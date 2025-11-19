@@ -78,6 +78,8 @@ app.get('*', (c) => {
         
         <!-- Page Scripts -->
         <script src="/static/js/pages/landing.js"></script>
+        <script src="/static/js/pages/features.js"></script>
+        <script src="/static/js/pages/content-pages.js"></script>
         <script src="/static/js/pages/login.js"></script>
         <script src="/static/js/pages/signup.js"></script>
         <script src="/static/js/pages/project-manager.js"></script>

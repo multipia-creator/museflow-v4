@@ -61,21 +61,26 @@ const Landing = {
           
           <!-- Navigation -->
           <nav style="display: flex; align-items: center; gap: 32px;">
-            <a href="#" class="nav-link" style="
+            <a href="#" data-nav="/features" class="nav-link" style="
               color: var(--gray-700);
               font-weight: 500;
               transition: color 0.2s;
             ">Features</a>
-            <a href="#" class="nav-link" style="
+            <a href="#" data-nav="/modules" class="nav-link" style="
               color: var(--gray-700);
               font-weight: 500;
               transition: color 0.2s;
             ">Modules</a>
-            <a href="#" class="nav-link" style="
+            <a href="#" data-nav="/pricing" class="nav-link" style="
               color: var(--gray-700);
               font-weight: 500;
               transition: color 0.2s;
             ">Pricing</a>
+            <a href="#" data-nav="/about" class="nav-link" style="
+              color: var(--gray-700);
+              font-weight: 500;
+              transition: color 0.2s;
+            ">About</a>
             <button id="btn-login" class="btn btn-secondary">Login</button>
             <button id="btn-signup" class="btn btn-primary">Sign Up</button>
           </nav>
@@ -345,6 +350,15 @@ const Landing = {
       });
       link.addEventListener('mouseleave', (e) => {
         e.target.style.color = 'var(--gray-700)';
+      });
+    });
+    
+    // Nav links click
+    document.querySelectorAll('[data-nav]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const path = link.dataset.nav;
+        Router.navigate(path);
       });
     });
   }
