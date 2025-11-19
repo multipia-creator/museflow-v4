@@ -71,8 +71,18 @@ app.get('*', (c) => {
         <script src="/static/js/core/router.js"></script>
         <script src="/static/js/core/auth.js"></script>
         
+        <!-- Canvas System -->
+        <script src="/static/js/core/canvas-engine.js"></script>
+        <script src="/static/js/components/node.js"></script>
+        <script src="/static/js/components/connection.js"></script>
+        
         <!-- Page Scripts -->
         <script src="/static/js/pages/landing.js"></script>
+        <script src="/static/js/pages/login.js"></script>
+        <script src="/static/js/pages/signup.js"></script>
+        <script src="/static/js/pages/project-manager.js"></script>
+        <script src="/static/js/pages/canvas.js"></script>
+        <script src="/static/js/pages/canvas-events.js"></script>
         
         <!-- App Initialization (must be last) -->
         <script src="/static/js/core/app.js"></script>
