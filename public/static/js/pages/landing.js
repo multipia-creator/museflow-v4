@@ -1,0 +1,355 @@
+// Museflow v4.0 - Landing Page
+
+const Landing = {
+  /**
+   * Initialize landing page
+   */
+  init() {
+    console.log('🏠 Loading Landing Page');
+    this.render();
+    this.attachEvents();
+  },
+  
+  /**
+   * Render landing page HTML
+   */
+  render() {
+    const container = document.createElement('div');
+    container.setAttribute('data-page', 'landing');
+    
+    container.innerHTML = `
+      <!-- Header -->
+      <header style="
+        background: white;
+        border-bottom: 1px solid var(--gray-200);
+        padding: 20px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.95);
+      ">
+        <div class="container" style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        ">
+          <!-- Logo -->
+          <div style="
+            display: flex;
+            align-items: center;
+            gap: 12px;
+          ">
+            <div style="
+              width: 40px;
+              height: 40px;
+              background: var(--gradient-primary);
+              border-radius: 10px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 20px;
+            ">🏛️</div>
+            <span style="
+              font-size: 24px;
+              font-weight: 700;
+              background: var(--gradient-primary);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+            ">Museflow</span>
+          </div>
+          
+          <!-- Navigation -->
+          <nav style="display: flex; align-items: center; gap: 32px;">
+            <a href="#" class="nav-link" style="
+              color: var(--gray-700);
+              font-weight: 500;
+              transition: color 0.2s;
+            ">Features</a>
+            <a href="#" class="nav-link" style="
+              color: var(--gray-700);
+              font-weight: 500;
+              transition: color 0.2s;
+            ">Modules</a>
+            <a href="#" class="nav-link" style="
+              color: var(--gray-700);
+              font-weight: 500;
+              transition: color 0.2s;
+            ">Pricing</a>
+            <button id="btn-login" class="btn btn-secondary">Login</button>
+            <button id="btn-signup" class="btn btn-primary">Sign Up</button>
+          </nav>
+        </div>
+      </header>
+      
+      <!-- Hero Section -->
+      <section style="
+        padding: 120px 0;
+        background: var(--gradient-hero);
+        position: relative;
+        overflow: hidden;
+      ">
+        <div class="container" style="
+          text-align: center;
+          position: relative;
+          z-index: 1;
+        ">
+          <h1 style="
+            font-size: 64px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 24px;
+            line-height: 1.1;
+          ">
+            AI-Powered<br>Museum Workflow
+          </h1>
+          <p style="
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 48px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+          ">
+            Transform your museum operations with intelligent workflow automation
+          </p>
+          <div style="display: flex; gap: 16px; justify-content: center;">
+            <button id="cta-get-started" class="btn btn-large" style="
+              background: white;
+              color: var(--primary-600);
+              box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            ">
+              Get Started Free
+            </button>
+            <button id="cta-learn-more" class="btn btn-large" style="
+              background: rgba(255, 255, 255, 0.2);
+              color: white;
+              backdrop-filter: blur(10px);
+              border: 2px solid rgba(255, 255, 255, 0.3);
+            ">
+              Learn More
+            </button>
+          </div>
+        </div>
+        
+        <!-- Background decoration -->
+        <div style="
+          position: absolute;
+          top: -100px;
+          right: -100px;
+          width: 500px;
+          height: 500px;
+          background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+          border-radius: 50%;
+        "></div>
+        <div style="
+          position: absolute;
+          bottom: -150px;
+          left: -150px;
+          width: 600px;
+          height: 600px;
+          background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+          border-radius: 50%;
+        "></div>
+      </section>
+      
+      <!-- Modules Section -->
+      <section style="
+        padding: 100px 0;
+        background: white;
+      ">
+        <div class="container">
+          <h2 style="
+            text-align: center;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+          ">6 Specialized Modules</h2>
+          <p style="
+            text-align: center;
+            font-size: 20px;
+            color: var(--gray-600);
+            margin-bottom: 64px;
+          ">Everything you need to manage your museum</p>
+          
+          <div style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+          ">
+            ${this.renderModules()}
+          </div>
+        </div>
+      </section>
+      
+      <!-- Footer -->
+      <footer style="
+        background: var(--gray-900);
+        color: white;
+        padding: 64px 0 32px;
+      ">
+        <div class="container">
+          <div style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 48px;
+            margin-bottom: 48px;
+          ">
+            <div>
+              <div style="
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 16px;
+              ">
+                <div style="
+                  width: 40px;
+                  height: 40px;
+                  background: var(--gradient-primary);
+                  border-radius: 10px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 20px;
+                ">🏛️</div>
+                <span style="font-size: 20px; font-weight: 700;">Museflow</span>
+              </div>
+              <p style="color: var(--gray-400);">
+                AI-powered workflow platform for museums
+              </p>
+            </div>
+            
+            <div>
+              <h4 style="margin-bottom: 16px; font-size: 16px;">Product</h4>
+              <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 8px;">
+                  <a href="#" style="color: var(--gray-400);">Features</a>
+                </li>
+                <li style="margin-bottom: 8px;">
+                  <a href="#" style="color: var(--gray-400);">Modules</a>
+                </li>
+                <li style="margin-bottom: 8px;">
+                  <a href="#" style="color: var(--gray-400);">Pricing</a>
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 style="margin-bottom: 16px; font-size: 16px;">Contact</h4>
+              <p style="color: var(--gray-400); margin-bottom: 8px;">
+                Prof. Hyun Woo Nam
+              </p>
+              <p style="color: var(--gray-400); margin-bottom: 8px;">
+                Seokyeong University
+              </p>
+              <p style="color: var(--gray-400);">
+                gallerypia@gmail.com
+              </p>
+            </div>
+          </div>
+          
+          <div style="
+            border-top: 1px solid var(--gray-800);
+            padding-top: 32px;
+            text-align: center;
+            color: var(--gray-400);
+          ">
+            © 2025 Museflow. All rights reserved.
+          </div>
+        </div>
+      </footer>
+    `;
+    
+    document.body.appendChild(container);
+  },
+  
+  /**
+   * Render module cards
+   */
+  renderModules() {
+    const modules = [
+      { id: 'exhibition', icon: '🎨', name: 'Exhibition', color: '#8b5cf6', desc: 'Plan and execute exhibitions' },
+      { id: 'education', icon: '📚', name: 'Education', color: '#06b6d4', desc: 'Design educational programs' },
+      { id: 'archive', icon: '📦', name: 'Archive', color: '#10b981', desc: 'Organize collections' },
+      { id: 'publication', icon: '📰', name: 'Publication', color: '#f59e0b', desc: 'Create catalogs' },
+      { id: 'research', icon: '🔬', name: 'Research', color: '#ec4899', desc: 'Conduct research' },
+      { id: 'administration', icon: '⚙️', name: 'Administration', color: '#6366f1', desc: 'Manage operations' }
+    ];
+    
+    return modules.map(m => `
+      <div class="card" style="
+        text-align: center;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.3s;
+      ">
+        <div style="
+          width: 80px;
+          height: 80px;
+          background: ${m.color}15;
+          border-radius: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 40px;
+          margin: 0 auto 24px;
+        ">${m.icon}</div>
+        <h3 style="
+          font-size: 24px;
+          font-weight: 600;
+          color: ${m.color};
+          margin-bottom: 12px;
+        ">${m.name}</h3>
+        <p style="
+          color: var(--gray-600);
+          font-size: 16px;
+        ">${m.desc}</p>
+      </div>
+    `).join('');
+  },
+  
+  /**
+   * Attach event listeners
+   */
+  attachEvents() {
+    // Login button
+    document.getElementById('btn-login')?.addEventListener('click', () => {
+      Router.navigate('/login');
+    });
+    
+    // Signup button
+    document.getElementById('btn-signup')?.addEventListener('click', () => {
+      Router.navigate('/signup');
+    });
+    
+    // Get Started CTA
+    document.getElementById('cta-get-started')?.addEventListener('click', () => {
+      if (Auth.check()) {
+        Router.navigate('/project-manager');
+      } else {
+        Router.navigate('/signup');
+      }
+    });
+    
+    // Learn More CTA
+    document.getElementById('cta-learn-more')?.addEventListener('click', () => {
+      // Scroll to modules section
+      const modulesSection = document.querySelector('section:nth-of-type(2)');
+      modulesSection?.scrollIntoView({ behavior: 'smooth' });
+    });
+    
+    // Nav links hover effect
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('mouseenter', (e) => {
+        e.target.style.color = 'var(--primary-600)';
+      });
+      link.addEventListener('mouseleave', (e) => {
+        e.target.style.color = 'var(--gray-700)';
+      });
+    });
+  }
+};
+
+// Expose globally
+window.Landing = Landing;
+console.log('✅ Landing Page loaded');
