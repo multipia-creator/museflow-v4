@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Museflow 설계서 다운로드</title>
+    <title>Museflow 플랫폼 설계서 다운로드</title>
     <style>
         * {
             margin: 0;
@@ -25,132 +25,174 @@
             background: white;
             border-radius: 24px;
             padding: 48px;
-            max-width: 600px;
+            max-width: 800px;
             width: 100%;
-            box-shadow: 0 30px 90px rgba(0,0,0,0.3);
-            text-align: center;
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.3);
         }
         
         .logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 32px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 64px;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .logo img {
+            height: 60px;
+            width: auto;
         }
         
         h1 {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 800;
             color: #1f2937;
+            text-align: center;
             margin-bottom: 16px;
         }
         
         .subtitle {
             font-size: 18px;
             color: #6b7280;
-            margin-bottom: 40px;
+            text-align: center;
+            margin-bottom: 48px;
         }
         
-        .info-box {
-            background: #f9fafb;
+        .download-card {
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
             border: 2px solid #e5e7eb;
             border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 32px;
-            text-align: left;
+            padding: 32px;
+            margin-bottom: 24px;
+            transition: all 0.3s;
         }
         
-        .info-row {
+        .download-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            border-color: #8b5cf6;
+        }
+        
+        .download-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #e5e7eb;
+            gap: 16px;
+            margin-bottom: 16px;
         }
         
-        .info-row:last-child {
-            border-bottom: none;
+        .file-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
         }
         
-        .info-label {
-            font-weight: 600;
-            color: #374151;
+        .file-info {
+            flex: 1;
+        }
+        
+        .file-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+        
+        .file-meta {
             font-size: 14px;
-        }
-        
-        .info-value {
             color: #6b7280;
-            font-size: 14px;
         }
         
         .download-btn {
-            display: inline-block;
+            width: 100%;
+            padding: 16px 24px;
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            padding: 18px 48px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: 700;
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-            transition: all 0.3s ease;
             border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
         }
         
         .download-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
         }
         
-        .download-btn:active {
-            transform: translateY(0);
+        .file-description {
+            color: #4b5563;
+            line-height: 1.6;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
         }
         
-        .icon {
-            margin-right: 8px;
-        }
-        
-        .footer {
-            margin-top: 32px;
-            padding-top: 24px;
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 48px;
+            padding-top: 32px;
             border-top: 2px solid #e5e7eb;
-            font-size: 14px;
-            color: #9ca3af;
         }
         
-        .footer a {
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #8b5cf6;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 32px;
+        }
+        
+        .back-link a {
             color: #8b5cf6;
             text-decoration: none;
             font-weight: 600;
+            font-size: 16px;
         }
         
-        .footer a:hover {
+        .back-link a:hover {
             text-decoration: underline;
         }
         
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
             .container {
                 padding: 32px 24px;
             }
             
             h1 {
-                font-size: 24px;
+                font-size: 28px;
             }
             
-            .subtitle {
-                font-size: 16px;
+            .stats {
+                grid-template-columns: 1fr;
+                gap: 24px;
             }
             
-            .download-btn {
-                padding: 16px 32px;
-                font-size: 16px;
-                width: 100%;
+            .download-header {
+                flex-direction: column;
+                text-align: center;
             }
         }
     </style>
@@ -158,50 +200,69 @@
 <body>
     <div class="container">
         <div class="logo">
-            📚
+            <img src="/logo-full.png" alt="Museflow">
         </div>
         
-        <h1>Museflow v4.0 플랫폼 설계서</h1>
-        <p class="subtitle">AI 기반 박물관 워크플로우 관리 시스템 상세 설계 문서</p>
+        <h1>플랫폼 설계서 다운로드</h1>
+        <p class="subtitle">Museflow v4.0 상세 기술 설계 문서</p>
         
-        <div class="info-box">
-            <div class="info-row">
-                <span class="info-label">📄 파일 형식</span>
-                <span class="info-value">PDF (Portable Document Format)</span>
+        <!-- PDF Download -->
+        <div class="download-card">
+            <div class="download-header">
+                <div class="file-icon">📄</div>
+                <div class="file-info">
+                    <div class="file-name">플랫폼 설계서 (PDF)</div>
+                    <div class="file-meta">211 KB · 60+ 페이지 · PDF 1.7</div>
+                </div>
             </div>
-            <div class="info-row">
-                <span class="info-label">📦 파일 크기</span>
-                <span class="info-value">211 KB</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">📖 예상 페이지</span>
-                <span class="info-value">60+ 페이지</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">📚 챕터 수</span>
-                <span class="info-value">13개 주요 섹션</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">📅 작성일</span>
-                <span class="info-value">2024년 11월 20일</span>
+            <a href="/static/Museflow_Platform_Design_Document.pdf" download="Museflow_Platform_Design_Document.pdf" class="download-btn">
+                <span>📥</span>
+                PDF 다운로드
+            </a>
+            <div class="file-description">
+                <strong>포함 내용:</strong> 13개 상세 챕터, 시스템 아키텍처, 기술 스택, 데이터베이스 설계, 
+                UI/UX 명세, 캔버스 엔진, 88+ 노드 시스템, API 명세, 성능 최적화 전략 등
             </div>
         </div>
         
-        <a href="/static/Museflow_Platform_Design_Document.pdf" 
-           class="download-btn" 
-           download="Museflow_Platform_Design_Document.pdf">
-            <span class="icon">⬇️</span>
-            설계서 다운로드
-        </a>
+        <!-- Markdown Download -->
+        <div class="download-card">
+            <div class="download-header">
+                <div class="file-icon">📝</div>
+                <div class="file-info">
+                    <div class="file-name">설계서 소스 (Markdown)</div>
+                    <div class="file-meta">60 KB · Markdown 형식</div>
+                </div>
+            </div>
+            <a href="/static/PLATFORM_DESIGN_DOCUMENT.md" download="PLATFORM_DESIGN_DOCUMENT.md" class="download-btn">
+                <span>📥</span>
+                Markdown 다운로드
+            </a>
+            <div class="file-description">
+                <strong>용도:</strong> 편집 가능한 소스 파일, GitHub/GitLab 문서화, 
+                커스텀 PDF 생성, 내용 수정 및 확장
+            </div>
+        </div>
         
-        <div class="footer">
-            <p>
-                <strong>포함 내용:</strong> 시스템 아키텍처, 기술 스택, 데이터베이스 설계, UI/UX 명세, 
-                88+ 노드 시스템, 캔버스 엔진, API 문서, 배포 가이드
-            </p>
-            <p style="margin-top: 16px;">
-                <a href="/">← 메인 페이지로 돌아가기</a>
-            </p>
+        <!-- Statistics -->
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value">13</div>
+                <div class="stat-label">챕터</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">60+</div>
+                <div class="stat-label">페이지</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">88+</div>
+                <div class="stat-label">노드 명세</div>
+            </div>
+        </div>
+        
+        <!-- Back Link -->
+        <div class="back-link">
+            <a href="/">← Museflow 홈으로 돌아가기</a>
         </div>
     </div>
 </body>

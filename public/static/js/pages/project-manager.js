@@ -731,16 +731,30 @@ const ProjectManager = {
       });
     }
     
-    // Menu items (placeholder)
-    ['menu-profile', 'menu-billing', 'menu-help'].forEach(id => {
-      const btn = document.getElementById(id);
-      if (btn) {
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          Toast.info('Coming soon! 🚀');
-        });
-      }
-    });
+    // Profile Menu Navigation
+    const profileBtn = document.getElementById('menu-profile');
+    if (profileBtn) {
+      profileBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        Router.navigate('/profile');
+      });
+    }
+    
+    const billingBtn = document.getElementById('menu-billing');
+    if (billingBtn) {
+      billingBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        Router.navigate('/billing');
+      });
+    }
+    
+    const helpBtn = document.getElementById('menu-help');
+    if (helpBtn) {
+      helpBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        Router.navigate('/help');
+      });
+    };
     
     // Notifications
     const notificationsBtn = document.getElementById('notifications-btn');

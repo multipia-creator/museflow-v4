@@ -12,6 +12,9 @@ const Router = {
     '/login': 'Login',
     '/signup': 'Signup',
     '/project-manager': 'ProjectManager',
+    '/profile': 'ProfileSettings',
+    '/billing': 'ProfileSettings',
+    '/help': 'ProfileSettings',
     '/canvas': 'Canvas'
   },
   
@@ -62,8 +65,16 @@ const Router = {
       return;
     }
     
-    // Initialize the page
-    window[pageName].init();
+    // Handle tab-based pages (ProfileSettings with different tabs)
+    const tabMatch = path.match(/\/(profile|billing|help)/);
+    if (tabMatch && pageName === 'ProfileSettings') {
+      const tab = tabMatch[1];
+      window[pageName].init(tab);
+    } else {
+      // Initialize the page normally
+      window[pageName].init();
+    }
+    
     this.currentPage = pageName;
     
     // Update browser history

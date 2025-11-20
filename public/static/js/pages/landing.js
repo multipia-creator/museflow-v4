@@ -228,13 +228,13 @@ const Landing = {
               <h4 style="margin-bottom: 16px; font-size: 16px;">Product</h4>
               <ul style="list-style: none; padding: 0;">
                 <li style="margin-bottom: 8px;">
-                  <a href="#" style="color: var(--gray-400);">Features</a>
+                  <a href="#" data-nav="/features" style="color: var(--gray-400); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--primary-500)'" onmouseout="this.style.color='var(--gray-400)'">Features</a>
                 </li>
                 <li style="margin-bottom: 8px;">
-                  <a href="#" style="color: var(--gray-400);">Modules</a>
+                  <a href="#" data-nav="/modules" style="color: var(--gray-400); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--primary-500)'" onmouseout="this.style.color='var(--gray-400)'">Modules</a>
                 </li>
                 <li style="margin-bottom: 8px;">
-                  <a href="#" style="color: var(--gray-400);">Pricing</a>
+                  <a href="#" data-nav="/pricing" style="color: var(--gray-400); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--primary-500)'" onmouseout="this.style.color='var(--gray-400)'">Pricing</a>
                 </li>
               </ul>
             </div>

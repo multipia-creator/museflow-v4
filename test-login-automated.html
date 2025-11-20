@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Automated Login Test</title>
+</head>
+<body>
+    <h1>Automated Login Test for Museflow</h1>
+    <div id="results"></div>
+    <script>
+        const results = document.getElementById('results');
+        
+        async function testLogin() {
+            // Test credentials
+            const testCases = [
+                { email: 'admin@museflow.com', password: 'admin123', name: 'Admin' },
+                { email: 'test@museflow.com', password: 'test1234', name: 'Test User' },
+                { email: 'wrong@email.com', password: 'wrongpass', name: 'Invalid' }
+            ];
+            
+            results.innerHTML += '<h2>Test Results:</h2>';
+            
+            for (const testCase of testCases) {
+                results.innerHTML += `<h3>Testing: ${testCase.name} (${testCase.email})</h3>`;
+                
+                // Get users from localStorage
+                const users = JSON.parse(localStorage.getItem('museflow_users') || '[]');
+                results.innerHTML += `<p>Total users in storage: ${users.length}</p>`;
+                
+                // Try to find user
+                const user = users.find(u => 
+                    u.email.toLowerCase() === testCase.email.toLowerCase() && 
+                    u.password === testCase.password
+                );
+                
+                if (user) {
+                    results.innerHTML += `<p style="color: green;">✅ Login would succeed for ${testCase.name}</p>`;
+                    results.innerHTML += `<pre>${JSON.stringify(user, null, 2)}</pre>`;
+                } else {
+                    results.innerHTML += `<p style="color: red;">❌ Login would fail for ${testCase.name}</p>`;
+                }
+            }
+            
+            // Show all users
+            const allUsers = JSON.parse(localStorage.getItem('museflow_users') || '[]');
+            results.innerHTML += '<h2>All Users in Database:</h2>';
+            results.innerHTML += `<pre>${JSON.stringify(allUsers, null, 2)}</pre>`;
+        }
+        
+        // Run test after page loads
+        window.onload = testLogin;
+    </script>
+</body>
+</html>

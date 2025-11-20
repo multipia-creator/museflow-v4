@@ -70,6 +70,7 @@ app.get('*', (c) => {
         <script src="/static/js/components/toast.js"></script>
         <script src="/static/js/core/router.js"></script>
         <script src="/static/js/core/auth.js"></script>
+        <script src="/static/js/data/test-data.js"></script>
         
         <!-- Canvas System -->
         <script src="/static/js/core/canvas-engine.js"></script>
@@ -83,6 +84,7 @@ app.get('*', (c) => {
         <script src="/static/js/pages/login.js"></script>
         <script src="/static/js/pages/signup.js"></script>
         <script src="/static/js/pages/project-manager.js"></script>
+        <script src="/static/js/pages/profile-settings.js"></script>
         <script src="/static/js/pages/canvas.js"></script>
         <script src="/static/js/pages/canvas-events.js"></script>
         
