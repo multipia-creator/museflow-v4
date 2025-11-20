@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - MuseFlow V4</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold text-gray-800">
+                    <i class="fas fa-crown mr-2 text-purple-600"></i>
+                    Admin
+                </h1>
+            </div>
+            <nav class="mt-6">
+                <a href="#dashboard" class="flex items-center px-6 py-3 text-gray-700 bg-purple-50 border-r-4 border-purple-600">
+                    <i class="fas fa-chart-line mr-3"></i>
+                    Dashboard
+                </a>
+                <a href="#users" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50">
+                    <i class="fas fa-users mr-3"></i>
+                    Users
+                </a>
+                <a href="#workflows" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50">
+                    <i class="fas fa-project-diagram mr-3"></i>
+                    Workflows
+                </a>
+                <a href="#sensors" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50">
+                    <i class="fas fa-sensor mr-3"></i>
+                    Sensors
+                </a>
+                <a href="#cache" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50">
+                    <i class="fas fa-database mr-3"></i>
+                    Cache
+                </a>
+                <a href="#logs" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50">
+                    <i class="fas fa-file-alt mr-3"></i>
+                    Logs
+                </a>
+                <a href="#settings" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50">
+                    <i class="fas fa-cog mr-3"></i>
+                    Settings
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto p-8">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-800">Dashboard Overview</h2>
+                <p class="text-gray-600 mt-2">System management and monitoring</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm">Total Users</p>
+                            <p id="stat-users" class="text-3xl font-bold text-gray-800">0</p>
+                        </div>
+                        <div class="bg-blue-100 rounded-full p-3">
+                            <i class="fas fa-users text-2xl text-blue-600"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm">Active Workflows</p>
+                            <p id="stat-workflows" class="text-3xl font-bold text-gray-800">0</p>
+                        </div>
+                        <div class="bg-green-100 rounded-full p-3">
+                            <i class="fas fa-project-diagram text-2xl text-green-600"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm">Cache Hit Rate</p>
+                            <p id="stat-cache" class="text-3xl font-bold text-gray-800">0%</p>
+                        </div>
+                        <div class="bg-purple-100 rounded-full p-3">
+                            <i class="fas fa-database text-2xl text-purple-600"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600 text-sm">Active Alerts</p>
+                            <p id="stat-alerts" class="text-3xl font-bold text-gray-800">0</p>
+                        </div>
+                        <div class="bg-red-100 rounded-full p-3">
+                            <i class="fas fa-exclamation-triangle text-2xl text-red-600"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold mb-4">API Requests (24h)</h3>
+                    <canvas id="requests-chart"></canvas>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold mb-4">System Performance</h3>
+                    <canvas id="performance-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Cache Management -->
+            <div class="bg-white rounded-lg shadow p-6 mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold">Cache Management</h3>
+                    <div class="space-x-2">
+                        <button onclick="cleanCache()" class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+                            <i class="fas fa-broom mr-2"></i>Clean Expired
+                        </button>
+                        <button onclick="clearCache()" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                            <i class="fas fa-trash mr-2"></i>Clear All
+                        </button>
+                    </div>
+                </div>
+                <div id="cache-stats" class="text-gray-600">Loading...</div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
+                <div id="activity-log" class="space-y-2">
+                    <p class="text-gray-600">Loading activity...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Load stats
+        async function loadStats() {
+            try {
+                const [cache, chatbot, iot] = await Promise.all([
+                    fetch('/api/performance/metrics').then(r => r.json()),
+                    fetch('/api/chatbot/stats').then(r => r.json()),
+                    fetch('/api/iot-sensors/alerts').then(r => r.json()).catch(() => ({success: false}))
+                ]);
+
+                if (cache.success) {
+                    document.getElementById('stat-cache').textContent = cache.metrics.cache.hitRate;
+                }
+
+                if (chatbot.success) {
+                    document.getElementById('stat-users').textContent = chatbot.stats.totalSessions;
+                }
+
+                if (iot.success && iot.alerts) {
+                    document.getElementById('stat-alerts').textContent = iot.alerts.length;
+                }
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+
+        // Clean cache
+        async function cleanCache() {
+            if (!confirm('Clean expired cache entries?')) return;
+            
+            try {
+                const response = await fetch('/api/performance/cache/clean', { method: 'POST' });
+                const data = await response.json();
+                alert(`Cleaned ${data.cleaned} expired entries`);
+                loadStats();
+            } catch (error) {
+                alert('Failed to clean cache');
+            }
+        }
+
+        // Clear cache
+        async function clearCache() {
+            if (!confirm('Clear ALL cache? This cannot be undone.')) return;
+            
+            try {
+                await fetch('/api/performance/cache/clear', { method: 'POST' });
+                alert('Cache cleared successfully');
+                loadStats();
+            } catch (error) {
+                alert('Failed to clear cache');
+            }
+        }
+
+        // Initialize
+        loadStats();
+        setInterval(loadStats, 30000); // Refresh every 30 seconds
+    </script>
+</body>
+</html>
