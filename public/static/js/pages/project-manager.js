@@ -101,12 +101,14 @@ const ProjectManager = {
                   padding: 0 32px;">
         
         <!-- Logo -->
-        <div style="display: flex; align-items: center; gap: 16px;">
-          <img src="/logo-full.png" alt="Museflow" style="height: 40px; width: auto;">
-          <h2 style="font-size: 24px; font-weight: 700; color: #1f2937; margin: 0;">
-            Museflow
-          </h2>
-        </div>
+        <a href="/project-manager" data-nav="/project-manager" style="
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          transition: opacity 0.3s;
+        " onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+          <img src="/static/images/logo-horizontal.png" alt="Museflow" style="height: 40px; width: auto;">
+        </a>
         
         <!-- Search Bar -->
         <div style="flex: 1; max-width: 500px; margin: 0 32px;">

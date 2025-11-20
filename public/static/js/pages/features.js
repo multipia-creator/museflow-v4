@@ -17,52 +17,7 @@ const Features = {
     container.innerHTML = `
       <div style="min-height: 100vh; background: linear-gradient(180deg, #f9fafb 0%, #ffffff 100%);">
         
-        <!-- Navigation -->
-        <nav style="position: sticky; top: 0; z-index: 100; background: rgba(255, 255, 255, 0.95); 
-                    backdrop-filter: blur(10px); border-bottom: 1px solid #e5e7eb; padding: 16px 0;">
-          <div style="max-width: 1200px; margin: 0 auto; padding: 0 24px; 
-                      display: flex; align-items: center; justify-content: space-between;">
-            <div style="display: flex; align-items: center; gap: 16px;">
-              <img src="/logo-full.png" alt="Museflow" style="height: 40px; width: auto;">
-              <h2 style="font-size: 24px; font-weight: 700; color: #1f2937; margin: 0;">Museflow</h2>
-            </div>
-            
-            <div style="display: flex; gap: 32px; align-items: center;">
-              <a href="#" data-nav="/" style="text-decoration: none; color: #6b7280; font-weight: 600; 
-                                             transition: color 0.2s;"
-                 onmouseover="this.style.color='#1f2937'" onmouseout="this.style.color='#6b7280'">
-                Home
-              </a>
-              <a href="#" data-nav="/features" style="text-decoration: none; color: #6366f1; font-weight: 600;">
-                Features
-              </a>
-              <a href="#" data-nav="/modules" style="text-decoration: none; color: #6b7280; font-weight: 600; 
-                                                     transition: color 0.2s;"
-                 onmouseover="this.style.color='#1f2937'" onmouseout="this.style.color='#6b7280'">
-                Modules
-              </a>
-              <a href="#" data-nav="/pricing" style="text-decoration: none; color: #6b7280; font-weight: 600; 
-                                                      transition: color 0.2s;"
-                 onmouseover="this.style.color='#1f2937'" onmouseout="this.style.color='#6b7280'">
-                Pricing
-              </a>
-              <a href="#" data-nav="/about" style="text-decoration: none; color: #6b7280; font-weight: 600; 
-                                                    transition: color 0.2s;"
-                 onmouseover="this.style.color='#1f2937'" onmouseout="this.style.color='#6b7280'">
-                About
-              </a>
-              <button 
-                data-nav="/login"
-                style="padding: 10px 24px; background: linear-gradient(135deg, #667eea, #764ba2); 
-                       color: white; border: none; border-radius: 10px; font-weight: 600; 
-                       cursor: pointer; transition: transform 0.2s;"
-                onmouseover="this.style.transform='translateY(-2px)'"
-                onmouseout="this.style.transform='translateY(0)'">
-                Get Started
-              </button>
-            </div>
-          </div>
-        </nav>
+        ${Navbar.render('light')}
         
         <!-- Hero Section -->
         <section style="padding: 120px 24px 80px; text-align: center;">
@@ -411,14 +366,10 @@ const Features = {
   },
 
   attachEvents() {
-    // Navigation links
-    document.querySelectorAll('[data-nav]').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const path = link.dataset.nav;
-        Router.navigate(path);
-      });
-    });
+    const container = document.querySelector('[data-page="features"]');
+    
+    // Attach Navbar events
+    Navbar.attachEvents(container);
     
     console.log('✅ Features events attached');
   }

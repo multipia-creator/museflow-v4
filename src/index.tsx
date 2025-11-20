@@ -25,7 +25,7 @@ app.get('*', (c) => {
         <link rel="stylesheet" href="/static/css/design-system.css">
         
         <!-- Favicon -->
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏛️</text></svg>">
+        <link rel="icon" type="image/png" href="/static/images/logo-square.png">
     </head>
     <body>
         <!-- Loading Screen -->
@@ -42,24 +42,16 @@ app.get('*', (c) => {
           justify-content: center;
           z-index: 9999;
         ">
-          <div style="
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            margin-bottom: 24px;
-            backdrop-filter: blur(10px);
-          ">🏛️</div>
-          <h2 style="
-            color: white;
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 16px;
-          ">Museflow</h2>
+          <img 
+            src="/static/images/logo-square.png" 
+            alt="Museflow" 
+            style="
+              width: 120px;
+              height: 120px;
+              margin-bottom: 32px;
+              animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            "
+          />
           <div class="spinner"></div>
         </div>
         
@@ -68,6 +60,7 @@ app.get('*', (c) => {
         
         <!-- Core Scripts -->
         <script src="/static/js/components/toast.js"></script>
+        <script src="/static/js/components/navbar.js"></script>
         <script src="/static/js/core/router.js"></script>
         <script src="/static/js/core/auth.js"></script>
         <script src="/static/js/data/test-data.js"></script>

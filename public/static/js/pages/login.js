@@ -58,17 +58,16 @@ const Login = {
         ">
           <!-- Logo -->
           <div style="
-            width: 120px;
-            height: 120px;
             background: white;
-            border-radius: 30px;
+            border-radius: 20px;
+            padding: 24px 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 32px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
           ">
-            <img src="/logo-icon.png" alt="Museflow" style="width: 80px; height: 80px;">
+            <img src="/static/images/logo-horizontal.png" alt="Museflow" style="height: 48px; width: auto;">
           </div>
           
           <!-- Branding Text -->

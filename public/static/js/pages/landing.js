@@ -18,74 +18,7 @@ const Landing = {
     container.setAttribute('data-page', 'landing');
     
     container.innerHTML = `
-      <!-- Header -->
-      <header style="
-        background: white;
-        border-bottom: 1px solid var(--gray-200);
-        padding: 20px 0;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        backdrop-filter: blur(10px);
-        background: rgba(255, 255, 255, 0.95);
-      ">
-        <div class="container" style="
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        ">
-          <!-- Logo -->
-          <div style="
-            display: flex;
-            align-items: center;
-            gap: 12px;
-          ">
-            <div style="
-              width: 40px;
-              height: 40px;
-              background: var(--gradient-primary);
-              border-radius: 10px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-size: 20px;
-            ">🏛️</div>
-            <span style="
-              font-size: 24px;
-              font-weight: 700;
-              background: var(--gradient-primary);
-              -webkit-background-clip: text;
-              -webkit-text-fill-color: transparent;
-            ">Museflow</span>
-          </div>
-          
-          <!-- Navigation -->
-          <nav style="display: flex; align-items: center; gap: 32px;">
-            <a href="#" data-nav="/features" class="nav-link" style="
-              color: var(--gray-700);
-              font-weight: 500;
-              transition: color 0.2s;
-            ">Features</a>
-            <a href="#" data-nav="/modules" class="nav-link" style="
-              color: var(--gray-700);
-              font-weight: 500;
-              transition: color 0.2s;
-            ">Modules</a>
-            <a href="#" data-nav="/pricing" class="nav-link" style="
-              color: var(--gray-700);
-              font-weight: 500;
-              transition: color 0.2s;
-            ">Pricing</a>
-            <a href="#" data-nav="/about" class="nav-link" style="
-              color: var(--gray-700);
-              font-weight: 500;
-              transition: color 0.2s;
-            ">About</a>
-            <button id="btn-login" class="btn btn-secondary">Login</button>
-            <button id="btn-signup" class="btn btn-primary">Sign Up</button>
-          </nav>
-        </div>
-      </header>
+      ${Navbar.render('light')}
       
       <!-- Hero Section -->
       <section style="
@@ -358,15 +291,10 @@ const Landing = {
    * Attach event listeners
    */
   attachEvents() {
-    // Login button
-    document.getElementById('btn-login')?.addEventListener('click', () => {
-      Router.navigate('/login');
-    });
+    const container = document.querySelector('[data-page="landing"]');
     
-    // Signup button
-    document.getElementById('btn-signup')?.addEventListener('click', () => {
-      Router.navigate('/signup');
-    });
+    // Attach Navbar events
+    Navbar.attachEvents(container);
     
     // Get Started CTA
     document.getElementById('cta-get-started')?.addEventListener('click', () => {
@@ -382,25 +310,6 @@ const Landing = {
       // Scroll to modules section
       const modulesSection = document.querySelector('section:nth-of-type(2)');
       modulesSection?.scrollIntoView({ behavior: 'smooth' });
-    });
-    
-    // Nav links hover effect
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('mouseenter', (e) => {
-        e.target.style.color = 'var(--primary-600)';
-      });
-      link.addEventListener('mouseleave', (e) => {
-        e.target.style.color = 'var(--gray-700)';
-      });
-    });
-    
-    // Nav links click
-    document.querySelectorAll('[data-nav]').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const path = link.dataset.nav;
-        Router.navigate(path);
-      });
     });
   }
 };

@@ -3,45 +3,6 @@
  * Simple placeholder pages
  */
 
-// Shared Navigation Component
-const ContentNav = {
-  render() {
-    return `
-      <nav style="position: sticky; top: 0; z-index: 100; background: rgba(255, 255, 255, 0.95); 
-                  backdrop-filter: blur(10px); border-bottom: 1px solid #e5e7eb; padding: 16px 0;">
-        <div style="max-width: 1200px; margin: 0 auto; padding: 0 24px; 
-                    display: flex; align-items: center; justify-content: space-between;">
-          <div style="display: flex; align-items: center; gap: 16px; cursor: pointer;" data-nav="/">
-            <img src="/logo-full.png" alt="Museflow" style="height: 40px; width: auto;">
-            <h2 style="font-size: 24px; font-weight: 700; color: #1f2937; margin: 0;">Museflow</h2>
-          </div>
-          
-          <div style="display: flex; gap: 32px; align-items: center;">
-            <a href="#" data-nav="/" style="text-decoration: none; color: #6b7280; font-weight: 600;">Home</a>
-            <a href="#" data-nav="/features" style="text-decoration: none; color: #6b7280; font-weight: 600;">Features</a>
-            <a href="#" data-nav="/modules" style="text-decoration: none; color: #6b7280; font-weight: 600;">Modules</a>
-            <a href="#" data-nav="/pricing" style="text-decoration: none; color: #6b7280; font-weight: 600;">Pricing</a>
-            <a href="#" data-nav="/about" style="text-decoration: none; color: #6b7280; font-weight: 600;">About</a>
-            <button data-nav="/login" style="padding: 10px 24px; background: linear-gradient(135deg, #667eea, #764ba2); 
-                   color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;">
-              Get Started
-            </button>
-          </div>
-        </div>
-      </nav>
-    `;
-  },
-  
-  attachEvents() {
-    document.querySelectorAll('[data-nav]').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        Router.navigate(link.dataset.nav);
-      });
-    });
-  }
-};
-
 // Modules Page
 const Modules = {
   init() {
@@ -50,7 +11,7 @@ const Modules = {
     container.setAttribute('data-page', 'modules');
     container.innerHTML = `
       <div style="min-height: 100vh; background: #f9fafb;">
-        ${ContentNav.render()}
+        ${Navbar.render('light')}
         
         <section style="padding: 120px 24px 80px; text-align: center;">
           <div style="display: inline-block; padding: 8px 16px; background: #eef2ff; 
@@ -74,7 +35,7 @@ const Modules = {
       </div>
     `;
     document.getElementById('app').appendChild(container);
-    ContentNav.attachEvents();
+    Navbar.attachEvents(container);
   },
   
   renderModules() {
@@ -166,7 +127,7 @@ const Pricing = {
     container.setAttribute('data-page', 'pricing');
     container.innerHTML = `
       <div style="min-height: 100vh; background: linear-gradient(180deg, #f9fafb 0%, #ffffff 50%);">
-        ${ContentNav.render()}
+        ${Navbar.render('light')}
         
         <section style="padding: 120px 24px 80px; text-align: center;">
           <div style="display: inline-block; padding: 8px 16px; background: #eef2ff; 
@@ -190,7 +151,7 @@ const Pricing = {
       </div>
     `;
     document.getElementById('app').appendChild(container);
-    ContentNav.attachEvents();
+    Navbar.attachEvents(container);
     this.attachEvents();
   },
   
@@ -300,7 +261,7 @@ const About = {
     container.setAttribute('data-page', 'about');
     container.innerHTML = `
       <div style="min-height: 100vh; background: #ffffff;">
-        ${ContentNav.render()}
+        ${Navbar.render('light')}
         
         <section style="padding: 120px 24px 80px; text-align: center;">
           <div style="display: inline-block; padding: 8px 16px; background: #eef2ff; 
@@ -386,7 +347,7 @@ const About = {
       </div>
     `;
     document.getElementById('app').appendChild(container);
-    ContentNav.attachEvents();
+    Navbar.attachEvents(container);
   }
 };
 
