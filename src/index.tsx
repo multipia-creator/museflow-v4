@@ -99,6 +99,7 @@ app.get('*', (c) => {
         <!-- AI Components -->
         <script src="/static/js/components/ai-generation-modal.js?v=${Date.now()}"></script>
         <script src="/static/js/components/collaboration-panel.js?v=${Date.now()}"></script>
+        <script src="/static/js/components/museum-search-modal.js?v=${Date.now()}"></script>
         
         <!-- Page Scripts -->
         <script src="/static/js/pages/features.js?v=${Date.now()}"></script>

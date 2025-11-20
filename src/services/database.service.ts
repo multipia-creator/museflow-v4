@@ -520,4 +520,61 @@ export class DatabaseService {
 
     return result.results || [];
   }
+
+  // ========================================================================
+  // MUSEUM DATA CACHE
+  // ========================================================================
+
+  async cacheMuseumData(
+    endpoint: string,
+    queryParams: Record<string, any>,
+    responseData: any
+  ): Promise<void> {
+    const id = this.generateId();
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(); // 24 hours
+
+    await this.db
+      .prepare(
+        `INSERT INTO museum_data_cache (
+          id, api_endpoint, query_params, response_data, cached_at, expires_at, hit_count
+        ) VALUES (?, ?, ?, ?, datetime('now'), ?, 0)`
+      )
+      .bind(
+        id,
+        endpoint,
+        JSON.stringify(queryParams),
+        JSON.stringify(responseData),
+        expiresAt
+      )
+      .run();
+  }
+
+  async getMuseumCache(
+    endpoint: string,
+    queryParams: Record<string, any>
+  ): Promise<any | null> {
+    const result = await this.db
+      .prepare(
+        `SELECT * FROM museum_data_cache 
+         WHERE api_endpoint = ? 
+         AND query_params = ? 
+         AND expires_at > datetime('now')
+         ORDER BY cached_at DESC
+         LIMIT 1`
+      )
+      .bind(endpoint, JSON.stringify(queryParams))
+      .first<any>();
+
+    if (result) {
+      // Increment hit count
+      await this.db
+        .prepare('UPDATE museum_data_cache SET hit_count = hit_count + 1 WHERE id = ?')
+        .bind(result.id)
+        .run();
+
+      return JSON.parse(result.response_data);
+    }
+
+    return null;
+  }
 }

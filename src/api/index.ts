@@ -8,11 +8,13 @@ import { cors } from 'hono/cors';
 import workflowRoutes from './workflows';
 import aiRoutes from './ai';
 import collaborationRoutes from './collaboration';
+import museumRoutes from './museum';
 
 type Bindings = {
   DB: D1Database;
   GEMINI_API_KEY: string;
   NOTION_API_KEY?: string;
+  MUSEUM_API_KEY?: string;
   COLLABORATION_ROOM: DurableObjectNamespace;
 };
 
@@ -38,6 +40,7 @@ api.get('/health', (c) => {
 api.route('/workflows', workflowRoutes);
 api.route('/ai', aiRoutes);
 api.route('/collaboration', collaborationRoutes);
+api.route('/museum', museumRoutes);
 
 // 404 handler
 api.notFound((c) => {
