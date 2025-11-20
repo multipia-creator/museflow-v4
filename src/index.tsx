@@ -71,7 +71,6 @@ app.get('*', (c) => {
         <script src="/static/js/components/connection.js"></script>
         
         <!-- Page Scripts -->
-        <script src="/static/js/pages/landing.js"></script>
         <script src="/static/js/pages/features.js"></script>
         <script src="/static/js/pages/content-pages.js"></script>
         <script src="/static/js/pages/login.js"></script>

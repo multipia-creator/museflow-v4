@@ -22,12 +22,12 @@ const App = {
       const currentPath = window.location.pathname;
       
       if (currentPath === '/' || currentPath === '') {
-        // Landing page
+        // Home page
         if (isAuthenticated) {
           console.log('📍 Redirecting to Project Manager');
           Router.navigate('/project-manager', false);
         } else {
-          console.log('📍 Showing Landing Page');
+          console.log('📍 Showing Features Page');
           Router.navigate('/', false);
         }
       } else {

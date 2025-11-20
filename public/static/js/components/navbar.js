@@ -23,26 +23,8 @@ const Navbar = {
         <div class="container" style="
           display: flex;
           align-items: center;
-          justify-content: space-between;
+          justify-content: flex-end;
         ">
-          <!-- Logo -->
-          <a href="/" data-nav="/" style="
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            transition: opacity 0.3s var(--ease-out);
-          " class="logo-link">
-            <img 
-              src="/static/images/logo-horizontal.png" 
-              alt="Museflow" 
-              style="
-                height: 40px;
-                width: auto;
-                object-fit: contain;
-              "
-            />
-          </a>
-          
           <!-- Navigation -->
           <nav style="display: flex; align-items: center; gap: 32px;">
             <a href="#" data-nav="/features" class="nav-link" style="
@@ -76,10 +58,6 @@ const Navbar = {
       </header>
       
       <style>
-        .logo-link:hover {
-          opacity: 0.8;
-        }
-        
         .nav-link:hover {
           color: var(--primary-600) !important;
         }
@@ -92,10 +70,6 @@ const Navbar = {
           
           header nav a.nav-link {
             display: none;
-          }
-          
-          .logo-link img {
-            height: 32px !important;
           }
         }
       </style>
@@ -121,26 +95,8 @@ const Navbar = {
         <div class="container" style="
           display: flex;
           align-items: center;
-          justify-content: space-between;
+          justify-content: flex-end;
         ">
-          <!-- Logo -->
-          <a href="/project-manager" data-nav="/project-manager" style="
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            transition: opacity 0.3s var(--ease-out);
-          " class="logo-link">
-            <img 
-              src="/static/images/logo-horizontal.png" 
-              alt="Museflow" 
-              style="
-                height: 40px;
-                width: auto;
-                object-fit: contain;
-              "
-            />
-          </a>
-          
           <!-- Navigation -->
           <nav style="display: flex; align-items: center; gap: 24px;">
             <a href="#" data-nav="/project-manager" class="nav-link" style="
@@ -161,10 +117,6 @@ const Navbar = {
       </header>
       
       <style>
-        .logo-link:hover {
-          opacity: 0.8;
-        }
-        
         .nav-link:hover {
           color: var(--primary-600) !important;
         }
@@ -173,10 +125,6 @@ const Navbar = {
         @media (max-width: 768px) {
           header nav {
             gap: 12px !important;
-          }
-          
-          .logo-link img {
-            height: 32px !important;
           }
         }
       </style>

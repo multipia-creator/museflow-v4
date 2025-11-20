@@ -4,8 +4,7 @@
 const Router = {
   // Route definitions
   routes: {
-    '/': 'Landing',
-    '/features': 'Features',
+    '/': 'Features',
     '/modules': 'Modules',
     '/pricing': 'Pricing',
     '/about': 'About',
