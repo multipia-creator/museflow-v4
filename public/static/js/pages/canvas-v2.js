@@ -224,10 +224,20 @@ const CanvasV2 = {
    * Load project from session storage
    */
   loadProject() {
-    const projectData = sessionStorage.getItem('canvas_project');
+    console.log('📦 Loading project from sessionStorage...');
+    
+    // Try both keys for compatibility
+    let projectData = sessionStorage.getItem('museflow_current_project');
+    if (!projectData) {
+      projectData = sessionStorage.getItem('canvas_project');
+    }
+    
     if (projectData) {
       this.currentProject = JSON.parse(projectData);
-      console.log('📦 Loaded project:', this.currentProject.name);
+      console.log('✅ Loaded project:', this.currentProject.name);
+    } else {
+      console.error('❌ No project data found in sessionStorage');
+      console.log('Keys in sessionStorage:', Object.keys(sessionStorage));
     }
   },
   

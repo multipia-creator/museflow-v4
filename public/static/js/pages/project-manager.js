@@ -1211,12 +1211,30 @@ const ProjectManager = {
   },
 
   openProject(projectId) {
+    console.log('🔓 openProject called with ID:', projectId);
+    console.log('📚 Available projects:', this.projects.length);
+    
     const project = this.projects.find(p => p.id == projectId);
+    console.log('🔍 Found project:', project);
+    
     if (project) {
       console.log(`🎨 Opening project: ${project.name}`);
+      
       // Store current project in sessionStorage for canvas
       sessionStorage.setItem('museflow_current_project', JSON.stringify(project));
+      console.log('💾 Stored in sessionStorage');
+      
+      // Check if Router exists
+      if (typeof Router === 'undefined') {
+        console.error('❌ Router not found!');
+        return;
+      }
+      
+      console.log('🔀 Calling Router.navigate("/canvas")...');
       Router.navigate('/canvas');
+      console.log('✅ Router.navigate called');
+    } else {
+      console.error('❌ Project not found with ID:', projectId);
     }
   },
 
