@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuseFlow.life - AI-Powered Museum Workflow Platform</title>
+    <meta name="description" content="Transform your museum operations with AI-powered workflow automation, multi-agent system, and real-time collaboration.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="/static/css/world-class-ui.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(ellipse at top, #1e1b4b 0%, #0f0a1f 50%, #000000 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(15, 10, 31, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            background: rgba(15, 10, 31, 0.95);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+        
+        .nav-logo img {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+        }
+        
+        .nav-logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: #8b5cf6;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-cta {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            color: white;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+        }
+        
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.6);
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 8rem 2rem 4rem;
+        }
+        
+        .hero-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+            animation: bgFloat 20s ease-in-out infinite;
+        }
+        
+        @keyframes bgFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-logo {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.6));
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        .hero-cta-group {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .hero-cta-primary {
+            padding: 1.25rem 3rem;
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .hero-cta-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(139, 92, 246, 0.6);
+        }
+        
+        .hero-cta-secondary {
+            padding: 1.25rem 3rem;
+            font-size: 1.25rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .hero-cta-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-4px);
+        }
+        
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-stat {
+            text-align: center;
+        }
+        
+        .hero-stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-stat-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 0.5rem;
+        }
+        
+        /* Section Container */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            border-radius: 100px;
+            color: #a78bfa;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+        
+        .section-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-description {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+        }
+        
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .feature-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-list {
+            list-style: none;
+        }
+        
+        .feature-list li {
+            color: rgba(255, 255, 255, 0.6);
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: 700;
+        }
+        
+        /* Modules Grid */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .module-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8b5cf6, #ec4899, #3b82f6);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .module-card:hover::before {
+            transform: translateX(0);
+        }
+        
+        .module-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+        }
+        
+        .module-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .module-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: white;
+        }
+        
+        .module-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        /* Pricing Cards */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .pricing-card.featured {
+            border: 2px solid #8b5cf6;
+            transform: scale(1.05);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4);
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+        }
+        
+        .pricing-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.5rem 1.5rem;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .pricing-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+        
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .pricing-period {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 2rem;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+        
+        .pricing-features li {
+            padding: 0.75rem 0;
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .pricing-features i {
+            color: #10b981;
+            font-size: 1.125rem;
+        }
+        
+        .pricing-cta {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .pricing-card.featured .pricing-cta {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border: none;
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+        }
+        
+        .pricing-cta:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .pricing-card.featured .pricing-cta:hover {
+            background: linear-gradient(135deg, #7c3aed, #db2777);
+            box-shadow: 0 12px 32px rgba(139, 92, 246, 0.6);
+        }
+        
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .about-content h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .about-content p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .tech-badge {
+            padding: 0.75rem 1.5rem;
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            border-radius: 100px;
+            color: #a78bfa;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background: rgba(15, 10, 31, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4rem 2rem 2rem;
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-section h4 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: #8b5cf6;
+        }
+        
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.125rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-grid,
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo">
+                <img src="https://www.genspark.ai/api/files/s/26RipIBz" alt="MuseFlow">
+                <span class="nav-logo-text">MuseFlow.life</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#modules">Modules</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+            <a href="/canvas-v2.html" class="nav-cta">
+                <i class="fas fa-rocket"></i> Get Started
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-background"></div>
+        <div class="hero-content">
+            <img src="https://www.genspark.ai/api/files/s/26RipIBz" alt="MuseFlow" class="hero-logo">
+            
+            <h1 class="hero-title">
+                AI-Powered Museum<br>Workflow Platform
+            </h1>
+            
+            <p class="hero-subtitle">
+                Transform your museum operations with intelligent workflow automation, 
+                multi-agent AI system, and real-time collaboration. 
+                Built for the future of cultural institutions.
+            </p>
+            
+            <div class="hero-cta-group">
+                <a href="/canvas-v2.html" class="hero-cta-primary">
+                    <i class="fas fa-rocket"></i> Start Free Trial
+                </a>
+                <a href="#features" class="hero-cta-secondary">
+                    <i class="fas fa-play-circle"></i> Watch Demo
+                </a>
+            </div>
+            
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-number">8</div>
+                    <div class="hero-stat-label">AI Agents</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">19</div>
+                    <div class="hero-stat-label">Auto-Generated Nodes</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">3s</div>
+                    <div class="hero-stat-label">Workflow Creation</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section" id="features">
+        <div class="section-header">
+            <span class="section-badge">Core Features</span>
+            <h2 class="section-title">Everything You Need</h2>
+            <p class="section-description">
+                Comprehensive AI-powered tools for modern museum management
+            </p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 class="feature-title">AI Workflow Generation</h3>
+                <p class="feature-description">
+                    Transform natural language into complete workflows in 3-5 seconds
+                </p>
+                <ul class="feature-list">
+                    <li>19 auto-generated nodes across 6 phases</li>
+                    <li>Budget estimation & optimization</li>
+                    <li>Artwork selection & curation</li>
+                    <li>Timeline planning with milestones</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users-cog"></i>
+                </div>
+                <h3 class="feature-title">Multi-Agent System</h3>
+                <p class="feature-description">
+                    8 specialized AI agents working together via MCP protocol
+                </p>
+                <ul class="feature-list">
+                    <li>Exhibition planning & curation</li>
+                    <li>Financial analysis & optimization</li>
+                    <li>Artwork search & recommendation</li>
+                    <li>Visitor prediction & analytics</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 class="feature-title">Real-time Collaboration</h3>
+                <p class="feature-description">
+                    WebSocket-based collaboration with live cursors and sync
+                </p>
+                <ul class="feature-list">
+                    <li>Live cursor tracking</li>
+                    <li>Node selection synchronization</li>
+                    <li>Active users panel</li>
+                    <li>Auto-reconnect with backoff</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-museum"></i>
+                </div>
+                <h3 class="feature-title">Museum Data Integration</h3>
+                <p class="feature-description">
+                    Access to multiple museum APIs with unified search
+                </p>
+                <ul class="feature-list">
+                    <li>National Museum of Korea API</li>
+                    <li>Soma Museum API</li>
+                    <li>KCISA 3D cultural heritage models</li>
+                    <li>24-hour intelligent caching</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-cube"></i>
+                </div>
+                <h3 class="feature-title">3D Visualization & AR/VR</h3>
+                <p class="feature-description">
+                    Immersive experiences with Three.js and WebXR
+                </p>
+                <ul class="feature-list">
+                    <li>3D model viewer (GLB, GLTF, OBJ, FBX)</li>
+                    <li>AR artwork placement</li>
+                    <li>VR museum tours</li>
+                    <li>Digital twin simulation</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="feature-title">Analytics & Insights</h3>
+                <p class="feature-description">
+                    Real-time KPI dashboard and predictive analytics
+                </p>
+                <ul class="feature-list">
+                    <li>Visitor traffic prediction</li>
+                    <li>Revenue forecasting</li>
+                    <li>IoT sensor monitoring</li>
+                    <li>Performance optimization</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modules Section -->
+    <section class="section" id="modules">
+        <div class="section-header">
+            <span class="section-badge">AI Modules</span>
+            <h2 class="section-title">8 Specialized Agents</h2>
+            <p class="section-description">
+                Each agent is designed for specific museum management tasks
+            </p>
+        </div>
+        
+        <div class="modules-grid">
+            <div class="module-card">
+                <div class="module-icon">🎯</div>
+                <h3 class="module-title">Coordinator Agent</h3>
+                <p class="module-description">
+                    Orchestrates all agents using MCP protocol, routes requests to appropriate specialists, and manages inter-agent communication.
+                </p>
+            </div>
+            
+            <div class="module-card">
+                <div class="module-icon">🎨</div>
+                <h3 class="module-title">Exhibition Agent</h3>
+                <p class="module-description">
+                    Plans exhibitions, curates artwork selections, designs gallery layouts, and generates exhibition concepts from descriptions.
+                </p>
+            </div>
+            
+            <div class="module-card">
+                <div class="module-icon">💰</div>
+                <h3 class="module-title">Budget Agent</h3>
+                <p class="module-description">
+                    Analyzes financial data, optimizes budget allocation, forecasts costs, and generates detailed budget breakdowns.
+                </p>
+            </div>
+            
+            <div class="module-card">
+                <div class="module-icon">🏛️</div>
+                <h3 class="module-title">Archive Agent</h3>
+                <p class="module-description">
+                    Searches artwork databases, recommends pieces based on criteria, provides historical context, and manages metadata.
+                </p>
+            </div>
+            
+            <div class="module-card">
+                <div class="module-icon">👥</div>
+                <h3 class="module-title">Visitor Agent</h3>
+                <p class="module-description">
+                    Predicts daily visitor traffic, analyzes patterns, forecasts capacity needs, and optimizes crowd management.
+                </p>
+            </div>
+            
+            <div class="module-card">
+                <div class="module-icon">🏗️</div>
+                <h3 class="module-title">Digital Twin Agent</h3>
+                <p class="module-description">
+                    Simulates museum spaces, optimizes artwork placement, generates visitor flow heatmaps, and tests layout configurations.
+                </p>
+            </div>
+            
+            <div class="module-card">
+                <div class="module-icon">💬</div>
+                <h3 class="module-title">Chatbot Agent</h3>
+                <p class="module-description">
+                    AI museum guide providing personalized recommendations, answering visitor questions, and managing conversation context.
+                </p>
+            </div>
+            
+            <div class="module-card">
+                <div class="module-icon">🔗</div>
+                <h3 class="module-title">Notion Integration</h3>
+                <p class="module-description">
+                    Two-way sync with Notion workspace, automatic project/task creation, and real-time status updates.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="section" id="pricing">
+        <div class="section-header">
+            <span class="section-badge">Pricing Plans</span>
+            <h2 class="section-title">Choose Your Plan</h2>
+            <p class="section-description">
+                Flexible pricing for museums of all sizes
+            </p>
+        </div>
+        
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3 class="pricing-name">Free</h3>
+                <div class="pricing-price">$0</div>
+                <div class="pricing-period">Forever free</div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check-circle"></i> Up to 5 workflows</li>
+                    <li><i class="fas fa-check-circle"></i> 2 team members</li>
+                    <li><i class="fas fa-check-circle"></i> Basic AI agents</li>
+                    <li><i class="fas fa-check-circle"></i> 100 museum API requests/day</li>
+                    <li><i class="fas fa-check-circle"></i> Community support</li>
+                </ul>
+                <button class="pricing-cta">Get Started</button>
+            </div>
+            
+            <div class="pricing-card featured">
+                <div class="pricing-badge">Most Popular</div>
+                <h3 class="pricing-name">Professional</h3>
+                <div class="pricing-price">$99</div>
+                <div class="pricing-period">per month</div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check-circle"></i> Unlimited workflows</li>
+                    <li><i class="fas fa-check-circle"></i> 10 team members</li>
+                    <li><i class="fas fa-check-circle"></i> All 8 AI agents</li>
+                    <li><i class="fas fa-check-circle"></i> Unlimited museum API</li>
+                    <li><i class="fas fa-check-circle"></i> AR/VR experiences</li>
+                    <li><i class="fas fa-check-circle"></i> Real-time collaboration</li>
+                    <li><i class="fas fa-check-circle"></i> Priority support</li>
+                </ul>
+                <button class="pricing-cta">Start Free Trial</button>
+            </div>
+            
+            <div class="pricing-card">
+                <h3 class="pricing-name">Enterprise</h3>
+                <div class="pricing-price">Custom</div>
+                <div class="pricing-period">Contact us</div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check-circle"></i> Everything in Pro</li>
+                    <li><i class="fas fa-check-circle"></i> Unlimited team members</li>
+                    <li><i class="fas fa-check-circle"></i> Custom AI training</li>
+                    <li><i class="fas fa-check-circle"></i> Dedicated infrastructure</li>
+                    <li><i class="fas fa-check-circle"></i> On-premise deployment</li>
+                    <li><i class="fas fa-check-circle"></i> 24/7 phone support</li>
+                    <li><i class="fas fa-check-circle"></i> SLA guarantee</li>
+                </ul>
+                <button class="pricing-cta">Contact Sales</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="section-header">
+            <span class="section-badge">About Us</span>
+            <h2 class="section-title">Building the Future of Museums</h2>
+        </div>
+        
+        <div class="about-grid">
+            <div class="about-content">
+                <h3>Our Mission</h3>
+                <p>
+                    MuseFlow.life was created to revolutionize how museums manage their operations. 
+                    We believe that cultural institutions deserve world-class technology that enables 
+                    them to focus on what matters most: preserving and sharing culture.
+                </p>
+                
+                <h3>Why MuseFlow?</h3>
+                <p>
+                    Traditional museum workflow management is complex, time-consuming, and error-prone. 
+                    MuseFlow leverages cutting-edge AI technology to automate routine tasks, provide 
+                    intelligent insights, and enable seamless collaboration.
+                </p>
+                
+                <p>
+                    Our multi-agent system orchestrates 8 specialized AI agents that work together 
+                    to handle everything from exhibition planning to visitor analytics, all powered 
+                    by Google's Gemini 2.0 and running on Cloudflare's global edge network.
+                </p>
+            </div>
+            
+            <div class="about-content">
+                <h3>Technology Stack</h3>
+                <div class="tech-stack">
+                    <span class="tech-badge">Gemini 2.0 Flash</span>
+                    <span class="tech-badge">TypeScript 5.7</span>
+                    <span class="tech-badge">Hono 4.10</span>
+                    <span class="tech-badge">Cloudflare Workers</span>
+                    <span class="tech-badge">D1 Database</span>
+                    <span class="tech-badge">Durable Objects</span>
+                    <span class="tech-badge">Three.js</span>
+                    <span class="tech-badge">WebXR API</span>
+                    <span class="tech-badge">Chart.js</span>
+                    <span class="tech-badge">Notion API</span>
+                </div>
+                
+                <h3 style="margin-top: 2rem;">Leadership</h3>
+                <p>
+                    Led by Professor Nam Hyun-woo (남현우 교수), MuseFlow combines deep expertise 
+                    in cultural heritage management with cutting-edge AI research and development.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#modules">Modules</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="/canvas-v2.html">Canvas Editor</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="/admin.html">Admin Dashboard</a></li>
+                    <li><a href="/ar-vr-demo.html">AR/VR Demo</a></li>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">API Reference</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="#"><i class="fab fa-github"></i> GitHub</a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                    <li><a href="#"><i class="fas fa-envelope"></i> Email</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 MuseFlow.life. All rights reserved. Built with ❤️ for museums worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all cards
+        document.querySelectorAll('.feature-card, .module-card, .pricing-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

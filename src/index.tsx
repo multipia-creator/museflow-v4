@@ -21,13 +21,16 @@ app.route('/api', api)
 // Note: Cache busting is handled via query parameters (?v=timestamp) in HTML
 app.use('/static/*', serveStatic({ root: './' }))
 
-// Landing page (root route)
+// Landing page - redirect to static file served by Cloudflare Pages
 app.get('/', (c) => {
+  // In production, Cloudflare Pages will serve /landing.html from public directory
+  // In development, we redirect to admin for now
+  const url = c.req.url
+  if (url.includes('localhost') || url.includes('127.0.0.1')) {
+    return c.redirect('/admin.html')
+  }
   return c.redirect('/landing.html')
 })
-
-// Serve static HTML files
-app.use('/*', serveStatic({ root: './public' }))
 
 // Canvas V2 route (main SPA) - Fallback for any other route
 app.get('*', (c) => {
