@@ -318,7 +318,7 @@ const Login = {
       </div>
     `;
     
-    document.body.appendChild(container);
+    document.getElementById('app').appendChild(container);
     
     // Add custom styles for form elements
     this.addFormStyles();
