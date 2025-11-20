@@ -192,9 +192,10 @@ pm2 logs museflow-v4 --nostream
 ### 5. Access Points
 
 **🌐 Production (Cloudflare Pages):**
-- **Live Site**: https://a897f414.museflow.pages.dev
+- **Live Site**: https://4ac75c5f.museflow.pages.dev ⭐ Latest
 - **Primary Domain**: https://museflow.pages.dev
 - **Status**: ✅ Deployed & Active
+- **Last Updated**: 2024-11-20 16:45 KST
 
 **Development:**
 - Local: http://localhost:3000
