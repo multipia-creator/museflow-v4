@@ -11,6 +11,8 @@ import collaborationRoutes from './collaboration';
 import museumRoutes from './museum';
 import visitorRoutes from './visitor';
 import nftRoutes from './nft';
+import threeDModelsRoutes from './3d-models';
+import digitalTwinRoutes from './digital-twin';
 
 type Bindings = {
   DB: D1Database;
@@ -18,6 +20,7 @@ type Bindings = {
   NOTION_API_KEY?: string;
   MUSEUM_API_KEY?: string;
   SOMA_API_KEY?: string;
+  KCISA_API_KEY?: string;
   COLLABORATION_ROOM: DurableObjectNamespace;
 };
 
@@ -46,6 +49,8 @@ api.route('/collaboration', collaborationRoutes);
 api.route('/museum', museumRoutes);
 api.route('/visitor', visitorRoutes);
 api.route('/nft', nftRoutes);
+api.route('/3d-models', threeDModelsRoutes);
+api.route('/digital-twin', digitalTwinRoutes);
 
 // 404 handler
 api.notFound((c) => {
