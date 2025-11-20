@@ -100,18 +100,8 @@ const ProjectManager = {
                   display: flex; align-items: center; justify-content: space-between; 
                   padding: 0 32px;">
         
-        <!-- Logo -->
-        <a href="/project-manager" data-nav="/project-manager" style="
-          display: flex;
-          align-items: center;
-          text-decoration: none;
-          transition: opacity 0.3s;
-        " onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-          <img src="/static/images/logo-horizontal.png" alt="Museflow" style="height: 40px; width: auto;">
-        </a>
-        
         <!-- Search Bar -->
-        <div style="flex: 1; max-width: 500px; margin: 0 32px;">
+        <div style="flex: 1; max-width: 500px;">
           <div style="position: relative;">
             <input 
               type="text" 
@@ -801,15 +791,6 @@ const ProjectManager = {
   },
 
   attachEvents() {
-    // Logo Click - Navigate to Project Manager
-    const logoLink = document.querySelector('[data-nav="/project-manager"]');
-    if (logoLink) {
-      logoLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        Router.navigate('/project-manager');
-      });
-    }
-    
     // Create Project Button
     const createBtn = document.getElementById('create-project-btn');
     if (createBtn) {
