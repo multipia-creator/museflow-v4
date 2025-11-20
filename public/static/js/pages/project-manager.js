@@ -511,18 +511,22 @@ const ProjectManager = {
   },
 
   renderProjectCards() {
-    if (this.filteredProjects.length === 0 && this.currentFilter !== 'all') {
-      return `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
-          <div style="font-size: 48px; margin-bottom: 16px;">🔍</div>
-          <h3 style="font-size: 20px; font-weight: 600; color: #6b7280;">
-            No projects found
-          </h3>
-          <p style="color: #9ca3af; margin-top: 8px;">
-            Try a different filter or create a new project
-          </p>
-        </div>
-      `;
+    // Safety check
+    if (!this.filteredProjects || this.filteredProjects.length === 0) {
+      if (this.currentFilter !== 'all') {
+        return `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+            <div style="font-size: 48px; margin-bottom: 16px;">🔍</div>
+            <h3 style="font-size: 20px; font-weight: 600; color: #6b7280;">
+              No projects found
+            </h3>
+            <p style="color: #9ca3af; margin-top: 8px;">
+              Try a different filter or create a new project
+            </p>
+          </div>
+        `;
+      }
+      return '';
     }
     
     const moduleIcons = {
@@ -534,7 +538,14 @@ const ProjectManager = {
       administration: '⚙️'
     };
     
-    return this.filteredProjects.map(project => `
+    return this.filteredProjects.map(project => {
+      // Safety check for project data
+      if (!project || !project.modules) {
+        console.error('Invalid project data:', project);
+        return '';
+      }
+      
+      return `
       <div class="project-card" data-project-id="${project.id}" 
            style="background: white; border-radius: 16px; padding: 24px; border: 2px solid #e5e7eb; 
                   cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;"
@@ -571,11 +582,11 @@ const ProjectManager = {
         
         <!-- Modules -->
         <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
-          ${project.modules.map(module => `
+          ${(project.modules || []).map(module => `
             <span style="padding: 6px 12px; background: ${project.color}15; color: ${project.color}; 
                          border-radius: 8px; font-size: 13px; font-weight: 600; display: flex; 
                          align-items: center; gap: 6px;">
-              ${moduleIcons[module]} ${module.charAt(0).toUpperCase() + module.slice(1)}
+              ${moduleIcons[module] || '📌'} ${module.charAt(0).toUpperCase() + module.slice(1)}
             </span>
           `).join('')}
         </div>
@@ -609,7 +620,8 @@ const ProjectManager = {
           </div>
         </div>
       </div>
-    `).join('');
+      `;
+    }).join('');
   },
 
   renderModuleSelectors() {
