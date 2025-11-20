@@ -13,6 +13,8 @@ import visitorRoutes from './visitor';
 import nftRoutes from './nft';
 import threeDModelsRoutes from './3d-models';
 import digitalTwinRoutes from './digital-twin';
+import webxrRoutes from './webxr';
+import iotSensorsRoutes from './iot-sensors';
 
 type Bindings = {
   DB: D1Database;
@@ -51,6 +53,8 @@ api.route('/visitor', visitorRoutes);
 api.route('/nft', nftRoutes);
 api.route('/3d-models', threeDModelsRoutes);
 api.route('/digital-twin', digitalTwinRoutes);
+api.route('/webxr', webxrRoutes);
+api.route('/iot-sensors', iotSensorsRoutes);
 
 // 404 handler
 api.notFound((c) => {
