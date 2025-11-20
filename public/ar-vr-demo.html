@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR/VR Demo - MuseFlow V4</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r170/three.min.js"></script>
+    <script src="static/libs/three/GLTFLoader.js"></script>
+    <script src="static/libs/three/OrbitControls.js"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <h1 class="text-2xl font-bold text-gray-800">
+                    <i class="fas fa-vr-cardboard mr-2 text-purple-600"></i>
+                    AR/VR Demo
+                </h1>
+                <a href="/" class="text-purple-600 hover:text-purple-800">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-6 py-8">
+        <!-- Capability Check -->
+        <div id="capability-check" class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-check-circle mr-2 text-green-600"></i>
+                Device Capabilities
+            </h2>
+            <div id="capability-status" class="space-y-2">
+                <p class="text-gray-600">Checking WebXR support...</p>
+            </div>
+        </div>
+
+        <!-- 3D Model Selection -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-cube mr-2 text-blue-600"></i>
+                Select 3D Model
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <button onclick="loadModel('sample1')" class="model-btn p-4 border-2 border-gray-300 rounded-lg hover:border-purple-600 transition">
+                    <i class="fas fa-vase text-4xl text-purple-600 mb-2"></i>
+                    <p class="font-semibold">Korean Celadon</p>
+                    <p class="text-sm text-gray-600">Traditional pottery</p>
+                </button>
+                <button onclick="loadModel('sample2')" class="model-btn p-4 border-2 border-gray-300 rounded-lg hover:border-purple-600 transition">
+                    <i class="fas fa-monument text-4xl text-purple-600 mb-2"></i>
+                    <p class="font-semibold">Stone Buddha</p>
+                    <p class="text-sm text-gray-600">Ancient sculpture</p>
+                </button>
+                <button onclick="loadModel('sample3')" class="model-btn p-4 border-2 border-gray-300 rounded-lg hover:border-purple-600 transition">
+                    <i class="fas fa-crown text-4xl text-purple-600 mb-2"></i>
+                    <p class="font-semibold">Gold Crown</p>
+                    <p class="text-sm text-gray-600">Silla Dynasty</p>
+                </button>
+            </div>
+
+            <!-- 3D Viewer -->
+            <div id="viewer-container" class="relative bg-gray-900 rounded-lg overflow-hidden" style="height: 500px;">
+                <canvas id="viewer-canvas"></canvas>
+                <div id="loading-indicator" class="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75">
+                    <div class="text-center text-white">
+                        <i class="fas fa-spinner fa-spin text-4xl mb-2"></i>
+                        <p>Loading 3D model...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 flex gap-4">
+                <button id="view-ar-btn" onclick="enterAR()" class="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-mobile-alt mr-2"></i>
+                    View in AR
+                </button>
+                <button id="view-vr-btn" onclick="enterVR()" class="flex-1 bg-gradient-to-r from-purple-500 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-purple-600 hover:to-purple-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-vr-cardboard mr-2"></i>
+                    Enter VR
+                </button>
+            </div>
+        </div>
+
+        <!-- Feature Guide -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-info-circle mr-2 text-blue-600"></i>
+                How to Use
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-semibold text-lg mb-2">
+                        <i class="fas fa-mobile-alt mr-2 text-green-600"></i>
+                        AR Mode (Mobile)
+                    </h3>
+                    <ul class="list-disc list-inside space-y-1 text-gray-700">
+                        <li>Requires AR-capable device (ARCore/ARKit)</li>
+                        <li>Point camera at flat surface</li>
+                        <li>Tap to place 3D model</li>
+                        <li>Walk around to view from all angles</li>
+                        <li>Pinch to scale model</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-lg mb-2">
+                        <i class="fas fa-vr-cardboard mr-2 text-purple-600"></i>
+                        VR Mode
+                    </h3>
+                    <ul class="list-disc list-inside space-y-1 text-gray-700">
+                        <li>Requires VR headset (Meta Quest, etc.)</li>
+                        <li>Immersive 3D environment</li>
+                        <li>Look around by moving head</li>
+                        <li>Use controllers to interact</li>
+                        <li>Exit with device button</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentModel = null;
+        let arSupported = false;
+        let vrSupported = false;
+
+        // Check WebXR capabilities
+        async function checkCapabilities() {
+            try {
+                const response = await fetch('/api/webxr/capabilities');
+                const data = await response.json();
+
+                if (data.success) {
+                    const cap = data.capabilities;
+                    arSupported = cap.arSupported;
+                    vrSupported = cap.vrSupported;
+
+                    const statusDiv = document.getElementById('capability-status');
+                    statusDiv.innerHTML = `
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex items-center ${arSupported ? 'text-green-600' : 'text-red-600'}">
+                                <i class="fas ${arSupported ? 'fa-check-circle' : 'fa-times-circle'} mr-2"></i>
+                                <span>AR Support: ${arSupported ? 'Available' : 'Not Available'}</span>
+                            </div>
+                            <div class="flex items-center ${vrSupported ? 'text-green-600' : 'text-red-600'}">
+                                <i class="fas ${vrSupported ? 'fa-check-circle' : 'fa-times-circle'} mr-2"></i>
+                                <span>VR Support: ${vrSupported ? 'Available' : 'Not Available'}</span>
+                            </div>
+                        </div>
+                        ${cap.features && cap.features.length > 0 ? `
+                        <div class="mt-4">
+                            <p class="font-semibold text-gray-700 mb-2">Available Features:</p>
+                            <div class="flex flex-wrap gap-2">
+                                ${cap.features.map(f => `<span class="px-2 py-1 bg-purple-100 text-purple-700 rounded text-sm">${f}</span>`).join('')}
+                            </div>
+                        </div>
+                        ` : ''}
+                    `;
+
+                    // Enable/disable buttons
+                    document.getElementById('view-ar-btn').disabled = !arSupported;
+                    document.getElementById('view-vr-btn').disabled = !vrSupported;
+                }
+            } catch (error) {
+                console.error('Failed to check capabilities:', error);
+                document.getElementById('capability-status').innerHTML = `
+                    <p class="text-red-600"><i class="fas fa-exclamation-triangle mr-2"></i>Failed to check WebXR capabilities</p>
+                `;
+            }
+        }
+
+        // Load 3D model (placeholder)
+        function loadModel(modelId) {
+            const loadingDiv = document.getElementById('loading-indicator');
+            loadingDiv.style.display = 'flex';
+
+            // Simulate loading
+            setTimeout(() => {
+                currentModel = modelId;
+                loadingDiv.style.display = 'none';
+                alert(`Model "${modelId}" loaded!\n\nNote: This is a demo. In production, actual 3D models from KCISA API would be loaded using Three.js.`);
+            }, 1000);
+        }
+
+        // Enter AR mode
+        async function enterAR() {
+            if (!arSupported) {
+                alert('AR is not supported on this device.');
+                return;
+            }
+
+            if (!currentModel) {
+                alert('Please select a 3D model first.');
+                return;
+            }
+
+            try {
+                alert('Starting AR session...\n\nNote: In production, this would initialize WebXR AR session and allow you to place the model in your physical space.');
+                
+                // In production, this would call:
+                // const response = await fetch('/api/webxr/session/ar', { method: 'POST', ... });
+            } catch (error) {
+                console.error('Failed to start AR:', error);
+                alert('Failed to start AR session.');
+            }
+        }
+
+        // Enter VR mode
+        async function enterVR() {
+            if (!vrSupported) {
+                alert('VR is not supported on this device.');
+                return;
+            }
+
+            if (!currentModel) {
+                alert('Please select a 3D model first.');
+                return;
+            }
+
+            try {
+                alert('Entering VR mode...\n\nNote: In production, this would launch an immersive VR environment where you can explore the 3D model in virtual reality.');
+                
+                // In production, this would call:
+                // const response = await fetch('/api/webxr/session/vr', { method: 'POST', ... });
+            } catch (error) {
+                console.error('Failed to start VR:', error);
+                alert('Failed to enter VR mode.');
+            }
+        }
+
+        // Initialize
+        checkCapabilities();
+    </script>
+</body>
+</html>
