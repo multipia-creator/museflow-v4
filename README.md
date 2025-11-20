@@ -1,6 +1,37 @@
-# 🏛️ Museflow V4 - AI Orchestrated Museum Workflow System
+# 🏛️ MuseFlow.life - AI Orchestrated Museum Workflow System
 
-Complete AI-powered museum workflow automation platform with **Gemini 3.0**, **Multi-Agent System**, **Real-time Collaboration**, and **Museum Data Integration**.
+<div align="center">
+  <img src="https://www.genspark.ai/api/files/s/26RipIBz" alt="MuseFlow Logo" width="200" />
+  
+  ### World-Class Museum Management Platform
+  
+  Complete AI-powered museum workflow automation with **Gemini 2.0**, **Multi-Agent System**, **Real-time Collaboration**, and **Immersive Experiences**.
+  
+  ![Status](https://img.shields.io/badge/status-active-success.svg)
+  ![Version](https://img.shields.io/badge/version-4.0-blue.svg)
+  ![TypeScript](https://img.shields.io/badge/TypeScript-5.7.2-blue)
+  ![Hono](https://img.shields.io/badge/Hono-4.10.6-orange)
+  ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+</div>
+
+---
+
+## ✨ What's New in Latest Update
+
+### 🎨 World-Class UI Design
+- **Glassmorphism** - Premium frosted glass effects with backdrop blur
+- **Neumorphism** - Soft 3D shadows for depth perception
+- **Neon Gradients** - Purple-pink gradient mesh throughout
+- **Dark Space Theme** - Deep space background with radial gradients
+- **Micro-interactions** - Smooth hover effects and animations
+- **Responsive Design** - Mobile-first, works on all devices
+- **Apple Vision Pro Style** - Spatial depth and premium aesthetics
+
+### 🌐 Internationalization (i18n)
+- **5 Languages Support** - Korean, English, Japanese, Chinese, Spanish
+- **Auto-Detection** - Browser language preference
+- **Locale Formatting** - Date, number, currency formatting
+- **Fallback System** - English as default
 
 ---
 
@@ -14,13 +45,13 @@ Complete AI-powered museum workflow automation platform with **Gemini 3.0**, **M
 - **Timeline Planning** with milestones
 
 ### 🎭 Multi-Agent System (8 Agents)
+- **Coordinator Agent** - MCP protocol orchestration
 - **Exhibition Agent** - Exhibition planning and curation
 - **Budget Agent** - Financial analysis and optimization  
 - **Archive Agent** - Artwork search and recommendation
 - **Visitor Agent** - Visitor traffic prediction and analytics
 - **Digital Twin Agent** - Museum space simulation and optimization
 - **Chatbot Agent** - AI museum guide with conversation management
-- **Agent Coordinator** - MCP protocol orchestration
 
 ### 👥 Real-time Collaboration
 - **WebSocket-based** real-time sync (Cloudflare Durable Objects)
@@ -146,11 +177,34 @@ npx wrangler d1 migrations apply museflow-production --local
 # Build the project
 npm run build
 
-# Start development server (sandbox)
-npm run dev:sandbox
+# Start development server (sandbox with PM2)
+pm2 start ecosystem.config.cjs
+
+# Check status
+pm2 list
+
+# View logs
+pm2 logs museflow-v4 --nostream
 
 # Access at: http://localhost:3000
 ```
+
+### 5. Access Points
+
+**Main Application:**
+- 🌐 Development: http://localhost:3000
+- 🌐 Production: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai
+
+**Additional Pages:**
+- 📊 Admin Dashboard: http://localhost:3000/admin.html
+- 🎮 AR/VR Demo: http://localhost:3000/ar-vr-demo.html
+- 💬 Chatbot Widget: Floating button (bottom-right corner)
+
+**Features to Explore:**
+1. **Home Page** - See new neon logo with animated background
+2. **Admin Dashboard** - Glass cards with neon glow effects
+3. **AR/VR Experience** - Immersive museum tour
+4. **Chatbot** - AI assistant with floating animation
 
 ---
 
