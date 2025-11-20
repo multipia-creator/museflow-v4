@@ -67,7 +67,7 @@ const Login = {
             margin-bottom: 32px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
           ">
-            <img src="/static/images/logo-horizontal.png" alt="Museflow" style="height: 48px; width: auto;">
+            <img src="/static/images/logo-square.png" alt="MuseFlow" style="height: 80px; width: 80px; border-radius: 16px; box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);">
           </div>
           
           <!-- Branding Text -->

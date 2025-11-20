@@ -819,8 +819,14 @@ const ProjectManager = {
   attachEvents() {
     // Create Project Button
     const createBtn = document.getElementById('create-project-btn');
+    console.log('🔍 Create button found:', createBtn);
     if (createBtn) {
-      createBtn.addEventListener('click', () => this.showCreateModal());
+      createBtn.addEventListener('click', () => {
+        console.log('🎯 Create button clicked!');
+        this.showCreateModal();
+      });
+    } else {
+      console.error('❌ Create button NOT FOUND!');
     }
     
     // Close Modal
@@ -1020,10 +1026,15 @@ const ProjectManager = {
   },
 
   showCreateModal() {
+    console.log('🎬 showCreateModal() called');
     const modal = document.getElementById('create-project-modal');
+    console.log('📦 Modal element:', modal);
     if (modal) {
       modal.style.display = 'flex';
       document.body.style.overflow = 'hidden';
+      console.log('✅ Modal displayed');
+    } else {
+      console.error('❌ Modal NOT FOUND in DOM!');
     }
   },
 
