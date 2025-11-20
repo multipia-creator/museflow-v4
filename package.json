@@ -3,18 +3,35 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:sandbox": "wrangler pages dev dist --ip 0.0.0.0 --port 3000",
     "build": "vite build",
     "preview": "wrangler pages dev",
     "deploy": "npm run build && wrangler pages deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "db:migrate:local": "wrangler d1 migrations apply museflow-production --local",
+    "db:migrate:prod": "wrangler d1 migrations apply museflow-production",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "hono": "^4.10.6"
+    "hono": "^4.10.6",
+    "@google/generative-ai": "^0.21.0",
+    "@notionhq/client": "^2.2.15",
+    "ws": "^8.18.0",
+    "zod": "^3.24.1",
+    "uuid": "^11.0.3",
+    "date-fns": "^4.1.0"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250105.0",
     "@hono/vite-build": "^1.2.0",
     "@hono/vite-dev-server": "^0.18.2",
+    "@types/node": "^22.10.2",
+    "@types/uuid": "^10.0.0",
+    "@types/ws": "^8.5.13",
+    "typescript": "^5.7.2",
     "vite": "^6.3.5",
+    "vitest": "^2.1.8",
     "wrangler": "^4.4.0"
   }
 }
