@@ -1,7 +1,17 @@
 import { Hono } from 'hono'
 import { serveStatic } from 'hono/cloudflare-workers'
+import api from './api/index'
 
-const app = new Hono()
+type Bindings = {
+  DB: D1Database;
+  GEMINI_API_KEY: string;
+  NOTION_API_KEY?: string;
+};
+
+const app = new Hono<{ Bindings: Bindings }>()
+
+// Mount API routes
+app.route('/api', api)
 
 // Serve static files
 // Note: Cache busting is handled via query parameters (?v=timestamp) in HTML
