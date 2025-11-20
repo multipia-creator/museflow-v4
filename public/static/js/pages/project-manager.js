@@ -18,6 +18,15 @@ const ProjectManager = {
   
   init() {
     console.log('🎨 Initializing Project Manager...');
+    
+    // Check authentication first
+    const currentUser = Auth.getCurrentUser();
+    if (!currentUser) {
+      console.log('❌ No user logged in, redirecting to login');
+      Router.navigate('/login');
+      return; // Stop initialization
+    }
+    
     this.loadProjects();
     this.render();
     this.attachEvents();
@@ -26,10 +35,6 @@ const ProjectManager = {
   loadProjects() {
     // Load projects from localStorage
     const currentUser = Auth.getCurrentUser();
-    if (!currentUser) {
-      Router.navigate('/login');
-      return;
-    }
     
     const storageKey = `museflow_projects_${currentUser.id}`;
     const stored = localStorage.getItem(storageKey);
@@ -88,7 +93,6 @@ const ProjectManager = {
 
   render() {
     const currentUser = Auth.getCurrentUser();
-    if (!currentUser) return;
     
     const container = document.createElement('div');
     container.setAttribute('data-page', 'project-manager');
