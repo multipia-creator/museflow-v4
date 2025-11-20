@@ -195,16 +195,36 @@ pm2 logs museflow-v4 --nostream
 - 🌐 Development: http://localhost:3000
 - 🌐 Production: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai
 
-**Additional Pages:**
-- 📊 Admin Dashboard: http://localhost:3000/admin.html
-- 🎮 AR/VR Demo: http://localhost:3000/ar-vr-demo.html
-- 💬 Chatbot Widget: Floating button (bottom-right corner)
+**Pages Available:**
+- 🏠 **Landing Page**: `/landing.html` - World-class marketing page
+  - Hero section with neon logo
+  - Features showcase (6 cards)
+  - Modules overview (8 agents)
+  - Pricing plans (Free, Pro, Enterprise)
+  - About section with tech stack
+  
+- 📊 **Admin Dashboard**: `/admin.html` - System management
+  - Glass card stats with neon glow
+  - Real-time KPI monitoring
+  - Cache management
+  - Activity logs
+  
+- 🎮 **AR/VR Demo**: `/ar-vr-demo.html` - Immersive experiences
+  - 3D model viewer
+  - AR artwork placement
+  - VR museum tours
+  - WebXR capabilities check
+  
+- 💬 **Chatbot Widget**: Floating button (bottom-right corner)
+  - AI museum guide
+  - Floating animation
+  - Dark glass window design
 
 **Features to Explore:**
-1. **Home Page** - See new neon logo with animated background
-2. **Admin Dashboard** - Glass cards with neon glow effects
-3. **AR/VR Experience** - Immersive museum tour
-4. **Chatbot** - AI assistant with floating animation
+1. **Landing Page** - Premium glassmorphism design with animations
+2. **Admin Dashboard** - Real-time analytics with Chart.js
+3. **AR/VR Experience** - Immersive cultural heritage viewing
+4. **Chatbot** - AI-powered visitor assistance
 
 ---
 
