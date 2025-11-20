@@ -4,6 +4,7 @@ import { serveStatic } from 'hono/cloudflare-workers'
 const app = new Hono()
 
 // Serve static files
+// Note: Cache busting is handled via query parameters (?v=timestamp) in HTML
 app.use('/static/*', serveStatic({ root: './' }))
 
 // Main route - Serve the SPA
@@ -22,7 +23,7 @@ app.get('*', (c) => {
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
         
         <!-- Styles -->
-        <link rel="stylesheet" href="/static/css/design-system.css">
+        <link rel="stylesheet" href="/static/css/design-system.css?v=${Date.now()}">
         
         <!-- Favicon -->
         <link rel="icon" type="image/png" href="/static/images/logo-square.png">
@@ -59,30 +60,30 @@ app.get('*', (c) => {
         <div id="app"></div>
         
         <!-- Core Scripts -->
-        <script src="/static/js/components/toast.js"></script>
-        <script src="/static/js/components/navbar.js"></script>
-        <script src="/static/js/core/router.js"></script>
-        <script src="/static/js/core/auth.js"></script>
-        <script src="/static/js/data/test-data.js"></script>
+        <script src="/static/js/components/toast.js?v=${Date.now()}"></script>
+        <script src="/static/js/components/navbar.js?v=${Date.now()}"></script>
+        <script src="/static/js/core/router.js?v=${Date.now()}"></script>
+        <script src="/static/js/core/auth.js?v=${Date.now()}"></script>
+        <script src="/static/js/data/test-data.js?v=${Date.now()}"></script>
         
         <!-- Canvas System -->
-        <script src="/static/js/core/canvas-engine.js"></script>
-        <script src="/static/js/components/node.js"></script>
-        <script src="/static/js/components/connection.js"></script>
+        <script src="/static/js/core/canvas-engine.js?v=${Date.now()}"></script>
+        <script src="/static/js/components/node.js?v=${Date.now()}"></script>
+        <script src="/static/js/components/connection.js?v=${Date.now()}"></script>
         
         <!-- Page Scripts -->
-        <script src="/static/js/pages/features.js"></script>
-        <script src="/static/js/pages/content-pages.js"></script>
-        <script src="/static/js/pages/login.js"></script>
-        <script src="/static/js/pages/signup.js"></script>
-        <script src="/static/js/pages/project-manager.js"></script>
-        <script src="/static/js/pages/profile-settings.js"></script>
-        <script src="/static/js/pages/admin-dashboard.js"></script>
-        <script src="/static/js/pages/canvas.js"></script>
-        <script src="/static/js/pages/canvas-events.js"></script>
+        <script src="/static/js/pages/features.js?v=${Date.now()}"></script>
+        <script src="/static/js/pages/content-pages.js?v=${Date.now()}"></script>
+        <script src="/static/js/pages/login.js?v=${Date.now()}"></script>
+        <script src="/static/js/pages/signup.js?v=${Date.now()}"></script>
+        <script src="/static/js/pages/project-manager.js?v=${Date.now()}"></script>
+        <script src="/static/js/pages/profile-settings.js?v=${Date.now()}"></script>
+        <script src="/static/js/pages/admin-dashboard.js?v=${Date.now()}"></script>
+        <script src="/static/js/pages/canvas.js?v=${Date.now()}"></script>
+        <script src="/static/js/pages/canvas-events.js?v=${Date.now()}"></script>
         
         <!-- App Initialization (must be last) -->
-        <script src="/static/js/core/app.js"></script>
+        <script src="/static/js/core/app.js?v=${Date.now()}"></script>
         
         <!-- Remove loading screen after initialization -->
         <script>
