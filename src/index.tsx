@@ -85,6 +85,7 @@ app.get('*', (c) => {
         <script src="/static/js/pages/signup.js"></script>
         <script src="/static/js/pages/project-manager.js"></script>
         <script src="/static/js/pages/profile-settings.js"></script>
+        <script src="/static/js/pages/admin-dashboard.js"></script>
         <script src="/static/js/pages/canvas.js"></script>
         <script src="/static/js/pages/canvas-events.js"></script>
         

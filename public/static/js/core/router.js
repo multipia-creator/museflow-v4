@@ -15,6 +15,7 @@ const Router = {
     '/profile': 'ProfileSettings',
     '/billing': 'ProfileSettings',
     '/help': 'ProfileSettings',
+    '/admin': 'AdminDashboard',
     '/canvas': 'Canvas'
   },
   

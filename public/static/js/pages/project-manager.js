@@ -189,6 +189,17 @@ const ProjectManager = {
           <span style="font-size: 18px;">❓</span>
           <span style="font-weight: 500;">Help & Support</span>
         </a>
+        ${currentUser.role === 'admin' ? `
+        <div style="height: 1px; background: #e5e7eb; margin: 8px 0;"></div>
+        <a href="#" id="menu-admin" style="display: flex; align-items: center; gap: 12px; 
+                                           padding: 12px 16px; border-radius: 10px; text-decoration: none; 
+                                           color: #dc2626; transition: all 0.2s;"
+           onmouseover="this.style.background='#fef2f2'"
+           onmouseout="this.style.background='transparent'">
+          <span style="font-size: 18px;">🛡️</span>
+          <span style="font-weight: 500;">Admin Dashboard</span>
+        </a>
+        ` : ''}
         <div style="height: 1px; background: #e5e7eb; margin: 8px 0;"></div>
         <a href="#" id="menu-logout" style="display: flex; align-items: center; gap: 12px; 
                                             padding: 12px 16px; border-radius: 10px; text-decoration: none; 
@@ -927,6 +938,14 @@ const ProjectManager = {
       helpBtn.addEventListener('click', (e) => {
         e.preventDefault();
         Router.navigate('/help');
+      });
+    };
+    
+    const adminBtn = document.getElementById('menu-admin');
+    if (adminBtn) {
+      adminBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        Router.navigate('/admin');
       });
     };
     
