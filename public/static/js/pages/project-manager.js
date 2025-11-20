@@ -200,6 +200,31 @@ const ProjectManager = {
         </a>
       </div>
       
+      <!-- Notifications Dropdown (Hidden by default) -->
+      <div id="notifications-dropdown" style="display: none; position: fixed; top: 80px; right: 150px; 
+                                              background: white; border-radius: 16px; padding: 16px; 
+                                              box-shadow: 0 10px 40px rgba(0,0,0,0.15); z-index: 1000;
+                                              min-width: 360px; max-width: 400px; border: 1px solid #e5e7eb;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="font-size: 16px; font-weight: 700; color: #1f2937; margin: 0;">
+            Notifications
+          </h3>
+          <button 
+            id="mark-all-read"
+            style="font-size: 12px; color: #6366f1; background: none; border: none; 
+                   cursor: pointer; font-weight: 600; padding: 4px 8px;"
+            onmouseover="this.style.textDecoration='underline'"
+            onmouseout="this.style.textDecoration='none'"
+          >
+            Mark all as read
+          </button>
+        </div>
+        
+        <div id="notifications-list" style="max-height: 400px; overflow-y: auto;">
+          ${this.renderNotifications()}
+        </div>
+      </div>
+      
       <!-- Main Content -->
       <div style="margin-top: 70px; padding: 32px; background: #f9fafb; min-height: calc(100vh - 70px);">
         
@@ -613,6 +638,155 @@ const ProjectManager = {
     `).join('');
   },
 
+  renderNotifications() {
+    const notifications = this.getNotifications();
+    
+    if (notifications.length === 0) {
+      return `
+        <div style="text-align: center; padding: 32px 16px; color: #9ca3af;">
+          <div style="font-size: 48px; margin-bottom: 12px;">🔔</div>
+          <div style="font-size: 14px; font-weight: 500;">No new notifications</div>
+          <div style="font-size: 13px; margin-top: 4px;">You're all caught up!</div>
+        </div>
+      `;
+    }
+    
+    return notifications.map(notif => `
+      <div class="notification-item" data-notif-id="${notif.id}"
+           style="padding: 12px; border-radius: 10px; margin-bottom: 8px; cursor: pointer;
+                  background: ${notif.read ? 'transparent' : '#f0f9ff'}; 
+                  border: 1px solid ${notif.read ? '#f3f4f6' : '#bae6fd'};
+                  transition: all 0.2s;"
+           onmouseover="this.style.background='#f3f4f6'"
+           onmouseout="this.style.background='${notif.read ? 'transparent' : '#f0f9ff'}'">
+        <div style="display: flex; align-items: start; gap: 12px;">
+          <div style="font-size: 24px; flex-shrink: 0;">${notif.icon}</div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 14px; font-weight: ${notif.read ? '500' : '600'}; 
+                        color: #1f2937; margin-bottom: 4px;">
+              ${notif.title}
+            </div>
+            <div style="font-size: 13px; color: #6b7280; line-height: 1.4; margin-bottom: 4px;">
+              ${notif.message}
+            </div>
+            <div style="font-size: 12px; color: #9ca3af;">
+              ${this.formatNotificationTime(notif.timestamp)}
+            </div>
+          </div>
+          ${!notif.read ? '<div style="width: 8px; height: 8px; background: #3b82f6; border-radius: 50%; flex-shrink: 0; margin-top: 6px;"></div>' : ''}
+        </div>
+      </div>
+    `).join('');
+  },
+  
+  getNotifications() {
+    const currentUser = Auth.getCurrentUser();
+    if (!currentUser) return [];
+    
+    // Get or initialize notifications from localStorage
+    const storageKey = `museflow_notifications_${currentUser.id}`;
+    const stored = localStorage.getItem(storageKey);
+    
+    if (stored) {
+      return JSON.parse(stored);
+    }
+    
+    // Default sample notifications
+    const defaultNotifications = [
+      {
+        id: 1,
+        icon: '🎉',
+        title: 'Welcome to Museflow!',
+        message: 'Start creating your first project and explore the powerful workflow tools.',
+        timestamp: Date.now() - 3600000,
+        read: false
+      },
+      {
+        id: 2,
+        icon: '✅',
+        title: 'Project Updated',
+        message: 'Modern Art Exhibition 2024 has been successfully updated.',
+        timestamp: Date.now() - 7200000,
+        read: false
+      },
+      {
+        id: 3,
+        icon: '📊',
+        title: 'Weekly Report Available',
+        message: 'Your weekly project progress report is ready to view.',
+        timestamp: Date.now() - 86400000,
+        read: true
+      }
+    ];
+    
+    localStorage.setItem(storageKey, JSON.stringify(defaultNotifications));
+    return defaultNotifications;
+  },
+  
+  formatNotificationTime(timestamp) {
+    const now = Date.now();
+    const diff = now - timestamp;
+    
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    
+    if (days > 0) return `${days}d ago`;
+    if (hours > 0) return `${hours}h ago`;
+    if (minutes > 0) return `${minutes}m ago`;
+    return 'Just now';
+  },
+  
+  markNotificationAsRead(notifId) {
+    const currentUser = Auth.getCurrentUser();
+    if (!currentUser) return;
+    
+    const storageKey = `museflow_notifications_${currentUser.id}`;
+    const notifications = JSON.parse(localStorage.getItem(storageKey) || '[]');
+    
+    const notif = notifications.find(n => n.id === notifId);
+    if (notif) {
+      notif.read = true;
+      localStorage.setItem(storageKey, JSON.stringify(notifications));
+      
+      // Update notification badge
+      this.updateNotificationBadge();
+    }
+  },
+  
+  markAllNotificationsAsRead() {
+    const currentUser = Auth.getCurrentUser();
+    if (!currentUser) return;
+    
+    const storageKey = `museflow_notifications_${currentUser.id}`;
+    const notifications = JSON.parse(localStorage.getItem(storageKey) || '[]');
+    
+    notifications.forEach(n => n.read = true);
+    localStorage.setItem(storageKey, JSON.stringify(notifications));
+    
+    // Re-render notifications
+    const list = document.getElementById('notifications-list');
+    if (list) {
+      list.innerHTML = this.renderNotifications();
+    }
+    
+    // Update notification badge
+    this.updateNotificationBadge();
+    
+    Toast.success('All notifications marked as read');
+  },
+  
+  updateNotificationBadge() {
+    const notifications = this.getNotifications();
+    const unreadCount = notifications.filter(n => !n.read).length;
+    
+    const badge = document.querySelector('#notifications-btn span');
+    if (badge) {
+      badge.style.display = unreadCount > 0 ? 'block' : 'none';
+    }
+  },
+
   attachEvents() {
     // Create Project Button
     const createBtn = document.getElementById('create-project-btn');
@@ -756,11 +930,52 @@ const ProjectManager = {
       });
     };
     
-    // Notifications
+    // Notifications Dropdown
     const notificationsBtn = document.getElementById('notifications-btn');
-    if (notificationsBtn) {
-      notificationsBtn.addEventListener('click', () => {
-        Toast.info('No new notifications');
+    const notificationsDropdown = document.getElementById('notifications-dropdown');
+    
+    if (notificationsBtn && notificationsDropdown) {
+      notificationsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isVisible = notificationsDropdown.style.display === 'block';
+        
+        // Close user menu if open
+        const userMenuDropdown = document.getElementById('user-menu-dropdown');
+        if (userMenuDropdown) userMenuDropdown.style.display = 'none';
+        
+        // Toggle notifications dropdown
+        notificationsDropdown.style.display = isVisible ? 'none' : 'block';
+      });
+      
+      // Close when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!notificationsBtn.contains(e.target) && !notificationsDropdown.contains(e.target)) {
+          notificationsDropdown.style.display = 'none';
+        }
+      });
+      
+      // Mark all as read
+      const markAllReadBtn = document.getElementById('mark-all-read');
+      if (markAllReadBtn) {
+        markAllReadBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          this.markAllNotificationsAsRead();
+        });
+      }
+      
+      // Individual notification clicks
+      document.addEventListener('click', (e) => {
+        const notifItem = e.target.closest('.notification-item');
+        if (notifItem) {
+          const notifId = parseInt(notifItem.dataset.notifId);
+          this.markNotificationAsRead(notifId);
+          
+          // Re-render notifications
+          const list = document.getElementById('notifications-list');
+          if (list) {
+            list.innerHTML = this.renderNotifications();
+          }
+        }
       });
     }
     
