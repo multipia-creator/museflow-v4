@@ -1,6 +1,6 @@
 # 🏛️ Museflow V4 - AI Orchestrated Museum Workflow System
 
-Complete AI-powered museum workflow automation platform with **Gemini 3.0**, **Multi-Agent System**, and **Notion Integration**.
+Complete AI-powered museum workflow automation platform with **Gemini 3.0**, **Multi-Agent System**, **Real-time Collaboration**, and **Museum Data Integration**.
 
 ---
 
@@ -19,6 +19,19 @@ Complete AI-powered museum workflow automation platform with **Gemini 3.0**, **M
 - **Archive Agent** - Artwork search and recommendation
 - **Agent Coordinator** - MCP protocol orchestration
 
+### 👥 Real-time Collaboration
+- **WebSocket-based** real-time sync (Cloudflare Durable Objects)
+- **Live Cursors** - See where teammates are working
+- **Node Selection Sync** - Collaborative editing
+- **Active Users Panel** - See who's online
+- **Auto-reconnect** with exponential backoff
+
+### 🏛️ Museum Data Integration
+- **National Museum of Korea API** - Access to artwork collection
+- **Artwork Search** - Search by title, category, period, artist
+- **Data Caching** - 24-hour cache for performance (D1 Database)
+- **Museum Search Modal** - Beautiful UI for browsing artworks
+
 ### 🔄 Notion Integration
 - **Two-Way Sync** between Canvas and Notion
 - **Automatic Project/Task Creation**
@@ -28,7 +41,7 @@ Complete AI-powered museum workflow automation platform with **Gemini 3.0**, **M
 - **Knowledge Graph** (Entity & Relationship mapping)
 - **Event Sourcing** (Full workflow history)
 - **AI Suggestions** (Next step recommendations)
-- **Collaboration Ready** (Multi-user sessions)
+- **D1 Database** - Persistent state with auto-save
 
 ---
 
@@ -37,15 +50,15 @@ Complete AI-powered museum workflow automation platform with **Gemini 3.0**, **M
 ```
 5-Layer System:
 ┌──────────────────────────────┐
-│ Frontend (Canvas V2)         │ Figma-style UI
+│ Frontend (Canvas V2)         │ Figma-style UI + Real-time Collaboration
 ├──────────────────────────────┤
-│ AI Orchestration             │ Intent Recognition
+│ AI Orchestration             │ Intent Recognition + Gemini 3.0
 ├──────────────────────────────┤
-│ Multi-Agent System           │ 3 Specialized Agents
+│ Multi-Agent System           │ 3 Specialized Agents (Exhibition/Budget/Archive)
 ├──────────────────────────────┤
-│ Data Layer                   │ D1 + Notion + Neo4j
+│ Data Layer                   │ D1 + Museum API + Notion + Durable Objects
 ├──────────────────────────────┤
-│ Infrastructure               │ Cloudflare Workers
+│ Infrastructure               │ Cloudflare Workers + Pages
 └──────────────────────────────┘
 ```
 
@@ -54,20 +67,22 @@ Complete AI-powered museum workflow automation platform with **Gemini 3.0**, **M
 ## 📦 Tech Stack
 
 ### Backend
-- **Hono** - Web framework
-- **Cloudflare Workers** - Serverless runtime
-- **Cloudflare D1** - SQLite database
-- **TypeScript** - Type safety
+- **Hono** - Lightweight web framework
+- **Cloudflare Workers** - Serverless edge runtime
+- **Cloudflare D1** - Globally distributed SQLite database
+- **Cloudflare Durable Objects** - WebSocket state management
+- **TypeScript 5.7.2** - Full type safety
 
 ### AI & ML
-- **Gemini 3.0** - Google's latest AI model
-- **MCP Protocol** - Agent communication
+- **Gemini 3.0** (gemini-2.0-flash-exp) - Google's latest AI model
+- **MCP Protocol** - Agent-to-Agent communication
 - **Intent Recognition** - Natural language understanding
+- **Multi-Agent Orchestration** - Coordinated AI workflows
 
 ### Integration
-- **Notion API** - Workspace sync
-- **Museum APIs** - External data sources
-- **Neo4j** - Knowledge graph (planned)
+- **Notion API v2** - Workspace synchronization
+- **National Museum of Korea API** - Artwork data
+- **Neo4j** - Knowledge graph (schema ready)
 
 ---
 
