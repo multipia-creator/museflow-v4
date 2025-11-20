@@ -12,7 +12,7 @@ const ContentNav = {
         <div style="max-width: 1200px; margin: 0 auto; padding: 0 24px; 
                     display: flex; align-items: center; justify-content: space-between;">
           <div style="display: flex; align-items: center; gap: 16px; cursor: pointer;" data-nav="/">
-            <img src="/logo.svg" alt="Museflow" style="width: 40px; height: 40px;">
+            <img src="/logo-full.png" alt="Museflow" style="height: 40px; width: auto;">
             <h2 style="font-size: 24px; font-weight: 700; color: #1f2937; margin: 0;">Museflow</h2>
           </div>
           

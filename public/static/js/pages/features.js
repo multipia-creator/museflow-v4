@@ -23,7 +23,7 @@ const Features = {
           <div style="max-width: 1200px; margin: 0 auto; padding: 0 24px; 
                       display: flex; align-items: center; justify-content: space-between;">
             <div style="display: flex; align-items: center; gap: 16px;">
-              <img src="/logo.svg" alt="Museflow" style="width: 40px; height: 40px;">
+              <img src="/logo-full.png" alt="Museflow" style="height: 40px; width: auto;">
               <h2 style="font-size: 24px; font-weight: 700; color: #1f2937; margin: 0;">Museflow</h2>
             </div>
             
@@ -244,7 +244,7 @@ const Features = {
         <footer style="padding: 48px 24px; background: #111827; color: white;">
           <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
             <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 24px;">
-              <img src="/logo.svg" alt="Museflow" style="width: 40px; height: 40px;">
+              <img src="/logo-full.png" alt="Museflow" style="height: 40px; width: auto;">
               <h3 style="font-size: 24px; font-weight: 700; margin: 0;">Museflow</h3>
             </div>
             
