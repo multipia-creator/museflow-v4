@@ -482,6 +482,16 @@ const ProjectManager = {
       </div>
       
       <style>
+        /* Project Card Hover Effects */
+        .project-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+        
+        .project-menu-btn:hover {
+          background: #e5e7eb !important;
+        }
+        
         /* Responsive Design */
         @media (max-width: 1200px) {
           #projects-grid {
@@ -561,11 +571,9 @@ const ProjectManager = {
       }
       
       return `
-      <div class="project-card" data-project-id="${project.id}" 
+      <div class="project-card" data-project-id="${project.id}" data-color="${project.color}"
            style="background: white; border-radius: 16px; padding: 24px; border: 2px solid #e5e7eb; 
-                  cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;"
-           onmouseover="this.style.borderColor='${project.color}'; this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 24px rgba(0,0,0,0.1)'"
-           onmouseout="this.style.borderColor='#e5e7eb'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                  cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;">
         
         <!-- Color Bar -->
         <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: ${project.color};"></div>
@@ -586,11 +594,7 @@ const ProjectManager = {
             data-project-id="${project.id}"
             style="width: 32px; height: 32px; border-radius: 8px; border: none; 
                    background: #f3f4f6; cursor: pointer; font-size: 16px; flex-shrink: 0;
-                   transition: all 0.2s;"
-            onmouseover="this.style.background='#e5e7eb'"
-            onmouseout="this.style.background='#f3f4f6'"
-            onclick="event.stopPropagation()"
-          >
+                   transition: all 0.2s;">
             ⋯
           </button>
         </div>
@@ -884,6 +888,7 @@ const ProjectManager = {
     console.log('🔍 Number of project cards:', document.querySelectorAll('.project-card').length);
     
     if (projectsGrid) {
+      // Click handler
       projectsGrid.addEventListener('click', (e) => {
         console.log('📍 Grid clicked, target:', e.target);
         
@@ -904,6 +909,23 @@ const ProjectManager = {
           console.log('⚠️ No project card found');
         }
       });
+      
+      // Hover handlers for dynamic border color
+      projectsGrid.addEventListener('mouseover', (e) => {
+        const card = e.target.closest('.project-card');
+        if (card) {
+          const color = card.dataset.color;
+          card.style.borderColor = color;
+        }
+      });
+      
+      projectsGrid.addEventListener('mouseout', (e) => {
+        const card = e.target.closest('.project-card');
+        if (card) {
+          card.style.borderColor = '#e5e7eb';
+        }
+      });
+      
       console.log('✅ Grid click listener attached');
     } else {
       console.error('❌ Projects grid NOT FOUND!');
