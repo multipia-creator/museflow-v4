@@ -1039,18 +1039,34 @@ const ProjectManager = {
   handleCreateProject(e) {
     e.preventDefault();
     
+    console.log('🎯 Creating project...');
+    
     const name = document.getElementById('project-name').value.trim();
     const description = document.getElementById('project-description').value.trim();
     const selectedModules = Array.from(document.querySelectorAll('input[name="modules"]:checked'))
       .map(input => input.value);
-    const selectedColor = document.querySelector('.color-selector[style*="border-color: rgb"]')?.dataset.color || '#8b5cf6';
+    
+    // Find selected color more reliably
+    let selectedColor = '#8b5cf6'; // default
+    const colorSelectors = document.querySelectorAll('.color-selector');
+    for (const selector of colorSelectors) {
+      const borderColor = selector.style.borderColor;
+      if (borderColor && borderColor !== 'transparent' && borderColor !== '') {
+        selectedColor = selector.dataset.color;
+        break;
+      }
+    }
+    
+    console.log('📝 Form data:', { name, description, selectedModules, selectedColor });
     
     if (!name) {
+      console.log('❌ Name is empty');
       Toast.error('Please enter a project name');
       return;
     }
     
     if (selectedModules.length === 0) {
+      console.log('❌ No modules selected');
       Toast.error('Please select at least one module');
       return;
     }
@@ -1068,9 +1084,13 @@ const ProjectManager = {
       status: 'active'
     };
     
+    console.log('✨ New project:', newProject);
+    
     this.projects.unshift(newProject);
     this.saveProjects();
     this.applyFilters();
+    
+    console.log('📊 Total projects:', this.projects.length);
     
     // Re-render projects grid
     const grid = document.getElementById('projects-grid');
@@ -1085,10 +1105,15 @@ const ProjectManager = {
           this.openProject(projectId);
         });
       });
+      
+      console.log('✅ Grid re-rendered with', projectCards.length, 'cards');
+    } else {
+      console.error('❌ projects-grid not found!');
     }
     
     this.hideCreateModal();
     Toast.success(`Project "${name}" created! 🎉`);
+    console.log('🎉 Project creation complete!');
   },
 
   applyFilters() {
