@@ -74,11 +74,6 @@ app.get('*', (c) => {
         <script src="/static/js/core/auth.js?v=${Date.now()}"></script>
         <script src="/static/js/data/test-data.js?v=${Date.now()}"></script>
         
-        <!-- Canvas System -->
-        <script src="/static/js/core/canvas-engine.js?v=${Date.now()}"></script>
-        <script src="/static/js/components/node.js?v=${Date.now()}"></script>
-        <script src="/static/js/components/connection.js?v=${Date.now()}"></script>
-        
         <!-- Page Scripts -->
         <script src="/static/js/pages/features.js?v=${Date.now()}"></script>
         <script src="/static/js/pages/content-pages.js?v=${Date.now()}"></script>
@@ -87,8 +82,9 @@ app.get('*', (c) => {
         <script src="/static/js/pages/project-manager.js?v=${Date.now()}"></script>
         <script src="/static/js/pages/profile-settings.js?v=${Date.now()}"></script>
         <script src="/static/js/pages/admin-dashboard.js?v=${Date.now()}"></script>
-        <script src="/static/js/pages/canvas.js?v=${Date.now()}"></script>
-        <script src="/static/js/pages/canvas-events.js?v=${Date.now()}"></script>
+        
+        <!-- Canvas V2 - World-Class Node Editor -->
+        <script src="/static/js/pages/canvas-v2.js?v=${Date.now()}"></script>
         
         <!-- App Initialization (must be last) -->
         <script src="/static/js/core/app.js?v=${Date.now()}"></script>

@@ -15,7 +15,7 @@ const Router = {
     '/billing': 'ProfileSettings',
     '/help': 'ProfileSettings',
     '/admin': 'AdminDashboard',
-    '/canvas': 'Canvas'
+    '/canvas': 'CanvasV2'
   },
   
   currentPage: null,
