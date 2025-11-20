@@ -801,6 +801,15 @@ const ProjectManager = {
   },
 
   attachEvents() {
+    // Logo Click - Navigate to Project Manager
+    const logoLink = document.querySelector('[data-nav="/project-manager"]');
+    if (logoLink) {
+      logoLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        Router.navigate('/project-manager');
+      });
+    }
+    
     // Create Project Button
     const createBtn = document.getElementById('create-project-btn');
     if (createBtn) {
@@ -1149,4 +1158,6 @@ const modules = [
   { id: 'administration', icon: '⚙️', name: 'Administration', color: '#6366f1' }
 ];
 
+// Expose globally
+window.ProjectManager = ProjectManager;
 console.log('✅ Project Manager module loaded');
