@@ -58,25 +58,61 @@ app.get('*', (c) => {
           left: 0;
           width: 100vw;
           height: 100vh;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: radial-gradient(ellipse at top, #1e1b4b 0%, #0f0a1f 50%, #000000 100%);
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
           z-index: 9999;
+          overflow: hidden;
         ">
+          <!-- Animated background particles -->
+          <div style="
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+              radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 50%),
+              radial-gradient(circle at 40% 20%, rgba(59, 130, 246, 0.2) 0%, transparent 50%);
+            animation: bgFloat 15s ease-in-out infinite;
+          "></div>
           <img 
-            src="/static/images/logo-square.png" 
-            alt="Museflow" 
+            src="https://www.genspark.ai/api/files/s/26RipIBz" 
+            alt="MuseFlow" 
             style="
-              width: 120px;
-              height: 120px;
+              width: 180px;
+              height: 180px;
               margin-bottom: 32px;
               animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+              border-radius: 32px;
+              box-shadow: 0 20px 60px rgba(102, 126, 234, 0.6);
             "
           />
-          <div class="spinner"></div>
+          <div class="spinner" style="position: relative; z-index: 1;"></div>
+          <p style="
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+            font-weight: 500;
+            margin-top: 24px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+          ">Loading MuseFlow.life</p>
         </div>
+        
+        <style>
+          @keyframes bgFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+          }
+          @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+          }
+        </style>
         
         <!-- App Container (SPA pages will be rendered here) -->
         <div id="app"></div>
