@@ -55,7 +55,7 @@ const CanvasV2 = {
   /**
    * Initialize canvas
    */
-  init() {
+  async init() {
     console.log('🎨 Initializing Canvas V2...');
     
     // Load project
@@ -66,6 +66,9 @@ const CanvasV2 = {
       return;
     }
     
+    // Initialize backend integration
+    await this.initBackendIntegration();
+    
     // Render UI
     this.render();
     this.attachEvents();
@@ -75,16 +78,46 @@ const CanvasV2 = {
     this.ctx = this.canvas.getContext('2d');
     this.resizeCanvas();
     
-    // Load saved data
-    this.loadCanvasData();
+    // Load saved data (from D1 or localStorage fallback)
+    await this.loadCanvasData();
     
     // Start render loop
     this.startRenderLoop();
     
-    // Auto-save every 5 seconds
-    setInterval(() => this.saveCanvasData(), 5000);
+    // Auto-save every 10 seconds (to D1)
+    setInterval(() => this.saveCanvasData(), 10000);
     
     console.log('✅ Canvas V2 initialized');
+  },
+  
+  /**
+   * Initialize backend integration (API, Sync, AI)
+   */
+  async initBackendIntegration() {
+    try {
+      // Initialize API client
+      if (!window.MuseFlowAPI) {
+        initMuseFlowAPI();
+      }
+      
+      // Initialize Workflow Sync
+      if (!window.WorkflowSync) {
+        initWorkflowSync(window.MuseFlowAPI);
+      }
+      
+      // Initialize AI Generator
+      if (!window.AIGenerator) {
+        initAIGenerator(window.MuseFlowAPI);
+      }
+      
+      // Test AI connection
+      const isAIReady = await window.AIGenerator.testConnection();
+      console.log('🤖 AI Status:', isAIReady ? '✅ Ready' : '⚠️ Not available');
+      
+    } catch (error) {
+      console.warn('⚠️ Backend integration warning:', error.message);
+      Toast.warning('Running in offline mode');
+    }
   },
   
   /**
@@ -254,6 +287,14 @@ const CanvasV2 = {
             ↷ Redo
           </button>
         </div>
+        
+        <!-- AI Generate Button -->
+        <button id="ai-generate-btn" title="AI Generate Workflow (Ctrl+G)"
+                style="padding: 8px 20px; background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+                       color: white; border: none; border-radius: 8px; cursor: pointer;
+                       font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+          🤖 AI Generate
+        </button>
         
         <!-- Save Button -->
         <button id="save-btn" title="Save (Ctrl+S)"
@@ -704,9 +745,18 @@ const CanvasV2 = {
       this.resetZoom();
     });
     
+    // AI Generate button
+    document.getElementById('ai-generate-btn')?.addEventListener('click', () => {
+      if (window.AIGenerationModal) {
+        AIGenerationModal.show();
+      } else {
+        Toast.error('AI features not available');
+      }
+    });
+    
     // Save button
-    document.getElementById('save-btn')?.addEventListener('click', () => {
-      this.saveCanvasData();
+    document.getElementById('save-btn')?.addEventListener('click', async () => {
+      await this.saveCanvasData();
       Toast.success('Canvas saved!');
     });
     
@@ -857,6 +907,14 @@ const CanvasV2 = {
         Toast.success('Canvas saved!');
       }
       
+      // Ctrl+G - AI Generate
+      if (e.ctrlKey && e.key === 'g') {
+        e.preventDefault();
+        if (window.AIGenerationModal) {
+          AIGenerationModal.show();
+        }
+      }
+      
       // Ctrl+A - Select all
       if (e.ctrlKey && e.key === 'a') {
         e.preventDefault();
@@ -888,24 +946,121 @@ const CanvasV2 = {
     this.canvas.height = rect.height;
   },
   
-  loadCanvasData() {
+  async loadCanvasData() {
+    try {
+      // Show loading overlay
+      if (typeof LoadingOverlay !== 'undefined') {
+        LoadingOverlay.show('Loading workflow from database...');
+      }
+      
+      // Try loading from D1 database first
+      if (window.WorkflowSync) {
+        const data = await window.WorkflowSync.init(this.currentProject);
+        if (data && data.nodes) {
+          this.nodes = data.nodes;
+          this.connections = data.connections;
+          if (data.viewport) {
+            this.viewport = data.viewport;
+          }
+          console.log('✅ Loaded from D1:', this.nodes.length, 'nodes');
+          
+          if (typeof LoadingOverlay !== 'undefined') {
+            LoadingOverlay.hide();
+          }
+          return;
+        }
+      }
+    } catch (error) {
+      console.warn('⚠️ D1 load failed, falling back to localStorage:', error.message);
+      
+      // Show warning toast
+      if (typeof Toast !== 'undefined') {
+        Toast.warning('Using offline data');
+      }
+    }
+    
+    // Fallback to localStorage
     const saved = localStorage.getItem(`canvas_${this.currentProject?.id}`);
     if (saved) {
       const data = JSON.parse(saved);
       this.nodes = data.nodes || [];
       this.connections = data.connections || [];
       this.viewport = data.viewport || this.viewport;
+      console.log('✅ Loaded from localStorage:', this.nodes.length, 'nodes');
+    }
+    
+    if (typeof LoadingOverlay !== 'undefined') {
+      LoadingOverlay.hide();
     }
   },
   
-  saveCanvasData() {
+  async saveCanvasData() {
     if (!this.currentProject) return;
+    
     const data = {
       nodes: this.nodes,
       connections: this.connections,
       viewport: this.viewport
     };
+    
+    // Save to localStorage (instant)
     localStorage.setItem(`canvas_${this.currentProject.id}`, JSON.stringify(data));
+    
+    // Save to D1 database (async)
+    try {
+      if (window.WorkflowSync && window.WorkflowSync.workflowId) {
+        await window.WorkflowSync.syncAll(this.nodes, this.connections, this.viewport);
+        console.log('✅ Synced to D1');
+      }
+    } catch (error) {
+      console.warn('⚠️ D1 sync failed:', error.message);
+    }
+  },
+  
+  /**
+   * Load AI-generated workflow
+   */
+  async loadGeneratedWorkflow(workflowId) {
+    try {
+      const response = await window.MuseFlowAPI.getWorkflow(workflowId);
+      
+      if (response.success) {
+        const { workflow, nodes, connections } = response.data;
+        
+        // Convert DB format to Canvas format
+        this.nodes = nodes.map(window.WorkflowSync.convertDBNodeToCanvas);
+        this.connections = connections.map(window.WorkflowSync.convertDBConnectionToCanvas);
+        this.viewport = {
+          x: workflow.viewport_x,
+          y: workflow.viewport_y,
+          zoom: workflow.viewport_zoom,
+        };
+        
+        // Set workflow ID for future syncs
+        window.WorkflowSync.workflowId = workflowId;
+        window.WorkflowSync.startAutoSync();
+        
+        console.log(`✅ Loaded AI workflow: ${nodes.length} nodes`);
+        
+        if (typeof Toast !== 'undefined') {
+          Toast.success(`Loaded ${nodes.length} nodes`);
+        }
+      } else {
+        throw new Error(response.error);
+      }
+    } catch (error) {
+      console.error('❌ Failed to load workflow:', error);
+      
+      if (typeof ErrorModal !== 'undefined') {
+        ErrorModal.show({
+          title: 'Failed to Load Workflow',
+          message: 'Unable to load the generated workflow',
+          details: error.message,
+        });
+      } else if (typeof Toast !== 'undefined') {
+        Toast.error('Failed to load workflow');
+      }
+    }
   },
   
   startRenderLoop() {

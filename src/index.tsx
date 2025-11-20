@@ -79,10 +79,20 @@ app.get('*', (c) => {
         
         <!-- Core Scripts -->
         <script src="/static/js/components/toast.js?v=${Date.now()}"></script>
+        <script src="/static/js/components/loading-overlay.js?v=${Date.now()}"></script>
+        <script src="/static/js/components/error-modal.js?v=${Date.now()}"></script>
         <script src="/static/js/components/navbar.js?v=${Date.now()}"></script>
         <script src="/static/js/core/router.js?v=${Date.now()}"></script>
         <script src="/static/js/core/auth.js?v=${Date.now()}"></script>
         <script src="/static/js/data/test-data.js?v=${Date.now()}"></script>
+        
+        <!-- SDK Scripts (Backend Integration) -->
+        <script src="/static/js/sdk/api-client.js?v=${Date.now()}"></script>
+        <script src="/static/js/sdk/workflow-sync.js?v=${Date.now()}"></script>
+        <script src="/static/js/sdk/ai-generator.js?v=${Date.now()}"></script>
+        
+        <!-- AI Components -->
+        <script src="/static/js/components/ai-generation-modal.js?v=${Date.now()}"></script>
         
         <!-- Page Scripts -->
         <script src="/static/js/pages/features.js?v=${Date.now()}"></script>
