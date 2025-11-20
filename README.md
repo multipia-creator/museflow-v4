@@ -359,11 +359,26 @@ curl https://3001-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai
 5. **Performance Optimization** - 번들 크기, 렌더링 최적화
 6. **Cloudflare Deployment** - 프로덕션 배포
 
+## 📚 문서
+
+### 플랫폼 설계서
+**상세한 기술 설계서가 필요하신가요?**
+
+- 📄 **[플랫폼 구축 설계서 (PDF)](./docs/Museflow_Platform_Design_Document.pdf)** - 211KB, 60+ 페이지
+- 📝 **[설계서 (Markdown)](./docs/PLATFORM_DESIGN_DOCUMENT.md)** - 47KB 소스 파일
+
+**설계서 내용:**
+- 13개 상세 챕터 (프로젝트 개요, 시스템 아키텍처, 기술 스택, DB 설계, UI/UX, 핵심 기능, 캔버스 엔진, 노드 시스템, 인증/보안, 배포/운영, API 명세, 성능 최적화, 향후 계획)
+- 완전한 코드 예시 및 다이어그램
+- 테스트 계정 정보 및 개발 가이드
+- 전체 디렉토리 구조 및 데이터 스키마
+
 ## 🔗 관련 링크
 
 - **Development Server**: https://3001-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai
 - **GitHub**: (추후 배포)
 - **Production**: (추후 Cloudflare Pages 배포)
+- **설계서 PDF**: [docs/Museflow_Platform_Design_Document.pdf](./docs/Museflow_Platform_Design_Document.pdf)
 
 ## 📝 변경 이력
 
