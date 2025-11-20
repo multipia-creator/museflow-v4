@@ -68,21 +68,22 @@ const Landing = {
           position: relative;
           z-index: 1;
         ">
-          <!-- Extra Large Neon Logo -->
+          <!-- Massive Neon Logo - 800px -->
           <div style="
-            margin-bottom: 64px;
-            animation: fadeInScale 1.2s ease-out;
+            margin-bottom: 80px;
+            animation: fadeInScale 1.5s ease-out;
           ">
             <img 
               src="/static/images/logo-square.png" 
               alt="Museflow" 
               style="
-                width: 400px;
-                height: 400px;
+                width: 800px;
+                height: 800px;
+                max-width: 90vw;
                 margin: 0 auto;
-                filter: drop-shadow(0 0 60px rgba(96, 165, 250, 0.8))
-                        drop-shadow(0 0 120px rgba(236, 72, 153, 0.6))
-                        drop-shadow(0 0 80px rgba(139, 92, 246, 0.7));
+                filter: drop-shadow(0 0 100px rgba(96, 165, 250, 0.9))
+                        drop-shadow(0 0 180px rgba(236, 72, 153, 0.7))
+                        drop-shadow(0 0 140px rgba(139, 92, 246, 0.8));
                 animation: logoGlow 4s ease-in-out infinite;
               "
             />
