@@ -106,17 +106,18 @@ const Landing = {
             margin-bottom: 24px;
             line-height: 1.1;
           ">
-            AI-Powered<br>Museum Workflow
+            Transform Museum Operations<br>With Intelligent Workflows
           </h1>
           <p style="
             font-size: 24px;
             color: rgba(255, 255, 255, 0.9);
             margin-bottom: 48px;
-            max-width: 600px;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
+            line-height: 1.5;
           ">
-            Transform your museum operations with intelligent workflow automation
+            Empower your cultural institution with AI-driven workflow automation. From exhibitions to education, streamline every aspect of museum management in one unified platform.
           </p>
           <div style="display: flex; gap: 16px; justify-content: center;">
             <button id="cta-get-started" class="btn btn-large" style="
@@ -169,13 +170,17 @@ const Landing = {
             font-size: 48px;
             font-weight: 700;
             margin-bottom: 16px;
-          ">6 Specialized Modules</h2>
+          ">Six Comprehensive Modules for Modern Museums</h2>
           <p style="
             text-align: center;
             font-size: 20px;
             color: var(--gray-600);
             margin-bottom: 64px;
-          ">Everything you need to manage your museum</p>
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+          ">Built specifically for cultural institutions, each module is designed to address the unique challenges museums face daily—from curatorial planning to visitor engagement.</p>
           
           <div style="
             display: grid;
@@ -273,12 +278,48 @@ const Landing = {
    */
   renderModules() {
     const modules = [
-      { id: 'exhibition', icon: '🎨', name: 'Exhibition', color: '#8b5cf6', desc: 'Plan and execute exhibitions' },
-      { id: 'education', icon: '📚', name: 'Education', color: '#06b6d4', desc: 'Design educational programs' },
-      { id: 'archive', icon: '📦', name: 'Archive', color: '#10b981', desc: 'Organize collections' },
-      { id: 'publication', icon: '📰', name: 'Publication', color: '#f59e0b', desc: 'Create catalogs' },
-      { id: 'research', icon: '🔬', name: 'Research', color: '#ec4899', desc: 'Conduct research' },
-      { id: 'administration', icon: '⚙️', name: 'Administration', color: '#6366f1', desc: 'Manage operations' }
+      { 
+        id: 'exhibition', 
+        icon: '🎨', 
+        name: 'Exhibition Planning', 
+        color: '#8b5cf6', 
+        desc: 'Orchestrate compelling exhibitions from concept to closing—manage timelines, budgets, loans, and installations with precision.' 
+      },
+      { 
+        id: 'education', 
+        icon: '📚', 
+        name: 'Education & Outreach', 
+        color: '#06b6d4', 
+        desc: 'Design impactful educational programs, workshops, and community initiatives that bring art and culture to life for diverse audiences.' 
+      },
+      { 
+        id: 'archive', 
+        icon: '📦', 
+        name: 'Collection Management', 
+        color: '#10b981', 
+        desc: 'Digitize, catalog, and preserve your collections with advanced metadata management and condition reporting workflows.' 
+      },
+      { 
+        id: 'publication', 
+        icon: '📰', 
+        name: 'Publications & Media', 
+        color: '#f59e0b', 
+        desc: 'Produce scholarly catalogs, exhibition guides, and digital content with streamlined editorial and production workflows.' 
+      },
+      { 
+        id: 'research', 
+        icon: '🔬', 
+        name: 'Research & Documentation', 
+        color: '#ec4899', 
+        desc: 'Facilitate academic research, provenance studies, and conservation documentation with collaborative research tools.' 
+      },
+      { 
+        id: 'administration', 
+        icon: '⚙️', 
+        name: 'Operations & Admin', 
+        color: '#6366f1', 
+        desc: 'Streamline institutional operations—from budget planning and HR to facility management and compliance tracking.' 
+      }
     ];
     
     return modules.map(m => `

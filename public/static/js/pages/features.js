@@ -75,12 +75,12 @@ const Features = {
             
             <h1 style="font-size: 56px; font-weight: 900; color: #1f2937; 
                        margin: 0 0 24px 0; line-height: 1.2;">
-              AI-Powered Museum<br/>Workflow Platform
+              The Future of Museum<br/>Operations is Visual
             </h1>
             
             <p style="font-size: 20px; color: #6b7280; line-height: 1.6; margin: 0 0 48px 0;">
-              Streamline your museum operations with intelligent automation,<br/>
-              visual workflow design, and seamless collaboration.
+              From curatorial planning to visitor engagement, manage every aspect of your museum<br/>
+              with intelligent workflows, AI-powered insights, and world-class collaboration tools.
             </p>
             
             <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
@@ -112,10 +112,10 @@ const Features = {
           <div style="max-width: 1200px; margin: 0 auto;">
             <div style="text-align: center; margin-bottom: 64px;">
               <h2 style="font-size: 42px; font-weight: 800; color: #1f2937; margin: 0 0 16px 0;">
-                Everything you need
+                Built for Museum Excellence
               </h2>
-              <p style="font-size: 18px; color: #6b7280; max-width: 600px; margin: 0 auto;">
-                Powerful features designed for modern museum professionals
+              <p style="font-size: 18px; color: #6b7280; max-width: 700px; margin: 0 auto; line-height: 1.6;">
+                Every feature designed with cultural institutions in mind—combining decades of museum best practices with cutting-edge technology.
               </p>
             </div>
             
@@ -130,10 +130,10 @@ const Features = {
           <div style="max-width: 1200px; margin: 0 auto;">
             <div style="text-align: center; margin-bottom: 64px;">
               <h2 style="font-size: 42px; font-weight: 800; color: white; margin: 0 0 16px 0;">
-                🤖 AI-Powered Intelligence
+                🤖 Intelligence That Understands Museums
               </h2>
-              <p style="font-size: 18px; color: rgba(255, 255, 255, 0.9); max-width: 600px; margin: 0 auto;">
-                Let AI handle the routine, while you focus on creativity
+              <p style="font-size: 18px; color: rgba(255, 255, 255, 0.9); max-width: 700px; margin: 0 auto; line-height: 1.6;">
+                Our AI doesn't just automate—it understands the unique challenges of cultural institutions. Trained on thousands of successful museum projects worldwide.
               </p>
             </div>
             
@@ -155,12 +155,11 @@ const Features = {
                 </div>
                 
                 <h2 style="font-size: 42px; font-weight: 800; color: #1f2937; margin: 0 0 24px 0;">
-                  Visual Workflow Design
+                  Think Visually, Work Efficiently
                 </h2>
                 
                 <p style="font-size: 18px; color: #6b7280; line-height: 1.6; margin: 0 0 32px 0;">
-                  Design complex museum workflows with an intuitive drag-and-drop interface. 
-                  Connect nodes, visualize dependencies, and manage your entire project on an infinite canvas.
+                  Say goodbye to spreadsheets and email chains. Our Figma-inspired canvas lets you design, visualize, and execute complex museum projects with unprecedented clarity. Map dependencies, spot bottlenecks, and orchestrate exhibitions like a conductor leads an orchestra—all on one infinite canvas.
                 </p>
                 
                 <ul style="list-style: none; padding: 0; margin: 0;">
@@ -322,33 +321,33 @@ const Features = {
     const features = [
       {
         icon: '🎨',
-        title: 'Visual Workflow Design',
-        description: 'Drag-and-drop interface with 88+ specialized nodes for museum operations.'
+        title: 'Visual Workflow Builder',
+        description: 'Design complex museum workflows with our Figma-style canvas. 88+ specialized nodes covering everything from exhibition planning to conservation management—no coding required.'
       },
       {
         icon: '🤖',
-        title: 'AI Automation',
-        description: 'Intelligent suggestions and workflow automation powered by advanced AI.'
+        title: 'AI-Powered Automation',
+        description: 'Let artificial intelligence handle repetitive tasks, suggest optimal workflows, and predict project bottlenecks before they occur. Focus on creativity, not admin work.'
       },
       {
         icon: '📊',
-        title: 'Real-time Analytics',
-        description: 'Track progress, measure performance, and optimize your workflows.'
+        title: 'Advanced Analytics & Insights',
+        description: 'Make data-driven decisions with comprehensive dashboards. Track exhibition performance, visitor engagement metrics, collection utilization, and operational KPIs in real-time.'
       },
       {
         icon: '🔗',
-        title: 'Seamless Integration',
-        description: 'Connect with your existing tools and systems effortlessly.'
+        title: 'Universal System Integration',
+        description: 'Seamlessly connect with existing museum management systems, collection databases, ticketing platforms, and digital asset managers through our flexible API infrastructure.'
       },
       {
         icon: '👥',
-        title: 'Team Collaboration',
-        description: 'Work together in real-time with your team members anywhere.'
+        title: 'Real-Time Collaboration',
+        description: 'Empower your entire team to work together effortlessly. Share workflows, assign tasks, track progress, and communicate contextually—all within one unified platform.'
       },
       {
         icon: '🔒',
-        title: 'Enterprise Security',
-        description: 'Bank-level encryption and compliance with museum industry standards.'
+        title: 'Enterprise-Grade Security',
+        description: 'Protect sensitive collection data with bank-level encryption, role-based access controls, complete audit trails, and full compliance with museum data governance standards.'
       }
     ];
 
@@ -376,23 +375,23 @@ const Features = {
     const aiFeatures = [
       {
         icon: '🎯',
-        title: 'Smart Node Recommendations',
-        description: 'AI suggests the next best nodes based on your current workflow context and museum best practices.'
+        title: 'Intelligent Node Recommendations',
+        description: 'Our AI analyzes your workflow patterns and suggests optimal next steps based on successful museum projects worldwide. Discover best practices you didn\'t know existed.'
       },
       {
         icon: '🔮',
-        title: 'Workflow Prediction',
-        description: 'Predict bottlenecks and optimize resource allocation before issues arise.'
+        title: 'Predictive Project Analytics',
+        description: 'Identify potential delays, budget overruns, and resource conflicts before they impact your exhibition or program. Machine learning models trained on thousands of museum projects.'
       },
       {
         icon: '📝',
-        title: 'Auto-Documentation',
-        description: 'Generate comprehensive project documentation and reports automatically.'
+        title: 'Automated Documentation',
+        description: 'Generate exhibition catalogs, condition reports, loan agreements, and project summaries with one click. AI ensures consistency and completeness across all documentation.'
       },
       {
         icon: '🎓',
-        title: 'Best Practice Learning',
-        description: 'Learn from thousands of successful museum projects and apply proven patterns.'
+        title: 'Continuous Learning System',
+        description: 'The platform learns from every project completed across our network, constantly improving recommendations and identifying emerging best practices in the museum sector.'
       }
     ];
 
