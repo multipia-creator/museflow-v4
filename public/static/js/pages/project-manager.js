@@ -29,7 +29,12 @@ const ProjectManager = {
     
     this.loadProjects();
     this.render();
-    this.attachEvents();
+    
+    // Attach events after DOM is fully rendered
+    setTimeout(() => {
+      this.attachEvents();
+      console.log('✅ Project Manager initialized with event listeners');
+    }, 100);
   },
 
   loadProjects() {
@@ -875,31 +880,46 @@ const ProjectManager = {
     
     // Project Cards - Use event delegation for dynamic cards
     const projectsGrid = document.getElementById('projects-grid');
+    console.log('🔍 Projects grid element:', projectsGrid);
+    console.log('🔍 Number of project cards:', document.querySelectorAll('.project-card').length);
+    
     if (projectsGrid) {
       projectsGrid.addEventListener('click', (e) => {
+        console.log('📍 Grid clicked, target:', e.target);
+        
         // Find the clicked project card
         const card = e.target.closest('.project-card');
+        console.log('📍 Found card:', card);
+        
         if (card) {
           // Don't trigger if clicking menu button
           if (e.target.closest('.project-menu-btn')) {
+            console.log('⚠️ Menu button clicked, ignoring card click');
             return;
           }
           const projectId = card.dataset.projectId;
           console.log('🎯 Project card clicked:', projectId);
           this.openProject(projectId);
+        } else {
+          console.log('⚠️ No project card found');
         }
       });
+      console.log('✅ Grid click listener attached');
+    } else {
+      console.error('❌ Projects grid NOT FOUND!');
     }
     
     // Project Menu Buttons - Use event delegation
     document.addEventListener('click', (e) => {
       const menuBtn = e.target.closest('.project-menu-btn');
       if (menuBtn) {
+        console.log('📋 Menu button clicked');
         e.stopPropagation();
         const projectId = menuBtn.dataset.projectId;
         this.showProjectMenu(menuBtn, projectId);
       }
     });
+    console.log('✅ Menu button listener attached');
     
     // Search
     const searchInput = document.getElementById('search-projects');
