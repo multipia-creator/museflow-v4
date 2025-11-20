@@ -571,4 +571,6 @@ const Signup = {
   }
 };
 
+// Expose globally
+window.Signup = Signup;
 console.log('✅ Signup page module loaded');

@@ -371,6 +371,16 @@ const Features = {
     // Attach Navbar events
     Navbar.attachEvents(container);
     
+    // Attach all navigation buttons on the page (Start Free Trial, etc.)
+    const navButtons = container.querySelectorAll('[data-nav]');
+    navButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const path = button.getAttribute('data-nav');
+        Router.navigate(path);
+      });
+    });
+    
     console.log('✅ Features events attached');
   }
 };
