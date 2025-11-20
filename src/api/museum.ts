@@ -6,10 +6,12 @@
 import { Hono } from 'hono';
 import { initMuseumAPI } from '../services/museum-api.service';
 import { DatabaseService } from '../services/database.service';
+import { initEmbedding } from '../services/embedding.service';
 
 type Bindings = {
   DB: D1Database;
   MUSEUM_API_KEY?: string;
+  GEMINI_API_KEY: string;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -206,6 +208,171 @@ app.get('/cache', async (c) => {
       data: result.results || [],
     });
   } catch (error: any) {
+    return c.json({
+      success: false,
+      error: error.message,
+    }, 500);
+  }
+});
+
+/**
+ * Semantic search using embeddings
+ * POST /api/museum/semantic-search
+ * 
+ * Body: { query: string, limit?: number }
+ */
+app.post('/semantic-search', async (c) => {
+  try {
+    const { query, limit = 10 } = await c.req.json();
+
+    if (!query) {
+      return c.json({
+        success: false,
+        error: 'Query is required',
+      }, 400);
+    }
+
+    console.log(`🔍 Semantic search: "${query}"`);
+
+    // Initialize embedding service
+    const embeddingService = initEmbedding(c.env.GEMINI_API_KEY);
+
+    // Generate query embedding
+    const queryEmbedding = await embeddingService.generateEmbedding(query);
+
+    // Get all artworks with embeddings from Knowledge Graph
+    const db = new DatabaseService(c.env.DB);
+    const result = await c.env.DB.prepare(`
+      SELECT * FROM knowledge_entities
+      WHERE entity_type = 'artwork'
+      AND embedding_vector IS NOT NULL
+      LIMIT 100
+    `).all();
+
+    const entities = result.results || [];
+
+    // Calculate similarities
+    const candidates = entities.map((entity: any) => ({
+      id: entity.id,
+      embedding: JSON.parse(entity.embedding_vector),
+      data: entity,
+    }));
+
+    const similarities = embeddingService.findMostSimilar(
+      queryEmbedding.embedding,
+      candidates,
+      limit
+    );
+
+    // Format results
+    const artworks = similarities.map(sim => {
+      const entity = candidates.find(c => c.id === sim.id);
+      if (!entity) return null;
+
+      const props = JSON.parse(entity.data.properties);
+      return {
+        id: entity.data.id,
+        title: entity.data.name,
+        description: entity.data.description,
+        similarity: sim.similarity,
+        ...props,
+      };
+    }).filter(Boolean);
+
+    return c.json({
+      success: true,
+      data: {
+        artworks,
+        query,
+        total: artworks.length,
+      },
+    });
+  } catch (error: any) {
+    console.error('❌ Semantic search error:', error);
+    return c.json({
+      success: false,
+      error: error.message,
+    }, 500);
+  }
+});
+
+/**
+ * Generate embeddings for artworks
+ * POST /api/museum/generate-embeddings
+ * 
+ * Body: { artworkIds?: string[] } (if empty, generates for all)
+ */
+app.post('/generate-embeddings', async (c) => {
+  try {
+    const { artworkIds } = await c.req.json();
+
+    console.log('🔮 Generating embeddings...');
+
+    const db = new DatabaseService(c.env.DB);
+    const embeddingService = initEmbedding(c.env.GEMINI_API_KEY);
+
+    // Get artworks to process
+    let query = `
+      SELECT * FROM knowledge_entities
+      WHERE entity_type = 'artwork'
+    `;
+
+    if (artworkIds && artworkIds.length > 0) {
+      const placeholders = artworkIds.map(() => '?').join(',');
+      query += ` AND id IN (${placeholders})`;
+    }
+
+    query += ' LIMIT 50'; // Process in batches
+
+    const result = await c.env.DB.prepare(query)
+      .bind(...(artworkIds || []))
+      .all();
+
+    const entities = result.results || [];
+    let processed = 0;
+    let errors = 0;
+
+    // Generate embeddings
+    for (const entity of entities) {
+      try {
+        const props = JSON.parse(entity.properties);
+        
+        // Generate text representation
+        const text = embeddingService.generateArtworkText({
+          title: entity.name,
+          artist: props.artist || 'Unknown',
+          period: props.period || 'Unknown',
+          category: props.category || 'General',
+          material: props.material,
+          description: entity.description,
+        });
+
+        // Generate embedding
+        const embedding = await embeddingService.generateEmbedding(text);
+
+        // Update entity
+        await c.env.DB.prepare(`
+          UPDATE knowledge_entities
+          SET embedding_vector = ?, updated_at = datetime('now')
+          WHERE id = ?
+        `).bind(JSON.stringify(embedding.embedding), entity.id).run();
+
+        processed++;
+      } catch (error) {
+        console.error(`Failed to generate embedding for ${entity.id}:`, error);
+        errors++;
+      }
+    }
+
+    return c.json({
+      success: true,
+      message: `Generated embeddings for ${processed} artworks`,
+      processed,
+      errors,
+      total: entities.length,
+    });
+  } catch (error: any) {
+    console.error('❌ Embedding generation error:', error);
     return c.json({
       success: false,
       error: error.message,

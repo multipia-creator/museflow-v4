@@ -106,6 +106,64 @@ JSON format:
     }
   }
 
+  /**
+   * Semantic search using embeddings
+   * Note: This method would use the embedding service when integrated with database
+   */
+  async semanticSearch(
+    query: string,
+    limit: number = 10,
+    context?: AgentContext
+  ): Promise<ArchiveSearchResult> {
+    console.log('🔍 Semantic search:', query);
+
+    // In a real implementation, this would:
+    // 1. Generate query embedding using EmbeddingService
+    // 2. Search knowledge_entities table for similar embeddings
+    // 3. Calculate cosine similarity
+    // 4. Return top-k results
+
+    const prompt = `
+Perform semantic artwork search for: "${query}"
+
+Consider:
+- Visual similarity
+- Thematic connections
+- Artistic movements
+- Cultural context
+- Historical period
+
+Return ${limit} most relevant artworks with detailed relevance explanations.
+
+JSON format:
+{
+  "artworks": [{
+    "id": "string",
+    "title": "string",
+    "artist": "string",
+    "year": number,
+    "medium": "string",
+    "dimensions": "string",
+    "imageUrl": "string",
+    "location": "string",
+    "available": boolean,
+    "relevanceScore": number,
+    "relevanceReason": "string"
+  }],
+  "totalResults": number,
+  "queryUnderstanding": "string"
+}
+`;
+
+    try {
+      const result = await this.generateJSON<ArchiveSearchResult>(prompt, undefined, context);
+      console.log(`✅ Semantic search found ${result.artworks.length} artworks`);
+      return result;
+    } catch (error: any) {
+      throw new Error(`Semantic search failed: ${error.message}`);
+    }
+  }
+
   async plan(task: ArchiveSearchRequest, context: AgentContext): Promise<AgentPlan> {
     return {
       id: uuidv4(),
