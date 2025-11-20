@@ -11,16 +11,19 @@
     "db:migrate:local": "wrangler d1 migrations apply museflow-production --local",
     "db:migrate:prod": "wrangler d1 migrations apply museflow-production",
     "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "hono": "^4.10.6",
     "@google/generative-ai": "^0.21.0",
     "@notionhq/client": "^2.2.15",
-    "ws": "^8.18.0",
-    "zod": "^3.24.1",
+    "date-fns": "^4.1.0",
+    "hono": "^4.10.6",
     "uuid": "^11.0.3",
-    "date-fns": "^4.1.0"
+    "ws": "^8.18.0",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250105.0",
@@ -29,9 +32,11 @@
     "@types/node": "^22.10.2",
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.5.13",
+    "@vitest/ui": "^2.1.9",
+    "happy-dom": "^20.0.10",
     "typescript": "^5.7.2",
     "vite": "^6.3.5",
-    "vitest": "^2.1.8",
+    "vitest": "^2.1.9",
     "wrangler": "^4.4.0"
   }
 }
