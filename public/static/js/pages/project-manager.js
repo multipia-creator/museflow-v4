@@ -873,13 +873,32 @@ const ProjectManager = {
       });
     });
     
-    // Project Cards - Click to open canvas
-    const projectCards = document.querySelectorAll('.project-card');
-    projectCards.forEach(card => {
-      card.addEventListener('click', () => {
-        const projectId = card.dataset.projectId;
-        this.openProject(projectId);
+    // Project Cards - Use event delegation for dynamic cards
+    const projectsGrid = document.getElementById('projects-grid');
+    if (projectsGrid) {
+      projectsGrid.addEventListener('click', (e) => {
+        // Find the clicked project card
+        const card = e.target.closest('.project-card');
+        if (card) {
+          // Don't trigger if clicking menu button
+          if (e.target.closest('.project-menu-btn')) {
+            return;
+          }
+          const projectId = card.dataset.projectId;
+          console.log('🎯 Project card clicked:', projectId);
+          this.openProject(projectId);
+        }
       });
+    }
+    
+    // Project Menu Buttons - Use event delegation
+    document.addEventListener('click', (e) => {
+      const menuBtn = e.target.closest('.project-menu-btn');
+      if (menuBtn) {
+        e.stopPropagation();
+        const projectId = menuBtn.dataset.projectId;
+        this.showProjectMenu(menuBtn, projectId);
+      }
     });
     
     // Search
@@ -1113,21 +1132,11 @@ const ProjectManager = {
     
     console.log('📊 Total projects:', this.projects.length);
     
-    // Re-render projects grid
+    // Re-render projects grid (events handled by delegation)
     const grid = document.getElementById('projects-grid');
     if (grid) {
       grid.innerHTML = this.renderProjectCards();
-      
-      // Reattach project card events
-      const projectCards = document.querySelectorAll('.project-card');
-      projectCards.forEach(card => {
-        card.addEventListener('click', () => {
-          const projectId = card.dataset.projectId;
-          this.openProject(projectId);
-        });
-      });
-      
-      console.log('✅ Grid re-rendered with', projectCards.length, 'cards');
+      console.log('✅ Grid re-rendered with', this.filteredProjects.length, 'cards');
     } else {
       console.error('❌ projects-grid not found!');
     }
@@ -1151,19 +1160,11 @@ const ProjectManager = {
       return matchesSearch && matchesModule;
     });
     
-    // Re-render grid
+    // Re-render grid (events handled by delegation)
     const grid = document.getElementById('projects-grid');
     if (grid) {
       grid.innerHTML = this.renderProjectCards();
-      
-      // Reattach events
-      const projectCards = document.querySelectorAll('.project-card');
-      projectCards.forEach(card => {
-        card.addEventListener('click', () => {
-          const projectId = card.dataset.projectId;
-          this.openProject(projectId);
-        });
-      });
+      console.log('🔍 Filtered:', this.filteredProjects.length, 'projects');
     }
   },
 
@@ -1188,6 +1189,139 @@ const ProjectManager = {
     if (diffDays < 7) return `${diffDays} days ago`;
     if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
     return `${Math.floor(diffDays / 30)} months ago`;
+  },
+
+  showProjectMenu(buttonElement, projectId) {
+    console.log('📋 Show project menu for:', projectId);
+    
+    // Remove existing menu if any
+    const existingMenu = document.getElementById('project-context-menu');
+    if (existingMenu) {
+      existingMenu.remove();
+    }
+    
+    // Create context menu
+    const menu = document.createElement('div');
+    menu.id = 'project-context-menu';
+    menu.style.cssText = `
+      position: fixed;
+      background: white;
+      border-radius: 12px;
+      padding: 8px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      z-index: 10000;
+      min-width: 180px;
+      border: 1px solid #e5e7eb;
+    `;
+    
+    // Position menu near button
+    const rect = buttonElement.getBoundingClientRect();
+    menu.style.top = `${rect.bottom + 5}px`;
+    menu.style.right = `${window.innerWidth - rect.right}px`;
+    
+    menu.innerHTML = `
+      <button class="menu-item" data-action="open" data-project-id="${projectId}"
+              style="width: 100%; padding: 10px 14px; border: none; background: transparent;
+                     text-align: left; cursor: pointer; border-radius: 8px; font-size: 14px;
+                     font-weight: 500; color: #374151; display: flex; align-items: center; gap: 10px;
+                     transition: all 0.2s;"
+              onmouseover="this.style.background='#f3f4f6'"
+              onmouseout="this.style.background='transparent'">
+        <span style="font-size: 16px;">📂</span>
+        Open Project
+      </button>
+      <button class="menu-item" data-action="edit" data-project-id="${projectId}"
+              style="width: 100%; padding: 10px 14px; border: none; background: transparent;
+                     text-align: left; cursor: pointer; border-radius: 8px; font-size: 14px;
+                     font-weight: 500; color: #374151; display: flex; align-items: center; gap: 10px;
+                     transition: all 0.2s;"
+              onmouseover="this.style.background='#f3f4f6'"
+              onmouseout="this.style.background='transparent'">
+        <span style="font-size: 16px;">✏️</span>
+        Edit Project
+      </button>
+      <div style="height: 1px; background: #e5e7eb; margin: 4px 0;"></div>
+      <button class="menu-item" data-action="delete" data-project-id="${projectId}"
+              style="width: 100%; padding: 10px 14px; border: none; background: transparent;
+                     text-align: left; cursor: pointer; border-radius: 8px; font-size: 14px;
+                     font-weight: 500; color: #ef4444; display: flex; align-items: center; gap: 10px;
+                     transition: all 0.2s;"
+              onmouseover="this.style.background='#fef2f2'"
+              onmouseout="this.style.background='transparent'">
+        <span style="font-size: 16px;">🗑️</span>
+        Delete Project
+      </button>
+    `;
+    
+    document.body.appendChild(menu);
+    
+    // Handle menu actions
+    menu.addEventListener('click', (e) => {
+      const menuItem = e.target.closest('.menu-item');
+      if (menuItem) {
+        const action = menuItem.dataset.action;
+        const pid = menuItem.dataset.projectId;
+        
+        menu.remove();
+        
+        switch(action) {
+          case 'open':
+            this.openProject(pid);
+            break;
+          case 'edit':
+            this.editProject(pid);
+            break;
+          case 'delete':
+            this.deleteProject(pid);
+            break;
+        }
+      }
+    });
+    
+    // Close menu when clicking outside
+    setTimeout(() => {
+      const closeMenu = (e) => {
+        if (!menu.contains(e.target) && !buttonElement.contains(e.target)) {
+          menu.remove();
+          document.removeEventListener('click', closeMenu);
+        }
+      };
+      document.addEventListener('click', closeMenu);
+    }, 100);
+  },
+
+  editProject(projectId) {
+    const project = this.projects.find(p => p.id == projectId);
+    if (!project) return;
+    
+    Toast.info('Edit feature coming soon! 🚧', 2000);
+    console.log('✏️ Edit project:', project);
+  },
+
+  deleteProject(projectId) {
+    const project = this.projects.find(p => p.id == projectId);
+    if (!project) return;
+    
+    console.log('🗑️ Delete project:', project.name);
+    
+    // Show confirmation
+    const confirmed = confirm(`Are you sure you want to delete "${project.name}"?\n\nThis action cannot be undone.`);
+    
+    if (confirmed) {
+      // Remove from array
+      this.projects = this.projects.filter(p => p.id != projectId);
+      
+      // Save to localStorage
+      this.saveProjects();
+      
+      // Reapply filters and re-render
+      this.applyFilters();
+      
+      Toast.success(`Project "${project.name}" deleted successfully! 🗑️`, 2000);
+      console.log('✅ Project deleted');
+    } else {
+      console.log('❌ Delete cancelled');
+    }
   }
 };
 
