@@ -38,7 +38,17 @@ const ProjectManager = {
     
     const storageKey = `museflow_projects_${currentUser.id}`;
     const stored = localStorage.getItem(storageKey);
-    this.projects = stored ? JSON.parse(stored) : this.getDefaultProjects();
+    
+    if (!stored || JSON.parse(stored).length === 0) {
+      // Initialize with default projects if none exist
+      console.log('🎨 No projects found - Creating default projects...');
+      const defaultProjects = this.getDefaultProjects();
+      localStorage.setItem(storageKey, JSON.stringify(defaultProjects));
+      this.projects = defaultProjects;
+    } else {
+      this.projects = JSON.parse(stored);
+    }
+    
     this.filteredProjects = [...this.projects];
     
     console.log(`✅ Loaded ${this.projects.length} projects`);

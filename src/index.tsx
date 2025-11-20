@@ -89,7 +89,7 @@ app.get('*', (c) => {
             animation: bgFloat 15s ease-in-out infinite;
           "></div>
           <img 
-            src="https://www.genspark.ai/api/files/s/26RipIBz" 
+            src="/static/images/logo-square.png" 
             alt="MuseFlow" 
             style="
               width: 180px;
@@ -97,7 +97,7 @@ app.get('*', (c) => {
               margin-bottom: 32px;
               animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
               border-radius: 32px;
-              box-shadow: 0 20px 60px rgba(102, 126, 234, 0.6);
+              box-shadow: 0 20px 60px rgba(139, 92, 246, 0.6);
             "
           />
           <div class="spinner" style="position: relative; z-index: 1;"></div>
