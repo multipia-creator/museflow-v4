@@ -15,6 +15,7 @@ import threeDModelsRoutes from './3d-models';
 import digitalTwinRoutes from './digital-twin';
 import webxrRoutes from './webxr';
 import iotSensorsRoutes from './iot-sensors';
+import chatbotRoutes from './chatbot';
 
 type Bindings = {
   DB: D1Database;
@@ -55,6 +56,7 @@ api.route('/3d-models', threeDModelsRoutes);
 api.route('/digital-twin', digitalTwinRoutes);
 api.route('/webxr', webxrRoutes);
 api.route('/iot-sensors', iotSensorsRoutes);
+api.route('/chatbot', chatbotRoutes);
 
 // 404 handler
 api.notFound((c) => {
