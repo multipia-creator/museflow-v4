@@ -191,9 +191,14 @@ pm2 logs museflow-v4 --nostream
 
 ### 5. Access Points
 
-**Main Application:**
-- 🌐 Development: http://localhost:3000
-- 🌐 Production: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai
+**🌐 Production (Cloudflare Pages):**
+- **Live Site**: https://a897f414.museflow.pages.dev
+- **Primary Domain**: https://museflow.pages.dev
+- **Status**: ✅ Deployed & Active
+
+**Development:**
+- Local: http://localhost:3000
+- Sandbox: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai
 
 **Pages Available:**
 - 🏠 **Landing Page**: `/landing.html` - World-class marketing page
