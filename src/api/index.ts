@@ -7,11 +7,13 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import workflowRoutes from './workflows';
 import aiRoutes from './ai';
+import collaborationRoutes from './collaboration';
 
 type Bindings = {
   DB: D1Database;
   GEMINI_API_KEY: string;
   NOTION_API_KEY?: string;
+  COLLABORATION_ROOM: DurableObjectNamespace;
 };
 
 const api = new Hono<{ Bindings: Bindings }>();
@@ -35,6 +37,7 @@ api.get('/health', (c) => {
 // Mount route groups
 api.route('/workflows', workflowRoutes);
 api.route('/ai', aiRoutes);
+api.route('/collaboration', collaborationRoutes);
 
 // 404 handler
 api.notFound((c) => {

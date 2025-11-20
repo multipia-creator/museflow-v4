@@ -2,10 +2,14 @@ import { Hono } from 'hono'
 import { serveStatic } from 'hono/cloudflare-workers'
 import api from './api/index'
 
+// Export Durable Objects
+export { CollaborationRoom } from './durable-objects/collaboration-room'
+
 type Bindings = {
   DB: D1Database;
   GEMINI_API_KEY: string;
   NOTION_API_KEY?: string;
+  COLLABORATION_ROOM: DurableObjectNamespace;
 };
 
 const app = new Hono<{ Bindings: Bindings }>()
@@ -90,9 +94,11 @@ app.get('*', (c) => {
         <script src="/static/js/sdk/api-client.js?v=${Date.now()}"></script>
         <script src="/static/js/sdk/workflow-sync.js?v=${Date.now()}"></script>
         <script src="/static/js/sdk/ai-generator.js?v=${Date.now()}"></script>
+        <script src="/static/js/sdk/collaboration-client.js?v=${Date.now()}"></script>
         
         <!-- AI Components -->
         <script src="/static/js/components/ai-generation-modal.js?v=${Date.now()}"></script>
+        <script src="/static/js/components/collaboration-panel.js?v=${Date.now()}"></script>
         
         <!-- Page Scripts -->
         <script src="/static/js/pages/features.js?v=${Date.now()}"></script>

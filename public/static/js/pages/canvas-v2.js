@@ -91,7 +91,7 @@ const CanvasV2 = {
   },
   
   /**
-   * Initialize backend integration (API, Sync, AI)
+   * Initialize backend integration (API, Sync, AI, Collaboration)
    */
   async initBackendIntegration() {
     try {
@@ -114,10 +114,110 @@ const CanvasV2 = {
       const isAIReady = await window.AIGenerator.testConnection();
       console.log('🤖 AI Status:', isAIReady ? '✅ Ready' : '⚠️ Not available');
       
+      // Initialize Collaboration (after loading workflow)
+      setTimeout(() => {
+        this.initCollaboration();
+        
+        // Show collaboration panel
+        if (typeof CollaborationPanel !== 'undefined') {
+          CollaborationPanel.render();
+        }
+      }, 1000);
+      
     } catch (error) {
       console.warn('⚠️ Backend integration warning:', error.message);
-      Toast.warning('Running in offline mode');
+      if (typeof Toast !== 'undefined') {
+        Toast.warning('Running in offline mode');
+      }
     }
+  },
+  
+  /**
+   * Initialize real-time collaboration
+   */
+  async initCollaboration() {
+    if (!this.currentProject || typeof initCollaboration === 'undefined') {
+      return;
+    }
+    
+    try {
+      const userId = 'user-' + Math.random().toString(36).substring(7);
+      const userName = Auth.currentUser?.name || 'Anonymous';
+      const workflowId = window.WorkflowSync?.workflowId || this.currentProject.id;
+      
+      // Initialize collaboration client
+      const collab = initCollaboration(workflowId, userId, userName);
+      
+      // Connect to room
+      await collab.connect();
+      
+      // Setup event listeners
+      this.setupCollaborationListeners();
+      
+      console.log('✅ Collaboration initialized');
+      
+      if (typeof Toast !== 'undefined') {
+        Toast.success('Collaboration enabled');
+      }
+    } catch (error) {
+      console.warn('⚠️ Collaboration init failed:', error.message);
+    }
+  },
+  
+  /**
+   * Setup collaboration event listeners
+   */
+  setupCollaborationListeners() {
+    const collab = window.CollaborationClient;
+    if (!collab) return;
+    
+    // User joined/left
+    collab.on('user-joined', (user) => {
+      console.log('👋 User joined:', user.name);
+      if (typeof Toast !== 'undefined') {
+        Toast.info(`${user.name} joined`);
+      }
+    });
+    
+    collab.on('user-left', (userId) => {
+      console.log('👋 User left:', userId);
+    });
+    
+    // Node updates from other users
+    collab.on('node-update', ({ userId, node }) => {
+      // Update node if it exists
+      const existingNode = this.nodes.find(n => n.id === node.id);
+      if (existingNode) {
+        Object.assign(existingNode, node);
+      }
+    });
+    
+    collab.on('node-create', ({ userId, node }) => {
+      // Add node if it doesn't exist
+      const exists = this.nodes.find(n => n.id === node.id);
+      if (!exists) {
+        this.nodes.push(node);
+      }
+    });
+    
+    collab.on('node-delete', ({ userId, nodeId }) => {
+      // Remove node
+      this.nodes = this.nodes.filter(n => n.id !== nodeId);
+    });
+    
+    // Send cursor position on mouse move (throttled)
+    let lastCursorSend = 0;
+    this.canvas.addEventListener('mousemove', (e) => {
+      const now = Date.now();
+      if (now - lastCursorSend < 50) return; // Throttle to 20fps
+      lastCursorSend = now;
+      
+      const rect = this.canvas.getBoundingClientRect();
+      const x = (e.clientX - rect.left - this.viewport.x) / this.viewport.zoom;
+      const y = (e.clientY - rect.top - this.viewport.y) / this.viewport.zoom;
+      
+      collab.sendCursor(x, y);
+    });
   },
   
   /**
@@ -1087,6 +1187,88 @@ const CanvasV2 = {
     
     // Draw nodes
     this.nodes.forEach(node => this.drawNode(node));
+    
+    // Draw collaboration cursors and selections
+    if (window.CollaborationClient) {
+      this.drawCollaborationOverlay();
+    }
+  },
+  
+  /**
+   * Draw collaboration overlay (cursors and selections)
+   */
+  drawCollaborationOverlay() {
+    if (!window.CollaborationClient || !window.CollaborationClient.isConnected) return;
+    
+    const users = window.CollaborationClient.getUsers();
+    
+    users.forEach(user => {
+      if (user.id === window.CollaborationClient.userId) return; // Skip self
+      
+      // Draw cursor
+      if (user.cursor) {
+        this.drawCollaborationCursor(user);
+      }
+      
+      // Draw selection boxes
+      if (user.selectedNodes && user.selectedNodes.length > 0) {
+        this.drawCollaborationSelection(user);
+      }
+    });
+  },
+  
+  /**
+   * Draw collaboration cursor
+   */
+  drawCollaborationCursor(user) {
+    const { x, y, zoom } = this.viewport;
+    const cursorX = user.cursor.x * zoom + x;
+    const cursorY = user.cursor.y * zoom + y;
+    
+    // Draw cursor pointer
+    this.ctx.fillStyle = user.color;
+    this.ctx.beginPath();
+    this.ctx.moveTo(cursorX, cursorY);
+    this.ctx.lineTo(cursorX + 12, cursorY + 4);
+    this.ctx.lineTo(cursorX + 7, cursorY + 10);
+    this.ctx.lineTo(cursorX + 4, cursorY + 16);
+    this.ctx.closePath();
+    this.ctx.fill();
+    
+    // Draw user name tag
+    this.ctx.font = '12px Inter, sans-serif';
+    this.ctx.fillStyle = user.color;
+    const textWidth = this.ctx.measureText(user.name).width;
+    
+    this.ctx.fillStyle = user.color;
+    this.ctx.fillRect(cursorX + 16, cursorY, textWidth + 12, 20);
+    
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.fillText(user.name, cursorX + 22, cursorY + 14);
+  },
+  
+  /**
+   * Draw collaboration selection
+   */
+  drawCollaborationSelection(user) {
+    const { x, y, zoom } = this.viewport;
+    
+    user.selectedNodes.forEach(nodeId => {
+      const node = this.nodes.find(n => n.id === nodeId);
+      if (!node) return;
+      
+      const nodeX = node.x * zoom + x;
+      const nodeY = node.y * zoom + y;
+      const nodeWidth = node.width * zoom;
+      const nodeHeight = node.height * zoom;
+      
+      // Draw selection outline
+      this.ctx.strokeStyle = user.color;
+      this.ctx.lineWidth = 3;
+      this.ctx.setLineDash([5, 5]);
+      this.ctx.strokeRect(nodeX - 2, nodeY - 2, nodeWidth + 4, nodeHeight + 4);
+      this.ctx.setLineDash([]);
+    });
   },
   
   drawGrid() {

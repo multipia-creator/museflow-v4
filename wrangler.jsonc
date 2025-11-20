@@ -16,6 +16,25 @@
     }
   ],
   
+  // Durable Objects
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "COLLABORATION_ROOM",
+        "class_name": "CollaborationRoom",
+        "script_name": "museflow-v4"
+      }
+    ]
+  },
+  
+  // Migrations for Durable Objects
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_classes": ["CollaborationRoom"]
+    }
+  ],
+  
   // Environment Variables (loaded from .dev.vars for local dev)
   "vars": {
     "ENVIRONMENT": "development"
