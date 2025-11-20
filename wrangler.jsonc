@@ -1,10 +1,8 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "museflow-v4",
-  "main": "src/index.tsx",
+  "name": "museflow",
   "compatibility_date": "2024-01-01",
   "compatibility_flags": ["nodejs_compat"],
-  "pages_build_output_dir": "./dist",
   
   // D1 Database
   "d1_databases": [
@@ -27,13 +25,7 @@
     ]
   },
   
-  // Migrations for Durable Objects
-  "migrations": [
-    {
-      "tag": "v1",
-      "new_classes": ["CollaborationRoom"]
-    }
-  ],
+
   
   // KV Namespaces for caching (optional - comment out for local dev)
   // Uncomment after creating KV: npx wrangler kv:namespace create CACHE_KV
