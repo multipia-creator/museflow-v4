@@ -35,6 +35,15 @@
     }
   ],
   
+  // KV Namespaces for caching (optional - comment out for local dev)
+  // Uncomment after creating KV: npx wrangler kv:namespace create CACHE_KV
+  // "kv_namespaces": [
+  //   {
+  //     "binding": "CACHE_KV",
+  //     "id": "your-kv-id-here"
+  //   }
+  // ],
+  
   // Environment Variables (loaded from .dev.vars for local dev)
   "vars": {
     "ENVIRONMENT": "development"

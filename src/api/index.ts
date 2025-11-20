@@ -16,6 +16,7 @@ import digitalTwinRoutes from './digital-twin';
 import webxrRoutes from './webxr';
 import iotSensorsRoutes from './iot-sensors';
 import chatbotRoutes from './chatbot';
+import performanceRoutes from './performance';
 
 type Bindings = {
   DB: D1Database;
@@ -25,6 +26,7 @@ type Bindings = {
   SOMA_API_KEY?: string;
   KCISA_API_KEY?: string;
   COLLABORATION_ROOM: DurableObjectNamespace;
+  CACHE_KV?: KVNamespace;
 };
 
 const api = new Hono<{ Bindings: Bindings }>();
@@ -57,6 +59,7 @@ api.route('/digital-twin', digitalTwinRoutes);
 api.route('/webxr', webxrRoutes);
 api.route('/iot-sensors', iotSensorsRoutes);
 api.route('/chatbot', chatbotRoutes);
+api.route('/performance', performanceRoutes);
 
 // 404 handler
 api.notFound((c) => {
