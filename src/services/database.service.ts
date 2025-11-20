@@ -577,4 +577,310 @@ export class DatabaseService {
 
     return null;
   }
+
+  // ========================================================================
+  // NFT ASSETS
+  // ========================================================================
+
+  async createNFTAsset(data: any): Promise<any> {
+    const nft = {
+      id: data.id || this.generateId(),
+      token_id: data.token_id,
+      contract_address: data.contract_address,
+      blockchain: data.blockchain,
+      token_standard: data.token_standard || 'ERC-721',
+      name: data.name,
+      description: data.description || null,
+      image_url: data.image_url || null,
+      animation_url: data.animation_url || null,
+      external_url: data.external_url || null,
+      metadata_url: data.metadata_url,
+      metadata_json: data.metadata_json || null,
+      artwork_id: data.artwork_id || null,
+      exhibition_id: data.exhibition_id || null,
+      creator_address: data.creator_address,
+      current_owner_address: data.current_owner_address || data.creator_address,
+      minted_at: data.minted_at || new Date().toISOString(),
+      minting_transaction: data.minting_transaction || null,
+      attributes: data.attributes || null,
+      rarity_score: data.rarity_score || null,
+      price_in_eth: data.price_in_eth || null,
+      last_sale_price: data.last_sale_price || null,
+      total_sales: data.total_sales || 0,
+      status: data.status || 'minted',
+      visibility: data.visibility || 'public',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    await this.db
+      .prepare(
+        `INSERT INTO nft_assets (
+          id, token_id, contract_address, blockchain, token_standard,
+          name, description, image_url, animation_url, external_url,
+          metadata_url, metadata_json, artwork_id, exhibition_id,
+          creator_address, current_owner_address, minted_at, minting_transaction,
+          attributes, rarity_score, price_in_eth, last_sale_price, total_sales,
+          status, visibility, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      )
+      .bind(
+        nft.id,
+        nft.token_id,
+        nft.contract_address,
+        nft.blockchain,
+        nft.token_standard,
+        nft.name,
+        nft.description,
+        nft.image_url,
+        nft.animation_url,
+        nft.external_url,
+        nft.metadata_url,
+        nft.metadata_json,
+        nft.artwork_id,
+        nft.exhibition_id,
+        nft.creator_address,
+        nft.current_owner_address,
+        nft.minted_at,
+        nft.minting_transaction,
+        nft.attributes,
+        nft.rarity_score,
+        nft.price_in_eth,
+        nft.last_sale_price,
+        nft.total_sales,
+        nft.status,
+        nft.visibility,
+        nft.created_at,
+        nft.updated_at
+      )
+      .run();
+
+    return nft;
+  }
+
+  async getNFTAsset(id: string): Promise<any | null> {
+    const result = await this.db
+      .prepare('SELECT * FROM nft_assets WHERE id = ?')
+      .bind(id)
+      .first<any>();
+
+    return result || null;
+  }
+
+  async getNFTByTokenId(tokenId: string, contractAddress: string): Promise<any | null> {
+    const result = await this.db
+      .prepare('SELECT * FROM nft_assets WHERE token_id = ? AND contract_address = ?')
+      .bind(tokenId, contractAddress)
+      .first<any>();
+
+    return result || null;
+  }
+
+  async listNFTsByExhibition(exhibitionId: string): Promise<any[]> {
+    const result = await this.db
+      .prepare('SELECT * FROM nft_assets WHERE exhibition_id = ? ORDER BY created_at DESC')
+      .bind(exhibitionId)
+      .all<any>();
+
+    return result.results || [];
+  }
+
+  async listNFTsByArtwork(artworkId: string): Promise<any[]> {
+    const result = await this.db
+      .prepare('SELECT * FROM nft_assets WHERE artwork_id = ? ORDER BY created_at DESC')
+      .bind(artworkId)
+      .all<any>();
+
+    return result.results || [];
+  }
+
+  async listNFTsByOwner(ownerAddress: string): Promise<any[]> {
+    const result = await this.db
+      .prepare('SELECT * FROM nft_assets WHERE current_owner_address = ? ORDER BY created_at DESC')
+      .bind(ownerAddress)
+      .all<any>();
+
+    return result.results || [];
+  }
+
+  async updateNFTAsset(id: string, data: any): Promise<void> {
+    const updates: string[] = [];
+    const values: any[] = [];
+
+    if (data.current_owner_address !== undefined) {
+      updates.push('current_owner_address = ?');
+      values.push(data.current_owner_address);
+    }
+    if (data.price_in_eth !== undefined) {
+      updates.push('price_in_eth = ?');
+      values.push(data.price_in_eth);
+    }
+    if (data.last_sale_price !== undefined) {
+      updates.push('last_sale_price = ?');
+      values.push(data.last_sale_price);
+    }
+    if (data.total_sales !== undefined) {
+      updates.push('total_sales = ?');
+      values.push(data.total_sales);
+    }
+    if (data.status !== undefined) {
+      updates.push('status = ?');
+      values.push(data.status);
+    }
+    if (data.visibility !== undefined) {
+      updates.push('visibility = ?');
+      values.push(data.visibility);
+    }
+
+    if (updates.length === 0) return;
+
+    updates.push('updated_at = datetime(\'now\')');
+    values.push(id);
+
+    await this.db
+      .prepare(`UPDATE nft_assets SET ${updates.join(', ')} WHERE id = ?`)
+      .bind(...values)
+      .run();
+  }
+
+  async deleteNFTAsset(id: string): Promise<void> {
+    await this.db.prepare('DELETE FROM nft_assets WHERE id = ?').bind(id).run();
+  }
+
+  // NFT Collections
+
+  async createNFTCollection(data: any): Promise<any> {
+    const collection = {
+      id: data.id || this.generateId(),
+      name: data.name,
+      symbol: data.symbol,
+      description: data.description || null,
+      contract_address: data.contract_address,
+      blockchain: data.blockchain,
+      token_standard: data.token_standard || 'ERC-721',
+      base_uri: data.base_uri || null,
+      collection_image: data.collection_image || null,
+      external_url: data.external_url || null,
+      exhibition_id: data.exhibition_id || null,
+      total_supply: data.total_supply || 0,
+      max_supply: data.max_supply || null,
+      minted_count: data.minted_count || 0,
+      floor_price: data.floor_price || null,
+      total_volume: data.total_volume || null,
+      royalty_percentage: data.royalty_percentage || 0,
+      royalty_recipient: data.royalty_recipient || null,
+      status: data.status || 'active',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    await this.db
+      .prepare(
+        `INSERT INTO nft_collections (
+          id, name, symbol, description, contract_address, blockchain, token_standard,
+          base_uri, collection_image, external_url, exhibition_id,
+          total_supply, max_supply, minted_count, floor_price, total_volume,
+          royalty_percentage, royalty_recipient, status, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      )
+      .bind(
+        collection.id,
+        collection.name,
+        collection.symbol,
+        collection.description,
+        collection.contract_address,
+        collection.blockchain,
+        collection.token_standard,
+        collection.base_uri,
+        collection.collection_image,
+        collection.external_url,
+        collection.exhibition_id,
+        collection.total_supply,
+        collection.max_supply,
+        collection.minted_count,
+        collection.floor_price,
+        collection.total_volume,
+        collection.royalty_percentage,
+        collection.royalty_recipient,
+        collection.status,
+        collection.created_at,
+        collection.updated_at
+      )
+      .run();
+
+    return collection;
+  }
+
+  async getNFTCollection(id: string): Promise<any | null> {
+    const result = await this.db
+      .prepare('SELECT * FROM nft_collections WHERE id = ?')
+      .bind(id)
+      .first<any>();
+
+    return result || null;
+  }
+
+  async listNFTCollections(): Promise<any[]> {
+    const result = await this.db
+      .prepare('SELECT * FROM nft_collections ORDER BY created_at DESC')
+      .all<any>();
+
+    return result.results || [];
+  }
+
+  // NFT Transfer History
+
+  async recordNFTTransfer(data: any): Promise<any> {
+    const transfer = {
+      id: this.generateId(),
+      nft_id: data.nft_id,
+      token_id: data.token_id,
+      from_address: data.from_address,
+      to_address: data.to_address,
+      transaction_hash: data.transaction_hash,
+      block_number: data.block_number || null,
+      price_in_eth: data.price_in_eth || null,
+      price_in_usd: data.price_in_usd || null,
+      transfer_type: data.transfer_type, // 'mint', 'sale', 'transfer', 'burn'
+      marketplace: data.marketplace || null,
+      transferred_at: data.transferred_at || new Date().toISOString(),
+      created_at: new Date().toISOString(),
+    };
+
+    await this.db
+      .prepare(
+        `INSERT INTO nft_transfers (
+          id, nft_id, token_id, from_address, to_address, transaction_hash,
+          block_number, price_in_eth, price_in_usd, transfer_type, marketplace,
+          transferred_at, created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      )
+      .bind(
+        transfer.id,
+        transfer.nft_id,
+        transfer.token_id,
+        transfer.from_address,
+        transfer.to_address,
+        transfer.transaction_hash,
+        transfer.block_number,
+        transfer.price_in_eth,
+        transfer.price_in_usd,
+        transfer.transfer_type,
+        transfer.marketplace,
+        transfer.transferred_at,
+        transfer.created_at
+      )
+      .run();
+
+    return transfer;
+  }
+
+  async getNFTTransferHistory(nftId: string): Promise<any[]> {
+    const result = await this.db
+      .prepare('SELECT * FROM nft_transfers WHERE nft_id = ? ORDER BY transferred_at DESC')
+      .bind(nftId)
+      .all<any>();
+
+    return result.results || [];
+  }
 }

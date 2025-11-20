@@ -5,12 +5,14 @@
 
 import { Hono } from 'hono';
 import { initMuseumAPI } from '../services/museum-api.service';
+import { initSomaMuseum } from '../services/soma-museum.service';
 import { DatabaseService } from '../services/database.service';
 import { initEmbedding } from '../services/embedding.service';
 
 type Bindings = {
   DB: D1Database;
   MUSEUM_API_KEY?: string;
+  SOMA_API_KEY?: string;
   GEMINI_API_KEY: string;
 };
 
@@ -404,6 +406,264 @@ app.get('/test', async (c) => {
     return c.json({
       success: true,
       message: 'Museum API connection successful',
+      sampleResult: result.artworks[0] || null,
+    });
+  } catch (error: any) {
+    return c.json({
+      success: false,
+      error: error.message,
+    }, 500);
+  }
+});
+
+/**
+ * Search artworks from Soma Museum
+ * GET /api/museum/soma/search
+ */
+app.get('/soma/search', async (c) => {
+  try {
+    const apiKey = c.env.SOMA_API_KEY;
+    
+    if (!apiKey) {
+      return c.json({
+        success: false,
+        error: 'Soma Museum API key not configured',
+      }, 503);
+    }
+
+    const somaAPI = initSomaMuseum(apiKey);
+
+    const query = c.req.query('q') || '';
+    const category = c.req.query('category') || '';
+    const artist = c.req.query('artist') || '';
+    const year = c.req.query('year') || '';
+    const genre = c.req.query('genre') || '';
+    const limit = parseInt(c.req.query('limit') || '20');
+    const offset = parseInt(c.req.query('offset') || '0');
+
+    console.log(`🔍 Soma Museum search: "${query}"`);
+
+    const result = await somaAPI.searchArtworks({
+      query,
+      category,
+      artist,
+      year,
+      genre,
+      limit,
+      offset,
+    });
+
+    // Cache results in D1
+    const db = new DatabaseService(c.env.DB);
+    for (const artwork of result.artworks) {
+      try {
+        await db.cacheMuseumData(
+          `/soma/search?q=${query}`,
+          { q: query, category, artist, year, genre },
+          result
+        );
+        break; // Cache once per search
+      } catch (e) {
+        console.warn('Failed to cache Soma result:', e);
+      }
+    }
+
+    return c.json({
+      success: true,
+      data: result,
+    });
+  } catch (error: any) {
+    console.error('❌ Soma Museum search error:', error);
+    return c.json({
+      success: false,
+      error: error.message || 'Soma search failed',
+    }, 500);
+  }
+});
+
+/**
+ * Get Soma artwork by ID
+ * GET /api/museum/soma/artwork/:id
+ */
+app.get('/soma/artwork/:id', async (c) => {
+  try {
+    const apiKey = c.env.SOMA_API_KEY;
+    
+    if (!apiKey) {
+      return c.json({
+        success: false,
+        error: 'Soma Museum API key not configured',
+      }, 503);
+    }
+
+    const somaAPI = initSomaMuseum(apiKey);
+    const id = c.req.param('id');
+
+    const artwork = await somaAPI.getArtwork(id);
+
+    if (!artwork) {
+      return c.json({
+        success: false,
+        error: 'Soma artwork not found',
+      }, 404);
+    }
+
+    return c.json({
+      success: true,
+      data: artwork,
+    });
+  } catch (error: any) {
+    return c.json({
+      success: false,
+      error: error.message,
+    }, 500);
+  }
+});
+
+/**
+ * Get Soma Museum categories
+ * GET /api/museum/soma/categories
+ */
+app.get('/soma/categories', async (c) => {
+  try {
+    const apiKey = c.env.SOMA_API_KEY;
+    
+    if (!apiKey) {
+      return c.json({
+        success: false,
+        error: 'Soma Museum API key not configured',
+      }, 503);
+    }
+
+    const somaAPI = initSomaMuseum(apiKey);
+    const categories = await somaAPI.getCategories();
+
+    return c.json({
+      success: true,
+      data: categories,
+    });
+  } catch (error: any) {
+    return c.json({
+      success: false,
+      error: error.message,
+    }, 500);
+  }
+});
+
+/**
+ * Get Soma Museum genres
+ * GET /api/museum/soma/genres
+ */
+app.get('/soma/genres', async (c) => {
+  try {
+    const apiKey = c.env.SOMA_API_KEY;
+    
+    if (!apiKey) {
+      return c.json({
+        success: false,
+        error: 'Soma Museum API key not configured',
+      }, 503);
+    }
+
+    const somaAPI = initSomaMuseum(apiKey);
+    const genres = await somaAPI.getGenres();
+
+    return c.json({
+      success: true,
+      data: genres,
+    });
+  } catch (error: any) {
+    return c.json({
+      success: false,
+      error: error.message,
+    }, 500);
+  }
+});
+
+/**
+ * Unified search across both museums
+ * GET /api/museum/unified-search
+ */
+app.get('/unified-search', async (c) => {
+  try {
+    const query = c.req.query('q') || '';
+    const limit = parseInt(c.req.query('limit') || '20');
+    const offset = parseInt(c.req.query('offset') || '0');
+
+    console.log(`🔍 Unified search: "${query}"`);
+
+    const results = [];
+    const errors = [];
+
+    // Search National Museum
+    if (c.env.MUSEUM_API_KEY) {
+      try {
+        const museumAPI = initMuseumAPI(c.env.MUSEUM_API_KEY);
+        const museumResult = await museumAPI.searchArtworks({ query, limit: Math.floor(limit / 2), offset });
+        results.push(...museumResult.artworks);
+      } catch (error: any) {
+        errors.push({ source: 'National Museum', error: error.message });
+      }
+    }
+
+    // Search Soma Museum
+    if (c.env.SOMA_API_KEY) {
+      try {
+        const somaAPI = initSomaMuseum(c.env.SOMA_API_KEY);
+        const somaResult = await somaAPI.searchArtworks({ query, limit: Math.floor(limit / 2), offset });
+        results.push(...somaResult.artworks);
+      } catch (error: any) {
+        errors.push({ source: 'Soma Museum', error: error.message });
+      }
+    }
+
+    return c.json({
+      success: true,
+      data: {
+        artworks: results,
+        total: results.length,
+        offset,
+        limit,
+        sources: {
+          nationalMuseum: !!c.env.MUSEUM_API_KEY,
+          somaMuseum: !!c.env.SOMA_API_KEY,
+        },
+        errors: errors.length > 0 ? errors : undefined,
+      },
+    });
+  } catch (error: any) {
+    console.error('❌ Unified search error:', error);
+    return c.json({
+      success: false,
+      error: error.message || 'Unified search failed',
+    }, 500);
+  }
+});
+
+/**
+ * Test Soma Museum API connection
+ * GET /api/museum/soma/test
+ */
+app.get('/soma/test', async (c) => {
+  try {
+    const apiKey = c.env.SOMA_API_KEY;
+    
+    if (!apiKey) {
+      return c.json({
+        success: false,
+        error: 'Soma Museum API key not configured',
+        message: 'Please add SOMA_API_KEY to your environment variables',
+      }, 503);
+    }
+
+    const somaAPI = initSomaMuseum(apiKey);
+    
+    // Try a simple search
+    const result = await somaAPI.searchArtworks({ limit: 1 });
+    
+    return c.json({
+      success: true,
+      message: 'Soma Museum API connection successful',
       sampleResult: result.artworks[0] || null,
     });
   } catch (error: any) {

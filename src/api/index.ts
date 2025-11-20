@@ -9,12 +9,15 @@ import workflowRoutes from './workflows';
 import aiRoutes from './ai';
 import collaborationRoutes from './collaboration';
 import museumRoutes from './museum';
+import visitorRoutes from './visitor';
+import nftRoutes from './nft';
 
 type Bindings = {
   DB: D1Database;
   GEMINI_API_KEY: string;
   NOTION_API_KEY?: string;
   MUSEUM_API_KEY?: string;
+  SOMA_API_KEY?: string;
   COLLABORATION_ROOM: DurableObjectNamespace;
 };
 
@@ -41,6 +44,8 @@ api.route('/workflows', workflowRoutes);
 api.route('/ai', aiRoutes);
 api.route('/collaboration', collaborationRoutes);
 api.route('/museum', museumRoutes);
+api.route('/visitor', visitorRoutes);
+api.route('/nft', nftRoutes);
 
 // 404 handler
 api.notFound((c) => {
