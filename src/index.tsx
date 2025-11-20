@@ -21,7 +21,15 @@ app.route('/api', api)
 // Note: Cache busting is handled via query parameters (?v=timestamp) in HTML
 app.use('/static/*', serveStatic({ root: './' }))
 
-// Main route - Serve the SPA
+// Landing page (root route)
+app.get('/', (c) => {
+  return c.redirect('/landing.html')
+})
+
+// Serve static HTML files
+app.use('/*', serveStatic({ root: './public' }))
+
+// Canvas V2 route (main SPA) - Fallback for any other route
 app.get('*', (c) => {
   // Add cache control headers to HTML response
   c.header('Cache-Control', 'no-cache, no-store, must-revalidate')
