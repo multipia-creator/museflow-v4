@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - MuseFlow</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a0f2e 50%, #0a0a0f 100%);
+            color: #f5f5f7;
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: saturate(180%) blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+        }
+
+        .stat-card {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #10b981;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(139, 92, 246, 0.5);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+        }
+
+        .nav-bar {
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(139, 92, 246, 0.2);
+            border-top-color: #8b5cf6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+        <a href="/landing.html" class="nav-logo">
+            <img src="/static/images/logo-neon-m.png" alt="MuseFlow">
+            <span style="font-size: 1.25rem; font-weight: 700;">MuseFlow</span>
+        </a>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <a href="/admin.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <button id="logout-btn" class="btn-secondary">
+                <i class="fas fa-sign-out-alt"></i> 로그아웃
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div style="max-width: 1200px; margin: 0 auto; padding: 3rem 2rem;">
+        <!-- Loading Spinner -->
+        <div id="loading-spinner" class="loading-spinner"></div>
+
+        <!-- Account Container -->
+        <div id="account-container" style="display: none;">
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;" class="gradient-text">
+                    My Account
+                </h1>
+                <p style="color: rgba(255, 255, 255, 0.7);">개인정보 및 계정 설정을 관리하세요</p>
+            </div>
+
+            <!-- Profile Section -->
+            <div class="glass-card" style="padding: 2rem; margin-bottom: 2rem;">
+                <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-user-circle" style="color: #8b5cf6;"></i>
+                    프로필 정보
+                </h2>
+                
+                <div style="display: flex; gap: 2rem; align-items: start; flex-wrap: wrap;">
+                    <!-- Avatar -->
+                    <div style="text-align: center;">
+                        <img id="profile-avatar" src="https://ui-avatars.com/api/?name=User&size=120&background=8b5cf6&color=fff" alt="Profile" class="profile-avatar">
+                        <button id="change-avatar-btn" class="btn-secondary" style="margin-top: 1rem; font-size: 0.875rem; padding: 0.5rem 1rem;">
+                            <i class="fas fa-camera"></i> 사진 변경
+                        </button>
+                    </div>
+
+                    <!-- Profile Info -->
+                    <div style="flex: 1; min-width: 300px;">
+                        <div id="success-message" class="success-message"></div>
+                        <div id="error-message" class="error-message"></div>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <label class="form-label">이름</label>
+                            <input type="text" id="name-input" class="form-input" placeholder="이름을 입력하세요">
+                        </div>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <label class="form-label">이메일</label>
+                            <input type="email" id="email-input" class="form-input" readonly style="background: rgba(255, 255, 255, 0.02); cursor: not-allowed;">
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                            <div>
+                                <label class="form-label">가입일</label>
+                                <div id="created-at" style="color: rgba(255, 255, 255, 0.7);">-</div>
+                            </div>
+                            <div>
+                                <label class="form-label">마지막 로그인</label>
+                                <div id="last-login" style="color: rgba(255, 255, 255, 0.7);">-</div>
+                            </div>
+                        </div>
+
+                        <button id="update-profile-btn" class="btn-primary">
+                            <i class="fas fa-save"></i> 프로필 업데이트
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div class="stat-card">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎨</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #8b5cf6;">0</div>
+                    <div style="color: rgba(255, 255, 255, 0.7); margin-top: 0.25rem;">총 워크플로우</div>
+                </div>
+                <div class="stat-card">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚡</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #8b5cf6;">0</div>
+                    <div style="color: rgba(255, 255, 255, 0.7); margin-top: 0.25rem;">활성 프로젝트</div>
+                </div>
+                <div class="stat-card">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🤖</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #8b5cf6;">8</div>
+                    <div style="color: rgba(255, 255, 255, 0.7); margin-top: 0.25rem;">사용 가능한 AI 에이전트</div>
+                </div>
+            </div>
+
+            <!-- Security Section -->
+            <div class="glass-card" style="padding: 2rem; margin-bottom: 2rem;">
+                <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-shield-alt" style="color: #ec4899;"></i>
+                    보안 설정
+                </h2>
+
+                <div id="password-success-message" class="success-message"></div>
+                <div id="password-error-message" class="error-message"></div>
+
+                <div style="max-width: 500px;">
+                    <div style="margin-bottom: 1rem;">
+                        <label class="form-label">현재 비밀번호</label>
+                        <input type="password" id="current-password" class="form-input" placeholder="현재 비밀번호">
+                    </div>
+
+                    <div style="margin-bottom: 1rem;">
+                        <label class="form-label">새 비밀번호</label>
+                        <input type="password" id="new-password" class="form-input" placeholder="새 비밀번호 (8자 이상)">
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label class="form-label">새 비밀번호 확인</label>
+                        <input type="password" id="confirm-password" class="form-input" placeholder="새 비밀번호 확인">
+                    </div>
+
+                    <button id="change-password-btn" class="btn-primary">
+                        <i class="fas fa-key"></i> 비밀번호 변경
+                    </button>
+                </div>
+            </div>
+
+            <!-- Subscription Section -->
+            <div class="glass-card" style="padding: 2rem;">
+                <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-crown" style="color: #f59e0b;"></i>
+                    구독 정보
+                </h2>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem;">
+                    <div>
+                        <div style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Free Plan</div>
+                        <div style="color: rgba(255, 255, 255, 0.7);">5개의 워크플로우, 2명의 팀원, 기본 AI 에이전트</div>
+                    </div>
+                    <a href="/landing.html#pricing" class="btn-primary" style="text-decoration: none;">
+                        <i class="fas fa-arrow-up"></i> 업그레이드
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            window.location.href = '/login.html';
+        }
+
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const accountContainer = document.getElementById('account-container');
+        const successMessage = document.getElementById('success-message');
+        const errorMessage = document.getElementById('error-message');
+        const passwordSuccessMessage = document.getElementById('password-success-message');
+        const passwordErrorMessage = document.getElementById('password-error-message');
+
+        // Show/hide messages
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+        }
+
+        function showPasswordSuccess(message) {
+            passwordSuccessMessage.textContent = message;
+            passwordSuccessMessage.style.display = 'block';
+            passwordErrorMessage.style.display = 'none';
+            setTimeout(() => {
+                passwordSuccessMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        function showPasswordError(message) {
+            passwordErrorMessage.textContent = message;
+            passwordErrorMessage.style.display = 'block';
+            passwordSuccessMessage.style.display = 'none';
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Load user data
+        async function loadUserData() {
+            try {
+                loadingSpinner.style.display = 'block';
+                
+                const response = await fetch('/api/auth/me', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load user data');
+                }
+
+                const data = await response.json();
+                const user = data.user;
+
+                // Update UI
+                document.getElementById('name-input').value = user.name;
+                document.getElementById('email-input').value = user.email;
+                document.getElementById('created-at').textContent = formatDate(user.createdAt);
+                document.getElementById('last-login').textContent = formatDate(user.lastLogin);
+
+                // Update avatar
+                const avatar = document.getElementById('profile-avatar');
+                avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&size=120&background=8b5cf6&color=fff`;
+
+                loadingSpinner.style.display = 'none';
+                accountContainer.style.display = 'block';
+
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('user');
+                window.location.href = '/login.html';
+            }
+        }
+
+        // Update profile
+        document.getElementById('update-profile-btn').addEventListener('click', async () => {
+            const name = document.getElementById('name-input').value.trim();
+
+            if (!name) {
+                showError('이름을 입력해주세요.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showSuccess('프로필이 업데이트되었습니다.');
+                    
+                    // Update avatar
+                    const avatar = document.getElementById('profile-avatar');
+                    avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&size=120&background=8b5cf6&color=fff`;
+                    
+                    // Update stored user data
+                    const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+                    storedUser.name = name;
+                    localStorage.setItem('user', JSON.stringify(storedUser));
+                } else {
+                    showError(data.error || '프로필 업데이트에 실패했습니다.');
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                showError('서버 오류가 발생했습니다.');
+            }
+        });
+
+        // Change password
+        document.getElementById('change-password-btn').addEventListener('click', async () => {
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                showPasswordError('모든 필드를 입력해주세요.');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                showPasswordError('새 비밀번호가 일치하지 않습니다.');
+                return;
+            }
+
+            if (newPassword.length < 8) {
+                showPasswordError('새 비밀번호는 8자 이상이어야 합니다.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/password', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ currentPassword, newPassword })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showPasswordSuccess('비밀번호가 변경되었습니다. 다시 로그인해주세요.');
+                    
+                    // Clear form
+                    document.getElementById('current-password').value = '';
+                    document.getElementById('new-password').value = '';
+                    document.getElementById('confirm-password').value = '';
+                    
+                    // Redirect to login after 2 seconds
+                    setTimeout(() => {
+                        localStorage.removeItem('authToken');
+                        localStorage.removeItem('user');
+                        window.location.href = '/login.html';
+                    }, 2000);
+                } else {
+                    showPasswordError(data.error || '비밀번호 변경에 실패했습니다.');
+                }
+            } catch (error) {
+                console.error('Error changing password:', error);
+                showPasswordError('서버 오류가 발생했습니다.');
+            }
+        });
+
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            try {
+                await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user');
+            window.location.href = '/landing.html';
+        });
+
+        // Load user data on page load
+        loadUserData();
+    </script>
+</body>
+</html>
