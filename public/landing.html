@@ -252,6 +252,37 @@
             font-size: 0.875rem;
         }
         
+        /* Voice Recognition Button */
+        .voice-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .voice-btn:hover {
+            background: rgba(139, 92, 246, 0.3) !important;
+            border-color: rgba(139, 92, 246, 0.6) !important;
+            transform: translateY(-50%) scale(1.05) !important;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+        
+        .voice-btn.listening {
+            background: rgba(236, 72, 153, 0.3) !important;
+            border-color: rgba(236, 72, 153, 0.6) !important;
+            animation: voicePulse 1.5s ease-in-out infinite;
+        }
+        
+        .voice-btn.listening #voice-icon {
+            color: #ec4899 !important;
+        }
+        
+        @keyframes voicePulse {
+            0%, 100% { 
+                box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.7);
+            }
+            50% { 
+                box-shadow: 0 0 0 10px rgba(236, 72, 153, 0);
+            }
+        }
+        
         /* Hero Section */
         .hero {
             min-height: 100vh;
@@ -1286,41 +1317,42 @@
             <!-- AI Workspace Search -->
             <div class="ai-workspace" style="max-width: 800px; margin: 0 auto 2rem; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 1.5rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
                 <div style="position: relative; margin-bottom: 1rem;">
-                    <input type="text" id="ai-search" placeholder="무엇이든 물어보고 만들어보세요" style="width: 100%; padding: 1rem 3rem 1rem 1.5rem; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-size: 1rem;" />
-                    <button style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); border: none; padding: 0.75rem 1.5rem; border-radius: 10px; color: white; cursor: pointer; font-weight: 600;">
+                    <input type="text" id="ai-search" data-i18n-placeholder="searchPlaceholder" placeholder="당신의 전시를 디자인하세요" style="width: 100%; padding: 1rem 8rem 1rem 1.5rem; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-size: 1rem;" />
+                    
+                    <!-- Voice Recognition Button -->
+                    <button id="voice-btn" class="voice-btn" title="음성 인식" style="position: absolute; right: 5rem; top: 50%; transform: translateY(-50%); background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); padding: 0.75rem; border-radius: 10px; color: #a78bfa; cursor: pointer; font-weight: 600; transition: all 0.3s ease;">
+                        <i class="fas fa-microphone" id="voice-icon"></i>
+                    </button>
+                    
+                    <!-- Search Button -->
+                    <button id="search-btn" style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); border: none; padding: 0.75rem 1.5rem; border-radius: 10px; color: white; cursor: pointer; font-weight: 600;">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
                 <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;">
-                    <button class="ai-tool-btn" data-tool="agents" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        🎯 카드별 슈퍼 에이전트 집합
+                    <button class="ai-tool-btn" data-tool="exhibition" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                        <span data-i18n="toolPlanExhibition">🎯 전시 기획하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="slides" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        🎨 AI 슬라이드
+                    <button class="ai-tool-btn" data-tool="budget" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                        <span data-i18n="toolCalculateBudget">💰 예산 계산하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="sheets" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        💰 AI 시트
+                    <button class="ai-tool-btn" data-tool="artwork" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                        <span data-i18n="toolSelectArtworks">🏛️ 작품 선정하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="docs" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        🏛️ AI 문서
+                    <button class="ai-tool-btn" data-tool="visitor" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                        <span data-i18n="toolPredictVisitors">👥 관람객 예측하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="calendar" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        👥 AI 캘린더
+                    <button class="ai-tool-btn" data-tool="space" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                        <span data-i18n="toolDesignSpace">🏗️ 공간 설계하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="designer" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        🏗️ AI 디자이너
+                    <button class="ai-tool-btn" data-tool="schedule" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                        <span data-i18n="toolManageSchedule">📋 일정 관리하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="chat" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        💬 AI 채팅
-                    </button>
-                    <button class="ai-tool-btn" data-tool="avatar" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        🎮 AI 아바타
-                    </button>
-                    <button class="ai-tool-btn" data-tool="video" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        🎬 AI 동영상
+                    <button class="ai-tool-btn" data-tool="guide" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                        <span data-i18n="toolCreateGuide">💬 가이드 만들기</span>
                     </button>
                     <button class="ai-tool-btn" data-tool="all" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        🤖 모든 에이전트
+                        <span data-i18n="toolViewAll">🤖 전체 보기</span>
                     </button>
                 </div>
             </div>
@@ -2227,7 +2259,18 @@
                 footerTechTransfer: '기술이전: 남현우 교수',
                 footerPrivacyNotice: '이 사이트는 더 나은 사용자 경험을 위해 브라우저 로컬 저장소를 사용합니다.',
                 footerPrivacyLink: '개인정보처리방침',
-                footerTermsLink: '이용약관'
+                footerTermsLink: '이용약관',
+                
+                // Search & AI Tools
+                searchPlaceholder: '당신의 전시를 디자인하세요',
+                toolPlanExhibition: '🎯 전시 기획하기',
+                toolCalculateBudget: '💰 예산 계산하기',
+                toolSelectArtworks: '🏛️ 작품 선정하기',
+                toolPredictVisitors: '👥 관람객 예측하기',
+                toolDesignSpace: '🏗️ 공간 설계하기',
+                toolManageSchedule: '📋 일정 관리하기',
+                toolCreateGuide: '💬 가이드 만들기',
+                toolViewAll: '🤖 전체 보기'
             },
             en: {
                 // Navigation
@@ -2381,7 +2424,18 @@
                 footerTechTransfer: 'Technology Transfer: Professor Hyun Woo Nam',
                 footerPrivacyNotice: 'This site uses browser local storage for a better user experience.',
                 footerPrivacyLink: 'Privacy Policy',
-                footerTermsLink: 'Terms of Service'
+                footerTermsLink: 'Terms of Service',
+                
+                // Search & AI Tools
+                searchPlaceholder: 'Design Your Exhibition Experience',
+                toolPlanExhibition: '🎯 Plan Exhibition',
+                toolCalculateBudget: '💰 Calculate Budget',
+                toolSelectArtworks: '🏛️ Select Artworks',
+                toolPredictVisitors: '👥 Predict Visitors',
+                toolDesignSpace: '🏗️ Design Space',
+                toolManageSchedule: '📋 Manage Schedule',
+                toolCreateGuide: '💬 Create Guide',
+                toolViewAll: '🤖 View All'
             },
             ja: {
                 // Navigation
@@ -2535,7 +2589,18 @@
                 footerTechTransfer: '技術移転：ナム・ヒョンウ教授',
                 footerPrivacyNotice: 'このサイトは、より良いユーザー体験のためにブラウザーのローカルストレージを使用します。',
                 footerPrivacyLink: 'プライバシーポリシー',
-                footerTermsLink: '利用規約'
+                footerTermsLink: '利用規約',
+                
+                // Search & AI Tools
+                searchPlaceholder: 'あなたの展示をデザインしてください',
+                toolPlanExhibition: '🎯 展示を企画する',
+                toolCalculateBudget: '💰 予算を計算する',
+                toolSelectArtworks: '🏛️ 作品を選定する',
+                toolPredictVisitors: '👥 訪問者を予測する',
+                toolDesignSpace: '🏗️ 空間を設計する',
+                toolManageSchedule: '📋 スケジュールを管理する',
+                toolCreateGuide: '💬 ガイドを作成する',
+                toolViewAll: '🤖 すべて表示'
             },
             'zh-CN': {
                 // Navigation
@@ -2689,7 +2754,18 @@
                 footerTechTransfer: '技术转让：南贤宇教授',
                 footerPrivacyNotice: '本网站使用浏览器本地存储以提供更好的用户体验。',
                 footerPrivacyLink: '隐私政策',
-                footerTermsLink: '服务条款'
+                footerTermsLink: '服务条款',
+                
+                // Search & AI Tools
+                searchPlaceholder: '设计您的展览体验',
+                toolPlanExhibition: '🎯 策划展览',
+                toolCalculateBudget: '💰 计算预算',
+                toolSelectArtworks: '🏛️ 选择艺术品',
+                toolPredictVisitors: '👥 预测访客',
+                toolDesignSpace: '🏗️ 设计空间',
+                toolManageSchedule: '📋 管理日程',
+                toolCreateGuide: '💬 创建指南',
+                toolViewAll: '🤖 查看全部'
             },
             'zh-TW': {
                 // Navigation
@@ -2843,7 +2919,18 @@
                 footerTechTransfer: '技術轉讓：南賢宇教授',
                 footerPrivacyNotice: '本網站使用瀏覽器本地儲存以提供更好的使用者體驗。',
                 footerPrivacyLink: '隱私政策',
-                footerTermsLink: '服務條款'
+                footerTermsLink: '服務條款',
+                
+                // Search & AI Tools
+                searchPlaceholder: '設計您的展覽體驗',
+                toolPlanExhibition: '🎯 策劃展覽',
+                toolCalculateBudget: '💰 計算預算',
+                toolSelectArtworks: '🏛️ 選擇藝術品',
+                toolPredictVisitors: '👥 預測訪客',
+                toolDesignSpace: '🏗️ 設計空間',
+                toolManageSchedule: '📋 管理日程',
+                toolCreateGuide: '💬 創建指南',
+                toolViewAll: '🤖 查看全部'
             },
             fr: {
                 // Navigation
@@ -2997,7 +3084,18 @@
                 footerTechTransfer: 'Transfert de Technologie : Professeur Hyun Woo Nam',
                 footerPrivacyNotice: 'Ce site utilise le stockage local du navigateur pour une meilleure expérience utilisateur.',
                 footerPrivacyLink: 'Politique de Confidentialité',
-                footerTermsLink: 'Conditions d\'Utilisation'
+                footerTermsLink: 'Conditions d\'Utilisation',
+                
+                // Search & AI Tools
+                searchPlaceholder: 'Concevez Votre Expérience d\'Exposition',
+                toolPlanExhibition: '🎯 Planifier l\'Exposition',
+                toolCalculateBudget: '💰 Calculer le Budget',
+                toolSelectArtworks: '🏛️ Sélectionner les Œuvres',
+                toolPredictVisitors: '👥 Prédire les Visiteurs',
+                toolDesignSpace: '🏗️ Concevoir l\'Espace',
+                toolManageSchedule: '📋 Gérer le Calendrier',
+                toolCreateGuide: '💬 Créer un Guide',
+                toolViewAll: '🤖 Tout Voir'
             },
             de: {
                 // Navigation
@@ -3151,7 +3249,18 @@
                 footerTechTransfer: 'Technologietransfer: Professor Hyun Woo Nam',
                 footerPrivacyNotice: 'Diese Seite verwendet Browser-Lokal-Speicher für eine bessere Benutzererfahrung.',
                 footerPrivacyLink: 'Datenschutzrichtlinie',
-                footerTermsLink: 'Nutzungsbedingungen'
+                footerTermsLink: 'Nutzungsbedingungen',
+                
+                // Search & AI Tools
+                searchPlaceholder: 'Gestalten Sie Ihr Ausstellungserlebnis',
+                toolPlanExhibition: '🎯 Ausstellung Planen',
+                toolCalculateBudget: '💰 Budget Berechnen',
+                toolSelectArtworks: '🏛️ Kunstwerke Auswählen',
+                toolPredictVisitors: '👥 Besucher Vorhersagen',
+                toolDesignSpace: '🏗️ Raum Gestalten',
+                toolManageSchedule: '📋 Zeitplan Verwalten',
+                toolCreateGuide: '💬 Leitfaden Erstellen',
+                toolViewAll: '🤖 Alles Anzeigen'
             },
             es: {
                 // Navigation
@@ -3305,7 +3414,18 @@
                 footerTechTransfer: 'Transferencia de Tecnología: Profesor Hyun Woo Nam',
                 footerPrivacyNotice: 'Este sitio utiliza almacenamiento local del navegador para una mejor experiencia de usuario.',
                 footerPrivacyLink: 'Política de Privacidad',
-                footerTermsLink: 'Términos de Servicio'
+                footerTermsLink: 'Términos de Servicio',
+                
+                // Search & AI Tools
+                searchPlaceholder: 'Diseñe Su Experiencia de Exposición',
+                toolPlanExhibition: '🎯 Planificar Exposición',
+                toolCalculateBudget: '💰 Calcular Presupuesto',
+                toolSelectArtworks: '🏛️ Seleccionar Obras',
+                toolPredictVisitors: '👥 Predecir Visitantes',
+                toolDesignSpace: '🏗️ Diseñar Espacio',
+                toolManageSchedule: '📋 Gestionar Calendario',
+                toolCreateGuide: '💬 Crear Guía',
+                toolViewAll: '🤖 Ver Todo'
             },
             it: {
                 // Navigation
@@ -3459,7 +3579,18 @@
                 footerTechTransfer: 'Trasferimento Tecnologico: Professor Hyun Woo Nam',
                 footerPrivacyNotice: 'Questo sito utilizza lo storage locale del browser per una migliore esperienza utente.',
                 footerPrivacyLink: 'Informativa sulla Privacy',
-                footerTermsLink: 'Termini di Servizio'
+                footerTermsLink: 'Termini di Servizio',
+                
+                // Search & AI Tools
+                searchPlaceholder: 'Progetta la Tua Esperienza Espositiva',
+                toolPlanExhibition: '🎯 Pianifica Mostra',
+                toolCalculateBudget: '💰 Calcola Budget',
+                toolSelectArtworks: '🏛️ Seleziona Opere',
+                toolPredictVisitors: '👥 Prevedi Visitatori',
+                toolDesignSpace: '🏗️ Progetta Spazio',
+                toolManageSchedule: '📋 Gestisci Calendario',
+                toolCreateGuide: '💬 Crea Guida',
+                toolViewAll: '🤖 Visualizza Tutto'
             }
         };
         
@@ -3497,6 +3628,12 @@
                 }
             });
             
+            // Update placeholder for search input
+            const searchInput = document.getElementById('ai-search');
+            if (searchInput && t.searchPlaceholder) {
+                searchInput.placeholder = t.searchPlaceholder;
+            }
+            
             console.log(`🌐 Language switched to: ${lang}`);
         }
         
@@ -3511,6 +3648,78 @@
         
         // Initialize language on page load
         updateLanguage(currentLang);
+        
+        // Voice Recognition with Web Speech API
+        const voiceBtn = document.getElementById('voice-btn');
+        const voiceIcon = document.getElementById('voice-icon');
+        const searchInput = document.getElementById('ai-search');
+        
+        // Check if browser supports Web Speech API
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        
+        if (SpeechRecognition && voiceBtn) {
+            const recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            
+            // Language mapping for speech recognition
+            const speechLangMap = {
+                'ko': 'ko-KR',
+                'en': 'en-US',
+                'ja': 'ja-JP',
+                'zh-CN': 'zh-CN',
+                'zh-TW': 'zh-TW',
+                'fr': 'fr-FR',
+                'de': 'de-DE',
+                'es': 'es-ES',
+                'it': 'it-IT'
+            };
+            
+            voiceBtn.addEventListener('click', () => {
+                // Set language based on current selection
+                recognition.lang = speechLangMap[currentLang] || 'ko-KR';
+                
+                try {
+                    recognition.start();
+                    voiceBtn.classList.add('listening');
+                    voiceIcon.className = 'fas fa-circle';
+                    console.log('🎤 Voice recognition started in', recognition.lang);
+                } catch (error) {
+                    console.error('Voice recognition error:', error);
+                }
+            });
+            
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                searchInput.value = transcript;
+                console.log('🎤 Recognized:', transcript);
+                
+                // Optional: Auto-trigger search
+                // document.getElementById('search-btn')?.click();
+            };
+            
+            recognition.onend = () => {
+                voiceBtn.classList.remove('listening');
+                voiceIcon.className = 'fas fa-microphone';
+                console.log('🎤 Voice recognition ended');
+            };
+            
+            recognition.onerror = (event) => {
+                voiceBtn.classList.remove('listening');
+                voiceIcon.className = 'fas fa-microphone';
+                console.error('🎤 Voice recognition error:', event.error);
+                
+                if (event.error === 'no-speech') {
+                    alert(currentLang === 'ko' ? '음성이 감지되지 않았습니다.' : 'No speech detected.');
+                } else if (event.error === 'not-allowed') {
+                    alert(currentLang === 'ko' ? '마이크 권한이 필요합니다.' : 'Microphone permission is required.');
+                }
+            };
+        } else if (voiceBtn) {
+            // Hide voice button if not supported
+            voiceBtn.style.display = 'none';
+            console.log('⚠️ Web Speech API not supported in this browser');
+        }
         
         // Privacy Policy & Terms Modal Handlers
         document.getElementById('privacy-link').addEventListener('click', (e) => {
