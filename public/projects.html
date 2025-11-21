@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" id="html-root">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -240,11 +240,14 @@
             <span style="font-size: 1.25rem; font-weight: 700;">MuseFlow</span>
         </a>
         <div style="display: flex; gap: 1rem; align-items: center;">
+            <button id="lang-toggle" style="background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); padding: 0.5rem 1rem; border-radius: 8px; color: white; cursor: pointer; transition: all 0.3s;">
+                🇰🇷 <span id="current-lang">한국어</span>
+            </button>
             <a href="/account.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
-                <i class="fas fa-user"></i> 내 계정
+                <i class="fas fa-user"></i> <span data-i18n="myAccount">내 계정</span>
             </a>
             <a href="/admin.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
-                <i class="fas fa-home"></i> Dashboard
+                <i class="fas fa-home"></i> <span data-i18n="dashboard">Dashboard</span>
             </a>
         </div>
     </nav>
@@ -254,34 +257,34 @@
         <!-- Header -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; flex-wrap: wrap; gap: 1.5rem;">
             <div>
-                <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;" class="gradient-text">
+                <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;" class="gradient-text" data-i18n="myProjects">
                     내 프로젝트
                 </h1>
-                <p style="color: rgba(255, 255, 255, 0.7);">워크플로우 프로젝트를 관리하고 편집하세요</p>
+                <p style="color: rgba(255, 255, 255, 0.7);" data-i18n="projectsSubtitle">워크플로우 프로젝트를 관리하고 편집하세요</p>
             </div>
             <button id="new-project-btn" class="btn-primary">
-                <i class="fas fa-plus"></i> 새 프로젝트
+                <i class="fas fa-plus"></i> <span data-i18n="newProject">새 프로젝트</span>
             </button>
         </div>
 
         <!-- Search and Filter -->
         <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
             <div class="search-box" style="flex: 1; min-width: 300px;">
-                <input type="text" id="search-input" placeholder="프로젝트 검색...">
+                <input type="text" id="search-input" placeholder="프로젝트 검색..." data-i18n-placeholder="searchPlaceholder">
                 <i class="fas fa-search"></i>
             </div>
             <select id="status-filter" style="padding: 0.875rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; cursor: pointer;">
-                <option value="all">모든 상태</option>
-                <option value="draft">초안</option>
-                <option value="active">활성</option>
-                <option value="completed">완료</option>
+                <option value="all" data-i18n="statusAll">모든 상태</option>
+                <option value="draft" data-i18n="statusDraft">초안</option>
+                <option value="active" data-i18n="statusActive">활성</option>
+                <option value="completed" data-i18n="statusCompleted">완료</option>
             </select>
         </div>
 
         <!-- Loading State -->
         <div id="loading-state" style="text-align: center; padding: 4rem 0;">
             <div class="loading-spinner" style="margin: 0 auto;"></div>
-            <p style="margin-top: 1rem; color: rgba(255, 255, 255, 0.7);">프로젝트를 불러오는 중...</p>
+            <p style="margin-top: 1rem; color: rgba(255, 255, 255, 0.7);" data-i18n="loadingProjects">프로젝트를 불러오는 중...</p>
         </div>
 
         <!-- Projects Grid -->
@@ -292,10 +295,10 @@
         <!-- Empty State -->
         <div id="empty-state" class="empty-state" style="display: none;">
             <div class="empty-icon">📂</div>
-            <h2 style="font-size: 1.75rem; font-weight: 600; margin-bottom: 0.5rem;">프로젝트가 없습니다</h2>
-            <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem;">첫 번째 워크플로우 프로젝트를 만들어보세요</p>
+            <h2 style="font-size: 1.75rem; font-weight: 600; margin-bottom: 0.5rem;" data-i18n="noProjects">프로젝트가 없습니다</h2>
+            <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem;" data-i18n="createFirstProject">첫 번째 워크플로우 프로젝트를 만들어보세요</p>
             <button id="empty-new-project-btn" class="btn-primary">
-                <i class="fas fa-plus"></i> 새 프로젝트 만들기
+                <i class="fas fa-plus"></i> <span data-i18n="createNewProject">새 프로젝트 만들기</span>
             </button>
         </div>
     </div>
@@ -303,23 +306,23 @@
     <!-- New Project Modal -->
     <div id="new-project-modal" class="modal">
         <div class="modal-content">
-            <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem;" class="gradient-text">
+            <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem;" class="gradient-text" data-i18n="createNewProject">
                 새 프로젝트 만들기
             </h2>
             
             <form id="new-project-form">
-                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9);">프로젝트 제목</label>
-                <input type="text" id="project-title" class="form-input" placeholder="예: 2024 봄 특별전 기획" required>
+                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9);" data-i18n="projectTitle">프로젝트 제목</label>
+                <input type="text" id="project-title" class="form-input" placeholder="예: 2024 봄 특별전 기획" data-i18n-placeholder="projectTitlePlaceholder" required>
                 
-                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9);">프로젝트 설명 (선택)</label>
-                <textarea id="project-description" class="form-input" placeholder="프로젝트에 대한 간단한 설명을 입력하세요"></textarea>
+                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9);" data-i18n="projectDescription">프로젝트 설명 (선택)</label>
+                <textarea id="project-description" class="form-input" placeholder="프로젝트에 대한 간단한 설명을 입력하세요" data-i18n-placeholder="projectDescPlaceholder"></textarea>
                 
                 <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
                     <button type="submit" class="btn-primary" style="flex: 1;">
-                        <i class="fas fa-check"></i> 생성
+                        <i class="fas fa-check"></i> <span data-i18n="create">생성</span>
                     </button>
                     <button type="button" id="cancel-modal-btn" style="flex: 1; padding: 0.875rem 1.75rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; color: white; cursor: pointer;">
-                        취소
+                        <span data-i18n="cancel">취소</span>
                     </button>
                 </div>
             </form>
@@ -327,6 +330,127 @@
     </div>
 
     <script>
+        // i18n Translation System
+        const translations = {
+            ko: {
+                myAccount: '내 계정',
+                dashboard: 'Dashboard',
+                myProjects: '내 프로젝트',
+                projectsSubtitle: '워크플로우 프로젝트를 관리하고 편집하세요',
+                newProject: '새 프로젝트',
+                searchPlaceholder: '프로젝트 검색...',
+                statusAll: '모든 상태',
+                statusDraft: '초안',
+                statusActive: '활성',
+                statusCompleted: '완료',
+                loadingProjects: '프로젝트를 불러오는 중...',
+                noProjects: '프로젝트가 없습니다',
+                createFirstProject: '첫 번째 워크플로우 프로젝트를 만들어보세요',
+                createNewProject: '새 프로젝트 만들기',
+                projectTitle: '프로젝트 제목',
+                projectTitlePlaceholder: '예: 2024 봄 특별전 기획',
+                projectDescription: '프로젝트 설명 (선택)',
+                projectDescPlaceholder: '프로젝트에 대한 간단한 설명을 입력하세요',
+                create: '생성',
+                cancel: '취소',
+                noDescription: '설명이 없습니다.',
+                today: '오늘',
+                yesterday: '어제',
+                daysAgo: '일 전',
+                createFailed: '프로젝트 생성에 실패했습니다.',
+                serverError: '서버 오류가 발생했습니다.',
+                deleteProject: '프로젝트 삭제',
+                deleteConfirm: '정말로 이 프로젝트를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.',
+                projectDeleted: '프로젝트가 삭제되었습니다.',
+                deleteFailed: '프로젝트 삭제에 실패했습니다.',
+                edit: '편집',
+                delete: '삭제'
+            },
+            en: {
+                myAccount: 'My Account',
+                dashboard: 'Dashboard',
+                myProjects: 'My Projects',
+                projectsSubtitle: 'Manage and edit your workflow projects',
+                newProject: 'New Project',
+                searchPlaceholder: 'Search projects...',
+                statusAll: 'All Status',
+                statusDraft: 'Draft',
+                statusActive: 'Active',
+                statusCompleted: 'Completed',
+                loadingProjects: 'Loading projects...',
+                noProjects: 'No Projects',
+                createFirstProject: 'Create your first workflow project',
+                createNewProject: 'Create New Project',
+                projectTitle: 'Project Title',
+                projectTitlePlaceholder: 'e.g., 2024 Spring Exhibition Planning',
+                projectDescription: 'Project Description (Optional)',
+                projectDescPlaceholder: 'Enter a brief description of the project',
+                create: 'Create',
+                cancel: 'Cancel',
+                noDescription: 'No description.',
+                today: 'Today',
+                yesterday: 'Yesterday',
+                daysAgo: ' days ago',
+                createFailed: 'Failed to create project.',
+                serverError: 'Server error occurred.',
+                deleteProject: 'Delete Project',
+                deleteConfirm: 'Are you sure you want to delete this project? This action cannot be undone.',
+                projectDeleted: 'Project deleted successfully.',
+                deleteFailed: 'Failed to delete project.',
+                edit: 'Edit',
+                delete: 'Delete'
+            }
+        };
+
+        let currentLang = localStorage.getItem('museflow_language') || 'ko';
+
+        function updateLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('museflow_language', lang);
+            document.getElementById('html-root').lang = lang;
+            const t = translations[lang];
+            
+            // Update all elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (t[key]) {
+                    element.innerHTML = t[key];
+                }
+            });
+
+            // Update placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                if (t[key]) {
+                    element.placeholder = t[key];
+                }
+            });
+
+            // Update language toggle button
+            const langToggle = document.getElementById('current-lang');
+            const langButton = document.getElementById('lang-toggle');
+            if (lang === 'ko') {
+                langButton.innerHTML = '🇰🇷 <span id="current-lang">한국어</span>';
+            } else {
+                langButton.innerHTML = '🇺🇸 <span id="current-lang">English</span>';
+            }
+
+            // Re-render projects with updated language
+            if (allProjects.length > 0) {
+                filterProjects();
+            }
+        }
+
+        // Language toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLanguage(currentLang);
+            
+            document.getElementById('lang-toggle').addEventListener('click', () => {
+                const newLang = currentLang === 'ko' ? 'en' : 'ko';
+                updateLanguage(newLang);
+            });
+        });
+
         // Check authentication
         const token = localStorage.getItem('authToken');
         if (!token) {
@@ -342,12 +466,15 @@
         const newProjectModal = document.getElementById('new-project-modal');
         const newProjectForm = document.getElementById('new-project-form');
 
-        // Status badge mapping
-        const statusConfig = {
-            draft: { label: '초안', class: 'status-draft' },
-            active: { label: '활성', class: 'status-active' },
-            completed: { label: '완료', class: 'status-completed' }
-        };
+        // Status badge mapping (will be translated dynamically)
+        function getStatusConfig(lang) {
+            const t = translations[lang];
+            return {
+                draft: { label: t.statusDraft, class: 'status-draft' },
+                active: { label: t.statusActive, class: 'status-active' },
+                completed: { label: t.statusCompleted, class: 'status-completed' }
+            };
+        }
 
         // Format date
         function formatDate(dateString) {
@@ -355,14 +482,16 @@
             const now = new Date();
             const diff = now - date;
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const t = translations[currentLang];
             
-            if (days === 0) return '오늘';
-            if (days === 1) return '어제';
-            if (days < 7) return `${days}일 전`;
+            if (days === 0) return t.today;
+            if (days === 1) return t.yesterday;
+            if (days < 7) return `${days}${t.daysAgo}`;
             
-            return date.toLocaleDateString('ko-KR', {
+            const locale = currentLang === 'ko' ? 'ko-KR' : 'en-US';
+            return date.toLocaleDateString(locale, {
                 year: 'numeric',
-                month: 'long',
+                month: currentLang === 'ko' ? 'long' : 'short',
                 day: 'numeric'
             });
         }
@@ -380,21 +509,31 @@
             projectsGrid.innerHTML = '';
 
             projects.forEach(project => {
+                const statusConfig = getStatusConfig(currentLang);
                 const status = statusConfig[project.status] || statusConfig.draft;
                 const card = document.createElement('div');
                 card.className = 'glass-card project-card';
                 card.style.padding = '1.5rem';
+                const t = translations[currentLang];
                 card.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
                         <h3 style="font-size: 1.25rem; font-weight: 600; flex: 1;">${project.title}</h3>
                         <span class="status-badge ${status.class}">${status.label}</span>
                     </div>
                     <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 1.5rem; min-height: 3rem;">
-                        ${project.description || '설명이 없습니다.'}
+                        ${project.description || t.noDescription}
                     </p>
-                    <div style="display: flex; justify-content: space-between; align-items: center; color: rgba(255, 255, 255, 0.5); font-size: 0.875rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; color: rgba(255, 255, 255, 0.5); font-size: 0.875rem; margin-bottom: 1rem;">
                         <span><i class="fas fa-clock"></i> ${formatDate(project.updated_at)}</span>
                         <span><i class="fas fa-calendar"></i> ${formatDate(project.created_at)}</span>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                        <button onclick="editProject(${project.id}, event)" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 8px; color: white; cursor: pointer; transition: all 0.3s;">
+                            <i class="fas fa-edit"></i> ${t.edit}
+                        </button>
+                        <button onclick="deleteProject(${project.id}, event)" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; color: #ef4444; cursor: pointer; transition: all 0.3s;">
+                            <i class="fas fa-trash"></i> ${t.delete}
+                        </button>
                     </div>
                 `;
                 card.addEventListener('click', () => {
@@ -496,19 +635,56 @@
 
                 const data = await response.json();
 
+                const t = translations[currentLang];
                 if (response.ok) {
                     closeModal();
                     await loadProjects();
                     // Optionally redirect to canvas
                     // window.location.href = `/admin.html?project=${data.projectId}`;
                 } else {
-                    alert(data.error || '프로젝트 생성에 실패했습니다.');
+                    alert(data.error || t.createFailed);
                 }
             } catch (error) {
                 console.error('Error creating project:', error);
-                alert('서버 오류가 발생했습니다.');
+                alert(t.serverError);
             }
         });
+
+        // Edit project function
+        window.editProject = function(projectId, event) {
+            event.stopPropagation();
+            window.location.href = `/admin.html?project=${projectId}`;
+        };
+
+        // Delete project function
+        window.deleteProject = async function(projectId, event) {
+            event.stopPropagation();
+            const t = translations[currentLang];
+            
+            if (!confirm(t.deleteConfirm)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/projects/${projectId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    alert(t.projectDeleted);
+                    await loadProjects();
+                } else {
+                    const data = await response.json();
+                    alert(data.error || t.deleteFailed);
+                }
+            } catch (error) {
+                console.error('Error deleting project:', error);
+                alert(t.serverError);
+            }
+        };
 
         // Load projects on page load
         loadProjects();

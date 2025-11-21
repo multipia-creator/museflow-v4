@@ -191,4 +191,48 @@ projects.delete('/:id', async (c) => {
   }
 });
 
+// Get project statistics
+projects.get('/stats/summary', async (c) => {
+  try {
+    const userId = await verifyAuth(c);
+    
+    if (!userId) {
+      return c.json({ error: '인증이 필요합니다.' }, 401);
+    }
+    
+    // Get total count
+    const totalResult = await c.env.DB.prepare(
+      'SELECT COUNT(*) as total FROM projects WHERE user_id = ?'
+    ).bind(userId).first();
+    
+    // Get active count
+    const activeResult = await c.env.DB.prepare(
+      'SELECT COUNT(*) as active FROM projects WHERE user_id = ? AND status = ?'
+    ).bind(userId, 'active').first();
+    
+    // Get count by status
+    const draftResult = await c.env.DB.prepare(
+      'SELECT COUNT(*) as draft FROM projects WHERE user_id = ? AND status = ?'
+    ).bind(userId, 'draft').first();
+    
+    const completedResult = await c.env.DB.prepare(
+      'SELECT COUNT(*) as completed FROM projects WHERE user_id = ? AND status = ?'
+    ).bind(userId, 'completed').first();
+    
+    return c.json({
+      success: true,
+      stats: {
+        total: totalResult?.total || 0,
+        active: activeResult?.active || 0,
+        draft: draftResult?.draft || 0,
+        completed: completedResult?.completed || 0,
+      }
+    });
+    
+  } catch (error) {
+    console.error('Get project stats error:', error);
+    return c.json({ error: '서버 오류가 발생했습니다.' }, 500);
+  }
+});
+
 export default projects;

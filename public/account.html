@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" id="html-root">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -185,11 +185,17 @@
             <span style="font-size: 1.25rem; font-weight: 700;">MuseFlow</span>
         </a>
         <div style="display: flex; gap: 1rem; align-items: center;">
+            <button id="lang-toggle" style="background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); padding: 0.5rem 1rem; border-radius: 8px; color: white; cursor: pointer; transition: all 0.3s;">
+                🇰🇷 <span id="current-lang">한국어</span>
+            </button>
+            <a href="/projects.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">
+                <i class="fas fa-folder"></i> <span data-i18n="myProjects">내 프로젝트</span>
+            </a>
             <a href="/admin.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: color 0.3s;">
-                <i class="fas fa-home"></i> Dashboard
+                <i class="fas fa-home"></i> <span data-i18n="dashboard">Dashboard</span>
             </a>
             <button id="logout-btn" class="btn-secondary">
-                <i class="fas fa-sign-out-alt"></i> 로그아웃
+                <i class="fas fa-sign-out-alt"></i> <span data-i18n="logout">로그아웃</span>
             </button>
         </div>
     </nav>
@@ -203,17 +209,17 @@
         <div id="account-container" style="display: none;">
             <!-- Header -->
             <div style="text-align: center; margin-bottom: 3rem;">
-                <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;" class="gradient-text">
+                <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;" class="gradient-text" data-i18n="myAccount">
                     My Account
                 </h1>
-                <p style="color: rgba(255, 255, 255, 0.7);">개인정보 및 계정 설정을 관리하세요</p>
+                <p style="color: rgba(255, 255, 255, 0.7);" data-i18n="accountSubtitle">개인정보 및 계정 설정을 관리하세요</p>
             </div>
 
             <!-- Profile Section -->
             <div class="glass-card" style="padding: 2rem; margin-bottom: 2rem;">
                 <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
                     <i class="fas fa-user-circle" style="color: #8b5cf6;"></i>
-                    프로필 정보
+                    <span data-i18n="profileInfo">프로필 정보</span>
                 </h2>
                 
                 <div style="display: flex; gap: 2rem; align-items: start; flex-wrap: wrap;">
@@ -221,7 +227,7 @@
                     <div style="text-align: center;">
                         <img id="profile-avatar" src="https://ui-avatars.com/api/?name=User&size=120&background=8b5cf6&color=fff" alt="Profile" class="profile-avatar">
                         <button id="change-avatar-btn" class="btn-secondary" style="margin-top: 1rem; font-size: 0.875rem; padding: 0.5rem 1rem;">
-                            <i class="fas fa-camera"></i> 사진 변경
+                            <i class="fas fa-camera"></i> <span data-i18n="changePhoto">사진 변경</span>
                         </button>
                     </div>
 
@@ -231,28 +237,28 @@
                         <div id="error-message" class="error-message"></div>
 
                         <div style="margin-bottom: 1.5rem;">
-                            <label class="form-label">이름</label>
-                            <input type="text" id="name-input" class="form-input" placeholder="이름을 입력하세요">
+                            <label class="form-label" data-i18n="name">이름</label>
+                            <input type="text" id="name-input" class="form-input" placeholder="이름을 입력하세요" data-i18n-placeholder="namePlaceholder">
                         </div>
 
                         <div style="margin-bottom: 1.5rem;">
-                            <label class="form-label">이메일</label>
+                            <label class="form-label" data-i18n="email">이메일</label>
                             <input type="email" id="email-input" class="form-input" readonly style="background: rgba(255, 255, 255, 0.02); cursor: not-allowed;">
                         </div>
 
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
                             <div>
-                                <label class="form-label">가입일</label>
+                                <label class="form-label" data-i18n="joinedDate">가입일</label>
                                 <div id="created-at" style="color: rgba(255, 255, 255, 0.7);">-</div>
                             </div>
                             <div>
-                                <label class="form-label">마지막 로그인</label>
+                                <label class="form-label" data-i18n="lastLogin">마지막 로그인</label>
                                 <div id="last-login" style="color: rgba(255, 255, 255, 0.7);">-</div>
                             </div>
                         </div>
 
                         <button id="update-profile-btn" class="btn-primary">
-                            <i class="fas fa-save"></i> 프로필 업데이트
+                            <i class="fas fa-save"></i> <span data-i18n="updateProfile">프로필 업데이트</span>
                         </button>
                     </div>
                 </div>
@@ -262,18 +268,18 @@
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
                 <div class="stat-card">
                     <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎨</div>
-                    <div style="font-size: 2rem; font-weight: 700; color: #8b5cf6;">0</div>
-                    <div style="color: rgba(255, 255, 255, 0.7); margin-top: 0.25rem;">총 워크플로우</div>
+                    <div id="total-projects" style="font-size: 2rem; font-weight: 700; color: #8b5cf6;">0</div>
+                    <div style="color: rgba(255, 255, 255, 0.7); margin-top: 0.25rem;" data-i18n="totalWorkflows">총 워크플로우</div>
                 </div>
                 <div class="stat-card">
                     <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⚡</div>
-                    <div style="font-size: 2rem; font-weight: 700; color: #8b5cf6;">0</div>
-                    <div style="color: rgba(255, 255, 255, 0.7); margin-top: 0.25rem;">활성 프로젝트</div>
+                    <div id="active-projects" style="font-size: 2rem; font-weight: 700; color: #8b5cf6;">0</div>
+                    <div style="color: rgba(255, 255, 255, 0.7); margin-top: 0.25rem;" data-i18n="activeProjects">활성 프로젝트</div>
                 </div>
                 <div class="stat-card">
                     <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🤖</div>
                     <div style="font-size: 2rem; font-weight: 700; color: #8b5cf6;">8</div>
-                    <div style="color: rgba(255, 255, 255, 0.7); margin-top: 0.25rem;">사용 가능한 AI 에이전트</div>
+                    <div style="color: rgba(255, 255, 255, 0.7); margin-top: 0.25rem;" data-i18n="availableAgents">사용 가능한 AI 에이전트</div>
                 </div>
             </div>
 
@@ -281,7 +287,7 @@
             <div class="glass-card" style="padding: 2rem; margin-bottom: 2rem;">
                 <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
                     <i class="fas fa-shield-alt" style="color: #ec4899;"></i>
-                    보안 설정
+                    <span data-i18n="securitySettings">보안 설정</span>
                 </h2>
 
                 <div id="password-success-message" class="success-message"></div>
@@ -289,22 +295,22 @@
 
                 <div style="max-width: 500px;">
                     <div style="margin-bottom: 1rem;">
-                        <label class="form-label">현재 비밀번호</label>
-                        <input type="password" id="current-password" class="form-input" placeholder="현재 비밀번호">
+                        <label class="form-label" data-i18n="currentPassword">현재 비밀번호</label>
+                        <input type="password" id="current-password" class="form-input" placeholder="현재 비밀번호" data-i18n-placeholder="currentPasswordPlaceholder">
                     </div>
 
                     <div style="margin-bottom: 1rem;">
-                        <label class="form-label">새 비밀번호</label>
-                        <input type="password" id="new-password" class="form-input" placeholder="새 비밀번호 (8자 이상)">
+                        <label class="form-label" data-i18n="newPassword">새 비밀번호</label>
+                        <input type="password" id="new-password" class="form-input" placeholder="새 비밀번호 (8자 이상)" data-i18n-placeholder="newPasswordPlaceholder">
                     </div>
 
                     <div style="margin-bottom: 1.5rem;">
-                        <label class="form-label">새 비밀번호 확인</label>
-                        <input type="password" id="confirm-password" class="form-input" placeholder="새 비밀번호 확인">
+                        <label class="form-label" data-i18n="confirmPassword">새 비밀번호 확인</label>
+                        <input type="password" id="confirm-password" class="form-input" placeholder="새 비밀번호 확인" data-i18n-placeholder="confirmPasswordPlaceholder">
                     </div>
 
                     <button id="change-password-btn" class="btn-primary">
-                        <i class="fas fa-key"></i> 비밀번호 변경
+                        <i class="fas fa-key"></i> <span data-i18n="changePassword">비밀번호 변경</span>
                     </button>
                 </div>
             </div>
@@ -313,16 +319,16 @@
             <div class="glass-card" style="padding: 2rem;">
                 <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
                     <i class="fas fa-crown" style="color: #f59e0b;"></i>
-                    구독 정보
+                    <span data-i18n="subscriptionInfo">구독 정보</span>
                 </h2>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem;">
                     <div>
-                        <div style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Free Plan</div>
-                        <div style="color: rgba(255, 255, 255, 0.7);">5개의 워크플로우, 2명의 팀원, 기본 AI 에이전트</div>
+                        <div style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;" data-i18n="freePlan">Free Plan</div>
+                        <div style="color: rgba(255, 255, 255, 0.7);" data-i18n="freePlanDesc">5개의 워크플로우, 2명의 팀원, 기본 AI 에이전트</div>
                     </div>
                     <a href="/landing.html#pricing" class="btn-primary" style="text-decoration: none;">
-                        <i class="fas fa-arrow-up"></i> 업그레이드
+                        <i class="fas fa-arrow-up"></i> <span data-i18n="upgrade">업그레이드</span>
                     </a>
                 </div>
             </div>
@@ -330,6 +336,131 @@
     </div>
 
     <script>
+        // i18n Translation System
+        const translations = {
+            ko: {
+                myProjects: '내 프로젝트',
+                dashboard: 'Dashboard',
+                logout: '로그아웃',
+                myAccount: 'My Account',
+                accountSubtitle: '개인정보 및 계정 설정을 관리하세요',
+                profileInfo: '프로필 정보',
+                changePhoto: '사진 변경',
+                name: '이름',
+                namePlaceholder: '이름을 입력하세요',
+                email: '이메일',
+                joinedDate: '가입일',
+                lastLogin: '마지막 로그인',
+                updateProfile: '프로필 업데이트',
+                totalWorkflows: '총 워크플로우',
+                activeProjects: '활성 프로젝트',
+                availableAgents: '사용 가능한 AI 에이전트',
+                securitySettings: '보안 설정',
+                currentPassword: '현재 비밀번호',
+                currentPasswordPlaceholder: '현재 비밀번호',
+                newPassword: '새 비밀번호',
+                newPasswordPlaceholder: '새 비밀번호 (8자 이상)',
+                confirmPassword: '새 비밀번호 확인',
+                confirmPasswordPlaceholder: '새 비밀번호 확인',
+                changePassword: '비밀번호 변경',
+                subscriptionInfo: '구독 정보',
+                freePlan: 'Free Plan',
+                freePlanDesc: '5개의 워크플로우, 2명의 팀원, 기본 AI 에이전트',
+                upgrade: '업그레이드',
+                profileUpdated: '프로필이 업데이트되었습니다.',
+                profileUpdateFailed: '프로필 업데이트에 실패했습니다.',
+                enterName: '이름을 입력해주세요.',
+                fillAllFields: '모든 필드를 입력해주세요.',
+                passwordsNotMatch: '새 비밀번호가 일치하지 않습니다.',
+                passwordMinLength: '새 비밀번호는 8자 이상이어야 합니다.',
+                passwordChanged: '비밀번호가 변경되었습니다. 다시 로그인해주세요.',
+                passwordChangeFailed: '비밀번호 변경에 실패했습니다.',
+                serverError: '서버 오류가 발생했습니다.'
+            },
+            en: {
+                myProjects: 'My Projects',
+                dashboard: 'Dashboard',
+                logout: 'Logout',
+                myAccount: 'My Account',
+                accountSubtitle: 'Manage your personal information and account settings',
+                profileInfo: 'Profile Information',
+                changePhoto: 'Change Photo',
+                name: 'Name',
+                namePlaceholder: 'Enter your name',
+                email: 'Email',
+                joinedDate: 'Joined Date',
+                lastLogin: 'Last Login',
+                updateProfile: 'Update Profile',
+                totalWorkflows: 'Total Workflows',
+                activeProjects: 'Active Projects',
+                availableAgents: 'Available AI Agents',
+                securitySettings: 'Security Settings',
+                currentPassword: 'Current Password',
+                currentPasswordPlaceholder: 'Current password',
+                newPassword: 'New Password',
+                newPasswordPlaceholder: 'New password (8+ characters)',
+                confirmPassword: 'Confirm Password',
+                confirmPasswordPlaceholder: 'Confirm new password',
+                changePassword: 'Change Password',
+                subscriptionInfo: 'Subscription Info',
+                freePlan: 'Free Plan',
+                freePlanDesc: '5 workflows, 2 team members, basic AI agents',
+                upgrade: 'Upgrade',
+                profileUpdated: 'Profile updated successfully.',
+                profileUpdateFailed: 'Failed to update profile.',
+                enterName: 'Please enter your name.',
+                fillAllFields: 'Please fill in all fields.',
+                passwordsNotMatch: 'New passwords do not match.',
+                passwordMinLength: 'New password must be at least 8 characters.',
+                passwordChanged: 'Password changed successfully. Please login again.',
+                passwordChangeFailed: 'Failed to change password.',
+                serverError: 'Server error occurred.'
+            }
+        };
+
+        let currentLang = localStorage.getItem('museflow_language') || 'ko';
+
+        function updateLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('museflow_language', lang);
+            document.getElementById('html-root').lang = lang;
+            const t = translations[lang];
+            
+            // Update all elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (t[key]) {
+                    element.innerHTML = t[key];
+                }
+            });
+
+            // Update placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                if (t[key]) {
+                    element.placeholder = t[key];
+                }
+            });
+
+            // Update language toggle button
+            const langButton = document.getElementById('lang-toggle');
+            if (lang === 'ko') {
+                langButton.innerHTML = '🇰🇷 <span id="current-lang">한국어</span>';
+            } else {
+                langButton.innerHTML = '🇺🇸 <span id="current-lang">English</span>';
+            }
+        }
+
+        // Language toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLanguage(currentLang);
+            
+            document.getElementById('lang-toggle').addEventListener('click', () => {
+                const newLang = currentLang === 'ko' ? 'en' : 'ko';
+                updateLanguage(newLang);
+            });
+        });
+
         // Check authentication
         const token = localStorage.getItem('authToken');
         if (!token) {
@@ -392,6 +523,7 @@
             try {
                 loadingSpinner.style.display = 'block';
                 
+                // Load user profile
                 const response = await fetch('/api/auth/me', {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -415,6 +547,9 @@
                 const avatar = document.getElementById('profile-avatar');
                 avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&size=120&background=8b5cf6&color=fff`;
 
+                // Load project statistics
+                await loadProjectStats();
+
                 loadingSpinner.style.display = 'none';
                 accountContainer.style.display = 'block';
 
@@ -426,12 +561,34 @@
             }
         }
 
+        // Load project statistics
+        async function loadProjectStats() {
+            try {
+                const response = await fetch('/api/projects/stats/summary', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.stats) {
+                        document.getElementById('total-projects').textContent = data.stats.total;
+                        document.getElementById('active-projects').textContent = data.stats.active;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading project stats:', error);
+            }
+        }
+
         // Update profile
         document.getElementById('update-profile-btn').addEventListener('click', async () => {
+            const t = translations[currentLang];
             const name = document.getElementById('name-input').value.trim();
 
             if (!name) {
-                showError('이름을 입력해주세요.');
+                showError(t.enterName);
                 return;
             }
 
@@ -447,8 +604,9 @@
 
                 const data = await response.json();
 
+                const t = translations[currentLang];
                 if (response.ok) {
-                    showSuccess('프로필이 업데이트되었습니다.');
+                    showSuccess(t.profileUpdated);
                     
                     // Update avatar
                     const avatar = document.getElementById('profile-avatar');
@@ -459,32 +617,33 @@
                     storedUser.name = name;
                     localStorage.setItem('user', JSON.stringify(storedUser));
                 } else {
-                    showError(data.error || '프로필 업데이트에 실패했습니다.');
+                    showError(data.error || t.profileUpdateFailed);
                 }
             } catch (error) {
                 console.error('Error updating profile:', error);
-                showError('서버 오류가 발생했습니다.');
+                showError(t.serverError);
             }
         });
 
         // Change password
         document.getElementById('change-password-btn').addEventListener('click', async () => {
+            const t = translations[currentLang];
             const currentPassword = document.getElementById('current-password').value;
             const newPassword = document.getElementById('new-password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
 
             if (!currentPassword || !newPassword || !confirmPassword) {
-                showPasswordError('모든 필드를 입력해주세요.');
+                showPasswordError(t.fillAllFields);
                 return;
             }
 
             if (newPassword !== confirmPassword) {
-                showPasswordError('새 비밀번호가 일치하지 않습니다.');
+                showPasswordError(t.passwordsNotMatch);
                 return;
             }
 
             if (newPassword.length < 8) {
-                showPasswordError('새 비밀번호는 8자 이상이어야 합니다.');
+                showPasswordError(t.passwordMinLength);
                 return;
             }
 
@@ -500,8 +659,9 @@
 
                 const data = await response.json();
 
+                const t = translations[currentLang];
                 if (response.ok) {
-                    showPasswordSuccess('비밀번호가 변경되었습니다. 다시 로그인해주세요.');
+                    showPasswordSuccess(t.passwordChanged);
                     
                     // Clear form
                     document.getElementById('current-password').value = '';
@@ -515,11 +675,11 @@
                         window.location.href = '/login.html';
                     }, 2000);
                 } else {
-                    showPasswordError(data.error || '비밀번호 변경에 실패했습니다.');
+                    showPasswordError(data.error || t.passwordChangeFailed);
                 }
             } catch (error) {
                 console.error('Error changing password:', error);
-                showPasswordError('서버 오류가 발생했습니다.');
+                showPasswordError(t.serverError);
             }
         });
 
