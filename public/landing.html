@@ -74,9 +74,12 @@
             width: 48px;
             height: 48px;
             border-radius: 12px;
-            /* Remove black background from neon logo */
+            /* Remove black background from neon logo - multiple methods */
             background: transparent;
             mix-blend-mode: screen;
+            filter: brightness(1.2) contrast(1.1);
+            /* If still showing black, try invert method */
+            /* filter: invert(1) hue-rotate(180deg); */
         }
         
         .nav-logo-text {
@@ -827,7 +830,7 @@
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="#hero" class="nav-logo">
-                <img src="/static/images/logo-square.png" alt="MuseFlow" style="box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);">
+                <img src="/static/images/logo-square-transparent.png" alt="MuseFlow" style="box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);">
                 <span class="nav-logo-text">MuseFlow.life</span>
             </a>
             <ul class="nav-links">
@@ -865,13 +868,13 @@
     <section class="hero" id="hero">
         <div class="hero-background"></div>
         <div class="hero-content">
-            <img src="/static/images/logo-square.png" alt="MuseFlow" class="hero-logo" style="mix-blend-mode: screen; background: transparent;">
+            <img src="/static/images/logo-square-transparent.png" alt="MuseFlow" class="hero-logo">
             
-            <h1 class="hero-title">
+            <h1 class="hero-title" data-i18n="heroTitle">
                 AI-Powered Museum<br>Workflow Platform
             </h1>
             
-            <p class="hero-subtitle">
+            <p class="hero-subtitle" data-i18n="heroSubtitle">
                 Transform your museum operations with intelligent workflow automation, 
                 multi-agent AI system, and real-time collaboration. 
                 Built for the future of cultural institutions.
@@ -879,25 +882,25 @@
             
             <div class="hero-cta-group">
                 <a href="/admin.html" class="hero-cta-primary">
-                    <i class="fas fa-rocket"></i> Launch Platform
+                    <i class="fas fa-rocket"></i> <span data-i18n="launchPlatform">Launch Platform</span>
                 </a>
                 <a href="#features" class="hero-cta-secondary">
-                    <i class="fas fa-info-circle"></i> Learn More
+                    <i class="fas fa-info-circle"></i> <span data-i18n="learnMore">Learn More</span>
                 </a>
             </div>
             
             <div class="hero-stats">
                 <div class="hero-stat">
                     <div class="hero-stat-number">8</div>
-                    <div class="hero-stat-label">AI Agents</div>
+                    <div class="hero-stat-label" data-i18n="aiAgents">AI Agents</div>
                 </div>
                 <div class="hero-stat">
                     <div class="hero-stat-number">19</div>
-                    <div class="hero-stat-label">Auto-Generated Nodes</div>
+                    <div class="hero-stat-label" data-i18n="autoNodes">Auto-Generated Nodes</div>
                 </div>
                 <div class="hero-stat">
                     <div class="hero-stat-number">3s</div>
-                    <div class="hero-stat-label">Workflow Creation</div>
+                    <div class="hero-stat-label" data-i18n="workflowCreation">Workflow Creation</div>
                 </div>
             </div>
         </div>
@@ -907,9 +910,9 @@
     <section class="section" id="demo" style="padding: 6rem 2rem;">
         <div style="max-width: 1200px; margin: 0 auto;">
             <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
-                <span class="section-badge">Watch Demo</span>
-                <h2 class="section-title">See MuseFlow in Action</h2>
-                <p class="section-description">
+                <span class="section-badge" data-i18n="demoSectionBadge">Watch Demo</span>
+                <h2 class="section-title" data-i18n="demoTitle">See MuseFlow in Action</h2>
+                <p class="section-description" data-i18n="demoSubtitle">
                     Watch how museums are transforming their workflows
                 </p>
             </div>
@@ -925,12 +928,12 @@
                     
                     <!-- Coming Soon Text -->
                     <div style="text-align: center;">
-                        <h3 style="font-size: 2rem; font-weight: 700; color: white; margin-bottom: 1rem; text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">Demo Video Coming Soon</h3>
-                        <p style="font-size: 1.125rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 2rem;">Be the first to see MuseFlow's powerful features in action</p>
+                        <h3 style="font-size: 2rem; font-weight: 700; color: white; margin-bottom: 1rem; text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);" data-i18n="demoComingSoon">Demo Video Coming Soon</h3>
+                        <p style="font-size: 1.125rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 2rem;" data-i18n="demoNotifyText">Be the first to see MuseFlow's powerful features in action</p>
                         
                         <!-- Notify Me Button -->
                         <button id="notify-btn" style="padding: 1rem 2rem; background: white; color: #8b5cf6; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);">
-                            <i class="fas fa-bell"></i> Notify Me When Available
+                            <i class="fas fa-bell"></i> <span data-i18n="notifyButton">Notify Me When Available</span>
                         </button>
                     </div>
                 </div>
@@ -942,24 +945,24 @@
                     <div style="width: 64px; height: 64px; margin: 0 auto 1rem; background: rgba(139, 92, 246, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
                         <i class="fas fa-bolt" style="font-size: 2rem; color: #8b5cf6;"></i>
                     </div>
-                    <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;">3-Second Workflow</h4>
-                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;">Generate complete exhibition workflows instantly</p>
+                    <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-i18n="demoFeature1Title">3-Second Workflow</h4>
+                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="demoFeature1Desc">Generate complete exhibition workflows instantly</p>
                 </div>
                 
                 <div style="text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="width: 64px; height: 64px; margin: 0 auto 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
                         <i class="fas fa-robot" style="font-size: 2rem; color: #3b82f6;"></i>
                     </div>
-                    <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;">8 AI Agents</h4>
-                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;">Specialized agents for every museum task</p>
+                    <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-i18n="demoFeature2Title">8 AI Agents</h4>
+                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="demoFeature2Desc">Specialized agents for every museum task</p>
                 </div>
                 
                 <div style="text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="width: 64px; height: 64px; margin: 0 auto 1rem; background: rgba(236, 72, 153, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
                         <i class="fas fa-users" style="font-size: 2rem; color: #ec4899;"></i>
                     </div>
-                    <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;">Real-time Collaboration</h4>
-                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;">Team up seamlessly across your organization</p>
+                    <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-i18n="demoFeature3Title">Real-time Collaboration</h4>
+                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="demoFeature3Desc">Team up seamlessly across your organization</p>
                 </div>
             </div>
         </div>
@@ -1556,20 +1559,100 @@
             observer.observe(card);
         });
         
-        // Language Switcher
+        // Language Switcher - Comprehensive Translations
         const translations = {
             ko: {
+                // Navigation
                 signup: 'MuseFlow 슈퍼 에이전트 잠금 해제',
                 login: '로그인',
                 langName: '영어',
                 langFlag: '🇺🇸',
                 mypage: '내 계정',
-                navHome: 'Home',
-                navModules: 'Modules',
-                navPricing: 'Pricing',
-                navAbout: 'About'
+                navHome: '홈',
+                navModules: '모듈',
+                navPricing: '가격',
+                navAbout: '소개',
+                
+                // Hero Section
+                heroTitle: 'AI 기반 뮤지엄<br>워크플로우 플랫폼',
+                heroSubtitle: '지능형 워크플로우 자동화, 멀티 에이전트 AI 시스템, 실시간 협업으로 뮤지엄 운영을 혁신하세요. 문화기관의 미래를 위해 설계되었습니다.',
+                launchPlatform: '플랫폼 시작하기',
+                learnMore: '더 알아보기',
+                aiAgents: 'AI 에이전트',
+                autoNodes: '자동 생성 노드',
+                workflowCreation: '워크플로우 생성',
+                
+                // Demo Section
+                demoSectionBadge: '데모 보기',
+                demoTitle: 'MuseFlow 실전 체험',
+                demoSubtitle: '뮤지엄이 워크플로우를 혁신하는 방법을 확인하세요',
+                demoComingSoon: '데모 영상 곧 공개',
+                demoNotifyText: '가장 먼저 MuseFlow의 강력한 기능을 체험해보세요',
+                notifyButton: '출시 알림 받기',
+                demoFeature1Title: '3초 워크플로우',
+                demoFeature1Desc: '전시 워크플로우를 즉시 생성',
+                demoFeature2Title: '8개 AI 에이전트',
+                demoFeature2Desc: '모든 뮤지엄 업무를 위한 전문 에이전트',
+                demoFeature3Title: '실시간 협업',
+                demoFeature3Desc: '조직 전체가 원활하게 팀업',
+                
+                // Features Section
+                featuresBadge: '핵심 기능',
+                featuresTitle: '필요한 모든 것',
+                featuresDesc: '현대 뮤지엄 관리를 위한 포괄적인 AI 기반 도구',
+                
+                // Feature Cards
+                feature1Title: 'AI 워크플로우 생성',
+                feature1Desc: '자연어를 3-5초 안에 완전한 워크플로우로 변환',
+                feature1Item1: '6단계에 걸친 19개 자동 생성 노드',
+                feature1Item2: '예산 추정 및 최적화',
+                feature1Item3: '작품 선정 및 큐레이션',
+                feature1Item4: '마일스톤이 포함된 타임라인 계획',
+                
+                feature2Title: '멀티 에이전트 시스템',
+                feature2Desc: 'MCP 프로토콜을 통해 함께 작동하는 8개의 전문 AI 에이전트',
+                feature2Item1: '전시 기획 및 큐레이션',
+                feature2Item2: '재무 분석 및 최적화',
+                feature2Item3: '작품 검색 및 추천',
+                feature2Item4: '관람객 예측 및 분석',
+                
+                feature3Title: '실시간 협업',
+                feature3Desc: '팀이 프로젝트에서 원활하게 협업할 수 있는 실시간 동기화',
+                feature3Item1: '멀티 사용자 편집 지원',
+                feature3Item2: '변경 사항 즉시 동기화',
+                feature3Item3: '역할 기반 권한',
+                feature3Item4: '통합 채팅 및 댓글',
+                
+                feature4Title: '뮤지엄 API 통합',
+                feature4Desc: '주요 뮤지엄 데이터베이스에 직접 연결하여 작품 검색',
+                feature4Item1: '국립중앙뮤지엄 통합',
+                feature4Item2: '서울시립미술관(SeMA) 접근',
+                feature4Item3: 'KCISA 문화 데이터',
+                feature4Item4: '확장 가능한 API 프레임워크',
+                
+                feature5Title: '예산 최적화',
+                feature5Desc: 'AI 기반 재무 계획 및 비용 관리',
+                feature5Item1: '자동 예산 추정',
+                feature5Item2: '비용 분석',
+                feature5Item3: '자원 배분',
+                feature5Item4: 'ROI 추적',
+                
+                feature6Title: '타임라인 관리',
+                feature6Desc: '명확한 마일스톤과 기한이 있는 시각적 프로젝트 타임라인',
+                feature6Item1: '간트 차트 뷰',
+                feature6Item2: '종속성 추적',
+                feature6Item3: '진행 모니터링',
+                feature6Item4: '자동 알림',
+                
+                // Footer
+                footerCopyright: '© 2025 Imageroot. All rights reserved. Powered by Hyun Woo Nam Professor.',
+                footerTechTransfer: '기술이전: 남현우 교수',
+                footerPrivacyNotice: '이 사이트는 더 나은 사용자 경험을 위해 브라우저 로컬 저장소를 사용합니다.',
+                footerPrivacyLink: '개인정보처리방침',
+                footerTermsLink: '이용약관'
             },
             en: {
+                // Navigation
                 signup: 'Unlock MuseFlow Super Agent',
                 login: 'Login',
                 langName: 'Korean',
@@ -1578,7 +1661,85 @@
                 navHome: 'Home',
                 navModules: 'Modules',
                 navPricing: 'Pricing',
-                navAbout: 'About'
+                navAbout: 'About',
+                
+                // Hero Section
+                heroTitle: 'AI-Powered Museum<br>Workflow Platform',
+                heroSubtitle: 'Transform your museum operations with intelligent workflow automation, multi-agent AI system, and real-time collaboration. Built for the future of cultural institutions.',
+                launchPlatform: 'Launch Platform',
+                learnMore: 'Learn More',
+                aiAgents: 'AI Agents',
+                autoNodes: 'Auto-Generated Nodes',
+                workflowCreation: 'Workflow Creation',
+                
+                // Demo Section
+                demoSectionBadge: 'Watch Demo',
+                demoTitle: 'See MuseFlow in Action',
+                demoSubtitle: 'Watch how museums are transforming their workflows',
+                demoComingSoon: 'Demo Video Coming Soon',
+                demoNotifyText: 'Be the first to see MuseFlow\'s powerful features in action',
+                notifyButton: 'Notify Me When Available',
+                demoFeature1Title: '3-Second Workflow',
+                demoFeature1Desc: 'Generate complete exhibition workflows instantly',
+                demoFeature2Title: '8 AI Agents',
+                demoFeature2Desc: 'Specialized agents for every museum task',
+                demoFeature3Title: 'Real-time Collaboration',
+                demoFeature3Desc: 'Team up seamlessly across your organization',
+                
+                // Features Section
+                featuresBadge: 'Core Features',
+                featuresTitle: 'Everything You Need',
+                featuresDesc: 'Comprehensive AI-powered tools for modern museum management',
+                
+                // Feature Cards
+                feature1Title: 'AI Workflow Generation',
+                feature1Desc: 'Transform natural language into complete workflows in 3-5 seconds',
+                feature1Item1: '19 auto-generated nodes across 6 phases',
+                feature1Item2: 'Budget estimation & optimization',
+                feature1Item3: 'Artwork selection & curation',
+                feature1Item4: 'Timeline planning with milestones',
+                
+                feature2Title: 'Multi-Agent System',
+                feature2Desc: '8 specialized AI agents working together via MCP protocol',
+                feature2Item1: 'Exhibition planning & curation',
+                feature2Item2: 'Financial analysis & optimization',
+                feature2Item3: 'Artwork search & recommendation',
+                feature2Item4: 'Visitor prediction & analytics',
+                
+                feature3Title: 'Real-time Collaboration',
+                feature3Desc: 'Real-time synchronization enabling teams to collaborate seamlessly on projects',
+                feature3Item1: 'Multi-user editing support',
+                feature3Item2: 'Instant change synchronization',
+                feature3Item3: 'Role-based permissions',
+                feature3Item4: 'Integrated chat and comments',
+                
+                feature4Title: 'Museum API Integration',
+                feature4Desc: 'Direct connection to major museum databases for artwork search',
+                feature4Item1: 'National Museum of Korea integration',
+                feature4Item2: 'Seoul Museum of Art (SeMA) access',
+                feature4Item3: 'KCISA cultural data',
+                feature4Item4: 'Extensible API framework',
+                
+                feature5Title: 'Budget Optimization',
+                feature5Desc: 'AI-powered financial planning and cost management',
+                feature5Item1: 'Automatic budget estimation',
+                feature5Item2: 'Cost analysis',
+                feature5Item3: 'Resource allocation',
+                feature5Item4: 'ROI tracking',
+                
+                feature6Title: 'Timeline Management',
+                feature6Desc: 'Visual project timelines with clear milestones and deadlines',
+                feature6Item1: 'Gantt chart views',
+                feature6Item2: 'Dependency tracking',
+                feature6Item3: 'Progress monitoring',
+                feature6Item4: 'Automated alerts',
+                
+                // Footer
+                footerCopyright: '© 2025 Imageroot. All rights reserved. Powered by Hyun Woo Nam Professor.',
+                footerTechTransfer: 'Technology Transfer: Professor Hyun Woo Nam',
+                footerPrivacyNotice: 'This site uses browser local storage for a better user experience.',
+                footerPrivacyLink: 'Privacy Policy',
+                footerTermsLink: 'Terms of Service'
             }
         };
         
@@ -1603,6 +1764,15 @@
             navLinks[1].textContent = t.navModules;
             navLinks[2].textContent = t.navPricing;
             navLinks[3].textContent = t.navAbout;
+            
+            // Auto-translate all elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (t[key]) {
+                    // Use innerHTML to support HTML like <br> tags
+                    element.innerHTML = t[key];
+                }
+            });
             
             console.log(`🌐 Language switched to: ${lang}`);
         }

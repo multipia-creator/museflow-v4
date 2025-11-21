@@ -35,7 +35,7 @@ const Signup = {
                       align-items: center; justify-content: center;
                       box-shadow: 0 20px 60px rgba(0,0,0,0.3);
                       animation: logoFloat 3s ease-in-out infinite;">
-            <img src="/static/images/logo-square.png" alt="MuseFlow" style="width: 80px; height: 80px; border-radius: 16px; box-shadow: 0 0 20px rgba(139, 92, 246, 0.6); mix-blend-mode: screen; background: transparent;">
+            <img src="/static/images/logo-square-transparent.png" alt="MuseFlow" style="width: 80px; height: 80px; border-radius: 16px; box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);">
           </div>
           
           <!-- Heading -->
