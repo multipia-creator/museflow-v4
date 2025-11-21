@@ -240,9 +240,17 @@
             <span style="font-size: 1.25rem; font-weight: 700;">MuseFlow</span>
         </a>
         <div style="display: flex; gap: 1rem; align-items: center;">
-            <button id="lang-toggle" style="background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); padding: 0.5rem 1rem; border-radius: 8px; color: white; cursor: pointer; transition: all 0.3s;">
-                🇰🇷 <span id="current-lang">한국어</span>
-            </button>
+            <select id="lang-select" style="background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); padding: 0.5rem 1rem; border-radius: 8px; color: white; cursor: pointer; transition: all 0.3s; font-size: 0.875rem;">
+                <option value="ko">🇰🇷 한국어</option>
+                <option value="en">🇺🇸 English</option>
+                <option value="ja">🇯🇵 日本語</option>
+                <option value="zh-CN">🇨🇳 简体中文</option>
+                <option value="zh-TW">🇹🇼 繁體中文</option>
+                <option value="fr">🇫🇷 Français</option>
+                <option value="de">🇩🇪 Deutsch</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="it">🇮🇹 Italiano</option>
+            </select>
             <a href="/account.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
                 <i class="fas fa-user"></i> <span data-i18n="myAccount">내 계정</span>
             </a>
@@ -399,6 +407,244 @@
                 deleteFailed: 'Failed to delete project.',
                 edit: 'Edit',
                 delete: 'Delete'
+            },
+            ja: {
+                myAccount: 'マイアカウント',
+                dashboard: 'ダッシュボード',
+                myProjects: 'マイプロジェクト',
+                projectsSubtitle: 'ワークフロープロジェクトを管理・編集',
+                newProject: '新規プロジェクト',
+                searchPlaceholder: 'プロジェクトを検索...',
+                statusAll: 'すべてのステータス',
+                statusDraft: '下書き',
+                statusActive: 'アクティブ',
+                statusCompleted: '完了',
+                loadingProjects: 'プロジェクトを読み込み中...',
+                noProjects: 'プロジェクトがありません',
+                createFirstProject: '最初のワークフロープロジェクトを作成しましょう',
+                createNewProject: '新規プロジェクト作成',
+                projectTitle: 'プロジェクトタイトル',
+                projectTitlePlaceholder: '例：2024年春季特別展企画',
+                projectDescription: 'プロジェクト説明（任意）',
+                projectDescPlaceholder: 'プロジェクトの簡単な説明を入力',
+                create: '作成',
+                cancel: 'キャンセル',
+                noDescription: '説明がありません。',
+                today: '今日',
+                yesterday: '昨日',
+                daysAgo: '日前',
+                createFailed: 'プロジェクトの作成に失敗しました。',
+                serverError: 'サーバーエラーが発生しました。',
+                deleteProject: 'プロジェクトを削除',
+                deleteConfirm: '本当にこのプロジェクトを削除しますか？この操作は取り消せません。',
+                projectDeleted: 'プロジェクトが削除されました。',
+                deleteFailed: 'プロジェクトの削除に失敗しました。',
+                edit: '編集',
+                delete: '削除'
+            },
+            'zh-CN': {
+                myAccount: '我的账户',
+                dashboard: '仪表板',
+                myProjects: '我的项目',
+                projectsSubtitle: '管理和编辑您的工作流项目',
+                newProject: '新建项目',
+                searchPlaceholder: '搜索项目...',
+                statusAll: '全部状态',
+                statusDraft: '草稿',
+                statusActive: '活跃',
+                statusCompleted: '已完成',
+                loadingProjects: '正在加载项目...',
+                noProjects: '暂无项目',
+                createFirstProject: '创建您的第一个工作流项目',
+                createNewProject: '创建新项目',
+                projectTitle: '项目标题',
+                projectTitlePlaceholder: '例如：2024春季特展策划',
+                projectDescription: '项目描述（可选）',
+                projectDescPlaceholder: '输入项目的简要描述',
+                create: '创建',
+                cancel: '取消',
+                noDescription: '无描述。',
+                today: '今天',
+                yesterday: '昨天',
+                daysAgo: '天前',
+                createFailed: '创建项目失败。',
+                serverError: '服务器错误。',
+                deleteProject: '删除项目',
+                deleteConfirm: '确定要删除此项目吗？此操作无法撤销。',
+                projectDeleted: '项目已删除。',
+                deleteFailed: '删除项目失败。',
+                edit: '编辑',
+                delete: '删除'
+            },
+            'zh-TW': {
+                myAccount: '我的帳戶',
+                dashboard: '儀表板',
+                myProjects: '我的專案',
+                projectsSubtitle: '管理和編輯您的工作流程專案',
+                newProject: '新增專案',
+                searchPlaceholder: '搜尋專案...',
+                statusAll: '全部狀態',
+                statusDraft: '草稿',
+                statusActive: '活躍',
+                statusCompleted: '已完成',
+                loadingProjects: '正在載入專案...',
+                noProjects: '暫無專案',
+                createFirstProject: '建立您的第一個工作流程專案',
+                createNewProject: '建立新專案',
+                projectTitle: '專案標題',
+                projectTitlePlaceholder: '例如：2024春季特展策劃',
+                projectDescription: '專案描述（選填）',
+                projectDescPlaceholder: '輸入專案的簡要描述',
+                create: '建立',
+                cancel: '取消',
+                noDescription: '無描述。',
+                today: '今天',
+                yesterday: '昨天',
+                daysAgo: '天前',
+                createFailed: '建立專案失敗。',
+                serverError: '伺服器錯誤。',
+                deleteProject: '刪除專案',
+                deleteConfirm: '確定要刪除此專案嗎？此操作無法復原。',
+                projectDeleted: '專案已刪除。',
+                deleteFailed: '刪除專案失敗。',
+                edit: '編輯',
+                delete: '刪除'
+            },
+            fr: {
+                myAccount: 'Mon Compte',
+                dashboard: 'Tableau de bord',
+                myProjects: 'Mes Projets',
+                projectsSubtitle: 'Gérez et modifiez vos projets de workflow',
+                newProject: 'Nouveau Projet',
+                searchPlaceholder: 'Rechercher des projets...',
+                statusAll: 'Tous les statuts',
+                statusDraft: 'Brouillon',
+                statusActive: 'Actif',
+                statusCompleted: 'Terminé',
+                loadingProjects: 'Chargement des projets...',
+                noProjects: 'Aucun projet',
+                createFirstProject: 'Créez votre premier projet de workflow',
+                createNewProject: 'Créer un Nouveau Projet',
+                projectTitle: 'Titre du Projet',
+                projectTitlePlaceholder: 'Ex : Planification exposition printemps 2024',
+                projectDescription: 'Description du Projet (Optionnel)',
+                projectDescPlaceholder: 'Entrez une brève description du projet',
+                create: 'Créer',
+                cancel: 'Annuler',
+                noDescription: 'Aucune description.',
+                today: "Aujourd'hui",
+                yesterday: 'Hier',
+                daysAgo: ' jours',
+                createFailed: 'Échec de la création du projet.',
+                serverError: 'Erreur serveur.',
+                deleteProject: 'Supprimer le Projet',
+                deleteConfirm: 'Êtes-vous sûr de vouloir supprimer ce projet ? Cette action est irréversible.',
+                projectDeleted: 'Projet supprimé avec succès.',
+                deleteFailed: 'Échec de la suppression du projet.',
+                edit: 'Modifier',
+                delete: 'Supprimer'
+            },
+            de: {
+                myAccount: 'Mein Konto',
+                dashboard: 'Dashboard',
+                myProjects: 'Meine Projekte',
+                projectsSubtitle: 'Verwalten und bearbeiten Sie Ihre Workflow-Projekte',
+                newProject: 'Neues Projekt',
+                searchPlaceholder: 'Projekte suchen...',
+                statusAll: 'Alle Status',
+                statusDraft: 'Entwurf',
+                statusActive: 'Aktiv',
+                statusCompleted: 'Abgeschlossen',
+                loadingProjects: 'Projekte werden geladen...',
+                noProjects: 'Keine Projekte',
+                createFirstProject: 'Erstellen Sie Ihr erstes Workflow-Projekt',
+                createNewProject: 'Neues Projekt Erstellen',
+                projectTitle: 'Projekttitel',
+                projectTitlePlaceholder: 'z.B. Frühjahrsausstellung 2024 Planung',
+                projectDescription: 'Projektbeschreibung (Optional)',
+                projectDescPlaceholder: 'Geben Sie eine kurze Beschreibung des Projekts ein',
+                create: 'Erstellen',
+                cancel: 'Abbrechen',
+                noDescription: 'Keine Beschreibung.',
+                today: 'Heute',
+                yesterday: 'Gestern',
+                daysAgo: ' Tage',
+                createFailed: 'Projekt konnte nicht erstellt werden.',
+                serverError: 'Serverfehler aufgetreten.',
+                deleteProject: 'Projekt Löschen',
+                deleteConfirm: 'Möchten Sie dieses Projekt wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.',
+                projectDeleted: 'Projekt erfolgreich gelöscht.',
+                deleteFailed: 'Projekt konnte nicht gelöscht werden.',
+                edit: 'Bearbeiten',
+                delete: 'Löschen'
+            },
+            es: {
+                myAccount: 'Mi Cuenta',
+                dashboard: 'Panel de Control',
+                myProjects: 'Mis Proyectos',
+                projectsSubtitle: 'Gestiona y edita tus proyectos de flujo de trabajo',
+                newProject: 'Nuevo Proyecto',
+                searchPlaceholder: 'Buscar proyectos...',
+                statusAll: 'Todos los estados',
+                statusDraft: 'Borrador',
+                statusActive: 'Activo',
+                statusCompleted: 'Completado',
+                loadingProjects: 'Cargando proyectos...',
+                noProjects: 'Sin proyectos',
+                createFirstProject: 'Crea tu primer proyecto de flujo de trabajo',
+                createNewProject: 'Crear Nuevo Proyecto',
+                projectTitle: 'Título del Proyecto',
+                projectTitlePlaceholder: 'Ej: Planificación Exposición Primavera 2024',
+                projectDescription: 'Descripción del Proyecto (Opcional)',
+                projectDescPlaceholder: 'Ingrese una breve descripción del proyecto',
+                create: 'Crear',
+                cancel: 'Cancelar',
+                noDescription: 'Sin descripción.',
+                today: 'Hoy',
+                yesterday: 'Ayer',
+                daysAgo: ' días',
+                createFailed: 'Error al crear el proyecto.',
+                serverError: 'Error del servidor.',
+                deleteProject: 'Eliminar Proyecto',
+                deleteConfirm: '¿Está seguro de que desea eliminar este proyecto? Esta acción no se puede deshacer.',
+                projectDeleted: 'Proyecto eliminado correctamente.',
+                deleteFailed: 'Error al eliminar el proyecto.',
+                edit: 'Editar',
+                delete: 'Eliminar'
+            },
+            it: {
+                myAccount: 'Il Mio Account',
+                dashboard: 'Dashboard',
+                myProjects: 'I Miei Progetti',
+                projectsSubtitle: 'Gestisci e modifica i tuoi progetti workflow',
+                newProject: 'Nuovo Progetto',
+                searchPlaceholder: 'Cerca progetti...',
+                statusAll: 'Tutti gli stati',
+                statusDraft: 'Bozza',
+                statusActive: 'Attivo',
+                statusCompleted: 'Completato',
+                loadingProjects: 'Caricamento progetti...',
+                noProjects: 'Nessun progetto',
+                createFirstProject: 'Crea il tuo primo progetto workflow',
+                createNewProject: 'Crea Nuovo Progetto',
+                projectTitle: 'Titolo del Progetto',
+                projectTitlePlaceholder: 'Es: Pianificazione Mostra Primavera 2024',
+                projectDescription: 'Descrizione del Progetto (Opzionale)',
+                projectDescPlaceholder: 'Inserisci una breve descrizione del progetto',
+                create: 'Crea',
+                cancel: 'Annulla',
+                noDescription: 'Nessuna descrizione.',
+                today: 'Oggi',
+                yesterday: 'Ieri',
+                daysAgo: ' giorni fa',
+                createFailed: 'Creazione progetto fallita.',
+                serverError: 'Errore del server.',
+                deleteProject: 'Elimina Progetto',
+                deleteConfirm: 'Sei sicuro di voler eliminare questo progetto? Questa azione non può essere annullata.',
+                projectDeleted: 'Progetto eliminato con successo.',
+                deleteFailed: 'Eliminazione progetto fallita.',
+                edit: 'Modifica',
+                delete: 'Elimina'
             }
         };
 
@@ -426,13 +672,10 @@
                 }
             });
 
-            // Update language toggle button
-            const langToggle = document.getElementById('current-lang');
-            const langButton = document.getElementById('lang-toggle');
-            if (lang === 'ko') {
-                langButton.innerHTML = '🇰🇷 <span id="current-lang">한국어</span>';
-            } else {
-                langButton.innerHTML = '🇺🇸 <span id="current-lang">English</span>';
+            // Update language selector
+            const langSelect = document.getElementById('lang-select');
+            if (langSelect) {
+                langSelect.value = lang;
             }
 
             // Re-render projects with updated language
@@ -441,14 +684,17 @@
             }
         }
 
-        // Language toggle
+        // Language selector
         document.addEventListener('DOMContentLoaded', () => {
             updateLanguage(currentLang);
             
-            document.getElementById('lang-toggle').addEventListener('click', () => {
-                const newLang = currentLang === 'ko' ? 'en' : 'ko';
-                updateLanguage(newLang);
-            });
+            const langSelect = document.getElementById('lang-select');
+            if (langSelect) {
+                langSelect.value = currentLang;
+                langSelect.addEventListener('change', (e) => {
+                    updateLanguage(e.target.value);
+                });
+            }
         });
 
         // Check authentication
