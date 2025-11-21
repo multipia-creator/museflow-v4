@@ -795,6 +795,28 @@
                 grid-template-columns: 1fr;
             }
         }
+        
+        /* Demo Video Section Animations */
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+            }
+        }
+        
+        .demo-play-button:hover {
+            transform: scale(1.1) !important;
+            background: rgba(255, 255, 255, 0.3) !important;
+        }
+        
+        #notify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(255, 255, 255, 0.3) !important;
+        }
     </style>
 </head>
 <body>
@@ -873,6 +895,68 @@
                 <div class="hero-stat">
                     <div class="hero-stat-number">3s</div>
                     <div class="hero-stat-label">Workflow Creation</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Video Section -->
+    <section class="section" id="demo" style="padding: 6rem 2rem;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
+                <span class="section-badge">Watch Demo</span>
+                <h2 class="section-title">See MuseFlow in Action</h2>
+                <p class="section-description">
+                    Watch how museums are transforming their workflows
+                </p>
+            </div>
+            
+            <!-- Enhanced Demo Video Container -->
+            <div style="position: relative; border-radius: 24px; overflow: hidden; aspect-ratio: 16/9; background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%); box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4);">
+                <!-- Video Placeholder -->
+                <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; backdrop-filter: blur(40px); background: rgba(0, 0, 0, 0.3);">
+                    <!-- Pulsing Play Button -->
+                    <div class="demo-play-button" style="width: 100px; height: 100px; background: rgba(255, 255, 255, 0.2); border: 3px solid white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; animation: pulse 2s infinite;">
+                        <i class="fas fa-play" style="font-size: 2.5rem; color: white; margin-left: 8px;"></i>
+                    </div>
+                    
+                    <!-- Coming Soon Text -->
+                    <div style="text-align: center;">
+                        <h3 style="font-size: 2rem; font-weight: 700; color: white; margin-bottom: 1rem; text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">Demo Video Coming Soon</h3>
+                        <p style="font-size: 1.125rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 2rem;">Be the first to see MuseFlow's powerful features in action</p>
+                        
+                        <!-- Notify Me Button -->
+                        <button id="notify-btn" style="padding: 1rem 2rem; background: white; color: #8b5cf6; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);">
+                            <i class="fas fa-bell"></i> Notify Me When Available
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Feature Highlights Below Video -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem;">
+                <div style="text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <div style="width: 64px; height: 64px; margin: 0 auto 1rem; background: rgba(139, 92, 246, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-bolt" style="font-size: 2rem; color: #8b5cf6;"></i>
+                    </div>
+                    <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;">3-Second Workflow</h4>
+                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;">Generate complete exhibition workflows instantly</p>
+                </div>
+                
+                <div style="text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <div style="width: 64px; height: 64px; margin: 0 auto 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-robot" style="font-size: 2rem; color: #3b82f6;"></i>
+                    </div>
+                    <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;">8 AI Agents</h4>
+                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;">Specialized agents for every museum task</p>
+                </div>
+                
+                <div style="text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <div style="width: 64px; height: 64px; margin: 0 auto 1rem; background: rgba(236, 72, 153, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-users" style="font-size: 2rem; color: #ec4899;"></i>
+                    </div>
+                    <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;">Real-time Collaboration</h4>
+                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;">Team up seamlessly across your organization</p>
                 </div>
             </div>
         </div>
@@ -1223,9 +1307,9 @@
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; 2024 MuseFlow.life. All rights reserved. Built with ❤️ for museums worldwide.</p>
+            <p>&copy; 2025 Imageroot. All rights reserved. Powered by Hyun Woo Nam Professor.</p>
             <p style="margin-top: 1rem; font-size: 0.875rem;">
-                <strong>기술이전:</strong> 남현우 교수 (<a href="mailto:gallerypia@gmail.com" style="color: #8b5cf6; text-decoration: none;">gallerypia@gmail.com</a>)
+                <strong>기술이전:</strong> 남현우 교수 (<a href="https://gallerypia.com" target="_blank" rel="noopener noreferrer" style="color: #8b5cf6; text-decoration: none;">gallerypia.com</a>)
             </p>
             <p style="margin-top: 1.5rem; font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">
                 이 사이트는 더 나은 사용자 경험을 위해 브라우저 로컬 저장소를 사용합니다. 
@@ -1557,6 +1641,25 @@
                 document.querySelectorAll('.policy-modal').forEach(modal => {
                     modal.style.display = 'none';
                 });
+            }
+        });
+        
+        // Demo Video Notify Button
+        document.getElementById('notify-btn')?.addEventListener('click', () => {
+            const email = prompt('데모 영상이 공개되면 알림을 받을 이메일 주소를 입력해주세요:\n\nEnter your email to be notified when the demo video is available:');
+            
+            if (email && email.includes('@')) {
+                // Store in localStorage for now (in production, send to backend)
+                const notifications = JSON.parse(localStorage.getItem('museflow_demo_notifications') || '[]');
+                if (!notifications.includes(email)) {
+                    notifications.push(email);
+                    localStorage.setItem('museflow_demo_notifications', JSON.stringify(notifications));
+                }
+                
+                alert(`✅ 감사합니다! ${email} 주소로 데모 영상 공개 시 알림을 보내드리겠습니다.\n\nThank you! We'll notify you at ${email} when the demo is ready.`);
+                console.log('📧 Email notification registered:', email);
+            } else if (email) {
+                alert('❌ 올바른 이메일 주소를 입력해주세요.\n\nPlease enter a valid email address.');
             }
         });
     </script>

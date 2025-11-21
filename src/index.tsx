@@ -33,6 +33,8 @@ app.get('/', (c) => {
 })
 
 // Canvas V2 route (main SPA) - Fallback for any other route
+// Note: HTML files (landing.html, login.html, signup.html, admin.html) are excluded 
+// from this route via _routes.json and served as static files by Cloudflare Pages
 app.get('*', (c) => {
   // Add cache control headers to HTML response
   c.header('Cache-Control', 'no-cache, no-store, must-revalidate')
