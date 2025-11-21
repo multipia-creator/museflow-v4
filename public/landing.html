@@ -1567,9 +1567,9 @@
         </div>
     </section>
 
-    <!-- Pricing Section -->
-    <section class="section pricing-section" id="pricing">
-        <div class="section-header">
+    <!-- Pricing Section - Apple Style -->
+    <section class="section pricing-section" id="pricing" style="padding: 5rem 2rem; background: linear-gradient(180deg, #000 0%, #0a0a0f 50%, #000 100%);">
+        <div class="section-header" style="margin-bottom: 4rem;">
             <span class="section-badge" data-i18n="pricingBadge">Pricing Plans</span>
             <h2 class="section-title" data-i18n="pricingTitle">Choose Your Plan</h2>
             <p class="section-description" data-i18n="pricingDesc">
@@ -1577,106 +1577,120 @@
             </p>
         </div>
         
-        <div class="pricing-grid">
-            <div class="pricing-card">
-                <h3 class="pricing-name" data-i18n="pricingFree">Free</h3>
-                <div class="pricing-price">$0</div>
-                <div class="pricing-period" data-i18n="pricingFreePeriod">Forever free</div>
-                <ul class="pricing-features">
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingFreeFeature1">Up to 5 workflows</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingFreeFeature2">2 team members</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingFreeFeature3">Basic AI agents</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingFreeFeature4">100 museum API requests/day</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingFreeFeature5">Community support</span></li>
+        <div class="pricing-grid" style="max-width: 1200px; margin: 0 auto;">
+            <!-- Free Plan -->
+            <div class="pricing-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);">
+                <h3 class="pricing-name" data-i18n="pricingFree" style="font-size: 1.75rem; margin-bottom: 1rem;">Free</h3>
+                <div class="pricing-price" style="font-size: 3.5rem; margin-bottom: 0.25rem;">$0</div>
+                <div class="pricing-period" data-i18n="pricingFreePeriod" style="font-size: 1rem; margin-bottom: 2rem; opacity: 0.6;">Forever free</div>
+                <ul class="pricing-features" style="text-align: left; margin-bottom: 2.5rem;">
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature1">Up to 5 workflows</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature2">2 team members</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature3">Basic AI agents</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature4">100 museum API requests/day</span></li>
+                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature5">Community support</span></li>
                 </ul>
-                <button class="pricing-cta" data-i18n="pricingFreeCta">Get Started</button>
+                <button class="pricing-cta" data-i18n="pricingFreeCta" style="width: 100%; padding: 1rem; font-size: 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateY(0)';">Get Started</button>
             </div>
             
-            <div class="pricing-card featured">
-                <div class="pricing-badge" data-i18n="pricingProBadge">Most Popular</div>
-                <h3 class="pricing-name" data-i18n="pricingPro">Professional</h3>
-                <div class="pricing-price" data-i18n="pricingProPrice">$99</div>
-                <div class="pricing-period" data-i18n="pricingProPeriod">per month</div>
-                <ul class="pricing-features">
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingProFeature1">Unlimited workflows</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingProFeature2">10 team members</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingProFeature3">All 8 AI agents</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingProFeature4">Unlimited museum API</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingProFeature5">AR/VR experiences</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingProFeature6">Real-time collaboration</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingProFeature7">Priority support</span></li>
+            <!-- Professional Plan - Featured -->
+            <div class="pricing-card featured" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%); border: 2px solid rgba(139, 92, 246, 0.5); transform: scale(1.05); position: relative;">
+                <div class="pricing-badge" data-i18n="pricingProBadge" style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #8b5cf6, #ec4899); padding: 0.5rem 1.5rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; box-shadow: 0 4px 16px rgba(139, 92, 246, 0.5);">Most Popular</div>
+                <h3 class="pricing-name" data-i18n="pricingPro" style="font-size: 1.75rem; margin-bottom: 1rem; margin-top: 1rem;">Professional</h3>
+                <div class="pricing-price" data-i18n="pricingProPrice" style="font-size: 3.5rem; margin-bottom: 0.25rem; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">$99</div>
+                <div class="pricing-period" data-i18n="pricingProPeriod" style="font-size: 1rem; margin-bottom: 2rem; opacity: 0.6;">per month</div>
+                <ul class="pricing-features" style="text-align: left; margin-bottom: 2.5rem;">
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature1">Unlimited workflows</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature2">10 team members</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature3">All 8 AI agents</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature4">Unlimited museum API</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature5">AR/VR experiences</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature6">Real-time collaboration</span></li>
+                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature7">Priority support</span></li>
                 </ul>
-                <button class="pricing-cta" data-i18n="pricingProCta">Start Free Trial</button>
+                <button class="pricing-cta" data-i18n="pricingProCta" style="width: 100%; padding: 1rem; font-size: 1rem; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); border: none; color: white; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4); font-weight: 600;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 40px rgba(139, 92, 246, 0.6)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 32px rgba(139, 92, 246, 0.4)';">Start Free Trial</button>
             </div>
             
-            <div class="pricing-card">
-                <h3 class="pricing-name" data-i18n="pricingEnterprise">Enterprise</h3>
-                <div class="pricing-price" data-i18n="pricingEnterprisePrice">Custom</div>
-                <div class="pricing-period" data-i18n="pricingEnterprisePeriod">Contact us</div>
-                <ul class="pricing-features">
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingEnterpriseFeature1">Everything in Pro</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingEnterpriseFeature2">Unlimited team members</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingEnterpriseFeature3">Custom AI training</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingEnterpriseFeature4">Dedicated infrastructure</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingEnterpriseFeature5">On-premise deployment</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingEnterpriseFeature6">24/7 phone support</span></li>
-                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingEnterpriseFeature7">SLA guarantee</span></li>
+            <!-- Enterprise Plan -->
+            <div class="pricing-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);">
+                <h3 class="pricing-name" data-i18n="pricingEnterprise" style="font-size: 1.75rem; margin-bottom: 1rem;">Enterprise</h3>
+                <div class="pricing-price" data-i18n="pricingEnterprisePrice" style="font-size: 3.5rem; margin-bottom: 0.25rem;">Custom</div>
+                <div class="pricing-period" data-i18n="pricingEnterprisePeriod" style="font-size: 1rem; margin-bottom: 2rem; opacity: 0.6;">Contact us</div>
+                <ul class="pricing-features" style="text-align: left; margin-bottom: 2.5rem;">
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature1">Everything in Pro</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature2">Unlimited team members</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature3">Custom AI training</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature4">Dedicated infrastructure</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature5">On-premise deployment</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature6">24/7 phone support</span></li>
+                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature7">SLA guarantee</span></li>
                 </ul>
-                <button class="pricing-cta" data-i18n="pricingEnterpriseCta">Contact Sales</button>
+                <button class="pricing-cta" data-i18n="pricingEnterpriseCta" style="width: 100%; padding: 1rem; font-size: 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateY(0)';">Contact Sales</button>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section class="section about-section" id="about">
-        <div class="section-header">
-            <span class="section-badge" data-i18n="aboutBadge">About Us</span>
-            <h2 class="section-title" data-i18n="aboutTitle">Building the Future of Museums</h2>
-        </div>
-        
-        <div class="about-grid">
-            <div class="about-content">
-                <h3 data-i18n="aboutMissionTitle">Our Mission</h3>
-                <p data-i18n="aboutMission">
+    <!-- About Section - Apple Style -->
+    <section id="about" style="padding: 0; margin: 0;">
+        <div class="agents-grid" style="grid-template-columns: 1fr;">
+            <!-- Mission & Vision -->
+            <div class="agent-card-hero" style="min-height: 70vh;">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">🎯</div>
+                </div>
+                <h2 class="agent-title-large" data-i18n="aboutTitle">Building the Future<br>of Museums</h2>
+                <p class="agent-description-large" data-i18n="aboutMission">
                     MuseFlow.life was created to revolutionize how museums manage their operations. 
                     We believe that cultural institutions deserve world-class technology that enables 
                     them to focus on what matters most: preserving and sharing culture.
                 </p>
-                
-                <h3 data-i18n="aboutWhyTitle">Why MuseFlow?</h3>
-                <p data-i18n="aboutWhy">
-                    Traditional museum workflow management is complex, time-consuming, and error-prone. 
-                    MuseFlow leverages cutting-edge AI technology to automate routine tasks, provide 
-                    intelligent insights, and enable seamless collaboration.
-                </p>
-                
-                <p>
-                    Our multi-agent system orchestrates 8 specialized AI agents that work together 
-                    to handle everything from exhibition planning to visitor analytics, all powered 
-                    by Google's Gemini 2.0 and running on Cloudflare's global edge network.
-                </p>
+                <div class="agent-cta-group">
+                    <a href="/admin.html" class="agent-btn agent-btn-primary">Get Started</a>
+                    <a href="#pricing" class="agent-btn agent-btn-secondary">View Pricing →</a>
+                </div>
             </div>
             
-            <div class="about-content">
-                <h3>Technology Stack</h3>
-                <div class="tech-stack">
-                    <span class="tech-badge">Gemini 2.0 Flash</span>
-                    <span class="tech-badge">TypeScript 5.7</span>
-                    <span class="tech-badge">Hono 4.10</span>
-                    <span class="tech-badge">Cloudflare Workers</span>
-                    <span class="tech-badge">D1 Database</span>
-                    <span class="tech-badge">Durable Objects</span>
-                    <span class="tech-badge">Three.js</span>
-                    <span class="tech-badge">WebXR API</span>
-                    <span class="tech-badge">Chart.js</span>
-                    <span class="tech-badge">Notion API</span>
+            <!-- Technology Stack -->
+            <div class="agent-card-hero" style="min-height: 70vh;">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">⚡</div>
                 </div>
-                
-                <h3 style="margin-top: 2rem;">Leadership</h3>
-                <p>
-                    Led by Professor Nam Hyun-woo (남현우 교수), MuseFlow combines deep expertise 
+                <h2 class="agent-title-large">Powered by<br>Cutting-Edge Tech</h2>
+                <p class="agent-description-large" data-i18n="aboutWhy">
+                    Our multi-agent system orchestrates 8 specialized AI agents powered 
+                    by Google's Gemini 2.0 and running on Cloudflare's global edge network.
+                </p>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; max-width: 700px; margin-bottom: 2rem;">
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Gemini 2.0 Flash</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">TypeScript 5.7</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Hono 4.10</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Cloudflare Workers</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">D1 Database</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Durable Objects</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Three.js</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">WebXR API</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Chart.js</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Notion API</span>
+                </div>
+                <div class="agent-cta-group">
+                    <a href="#features" class="agent-btn agent-btn-primary">Explore Features</a>
+                </div>
+            </div>
+            
+            <!-- Leadership -->
+            <div class="agent-card-hero" style="min-height: 60vh;">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">👨‍🏫</div>
+                </div>
+                <h2 class="agent-title-large">Led by Experts<br>in Culture & AI</h2>
+                <p class="agent-description-large">
+                    Professor Nam Hyun-woo (남현우 교수) combines deep expertise 
                     in cultural heritage management with cutting-edge AI research and development.
                 </p>
+                <div class="agent-cta-group">
+                    <a href="/admin.html" class="agent-btn agent-btn-primary">Join MuseFlow</a>
+                    <a href="#pricing" class="agent-btn agent-btn-secondary">Contact Us →</a>
+                </div>
             </div>
         </div>
     </section>
