@@ -181,6 +181,40 @@
             color: white;
         }
         
+        /* Icon Buttons (Language & MyPage) */
+        .nav-icon-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        
+        .nav-icon-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        .lang-flag {
+            font-size: 1.125rem;
+        }
+        
+        .lang-text,
+        .mypage-text {
+            font-size: 0.875rem;
+        }
+        
         /* Hero Section */
         .hero {
             min-height: 100vh;
@@ -698,6 +732,17 @@
         }
         
         /* Responsive */
+        @media (max-width: 1200px) {
+            .lang-text,
+            .mypage-text {
+                display: none;
+            }
+            
+            .nav-icon-btn {
+                padding: 0.625rem;
+            }
+        }
+        
         @media (max-width: 1024px) {
             .nav-signup-btn span {
                 display: none;
@@ -722,6 +767,12 @@
                 font-size: 0.75rem;
                 padding: 0.5rem 1rem;
             }
+            
+            .nav-icon-btn {
+                font-size: 0.75rem;
+                padding: 0.5rem 0.75rem;
+            }
+        }
             
             .hero-title {
                 font-size: 2.5rem;
@@ -760,7 +811,7 @@
                 <li><a href="#pricing">Pricing</a></li>
                 <li><a href="#about">About</a></li>
             </ul>
-            <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
                 <a href="/signup.html" class="nav-signup-btn">
                     <i class="fas fa-sparkles"></i> 
                     <span>MuseFlow 슈퍼 에이전트 잠금 해제</span>
@@ -768,6 +819,18 @@
                 </a>
                 <a href="/login.html" class="nav-login-btn">
                     로그인
+                </a>
+                
+                <!-- Language Switcher -->
+                <button id="language-btn" class="nav-icon-btn" title="언어 전환">
+                    <span class="lang-flag">🇺🇸</span>
+                    <span class="lang-text">영어</span>
+                </button>
+                
+                <!-- MyPage Button -->
+                <a href="/admin.html" class="nav-icon-btn" title="내 계정">
+                    <span style="font-size: 1rem;">👤</span>
+                    <span class="mypage-text">내 계정</span>
                 </a>
             </div>
         </div>
@@ -1214,6 +1277,66 @@
             card.style.transition = 'all 0.6s ease';
             observer.observe(card);
         });
+        
+        // Language Switcher
+        const translations = {
+            ko: {
+                signup: 'MuseFlow 슈퍼 에이전트 잠금 해제',
+                login: '로그인',
+                langName: '영어',
+                langFlag: '🇺🇸',
+                mypage: '내 계정',
+                navHome: 'Home',
+                navModules: 'Modules',
+                navPricing: 'Pricing',
+                navAbout: 'About'
+            },
+            en: {
+                signup: 'Unlock MuseFlow Super Agent',
+                login: 'Login',
+                langName: 'Korean',
+                langFlag: '🇰🇷',
+                mypage: 'My Account',
+                navHome: 'Home',
+                navModules: 'Modules',
+                navPricing: 'Pricing',
+                navAbout: 'About'
+            }
+        };
+        
+        let currentLang = localStorage.getItem('museflow_language') || 'ko';
+        
+        function updateLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('museflow_language', lang);
+            
+            const t = translations[lang];
+            
+            // Update navigation
+            document.querySelector('.nav-signup-btn span').textContent = t.signup;
+            document.querySelector('.nav-login-btn').textContent = t.login;
+            document.querySelector('.lang-flag').textContent = lang === 'ko' ? t.langFlag : '🇺🇸';
+            document.querySelector('.lang-text').textContent = t.langName;
+            document.querySelector('.mypage-text').textContent = t.mypage;
+            
+            // Update nav links
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks[0].textContent = t.navHome;
+            navLinks[1].textContent = t.navModules;
+            navLinks[2].textContent = t.navPricing;
+            navLinks[3].textContent = t.navAbout;
+            
+            console.log(`🌐 Language switched to: ${lang}`);
+        }
+        
+        // Language button click handler
+        document.getElementById('language-btn').addEventListener('click', () => {
+            const newLang = currentLang === 'ko' ? 'en' : 'ko';
+            updateLanguage(newLang);
+        });
+        
+        // Initialize language on page load
+        updateLanguage(currentLang);
     </script>
 </body>
 </html>
