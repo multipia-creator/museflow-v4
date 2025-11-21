@@ -134,6 +134,53 @@
             box-shadow: 0 8px 24px rgba(139, 92, 246, 0.6);
         }
         
+        /* Signup Button - Genspark Style */
+        .nav-signup-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #60a5fa;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .nav-signup-btn:hover {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-1px);
+        }
+        
+        .nav-signup-btn i:first-child {
+            font-size: 1rem;
+        }
+        
+        /* Login Button */
+        .nav-login-btn {
+            padding: 0.625rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .nav-login-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
         /* Hero Section */
         .hero {
             min-height: 100vh;
@@ -651,9 +698,29 @@
         }
         
         /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-signup-btn span {
+                display: none;
+            }
+            
+            .nav-signup-btn {
+                padding: 0.625rem 1rem;
+            }
+        }
+        
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
+            }
+            
+            .nav-signup-btn {
+                font-size: 0.75rem;
+                padding: 0.5rem 0.75rem;
+            }
+            
+            .nav-login-btn {
+                font-size: 0.75rem;
+                padding: 0.5rem 1rem;
             }
             
             .hero-title {
@@ -693,9 +760,16 @@
                 <li><a href="#pricing">Pricing</a></li>
                 <li><a href="#about">About</a></li>
             </ul>
-            <a href="/admin.html" class="nav-cta">
-                <i class="fas fa-rocket"></i> Get Started
-            </a>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="/signup.html" class="nav-signup-btn">
+                    <i class="fas fa-sparkles"></i> 
+                    <span>MuseFlow 슈퍼 에이전트 잠금 해제</span>
+                    <i class="fas fa-arrow-right" style="font-size: 0.875rem;"></i>
+                </a>
+                <a href="/login.html" class="nav-login-btn">
+                    로그인
+                </a>
+            </div>
         </div>
     </nav>
 
