@@ -26,7 +26,7 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            background: radial-gradient(ellipse at top, #1e1b4b 0%, #0f0a1f 50%, #000000 100%);
+            background: #0a0a0f;
             color: white;
             overflow-x: hidden;
         }
@@ -230,6 +230,7 @@
             position: relative;
             overflow: hidden;
             padding: 8rem 2rem 4rem;
+            background: radial-gradient(ellipse at top, #1e1b4b 0%, #0f0a1f 50%, rgba(10, 10, 15, 0.8) 100%);
         }
         
         .hero-background {
@@ -277,17 +278,21 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            line-height: 1.2;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            text-shadow: 0 0 80px rgba(139, 92, 246, 0.5);
         }
         
         .hero-subtitle {
             font-size: 1.5rem;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.75);
             margin-bottom: 3rem;
             max-width: 800px;
             margin-left: auto;
             margin-right: auto;
-            line-height: 1.6;
+            line-height: 1.7;
+            font-weight: 400;
+            letter-spacing: -0.01em;
         }
         
         .hero-cta-group {
@@ -299,52 +304,78 @@
         
         .hero-cta-primary {
             padding: 1.25rem 3rem;
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
             color: white;
             border: none;
-            border-radius: 16px;
-            font-weight: 700;
+            border-radius: 14px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
             text-decoration: none;
             display: inline-block;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: -0.01em;
+        }
+        
+        .hero-cta-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .hero-cta-primary:hover::before {
+            left: 100%;
         }
         
         .hero-cta-primary:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 16px 48px rgba(139, 92, 246, 0.6);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 56px rgba(139, 92, 246, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
         
         .hero-cta-secondary {
             padding: 1.25rem 3rem;
-            font-size: 1.25rem;
-            background: rgba(255, 255, 255, 0.1);
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
             color: white;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
-            font-weight: 700;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
             display: inline-block;
+            backdrop-filter: blur(10px);
+            letter-spacing: -0.01em;
         }
         
         .hero-cta-secondary:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(139, 92, 246, 0.5);
-            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(139, 92, 246, 0.6);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.3);
         }
         
         .hero-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
+            gap: 2.5rem;
+            margin-top: 4.5rem;
             max-width: 900px;
             margin-left: auto;
             margin-right: auto;
+            padding: 2.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
         }
         
         .hero-stat {
@@ -368,14 +399,35 @@
         
         /* Section Container */
         .section {
-            padding: 6rem 2rem;
+            padding: 3.5rem 2rem;
             max-width: 1400px;
             margin: 0 auto;
+            position: relative;
+        }
+        
+        /* Demo Section - Purple gradient */
+        .demo-section {
+            background: linear-gradient(180deg, rgba(10, 10, 15, 1) 0%, rgba(26, 15, 46, 0.4) 50%, rgba(10, 10, 15, 1) 100%);
+        }
+        
+        /* Features Section - Darker */
+        .features-section {
+            background: linear-gradient(180deg, rgba(10, 10, 15, 1) 0%, rgba(15, 10, 31, 0.6) 50%, rgba(10, 10, 15, 1) 100%);
+        }
+        
+        /* Pricing Section - Blue tint */
+        .pricing-section {
+            background: radial-gradient(ellipse at center, rgba(30, 27, 75, 0.3) 0%, rgba(10, 10, 15, 1) 70%);
+        }
+        
+        /* About Section - Pink tint */
+        .about-section {
+            background: radial-gradient(ellipse at bottom, rgba(46, 15, 43, 0.3) 0%, rgba(10, 10, 15, 1) 70%);
         }
         
         .section-header {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
         }
         
         .section-badge {
@@ -393,21 +445,25 @@
         }
         
         .section-title {
-            font-size: 3rem;
-            font-weight: 900;
+            font-size: 2.75rem;
+            font-weight: 800;
             margin-bottom: 1rem;
             background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
         }
         
         .section-description {
-            font-size: 1.25rem;
-            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.65);
             max-width: 700px;
             margin: 0 auto;
-            line-height: 1.6;
+            line-height: 1.7;
+            font-weight: 400;
+            letter-spacing: -0.01em;
         }
         
         /* Features Grid */
@@ -418,19 +474,38 @@
         }
         
         .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
             padding: 2.5rem;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
         
         .feature-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(139, 92, 246, 0.5);
-            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 24px 72px rgba(139, 92, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        
+        .feature-card:hover::before {
+            opacity: 1;
         }
         
         .feature-icon {
@@ -486,12 +561,12 @@
         }
         
         .module-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
             padding: 2rem;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
@@ -513,9 +588,10 @@
         }
         
         .module-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(139, 92, 246, 0.5);
-            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 24px 72px rgba(139, 92, 246, 0.25);
+            background: rgba(255, 255, 255, 0.06);
         }
         
         .module-icon {
@@ -546,25 +622,48 @@
         }
         
         .pricing-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
             padding: 3rem 2rem;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            overflow: hidden;
+        }
+        
+        .pricing-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .pricing-card:hover::after {
+            left: 100%;
         }
         
         .pricing-card.featured {
-            border: 2px solid #8b5cf6;
+            border: 2px solid rgba(139, 92, 246, 0.6);
             transform: scale(1.05);
-            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 24px 72px rgba(139, 92, 246, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            background: rgba(139, 92, 246, 0.05);
         }
         
         .pricing-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(139, 92, 246, 0.5);
-            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+            transform: translateY(-12px) scale(1.02);
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 28px 80px rgba(139, 92, 246, 0.3);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        
+        .pricing-card.featured:hover {
+            transform: scale(1.08) translateY(-12px);
+            box-shadow: 0 32px 96px rgba(139, 92, 246, 0.5);
         }
         
         .pricing-badge {
@@ -689,9 +788,20 @@
         
         /* Footer */
         .footer {
-            background: rgba(15, 10, 31, 0.95);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 4rem 2rem 2rem;
+            background: linear-gradient(180deg, rgba(10, 10, 15, 0.8) 0%, rgba(15, 10, 31, 0.95) 100%);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 3.5rem 2rem 2rem;
+            position: relative;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent);
         }
         
         .footer-content {
@@ -907,7 +1017,7 @@
     </section>
 
     <!-- Demo Video Section -->
-    <section class="section" id="demo" style="padding: 6rem 2rem;">
+    <section class="section demo-section" id="demo" style="padding: 4rem 2rem;">
         <div style="max-width: 1200px; margin: 0 auto;">
             <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
                 <span class="section-badge" data-i18n="demoSectionBadge">Watch Demo</span>
@@ -969,7 +1079,7 @@
     </section>
 
     <!-- Features Section -->
-    <section class="section" id="features">
+    <section class="section features-section" id="features">
         <div class="section-header">
             <span class="section-badge" data-i18n="featuresBadge">Core Features</span>
             <h2 class="section-title" data-i18n="featuresTitle">Everything You Need</h2>
@@ -1078,7 +1188,7 @@
     </section>
 
     <!-- Modules Section -->
-    <section class="section" id="modules">
+    <section class="section demo-section" id="modules">
         <div class="section-header">
             <span class="section-badge">AI Modules</span>
             <h2 class="section-title">8 Specialized Agents</h2>
@@ -1155,7 +1265,7 @@
     </section>
 
     <!-- Pricing Section -->
-    <section class="section" id="pricing">
+    <section class="section pricing-section" id="pricing">
         <div class="section-header">
             <span class="section-badge" data-i18n="pricingBadge">Pricing Plans</span>
             <h2 class="section-title" data-i18n="pricingTitle">Choose Your Plan</h2>
@@ -1215,7 +1325,7 @@
     </section>
 
     <!-- About Section -->
-    <section class="section" id="about">
+    <section class="section about-section" id="about">
         <div class="section-header">
             <span class="section-badge" data-i18n="aboutBadge">About Us</span>
             <h2 class="section-title" data-i18n="aboutTitle">Building the Future of Museums</h2>
