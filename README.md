@@ -1,739 +1,306 @@
-# 🏛️ MuseFlow.life - AI Orchestrated Museum Workflow System
+# MuseFlow.life - AI-Powered Museum Workflow Platform
 
-<div align="center">
-  <img src="https://www.genspark.ai/api/files/s/26RipIBz" alt="MuseFlow Logo" width="200" />
-  
-  ### World-Class Museum Management Platform
-  
-  Complete AI-powered museum workflow automation with **Gemini 2.0**, **Multi-Agent System**, **Real-time Collaboration**, and **Immersive Experiences**.
-  
-  ![Status](https://img.shields.io/badge/status-active-success.svg)
-  ![Version](https://img.shields.io/badge/version-4.0-blue.svg)
-  ![TypeScript](https://img.shields.io/badge/TypeScript-5.7.2-blue)
-  ![Hono](https://img.shields.io/badge/Hono-4.10.6-orange)
-  ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-</div>
+## 🎯 Project Overview
 
----
+**Name**: MuseFlow.life  
+**Goal**: 혁신적인 AI 기반 박물관 워크플로우 자동화 플랫폼  
+**Status**: ✅ Core Features Completed
 
-## ✨ What's New in Latest Update
+### Main Features
+- 🤖 **8개의 전문 AI 에이전트**: Coordinator, Exhibition, Budget, Archive, Visitor, Digital Twin, Chatbot, Notion Integration
+- ⚡ **3초만에 워크플로우 생성**: 자연어 입력으로 19개 노드 자동 생성
+- 🎨 **Apple.com 스타일 디자인**: Glassmorphism UI with dark theme
+- 🔐 **완전한 인증 시스템**: JWT 기반 signup/login/logout
+- 📂 **프로젝트 관리**: CRUD API와 프로젝트 대시보드
+- 👤 **My Account 페이지**: 프로필 관리, 보안 설정, 통계
+- 🌐 **다국어 지원**: 한국어/영어 자동 번역
 
-### 🎨 World-Class UI Design
-- **Glassmorphism** - Premium frosted glass effects with backdrop blur
-- **Neumorphism** - Soft 3D shadows for depth perception
-- **Neon Gradients** - Purple-pink gradient mesh throughout
-- **Dark Space Theme** - Deep space background with radial gradients
-- **Micro-interactions** - Smooth hover effects and animations
-- **Responsive Design** - Mobile-first, works on all devices
-- **Apple Vision Pro Style** - Spatial depth and premium aesthetics
+## 🌐 URLs
 
-### 🌐 Internationalization (i18n)
-- **5 Languages Support** - Korean, English, Japanese, Chinese, Spanish
-- **Auto-Detection** - Browser language preference
-- **Locale Formatting** - Date, number, currency formatting
-- **Fallback System** - English as default
+### 🚀 Production
+- **Landing Page**: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai/landing.html
+- **Signup**: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai/signup.html
+- **Login**: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai/login.html
+- **Projects**: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai/projects.html
+- **My Account**: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai/account.html
+- **Canvas/Admin**: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai/admin.html
 
----
+### 📝 API Endpoints
+- **Auth**: `/api/auth/signup`, `/api/auth/login`, `/api/auth/me`, `/api/auth/logout`
+- **Profile**: `/api/auth/profile` (PUT), `/api/auth/password` (PUT)
+- **Projects**: `/api/projects` (GET/POST), `/api/projects/:id` (GET/PUT/DELETE)
 
-## 🌟 Key Features
+### 🧪 Test User
+- **Email**: test@museflow.life
+- **Password**: testpass123
+- **Name**: Test User
+- **Projects**: 3개 테스트 프로젝트 생성됨
 
-### 🤖 AI-Powered Workflow Generation
-- **Natural Language Input** → Complete Workflow (3-5 seconds)
-- **19 Auto-Generated Nodes** across 6 workflow phases
-- **Budget Estimation** and optimization
-- **Artwork Selection** and curation
-- **Timeline Planning** with milestones
+## 💾 Data Architecture
 
-### 🎭 Multi-Agent System (8 Agents)
-- **Coordinator Agent** - MCP protocol orchestration
-- **Exhibition Agent** - Exhibition planning and curation
-- **Budget Agent** - Financial analysis and optimization  
-- **Archive Agent** - Artwork search and recommendation
-- **Visitor Agent** - Visitor traffic prediction and analytics
-- **Digital Twin Agent** - Museum space simulation and optimization
-- **Chatbot Agent** - AI museum guide with conversation management
+### Database Tables (Cloudflare D1)
 
-### 👥 Real-time Collaboration
-- **WebSocket-based** real-time sync (Cloudflare Durable Objects)
-- **Live Cursors** - See where teammates are working
-- **Node Selection Sync** - Collaborative editing
-- **Active Users Panel** - See who's online
-- **Auto-reconnect** with exponential backoff
+#### users
+- id (PRIMARY KEY)
+- email (UNIQUE)
+- password_hash
+- name
+- created_at
+- last_login
+- profile_image
 
-### 🏛️ Museum Data Integration
-- **National Museum of Korea API** - Access to artwork collection
-- **Soma Museum API** - Seoul Museum of Art integration
-- **KCISA 3D API** - 3D cultural heritage models
-- **Unified Search** - Search across multiple museums
-- **Artwork Search** - Search by title, category, period, artist
-- **Data Caching** - 24-hour cache for performance (D1 Database)
-- **Museum Search Modal** - Beautiful UI for browsing artworks
+#### sessions
+- id (PRIMARY KEY)
+- user_id (FOREIGN KEY)
+- token (UNIQUE)
+- expires_at
+- created_at
 
-### 🔄 Notion Integration
-- **Two-Way Sync** between Canvas and Notion
-- **Automatic Project/Task Creation**
-- **Real-time Status Updates**
+#### projects
+- id (PRIMARY KEY)
+- user_id (FOREIGN KEY)
+- title
+- description
+- workflow_data (JSON)
+- status (draft/active/completed)
+- created_at
+- updated_at
 
-### 📊 Advanced Features
-- **Knowledge Graph** (Entity & Relationship mapping)
-- **Event Sourcing** (Full workflow history)
-- **AI Suggestions** (Next step recommendations)
-- **D1 Database** - Persistent state with auto-save
-- **NFT Assets** - Blockchain integration for digital exhibitions
-- **Visitor Prediction** - AI-powered traffic forecasting
-- **3D Visualization** - Three.js 3D model viewer
-- **Digital Twin** - Space simulation and visitor flow optimization
-- **AR/VR Support** - WebXR API for immersive experiences
-- **IoT Sensors** - Real-time environmental monitoring (9 sensor types)
-- **KPI Dashboard** - Real-time analytics with Chart.js
-- **AI Chatbot** - Museum visitor assistant with personalized recommendations
-- **Performance Optimization** - Dual-layer caching (Memory + KV) and query optimization
+### Storage Services
+- **D1 Database**: 사용자 인증, 프로젝트 데이터
+- **localStorage**: JWT 토큰, 사용자 세션
 
----
+## 🎨 Design System
 
-## 🏗️ Architecture
+### Color Palette
+- **Primary Gradient**: `linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)`
+- **Background**: `linear-gradient(135deg, #0a0a0f 0%, #1a0f2e 50%, #0a0a0f 100%)`
+- **Text**: `#f5f5f7` (primary), `rgba(255, 255, 255, 0.7)` (secondary)
+
+### Components
+- **Glassmorphism Cards**: `backdrop-filter: saturate(180%) blur(20px)`
+- **Neon Glow Effects**: `box-shadow: 0 0 20px rgba(139, 92, 246, 0.6)`
+- **Gradient Text**: `-webkit-background-clip: text`
+- **Smooth Transitions**: `cubic-bezier(0.4, 0, 0.2, 1)`
+
+### Typography
+- **Font Family**: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto
+- **Hero Title**: 3.5rem, 800 weight
+- **Section Title**: 2.5rem, 700 weight
+- **Body**: 1rem, 400 weight
+
+## 📱 User Flow
 
 ```
-5-Layer System:
-┌──────────────────────────────┐
-│ Frontend (Canvas V2)         │ Figma-style UI + Real-time Collaboration
-├──────────────────────────────┤
-│ AI Orchestration             │ Intent Recognition + Gemini 3.0
-├──────────────────────────────┤
-│ Multi-Agent System           │ 3 Specialized Agents (Exhibition/Budget/Archive)
-├──────────────────────────────┤
-│ Data Layer                   │ D1 + Museum API + Notion + Durable Objects
-├──────────────────────────────┤
-│ Infrastructure               │ Cloudflare Workers + Pages
-└──────────────────────────────┘
+Landing Page (/)
+    ↓
+[회원가입] → Signup Page (/signup.html)
+    ↓
+[로그인] → Login Page (/login.html)
+    ↓
+Projects Page (/projects.html)
+    ↓
+[프로젝트 클릭] → Canvas/Admin (/admin.html?project=:id)
+    ↓
+[내 계정] → My Account (/account.html)
 ```
 
----
-
-## 📦 Tech Stack
-
-### Backend
-- **Hono** - Lightweight web framework
-- **Cloudflare Workers** - Serverless edge runtime
-- **Cloudflare D1** - Globally distributed SQLite database
-- **Cloudflare Durable Objects** - WebSocket state management
-- **TypeScript 5.7.2** - Full type safety
-
-### AI & ML
-- **Gemini 3.0** (gemini-2.0-flash-exp) - Google's latest AI model
-- **MCP Protocol** - Agent-to-Agent communication
-- **Intent Recognition** - Natural language understanding
-- **Multi-Agent Orchestration** - Coordinated AI workflows
-
-### Integration
-- **Notion API v2** - Workspace synchronization
-- **National Museum of Korea API** - Artwork data
-- **Soma Museum API** - Seoul Museum of Art
-- **KCISA 3D API** - 3D cultural heritage models
-- **Three.js** - 3D model visualization
-- **Neo4j** - Knowledge graph (schema ready)
-- **Blockchain** - NFT integration (Ethereum, Polygon, Klaytn)
-
----
-
-## 🚀 Quick Start
-
-### 1. Prerequisites
-```bash
-Node.js 20+
-npm or yarn
-Cloudflare account (for deployment)
-Gemini API key (from Google AI Studio)
-```
-
-### 2. Installation
-```bash
-# Clone repository
-git clone <repository-url>
-cd museflow-v4
-
-# Install dependencies
-npm install
-
-# Copy environment variables
-cp .dev.vars.example .dev.vars
-
-# Edit .dev.vars and add your API keys
-```
-
-### 3. Setup Database
-```bash
-# Create D1 database (production)
-npx wrangler d1 create museflow-production
-
-# Copy the database_id to wrangler.jsonc
-
-# Run migrations (local)
-npx wrangler d1 migrations apply museflow-production --local
-```
-
-### 4. Development
-```bash
-# Build the project
-npm run build
-
-# Start development server (sandbox with PM2)
-pm2 start ecosystem.config.cjs
-
-# Check status
-pm2 list
-
-# View logs
-pm2 logs museflow-v4 --nostream
-
-# Access at: http://localhost:3000
-```
-
-### 5. Access Points
-
-**🌐 Production (Cloudflare Pages):**
-- **Live Site**: https://4ac75c5f.museflow.pages.dev ⭐ Latest
-- **Primary Domain**: https://museflow.pages.dev
-- **Status**: ✅ Deployed & Active
-- **Last Updated**: 2024-11-20 16:45 KST
-
-**Development:**
-- Local: http://localhost:3000
-- Sandbox: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai
-
-**Pages Available:**
-- 🏠 **Landing Page**: `/landing.html` - World-class marketing page
-  - Hero section with neon logo
-  - Features showcase (6 cards)
-  - Modules overview (8 agents)
-  - Pricing plans (Free, Pro, Enterprise)
-  - About section with tech stack
-  
-- 📊 **Admin Dashboard**: `/admin.html` - System management
-  - Glass card stats with neon glow
-  - Real-time KPI monitoring
-  - Cache management
-  - Activity logs
-  
-- 🎮 **AR/VR Demo**: `/ar-vr-demo.html` - Immersive experiences
-  - 3D model viewer
-  - AR artwork placement
-  - VR museum tours
-  - WebXR capabilities check
-  
-- 💬 **Chatbot Widget**: Floating button (bottom-right corner)
-  - AI museum guide
-  - Floating animation
-  - Dark glass window design
-
-**Features to Explore:**
-1. **Landing Page** - Premium glassmorphism design with animations
-2. **Admin Dashboard** - Real-time analytics with Chart.js
-3. **AR/VR Experience** - Immersive cultural heritage viewing
-4. **Chatbot** - AI-powered visitor assistance
-
----
-
-## 📚 API Documentation
-
-### Health Check
-```http
-GET /api/health
-```
-
-### AI Workflow Generation
-```http
-POST /api/ai/generate-workflow
-Content-Type: application/json
-
-{
-  "prompt": "다음 달 인상파 전시 기획해줘",
-  "context": {
-    "budget": 100000000,
-    "duration": "P3M",
-    "userId": "user-123"
-  }
-}
-
-Response:
-{
-  "success": true,
-  "data": {
-    "workflowId": "workflow-xxx",
-    "name": "인상파 전시",
-    "nodesCount": 19,
-    "connectionsCount": 18,
-    "metadata": {
-      "generatedBy": "ai",
-      "model": "gemini-2.0-flash-exp",
-      "confidence": 0.95,
-      "processingTime": 3245
-    }
-  }
-}
-```
-
-### Intent Recognition
-```http
-POST /api/ai/recognize-intent
-Content-Type: application/json
-
-{
-  "query": "다음 주 어린이 교육 프로그램 만들어줘"
-}
-
-Response:
-{
-  "success": true,
-  "data": {
-    "type": "create_workflow",
-    "confidence": 0.92,
-    "parameters": {
-      "theme": "어린이 교육 프로그램",
-      "targetAudience": "어린이"
-    }
-  }
-}
-```
-
-### Workflow Management
-```http
-# Create workflow
-POST /api/workflows
-
-# Get workflow with nodes
-GET /api/workflows/:id
-
-# Update workflow
-PUT /api/workflows/:id
-
-# Delete workflow
-DELETE /api/workflows/:id
-
-# List workflows
-GET /api/workflows?userId=user-123&limit=50
-```
-
-### Node Management
-```http
-# Add node
-POST /api/workflows/:id/nodes
-
-# Update node
-PUT /api/nodes/:id
-
-# Delete node
-DELETE /api/nodes/:id
-```
-
----
-
-## 🗄️ Database Schema
-
-### Core Tables (14 tables)
-
-```sql
-workflows           -- AI-generated workflows
-nodes               -- Workflow nodes with agent assignment
-connections         -- Node-to-node connections
-agent_executions    -- Agent execution history
-collaboration_sessions -- Real-time collaboration
-knowledge_entities  -- Museum domain entities
-knowledge_relationships -- Entity relationships
-workflow_events     -- Event sourcing
-ai_suggestions      -- AI recommendations
-museum_data_cache   -- API response cache
-nft_assets          -- NFT blockchain assets
-nft_collections     -- NFT collection management
-nft_transfers       -- NFT ownership history
-```
-
----
-
-## 🎯 Usage Examples
-
-### Example 1: Generate Exhibition Workflow
-
-```javascript
-const response = await fetch('http://localhost:3000/api/ai/generate-workflow', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    prompt: "현대미술 전시 기획해줘",
-    context: {
-      budget: 50000000,
-      duration: "P3M"
-    }
-  })
-});
-
-const result = await response.json();
-console.log('Generated workflow:', result.data.workflowId);
-console.log('Nodes created:', result.data.nodesCount);
-```
-
-### Example 2: Use Agents Directly
-
-```typescript
-import { initGemini } from './services/gemini.service';
-import { initCoordinator } from './agents/coordinator';
-
-// Initialize
-initGemini({ apiKey: process.env.GEMINI_API_KEY });
-const coordinator = initCoordinator();
-await coordinator.initialize();
-
-// Create exhibition workflow
-const exhibitionPlan = await coordinator.createExhibitionWorkflow(
-  {
-    theme: "20세기 한국 현대미술",
-    budget: 100000000,
-    duration: "P3M"
-  },
-  {
-    workflowId: 'workflow-123',
-    workflowName: '현대미술 전시',
-    // ... context
-  }
-);
-
-console.log('Exhibition concept:', exhibitionPlan.concept);
-console.log('Budget:', exhibitionPlan.budget.total);
-console.log('Artworks:', exhibitionPlan.artworks.length);
-console.log('Workflow nodes:', exhibitionPlan.nodes.length);
-```
-
----
-
-## 📊 Performance
-
-- **Workflow Generation**: ~30-60 seconds
-- **Intent Recognition**: ~1 second
-- **Budget Estimation**: ~15 seconds
-- **Artwork Search**: ~10 seconds
-- **Visitor Prediction**: ~20 seconds
-- **Digital Twin Simulation**: ~45 seconds
-- **3D Model Loading**: ~2-5 seconds (depends on model size)
-- **Cost per Workflow**: ~$0.0006 (약 0.8원)
-
----
-
-## 🔧 Configuration
-
-### Environment Variables (.dev.vars)
-
-```bash
-# Required
-GEMINI_API_KEY=your_gemini_api_key
-
-# Optional
-NOTION_API_KEY=your_notion_key
-NOTION_DATABASE_PROJECTS=project_db_id
-NOTION_DATABASE_TASKS=task_db_id
-
-# Museum APIs
-MUSEUM_API_KEY=your_museum_api_key
-SOMA_API_KEY=your_soma_api_key
-KCISA_API_KEY=your_kcisa_api_key
-```
-
-### Wrangler Configuration (wrangler.jsonc)
-
-```json
-{
-  "name": "museflow-v4",
-  "d1_databases": [{
-    "binding": "DB",
-    "database_name": "museflow-production",
-    "database_id": "your-database-id"
-  }]
-}
-```
-
----
-
-## 🧪 Testing
-
-```bash
-# Test AI connection
-curl http://localhost:3000/api/ai/test
-
-# Test health check
-curl http://localhost:3000/api/health
-
-# Test workflow generation
-curl -X POST http://localhost:3000/api/ai/generate-workflow \
-  -H "Content-Type: application/json" \
-  -d '{"prompt": "테스트 전시 기획", "context": {}}'
-```
-
----
-
-## 📁 Project Structure
-
-```
-museflow-v4/
-├── src/
-│   ├── agents/           # Multi-Agent System
-│   │   ├── base.agent.ts
-│   │   ├── exhibition.agent.ts
-│   │   ├── budget.agent.ts
-│   │   ├── archive.agent.ts
-│   │   └── coordinator.ts
-│   │
-│   ├── services/         # Core Services
-│   │   ├── gemini.service.ts
-│   │   ├── notion.service.ts
-│   │   ├── intent.service.ts
-│   │   └── database.service.ts
-│   │
-│   ├── api/              # API Routes
-│   │   ├── index.ts
-│   │   ├── workflows.ts
-│   │   └── ai.ts
-│   │
-│   ├── types/            # TypeScript Types
-│   │   ├── database.types.ts
-│   │   └── agent.types.ts
-│   │
-│   └── index.tsx         # Main entry
-│
-├── migrations/           # D1 Migrations
-│   ├── 0001_initial_schema.sql
-│   └── 0002_nft_assets.sql
-│
-├── public/static/        # Frontend Assets
-│   ├── js/pages/canvas-v2.js
-│   └── ...
-│
-├── docs/                 # Documentation
-│   └── ARCHITECTURE.md
-│
-├── package.json
-├── tsconfig.json
-├── wrangler.jsonc
-├── .dev.vars
-└── README.md
-```
-
----
-
-## 🚢 Deployment
+### Key Features by Page
+
+#### Landing Page
+- Hero section with AI Workspace search
+- 10개 AI 도구 버튼 (🎯 🎨 💰 🏛️ 👥 🏗️ 💬 🎮 🎬 🤖)
+- Apple-style large product cards (80vh height)
+- Features, Modules, Pricing, About sections
+
+#### Signup/Login Pages
+- Glassmorphism form design
+- Real-time validation
+- JWT token generation
+- Error/success message display
+
+#### Projects Page
+- Grid layout with project cards
+- Search and filter functionality
+- New project modal
+- Status badges (draft/active/completed)
+- Click to navigate to canvas
+
+#### My Account Page
+- Profile information display
+- Profile editing (name, avatar)
+- Password change functionality
+- Workflow statistics (0/0/8)
+- Subscription information
+- Logout button
+
+#### Admin/Canvas Page
+- Existing workflow editor
+- Project-based routing (?project=:id)
+- Full canvas functionality
+
+## 🚀 Deployment
+
+### Technology Stack
+- **Framework**: Hono (Cloudflare Workers)
+- **Database**: Cloudflare D1 (SQLite)
+- **Frontend**: Vanilla JS + TailwindCSS
+- **Auth**: JWT (7-day expiry)
+- **Deployment**: Cloudflare Pages
 
 ### Local Development
 ```bash
+# Install dependencies
+npm install
+
+# Run migrations
+npx wrangler d1 migrations apply museflow-production --local
+
+# Build
 npm run build
-npm run dev:sandbox
+
+# Start development server
+pm2 start ecosystem.config.cjs
+
+# Test
+curl http://localhost:3000
 ```
 
-### Production (Cloudflare Pages)
+### Production Deployment
 ```bash
 # Build
 npm run build
 
-# Deploy
-npx wrangler pages deploy dist --project-name museflow-v4
-
-# Apply migrations
-npx wrangler d1 migrations apply museflow-production
+# Deploy to Cloudflare Pages
+npx wrangler pages deploy dist --project-name museflow
 ```
 
----
+## ✅ Completed Features
 
-## 🤝 Contributing
+### Phase 1: Authentication System ✅
+- [x] User registration with validation
+- [x] Login with JWT tokens
+- [x] Session management
+- [x] Password hashing (SHA-256)
+- [x] Protected routes
 
-This is a research project for AI-powered museum workflow automation. 
+### Phase 2: User Profile Management ✅
+- [x] My Account page
+- [x] Profile editing
+- [x] Password change
+- [x] Avatar display
+- [x] User statistics
 
-For questions or collaboration:
-- GitHub Issues
-- Documentation: `/docs/ARCHITECTURE.md`
+### Phase 3: Project Management ✅
+- [x] Projects CRUD API
+- [x] Projects listing page
+- [x] Project creation modal
+- [x] Search and filter
+- [x] Status management
 
----
+### Phase 4: UI/UX Excellence ✅
+- [x] Apple.com design language
+- [x] Glassmorphism effects
+- [x] Responsive design
+- [x] Loading states
+- [x] Error handling
 
-## 📄 License
+### Phase 5: Testing & Validation ✅
+- [x] Test user creation
+- [x] API endpoint testing
+- [x] Complete user flow validation
+- [x] 3 test projects created
 
-Private research project.
+## 📋 Pending Tasks
 
----
+### High Priority
+- [ ] Canvas page integration with project data
+- [ ] Workflow data persistence
+- [ ] Real-time collaboration features
+- [ ] File upload for profile images
 
-## 🎓 Academic Use
+### Medium Priority
+- [ ] Email verification
+- [ ] Password reset flow
+- [ ] Project sharing
+- [ ] Team collaboration
 
-This system can be used for research in:
-- AI Multi-Agent Systems
-- Natural Language Interfaces
-- Museum Technology
-- Knowledge Graph Applications
-- Human-AI Collaboration
+### Low Priority
+- [ ] Dark/light theme toggle
+- [ ] Export workflow data
+- [ ] Analytics dashboard
+- [ ] Notification system
 
----
+## 🛠️ Development Notes
 
-## 📞 Contact
+### Git Repository
+- **Branch**: main
+- **Latest Commit**: "Add Projects page with full CRUD API and login redirect"
+- **Total Commits**: 5+
 
-- Project Lead: 남현우 교수
-- Institution: [Your Institution]
-- Email: [Your Email]
-
----
-
----
-
-## 🆕 Recent Updates (All Phases Complete ✅)
-
-### Phase A - Immediate Enhancements (✅ 100%)
-✅ **Soma Museum API Integration** - Seoul Museum of Art data access  
-✅ **Visitor Prediction Agent** - AI-powered traffic forecasting with historical data analysis  
-✅ **NFT Assets System** - Blockchain integration with 3 tables (assets, collections, transfers)
-
-### Phase B - Next Session Features (✅ 100%)
-✅ **KCISA 3D API Integration** - 3D cultural heritage models (GLB, GLTF, OBJ, FBX)  
-✅ **Three.js 3D Viewer** - Production-ready 3D visualization component  
-✅ **Digital Twin Simulation** - Space optimization with visitor flow analysis
-
-### Phase C - Long-term Enhancements (✅ 100%)
-✅ **AR/VR Support** - WebXR API integration (immersive-ar, immersive-vr modes)  
-✅ **IoT Sensor Integration** - Real-time monitoring with 9 sensor types and threshold alerts  
-✅ **Real-time KPI Dashboard** - Analytics dashboard with Chart.js (auto-refresh every 5s)  
-✅ **Advanced AI Features** - Chatbot agent with conversation management and recommendations  
-✅ **Performance Optimization** - Dual-layer caching (Memory + KV), query optimizer, monitoring API
-
-### New API Endpoints (60+ total)
+### File Structure
 ```
-# Museum Integration
-GET  /api/museum/soma/search          - Soma Museum search
-GET  /api/museum/unified-search       - Unified multi-museum search
-
-# Visitor Analytics
-POST /api/visitor/predict             - Visitor traffic prediction
-POST /api/visitor/analyze             - Historical data analysis
-POST /api/visitor/capacity            - Capacity planning
-POST /api/visitor/revenue             - Revenue projection
-
-# NFT Management
-GET/POST/PUT/DELETE /api/nft/assets   - NFT asset management
-GET/POST /api/nft/collections         - NFT collections
-GET/POST /api/nft/transfers           - Transfer history
-
-# 3D Models
-GET  /api/3d-models/search            - 3D model search
-GET  /api/3d-models/:id               - Model details
-POST /api/3d-models/validate          - URL validation
-
-# Digital Twin
-POST /api/digital-twin/simulate       - Space simulation
-POST /api/digital-twin/optimize       - Placement optimization
-POST /api/digital-twin/visitor-flow   - Visitor flow simulation
-
-# WebXR (AR/VR)
-GET  /api/webxr/capabilities          - Device capability check
-POST /api/webxr/session/vr            - Start VR session
-POST /api/webxr/session/ar            - Start AR session
-
-# IoT Sensors
-GET  /api/iot-sensors/sensors         - List all sensors
-GET  /api/iot-sensors/sensors/:id     - Get sensor data
-POST /api/iot-sensors/sensors/:id     - Update sensor value
-GET  /api/iot-sensors/zones/:zone/metrics - Zone metrics
-GET  /api/iot-sensors/alerts          - Active alerts
-
-# Chatbot
-POST /api/chatbot/session             - Create chat session
-POST /api/chatbot/message             - Send message
-GET  /api/chatbot/session/:id         - Get session history
-POST /api/chatbot/recommendations     - Get recommendations
-GET  /api/chatbot/stats               - Chatbot statistics
-
-# Performance Monitoring
-GET  /api/performance/metrics         - Performance metrics
-GET  /api/performance/cache/stats     - Cache statistics
-POST /api/performance/cache/clear     - Clear cache
-GET  /api/performance/recommendations - Optimization tips
+museflow-v4/
+├── public/
+│   ├── landing.html (112KB)
+│   ├── signup.html (10KB)
+│   ├── login.html (10KB)
+│   ├── account.html (21KB)
+│   ├── projects.html (18KB)
+│   ├── admin.html (13KB)
+│   └── static/
+│       └── images/
+│           └── logo-neon-m.png (45KB)
+├── src/
+│   ├── index.tsx (main app)
+│   └── routes/
+│       ├── auth.ts (5.4KB)
+│       └── projects.ts (4.8KB)
+├── migrations/
+│   ├── 0001_create_users_table.sql
+│   └── 0002_create_projects_table.sql
+└── ecosystem.config.cjs (PM2 config)
 ```
 
-### Performance Improvements
-- **Cache Hit Rate**: 100% for repeated queries
-- **Query Optimization**: EXPLAIN QUERY PLAN analysis and slow query detection (>100ms)
-- **Memory + KV Caching**: Dual-layer with automatic TTL management
-- **API Response Time**: < 100ms for cached requests
+### Key Technologies
+- **Hono**: 4.0.0+
+- **Wrangler**: 3.78.0+
+- **Vite**: 5.0.0+
+- **PM2**: Pre-installed
+- **TailwindCSS**: CDN
+- **FontAwesome**: 6.4.0 CDN
 
-### New Services
-- `cache.service.ts` (6,788 chars) - Dual-layer caching system
-- `query-optimizer.service.ts` (9,025 chars) - Database query optimization
-- `webxr.service.ts` (8,790 chars) - AR/VR functionality
-- `iot-sensor.service.ts` (10,407 chars) - Sensor monitoring and alerting
+## 🎯 Next Steps
 
-### New Agents
-- `chatbot.agent.ts` (10,757 chars) - AI museum guide with conversation management
+1. **Canvas Integration** (In Progress)
+   - Connect projects to canvas editor
+   - Save/load workflow data
+   - Project-specific canvases
 
-### New UI Components
-- `threejs-viewer.js` (11,306 chars) - 3D model viewer with 5-stage lighting
-- `kpi-dashboard.js` (13,571 chars) - Real-time analytics dashboard with Chart.js
+2. **UI Polish** (In Progress)
+   - Fix any remaining button/link errors
+   - Ensure design consistency
+   - Mobile responsiveness testing
 
----
+3. **Feature Completion**
+   - Implement missing functionality
+   - Add real-time features
+   - Complete admin dashboard
 
-*Last Updated: 2025-11-20*  
-*Version: 2.0.0 (ALL PHASES COMPLETE)*  
-*Status: Production Ready with Full Feature Set*  
-*Total API Endpoints: 60+*  
-*Total Agents: 8*  
-*Total Services: 15+*  
-*Total DB Tables: 14*
+4. **Production Deployment**
+   - Deploy to Cloudflare Pages
+   - Set up custom domain
+   - Configure environment variables
 
----
+## 📞 Support
 
-## 🎉 Additional Features (All 12 Complete)
-
-### ✅ User Interface
-1. **Chatbot UI** - Floating chat widget with real-time AI responses
-2. **AR/VR Demo** - WebXR demo page for immersive experiences
-3. **Admin Dashboard** - System management and monitoring interface
-4. **KPI Dashboard** - Real-time analytics with Chart.js
-
-### ✅ Backend Services
-5. **Notification System** - Email (SendGrid/Resend) and SMS (Twilio)
-6. **Cache Service** - Dual-layer caching (Memory + KV)
-7. **Query Optimizer** - Database performance analysis
-
-### ✅ Testing & Documentation
-8. **Test Coverage** - Vitest test suites for agents and services
-9. **Deployment Guide** - Complete Cloudflare Pages deployment walkthrough (DEPLOYMENT.md)
-10. **API Documentation** - Comprehensive endpoint documentation
-
-### ✅ PWA & Modern Web
-11. **Service Worker** - Offline support and caching
-12. **PWA Manifest** - Install as app on any device
+For issues or questions:
+- GitHub: [Repository Link]
+- Email: support@museflow.life
+- Documentation: [Coming Soon]
 
 ---
 
-## 📦 New Pages & Demos
-
-### Public Pages
-- `/` - Main Canvas V2 interface
-- `/admin.html` - Admin dashboard
-- `/ar-vr-demo.html` - AR/VR demo interface
-
-### API Collections
-- `/api/chatbot/*` - 10 chatbot endpoints
-- `/api/performance/*` - 9 performance monitoring endpoints
-- `/api/webxr/*` - 3 WebXR endpoints
-- `/api/iot-sensors/*` - 6 IoT endpoints
-
----
-
-## 🚀 Quick Links
-
-- **Backup**: https://www.genspark.ai/api/files/s/jrwCtsNF
-- **Deployment Guide**: See DEPLOYMENT.md
-- **Test Suite**: Run `npm test`
-- **Admin Dashboard**: Visit /admin.html
-- **AR/VR Demo**: Visit /ar-vr-demo.html
-
----
-
-*Last Updated: 2025-11-20*  
-*Version: 2.1.0 (ALL FEATURES COMPLETE)*  
-*Status: Production Ready with Full Feature Set*  
-*Total Commits: 150+*  
-*Total Files: 100+*  
-*Total Lines of Code: 25,000+*
-
-🏆 **100% Feature Complete - Ready for Production Deployment**
+**Last Updated**: 2025-11-21  
+**Version**: 1.0.0  
+**Status**: ✅ Core Features Complete, 🔄 UI Polish In Progress
