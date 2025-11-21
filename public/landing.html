@@ -1227,8 +1227,199 @@
             <p style="margin-top: 1rem; font-size: 0.875rem;">
                 <strong>기술이전:</strong> 남현우 교수 (<a href="mailto:gallerypia@gmail.com" style="color: #8b5cf6; text-decoration: none;">gallerypia@gmail.com</a>)
             </p>
+            <p style="margin-top: 1.5rem; font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">
+                이 사이트는 더 나은 사용자 경험을 위해 브라우저 로컬 저장소를 사용합니다. 
+                <a href="#privacy-modal" id="privacy-link" style="color: #8b5cf6; text-decoration: none; margin: 0 0.5rem;">개인정보처리방침</a>
+                <span style="color: rgba(255, 255, 255, 0.3);">|</span>
+                <a href="#terms-modal" id="terms-link" style="color: #8b5cf6; text-decoration: none; margin: 0 0.5rem;">이용약관</a>
+            </p>
         </div>
     </footer>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacy-modal" class="policy-modal" style="display: none;">
+        <div class="policy-modal-content">
+            <button class="policy-modal-close" onclick="document.getElementById('privacy-modal').style.display='none'">&times;</button>
+            <h2>개인정보처리방침</h2>
+            <div class="policy-content">
+                <h3>1. 수집하는 개인정보</h3>
+                <p>MuseFlow는 다음과 같은 정보를 로컬 브라우저에만 저장합니다:</p>
+                <ul>
+                    <li>사용자 이름 및 이메일 (회원가입 시)</li>
+                    <li>프로젝트 데이터 (작업 내용)</li>
+                    <li>언어 설정</li>
+                </ul>
+                
+                <h3>2. 개인정보의 보관</h3>
+                <p>모든 데이터는 귀하의 브라우저 로컬 저장소(LocalStorage)에만 저장되며, 외부 서버로 전송되지 않습니다.</p>
+                
+                <h3>3. 제3자 제공</h3>
+                <p>MuseFlow는 귀하의 개인정보를 제3자에게 제공하지 않습니다.</p>
+                
+                <h3>4. 쿠키 사용</h3>
+                <p>이 사이트는 제3자 추적 쿠키를 사용하지 않습니다. 오직 브라우저 로컬 저장소만을 사용하여 사용자 경험을 개선합니다.</p>
+                
+                <h3>5. 귀하의 권리</h3>
+                <p>귀하는 언제든지 브라우저 설정을 통해 저장된 데이터를 삭제할 수 있습니다.</p>
+                
+                <h3>6. 문의</h3>
+                <p>개인정보 관련 문의: <a href="mailto:gallerypia@gmail.com" style="color: #8b5cf6;">gallerypia@gmail.com</a></p>
+                
+                <p style="margin-top: 2rem; font-size: 0.875rem; color: rgba(255,255,255,0.6);">
+                    최종 업데이트: 2024년 11월 20일
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms of Service Modal -->
+    <div id="terms-modal" class="policy-modal" style="display: none;">
+        <div class="policy-modal-content">
+            <button class="policy-modal-close" onclick="document.getElementById('terms-modal').style.display='none'">&times;</button>
+            <h2>이용약관</h2>
+            <div class="policy-content">
+                <h3>1. 서비스 이용</h3>
+                <p>MuseFlow는 박물관 및 문화기관을 위한 워크플로우 관리 플랫폼입니다.</p>
+                
+                <h3>2. 사용자 책임</h3>
+                <ul>
+                    <li>사용자는 정확한 정보를 제공해야 합니다.</li>
+                    <li>사용자는 본인의 계정 보안을 유지할 책임이 있습니다.</li>
+                    <li>불법적인 목적으로 서비스를 사용할 수 없습니다.</li>
+                </ul>
+                
+                <h3>3. 지적재산권</h3>
+                <p>MuseFlow의 모든 콘텐츠, 기능 및 소프트웨어는 저작권법의 보호를 받습니다.</p>
+                
+                <h3>4. 서비스 제공 범위</h3>
+                <p>본 서비스는 "있는 그대로(as-is)" 제공되며, 서비스의 중단 없는 운영을 보장하지 않습니다.</p>
+                
+                <h3>5. 책임의 제한</h3>
+                <p>MuseFlow는 서비스 사용으로 인한 직간접적 손해에 대해 법적 책임을 지지 않습니다.</p>
+                
+                <h3>6. 약관 변경</h3>
+                <p>MuseFlow는 필요 시 본 약관을 수정할 수 있으며, 변경 사항은 웹사이트를 통해 공지됩니다.</p>
+                
+                <h3>7. 문의</h3>
+                <p>이용약관 관련 문의: <a href="mailto:gallerypia@gmail.com" style="color: #8b5cf6;">gallerypia@gmail.com</a></p>
+                
+                <p style="margin-top: 2rem; font-size: 0.875rem; color: rgba(255,255,255,0.6);">
+                    최종 업데이트: 2024년 11월 20일
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Policy Modal Styles */
+        .policy-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .policy-modal-content {
+            background: linear-gradient(135deg, #1e1b4b 0%, #0f0a1f 100%);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            box-shadow: 0 20px 80px rgba(139, 92, 246, 0.3);
+        }
+        
+        .policy-modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .policy-modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+        
+        .policy-modal h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .policy-content {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
+        }
+        
+        .policy-content h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #8b5cf6;
+        }
+        
+        .policy-content p {
+            margin-bottom: 1rem;
+        }
+        
+        .policy-content ul {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .policy-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .policy-content a {
+            color: #8b5cf6;
+            text-decoration: none;
+        }
+        
+        .policy-content a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .policy-modal-content {
+                padding: 2rem 1.5rem;
+                max-height: 85vh;
+            }
+            
+            .policy-modal h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 
     <script>
         // Navbar scroll effect
@@ -1337,6 +1528,37 @@
         
         // Initialize language on page load
         updateLanguage(currentLang);
+        
+        // Privacy Policy & Terms Modal Handlers
+        document.getElementById('privacy-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('privacy-modal').style.display = 'flex';
+            console.log('📜 Privacy Policy opened');
+        });
+        
+        document.getElementById('terms-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('terms-modal').style.display = 'flex';
+            console.log('📜 Terms of Service opened');
+        });
+        
+        // Close modals when clicking outside
+        document.querySelectorAll('.policy-modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+        
+        // Close modals with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.policy-modal').forEach(modal => {
+                    modal.style.display = 'none';
+                });
+            }
+        });
     </script>
 </body>
 </html>
