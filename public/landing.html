@@ -74,6 +74,9 @@
             width: 48px;
             height: 48px;
             border-radius: 12px;
+            /* Remove black background from neon logo */
+            background: transparent;
+            mix-blend-mode: screen;
         }
         
         .nav-logo-text {
@@ -862,7 +865,7 @@
     <section class="hero" id="hero">
         <div class="hero-background"></div>
         <div class="hero-content">
-            <img src="/static/images/logo-square.png" alt="MuseFlow" class="hero-logo">
+            <img src="/static/images/logo-square.png" alt="MuseFlow" class="hero-logo" style="mix-blend-mode: screen; background: transparent;">
             
             <h1 class="hero-title">
                 AI-Powered Museum<br>Workflow Platform
@@ -1590,7 +1593,7 @@
             // Update navigation
             document.querySelector('.nav-signup-btn span').textContent = t.signup;
             document.querySelector('.nav-login-btn').textContent = t.login;
-            document.querySelector('.lang-flag').textContent = lang === 'ko' ? t.langFlag : '🇺🇸';
+            document.querySelector('.lang-flag').textContent = t.langFlag;
             document.querySelector('.lang-text').textContent = t.langName;
             document.querySelector('.mypage-text').textContent = t.mypage;
             
