@@ -109,9 +109,12 @@ Projects Page (/projects.html)
 ### Key Features by Page
 
 #### Landing Page
-- **i18n 지원**: 9개 언어 완전 지원 (150개 번역 키)
-- Hero section with AI Workspace search
-- 10개 AI 도구 버튼 (🎯 🎨 💰 🏛️ 👥 🏗️ 💬 🎮 🎬 🤖)
+- **i18n 지원**: 9개 언어 완전 지원 (159개 번역 키)
+- **🎤 음성 인식**: Web Speech API 기반 9개 언어 음성 입력
+- **검색창**: "당신의 전시를 디자인하세요" (9개 언어 지원)
+- **박물관 특화 AI 도구 버튼** (8개):
+  - 🎯 전시 기획하기 | 💰 예산 계산하기 | 🏛️ 작품 선정하기 | 👥 관람객 예측하기
+  - 🏗️ 공간 설계하기 | 📋 일정 관리하기 | 💬 가이드 만들기 | 🤖 전체 보기
 - Apple-style large product cards (80vh height)
 - Features, Modules, Pricing, About sections
 - Language selector dropdown
@@ -331,18 +334,40 @@ For issues or questions:
 
 ## 🎉 최신 업데이트 (2025-11-21)
 
-### ✨ 최신: 9개 언어 지원 (v1.2.0)
+### ✨ 최신: 음성 인식 & 박물관 특화 AI 도구 (v1.3.0)
+1. **🎤 음성 인식 기능 (Web Speech API)**
+   - 마이크 버튼으로 음성 입력 지원
+   - 9개 언어 음성 인식 (ko-KR, en-US, ja-JP, zh-CN, zh-TW, fr-FR, de-DE, es-ES, it-IT)
+   - 녹음 중 시각적 피드백 (빨간 펄스 애니메이션)
+   - 음성을 텍스트로 자동 변환하여 검색창에 입력
+
+2. **🏛️ 박물관 특화 AI 도구 버튼 (8개)**
+   - 🎯 전시 기획하기 (Plan Exhibition)
+   - 💰 예산 계산하기 (Calculate Budget)
+   - 🏛️ 작품 선정하기 (Select Artworks)
+   - 👥 관람객 예측하기 (Predict Visitors)
+   - 🏗️ 공간 설계하기 (Design Space)
+   - 📋 일정 관리하기 (Manage Schedule)
+   - 💬 가이드 만들기 (Create Guide)
+   - 🤖 전체 보기 (View All)
+
+3. **🎯 검색창 개선**
+   - 플레이스홀더: "당신의 전시를 디자인하세요" (9개 언어)
+   - 음성 인식 + 검색 버튼 UI 개선
+   - 총 81개 새로운 번역 항목 추가
+
+### ✨ 9개 언어 지원 (v1.2.0)
 1. **완전한 다국어 지원** 🌍
    - **총 9개 언어**: 🇰🇷 한국어, 🇺🇸 영어, 🇯🇵 일본어, 🇨🇳 중국어(간체), 🇹🇼 중국어(번체), 🇫🇷 프랑스어, 🇩🇪 독일어, 🇪🇸 스페인어, 🇮🇹 이탈리아어
    - **언어 선택 드롭다운**: 버튼 → 드롭다운으로 UI 개선
    - **자동 번역**: 모든 UI 요소, 에러 메시지, 폼 라벨
    - **localStorage 저장**: 사용자 언어 설정 자동 유지
 
-2. **i18n 시스템 완료** (v1.2.0)
-   - **Landing 페이지**: 완전 번역 (150개 키 × 9개 언어 = 1,350개 항목)
+2. **i18n 시스템 완료** (v1.3.0)
+   - **Landing 페이지**: 완전 번역 (159개 키 × 9개 언어 = 1,431개 항목)
    - **Projects 페이지**: 완전 번역 (28개 키 × 9개 언어 = 252개 항목)
    - **Account 페이지**: 완전 번역 (35개 키 × 9개 언어 = 315개 항목)
-   - **총 1,917개 번역 항목**: 모든 페이지 완전 다국어 지원
+   - **총 1,998개 번역 항목**: 모든 페이지 완전 다국어 지원
    - 실시간 언어 전환
    - 동적 번역 시스템
 
@@ -366,5 +391,5 @@ For issues or questions:
 ---
 
 **Last Updated**: 2025-11-21  
-**Version**: 1.2.0  
-**Status**: ✅ 9개 언어 지원 완료, 🌍 World-Class i18n System
+**Version**: 1.3.0  
+**Status**: ✅ 음성 인식 & 박물관 특화 AI 도구, 🎤 Voice Recognition, 🏛️ Museum-Specific AI Tools
