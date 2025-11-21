@@ -29,11 +29,12 @@
 - **Auth**: `/api/auth/signup`, `/api/auth/login`, `/api/auth/me`, `/api/auth/logout`
 - **Profile**: `/api/auth/profile` (PUT), `/api/auth/password` (PUT)
 - **Projects**: `/api/projects` (GET/POST), `/api/projects/:id` (GET/PUT/DELETE)
+- **Stats**: `/api/projects/stats/summary` (GET) - 프로젝트 통계
 
 ### 🧪 Test User
-- **Email**: test@museflow.life
-- **Password**: testpass123
-- **Name**: Test User
+- **Email**: demo@museflow.life
+- **Password**: demo123!
+- **Name**: Demo User
 - **Projects**: 3개 테스트 프로젝트 생성됨
 
 ## 💾 Data Architecture
@@ -120,17 +121,22 @@ Projects Page (/projects.html)
 - Error/success message display
 
 #### Projects Page
+- **i18n 지원**: 한국어/영어 자동 번역
 - Grid layout with project cards
 - Search and filter functionality
 - New project modal
 - Status badges (draft/active/completed)
+- **삭제 기능**: 프로젝트 삭제 버튼 추가
+- **편집 기능**: 프로젝트 편집 버튼 추가
 - Click to navigate to canvas
 
 #### My Account Page
+- **i18n 지원**: 한국어/영어 자동 번역
 - Profile information display
 - Profile editing (name, avatar)
 - Password change functionality
-- Workflow statistics (0/0/8)
+- **실시간 통계**: 프로젝트 통계 API 연동
+- **Workflow statistics**: Total/Active/Agents 표시
 - Subscription information
 - Logout button
 
@@ -197,6 +203,8 @@ npx wrangler pages deploy dist --project-name museflow
 - [x] Project creation modal
 - [x] Search and filter
 - [x] Status management
+- [x] Delete functionality with UI
+- [x] Edit navigation buttons
 
 ### Phase 4: UI/UX Excellence ✅
 - [x] Apple.com design language
@@ -205,25 +213,42 @@ npx wrangler pages deploy dist --project-name museflow
 - [x] Loading states
 - [x] Error handling
 
-### Phase 5: Testing & Validation ✅
+### Phase 5: i18n & Internationalization ✅
+- [x] Projects page: 한국어/영어 번역 시스템
+- [x] Account page: 한국어/영어 번역 시스템
+- [x] Language toggle button (🇰🇷/🇺🇸)
+- [x] Auto-translation for all UI elements
+- [x] localStorage persistence
+
+### Phase 6: Statistics & Analytics ✅
+- [x] Project statistics API endpoint
+- [x] Real-time stats integration (Account page)
+- [x] Total/Active/Draft/Completed counts
+- [x] Dynamic stat card updates
+
+### Phase 7: Testing & Validation ✅
 - [x] Test user creation
 - [x] API endpoint testing
 - [x] Complete user flow validation
 - [x] 3 test projects created
+- [x] i18n system testing
+- [x] Delete functionality testing
 
 ## 📋 Pending Tasks
 
 ### High Priority
+- [ ] Canvas page i18n translation (admin.html)
 - [ ] Canvas page integration with project data
 - [ ] Workflow data persistence
+- [ ] Mobile responsiveness improvements
 - [ ] Real-time collaboration features
-- [ ] File upload for profile images
 
 ### Medium Priority
 - [ ] Email verification
 - [ ] Password reset flow
 - [ ] Project sharing
 - [ ] Team collaboration
+- [ ] File upload for profile images
 
 ### Low Priority
 - [ ] Dark/light theme toggle
@@ -301,6 +326,34 @@ For issues or questions:
 
 ---
 
+## 🎉 최신 업데이트 (2025-11-21)
+
+### ✨ 추가 개선 사항
+1. **i18n 다국어 지원** (한국어/영어)
+   - Projects 페이지 완전 번역
+   - Account 페이지 완전 번역
+   - 언어 전환 버튼 추가 (🇰🇷/🇺🇸)
+   - localStorage 기반 언어 설정 저장
+
+2. **프로젝트 통계 시스템**
+   - `/api/projects/stats/summary` 엔드포인트 추가
+   - Account 페이지 실시간 통계 연동
+   - Total/Active/Draft/Completed 개수 표시
+
+3. **프로젝트 관리 개선**
+   - 삭제 기능 UI 추가 (빨간색 삭제 버튼)
+   - 편집 기능 UI 추가 (보라색 편집 버튼)
+   - 삭제 확인 다이얼로그
+   - 다국어 지원 에러 메시지
+
+4. **빌드 및 테스트**
+   - Vite 빌드 성공 (1.33s)
+   - PM2 재시작 완료
+   - 3개 테스트 프로젝트 생성
+   - 모든 API 엔드포인트 검증 완료
+
+---
+
 **Last Updated**: 2025-11-21  
-**Version**: 1.0.0  
-**Status**: ✅ Core Features Complete, 🔄 UI Polish In Progress
+**Version**: 1.1.0  
+**Status**: ✅ i18n & Stats Complete, 🔄 Canvas Integration Pending
