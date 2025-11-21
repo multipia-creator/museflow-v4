@@ -109,10 +109,12 @@ Projects Page (/projects.html)
 ### Key Features by Page
 
 #### Landing Page
+- **i18n 지원**: 9개 언어 완전 지원 (150개 번역 키)
 - Hero section with AI Workspace search
 - 10개 AI 도구 버튼 (🎯 🎨 💰 🏛️ 👥 🏗️ 💬 🎮 🎬 🤖)
 - Apple-style large product cards (80vh height)
 - Features, Modules, Pricing, About sections
+- Language selector dropdown
 
 #### Signup/Login Pages
 - Glassmorphism form design
@@ -121,7 +123,7 @@ Projects Page (/projects.html)
 - Error/success message display
 
 #### Projects Page
-- **i18n 지원**: 한국어/영어 자동 번역
+- **i18n 지원**: 9개 언어 완전 지원 (28개 번역 키)
 - Grid layout with project cards
 - Search and filter functionality
 - New project modal
@@ -131,7 +133,7 @@ Projects Page (/projects.html)
 - Click to navigate to canvas
 
 #### My Account Page
-- **i18n 지원**: 한국어/영어 자동 번역
+- **i18n 지원**: 9개 언어 완전 지원 (35개 번역 키)
 - Profile information display
 - Profile editing (name, avatar)
 - Password change functionality
@@ -214,9 +216,10 @@ npx wrangler pages deploy dist --project-name museflow
 - [x] Error handling
 
 ### Phase 5: i18n & Internationalization ✅
-- [x] Projects page: 한국어/영어 번역 시스템
-- [x] Account page: 한국어/영어 번역 시스템
-- [x] Language toggle button (🇰🇷/🇺🇸)
+- [x] Projects page: 9개 언어 완전 지원 (28개 키)
+- [x] Account page: 9개 언어 완전 지원 (35개 키)
+- [x] Landing page: 9개 언어 완전 지원 (150개 키)
+- [x] Language selector dropdown (9 languages)
 - [x] Auto-translation for all UI elements
 - [x] localStorage persistence
 
@@ -335,9 +338,11 @@ For issues or questions:
    - **자동 번역**: 모든 UI 요소, 에러 메시지, 폼 라벨
    - **localStorage 저장**: 사용자 언어 설정 자동 유지
 
-2. **i18n 시스템** (v1.1.0)
-   - Projects 페이지 완전 번역 (28개 키 × 9개 언어)
-   - Account 페이지 완전 번역 (35개 키 × 9개 언어)
+2. **i18n 시스템 완료** (v1.2.0)
+   - **Landing 페이지**: 완전 번역 (150개 키 × 9개 언어 = 1,350개 항목)
+   - **Projects 페이지**: 완전 번역 (28개 키 × 9개 언어 = 252개 항목)
+   - **Account 페이지**: 완전 번역 (35개 키 × 9개 언어 = 315개 항목)
+   - **총 1,917개 번역 항목**: 모든 페이지 완전 다국어 지원
    - 실시간 언어 전환
    - 동적 번역 시스템
 
