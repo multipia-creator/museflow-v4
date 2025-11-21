@@ -933,6 +933,261 @@
             transform: translateY(-2px);
             box-shadow: 0 12px 32px rgba(255, 255, 255, 0.3) !important;
         }
+        
+        /* ========================================
+           Apple-Style Large Block Grid
+           ======================================== */
+        
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0;
+            width: 100%;
+            margin: 0;
+        }
+        
+        .agent-card-hero {
+            min-height: 80vh;
+            padding: 5rem 4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Alternating backgrounds */
+        .agent-card-hero:nth-child(1) { 
+            background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%);
+            color: #1d1d1f;
+        }
+        .agent-card-hero:nth-child(2) { 
+            background: linear-gradient(135deg, #000 0%, #1a0f2e 100%);
+            color: #f5f5f7;
+        }
+        .agent-card-hero:nth-child(3) { 
+            background: linear-gradient(135deg, #fbfbfd 0%, #f0f0f5 100%);
+            color: #1d1d1f;
+        }
+        .agent-card-hero:nth-child(4) { 
+            background: linear-gradient(135deg, #0a0a0f 0%, #1e1b4b 100%);
+            color: #f5f5f7;
+        }
+        .agent-card-hero:nth-child(5) { 
+            background: linear-gradient(135deg, #fafafa 0%, #e5e5ea 100%);
+            color: #1d1d1f;
+        }
+        .agent-card-hero:nth-child(6) { 
+            background: linear-gradient(135deg, #0f0a1f 0%, #2e1065 100%);
+            color: #f5f5f7;
+        }
+        .agent-card-hero:nth-child(7) { 
+            background: linear-gradient(135deg, #f9f9fb 0%, #ececf1 100%);
+            color: #1d1d1f;
+        }
+        .agent-card-hero:nth-child(8) { 
+            background: linear-gradient(135deg, #000 0%, #0f0a1f 100%);
+            color: #f5f5f7;
+        }
+        
+        .agent-card-hero:hover {
+            transform: scale(1.02);
+        }
+        
+        .agent-visual {
+            width: 280px;
+            height: 280px;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .agent-icon-large {
+            font-size: 8rem;
+            filter: drop-shadow(0 8px 32px rgba(139, 92, 246, 0.4));
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .agent-card-hero:nth-child(even) .agent-icon-large {
+            filter: drop-shadow(0 8px 48px rgba(139, 92, 246, 0.6));
+        }
+        
+        .agent-title-large {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+        
+        .agent-card-hero:nth-child(odd) .agent-title-large {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .agent-description-large {
+            font-size: 1.5rem;
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+            font-weight: 400;
+        }
+        
+        .agent-card-hero:nth-child(odd) .agent-description-large {
+            color: rgba(29, 29, 31, 0.7);
+        }
+        
+        .agent-card-hero:nth-child(even) .agent-description-large {
+            color: rgba(245, 245, 247, 0.75);
+        }
+        
+        .agent-cta-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .agent-btn {
+            padding: 0.875rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 980px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .agent-card-hero:nth-child(odd) .agent-btn-primary {
+            background: #0071e3;
+            color: white;
+            border: none;
+        }
+        
+        .agent-card-hero:nth-child(odd) .agent-btn-primary:hover {
+            background: #0077ed;
+            transform: scale(1.05);
+        }
+        
+        .agent-card-hero:nth-child(even) .agent-btn-primary {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+        }
+        
+        .agent-card-hero:nth-child(even) .agent-btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6);
+        }
+        
+        .agent-card-hero:nth-child(odd) .agent-btn-secondary {
+            background: transparent;
+            color: #0071e3;
+            border: 2px solid rgba(0, 113, 227, 0.3);
+        }
+        
+        .agent-card-hero:nth-child(odd) .agent-btn-secondary:hover {
+            border-color: #0071e3;
+            transform: scale(1.05);
+        }
+        
+        .agent-card-hero:nth-child(even) .agent-btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .agent-card-hero:nth-child(even) .agent-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: scale(1.05);
+        }
+        
+        .agent-card-hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            opacity: 0.1;
+            filter: blur(100px);
+        }
+        
+        .agent-card-hero:nth-child(1)::before {
+            background: #8b5cf6;
+            top: -200px;
+            right: -200px;
+        }
+        
+        .agent-card-hero:nth-child(2)::before {
+            background: #ec4899;
+            bottom: -200px;
+            left: -200px;
+        }
+        
+        .agent-card-hero:nth-child(3)::before {
+            background: #3b82f6;
+            top: -200px;
+            left: -200px;
+        }
+        
+        .agent-card-hero:nth-child(4)::before {
+            background: #8b5cf6;
+            bottom: -200px;
+            right: -200px;
+        }
+        
+        /* Responsive for agent grid */
+        @media (max-width: 1024px) {
+            .agents-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .agent-title-large {
+                font-size: 2.5rem;
+            }
+            
+            .agent-description-large {
+                font-size: 1.25rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .agent-card-hero {
+                min-height: 60vh;
+                padding: 3rem 2rem;
+            }
+            
+            .agent-visual {
+                width: 200px;
+                height: 200px;
+                margin-bottom: 2rem;
+            }
+            
+            .agent-icon-large {
+                font-size: 5rem;
+            }
+            
+            .agent-title-large {
+                font-size: 2rem;
+            }
+            
+            .agent-description-large {
+                font-size: 1.1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1078,188 +1333,236 @@
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="section features-section" id="features">
-        <div class="section-header">
-            <span class="section-badge" data-i18n="featuresBadge">Core Features</span>
-            <h2 class="section-title" data-i18n="featuresTitle">Everything You Need</h2>
-            <p class="section-description" data-i18n="featuresDesc">
-                Comprehensive AI-powered tools for modern museum management
-            </p>
-        </div>
-        
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-brain"></i>
+    <!-- Features Section - Apple Style -->
+    <section id="features" style="padding: 0; margin: 0;">
+        <div class="agents-grid">
+            <!-- AI Workflow Generation -->
+            <div class="agent-card-hero">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">🧠</div>
                 </div>
-                <h3 class="feature-title" data-i18n="feature1Title">AI Workflow Generation</h3>
-                <p class="feature-description" data-i18n="feature1Desc">
-                    Transform natural language into complete workflows in 3-5 seconds
+                <h2 class="agent-title-large" data-i18n="feature1Title">AI Workflow<br>Generation</h2>
+                <p class="agent-description-large" data-i18n="feature1Desc">
+                    Transform natural language into complete workflows in 3-5 seconds.
+                    19 auto-generated nodes across 6 phases with budget estimation.
                 </p>
-                <ul class="feature-list">
-                    <li data-i18n="feature1Item1">19 auto-generated nodes across 6 phases</li>
-                    <li data-i18n="feature1Item2">Budget estimation & optimization</li>
-                    <li data-i18n="feature1Item3">Artwork selection & curation</li>
-                    <li data-i18n="feature1Item4">Timeline planning with milestones</li>
-                </ul>
+                <div class="agent-cta-group">
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                </div>
             </div>
             
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-users-cog"></i>
+            <!-- Multi-Agent System -->
+            <div class="agent-card-hero">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">🤖</div>
                 </div>
-                <h3 class="feature-title" data-i18n="feature2Title">Multi-Agent System</h3>
-                <p class="feature-description" data-i18n="feature2Desc">
-                    8 specialized AI agents working together via MCP protocol
+                <h2 class="agent-title-large" data-i18n="feature2Title">Multi-Agent<br>System</h2>
+                <p class="agent-description-large" data-i18n="feature2Desc">
+                    8 specialized AI agents working together via MCP protocol.
+                    Exhibition planning, financial analysis, and visitor prediction.
                 </p>
-                <ul class="feature-list">
-                    <li data-i18n="feature2Item1">Exhibition planning & curation</li>
-                    <li data-i18n="feature2Item2">Financial analysis & optimization</li>
-                    <li data-i18n="feature2Item3">Artwork search & recommendation</li>
-                    <li data-i18n="feature2Item4">Visitor prediction & analytics</li>
-                </ul>
+                <div class="agent-cta-group">
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                </div>
             </div>
             
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-users"></i>
+            <!-- Real-time Collaboration -->
+            <div class="agent-card-hero">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">👥</div>
                 </div>
-                <h3 class="feature-title" data-i18n="feature3Title">Real-time Collaboration</h3>
-                <p class="feature-description" data-i18n="feature3Desc">
-                    WebSocket-based collaboration with live cursors and sync
+                <h2 class="agent-title-large" data-i18n="feature3Title">Real-time<br>Collaboration</h2>
+                <p class="agent-description-large" data-i18n="feature3Desc">
+                    WebSocket-based collaboration with live cursors and sync.
+                    Node selection synchronization with auto-reconnect.
                 </p>
-                <ul class="feature-list">
-                    <li data-i18n="feature3Item1">Live cursor tracking</li>
-                    <li data-i18n="feature3Item2">Node selection synchronization</li>
-                    <li data-i18n="feature3Item3">Active users panel</li>
-                    <li data-i18n="feature3Item4">Auto-reconnect with backoff</li>
-                </ul>
+                <div class="agent-cta-group">
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                </div>
             </div>
             
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-museum"></i>
+            <!-- Museum Data Integration -->
+            <div class="agent-card-hero">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">🏛️</div>
                 </div>
-                <h3 class="feature-title" data-i18n="feature4Title">Museum Data Integration</h3>
-                <p class="feature-description" data-i18n="feature4Desc">
-                    Access to multiple museum APIs with unified search
+                <h2 class="agent-title-large" data-i18n="feature4Title">Museum Data<br>Integration</h2>
+                <p class="agent-description-large" data-i18n="feature4Desc">
+                    Access to multiple museum APIs with unified search.
+                    National Museum of Korea, Soma Museum, KCISA 3D models.
                 </p>
-                <ul class="feature-list">
-                    <li data-i18n="feature4Item1">National Museum of Korea API</li>
-                    <li data-i18n="feature4Item2">Soma Museum API</li>
-                    <li data-i18n="feature4Item3">KCISA 3D cultural heritage models</li>
-                    <li data-i18n="feature4Item4">24-hour intelligent caching</li>
-                </ul>
+                <div class="agent-cta-group">
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                </div>
             </div>
             
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-cube"></i>
+            <!-- 3D Visualization & AR/VR -->
+            <div class="agent-card-hero">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">🎮</div>
                 </div>
-                <h3 class="feature-title" data-i18n="feature5Title">3D Visualization & AR/VR</h3>
-                <p class="feature-description" data-i18n="feature5Desc">
-                    Immersive experiences with Three.js and WebXR
+                <h2 class="agent-title-large" data-i18n="feature5Title">3D & AR/VR<br>Experience</h2>
+                <p class="agent-description-large" data-i18n="feature5Desc">
+                    Immersive experiences with Three.js and WebXR.
+                    3D model viewer, AR artwork placement, VR museum tours.
                 </p>
-                <ul class="feature-list">
-                    <li data-i18n="feature5Item1">3D model viewer (GLB, GLTF, OBJ, FBX)</li>
-                    <li data-i18n="feature5Item2">AR artwork placement</li>
-                    <li data-i18n="feature5Item3">VR museum tours</li>
-                    <li data-i18n="feature5Item4">Digital twin simulation</li>
-                </ul>
+                <div class="agent-cta-group">
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                </div>
             </div>
             
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-chart-line"></i>
+            <!-- Analytics & Insights -->
+            <div class="agent-card-hero">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">📊</div>
                 </div>
-                <h3 class="feature-title" data-i18n="feature6Title">Analytics & Insights</h3>
-                <p class="feature-description" data-i18n="feature6Desc">
-                    Real-time KPI dashboard and predictive analytics
+                <h2 class="agent-title-large" data-i18n="feature6Title">Analytics &<br>Insights</h2>
+                <p class="agent-description-large" data-i18n="feature6Desc">
+                    Real-time KPI dashboard and predictive analytics.
+                    Visitor traffic prediction, revenue forecasting, IoT monitoring.
                 </p>
-                <ul class="feature-list">
-                    <li data-i18n="feature6Item1">Visitor traffic prediction</li>
-                    <li data-i18n="feature6Item2">Revenue forecasting</li>
-                    <li data-i18n="feature6Item3">IoT sensor monitoring</li>
-                    <li data-i18n="feature6Item4">Performance optimization</li>
-                </ul>
+                <div class="agent-cta-group">
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Modules Section -->
-    <section class="section demo-section" id="modules">
-        <div class="section-header">
-            <span class="section-badge">AI Modules</span>
-            <h2 class="section-title">8 Specialized Agents</h2>
-            <p class="section-description">
-                Each agent is designed for specific museum management tasks
-            </p>
-        </div>
-        
-        <div class="modules-grid">
-            <div class="module-card">
-                <div class="module-icon">🎯</div>
-                <h3 class="module-title">Coordinator Agent</h3>
-                <p class="module-description">
-                    Orchestrates all agents using MCP protocol, routes requests to appropriate specialists, and manages inter-agent communication.
+    <!-- Modules Section - Apple Style -->
+    <section id="modules" style="padding: 0; margin: 0;">
+        <div class="agents-grid">
+            <!-- Coordinator Agent -->
+            <div class="agent-card-hero">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">🎯</div>
+                </div>
+                <h2 class="agent-title-large" data-i18n="coordinatorTitle">Coordinator<br>Agent</h2>
+                <p class="agent-description-large" data-i18n="coordinatorDesc">
+                    The brain of MuseFlow. Orchestrates all agents using MCP protocol, 
+                    routes requests to specialists, and manages inter-agent communication.
                 </p>
+                <div class="agent-cta-group">
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                </div>
             </div>
             
-            <div class="module-card">
-                <div class="module-icon">🎨</div>
-                <h3 class="module-title">Exhibition Agent</h3>
-                <p class="module-description">
-                    Plans exhibitions, curates artwork selections, designs gallery layouts, and generates exhibition concepts from descriptions.
+            <!-- Exhibition Agent -->
+            <div class="agent-card-hero">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">🎨</div>
+                </div>
+                <h2 class="agent-title-large" data-i18n="exhibitionTitle">Exhibition<br>Agent</h2>
+                <p class="agent-description-large" data-i18n="exhibitionDesc">
+                    Your creative curator. Plans exhibitions, curates artwork selections, 
+                    designs gallery layouts from simple descriptions.
                 </p>
+                <div class="agent-cta-group">
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                </div>
             </div>
             
-            <div class="module-card">
-                <div class="module-icon">💰</div>
-                <h3 class="module-title">Budget Agent</h3>
-                <p class="module-description">
-                    Analyzes financial data, optimizes budget allocation, forecasts costs, and generates detailed budget breakdowns.
+            <!-- Budget Agent -->
+            <div class="agent-card-hero">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">💰</div>
+                </div>
+                <h2 class="agent-title-large" data-i18n="budgetTitle">Budget<br>Agent</h2>
+                <p class="agent-description-large" data-i18n="budgetDesc">
+                    Financial intelligence. Analyzes data, optimizes budget allocation, 
+                    forecasts costs, and generates detailed breakdowns.
                 </p>
+                <div class="agent-cta-group">
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                </div>
             </div>
             
-            <div class="module-card">
-                <div class="module-icon">🏛️</div>
-                <h3 class="module-title">Archive Agent</h3>
-                <p class="module-description">
-                    Searches artwork databases, recommends pieces based on criteria, provides historical context, and manages metadata.
+            <!-- Archive Agent -->
+            <div class="agent-card-hero">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">🏛️</div>
+                </div>
+                <h2 class="agent-title-large" data-i18n="archiveTitle">Archive<br>Agent</h2>
+                <p class="agent-description-large" data-i18n="archiveDesc">
+                    Your digital archivist. Searches artwork databases, recommends pieces, 
+                    provides historical context, and manages metadata.
                 </p>
+                <div class="agent-cta-group">
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                </div>
             </div>
             
-            <div class="module-card">
-                <div class="module-icon">👥</div>
-                <h3 class="module-title">Visitor Agent</h3>
-                <p class="module-description">
-                    Predicts daily visitor traffic, analyzes patterns, forecasts capacity needs, and optimizes crowd management.
+            <!-- Visitor Agent -->
+            <div class="agent-card-hero">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">👥</div>
+                </div>
+                <h2 class="agent-title-large" data-i18n="visitorTitle">Visitor<br>Agent</h2>
+                <p class="agent-description-large" data-i18n="visitorDesc">
+                    Crowd intelligence. Predicts daily traffic, analyzes patterns, 
+                    forecasts capacity needs, and optimizes management.
                 </p>
+                <div class="agent-cta-group">
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                </div>
             </div>
             
-            <div class="module-card">
-                <div class="module-icon">🏗️</div>
-                <h3 class="module-title">Digital Twin Agent</h3>
-                <p class="module-description">
-                    Simulates museum spaces, optimizes artwork placement, generates visitor flow heatmaps, and tests layout configurations.
+            <!-- Digital Twin Agent -->
+            <div class="agent-card-hero">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">🏗️</div>
+                </div>
+                <h2 class="agent-title-large" data-i18n="digitalTwinTitle">Digital Twin<br>Agent</h2>
+                <p class="agent-description-large" data-i18n="digitalTwinDesc">
+                    Virtual museum simulator. Optimizes artwork placement, generates flow heatmaps, 
+                    and tests layout configurations in real-time.
                 </p>
+                <div class="agent-cta-group">
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                </div>
             </div>
             
-            <div class="module-card">
-                <div class="module-icon">💬</div>
-                <h3 class="module-title">Chatbot Agent</h3>
-                <p class="module-description">
-                    AI museum guide providing personalized recommendations, answering visitor questions, and managing conversation context.
+            <!-- Chatbot Agent -->
+            <div class="agent-card-hero">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">💬</div>
+                </div>
+                <h2 class="agent-title-large" data-i18n="chatbotTitle">Chatbot<br>Agent</h2>
+                <p class="agent-description-large" data-i18n="chatbotDesc">
+                    AI museum guide. Provides personalized recommendations, 
+                    answers visitor questions, and manages conversation context.
                 </p>
+                <div class="agent-cta-group">
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                </div>
             </div>
             
-            <div class="module-card">
-                <div class="module-icon">🔗</div>
-                <h3 class="module-title">Notion Integration</h3>
-                <p class="module-description">
-                    Two-way sync with Notion workspace, automatic project/task creation, and real-time status updates.
+            <!-- Notion Integration -->
+            <div class="agent-card-hero">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">🔗</div>
+                </div>
+                <h2 class="agent-title-large" data-i18n="notionTitle">Notion<br>Integration</h2>
+                <p class="agent-description-large" data-i18n="notionDesc">
+                    Seamless workflow sync. Two-way sync with Notion workspace, 
+                    automatic project creation, and real-time status updates.
                 </p>
+                <div class="agent-cta-group">
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                </div>
             </div>
         </div>
     </section>
