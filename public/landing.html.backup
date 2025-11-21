@@ -26,7 +26,7 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0a0f;
+            background: radial-gradient(ellipse at top, #1e1b4b 0%, #0f0a1f 50%, #000000 100%);
             color: white;
             overflow-x: hidden;
         }
@@ -230,7 +230,6 @@
             position: relative;
             overflow: hidden;
             padding: 8rem 2rem 4rem;
-            background: radial-gradient(ellipse at top, #1e1b4b 0%, #0f0a1f 50%, rgba(10, 10, 15, 0.8) 100%);
         }
         
         .hero-background {
@@ -278,21 +277,17 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            line-height: 1.15;
-            letter-spacing: -0.02em;
-            text-shadow: 0 0 80px rgba(139, 92, 246, 0.5);
+            line-height: 1.2;
         }
         
         .hero-subtitle {
             font-size: 1.5rem;
-            color: rgba(255, 255, 255, 0.75);
+            color: rgba(255, 255, 255, 0.8);
             margin-bottom: 3rem;
             max-width: 800px;
             margin-left: auto;
             margin-right: auto;
-            line-height: 1.7;
-            font-weight: 400;
-            letter-spacing: -0.01em;
+            line-height: 1.6;
         }
         
         .hero-cta-group {
@@ -304,78 +299,52 @@
         
         .hero-cta-primary {
             padding: 1.25rem 3rem;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
             color: white;
             border: none;
-            border-radius: 14px;
-            font-weight: 600;
+            border-radius: 16px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
             text-decoration: none;
             display: inline-block;
-            position: relative;
-            overflow: hidden;
-            letter-spacing: -0.01em;
-        }
-        
-        .hero-cta-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-        
-        .hero-cta-primary:hover::before {
-            left: 100%;
         }
         
         .hero-cta-primary:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 20px 56px rgba(139, 92, 246, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(139, 92, 246, 0.6);
         }
         
         .hero-cta-secondary {
             padding: 1.25rem 3rem;
-            font-size: 1.2rem;
-            background: rgba(255, 255, 255, 0.05);
+            font-size: 1.25rem;
+            background: rgba(255, 255, 255, 0.1);
             color: white;
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            border-radius: 14px;
-            font-weight: 600;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
-            backdrop-filter: blur(10px);
-            letter-spacing: -0.01em;
         }
         
         .hero-cta-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(139, 92, 246, 0.6);
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-4px);
         }
         
         .hero-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2.5rem;
-            margin-top: 4.5rem;
+            gap: 2rem;
+            margin-top: 4rem;
             max-width: 900px;
             margin-left: auto;
             margin-right: auto;
-            padding: 2.5rem;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
         }
         
         .hero-stat {
@@ -399,35 +368,14 @@
         
         /* Section Container */
         .section {
-            padding: 3.5rem 2rem;
+            padding: 6rem 2rem;
             max-width: 1400px;
             margin: 0 auto;
-            position: relative;
-        }
-        
-        /* Demo Section - Purple gradient */
-        .demo-section {
-            background: linear-gradient(180deg, rgba(10, 10, 15, 1) 0%, rgba(26, 15, 46, 0.4) 50%, rgba(10, 10, 15, 1) 100%);
-        }
-        
-        /* Features Section - Darker */
-        .features-section {
-            background: linear-gradient(180deg, rgba(10, 10, 15, 1) 0%, rgba(15, 10, 31, 0.6) 50%, rgba(10, 10, 15, 1) 100%);
-        }
-        
-        /* Pricing Section - Blue tint */
-        .pricing-section {
-            background: radial-gradient(ellipse at center, rgba(30, 27, 75, 0.3) 0%, rgba(10, 10, 15, 1) 70%);
-        }
-        
-        /* About Section - Pink tint */
-        .about-section {
-            background: radial-gradient(ellipse at bottom, rgba(46, 15, 43, 0.3) 0%, rgba(10, 10, 15, 1) 70%);
         }
         
         .section-header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
         }
         
         .section-badge {
@@ -445,25 +393,21 @@
         }
         
         .section-title {
-            font-size: 2.75rem;
-            font-weight: 800;
+            font-size: 3rem;
+            font-weight: 900;
             margin-bottom: 1rem;
             background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
         }
         
         .section-description {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.65);
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.7);
             max-width: 700px;
             margin: 0 auto;
-            line-height: 1.7;
-            font-weight: 400;
-            letter-spacing: -0.01em;
+            line-height: 1.6;
         }
         
         /* Features Grid */
@@ -474,38 +418,19 @@
         }
         
         .feature-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
             padding: 2.5rem;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent);
-            opacity: 0;
-            transition: opacity 0.4s ease;
         }
         
         .feature-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: rgba(139, 92, 246, 0.4);
-            box-shadow: 0 24px 72px rgba(139, 92, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.06);
-        }
-        
-        .feature-card:hover::before {
-            opacity: 1;
+            transform: translateY(-8px);
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
         }
         
         .feature-icon {
@@ -561,12 +486,12 @@
         }
         
         .module-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
             padding: 2rem;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
@@ -588,10 +513,9 @@
         }
         
         .module-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: rgba(139, 92, 246, 0.4);
-            box-shadow: 0 24px 72px rgba(139, 92, 246, 0.25);
-            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-8px);
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
         }
         
         .module-icon {
@@ -622,48 +546,25 @@
         }
         
         .pricing-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
             padding: 3rem 2rem;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
-        }
-        
-        .pricing-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
-            transition: left 0.5s ease;
-        }
-        
-        .pricing-card:hover::after {
-            left: 100%;
         }
         
         .pricing-card.featured {
-            border: 2px solid rgba(139, 92, 246, 0.6);
+            border: 2px solid #8b5cf6;
             transform: scale(1.05);
-            box-shadow: 0 24px 72px rgba(139, 92, 246, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            background: rgba(139, 92, 246, 0.05);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4);
         }
         
         .pricing-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            border-color: rgba(139, 92, 246, 0.4);
-            box-shadow: 0 28px 80px rgba(139, 92, 246, 0.3);
-            background: rgba(255, 255, 255, 0.06);
-        }
-        
-        .pricing-card.featured:hover {
-            transform: scale(1.08) translateY(-12px);
-            box-shadow: 0 32px 96px rgba(139, 92, 246, 0.5);
+            transform: translateY(-8px);
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
         }
         
         .pricing-badge {
@@ -788,20 +689,9 @@
         
         /* Footer */
         .footer {
-            background: linear-gradient(180deg, rgba(10, 10, 15, 0.8) 0%, rgba(15, 10, 31, 0.95) 100%);
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 3.5rem 2rem 2rem;
-            position: relative;
-        }
-        
-        .footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent);
+            background: rgba(15, 10, 31, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4rem 2rem 2rem;
         }
         
         .footer-content {
@@ -933,261 +823,6 @@
             transform: translateY(-2px);
             box-shadow: 0 12px 32px rgba(255, 255, 255, 0.3) !important;
         }
-        
-        /* ========================================
-           Apple-Style Large Block Grid
-           ======================================== */
-        
-        .agents-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0;
-            width: 100%;
-            margin: 0;
-        }
-        
-        .agent-card-hero {
-            min-height: 80vh;
-            padding: 5rem 4rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        /* Alternating backgrounds */
-        .agent-card-hero:nth-child(1) { 
-            background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%);
-            color: #1d1d1f;
-        }
-        .agent-card-hero:nth-child(2) { 
-            background: linear-gradient(135deg, #000 0%, #1a0f2e 100%);
-            color: #f5f5f7;
-        }
-        .agent-card-hero:nth-child(3) { 
-            background: linear-gradient(135deg, #fbfbfd 0%, #f0f0f5 100%);
-            color: #1d1d1f;
-        }
-        .agent-card-hero:nth-child(4) { 
-            background: linear-gradient(135deg, #0a0a0f 0%, #1e1b4b 100%);
-            color: #f5f5f7;
-        }
-        .agent-card-hero:nth-child(5) { 
-            background: linear-gradient(135deg, #fafafa 0%, #e5e5ea 100%);
-            color: #1d1d1f;
-        }
-        .agent-card-hero:nth-child(6) { 
-            background: linear-gradient(135deg, #0f0a1f 0%, #2e1065 100%);
-            color: #f5f5f7;
-        }
-        .agent-card-hero:nth-child(7) { 
-            background: linear-gradient(135deg, #f9f9fb 0%, #ececf1 100%);
-            color: #1d1d1f;
-        }
-        .agent-card-hero:nth-child(8) { 
-            background: linear-gradient(135deg, #000 0%, #0f0a1f 100%);
-            color: #f5f5f7;
-        }
-        
-        .agent-card-hero:hover {
-            transform: scale(1.02);
-        }
-        
-        .agent-visual {
-            width: 280px;
-            height: 280px;
-            margin-bottom: 3rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        
-        .agent-icon-large {
-            font-size: 8rem;
-            filter: drop-shadow(0 8px 32px rgba(139, 92, 246, 0.4));
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        .agent-card-hero:nth-child(even) .agent-icon-large {
-            filter: drop-shadow(0 8px 48px rgba(139, 92, 246, 0.6));
-        }
-        
-        .agent-title-large {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.03em;
-            line-height: 1.1;
-        }
-        
-        .agent-card-hero:nth-child(odd) .agent-title-large {
-            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .agent-description-large {
-            font-size: 1.5rem;
-            max-width: 600px;
-            line-height: 1.6;
-            margin-bottom: 3rem;
-            font-weight: 400;
-        }
-        
-        .agent-card-hero:nth-child(odd) .agent-description-large {
-            color: rgba(29, 29, 31, 0.7);
-        }
-        
-        .agent-card-hero:nth-child(even) .agent-description-large {
-            color: rgba(245, 245, 247, 0.75);
-        }
-        
-        .agent-cta-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .agent-btn {
-            padding: 0.875rem 2rem;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 980px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-        }
-        
-        .agent-card-hero:nth-child(odd) .agent-btn-primary {
-            background: #0071e3;
-            color: white;
-            border: none;
-        }
-        
-        .agent-card-hero:nth-child(odd) .agent-btn-primary:hover {
-            background: #0077ed;
-            transform: scale(1.05);
-        }
-        
-        .agent-card-hero:nth-child(even) .agent-btn-primary {
-            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            color: white;
-            border: none;
-            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
-        }
-        
-        .agent-card-hero:nth-child(even) .agent-btn-primary:hover {
-            transform: scale(1.05);
-            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6);
-        }
-        
-        .agent-card-hero:nth-child(odd) .agent-btn-secondary {
-            background: transparent;
-            color: #0071e3;
-            border: 2px solid rgba(0, 113, 227, 0.3);
-        }
-        
-        .agent-card-hero:nth-child(odd) .agent-btn-secondary:hover {
-            border-color: #0071e3;
-            transform: scale(1.05);
-        }
-        
-        .agent-card-hero:nth-child(even) .agent-btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-        }
-        
-        .agent-card-hero:nth-child(even) .agent-btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(139, 92, 246, 0.5);
-            transform: scale(1.05);
-        }
-        
-        .agent-card-hero::before {
-            content: '';
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            border-radius: 50%;
-            opacity: 0.1;
-            filter: blur(100px);
-        }
-        
-        .agent-card-hero:nth-child(1)::before {
-            background: #8b5cf6;
-            top: -200px;
-            right: -200px;
-        }
-        
-        .agent-card-hero:nth-child(2)::before {
-            background: #ec4899;
-            bottom: -200px;
-            left: -200px;
-        }
-        
-        .agent-card-hero:nth-child(3)::before {
-            background: #3b82f6;
-            top: -200px;
-            left: -200px;
-        }
-        
-        .agent-card-hero:nth-child(4)::before {
-            background: #8b5cf6;
-            bottom: -200px;
-            right: -200px;
-        }
-        
-        /* Responsive for agent grid */
-        @media (max-width: 1024px) {
-            .agents-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .agent-title-large {
-                font-size: 2.5rem;
-            }
-            
-            .agent-description-large {
-                font-size: 1.25rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .agent-card-hero {
-                min-height: 60vh;
-                padding: 3rem 2rem;
-            }
-            
-            .agent-visual {
-                width: 200px;
-                height: 200px;
-                margin-bottom: 2rem;
-            }
-            
-            .agent-icon-large {
-                font-size: 5rem;
-            }
-            
-            .agent-title-large {
-                font-size: 2rem;
-            }
-            
-            .agent-description-large {
-                font-size: 1.1rem;
-            }
-        }
     </style>
 </head>
 <body>
@@ -1205,12 +840,12 @@
                 <li><a href="#about">About</a></li>
             </ul>
             <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <a href="/signup.html" class="nav-signup-btn">
+                <a href="/admin.html" class="nav-signup-btn">
                     <i class="fas fa-sparkles"></i> 
                     <span>MuseFlow 슈퍼 에이전트 잠금 해제</span>
                     <i class="fas fa-arrow-right" style="font-size: 0.875rem;"></i>
                 </a>
-                <a href="/login.html" class="nav-login-btn">
+                <a href="/admin.html" class="nav-login-btn">
                     로그인
                 </a>
                 
@@ -1245,61 +880,12 @@
                 Built for the future of cultural institutions.
             </p>
             
-            <!-- AI Workspace Search -->
-            <div class="ai-workspace" style="max-width: 800px; margin: 0 auto 2rem; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 1.5rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
-                <div style="position: relative; margin-bottom: 1rem;">
-                    <input type="text" id="ai-search" placeholder="무엇이든 물어보고 만들어보세요" style="width: 100%; padding: 1rem 3rem 1rem 1.5rem; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-size: 1rem;" />
-                    <button style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); border: none; padding: 0.75rem 1.5rem; border-radius: 10px; color: white; cursor: pointer; font-weight: 600;">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;">
-                    <button class="ai-tool-btn" data-tool="agents" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        <i class="fas fa-layer-group"></i> 카드별 슈퍼 에이전트 집합
-                    </button>
-                    <button class="ai-tool-btn" data-tool="slides" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        <i class="fas fa-presentation"></i> AI 슬라이드
-                    </button>
-                    <button class="ai-tool-btn" data-tool="sheets" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        <i class="fas fa-table"></i> AI 시트
-                    </button>
-                    <button class="ai-tool-btn" data-tool="docs" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        <i class="fas fa-file-alt"></i> AI 문서
-                    </button>
-                    <button class="ai-tool-btn" data-tool="calendar" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        <i class="fas fa-calendar"></i> AI 캘린더
-                    </button>
-                    <button class="ai-tool-btn" data-tool="designer" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        <i class="fas fa-paint-brush"></i> AI 디자이너
-                    </button>
-                    <button class="ai-tool-btn" data-tool="chat" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        <i class="fas fa-comments"></i> AI 채팅
-                    </button>
-                    <button class="ai-tool-btn" data-tool="avatar" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        <i class="fas fa-user-circle"></i> AI 아바타
-                    </button>
-                    <button class="ai-tool-btn" data-tool="video" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        <i class="fas fa-video"></i> AI 동영상
-                    </button>
-                    <button class="ai-tool-btn" data-tool="all" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
-                        <i class="fas fa-th"></i> 모든 에이전트
-                    </button>
-                </div>
-            </div>
-            
             <div class="hero-cta-group">
+                <a href="/admin.html" class="hero-cta-primary">
+                    <i class="fas fa-rocket"></i> <span data-i18n="launchPlatform">Launch Platform</span>
+                </a>
                 <a href="#features" class="hero-cta-secondary">
                     <i class="fas fa-info-circle"></i> <span data-i18n="learnMore">Learn More</span>
-                </a>
-            </div>
-            
-            <!-- Auth Buttons -->
-            <div class="hero-cta-group" style="margin-top: 1.5rem;">
-                <a href="/signup.html" class="hero-cta-primary">
-                    <i class="fas fa-user-plus"></i> <span data-i18n="signupButton">가입하기</span>
-                </a>
-                <a href="/login.html" class="hero-cta-secondary">
-                    <i class="fas fa-sign-in-alt"></i> <span data-i18n="loginButton">로그인</span>
                 </a>
             </div>
             
@@ -1321,7 +907,7 @@
     </section>
 
     <!-- Demo Video Section -->
-    <section class="section demo-section" id="demo" style="padding: 4rem 2rem;">
+    <section class="section" id="demo" style="padding: 6rem 2rem;">
         <div style="max-width: 1200px; margin: 0 auto;">
             <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
                 <span class="section-badge" data-i18n="demoSectionBadge">Watch Demo</span>
@@ -1382,243 +968,195 @@
         </div>
     </section>
 
-    <!-- Features Section - Apple Style -->
-    <section id="features" style="padding: 0; margin: 0;">
-        <div class="agents-grid">
-            <!-- AI Workflow Generation -->
-            <div class="agent-card-hero">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">🧠</div>
+    <!-- Features Section -->
+    <section class="section" id="features">
+        <div class="section-header">
+            <span class="section-badge" data-i18n="featuresBadge">Core Features</span>
+            <h2 class="section-title" data-i18n="featuresTitle">Everything You Need</h2>
+            <p class="section-description" data-i18n="featuresDesc">
+                Comprehensive AI-powered tools for modern museum management
+            </p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
                 </div>
-                <h2 class="agent-title-large" data-i18n="feature1Title">AI Workflow<br>Generation</h2>
-                <p class="agent-description-large" data-i18n="feature1Desc">
-                    Transform natural language into complete workflows in 3-5 seconds.
-                    19 auto-generated nodes across 6 phases with budget estimation.
+                <h3 class="feature-title" data-i18n="feature1Title">AI Workflow Generation</h3>
+                <p class="feature-description" data-i18n="feature1Desc">
+                    Transform natural language into complete workflows in 3-5 seconds
                 </p>
-                <div class="agent-cta-group">
-                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
-                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
-                </div>
+                <ul class="feature-list">
+                    <li data-i18n="feature1Item1">19 auto-generated nodes across 6 phases</li>
+                    <li data-i18n="feature1Item2">Budget estimation & optimization</li>
+                    <li data-i18n="feature1Item3">Artwork selection & curation</li>
+                    <li data-i18n="feature1Item4">Timeline planning with milestones</li>
+                </ul>
             </div>
             
-            <!-- Multi-Agent System -->
-            <div class="agent-card-hero">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">🤖</div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users-cog"></i>
                 </div>
-                <h2 class="agent-title-large" data-i18n="feature2Title">Multi-Agent<br>System</h2>
-                <p class="agent-description-large" data-i18n="feature2Desc">
-                    8 specialized AI agents working together via MCP protocol.
-                    Exhibition planning, financial analysis, and visitor prediction.
+                <h3 class="feature-title" data-i18n="feature2Title">Multi-Agent System</h3>
+                <p class="feature-description" data-i18n="feature2Desc">
+                    8 specialized AI agents working together via MCP protocol
                 </p>
-                <div class="agent-cta-group">
-                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
-                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
-                </div>
+                <ul class="feature-list">
+                    <li data-i18n="feature2Item1">Exhibition planning & curation</li>
+                    <li data-i18n="feature2Item2">Financial analysis & optimization</li>
+                    <li data-i18n="feature2Item3">Artwork search & recommendation</li>
+                    <li data-i18n="feature2Item4">Visitor prediction & analytics</li>
+                </ul>
             </div>
             
-            <!-- Real-time Collaboration -->
-            <div class="agent-card-hero">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">👥</div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
                 </div>
-                <h2 class="agent-title-large" data-i18n="feature3Title">Real-time<br>Collaboration</h2>
-                <p class="agent-description-large" data-i18n="feature3Desc">
-                    WebSocket-based collaboration with live cursors and sync.
-                    Node selection synchronization with auto-reconnect.
+                <h3 class="feature-title" data-i18n="feature3Title">Real-time Collaboration</h3>
+                <p class="feature-description" data-i18n="feature3Desc">
+                    WebSocket-based collaboration with live cursors and sync
                 </p>
-                <div class="agent-cta-group">
-                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
-                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
-                </div>
+                <ul class="feature-list">
+                    <li data-i18n="feature3Item1">Live cursor tracking</li>
+                    <li data-i18n="feature3Item2">Node selection synchronization</li>
+                    <li data-i18n="feature3Item3">Active users panel</li>
+                    <li data-i18n="feature3Item4">Auto-reconnect with backoff</li>
+                </ul>
             </div>
             
-            <!-- Museum Data Integration -->
-            <div class="agent-card-hero">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">🏛️</div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-museum"></i>
                 </div>
-                <h2 class="agent-title-large" data-i18n="feature4Title">Museum Data<br>Integration</h2>
-                <p class="agent-description-large" data-i18n="feature4Desc">
-                    Access to multiple museum APIs with unified search.
-                    National Museum of Korea, Soma Museum, KCISA 3D models.
+                <h3 class="feature-title" data-i18n="feature4Title">Museum Data Integration</h3>
+                <p class="feature-description" data-i18n="feature4Desc">
+                    Access to multiple museum APIs with unified search
                 </p>
-                <div class="agent-cta-group">
-                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
-                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
-                </div>
+                <ul class="feature-list">
+                    <li data-i18n="feature4Item1">National Museum of Korea API</li>
+                    <li data-i18n="feature4Item2">Soma Museum API</li>
+                    <li data-i18n="feature4Item3">KCISA 3D cultural heritage models</li>
+                    <li data-i18n="feature4Item4">24-hour intelligent caching</li>
+                </ul>
             </div>
             
-            <!-- 3D Visualization & AR/VR -->
-            <div class="agent-card-hero">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">🎮</div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-cube"></i>
                 </div>
-                <h2 class="agent-title-large" data-i18n="feature5Title">3D & AR/VR<br>Experience</h2>
-                <p class="agent-description-large" data-i18n="feature5Desc">
-                    Immersive experiences with Three.js and WebXR.
-                    3D model viewer, AR artwork placement, VR museum tours.
+                <h3 class="feature-title" data-i18n="feature5Title">3D Visualization & AR/VR</h3>
+                <p class="feature-description" data-i18n="feature5Desc">
+                    Immersive experiences with Three.js and WebXR
                 </p>
-                <div class="agent-cta-group">
-                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
-                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
-                </div>
+                <ul class="feature-list">
+                    <li data-i18n="feature5Item1">3D model viewer (GLB, GLTF, OBJ, FBX)</li>
+                    <li data-i18n="feature5Item2">AR artwork placement</li>
+                    <li data-i18n="feature5Item3">VR museum tours</li>
+                    <li data-i18n="feature5Item4">Digital twin simulation</li>
+                </ul>
             </div>
             
-            <!-- Analytics & Insights -->
-            <div class="agent-card-hero">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">📊</div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
                 </div>
-                <h2 class="agent-title-large" data-i18n="feature6Title">Analytics &<br>Insights</h2>
-                <p class="agent-description-large" data-i18n="feature6Desc">
-                    Real-time KPI dashboard and predictive analytics.
-                    Visitor traffic prediction, revenue forecasting, IoT monitoring.
+                <h3 class="feature-title" data-i18n="feature6Title">Analytics & Insights</h3>
+                <p class="feature-description" data-i18n="feature6Desc">
+                    Real-time KPI dashboard and predictive analytics
                 </p>
-                <div class="agent-cta-group">
-                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
-                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
-                </div>
+                <ul class="feature-list">
+                    <li data-i18n="feature6Item1">Visitor traffic prediction</li>
+                    <li data-i18n="feature6Item2">Revenue forecasting</li>
+                    <li data-i18n="feature6Item3">IoT sensor monitoring</li>
+                    <li data-i18n="feature6Item4">Performance optimization</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <!-- Modules Section - Apple Style -->
-    <section id="modules" style="padding: 0; margin: 0;">
-        <div class="agents-grid">
-            <!-- Coordinator Agent -->
-            <div class="agent-card-hero">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">🎯</div>
-                </div>
-                <h2 class="agent-title-large" data-i18n="coordinatorTitle">Coordinator<br>Agent</h2>
-                <p class="agent-description-large" data-i18n="coordinatorDesc">
-                    The brain of MuseFlow. Orchestrates all agents using MCP protocol, 
-                    routes requests to specialists, and manages inter-agent communication.
+    <!-- Modules Section -->
+    <section class="section" id="modules">
+        <div class="section-header">
+            <span class="section-badge">AI Modules</span>
+            <h2 class="section-title">8 Specialized Agents</h2>
+            <p class="section-description">
+                Each agent is designed for specific museum management tasks
+            </p>
+        </div>
+        
+        <div class="modules-grid">
+            <div class="module-card">
+                <div class="module-icon">🎯</div>
+                <h3 class="module-title">Coordinator Agent</h3>
+                <p class="module-description">
+                    Orchestrates all agents using MCP protocol, routes requests to appropriate specialists, and manages inter-agent communication.
                 </p>
-                <div class="agent-cta-group">
-                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
-                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
-                </div>
             </div>
             
-            <!-- Exhibition Agent -->
-            <div class="agent-card-hero">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">🎨</div>
-                </div>
-                <h2 class="agent-title-large" data-i18n="exhibitionTitle">Exhibition<br>Agent</h2>
-                <p class="agent-description-large" data-i18n="exhibitionDesc">
-                    Your creative curator. Plans exhibitions, curates artwork selections, 
-                    designs gallery layouts from simple descriptions.
+            <div class="module-card">
+                <div class="module-icon">🎨</div>
+                <h3 class="module-title">Exhibition Agent</h3>
+                <p class="module-description">
+                    Plans exhibitions, curates artwork selections, designs gallery layouts, and generates exhibition concepts from descriptions.
                 </p>
-                <div class="agent-cta-group">
-                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
-                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
-                </div>
             </div>
             
-            <!-- Budget Agent -->
-            <div class="agent-card-hero">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">💰</div>
-                </div>
-                <h2 class="agent-title-large" data-i18n="budgetTitle">Budget<br>Agent</h2>
-                <p class="agent-description-large" data-i18n="budgetDesc">
-                    Financial intelligence. Analyzes data, optimizes budget allocation, 
-                    forecasts costs, and generates detailed breakdowns.
+            <div class="module-card">
+                <div class="module-icon">💰</div>
+                <h3 class="module-title">Budget Agent</h3>
+                <p class="module-description">
+                    Analyzes financial data, optimizes budget allocation, forecasts costs, and generates detailed budget breakdowns.
                 </p>
-                <div class="agent-cta-group">
-                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
-                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
-                </div>
             </div>
             
-            <!-- Archive Agent -->
-            <div class="agent-card-hero">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">🏛️</div>
-                </div>
-                <h2 class="agent-title-large" data-i18n="archiveTitle">Archive<br>Agent</h2>
-                <p class="agent-description-large" data-i18n="archiveDesc">
-                    Your digital archivist. Searches artwork databases, recommends pieces, 
-                    provides historical context, and manages metadata.
+            <div class="module-card">
+                <div class="module-icon">🏛️</div>
+                <h3 class="module-title">Archive Agent</h3>
+                <p class="module-description">
+                    Searches artwork databases, recommends pieces based on criteria, provides historical context, and manages metadata.
                 </p>
-                <div class="agent-cta-group">
-                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
-                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
-                </div>
             </div>
             
-            <!-- Visitor Agent -->
-            <div class="agent-card-hero">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">👥</div>
-                </div>
-                <h2 class="agent-title-large" data-i18n="visitorTitle">Visitor<br>Agent</h2>
-                <p class="agent-description-large" data-i18n="visitorDesc">
-                    Crowd intelligence. Predicts daily traffic, analyzes patterns, 
-                    forecasts capacity needs, and optimizes management.
+            <div class="module-card">
+                <div class="module-icon">👥</div>
+                <h3 class="module-title">Visitor Agent</h3>
+                <p class="module-description">
+                    Predicts daily visitor traffic, analyzes patterns, forecasts capacity needs, and optimizes crowd management.
                 </p>
-                <div class="agent-cta-group">
-                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
-                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
-                </div>
             </div>
             
-            <!-- Digital Twin Agent -->
-            <div class="agent-card-hero">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">🏗️</div>
-                </div>
-                <h2 class="agent-title-large" data-i18n="digitalTwinTitle">Digital Twin<br>Agent</h2>
-                <p class="agent-description-large" data-i18n="digitalTwinDesc">
-                    Virtual museum simulator. Optimizes artwork placement, generates flow heatmaps, 
-                    and tests layout configurations in real-time.
+            <div class="module-card">
+                <div class="module-icon">🏗️</div>
+                <h3 class="module-title">Digital Twin Agent</h3>
+                <p class="module-description">
+                    Simulates museum spaces, optimizes artwork placement, generates visitor flow heatmaps, and tests layout configurations.
                 </p>
-                <div class="agent-cta-group">
-                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
-                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
-                </div>
             </div>
             
-            <!-- Chatbot Agent -->
-            <div class="agent-card-hero">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">💬</div>
-                </div>
-                <h2 class="agent-title-large" data-i18n="chatbotTitle">Chatbot<br>Agent</h2>
-                <p class="agent-description-large" data-i18n="chatbotDesc">
-                    AI museum guide. Provides personalized recommendations, 
-                    answers visitor questions, and manages conversation context.
+            <div class="module-card">
+                <div class="module-icon">💬</div>
+                <h3 class="module-title">Chatbot Agent</h3>
+                <p class="module-description">
+                    AI museum guide providing personalized recommendations, answering visitor questions, and managing conversation context.
                 </p>
-                <div class="agent-cta-group">
-                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
-                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
-                </div>
             </div>
             
-            <!-- Notion Integration -->
-            <div class="agent-card-hero">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">🔗</div>
-                </div>
-                <h2 class="agent-title-large" data-i18n="notionTitle">Notion<br>Integration</h2>
-                <p class="agent-description-large" data-i18n="notionDesc">
-                    Seamless workflow sync. Two-way sync with Notion workspace, 
-                    automatic project creation, and real-time status updates.
+            <div class="module-card">
+                <div class="module-icon">🔗</div>
+                <h3 class="module-title">Notion Integration</h3>
+                <p class="module-description">
+                    Two-way sync with Notion workspace, automatic project/task creation, and real-time status updates.
                 </p>
-                <div class="agent-cta-group">
-                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
-                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- Pricing Section - Apple Style -->
-    <section class="section pricing-section" id="pricing" style="padding: 5rem 2rem; background: linear-gradient(180deg, #000 0%, #0a0a0f 50%, #000 100%);">
-        <div class="section-header" style="margin-bottom: 4rem;">
+    <!-- Pricing Section -->
+    <section class="section" id="pricing">
+        <div class="section-header">
             <span class="section-badge" data-i18n="pricingBadge">Pricing Plans</span>
             <h2 class="section-title" data-i18n="pricingTitle">Choose Your Plan</h2>
             <p class="section-description" data-i18n="pricingDesc">
@@ -1626,120 +1164,106 @@
             </p>
         </div>
         
-        <div class="pricing-grid" style="max-width: 1200px; margin: 0 auto;">
-            <!-- Free Plan -->
-            <div class="pricing-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);">
-                <h3 class="pricing-name" data-i18n="pricingFree" style="font-size: 1.75rem; margin-bottom: 1rem;">Free</h3>
-                <div class="pricing-price" style="font-size: 3.5rem; margin-bottom: 0.25rem;">$0</div>
-                <div class="pricing-period" data-i18n="pricingFreePeriod" style="font-size: 1rem; margin-bottom: 2rem; opacity: 0.6;">Forever free</div>
-                <ul class="pricing-features" style="text-align: left; margin-bottom: 2.5rem;">
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature1">Up to 5 workflows</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature2">2 team members</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature3">Basic AI agents</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature4">100 museum API requests/day</span></li>
-                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature5">Community support</span></li>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3 class="pricing-name" data-i18n="pricingFree">Free</h3>
+                <div class="pricing-price">$0</div>
+                <div class="pricing-period" data-i18n="pricingFreePeriod">Forever free</div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingFreeFeature1">Up to 5 workflows</span></li>
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingFreeFeature2">2 team members</span></li>
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingFreeFeature3">Basic AI agents</span></li>
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingFreeFeature4">100 museum API requests/day</span></li>
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingFreeFeature5">Community support</span></li>
                 </ul>
-                <button class="pricing-cta" data-i18n="pricingFreeCta" style="width: 100%; padding: 1rem; font-size: 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateY(0)';">Get Started</button>
+                <button class="pricing-cta" data-i18n="pricingFreeCta">Get Started</button>
             </div>
             
-            <!-- Professional Plan - Featured -->
-            <div class="pricing-card featured" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%); border: 2px solid rgba(139, 92, 246, 0.5); transform: scale(1.05); position: relative;">
-                <div class="pricing-badge" data-i18n="pricingProBadge" style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #8b5cf6, #ec4899); padding: 0.5rem 1.5rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; box-shadow: 0 4px 16px rgba(139, 92, 246, 0.5);">Most Popular</div>
-                <h3 class="pricing-name" data-i18n="pricingPro" style="font-size: 1.75rem; margin-bottom: 1rem; margin-top: 1rem;">Professional</h3>
-                <div class="pricing-price" data-i18n="pricingProPrice" style="font-size: 3.5rem; margin-bottom: 0.25rem; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">$99</div>
-                <div class="pricing-period" data-i18n="pricingProPeriod" style="font-size: 1rem; margin-bottom: 2rem; opacity: 0.6;">per month</div>
-                <ul class="pricing-features" style="text-align: left; margin-bottom: 2.5rem;">
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature1">Unlimited workflows</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature2">10 team members</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature3">All 8 AI agents</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature4">Unlimited museum API</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature5">AR/VR experiences</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature6">Real-time collaboration</span></li>
-                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature7">Priority support</span></li>
+            <div class="pricing-card featured">
+                <div class="pricing-badge" data-i18n="pricingProBadge">Most Popular</div>
+                <h3 class="pricing-name" data-i18n="pricingPro">Professional</h3>
+                <div class="pricing-price" data-i18n="pricingProPrice">$99</div>
+                <div class="pricing-period" data-i18n="pricingProPeriod">per month</div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingProFeature1">Unlimited workflows</span></li>
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingProFeature2">10 team members</span></li>
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingProFeature3">All 8 AI agents</span></li>
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingProFeature4">Unlimited museum API</span></li>
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingProFeature5">AR/VR experiences</span></li>
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingProFeature6">Real-time collaboration</span></li>
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingProFeature7">Priority support</span></li>
                 </ul>
-                <button class="pricing-cta" data-i18n="pricingProCta" style="width: 100%; padding: 1rem; font-size: 1rem; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); border: none; color: white; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4); font-weight: 600;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 40px rgba(139, 92, 246, 0.6)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 32px rgba(139, 92, 246, 0.4)';">Start Free Trial</button>
+                <button class="pricing-cta" data-i18n="pricingProCta">Start Free Trial</button>
             </div>
             
-            <!-- Enterprise Plan -->
-            <div class="pricing-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);">
-                <h3 class="pricing-name" data-i18n="pricingEnterprise" style="font-size: 1.75rem; margin-bottom: 1rem;">Enterprise</h3>
-                <div class="pricing-price" data-i18n="pricingEnterprisePrice" style="font-size: 3.5rem; margin-bottom: 0.25rem;">Custom</div>
-                <div class="pricing-period" data-i18n="pricingEnterprisePeriod" style="font-size: 1rem; margin-bottom: 2rem; opacity: 0.6;">Contact us</div>
-                <ul class="pricing-features" style="text-align: left; margin-bottom: 2.5rem;">
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature1">Everything in Pro</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature2">Unlimited team members</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature3">Custom AI training</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature4">Dedicated infrastructure</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature5">On-premise deployment</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature6">24/7 phone support</span></li>
-                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature7">SLA guarantee</span></li>
+            <div class="pricing-card">
+                <h3 class="pricing-name" data-i18n="pricingEnterprise">Enterprise</h3>
+                <div class="pricing-price" data-i18n="pricingEnterprisePrice">Custom</div>
+                <div class="pricing-period" data-i18n="pricingEnterprisePeriod">Contact us</div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingEnterpriseFeature1">Everything in Pro</span></li>
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingEnterpriseFeature2">Unlimited team members</span></li>
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingEnterpriseFeature3">Custom AI training</span></li>
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingEnterpriseFeature4">Dedicated infrastructure</span></li>
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingEnterpriseFeature5">On-premise deployment</span></li>
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingEnterpriseFeature6">24/7 phone support</span></li>
+                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricingEnterpriseFeature7">SLA guarantee</span></li>
                 </ul>
-                <button class="pricing-cta" data-i18n="pricingEnterpriseCta" style="width: 100%; padding: 1rem; font-size: 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateY(0)';">Contact Sales</button>
+                <button class="pricing-cta" data-i18n="pricingEnterpriseCta">Contact Sales</button>
             </div>
         </div>
     </section>
 
-    <!-- About Section - Apple Style -->
-    <section id="about" style="padding: 0; margin: 0;">
-        <div class="agents-grid" style="grid-template-columns: 1fr;">
-            <!-- Mission & Vision -->
-            <div class="agent-card-hero" style="min-height: 70vh;">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">🎯</div>
-                </div>
-                <h2 class="agent-title-large" data-i18n="aboutTitle">Building the Future<br>of Museums</h2>
-                <p class="agent-description-large" data-i18n="aboutMission">
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="section-header">
+            <span class="section-badge" data-i18n="aboutBadge">About Us</span>
+            <h2 class="section-title" data-i18n="aboutTitle">Building the Future of Museums</h2>
+        </div>
+        
+        <div class="about-grid">
+            <div class="about-content">
+                <h3 data-i18n="aboutMissionTitle">Our Mission</h3>
+                <p data-i18n="aboutMission">
                     MuseFlow.life was created to revolutionize how museums manage their operations. 
                     We believe that cultural institutions deserve world-class technology that enables 
                     them to focus on what matters most: preserving and sharing culture.
                 </p>
-                <div class="agent-cta-group">
-                    <a href="/admin.html" class="agent-btn agent-btn-primary">Get Started</a>
-                    <a href="#pricing" class="agent-btn agent-btn-secondary">View Pricing →</a>
-                </div>
-            </div>
-            
-            <!-- Technology Stack -->
-            <div class="agent-card-hero" style="min-height: 70vh;">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">⚡</div>
-                </div>
-                <h2 class="agent-title-large">Powered by<br>Cutting-Edge Tech</h2>
-                <p class="agent-description-large" data-i18n="aboutWhy">
-                    Our multi-agent system orchestrates 8 specialized AI agents powered 
+                
+                <h3 data-i18n="aboutWhyTitle">Why MuseFlow?</h3>
+                <p data-i18n="aboutWhy">
+                    Traditional museum workflow management is complex, time-consuming, and error-prone. 
+                    MuseFlow leverages cutting-edge AI technology to automate routine tasks, provide 
+                    intelligent insights, and enable seamless collaboration.
+                </p>
+                
+                <p>
+                    Our multi-agent system orchestrates 8 specialized AI agents that work together 
+                    to handle everything from exhibition planning to visitor analytics, all powered 
                     by Google's Gemini 2.0 and running on Cloudflare's global edge network.
                 </p>
-                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; max-width: 700px; margin-bottom: 2rem;">
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Gemini 2.0 Flash</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">TypeScript 5.7</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Hono 4.10</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Cloudflare Workers</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">D1 Database</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Durable Objects</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Three.js</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">WebXR API</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Chart.js</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Notion API</span>
-                </div>
-                <div class="agent-cta-group">
-                    <a href="#features" class="agent-btn agent-btn-primary">Explore Features</a>
-                </div>
             </div>
             
-            <!-- Leadership -->
-            <div class="agent-card-hero" style="min-height: 60vh;">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">👨‍🏫</div>
+            <div class="about-content">
+                <h3>Technology Stack</h3>
+                <div class="tech-stack">
+                    <span class="tech-badge">Gemini 2.0 Flash</span>
+                    <span class="tech-badge">TypeScript 5.7</span>
+                    <span class="tech-badge">Hono 4.10</span>
+                    <span class="tech-badge">Cloudflare Workers</span>
+                    <span class="tech-badge">D1 Database</span>
+                    <span class="tech-badge">Durable Objects</span>
+                    <span class="tech-badge">Three.js</span>
+                    <span class="tech-badge">WebXR API</span>
+                    <span class="tech-badge">Chart.js</span>
+                    <span class="tech-badge">Notion API</span>
                 </div>
-                <h2 class="agent-title-large">Led by Experts<br>in Culture & AI</h2>
-                <p class="agent-description-large">
-                    Professor Nam Hyun-woo (남현우 교수) combines deep expertise 
+                
+                <h3 style="margin-top: 2rem;">Leadership</h3>
+                <p>
+                    Led by Professor Nam Hyun-woo (남현우 교수), MuseFlow combines deep expertise 
                     in cultural heritage management with cutting-edge AI research and development.
                 </p>
-                <div class="agent-cta-group">
-                    <a href="/admin.html" class="agent-btn agent-btn-primary">Join MuseFlow</a>
-                    <a href="#pricing" class="agent-btn agent-btn-secondary">Contact Us →</a>
-                </div>
             </div>
         </div>
     </section>
@@ -2054,8 +1578,6 @@
                 heroSubtitle: '지능형 워크플로우 자동화, 멀티 에이전트 AI 시스템, 실시간 협업으로 뮤지엄 운영을 혁신하세요. 문화기관의 미래를 위해 설계되었습니다.',
                 launchPlatform: '플랫폼 시작하기',
                 learnMore: '더 알아보기',
-                signupButton: '가입하기',
-                loginButton: '로그인',
                 aiAgents: 'AI 에이전트',
                 autoNodes: '자동 생성 노드',
                 workflowCreation: '워크플로우 생성',
@@ -2192,8 +1714,6 @@
                 heroSubtitle: 'Transform your museum operations with intelligent workflow automation, multi-agent AI system, and real-time collaboration. Built for the future of cultural institutions.',
                 launchPlatform: 'Launch Platform',
                 learnMore: 'Learn More',
-                signupButton: 'Sign Up',
-                loginButton: 'Login',
                 aiAgents: 'AI Agents',
                 autoNodes: 'Auto-Generated Nodes',
                 workflowCreation: 'Workflow Creation',
@@ -2406,51 +1926,6 @@
             } else if (email) {
                 alert('❌ 올바른 이메일 주소를 입력해주세요.\n\nPlease enter a valid email address.');
             }
-        });
-        
-        // AI Workspace functionality
-        const aiSearch = document.getElementById('ai-search');
-        const aiToolBtns = document.querySelectorAll('.ai-tool-btn');
-        
-        // AI Search functionality
-        aiSearch?.parentElement.querySelector('button')?.addEventListener('click', () => {
-            const query = aiSearch.value.trim();
-            if (query) {
-                console.log('🔍 AI Search:', query);
-                // Redirect to admin with search query
-                window.location.href = `/admin.html?search=${encodeURIComponent(query)}`;
-            }
-        });
-        
-        aiSearch?.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const query = aiSearch.value.trim();
-                if (query) {
-                    console.log('🔍 AI Search:', query);
-                    window.location.href = `/admin.html?search=${encodeURIComponent(query)}`;
-                }
-            }
-        });
-        
-        // AI Tool buttons
-        aiToolBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const tool = btn.getAttribute('data-tool');
-                console.log('🤖 AI Tool selected:', tool);
-                // Redirect to admin with tool parameter
-                window.location.href = `/admin.html?tool=${tool}`;
-            });
-            
-            // Hover effect
-            btn.addEventListener('mouseenter', () => {
-                btn.style.background = 'rgba(139, 92, 246, 0.2)';
-                btn.style.transform = 'translateY(-2px)';
-            });
-            
-            btn.addEventListener('mouseleave', () => {
-                btn.style.background = 'rgba(139, 92, 246, 0.1)';
-                btn.style.transform = 'translateY(0)';
-            });
         });
     </script>
 </body>

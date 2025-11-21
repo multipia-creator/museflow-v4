@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuseFlow Agents - Apple Style Mockup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #000;
+            color: #f5f5f7;
+            overflow-x: hidden;
+        }
+        
+        /* Hero Header */
+        .hero-header {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            background: radial-gradient(ellipse at top, #1e1b4b 0%, #0f0a1f 50%, #000 100%);
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            border-radius: 100px;
+            color: #a78bfa;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero-description {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+        }
+        
+        /* Apple-Style Grid */
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0;
+            width: 100%;
+        }
+        
+        .agent-card-hero {
+            min-height: 80vh;
+            padding: 5rem 4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Alternating backgrounds */
+        .agent-card-hero:nth-child(1) { 
+            background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%);
+            color: #1d1d1f;
+        }
+        .agent-card-hero:nth-child(2) { 
+            background: linear-gradient(135deg, #000 0%, #1a0f2e 100%);
+            color: #f5f5f7;
+        }
+        .agent-card-hero:nth-child(3) { 
+            background: linear-gradient(135deg, #fbfbfd 0%, #f0f0f5 100%);
+            color: #1d1d1f;
+        }
+        .agent-card-hero:nth-child(4) { 
+            background: linear-gradient(135deg, #0a0a0f 0%, #1e1b4b 100%);
+            color: #f5f5f7;
+        }
+        .agent-card-hero:nth-child(5) { 
+            background: linear-gradient(135deg, #fafafa 0%, #e5e5ea 100%);
+            color: #1d1d1f;
+        }
+        .agent-card-hero:nth-child(6) { 
+            background: linear-gradient(135deg, #0f0a1f 0%, #2e1065 100%);
+            color: #f5f5f7;
+        }
+        .agent-card-hero:nth-child(7) { 
+            background: linear-gradient(135deg, #f9f9fb 0%, #ececf1 100%);
+            color: #1d1d1f;
+        }
+        .agent-card-hero:nth-child(8) { 
+            background: linear-gradient(135deg, #000 0%, #0f0a1f 100%);
+            color: #f5f5f7;
+        }
+        
+        .agent-card-hero:hover {
+            transform: scale(1.02);
+        }
+        
+        /* Visual element container */
+        .agent-visual {
+            width: 280px;
+            height: 280px;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        /* Icon styling */
+        .agent-icon-large {
+            font-size: 8rem;
+            filter: drop-shadow(0 8px 32px rgba(139, 92, 246, 0.4));
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        /* Glow effect for dark cards */
+        .agent-card-hero:nth-child(even) .agent-icon-large {
+            filter: drop-shadow(0 8px 48px rgba(139, 92, 246, 0.6));
+        }
+        
+        .agent-title-large {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+        
+        /* Gradient text for light backgrounds */
+        .agent-card-hero:nth-child(odd) .agent-title-large {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .agent-description-large {
+            font-size: 1.5rem;
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+            font-weight: 400;
+        }
+        
+        /* Light card description */
+        .agent-card-hero:nth-child(odd) .agent-description-large {
+            color: rgba(29, 29, 31, 0.7);
+        }
+        
+        /* Dark card description */
+        .agent-card-hero:nth-child(even) .agent-description-large {
+            color: rgba(245, 245, 247, 0.75);
+        }
+        
+        /* CTA Buttons */
+        .agent-cta-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .agent-btn {
+            padding: 0.875rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 980px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Primary button for light cards */
+        .agent-card-hero:nth-child(odd) .agent-btn-primary {
+            background: #0071e3;
+            color: white;
+            border: none;
+        }
+        
+        .agent-card-hero:nth-child(odd) .agent-btn-primary:hover {
+            background: #0077ed;
+            transform: scale(1.05);
+        }
+        
+        /* Primary button for dark cards */
+        .agent-card-hero:nth-child(even) .agent-btn-primary {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+        }
+        
+        .agent-card-hero:nth-child(even) .agent-btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.6);
+        }
+        
+        /* Secondary button for light cards */
+        .agent-card-hero:nth-child(odd) .agent-btn-secondary {
+            background: transparent;
+            color: #0071e3;
+            border: 2px solid rgba(0, 113, 227, 0.3);
+        }
+        
+        .agent-card-hero:nth-child(odd) .agent-btn-secondary:hover {
+            border-color: #0071e3;
+            transform: scale(1.05);
+        }
+        
+        /* Secondary button for dark cards */
+        .agent-card-hero:nth-child(even) .agent-btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .agent-card-hero:nth-child(even) .agent-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: scale(1.05);
+        }
+        
+        /* Decorative elements */
+        .agent-card-hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            opacity: 0.1;
+            filter: blur(100px);
+        }
+        
+        .agent-card-hero:nth-child(1)::before {
+            background: #8b5cf6;
+            top: -200px;
+            right: -200px;
+        }
+        
+        .agent-card-hero:nth-child(2)::before {
+            background: #ec4899;
+            bottom: -200px;
+            left: -200px;
+        }
+        
+        .agent-card-hero:nth-child(3)::before {
+            background: #3b82f6;
+            top: -200px;
+            left: -200px;
+        }
+        
+        .agent-card-hero:nth-child(4)::before {
+            background: #8b5cf6;
+            bottom: -200px;
+            right: -200px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .agents-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .agent-title-large {
+                font-size: 2.5rem;
+            }
+            
+            .agent-description-large {
+                font-size: 1.25rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .agent-card-hero {
+                min-height: 60vh;
+                padding: 3rem 2rem;
+            }
+            
+            .agent-visual {
+                width: 200px;
+                height: 200px;
+                margin-bottom: 2rem;
+            }
+            
+            .agent-icon-large {
+                font-size: 5rem;
+            }
+            
+            .agent-title-large {
+                font-size: 2rem;
+            }
+            
+            .agent-description-large {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Header -->
+    <div class="hero-header">
+        <span class="hero-badge">AI-Powered Museum Management</span>
+        <h1 class="hero-title">8 Specialized Agents<br>One Powerful Platform</h1>
+        <p class="hero-description">
+            Each agent is expertly designed for specific museum management tasks,
+            working together seamlessly to transform your operations.
+        </p>
+    </div>
+    
+    <!-- Apple-Style Agent Grid -->
+    <div class="agents-grid">
+        <!-- Coordinator Agent -->
+        <div class="agent-card-hero">
+            <div class="agent-visual">
+                <div class="agent-icon-large">🎯</div>
+            </div>
+            <h2 class="agent-title-large">Coordinator<br>Agent</h2>
+            <p class="agent-description-large">
+                The brain of MuseFlow. Orchestrates all agents using MCP protocol, 
+                routes requests to specialists, and manages inter-agent communication.
+            </p>
+            <div class="agent-cta-group">
+                <a href="#" class="agent-btn agent-btn-primary">Learn more</a>
+                <a href="#" class="agent-btn agent-btn-secondary">Try now →</a>
+            </div>
+        </div>
+        
+        <!-- Exhibition Agent -->
+        <div class="agent-card-hero">
+            <div class="agent-visual">
+                <div class="agent-icon-large">🎨</div>
+            </div>
+            <h2 class="agent-title-large">Exhibition<br>Agent</h2>
+            <p class="agent-description-large">
+                Your creative curator. Plans exhibitions, curates artwork selections, 
+                designs gallery layouts from simple descriptions.
+            </p>
+            <div class="agent-cta-group">
+                <a href="#" class="agent-btn agent-btn-primary">Learn more</a>
+                <a href="#" class="agent-btn agent-btn-secondary">Try now →</a>
+            </div>
+        </div>
+        
+        <!-- Budget Agent -->
+        <div class="agent-card-hero">
+            <div class="agent-visual">
+                <div class="agent-icon-large">💰</div>
+            </div>
+            <h2 class="agent-title-large">Budget<br>Agent</h2>
+            <p class="agent-description-large">
+                Financial intelligence. Analyzes data, optimizes budget allocation, 
+                forecasts costs, and generates detailed breakdowns.
+            </p>
+            <div class="agent-cta-group">
+                <a href="#" class="agent-btn agent-btn-primary">Learn more</a>
+                <a href="#" class="agent-btn agent-btn-secondary">Try now →</a>
+            </div>
+        </div>
+        
+        <!-- Archive Agent -->
+        <div class="agent-card-hero">
+            <div class="agent-visual">
+                <div class="agent-icon-large">🏛️</div>
+            </div>
+            <h2 class="agent-title-large">Archive<br>Agent</h2>
+            <p class="agent-description-large">
+                Your digital archivist. Searches artwork databases, recommends pieces, 
+                provides historical context, and manages metadata.
+            </p>
+            <div class="agent-cta-group">
+                <a href="#" class="agent-btn agent-btn-primary">Learn more</a>
+                <a href="#" class="agent-btn agent-btn-secondary">Try now →</a>
+            </div>
+        </div>
+        
+        <!-- Visitor Agent -->
+        <div class="agent-card-hero">
+            <div class="agent-visual">
+                <div class="agent-icon-large">👥</div>
+            </div>
+            <h2 class="agent-title-large">Visitor<br>Agent</h2>
+            <p class="agent-description-large">
+                Crowd intelligence. Predicts daily traffic, analyzes patterns, 
+                forecasts capacity needs, and optimizes management.
+            </p>
+            <div class="agent-cta-group">
+                <a href="#" class="agent-btn agent-btn-primary">Learn more</a>
+                <a href="#" class="agent-btn agent-btn-secondary">Try now →</a>
+            </div>
+        </div>
+        
+        <!-- Digital Twin Agent -->
+        <div class="agent-card-hero">
+            <div class="agent-visual">
+                <div class="agent-icon-large">🏗️</div>
+            </div>
+            <h2 class="agent-title-large">Digital Twin<br>Agent</h2>
+            <p class="agent-description-large">
+                Virtual museum simulator. Optimizes artwork placement, generates flow heatmaps, 
+                and tests layout configurations in real-time.
+            </p>
+            <div class="agent-cta-group">
+                <a href="#" class="agent-btn agent-btn-primary">Learn more</a>
+                <a href="#" class="agent-btn agent-btn-secondary">Try now →</a>
+            </div>
+        </div>
+        
+        <!-- Chatbot Agent -->
+        <div class="agent-card-hero">
+            <div class="agent-visual">
+                <div class="agent-icon-large">💬</div>
+            </div>
+            <h2 class="agent-title-large">Chatbot<br>Agent</h2>
+            <p class="agent-description-large">
+                AI museum guide. Provides personalized recommendations, 
+                answers visitor questions, and manages conversation context.
+            </p>
+            <div class="agent-cta-group">
+                <a href="#" class="agent-btn agent-btn-primary">Learn more</a>
+                <a href="#" class="agent-btn agent-btn-secondary">Try now →</a>
+            </div>
+        </div>
+        
+        <!-- Notion Integration -->
+        <div class="agent-card-hero">
+            <div class="agent-visual">
+                <div class="agent-icon-large">🔗</div>
+            </div>
+            <h2 class="agent-title-large">Notion<br>Integration</h2>
+            <p class="agent-description-large">
+                Seamless workflow sync. Two-way sync with Notion workspace, 
+                automatic project creation, and real-time status updates.
+            </p>
+            <div class="agent-cta-group">
+                <a href="#" class="agent-btn agent-btn-primary">Learn more</a>
+                <a href="#" class="agent-btn agent-btn-secondary">Try now →</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
