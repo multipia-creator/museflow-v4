@@ -288,9 +288,9 @@
                     localStorage.setItem('authToken', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     
-                    showSuccess('로그인 성공! 대시보드로 이동합니다...');
+                    showSuccess('로그인 성공! 프로젝트로 이동합니다...');
                     setTimeout(() => {
-                        window.location.href = '/admin.html';
+                        window.location.href = '/projects.html';
                     }, 1000);
                 } else {
                     showError(data.error || '로그인에 실패했습니다.');

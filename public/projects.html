@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 프로젝트 - MuseFlow</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a0f2e 50%, #0a0a0f 100%);
+            color: #f5f5f7;
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: saturate(180%) blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 48px rgba(139, 92, 246, 0.3);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .project-card {
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #8b5cf6, #ec4899);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            border: none;
+            padding: 0.875rem 1.75rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.5);
+        }
+
+        .nav-bar {
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-draft {
+            background: rgba(107, 114, 128, 0.2);
+            color: #9ca3af;
+        }
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .status-completed {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 500px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.875rem 3rem 0.875rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(139, 92, 246, 0.2);
+            border-top-color: #8b5cf6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a0f2e 0%, #0a0a0f 100%);
+            padding: 2rem;
+            border-radius: 24px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+        <a href="/landing.html" class="nav-logo">
+            <img src="/static/images/logo-neon-m.png" alt="MuseFlow">
+            <span style="font-size: 1.25rem; font-weight: 700;">MuseFlow</span>
+        </a>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <a href="/account.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
+                <i class="fas fa-user"></i> 내 계정
+            </a>
+            <a href="/admin.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div style="max-width: 1400px; margin: 0 auto; padding: 3rem 2rem;">
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; flex-wrap: wrap; gap: 1.5rem;">
+            <div>
+                <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;" class="gradient-text">
+                    내 프로젝트
+                </h1>
+                <p style="color: rgba(255, 255, 255, 0.7);">워크플로우 프로젝트를 관리하고 편집하세요</p>
+            </div>
+            <button id="new-project-btn" class="btn-primary">
+                <i class="fas fa-plus"></i> 새 프로젝트
+            </button>
+        </div>
+
+        <!-- Search and Filter -->
+        <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+            <div class="search-box" style="flex: 1; min-width: 300px;">
+                <input type="text" id="search-input" placeholder="프로젝트 검색...">
+                <i class="fas fa-search"></i>
+            </div>
+            <select id="status-filter" style="padding: 0.875rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; cursor: pointer;">
+                <option value="all">모든 상태</option>
+                <option value="draft">초안</option>
+                <option value="active">활성</option>
+                <option value="completed">완료</option>
+            </select>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading-state" style="text-align: center; padding: 4rem 0;">
+            <div class="loading-spinner" style="margin: 0 auto;"></div>
+            <p style="margin-top: 1rem; color: rgba(255, 255, 255, 0.7);">프로젝트를 불러오는 중...</p>
+        </div>
+
+        <!-- Projects Grid -->
+        <div id="projects-grid" style="display: none; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem;">
+            <!-- Projects will be dynamically inserted here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <div class="empty-icon">📂</div>
+            <h2 style="font-size: 1.75rem; font-weight: 600; margin-bottom: 0.5rem;">프로젝트가 없습니다</h2>
+            <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem;">첫 번째 워크플로우 프로젝트를 만들어보세요</p>
+            <button id="empty-new-project-btn" class="btn-primary">
+                <i class="fas fa-plus"></i> 새 프로젝트 만들기
+            </button>
+        </div>
+    </div>
+
+    <!-- New Project Modal -->
+    <div id="new-project-modal" class="modal">
+        <div class="modal-content">
+            <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem;" class="gradient-text">
+                새 프로젝트 만들기
+            </h2>
+            
+            <form id="new-project-form">
+                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9);">프로젝트 제목</label>
+                <input type="text" id="project-title" class="form-input" placeholder="예: 2024 봄 특별전 기획" required>
+                
+                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9);">프로젝트 설명 (선택)</label>
+                <textarea id="project-description" class="form-input" placeholder="프로젝트에 대한 간단한 설명을 입력하세요"></textarea>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="submit" class="btn-primary" style="flex: 1;">
+                        <i class="fas fa-check"></i> 생성
+                    </button>
+                    <button type="button" id="cancel-modal-btn" style="flex: 1; padding: 0.875rem 1.75rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; color: white; cursor: pointer;">
+                        취소
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            window.location.href = '/login.html';
+        }
+
+        let allProjects = [];
+        const projectsGrid = document.getElementById('projects-grid');
+        const loadingState = document.getElementById('loading-state');
+        const emptyState = document.getElementById('empty-state');
+        const searchInput = document.getElementById('search-input');
+        const statusFilter = document.getElementById('status-filter');
+        const newProjectModal = document.getElementById('new-project-modal');
+        const newProjectForm = document.getElementById('new-project-form');
+
+        // Status badge mapping
+        const statusConfig = {
+            draft: { label: '초안', class: 'status-draft' },
+            active: { label: '활성', class: 'status-active' },
+            completed: { label: '완료', class: 'status-completed' }
+        };
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diff = now - date;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            
+            if (days === 0) return '오늘';
+            if (days === 1) return '어제';
+            if (days < 7) return `${days}일 전`;
+            
+            return date.toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Render projects
+        function renderProjects(projects) {
+            if (projects.length === 0) {
+                projectsGrid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            projectsGrid.style.display = 'grid';
+            projectsGrid.innerHTML = '';
+
+            projects.forEach(project => {
+                const status = statusConfig[project.status] || statusConfig.draft;
+                const card = document.createElement('div');
+                card.className = 'glass-card project-card';
+                card.style.padding = '1.5rem';
+                card.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h3 style="font-size: 1.25rem; font-weight: 600; flex: 1;">${project.title}</h3>
+                        <span class="status-badge ${status.class}">${status.label}</span>
+                    </div>
+                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 1.5rem; min-height: 3rem;">
+                        ${project.description || '설명이 없습니다.'}
+                    </p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; color: rgba(255, 255, 255, 0.5); font-size: 0.875rem;">
+                        <span><i class="fas fa-clock"></i> ${formatDate(project.updated_at)}</span>
+                        <span><i class="fas fa-calendar"></i> ${formatDate(project.created_at)}</span>
+                    </div>
+                `;
+                card.addEventListener('click', () => {
+                    window.location.href = `/admin.html?project=${project.id}`;
+                });
+                projectsGrid.appendChild(card);
+            });
+        }
+
+        // Load projects
+        async function loadProjects() {
+            try {
+                loadingState.style.display = 'block';
+                projectsGrid.style.display = 'none';
+                emptyState.style.display = 'none';
+
+                const response = await fetch('/api/projects', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load projects');
+                }
+
+                const data = await response.json();
+                allProjects = data.projects;
+
+                loadingState.style.display = 'none';
+                renderProjects(allProjects);
+
+            } catch (error) {
+                console.error('Error loading projects:', error);
+                loadingState.style.display = 'none';
+                emptyState.style.display = 'block';
+            }
+        }
+
+        // Filter projects
+        function filterProjects() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const statusValue = statusFilter.value;
+
+            let filtered = allProjects;
+
+            if (searchTerm) {
+                filtered = filtered.filter(p => 
+                    p.title.toLowerCase().includes(searchTerm) ||
+                    (p.description && p.description.toLowerCase().includes(searchTerm))
+                );
+            }
+
+            if (statusValue !== 'all') {
+                filtered = filtered.filter(p => p.status === statusValue);
+            }
+
+            renderProjects(filtered);
+        }
+
+        // Event listeners
+        searchInput.addEventListener('input', filterProjects);
+        statusFilter.addEventListener('change', filterProjects);
+
+        // Modal controls
+        function openModal() {
+            newProjectModal.classList.add('active');
+        }
+
+        function closeModal() {
+            newProjectModal.classList.remove('active');
+            newProjectForm.reset();
+        }
+
+        document.getElementById('new-project-btn').addEventListener('click', openModal);
+        document.getElementById('empty-new-project-btn').addEventListener('click', openModal);
+        document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
+        
+        newProjectModal.addEventListener('click', (e) => {
+            if (e.target === newProjectModal) closeModal();
+        });
+
+        // Create new project
+        newProjectForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const title = document.getElementById('project-title').value.trim();
+            const description = document.getElementById('project-description').value.trim();
+
+            try {
+                const response = await fetch('/api/projects', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title, description })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    closeModal();
+                    await loadProjects();
+                    // Optionally redirect to canvas
+                    // window.location.href = `/admin.html?project=${data.projectId}`;
+                } else {
+                    alert(data.error || '프로젝트 생성에 실패했습니다.');
+                }
+            } catch (error) {
+                console.error('Error creating project:', error);
+                alert('서버 오류가 발생했습니다.');
+            }
+        });
+
+        // Load projects on page load
+        loadProjects();
+    </script>
+</body>
+</html>
