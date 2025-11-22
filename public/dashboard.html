@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="/static/js/tracker.js"></script>
     <style>
         * {
             margin: 0;
@@ -253,6 +254,78 @@
             border-color: rgba(139, 92, 246, 0.4) !important;
             transform: translateX(4px);
         }
+        
+        /* Widget Styles */
+        .widget-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: saturate(180%) blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            cursor: move;
+            transition: all 0.3s ease;
+        }
+        
+        .widget-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+        
+        .widget-card.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+        
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .widget-title {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+        }
+        
+        .widget-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .widget-btn {
+            padding: 0.375rem 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+        
+        .widget-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.4);
+            transform: translateY(-1px);
+        }
+        
+        .widget-content {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        #customize-widgets-btn:hover {
+            background: rgba(139, 92, 246, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -348,6 +421,22 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Widgets Section -->
+        <section class="widgets-section" style="margin-bottom: 3rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="font-size: 1.75rem; font-weight: 700;">
+                    <i class="fas fa-th"></i> <span data-i18n="myWidgets">내 위젯</span>
+                </h2>
+                <button id="customize-widgets-btn" style="padding: 0.75rem 1.5rem; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 12px; color: white; cursor: pointer; font-size: 0.875rem; font-weight: 600; transition: all 0.3s;">
+                    <i class="fas fa-cog"></i> <span data-i18n="customize">커스터마이즈</span>
+                </button>
+            </div>
+            
+            <div id="widgets-grid" class="widgets-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem;">
+                <!-- Widgets will be dynamically loaded -->
             </div>
         </section>
 
@@ -849,6 +938,10 @@
                 const card = document.createElement('div');
                 card.className = 'glass-card project-card';
                 card.style.padding = '1.5rem';
+                card.setAttribute('data-track', 'true');
+                card.setAttribute('data-track-type', 'click');
+                card.setAttribute('data-track-resource', 'project');
+                card.setAttribute('data-track-id', project.id);
                 const t = translations[currentLang];
                 card.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
@@ -863,15 +956,16 @@
                         <span><i class="fas fa-calendar"></i> ${formatDate(project.created_at)}</span>
                     </div>
                     <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
-                        <button onclick="editProject(${project.id}, event)" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 8px; color: white; cursor: pointer; transition: all 0.3s;">
+                        <button onclick="editProject(${project.id}, event)" class="btn-secondary" data-track="true" data-track-type="edit" data-track-resource="project" data-track-id="${project.id}" style="padding: 0.5rem 1rem; font-size: 0.875rem; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 8px; color: white; cursor: pointer; transition: all 0.3s;">
                             <i class="fas fa-edit"></i> ${t.edit}
                         </button>
-                        <button onclick="deleteProject(${project.id}, event)" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; color: #ef4444; cursor: pointer; transition: all 0.3s;">
+                        <button onclick="deleteProject(${project.id}, event)" class="btn-secondary" data-track="true" data-track-type="delete" data-track-resource="project" data-track-id="${project.id}" style="padding: 0.5rem 1rem; font-size: 0.875rem; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; color: #ef4444; cursor: pointer; transition: all 0.3s;">
                             <i class="fas fa-trash"></i> ${t.delete}
                         </button>
                     </div>
                 `;
                 card.addEventListener('click', () => {
+                    // Tracking is automatic via data-track attributes
                     window.location.href = `/admin.html?project=${project.id}`;
                 });
                 projectsGrid.appendChild(card);
@@ -1064,26 +1158,45 @@
         // Load dashboard statistics
         async function loadDashboardStats() {
             try {
-                const response = await fetch('/api/projects/stats/summary', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                // Fetch project stats
+                const projectsResponse = await fetch('/api/projects/stats/summary', {
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
                 
-                if (!response.ok) throw new Error('Failed to load stats');
+                if (!projectsResponse.ok) throw new Error('Failed to load project stats');
                 
-                const stats = await response.json();
+                const projectStats = await projectsResponse.json();
                 
-                // Update stat cards
-                document.getElementById('total-projects').textContent = stats.total || 0;
-                document.getElementById('active-projects').textContent = stats.active || 0;
+                // Update project stat cards
+                document.getElementById('total-projects').textContent = projectStats.total || 0;
+                document.getElementById('active-projects').textContent = projectStats.active || 0;
                 
-                // Weekly activity (placeholder - will be from behaviors API)
-                document.getElementById('weekly-activity').textContent = stats.total || 0;
-                
-                // Productivity score (placeholder - will be calculated)
-                const score = stats.total > 0 ? Math.min(100, Math.round((stats.active / stats.total) * 100)) : 0;
-                document.getElementById('productivity-score').textContent = score;
+                // Fetch behavior insights
+                try {
+                    const insightsResponse = await fetch('/api/behaviors/insights', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    
+                    if (insightsResponse.ok) {
+                        const insights = await insightsResponse.json();
+                        
+                        // Update weekly activity
+                        document.getElementById('weekly-activity').textContent = insights.this_week_count || 0;
+                        
+                        // Update productivity score
+                        document.getElementById('productivity-score').textContent = insights.productivity_score || 0;
+                    } else {
+                        // Fallback to project stats
+                        document.getElementById('weekly-activity').textContent = projectStats.total || 0;
+                        const score = projectStats.total > 0 ? Math.min(100, Math.round((projectStats.active / projectStats.total) * 100)) : 0;
+                        document.getElementById('productivity-score').textContent = score;
+                    }
+                } catch (insightsError) {
+                    console.warn('Could not fetch insights, using fallback:', insightsError);
+                    document.getElementById('weekly-activity').textContent = projectStats.total || 0;
+                    const score = projectStats.total > 0 ? Math.min(100, Math.round((projectStats.active / projectStats.total) * 100)) : 0;
+                    document.getElementById('productivity-score').textContent = score;
+                }
                 
             } catch (error) {
                 console.error('Error loading dashboard stats:', error);
@@ -1242,6 +1355,435 @@
             }
         }
         
+        // ============================================
+        // HELPER FUNCTIONS
+        // ============================================
+        
+        // Get time ago string
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            
+            const intervals = [
+                { label: '년', seconds: 31536000 },
+                { label: '개월', seconds: 2592000 },
+                { label: '주', seconds: 604800 },
+                { label: '일', seconds: 86400 },
+                { label: '시간', seconds: 3600 },
+                { label: '분', seconds: 60 }
+            ];
+            
+            for (const interval of intervals) {
+                const count = Math.floor(seconds / interval.seconds);
+                if (count >= 1) {
+                    return `${count}${interval.label} 전`;
+                }
+            }
+            
+            return '방금 전';
+        }
+        
+        // ============================================
+        // WIDGET SYSTEM
+        // ============================================
+        
+        // Widget definitions
+        const widgetDefinitions = {
+            'recent-activity': {
+                id: 'recent-activity',
+                title: '최근 활동',
+                icon: 'fa-clock',
+                color: '#8b5cf6',
+                render: async () => {
+                    try {
+                        // Fetch real behavior data
+                        const response = await fetch('/api/behaviors/recent?limit=5', {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        
+                        if (!response.ok) throw new Error('Failed to fetch');
+                        
+                        const behaviors = await response.json();
+                        
+                        if (behaviors.length === 0) {
+                            return `
+                                <div style="text-align: center; padding: 2rem; color: rgba(255, 255, 255, 0.6);">
+                                    <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5;"></i>
+                                    <p>활동 기록이 없습니다</p>
+                                </div>
+                            `;
+                        }
+                        
+                        const eventIcons = {
+                            'click': { icon: 'fa-mouse-pointer', color: '#8b5cf6' },
+                            'view': { icon: 'fa-eye', color: '#3b82f6' },
+                            'edit': { icon: 'fa-edit', color: '#ec4899' },
+                            'create': { icon: 'fa-plus-circle', color: '#10b981' },
+                            'delete': { icon: 'fa-trash', color: '#ef4444' },
+                            'duration': { icon: 'fa-clock', color: '#f59e0b' }
+                        };
+                        
+                        const activities = behaviors.map(b => {
+                            const iconData = eventIcons[b.event_type] || { icon: 'fa-circle', color: '#8b5cf6' };
+                            const timeAgo = getTimeAgo(new Date(b.created_at));
+                            const resourceName = b.resource_type ? `${b.resource_type}${b.resource_id ? ` #${b.resource_id}` : ''}` : b.page_path;
+                            
+                            return {
+                                icon: iconData.icon,
+                                color: iconData.color,
+                                resource: resourceName,
+                                time: timeAgo
+                            };
+                        });
+                        
+                        return `
+                        <div class="activity-list" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            ${activities.map(a => `
+                                <div style="display: flex; gap: 1rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.03); border-radius: 8px; transition: all 0.2s;"
+                                     onmouseover="this.style.background='rgba(255, 255, 255, 0.08)'"
+                                     onmouseout="this.style.background='rgba(255, 255, 255, 0.03)'">
+                                    <div style="flex-shrink: 0; width: 32px; height: 32px; background: ${a.color}20; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: ${a.color};">
+                                        <i class="fas ${a.icon}"></i>
+                                    </div>
+                                    <div style="flex: 1; min-width: 0;">
+                                        <div style="font-size: 0.875rem; font-weight: 500; margin-bottom: 0.25rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${a.resource}</div>
+                                        <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.6);">${a.time}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+            },
+            
+            'weekly-chart': {
+                id: 'weekly-chart',
+                title: '주간 활동 차트',
+                icon: 'fa-chart-line',
+                color: '#3b82f6',
+                render: async () => {
+                    return `<canvas id="weekly-activity-chart" style="max-height: 250px;"></canvas>`;
+                },
+                afterRender: async () => {
+                    const ctx = document.getElementById('weekly-activity-chart');
+                    if (!ctx) return;
+                    
+                    try {
+                        // Fetch real insights data
+                        const response = await fetch('/api/behaviors/insights', {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        
+                        if (!response.ok) throw new Error('Failed to fetch');
+                        
+                        const insights = await response.json();
+                        
+                        // Process last 7 days data
+                        const today = new Date();
+                        const days = [];
+                        const data = [];
+                        const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+                        
+                        for (let i = 6; i >= 0; i--) {
+                            const date = new Date(today);
+                            date.setDate(date.getDate() - i);
+                            const dateStr = date.toISOString().split('T')[0];
+                            const dayName = dayNames[date.getDay()];
+                            
+                            days.push(dayName);
+                            
+                            const activity = insights.recent_activity?.find(a => a.date === dateStr);
+                            data.push(activity?.count || 0);
+                        }
+                        
+                        new Chart(ctx.getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: days,
+                            datasets: [{
+                                label: '활동 수',
+                                data: data,
+                                borderColor: '#8b5cf6',
+                                backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                                tension: 0.4,
+                                fill: true,
+                                pointBackgroundColor: '#8b5cf6',
+                                pointBorderColor: '#fff',
+                                pointBorderWidth: 2,
+                                pointRadius: 4,
+                                pointHoverRadius: 6
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: 'rgba(15, 10, 31, 0.9)',
+                                    titleColor: '#fff',
+                                    bodyColor: '#fff',
+                                    borderColor: '#8b5cf6',
+                                    borderWidth: 1,
+                                    padding: 12,
+                                    displayColors: false
+                                }
+                            },
+                            scales: {
+                                y: { 
+                                    beginAtZero: true,
+                                    grid: { 
+                                        color: 'rgba(255, 255, 255, 0.05)',
+                                        borderColor: 'rgba(255, 255, 255, 0.1)'
+                                    },
+                                    ticks: { 
+                                        color: 'rgba(255, 255, 255, 0.6)',
+                                        font: { size: 11 }
+                                    }
+                                },
+                                x: {
+                                    grid: { 
+                                        display: false,
+                                        borderColor: 'rgba(255, 255, 255, 0.1)'
+                                    },
+                                    ticks: { 
+                                        color: 'rgba(255, 255, 255, 0.6)',
+                                        font: { size: 11 }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            
+            'top-features': {
+                id: 'top-features',
+                title: '자주 사용하는 기능',
+                icon: 'fa-star',
+                color: '#f59e0b',
+                render: async () => {
+                    try {
+                        const response = await fetch('/api/behaviors/insights', {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        
+                        if (!response.ok) throw new Error('Failed to fetch');
+                        
+                        const insights = await response.json();
+                        
+                        if (!insights.top_features || insights.top_features.length === 0) {
+                            return `
+                                <div style="text-align: center; padding: 2rem; color: rgba(255, 255, 255, 0.6);">
+                                    <i class="fas fa-star" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5;"></i>
+                                    <p>데이터를 수집하는 중입니다</p>
+                                </div>
+                            `;
+                        }
+                        
+                        const resourceIcons = {
+                            'project': { icon: 'fa-folder', color: '#8b5cf6' },
+                            'workflow': { icon: 'fa-project-diagram', color: '#3b82f6' },
+                            'canvas': { icon: 'fa-paint-brush', color: '#ec4899' },
+                            'page': { icon: 'fa-file', color: '#10b981' }
+                        };
+                        
+                        const features = insights.top_features.slice(0, 4).map(f => {
+                            const iconData = resourceIcons[f.resource_type] || { icon: 'fa-circle', color: '#8b5cf6' };
+                            return {
+                                name: f.resource_type || 'Unknown',
+                                count: f.usage_count,
+                                icon: iconData.icon,
+                                color: iconData.color
+                            };
+                        });
+                        
+                        const maxCount = Math.max(...features.map(f => f.count));
+                        
+                        return `
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            ${features.map((f, i) => `
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div style="flex-shrink: 0; width: 28px; height: 28px; background: ${f.color}20; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: ${f.color}; font-size: 0.875rem;">
+                                        <i class="fas ${f.icon}"></i>
+                                    </div>
+                                    <div style="flex: 1; min-width: 0;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                            <span style="font-size: 0.875rem; font-weight: 500;">${f.name}</span>
+                                            <span style="font-size: 0.875rem; font-weight: 600; color: ${f.color};">${f.count}회</span>
+                                        </div>
+                                        <div style="height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 2px; overflow: hidden;">
+                                            <div style="height: 100%; width: ${(f.count / maxCount * 100)}%; background: linear-gradient(90deg, ${f.color}, ${f.color}88); transition: width 0.5s ease;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+            },
+            
+            'quick-stats': {
+                id: 'quick-stats',
+                title: '빠른 통계',
+                icon: 'fa-tachometer-alt',
+                color: '#10b981',
+                render: async () => {
+                    const stats = await fetch('/api/projects/stats/summary', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    }).then(r => r.json()).catch(() => ({ total: 0, active: 0, draft: 0, completed: 0 }));
+                    
+                    const statItems = [
+                        { label: '총', value: stats.total, icon: 'fa-folder', color: '#8b5cf6' },
+                        { label: '활성', value: stats.active, icon: 'fa-check-circle', color: '#3b82f6' },
+                        { label: '초안', value: stats.draft, icon: 'fa-file-alt', color: '#f59e0b' },
+                        { label: '완료', value: stats.completed, icon: 'fa-check-double', color: '#10b981' }
+                    ];
+                    
+                    return `
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            ${statItems.map(s => `
+                                <div style="text-align: center; padding: 1.25rem; background: ${s.color}10; border-radius: 12px; border: 1px solid ${s.color}30; transition: all 0.3s;"
+                                     onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px ${s.color}40'"
+                                     onmouseout="this.style.transform=''; this.style.boxShadow=''">
+                                    <div style="color: ${s.color}; margin-bottom: 0.5rem;">
+                                        <i class="fas ${s.icon}" style="font-size: 1.5rem;"></i>
+                                    </div>
+                                    <div style="font-size: 2rem; font-weight: 700; color: ${s.color}; margin-bottom: 0.25rem;">${s.value}</div>
+                                    <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.6);">${s.label}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+            }
+        };
+        
+        // Render widget
+        async function renderWidget(widgetId) {
+            const widget = widgetDefinitions[widgetId];
+            if (!widget) return '';
+            
+            const content = await widget.render();
+            
+            const html = `
+                <div class="widget-card" data-widget-id="${widget.id}" draggable="true">
+                    <div class="widget-header">
+                        <div class="widget-title">
+                            <i class="fas ${widget.icon}" style="color: ${widget.color};"></i>
+                            <span>${widget.title}</span>
+                        </div>
+                        <div class="widget-actions">
+                            <button class="widget-btn refresh-widget" title="새로고침">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                            <button class="widget-btn remove-widget" title="제거">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="widget-content">
+                        ${content}
+                    </div>
+                </div>
+            `;
+            
+            return html;
+        }
+        
+        // Initialize widgets
+        async function initializeWidgets() {
+            const savedWidgets = JSON.parse(localStorage.getItem('dashboard_widgets') || 
+                '["recent-activity", "weekly-chart", "top-features", "quick-stats"]');
+            
+            const widgetsGrid = document.getElementById('widgets-grid');
+            if (!widgetsGrid) return;
+            
+            widgetsGrid.innerHTML = '';
+            
+            for (const widgetId of savedWidgets) {
+                const widgetHTML = await renderWidget(widgetId);
+                widgetsGrid.innerHTML += widgetHTML;
+                
+                const widget = widgetDefinitions[widgetId];
+                if (widget.afterRender) {
+                    setTimeout(() => widget.afterRender(), 100);
+                }
+            }
+            
+            initializeDragAndDrop();
+            initializeWidgetActions();
+        }
+        
+        // Initialize drag and drop
+        function initializeDragAndDrop() {
+            const grid = document.getElementById('widgets-grid');
+            if (!grid) return;
+            
+            new Sortable(grid, {
+                animation: 150,
+                handle: '.widget-header',
+                ghostClass: 'dragging',
+                onEnd: () => {
+                    saveWidgetLayout();
+                }
+            });
+        }
+        
+        // Initialize widget actions
+        function initializeWidgetActions() {
+            document.addEventListener('click', async (e) => {
+                if (e.target.closest('.remove-widget')) {
+                    const widget = e.target.closest('.widget-card');
+                    widget.style.opacity = '0';
+                    widget.style.transform = 'scale(0.8)';
+                    setTimeout(() => {
+                        widget.remove();
+                        saveWidgetLayout();
+                    }, 300);
+                }
+                
+                if (e.target.closest('.refresh-widget')) {
+                    const widget = e.target.closest('.widget-card');
+                    const widgetId = widget.dataset.widgetId;
+                    await refreshWidget(widgetId, widget);
+                }
+            });
+        }
+        
+        // Refresh widget
+        async function refreshWidget(widgetId, widgetElement) {
+            const content = widgetElement.querySelector('.widget-content');
+            const refreshBtn = widgetElement.querySelector('.refresh-widget i');
+            
+            refreshBtn.classList.add('fa-spin');
+            content.style.opacity = '0.5';
+            
+            const widget = widgetDefinitions[widgetId];
+            const newContent = await widget.render();
+            
+            setTimeout(() => {
+                content.innerHTML = newContent;
+                content.style.opacity = '1';
+                refreshBtn.classList.remove('fa-spin');
+                
+                if (widget.afterRender) {
+                    setTimeout(() => widget.afterRender(), 100);
+                }
+            }, 500);
+        }
+        
+        // Save widget layout
+        function saveWidgetLayout() {
+            const widgets = [...document.querySelectorAll('.widget-card')];
+            const widgetIds = widgets.map(w => w.dataset.widgetId);
+            localStorage.setItem('dashboard_widgets', JSON.stringify(widgetIds));
+        }
+        
+        // Customize widgets button
+        document.getElementById('customize-widgets-btn')?.addEventListener('click', () => {
+            alert('위젯 커스터마이즈 기능은 곧 추가됩니다!\n\n현재는 위젯 헤더를 드래그하여 순서를 변경하거나,\n우측 상단의 X 버튼으로 위젯을 제거할 수 있습니다.');
+        });
+        
         // Initialize dashboard
         function initializeDashboard() {
             updateGreeting();
@@ -1251,6 +1793,7 @@
             loadUserName();
             loadDashboardStats();
             loadAIRecommendations();
+            initializeWidgets();
         }
         
         // Start dashboard initialization

@@ -3,6 +3,7 @@ import { serveStatic } from 'hono/cloudflare-workers'
 import api from './api/index'
 import auth from './routes/auth'
 import projects from './routes/projects'
+import behaviors from './routes/behaviors'
 
 // Export Durable Objects
 export { CollaborationRoom } from './durable-objects/collaboration-room'
@@ -20,6 +21,7 @@ const app = new Hono<{ Bindings: Bindings }>()
 app.route('/api', api)
 app.route('/api/auth', auth)
 app.route('/api/projects', projects)
+app.route('/api/behaviors', behaviors)
 
 // Serve static files
 // Note: Cache busting is handled via query parameters (?v=timestamp) in HTML
