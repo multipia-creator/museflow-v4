@@ -128,7 +128,9 @@ const CanvasV2 = {
       const isAIReady = await window.AIGenerator.testConnection();
       console.log('🤖 AI Status:', isAIReady ? '✅ Ready' : '⚠️ Not available');
       
-      // Initialize Collaboration (after loading workflow)
+      // Initialize Collaboration (optional - disable for now to reduce errors)
+      // Uncomment below to enable real-time collaboration
+      /*
       setTimeout(() => {
         this.initCollaboration();
         
@@ -137,6 +139,8 @@ const CanvasV2 = {
           CollaborationPanel.render();
         }
       }, 1000);
+      */
+      console.log('ℹ️ Collaboration disabled (enable in canvas-v2.js if needed)');
       
     } catch (error) {
       console.warn('⚠️ Backend integration warning:', error.message);
@@ -276,7 +280,7 @@ const CanvasV2 = {
           
           <!-- Canvas Area -->
           <div style="flex: 1; position: relative; overflow: hidden; background: #ffffff;">
-            <canvas id="main-canvas" style="display: block; cursor: grab;"></canvas>
+            <canvas id="main-canvas" style="display: block; width: 100%; height: 100%; cursor: grab;"></canvas>
             
             <!-- Canvas Controls -->
             <div style="position: absolute; bottom: 24px; left: 24px; display: flex; gap: 8px;">
@@ -1068,6 +1072,7 @@ const CanvasV2 = {
     const rect = this.canvas.getBoundingClientRect();
     this.canvas.width = rect.width;
     this.canvas.height = rect.height;
+    console.log('📏 Canvas resized:', rect.width, 'x', rect.height);
   },
   
   async loadCanvasData() {
