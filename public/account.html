@@ -706,6 +706,33 @@
             }
         });
 
+        // Change avatar
+        document.getElementById('change-avatar-btn').addEventListener('click', () => {
+            const t = translations[currentLang];
+            const name = document.getElementById('profile-name').value || 'User';
+            
+            // Generate random background colors for avatar
+            const colors = [
+                '8b5cf6', // purple
+                'ec4899', // pink
+                '3b82f6', // blue
+                '10b981', // green
+                'f59e0b', // amber
+                'ef4444', // red
+                '06b6d4', // cyan
+                '8b5cf6'  // purple (default)
+            ];
+            
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Update avatar with new random color
+            const avatar = document.getElementById('profile-avatar');
+            avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&size=120&background=${randomColor}&color=fff`;
+            
+            // Show success message
+            showProfileSuccess(t.profileUpdated || '프로필 사진이 변경되었습니다.');
+        });
+
         // Logout
         document.getElementById('logout-btn').addEventListener('click', async () => {
             try {
