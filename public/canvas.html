@@ -147,20 +147,20 @@
             cursor: grabbing;
         }
     </style>
-    <script src="/static/js/tracker.js"></script>
+    <script src="/static/js/tracker.js?v=1.5.3"></script>
     
     <!-- Canvas V2 Dependencies -->
-    <script src="/static/js/components/toast.js"></script>
-    <script src="/static/js/core/router.js"></script>
-    <script src="/static/js/core/auth.js"></script>
-    <script src="/static/js/sdk/api-client.js"></script>
-    <script src="/static/js/sdk/workflow-sync.js"></script>
-    <script src="/static/js/sdk/ai-generator.js"></script>
-    <script src="/static/js/sdk/collaboration-client.js"></script>
-    <script src="/static/js/components/collaboration-panel.js"></script>
+    <script src="/static/js/components/toast.js?v=1.5.3"></script>
+    <script src="/static/js/core/router.js?v=1.5.3"></script>
+    <script src="/static/js/core/auth.js?v=1.5.3"></script>
+    <script src="/static/js/sdk/api-client.js?v=1.5.3"></script>
+    <script src="/static/js/sdk/workflow-sync.js?v=1.5.3"></script>
+    <script src="/static/js/sdk/ai-generator.js?v=1.5.3"></script>
+    <script src="/static/js/sdk/collaboration-client.js?v=1.5.3"></script>
+    <script src="/static/js/components/collaboration-panel.js?v=1.5.3"></script>
     
     <!-- Canvas V2 Main -->
-    <script src="/static/js/pages/canvas-v2.js"></script>
+    <script src="/static/js/pages/canvas-v2.js?v=1.5.3"></script>
 </head>
 <body>
     <!-- Loading Screen -->
@@ -177,10 +177,33 @@
         // API_BASE_URL is already declared in tracker.js (loaded above)
         // No need to redeclare here
         
+        // Ensure Toast is available (fallback if not loaded)
+        if (!window.Toast) {
+            console.warn('⚠️ Toast not loaded, creating fallback');
+            window.Toast = {
+                success: (msg) => console.log('✅', msg),
+                error: (msg) => console.error('❌', msg),
+                warning: (msg) => console.warn('⚠️', msg),
+                info: (msg) => console.info('ℹ️', msg)
+            };
+        }
+        
+        // Ensure Router is available (fallback)
+        if (!window.Router) {
+            console.warn('⚠️ Router not loaded, creating fallback');
+            window.Router = {
+                navigate: (path) => { window.location.href = path; }
+            };
+        }
+        
         // Initialize Canvas V2 when page loads
         window.addEventListener('DOMContentLoaded', async () => {
             try {
                 console.log('🎨 Initializing Canvas V2...');
+                console.log('📦 Checking dependencies...');
+                console.log('  - Toast:', typeof window.Toast);
+                console.log('  - Router:', typeof window.Router);
+                console.log('  - CanvasV2:', typeof window.CanvasV2);
                 console.log('📦 sessionStorage keys:', Object.keys(sessionStorage));
                 console.log('📦 museflow_current_project:', sessionStorage.getItem('museflow_current_project'));
                 
@@ -188,6 +211,11 @@
                 const projectData = sessionStorage.getItem('museflow_current_project');
                 if (!projectData) {
                     throw new Error('프로젝트 데이터가 없습니다. 프로젝트 목록에서 다시 선택해주세요.');
+                }
+                
+                // Check if CanvasV2 is loaded
+                if (!window.CanvasV2) {
+                    throw new Error('Canvas V2 모듈을 로드할 수 없습니다. 페이지를 새로고침해주세요.');
                 }
                 
                 // Initialize Canvas V2 (no parameters needed, reads from sessionStorage)
@@ -202,17 +230,26 @@
                 
             } catch (error) {
                 console.error('❌ Canvas initialization error:', error);
+                console.error('Error stack:', error.stack);
                 document.getElementById('loading-screen').innerHTML = `
-                    <div style="text-align: center;">
+                    <div style="text-align: center; padding: 40px;">
                         <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: #ef4444; margin-bottom: 20px;"></i>
                         <p style="color: rgba(255, 255, 255, 0.9); font-size: 18px; margin-bottom: 10px;">
                             캔버스 초기화 중 오류가 발생했습니다
                         </p>
-                        <p style="color: rgba(255, 255, 255, 0.5); font-size: 14px; margin-bottom: 30px;">
+                        <p style="color: rgba(255, 255, 255, 0.5); font-size: 14px; margin-bottom: 20px;">
                             ${error.message || '알 수 없는 오류'}
                         </p>
+                        <p style="color: rgba(255, 255, 255, 0.3); font-size: 12px; margin-bottom: 30px; font-family: monospace;">
+                            브라우저 캐시를 지우고 Ctrl+Shift+R로 새로고침해주세요
+                        </p>
+                        <button onclick="location.reload(true)" 
+                                style="padding: 12px 24px; background: #3b82f6; border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 16px; margin-right: 12px;">
+                            <i class="fas fa-sync" style="margin-right: 8px;"></i>
+                            강력 새로고침
+                        </button>
                         <button onclick="window.location.href='/projects.html'" 
-                                style="padding: 12px 24px; background: #8b5cf6; border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 16px; transition: all 0.2s;">
+                                style="padding: 12px 24px; background: #8b5cf6; border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 16px;">
                             <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
                             프로젝트 목록으로
                         </button>
