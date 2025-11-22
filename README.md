@@ -591,6 +591,53 @@ For issues or questions:
 
 ## 🐛 Bug Fixes (2025-11-22)
 
+### 🔥 최신: API_BASE_URL 중복 선언 오류 해결 (v1.4.2) ⭐ CRITICAL
+
+#### 문제 증상
+```
+Uncaught SyntaxError: Identifier 'API_BASE_URL' has already been declared (at projects.html:341:13)
+```
+
+#### 근본 원인
+- **tracker.js**에서 `API_BASE_URL` 첫 번째 선언 (전역 스코프)
+- **HTML 파일들** (projects.html, account.html, admin.html, dashboard.html)에서 **중복 선언 시도**
+- 브라우저 캐시 문제가 아닌 **코드 자체의 중복** 문제
+
+#### 해결 방법
+- ✅ **4개 HTML 파일**에서 중복 선언 제거
+- ✅ **tracker.js의 API_BASE_URL** 전역 선언 유지 (한 곳에서만 선언)
+- ✅ **PM2 설정 업데이트**: API 서버(3000) + 정적 파일 서버(8000) 통합 관리
+
+#### 수정된 파일
+```bash
+public/projects.html  - Line 345 중복 선언 제거
+public/account.html   - Line 351 중복 선언 제거  
+public/admin.html     - Line 248 중복 선언 제거
+public/dashboard.html - Line 522 중복 선언 제거
+ecosystem.config.cjs  - 양쪽 서버 PM2 통합
+```
+
+#### Git 커밋
+```
+ec8df98 - Add comprehensive API_BASE_URL duplication fix report
+d9ce0e8 - Update PM2 config to manage both API and static servers
+77e6cd7 - Fix: Remove duplicate API_BASE_URL declarations (already in tracker.js)
+```
+
+#### 공개 URL (포트별)
+- **정적 파일 (8000)**: https://8000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai
+- **API 서버 (3000)**: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai
+
+#### 사용자 액션 필요
+1. **브라우저 캐시 완전 삭제** (F12 → Application → Clear site data)
+2. **강력 새로고침** (Ctrl+Shift+R / Cmd+Shift+R)
+3. **시크릿 모드 테스트** 권장
+4. **포트 8000 URL**로 접속 (정적 HTML 파일 서빙)
+
+**상세 보고서**: `API_BASE_URL_FIX_REPORT.md` 참조
+
+---
+
 ### Critical JavaScript Errors Resolved
 
 1. **JavaScript Syntax Error (dashboard:1789)**
