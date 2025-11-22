@@ -4,6 +4,7 @@
  */
 
 import { Hono } from 'hono';
+import { verify } from 'hono/jwt';
 
 type Bindings = {
     DB: D1Database;
@@ -11,13 +12,39 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>();
 
+// Middleware to verify JWT and return user object
+async function verifyAuth(c: any): Promise<{ id: number; email: string } | null> {
+  try {
+    const authHeader = c.req.header('Authorization');
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return null;
+    }
+    
+    const token = authHeader.substring(7);
+    const secret = 'museflow-secret-key-2024';
+    
+    const payload = await verify(token, secret);
+    
+    // Return user object with id and email
+    return {
+      id: payload.userId as number,
+      email: payload.email as string
+    };
+    
+  } catch (error) {
+    console.error('Auth verification error:', error);
+    return null;
+  }
+}
+
 /**
  * POST /api/behaviors/track
  * Track user behaviors (batch)
  */
 app.post('/track', async (c) => {
     try {
-        const user = c.get('user');
+        const user = await verifyAuth(c);
         if (!user) {
             return c.json({ error: 'Unauthorized' }, 401);
         }
@@ -72,7 +99,7 @@ app.post('/track', async (c) => {
  */
 app.get('/recent', async (c) => {
     try {
-        const user = c.get('user');
+        const user = await verifyAuth(c);
         if (!user) {
             return c.json({ error: 'Unauthorized' }, 401);
         }
@@ -118,7 +145,7 @@ app.get('/recent', async (c) => {
  */
 app.get('/insights', async (c) => {
     try {
-        const user = c.get('user');
+        const user = await verifyAuth(c);
         if (!user) {
             return c.json({ error: 'Unauthorized' }, 401);
         }
@@ -227,7 +254,7 @@ app.get('/insights', async (c) => {
  */
 app.get('/stats', async (c) => {
     try {
-        const user = c.get('user');
+        const user = await verifyAuth(c);
         if (!user) {
             return c.json({ error: 'Unauthorized' }, 401);
         }
