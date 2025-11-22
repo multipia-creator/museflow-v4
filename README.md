@@ -13,6 +13,7 @@
 - 🔐 **완전한 인증 시스템**: JWT 기반 signup/login/logout
 - 📂 **프로젝트 관리**: CRUD API와 프로젝트 대시보드
 - 👤 **My Account 페이지**: 프로필 관리, 보안 설정, 통계
+- 📊 **초개인화 대시보드**: AI 기반 행동 추적, 실시간 인사이트, 드래그 가능 위젯
 - 🌍 **9개 언어 지원**: 한국어, 영어, 일본어, 중국어(간체/번체), 프랑스어, 독일어, 스페인어, 이탈리아어
 
 ## 🌐 URLs
@@ -21,6 +22,7 @@
 - **Landing Page**: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai/landing.html
 - **Signup**: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai/signup.html
 - **Login**: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai/login.html
+- **Dashboard**: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai/dashboard.html
 - **Projects**: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai/projects.html
 - **My Account**: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai/account.html
 - **Canvas/Admin**: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai/admin.html
@@ -30,6 +32,7 @@
 - **Profile**: `/api/auth/profile` (PUT), `/api/auth/password` (PUT)
 - **Projects**: `/api/projects` (GET/POST), `/api/projects/:id` (GET/PUT/DELETE)
 - **Stats**: `/api/projects/stats/summary` (GET) - 프로젝트 통계
+- **Behaviors**: `/api/behaviors/track` (POST), `/api/behaviors/recent` (GET), `/api/behaviors/insights` (GET), `/api/behaviors/stats` (GET)
 
 ### 🧪 Test User
 - **Email**: demo@museflow.life
@@ -67,9 +70,39 @@
 - created_at
 - updated_at
 
+#### user_behaviors (초개인화 대시보드)
+- id (PRIMARY KEY)
+- user_id (FOREIGN KEY)
+- event_type (click/view/edit/delete/create/search)
+- resource_type (project/workflow/canvas/page)
+- resource_id
+- page_path
+- duration
+- metadata (JSON)
+- created_at
+
+#### user_preferences (대시보드 설정)
+- id (PRIMARY KEY)
+- user_id (FOREIGN KEY, UNIQUE)
+- dashboard_layout (JSON)
+- favorite_projects (JSON)
+- hidden_widgets (JSON)
+- ui_theme
+- language
+- notification_settings (JSON)
+- created_at / updated_at
+
+#### user_insights (인사이트 캐시)
+- id (PRIMARY KEY)
+- user_id (FOREIGN KEY)
+- insight_type (productivity_score/top_features/weekly_summary)
+- insight_data (JSON)
+- valid_until
+- created_at / updated_at
+
 ### Storage Services
-- **D1 Database**: 사용자 인증, 프로젝트 데이터
-- **localStorage**: JWT 토큰, 사용자 세션
+- **D1 Database**: 사용자 인증, 프로젝트 데이터, 행동 추적, 인사이트
+- **localStorage**: JWT 토큰, 사용자 세션, 위젯 레이아웃
 
 ## 🎨 Design System
 
@@ -98,6 +131,8 @@ Landing Page (/)
 [회원가입] → Signup Page (/signup.html)
     ↓
 [로그인] → Login Page (/login.html)
+    ↓
+Dashboard Page (/dashboard.html) ← 초개인화 대시보드
     ↓
 Projects Page (/projects.html)
     ↓
@@ -132,8 +167,31 @@ Projects Page (/projects.html)
 - JWT token generation
 - Error/success message display
 
+#### Dashboard Page (초개인화 대시보드) ⭐ NEW
+- **i18n 지원**: 9개 언어 완전 지원 (30개 Dashboard 전용 번역 키)
+- **Daily Briefing**: 시간대별 인사말, 실시간 통계 카드, AI 추천 작업
+- **행동 추적 시스템**: 
+  - 자동 클릭/뷰/편집/삭제 이벤트 추적
+  - Batch 전송 (5개 또는 30초 주기)
+  - Beacon API로 안정적 전송
+  - data-track 속성 기반 자동 추적
+- **드래그 가능 위젯** (SortableJS):
+  - 최근 활동 (Recent Activity)
+  - 주간 활동 차트 (Chart.js)
+  - 자주 사용하는 기능 (Top Features)
+  - 통계 요약 (Quick Stats)
+  - localStorage에 레이아웃 저장
+- **AI 인사이트**:
+  - 생산성 점수 (0-100)
+  - 주간 활동 추세
+  - 기능 사용 통계
+  - 1시간 캐시로 성능 최적화
+- **실시간 데이터**: 모든 위젯이 behaviors API와 연동
+- **통계 카드**: 총 프로젝트, 활성 프로젝트, 이번 주 활동, 생산성 점수
+
 #### Projects Page
 - **i18n 지원**: 9개 언어 완전 지원 (28개 번역 키)
+- **행동 추적**: 프로젝트 클릭/편집/삭제 자동 추적
 - Grid layout with project cards
 - Search and filter functionality
 - New project modal
@@ -247,6 +305,35 @@ npx wrangler pages deploy dist --project-name museflow
 - [x] i18n system testing
 - [x] Delete functionality testing
 
+### Phase 8: 초개인화 대시보드 시스템 ✅ (v1.4.0)
+- [x] **행동 추적 시스템**
+  - [x] tracker.js 라이브러리 (6.4KB)
+  - [x] 자동 클릭 추적 (data-track 속성)
+  - [x] 배치 전송 (5개 or 30초)
+  - [x] Beacon API 안정적 전송
+  - [x] 세션 duration 추적
+  - [x] 5개 페이지에 통합 (dashboard, projects, account, admin, ar-vr-demo)
+- [x] **Behaviors API (4개 엔드포인트)**
+  - [x] POST /api/behaviors/track - 배치 이벤트 저장
+  - [x] GET /api/behaviors/recent - 최근 활동 조회
+  - [x] GET /api/behaviors/insights - AI 인사이트 생성
+  - [x] GET /api/behaviors/stats - 통계 요약
+- [x] **Dashboard 페이지 (95KB)**
+  - [x] Daily Briefing 섹션
+  - [x] 4개 드래그 가능 위젯 (SortableJS)
+  - [x] Chart.js 주간 활동 차트
+  - [x] 실시간 데이터 연동
+  - [x] localStorage 레이아웃 저장
+- [x] **Database 마이그레이션**
+  - [x] user_behaviors 테이블
+  - [x] user_preferences 테이블
+  - [x] user_insights 테이블 (1시간 캐시)
+  - [x] 6개 인덱스 최적화
+- [x] **i18n 확장 (9개 언어)**
+  - [x] 30개 Dashboard 전용 번역 키
+  - [x] 270개 번역 항목 추가
+  - [x] Projects.html + Dashboard.html 통합
+
 ## 📋 Pending Tasks
 
 ### High Priority
@@ -283,20 +370,25 @@ museflow-v4/
 │   ├── landing.html (112KB)
 │   ├── signup.html (10KB)
 │   ├── login.html (10KB)
+│   ├── dashboard.html (95KB) ⭐ NEW
 │   ├── account.html (21KB)
 │   ├── projects.html (18KB)
 │   ├── admin.html (13KB)
 │   └── static/
+│       ├── js/
+│       │   └── tracker.js (6.4KB) ⭐ NEW
 │       └── images/
 │           └── logo-neon-m.png (45KB)
 ├── src/
 │   ├── index.tsx (main app)
 │   └── routes/
 │       ├── auth.ts (5.4KB)
-│       └── projects.ts (4.8KB)
+│       ├── projects.ts (4.8KB)
+│       └── behaviors.ts (7.9KB) ⭐ NEW
 ├── migrations/
 │   ├── 0001_create_users_table.sql
-│   └── 0002_create_projects_table.sql
+│   ├── 0002_create_projects_table.sql
+│   └── 0003_create_behavior_tracking.sql (3.4KB) ⭐ NEW
 └── ecosystem.config.cjs (PM2 config)
 ```
 
@@ -341,7 +433,46 @@ For issues or questions:
 
 ## 🎉 최신 업데이트 (2025-11-22)
 
-### ✨ 최신: 모바일 반응형 디자인 완성 (v1.3.2)
+### ✨ 최신: 초개인화 지능형 대시보드 완성 (v1.4.0) ⭐ NEW
+1. **📊 초개인화 대시보드 시스템**
+   - **Daily Briefing**: 시간대별 인사말, 실시간 통계, AI 추천
+   - **4개 드래그 위젯**: 최근 활동, 주간 차트, 자주 쓰는 기능, 통계 요약
+   - **SortableJS**: 드래그 앤 드롭으로 위젯 재배치
+   - **Chart.js**: 주간 활동 라인 차트 시각화
+   - **localStorage**: 레이아웃 저장 및 복원
+
+2. **🔍 행동 추적 시스템 (tracker.js)**
+   - **자동 추적**: data-track 속성 기반 클릭 이벤트 자동 감지
+   - **배치 전송**: 5개 이벤트 또는 30초 주기로 자동 플러시
+   - **Beacon API**: 페이지 언로드 시 안정적 동기 전송
+   - **세션 추적**: 페이지 체류 시간, 총 duration 기록
+   - **5개 페이지 통합**: dashboard, projects, account, admin, ar-vr-demo
+
+3. **🤖 AI 인사이트 생성 (Behaviors API)**
+   - **4개 엔드포인트**: track, recent, insights, stats
+   - **생산성 점수**: 0-100 점수 자동 계산 (활동량 + 일관성)
+   - **주간 활동**: 최근 7일 데이터 그래프
+   - **인기 기능**: 상위 5개 기능 사용 통계
+   - **1시간 캐시**: user_insights 테이블로 성능 최적화
+
+4. **🗄️ Database 스키마 (3개 테이블)**
+   - **user_behaviors**: 모든 행동 이벤트 저장 (6개 인덱스)
+   - **user_preferences**: 대시보드 설정, 위젯 레이아웃
+   - **user_insights**: 계산된 인사이트 캐시 (TTL 1시간)
+
+5. **🌍 i18n 확장 (9개 언어 × 30개 키)**
+   - **270개 번역 항목**: 인사말, 위젯, 통계, 이벤트 타입
+   - **Projects + Dashboard**: 통합 번역 시스템
+   - **실시간 전환**: 언어 변경 시 즉시 반영
+
+6. **📈 통계 & 성능**
+   - **총 2,682개 번역**: 2,412 → 2,682 (+270개)
+   - **빌드 시간**: 2.65s (Vite)
+   - **tracker.js 크기**: 6.4KB
+   - **Dashboard 크기**: 95KB
+   - **캐시 효율**: 1시간 TTL로 DB 부하 감소
+
+### ✨ 모바일 반응형 디자인 완성 (v1.3.2)
 1. **📱 모바일 네비게이션**
    - **햄버거 메뉴**: 3줄 아이콘 → X 애니메이션 전환
    - **슬라이드 메뉴**: 왼쪽에서 부드럽게 슬라이드
@@ -459,5 +590,5 @@ For issues or questions:
 ---
 
 **Last Updated**: 2025-11-22  
-**Version**: 1.3.2  
-**Status**: ✅ 완전한 모바일 반응형, 📱 Full Mobile Responsive, 🍔 Hamburger Menu, 📲 Touch Optimized
+**Version**: 1.4.0  
+**Status**: ✅ 초개인화 대시보드 완성, 📊 AI-Powered Insights, 🔍 Behavior Tracking, 📱 Full Mobile Responsive
