@@ -27,20 +27,16 @@ app.route('/api/behaviors', behaviors)
 // Note: Cache busting is handled via query parameters (?v=timestamp) in HTML
 app.use('/static/*', serveStatic({ root: './' }))
 
-// Landing page - redirect to static file served by Cloudflare Pages
+// Serve all HTML files as static files (must use public/ prefix in production)
+app.use('/*.html', serveStatic({ root: './' }))
+
+// Landing page - redirect to landing.html
 app.get('/', (c) => {
-  // In production, Cloudflare Pages will serve /landing.html from public directory
-  // In development, we redirect to admin for now
-  const url = c.req.url
-  if (url.includes('localhost') || url.includes('127.0.0.1')) {
-    return c.redirect('/admin.html')
-  }
   return c.redirect('/landing.html')
 })
 
 // Canvas V2 route (main SPA) - Fallback for any other route
-// Note: HTML files (landing.html, login.html, signup.html, admin.html) are excluded 
-// from this route via _routes.json and served as static files by Cloudflare Pages
+// Note: HTML files are served via serveStatic middleware above
 app.get('*', (c) => {
   // Add cache control headers to HTML response
   c.header('Cache-Control', 'no-cache, no-store, must-revalidate')

@@ -5,7 +5,19 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
-    build(),
+    build({
+      exclude: [
+        '/static/**',
+        '/landing.html',
+        '/login.html',
+        '/signup.html',
+        '/dashboard.html',
+        '/projects.html',
+        '/account.html',
+        '/admin.html',
+        '/ar-vr-demo.html'
+      ]
+    }),
     devServer({
       adapter,
       entry: 'src/index.tsx'
