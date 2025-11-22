@@ -1,6 +1,5 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
-import { serveStatic } from 'hono/cloudflare-workers'
 import api from './api/index'
 import auth from './routes/auth'
 import projects from './routes/projects'
@@ -28,25 +27,11 @@ app.use('*', cors({
   credentials: true,
 }))
 
-// Mount API routes
+// Mount API routes ONLY
+// Note: Static files (HTML, CSS, JS) are served directly by Wrangler Pages Dev from dist/ folder
 app.route('/api', api)
 app.route('/api/auth', auth)
 app.route('/api/projects', projects)
 app.route('/api/behaviors', behaviors)
-
-// Serve static files
-// Note: Cache busting is handled via query parameters (?v=timestamp) in HTML
-app.use('/static/*', serveStatic({ root: './' }))
-
-// Serve HTML files with .html extension
-app.use('/*.html', serveStatic({ root: './' }))
-
-// Landing page
-app.get('/', (c) => {
-  return c.redirect('/landing.html')
-})
-
-// Disabled: Let Wrangler Pages handle static file serving automatically
-// Canvas V2 route removed to allow proper HTML file serving
 
 export default app
