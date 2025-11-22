@@ -66,16 +66,15 @@ const CanvasV2 = {
       return;
     }
     
-    // Initialize backend integration
-    await this.initBackendIntegration();
-    
-    // Render UI
+    // Render UI first
+    console.log('📐 Rendering UI...');
     this.render();
     
-    // Wait for DOM to update before attaching events
-    await new Promise(resolve => setTimeout(resolve, 50));
+    // Wait for DOM to be ready
+    await new Promise(resolve => setTimeout(resolve, 100));
     
-    // Initialize canvas
+    // Initialize canvas element
+    console.log('🎨 Initializing canvas element...');
     this.canvas = document.getElementById('main-canvas');
     if (!this.canvas) {
       console.error('❌ Canvas element not found!');
@@ -85,8 +84,13 @@ const CanvasV2 = {
     this.ctx = this.canvas.getContext('2d');
     this.resizeCanvas();
     
-    // Now attach events (canvas is ready)
+    // Attach all events
+    console.log('📌 Attaching events...');
     this.attachEvents();
+    
+    // Initialize backend integration
+    console.log('🔌 Initializing backend...');
+    await this.initBackendIntegration();
     
     // Load saved data (from D1 or localStorage fallback)
     await this.loadCanvasData();

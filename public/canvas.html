@@ -3,209 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="version" content="1.6.1">
     <title>Canvas - MuseFlow</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Dependencies -->
+    <script src="/static/js/tracker.js?v=1.6.1"></script>
+    <script src="/static/js/components/toast.js?v=1.6.1"></script>
+    <script src="/static/js/core/i18n.js?v=1.6.1"></script>
+    <script src="/static/js/core/router.js?v=1.6.1"></script>
+    <script src="/static/js/core/auth.js?v=1.6.1"></script>
+    <script src="/static/js/sdk/api-client.js?v=1.6.1"></script>
+    <script src="/static/js/sdk/workflow-sync.js?v=1.6.1"></script>
+    <script src="/static/js/sdk/ai-generator.js?v=1.6.1"></script>
+    <script src="/static/js/sdk/collaboration-client.js?v=1.6.1"></script>
+    <script src="/static/js/components/collaboration-panel.js?v=1.6.1"></script>
+    <script src="/static/js/pages/canvas-v2.js?v=1.6.1"></script>
+    
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: #0a0a0f;
-            color: #f5f5f7;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             overflow: hidden;
         }
-
-        #canvas-container {
-            width: 100vw;
-            height: 100vh;
-            position: relative;
-        }
-
-        #main-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            cursor: grab;
-        }
-
-        #main-canvas:active {
-            cursor: grabbing;
-        }
-
-        /* Loading screen */
+        
+        /* Loading Screen */
         #loading-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #0a0a0f 0%, #1a0f2e 50%, #0a0a0f 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
+            transition: opacity 0.5s;
         }
-
+        
+        #loading-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
         .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(139, 92, 246, 0.2);
-            border-top-color: #8b5cf6;
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-
+        
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-
-        /* Panels */
-        .panel {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            z-index: 100;
-        }
-
-        #left-panel {
-            top: 60px;
-            left: 20px;
-            bottom: 20px;
-            width: 300px;
-            border-radius: 16px;
-            overflow-y: auto;
-        }
-
-        #right-panel {
-            top: 60px;
-            right: 20px;
-            bottom: 20px;
-            width: 320px;
-            border-radius: 16px;
-            overflow-y: auto;
-            display: none;
-        }
-
-        #top-toolbar {
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            height: 44px;
-            border-radius: 12px;
-            padding: 0 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .toolbar-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        
+        .loading-text {
+            margin-top: 24px;
             color: white;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        /* Language Selector */
+        #lang-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        #lang-selector.visible {
+            opacity: 1;
+        }
+        
+        #lang-select {
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             transition: all 0.2s;
         }
-
-        .toolbar-btn:hover {
-            background: rgba(139, 92, 246, 0.3);
-            border-color: rgba(139, 92, 246, 0.5);
+        
+        #lang-select:hover {
+            background: white;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
         }
-
-        .node-item {
-            padding: 12px;
-            margin: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            cursor: grab;
-            transition: all 0.2s;
-        }
-
-        .node-item:hover {
-            background: rgba(139, 92, 246, 0.2);
-            border-color: rgba(139, 92, 246, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .node-item:active {
-            cursor: grabbing;
+        
+        #lang-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
     </style>
-    <script src="/static/js/tracker.js?v=1.6.0"></script>
-    
-    <!-- Canvas V2 Dependencies -->
-    <script src="/static/js/components/toast.js?v=1.6.0"></script>
-    <script src="/static/js/core/i18n.js?v=1.6.0"></script>
-    <script src="/static/js/core/router.js?v=1.6.0"></script>
-    <script src="/static/js/core/auth.js?v=1.6.0"></script>
-    <script src="/static/js/sdk/api-client.js?v=1.6.0"></script>
-    <script src="/static/js/sdk/workflow-sync.js?v=1.6.0"></script>
-    <script src="/static/js/sdk/ai-generator.js?v=1.6.0"></script>
-    <script src="/static/js/sdk/collaboration-client.js?v=1.6.0"></script>
-    <script src="/static/js/components/collaboration-panel.js?v=1.6.0"></script>
-    
-    <!-- Canvas V2 Main -->
-    <script src="/static/js/pages/canvas-v2.js?v=1.6.0"></script>
 </head>
 <body>
     <!-- Loading Screen -->
     <div id="loading-screen">
         <div class="spinner"></div>
-        <p style="margin-top: 20px; color: rgba(255, 255, 255, 0.7);">캔버스 로딩 중...</p>
+        <div class="loading-text">캔버스 초기화 중...</div>
     </div>
-
+    
     <!-- Language Selector -->
-    <div id="lang-selector" style="position: fixed; top: 10px; right: 10px; z-index: 10000; display: none;">
-        <select id="lang-select" style="padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); cursor: pointer; font-size: 14px;">
+    <div id="lang-selector">
+        <select id="lang-select">
             <option value="ko">🇰🇷 한국어</option>
             <option value="en">🇺🇸 English</option>
             <option value="zh">🇨🇳 中文</option>
             <option value="ja">🇯🇵 日本語</option>
         </select>
     </div>
-
-    <!-- Canvas V2 will render its UI here -->
+    
+    <!-- Canvas V2 Container -->
     <div id="app"></div>
-
-    <!-- Canvas V2 Initialization -->
+    
     <script>
-        // API_BASE_URL is already declared in tracker.js (loaded above)
-        // No need to redeclare here
+        console.log('🎨 MuseFlow Canvas V4 - v1.6.1');
         
-        // Ensure Toast is available (fallback if not loaded)
-        if (!window.Toast) {
-            console.warn('⚠️ Toast not loaded, creating fallback');
-            window.Toast = {
-                success: (msg) => console.log('✅', msg),
-                error: (msg) => console.error('❌', msg),
-                warning: (msg) => console.warn('⚠️', msg),
-                info: (msg) => console.info('ℹ️', msg)
-            };
+        // Setup language selector
+        function setupLanguageSelector() {
+            const langSelector = document.getElementById('lang-selector');
+            const langSelect = document.getElementById('lang-select');
+            
+            if (window.i18n) {
+                langSelect.value = i18n.getLang();
+            }
+            
+            langSelect.addEventListener('change', (e) => {
+                const newLang = e.target.value;
+                if (window.i18n) {
+                    i18n.setLang(newLang);
+                }
+                localStorage.setItem('museflow_lang', newLang);
+                window.location.reload();
+            });
+            
+            // Show after a short delay
+            setTimeout(() => {
+                langSelector.classList.add('visible');
+            }, 1000);
         }
         
-        // Ensure Router is available (fallback)
+        // Setup Router fallback
         if (!window.Router) {
-            console.warn('⚠️ Router not loaded, creating fallback');
             window.Router = {
-                navigate: (path) => { 
-                    console.log('🔀 Router.navigate:', path);
-                    // Convert Canvas V2 paths to our paths
+                navigate: (path) => {
                     if (path === '/project-manager' || path === '/projects') {
                         window.location.href = '/projects.html';
                     } else {
@@ -215,131 +174,73 @@
             };
         }
         
-        // Initialize Canvas V2 when page loads
+        // Setup Toast fallback
+        if (!window.Toast) {
+            window.Toast = {
+                success: (msg) => console.log('✅', msg),
+                error: (msg) => console.error('❌', msg),
+                warning: (msg) => console.warn('⚠️', msg),
+                info: (msg) => console.info('ℹ️', msg)
+            };
+        }
+        
+        // Initialize Canvas V2
         window.addEventListener('DOMContentLoaded', async () => {
             try {
-                console.log('🎨 Initializing Canvas V2...');
-                console.log('📦 Checking dependencies...');
-                console.log('  - Toast:', typeof window.Toast);
-                console.log('  - Router:', typeof window.Router);
-                console.log('  - CanvasV2:', typeof window.CanvasV2);
-                console.log('📦 sessionStorage keys:', Object.keys(sessionStorage));
-                console.log('📦 museflow_current_project:', sessionStorage.getItem('museflow_current_project'));
+                console.log('📦 Checking project data...');
                 
-                // Check if project data exists in sessionStorage
+                // Get project data from sessionStorage
                 const projectData = sessionStorage.getItem('museflow_current_project');
                 if (!projectData) {
-                    console.error('❌ No project data in sessionStorage!');
-                    console.log('📍 Current URL:', window.location.href);
-                    console.log('📍 URL params:', new URLSearchParams(window.location.search).toString());
-                    
-                    throw new Error('프로젝트 데이터가 없습니다. 프로젝트 목록에서 다시 선택해주세요.');
+                    throw new Error('프로젝트 데이터가 없습니다.');
                 }
                 
-                // Verify project data structure
-                try {
-                    const parsed = JSON.parse(projectData);
-                    console.log('✅ Project data parsed:', parsed);
-                    if (!parsed.id || !parsed.name) {
-                        throw new Error('Invalid project data structure');
-                    }
-                } catch (e) {
-                    console.error('❌ Invalid project data:', e);
-                    throw new Error('프로젝트 데이터가 손상되었습니다. 프로젝트 목록에서 다시 선택해주세요.');
-                }
+                const project = JSON.parse(projectData);
+                console.log('✅ Project loaded:', project.name);
                 
-                // Check if CanvasV2 is loaded
+                // Check if CanvasV2 is available
                 if (!window.CanvasV2) {
-                    throw new Error('Canvas V2 모듈을 로드할 수 없습니다. 페이지를 새로고침해주세요.');
+                    throw new Error('Canvas V2를 로드할 수 없습니다.');
                 }
                 
-                // Initialize Canvas V2 (no parameters needed, reads from sessionStorage)
+                console.log('🚀 Initializing Canvas V2...');
+                
+                // Initialize Canvas V2
                 await CanvasV2.init();
-                
-                // Force canvas resize and event reattachment after a short delay
-                setTimeout(() => {
-                    console.log('🔧 Post-init fixes...');
-                    
-                    // Force canvas resize
-                    if (CanvasV2.canvas && typeof CanvasV2.resizeCanvas === 'function') {
-                        CanvasV2.resizeCanvas();
-                        console.log('✅ Canvas resized:', CanvasV2.canvas.width, 'x', CanvasV2.canvas.height);
-                    }
-                    
-                    // Re-render to ensure everything is visible
-                    if (typeof CanvasV2.renderCanvas === 'function') {
-                        CanvasV2.renderCanvas();
-                        console.log('✅ Canvas re-rendered');
-                    }
-                }, 200);
-                
-                // Setup language selector (do this early, before hiding loading screen)
-                setTimeout(() => {
-                    const langSelector = document.getElementById('lang-selector');
-                    const langSelect = document.getElementById('lang-select');
-                    
-                    if (langSelector && langSelect) {
-                        // Show language selector
-                        langSelector.style.display = 'block';
-                        console.log('✅ Language selector displayed');
-                        
-                        // Set current language if i18n is available
-                        if (window.i18n) {
-                            langSelect.value = i18n.getLang();
-                            console.log('🌍 Current language:', i18n.getLang());
-                        }
-                        
-                        // Add event listener
-                        langSelect.addEventListener('change', (e) => {
-                            const newLang = e.target.value;
-                            console.log('🌍 Changing language to:', newLang);
-                            
-                            if (window.i18n) {
-                                i18n.setLang(newLang);
-                            }
-                            
-                            // Save to localStorage directly
-                            localStorage.setItem('museflow_lang', newLang);
-                            
-                            // Reload to apply translations
-                            window.location.reload();
-                        });
-                    } else {
-                        console.error('❌ Language selector elements not found');
-                    }
-                }, 100);
-                
-                // Hide loading screen
-                setTimeout(() => {
-                    document.getElementById('loading-screen').style.display = 'none';
-                }, 500);
                 
                 console.log('✅ Canvas V2 initialized successfully');
                 
+                // Setup language selector
+                setupLanguageSelector();
+                
+                // Hide loading screen
+                setTimeout(() => {
+                    const loadingScreen = document.getElementById('loading-screen');
+                    loadingScreen.classList.add('fade-out');
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }, 500);
+                
             } catch (error) {
-                console.error('❌ Canvas initialization error:', error);
-                console.error('Error stack:', error.stack);
-                document.getElementById('loading-screen').innerHTML = `
-                    <div style="text-align: center; padding: 40px;">
-                        <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: #ef4444; margin-bottom: 20px;"></i>
-                        <p style="color: rgba(255, 255, 255, 0.9); font-size: 18px; margin-bottom: 10px;">
-                            캔버스 초기화 중 오류가 발생했습니다
+                console.error('❌ Canvas initialization failed:', error);
+                
+                const loadingScreen = document.getElementById('loading-screen');
+                loadingScreen.innerHTML = `
+                    <div style="text-align: center; max-width: 500px; padding: 40px;">
+                        <div style="font-size: 64px; margin-bottom: 24px;">⚠️</div>
+                        <h2 style="color: white; font-size: 24px; margin-bottom: 16px;">
+                            캔버스 초기화 실패
+                        </h2>
+                        <p style="color: rgba(255,255,255,0.8); margin-bottom: 32px; line-height: 1.6;">
+                            ${error.message}
                         </p>
-                        <p style="color: rgba(255, 255, 255, 0.5); font-size: 14px; margin-bottom: 20px;">
-                            ${error.message || '알 수 없는 오류'}
-                        </p>
-                        <p style="color: rgba(255, 255, 255, 0.3); font-size: 12px; margin-bottom: 30px; font-family: monospace;">
-                            브라우저 캐시를 지우고 Ctrl+Shift+R로 새로고침해주세요
-                        </p>
-                        <button onclick="location.reload(true)" 
-                                style="padding: 12px 24px; background: #3b82f6; border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 16px; margin-right: 12px;">
-                            <i class="fas fa-sync" style="margin-right: 8px;"></i>
-                            강력 새로고침
-                        </button>
-                        <button onclick="window.location.href='/projects.html'" 
-                                style="padding: 12px 24px; background: #8b5cf6; border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 16px;">
-                            <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
-                            프로젝트 목록으로
+                        <button 
+                            onclick="window.location.href='/projects.html'" 
+                            style="padding: 14px 28px; background: white; border: none; border-radius: 12px; 
+                                   color: #667eea; font-size: 16px; font-weight: 600; cursor: pointer;
+                                   box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: all 0.2s;">
+                            ← 프로젝트 목록으로
                         </button>
                     </div>
                 `;
