@@ -112,9 +112,16 @@ Projects Page (/projects.html)
 - **i18n 지원**: 9개 언어 완전 지원 (159개 번역 키)
 - **🎤 음성 인식**: Web Speech API 기반 9개 언어 음성 입력
 - **검색창**: "당신의 전시를 디자인하세요" (9개 언어 지원)
-- **박물관 특화 AI 도구 버튼** (8개):
-  - 🎯 전시 기획하기 | 💰 예산 계산하기 | 🏛️ 작품 선정하기 | 👥 관람객 예측하기
-  - 🏗️ 공간 설계하기 | 📋 일정 관리하기 | 💬 가이드 만들기 | 🤖 전체 보기
+- **박물관 특화 AI 도구 버튼** (8개) - ✅ 기능 연결 완료:
+  - 🎯 전시 기획하기 → `/admin.html` 이동
+  - 🤖 전체 보기 → `/projects.html` 이동
+  - 💰 예산 계산하기 → Coming Soon 모달
+  - 🏛️ 작품 선정하기 → Coming Soon 모달
+  - 👥 관람객 예측하기 → Coming Soon 모달
+  - 🏗️ 공간 설계하기 → Coming Soon 모달
+  - 📋 일정 관리하기 → Coming Soon 모달
+  - 💬 가이드 만들기 → Coming Soon 모달
+- **모달 시스템**: Glassmorphism 디자인, 9개 언어 지원
 - Apple-style large product cards (80vh height)
 - Features, Modules, Pricing, About sections
 - Language selector dropdown
@@ -332,9 +339,34 @@ For issues or questions:
 
 ---
 
-## 🎉 최신 업데이트 (2025-11-21)
+## 🎉 최신 업데이트 (2025-11-22)
 
-### ✨ 최신: 음성 인식 & 박물관 특화 AI 도구 (v1.3.0)
+### ✨ 최신: AI 도구 버튼 기능 연결 & Signup/Login i18n (v1.3.1)
+1. **🔗 AI 도구 버튼 기능 연결**
+   - **전시 기획하기** → `/admin.html` 워크플로우 에디터로 이동
+   - **전체 보기** → `/projects.html` 프로젝트 목록으로 이동
+   - **Coming Soon 모달** (6개 도구):
+     - 💰 예산 계산하기, 🏛️ 작품 선정하기, 👥 관람객 예측하기
+     - 🏗️ 공간 설계하기, 📋 일정 관리하기, 💬 가이드 만들기
+   - **모달 시스템**: Glassmorphism 디자인, 부드러운 애니메이션
+   - **9개 언어 지원**: 63개 새로운 번역 항목 (7개 키 × 9개 언어)
+   - 외부 클릭 및 닫기 버튼으로 모달 닫기
+
+2. **🌍 Signup/Login 페이지 i18n 완료**
+   - **Signup**: 22개 키 × 9개 언어 = 198개 번역 항목
+   - **Login**: 17개 키 × 9개 언어 = 153개 번역 항목
+   - 폼 라벨, 플레이스홀더, 버튼, 에러 메시지 모두 번역
+   - 언어 선택 드롭다운 추가 (우측 상단)
+   - 실시간 언어 전환 및 localStorage 저장
+
+3. **📊 번역 통계 업데이트**
+   - **총 2,412개 번역 항목** (1,998 → 2,412, +414개)
+   - **Landing**: 166개 키 (159 → 166, +7개)
+   - **Signup**: 22개 키 (신규)
+   - **Login**: 17개 키 (신규)
+   - **모든 인증 페이지 완전 다국어 지원**
+
+### ✨ 음성 인식 & 박물관 특화 AI 도구 (v1.3.0)
 1. **🎤 음성 인식 기능 (Web Speech API)**
    - 마이크 버튼으로 음성 입력 지원
    - 9개 언어 음성 인식 (ko-KR, en-US, ja-JP, zh-CN, zh-TW, fr-FR, de-DE, es-ES, it-IT)
@@ -363,11 +395,13 @@ For issues or questions:
    - **자동 번역**: 모든 UI 요소, 에러 메시지, 폼 라벨
    - **localStorage 저장**: 사용자 언어 설정 자동 유지
 
-2. **i18n 시스템 완료** (v1.3.0)
-   - **Landing 페이지**: 완전 번역 (159개 키 × 9개 언어 = 1,431개 항목)
+2. **i18n 시스템 완료** (v1.3.1)
+   - **Landing 페이지**: 완전 번역 (166개 키 × 9개 언어 = 1,494개 항목)
+   - **Signup 페이지**: 완전 번역 (22개 키 × 9개 언어 = 198개 항목)
+   - **Login 페이지**: 완전 번역 (17개 키 × 9개 언어 = 153개 항목)
    - **Projects 페이지**: 완전 번역 (28개 키 × 9개 언어 = 252개 항목)
    - **Account 페이지**: 완전 번역 (35개 키 × 9개 언어 = 315개 항목)
-   - **총 1,998개 번역 항목**: 모든 페이지 완전 다국어 지원
+   - **총 2,412개 번역 항목**: 모든 페이지 완전 다국어 지원
    - 실시간 언어 전환
    - 동적 번역 시스템
 
@@ -390,6 +424,6 @@ For issues or questions:
 
 ---
 
-**Last Updated**: 2025-11-21  
-**Version**: 1.3.0  
-**Status**: ✅ 음성 인식 & 박물관 특화 AI 도구, 🎤 Voice Recognition, 🏛️ Museum-Specific AI Tools
+**Last Updated**: 2025-11-22  
+**Version**: 1.3.1  
+**Status**: ✅ AI 도구 버튼 기능 연결, 🔗 AI Tool Button Functionality, 🌍 Full Auth Pages i18n, 🎭 Modal System
