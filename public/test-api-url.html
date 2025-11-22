@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head><title>API URL Test</title></head>
+<body>
+<h1>API URL Test</h1>
+<div id="result"></div>
+<script>
+const API_BASE_URL = (() => {
+    const host = window.location.hostname;
+    const port = window.location.port;
+    const protocol = window.location.protocol;
+    
+    console.log('Host:', host);
+    console.log('Port:', port);
+    console.log('Protocol:', protocol);
+    
+    // Localhost with port 8000
+    if (host === 'localhost' && port === '8000') {
+        return 'http://localhost:3000';
+    }
+    
+    // Sandbox public URL (8000-xxx.sandbox.novita.ai)
+    if (host.includes('8000-') && host.includes('.sandbox.novita.ai')) {
+        return protocol + '//' + host.replace('8000-', '3000-');
+    }
+    
+    // Default: same origin
+    return '';
+})();
+
+document.getElementById('result').innerHTML = `
+<p>Current URL: ${window.location.href}</p>
+<p>API Base URL: ${API_BASE_URL || '(same origin)'}</p>
+<p>Final API URL: ${API_BASE_URL}/api/auth/login</p>
+`;
+
+console.log('API_BASE_URL:', API_BASE_URL);
+</script>
+</body>
+</html>

@@ -148,6 +148,19 @@
         }
     </style>
     <script src="/static/js/tracker.js"></script>
+    
+    <!-- Canvas V2 Dependencies -->
+    <script src="/static/js/components/toast.js"></script>
+    <script src="/static/js/core/router.js"></script>
+    <script src="/static/js/core/auth.js"></script>
+    <script src="/static/js/sdk/api-client.js"></script>
+    <script src="/static/js/sdk/workflow-sync.js"></script>
+    <script src="/static/js/sdk/ai-generator.js"></script>
+    <script src="/static/js/sdk/collaboration-client.js"></script>
+    <script src="/static/js/components/collaboration-panel.js"></script>
+    
+    <!-- Canvas V2 Main -->
+    <script src="/static/js/pages/canvas-v2.js"></script>
 </head>
 <body>
     <!-- Loading Screen -->
@@ -156,86 +169,10 @@
         <p style="margin-top: 20px; color: rgba(255, 255, 255, 0.7);">캔버스 로딩 중...</p>
     </div>
 
-    <!-- Canvas Container -->
-    <div id="canvas-container">
-        <!-- Main Canvas -->
-        <canvas id="main-canvas"></canvas>
+    <!-- Canvas V2 will render its UI here -->
+    <div id="app"></div>
 
-        <!-- Top Toolbar -->
-        <div id="top-toolbar" class="panel">
-            <button class="toolbar-btn" onclick="window.location.href='/projects.html'" title="프로젝트 목록">
-                <i class="fas fa-arrow-left"></i>
-            </button>
-            <div style="width: 1px; height: 24px; background: rgba(255, 255, 255, 0.2);"></div>
-            <button class="toolbar-btn" title="실행 취소">
-                <i class="fas fa-undo"></i>
-            </button>
-            <button class="toolbar-btn" title="다시 실행">
-                <i class="fas fa-redo"></i>
-            </button>
-            <div style="width: 1px; height: 24px; background: rgba(255, 255, 255, 0.2);"></div>
-            <button class="toolbar-btn" onclick="CanvasV2.zoomIn()" title="확대 (+)">
-                <i class="fas fa-plus"></i>
-            </button>
-            <button class="toolbar-btn" onclick="CanvasV2.zoomOut()" title="축소 (-)">
-                <i class="fas fa-minus"></i>
-            </button>
-            <button class="toolbar-btn" onclick="CanvasV2.resetView()" title="화면 초기화">
-                <i class="fas fa-compress"></i>
-            </button>
-            <div style="width: 1px; height: 24px; background: rgba(255, 255, 255, 0.2);"></div>
-            <button class="toolbar-btn" onclick="CanvasV2.toggleLeftPanel()" title="노드 라이브러리">
-                <i class="fas fa-th-large"></i>
-            </button>
-            <button class="toolbar-btn" onclick="CanvasV2.toggleRightPanel()" title="속성 패널">
-                <i class="fas fa-sliders-h"></i>
-            </button>
-            <div style="width: 1px; height: 24px; background: rgba(255, 255, 255, 0.2);"></div>
-            <button class="toolbar-btn" onclick="CanvasV2.save()" title="저장 (Ctrl+S)">
-                <i class="fas fa-save"></i>
-            </button>
-        </div>
-
-        <!-- Left Panel: Node Library -->
-        <div id="left-panel" class="panel">
-            <div style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">
-                    <i class="fas fa-th-large" style="color: #8b5cf6; margin-right: 8px;"></i>
-                    노드 라이브러리
-                </h3>
-                <input 
-                    type="text" 
-                    id="node-search" 
-                    placeholder="노드 검색..." 
-                    style="width: 100%; padding: 8px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: white; font-size: 14px;"
-                />
-            </div>
-            <div id="node-library" style="padding: 8px;">
-                <!-- Nodes will be dynamically loaded here -->
-                <p style="padding: 20px; text-align: center; color: rgba(255, 255, 255, 0.5);">
-                    노드를 로딩중...
-                </p>
-            </div>
-        </div>
-
-        <!-- Right Panel: Properties -->
-        <div id="right-panel" class="panel">
-            <div style="padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-                <h3 style="font-size: 18px; font-weight: 600;">
-                    <i class="fas fa-sliders-h" style="color: #8b5cf6; margin-right: 8px;"></i>
-                    속성
-                </h3>
-            </div>
-            <div id="properties-content" style="padding: 16px;">
-                <p style="text-align: center; color: rgba(255, 255, 255, 0.5); padding: 40px 20px;">
-                    노드를 선택하여 속성을 편집하세요
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Load Canvas V2 JavaScript -->
-    <script src="/static/js/pages/canvas-v2.js"></script>
+    <!-- Canvas V2 Initialization -->
     <script>
         // API_BASE_URL is already declared in tracker.js (loaded above)
         // No need to redeclare here
@@ -243,32 +180,17 @@
         // Initialize Canvas V2 when page loads
         window.addEventListener('DOMContentLoaded', async () => {
             try {
-                // Get project ID from URL
-                const urlParams = new URLSearchParams(window.location.search);
-                const projectId = urlParams.get('project');
+                console.log('🎨 Initializing Canvas V2...');
+                console.log('📦 sessionStorage keys:', Object.keys(sessionStorage));
+                console.log('📦 museflow_current_project:', sessionStorage.getItem('museflow_current_project'));
                 
-                if (projectId) {
-                    // Load project data
-                    const token = localStorage.getItem('authToken');
-                    if (!token) {
-                        window.location.href = '/login.html';
-                        return;
-                    }
-                    
-                    const response = await fetch(API_BASE_URL + `/api/projects/${projectId}`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-                    
-                    if (response.ok) {
-                        const data = await response.json();
-                        CanvasV2.currentProject = data.project;
-                        document.title = `${data.project.title} - Canvas - MuseFlow`;
-                    }
+                // Check if project data exists in sessionStorage
+                const projectData = sessionStorage.getItem('museflow_current_project');
+                if (!projectData) {
+                    throw new Error('프로젝트 데이터가 없습니다. 프로젝트 목록에서 다시 선택해주세요.');
                 }
                 
-                // Initialize canvas
+                // Initialize Canvas V2 (no parameters needed, reads from sessionStorage)
                 await CanvasV2.init();
                 
                 // Hide loading screen
@@ -276,9 +198,26 @@
                     document.getElementById('loading-screen').style.display = 'none';
                 }, 500);
                 
+                console.log('✅ Canvas V2 initialized successfully');
+                
             } catch (error) {
-                console.error('Canvas initialization error:', error);
-                alert('캔버스 초기화 중 오류가 발생했습니다.');
+                console.error('❌ Canvas initialization error:', error);
+                document.getElementById('loading-screen').innerHTML = `
+                    <div style="text-align: center;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: #ef4444; margin-bottom: 20px;"></i>
+                        <p style="color: rgba(255, 255, 255, 0.9); font-size: 18px; margin-bottom: 10px;">
+                            캔버스 초기화 중 오류가 발생했습니다
+                        </p>
+                        <p style="color: rgba(255, 255, 255, 0.5); font-size: 14px; margin-bottom: 30px;">
+                            ${error.message || '알 수 없는 오류'}
+                        </p>
+                        <button onclick="window.location.href='/projects.html'" 
+                                style="padding: 12px 24px; background: #8b5cf6; border: none; border-radius: 8px; color: white; cursor: pointer; font-size: 16px; transition: all 0.2s;">
+                            <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
+                            프로젝트 목록으로
+                        </button>
+                    </div>
+                `;
             }
         });
     </script>

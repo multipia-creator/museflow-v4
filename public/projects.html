@@ -1059,6 +1059,19 @@
                 
                 // Card click - navigate to canvas page
                 card.addEventListener('click', () => {
+                    // Save project to sessionStorage for Canvas V2
+                    const projectData = {
+                        id: project.id,
+                        name: project.title,
+                        description: project.description,
+                        status: project.status,
+                        created_at: project.created_at,
+                        updated_at: project.updated_at
+                    };
+                    sessionStorage.setItem('museflow_current_project', JSON.stringify(projectData));
+                    console.log('📦 Saved project to sessionStorage:', projectData);
+                    
+                    // Navigate to canvas
                     window.location.href = `/canvas.html?project=${project.id}`;
                 });
                 
@@ -1066,6 +1079,20 @@
                 const editBtn = card.querySelector('.edit-btn');
                 editBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
+                    
+                    // Save project to sessionStorage for Canvas V2
+                    const projectData = {
+                        id: project.id,
+                        name: project.title,
+                        description: project.description,
+                        status: project.status,
+                        created_at: project.created_at,
+                        updated_at: project.updated_at
+                    };
+                    sessionStorage.setItem('museflow_current_project', JSON.stringify(projectData));
+                    console.log('📦 Saved project to sessionStorage:', projectData);
+                    
+                    // Navigate to canvas
                     window.location.href = `/canvas.html?project=${project.id}`;
                 });
                 
