@@ -1132,7 +1132,7 @@
             }
         }
 
-        // Language selector
+        // Language selector and Event listeners initialization
         document.addEventListener('DOMContentLoaded', () => {
             updateLanguage(currentLang);
             
@@ -1143,12 +1143,38 @@
                     updateLanguage(e.target.value);
                 });
             }
+            
+            // Initialize all event listeners after DOM is ready
+            const searchInputEl = document.getElementById('search-input');
+            const statusFilterEl = document.getElementById('status-filter');
+            const newProjectBtn = document.getElementById('new-project-btn');
+            const emptyNewProjectBtn = document.getElementById('empty-new-project-btn');
+            const cancelModalBtn = document.getElementById('cancel-modal-btn');
+            const newProjectModalEl = document.getElementById('new-project-modal');
+            const customizeWidgetsBtn = document.getElementById('customize-widgets-btn');
+            
+            if (searchInputEl) searchInputEl.addEventListener('input', filterProjects);
+            if (statusFilterEl) statusFilterEl.addEventListener('change', filterProjects);
+            if (newProjectBtn) newProjectBtn.addEventListener('click', openModal);
+            if (emptyNewProjectBtn) emptyNewProjectBtn.addEventListener('click', openModal);
+            if (cancelModalBtn) cancelModalBtn.addEventListener('click', closeModal);
+            if (newProjectModalEl) {
+                newProjectModalEl.addEventListener('click', (e) => {
+                    if (e.target === newProjectModalEl) closeModal();
+                });
+            }
+            if (customizeWidgetsBtn) {
+                customizeWidgetsBtn.addEventListener('click', () => {
+                    const t = translations[currentLang];
+                    alert(t.customizeWidgetsInfo || '위젯 커스터마이즈 기능은 곧 추가됩니다!\n\n현재는 위젯 헤더를 드래그하여 순서를 변경하거나,\n우측 상단의 X 버튼으로 위젯을 제거할 수 있습니다.');
+                });
+            }
         });
 
         // Check authentication
         const token = localStorage.getItem('authToken');
         if (!token) {
-            window.location.href = '/login.html';
+            window.location.href = '/login';
         }
 
         let allProjects = [];
@@ -1293,10 +1319,6 @@
             renderProjects(filtered);
         }
 
-        // Event listeners
-        searchInput.addEventListener('input', filterProjects);
-        statusFilter.addEventListener('change', filterProjects);
-
         // Modal controls
         function openModal() {
             newProjectModal.classList.add('active');
@@ -1306,14 +1328,6 @@
             newProjectModal.classList.remove('active');
             newProjectForm.reset();
         }
-
-        document.getElementById('new-project-btn').addEventListener('click', openModal);
-        document.getElementById('empty-new-project-btn').addEventListener('click', openModal);
-        document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
-        
-        newProjectModal.addEventListener('click', (e) => {
-            if (e.target === newProjectModal) closeModal();
-        });
 
         // Create new project
         newProjectForm.addEventListener('submit', async (e) => {
@@ -2049,10 +2063,7 @@
             localStorage.setItem('dashboard_widgets', JSON.stringify(widgetIds));
         }
         
-        // Customize widgets button
-        document.getElementById('customize-widgets-btn')?.addEventListener('click', () => {
-            alert('위젯 커스터마이즈 기능은 곧 추가됩니다!\n\n현재는 위젯 헤더를 드래그하여 순서를 변경하거나,\n우측 상단의 X 버튼으로 위젯을 제거할 수 있습니다.');
-        });
+        // Customize widgets button handler (initialized in DOMContentLoaded)
         
         // Initialize dashboard
         function initializeDashboard() {
