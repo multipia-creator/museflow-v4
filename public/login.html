@@ -357,6 +357,7 @@
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + t.buttonProcessing;
             
             try {
+                console.log('Login attempt:', email);
                 const response = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: {
@@ -365,7 +366,9 @@
                     body: JSON.stringify({ email, password, rememberMe })
                 });
                 
+                console.log('Response status:', response.status);
                 const data = await response.json();
+                console.log('Response data:', data);
                 
                 if (response.ok) {
                     // Store token
@@ -373,15 +376,18 @@
                     localStorage.setItem('user', JSON.stringify(data.user));
                     
                     showSuccess(t.successLogin);
+                    console.log('Login successful, redirecting to dashboard...');
                     setTimeout(() => {
-                        window.location.href = '/dashboard.html';
+                        window.location.href = '/dashboard';
                     }, 1000);
                 } else {
+                    console.error('Login failed:', data.error);
                     showError(data.error || t.errorLoginFailed);
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span data-i18n="buttonLogin">' + t.buttonLogin + '</span>';
                 }
             } catch (error) {
+                console.error('Login error:', error);
                 showError(t.errorServerError);
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span data-i18n="buttonLogin">' + t.buttonLogin + '</span>';
