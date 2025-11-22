@@ -1057,16 +1057,16 @@
                     </div>
                 `;
                 
-                // Card click - navigate to admin page
+                // Card click - navigate to canvas page
                 card.addEventListener('click', () => {
-                    window.location.href = `/admin.html?project=${project.id}`;
+                    window.location.href = `/canvas.html?project=${project.id}`;
                 });
                 
                 // Edit button click - prevent propagation
                 const editBtn = card.querySelector('.edit-btn');
                 editBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    window.location.href = `/admin.html?project=${project.id}`;
+                    window.location.href = `/canvas.html?project=${project.id}`;
                 });
                 
                 // Delete button click - prevent propagation
