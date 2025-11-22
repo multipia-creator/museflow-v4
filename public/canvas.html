@@ -245,6 +245,21 @@
                 // Initialize Canvas V2 (no parameters needed, reads from sessionStorage)
                 await CanvasV2.init();
                 
+                // Wait for DOM to settle and reattach canvas events
+                setTimeout(() => {
+                    console.log('🔄 Reattaching canvas events...');
+                    if (CanvasV2.canvas && typeof CanvasV2.attachCanvasEvents === 'function') {
+                        CanvasV2.attachCanvasEvents();
+                        console.log('✅ Canvas events reattached');
+                    }
+                    
+                    // Also reattach left panel events for node drag
+                    if (typeof CanvasV2.attachLeftPanelEvents === 'function') {
+                        CanvasV2.attachLeftPanelEvents();
+                        console.log('✅ Left panel events reattached');
+                    }
+                }, 100);
+                
                 // Hide loading screen
                 setTimeout(() => {
                     document.getElementById('loading-screen').style.display = 'none';
