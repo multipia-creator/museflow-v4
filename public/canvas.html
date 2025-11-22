@@ -192,7 +192,15 @@
         if (!window.Router) {
             console.warn('⚠️ Router not loaded, creating fallback');
             window.Router = {
-                navigate: (path) => { window.location.href = path; }
+                navigate: (path) => { 
+                    console.log('🔀 Router.navigate:', path);
+                    // Convert Canvas V2 paths to our paths
+                    if (path === '/project-manager' || path === '/projects') {
+                        window.location.href = '/projects.html';
+                    } else {
+                        window.location.href = path;
+                    }
+                }
             };
         }
         
@@ -210,7 +218,23 @@
                 // Check if project data exists in sessionStorage
                 const projectData = sessionStorage.getItem('museflow_current_project');
                 if (!projectData) {
+                    console.error('❌ No project data in sessionStorage!');
+                    console.log('📍 Current URL:', window.location.href);
+                    console.log('📍 URL params:', new URLSearchParams(window.location.search).toString());
+                    
                     throw new Error('프로젝트 데이터가 없습니다. 프로젝트 목록에서 다시 선택해주세요.');
+                }
+                
+                // Verify project data structure
+                try {
+                    const parsed = JSON.parse(projectData);
+                    console.log('✅ Project data parsed:', parsed);
+                    if (!parsed.id || !parsed.name) {
+                        throw new Error('Invalid project data structure');
+                    }
+                } catch (e) {
+                    console.error('❌ Invalid project data:', e);
+                    throw new Error('프로젝트 데이터가 손상되었습니다. 프로젝트 목록에서 다시 선택해주세요.');
                 }
                 
                 // Check if CanvasV2 is loaded
