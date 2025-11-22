@@ -13,17 +13,27 @@ type Bindings = {
 const app = new Hono<{ Bindings: Bindings }>();
 
 // Middleware to verify JWT and return user object
-async function verifyAuth(c: any): Promise<{ id: number; email: string } | null> {
+// Supports both Authorization header and token in request body
+async function verifyAuth(c: any, bodyToken?: string): Promise<{ id: number; email: string } | null> {
   try {
-    const authHeader = c.req.header('Authorization');
+    let token: string | undefined;
     
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    // Try to get token from Authorization header first
+    const authHeader = c.req.header('Authorization');
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      token = authHeader.substring(7);
+    }
+    
+    // If not in header, try to get from body (for sendBeacon requests)
+    if (!token && bodyToken) {
+      token = bodyToken;
+    }
+    
+    if (!token) {
       return null;
     }
     
-    const token = authHeader.substring(7);
     const secret = 'museflow-secret-key-2024';
-    
     const payload = await verify(token, secret);
     
     // Return user object with id and email
@@ -44,12 +54,14 @@ async function verifyAuth(c: any): Promise<{ id: number; email: string } | null>
  */
 app.post('/track', async (c) => {
     try {
-        const user = await verifyAuth(c);
+        const body = await c.req.json();
+        const { events, token } = body;
+        
+        // Verify auth with token from header or body
+        const user = await verifyAuth(c, token);
         if (!user) {
             return c.json({ error: 'Unauthorized' }, 401);
         }
-
-        const { events } = await c.req.json();
         
         if (!events || !Array.isArray(events) || events.length === 0) {
             return c.json({ error: 'No events provided' }, 400);

@@ -4,9 +4,31 @@
  * Version: 1.0.0
  */
 
+// Auto-detect API base URL for dual-port architecture
+// Port 8000: Python HTTP server (static files)
+// Port 3000: Wrangler Pages Dev (API endpoints)
+const API_BASE_URL = (typeof window !== 'undefined') ? (() => {
+    const host = window.location.hostname;
+    const port = window.location.port;
+    const protocol = window.location.protocol;
+    
+    // Localhost with port 8000
+    if (host === 'localhost' && port === '8000') {
+        return 'http://localhost:3000';
+    }
+    
+    // Sandbox public URL (8000-xxx.sandbox.novita.ai)
+    if (host.includes('8000-') && host.includes('.sandbox.novita.ai')) {
+        return protocol + '//' + host.replace('8000-', '3000-');
+    }
+    
+    // Default: same origin
+    return '';
+})() : '';
+
 class BehaviorTracker {
     constructor(options = {}) {
-        this.apiEndpoint = options.apiEndpoint || '/api/behaviors/track';
+        this.apiEndpoint = options.apiEndpoint || `${API_BASE_URL}/api/behaviors/track`;
         this.batchSize = options.batchSize || 5;
         this.flushInterval = options.flushInterval || 30000; // 30 seconds
         this.enabled = options.enabled !== false;
@@ -134,7 +156,7 @@ class BehaviorTracker {
         const eventsToSend = [...this.events];
         this.events = [];
         
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('authToken');
         if (!token) {
             console.warn('⚠️ No auth token, skipping behavior tracking');
             return;
@@ -147,7 +169,12 @@ class BehaviorTracker {
         try {
             if (sync) {
                 // Synchronous request for beforeunload
-                const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+                // Note: sendBeacon cannot send Authorization header, so we include token in payload
+                const payloadWithToken = {
+                    ...payload,
+                    token: token
+                };
+                const blob = new Blob([JSON.stringify(payloadWithToken)], { type: 'application/json' });
                 navigator.sendBeacon(this.apiEndpoint, blob);
                 console.log('📤 Sent', eventsToSend.length, 'events (beacon)');
             } else {
