@@ -71,12 +71,22 @@ const CanvasV2 = {
     
     // Render UI
     this.render();
-    this.attachEvents();
+    
+    // Wait for DOM to update before attaching events
+    await new Promise(resolve => setTimeout(resolve, 50));
     
     // Initialize canvas
     this.canvas = document.getElementById('main-canvas');
+    if (!this.canvas) {
+      console.error('❌ Canvas element not found!');
+      Toast.error('Canvas element not found');
+      return;
+    }
     this.ctx = this.canvas.getContext('2d');
     this.resizeCanvas();
+    
+    // Now attach events (canvas is ready)
+    this.attachEvents();
     
     // Load saved data (from D1 or localStorage fallback)
     await this.loadCanvasData();

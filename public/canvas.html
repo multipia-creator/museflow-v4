@@ -147,20 +147,20 @@
             cursor: grabbing;
         }
     </style>
-    <script src="/static/js/tracker.js?v=1.5.3"></script>
+    <script src="/static/js/tracker.js?v=1.5.7"></script>
     
     <!-- Canvas V2 Dependencies -->
-    <script src="/static/js/components/toast.js?v=1.5.3"></script>
-    <script src="/static/js/core/router.js?v=1.5.3"></script>
-    <script src="/static/js/core/auth.js?v=1.5.3"></script>
-    <script src="/static/js/sdk/api-client.js?v=1.5.3"></script>
-    <script src="/static/js/sdk/workflow-sync.js?v=1.5.3"></script>
-    <script src="/static/js/sdk/ai-generator.js?v=1.5.3"></script>
-    <script src="/static/js/sdk/collaboration-client.js?v=1.5.3"></script>
-    <script src="/static/js/components/collaboration-panel.js?v=1.5.3"></script>
+    <script src="/static/js/components/toast.js?v=1.5.7"></script>
+    <script src="/static/js/core/router.js?v=1.5.7"></script>
+    <script src="/static/js/core/auth.js?v=1.5.7"></script>
+    <script src="/static/js/sdk/api-client.js?v=1.5.7"></script>
+    <script src="/static/js/sdk/workflow-sync.js?v=1.5.7"></script>
+    <script src="/static/js/sdk/ai-generator.js?v=1.5.7"></script>
+    <script src="/static/js/sdk/collaboration-client.js?v=1.5.7"></script>
+    <script src="/static/js/components/collaboration-panel.js?v=1.5.7"></script>
     
     <!-- Canvas V2 Main -->
-    <script src="/static/js/pages/canvas-v2.js?v=1.5.3"></script>
+    <script src="/static/js/pages/canvas-v2.js?v=1.5.7"></script>
 </head>
 <body>
     <!-- Loading Screen -->
@@ -244,21 +244,6 @@
                 
                 // Initialize Canvas V2 (no parameters needed, reads from sessionStorage)
                 await CanvasV2.init();
-                
-                // Wait for DOM to settle and reattach canvas events
-                setTimeout(() => {
-                    console.log('🔄 Reattaching canvas events...');
-                    if (CanvasV2.canvas && typeof CanvasV2.attachCanvasEvents === 'function') {
-                        CanvasV2.attachCanvasEvents();
-                        console.log('✅ Canvas events reattached');
-                    }
-                    
-                    // Also reattach left panel events for node drag
-                    if (typeof CanvasV2.attachLeftPanelEvents === 'function') {
-                        CanvasV2.attachLeftPanelEvents();
-                        console.log('✅ Left panel events reattached');
-                    }
-                }, 100);
                 
                 // Hide loading screen
                 setTimeout(() => {
