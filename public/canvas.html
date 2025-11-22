@@ -147,26 +147,37 @@
             cursor: grabbing;
         }
     </style>
-    <script src="/static/js/tracker.js?v=1.5.7"></script>
+    <script src="/static/js/tracker.js?v=1.5.9"></script>
     
     <!-- Canvas V2 Dependencies -->
-    <script src="/static/js/components/toast.js?v=1.5.7"></script>
-    <script src="/static/js/core/router.js?v=1.5.7"></script>
-    <script src="/static/js/core/auth.js?v=1.5.7"></script>
-    <script src="/static/js/sdk/api-client.js?v=1.5.7"></script>
-    <script src="/static/js/sdk/workflow-sync.js?v=1.5.7"></script>
-    <script src="/static/js/sdk/ai-generator.js?v=1.5.7"></script>
-    <script src="/static/js/sdk/collaboration-client.js?v=1.5.7"></script>
-    <script src="/static/js/components/collaboration-panel.js?v=1.5.7"></script>
+    <script src="/static/js/components/toast.js?v=1.5.9"></script>
+    <script src="/static/js/core/i18n.js?v=1.5.9"></script>
+    <script src="/static/js/core/router.js?v=1.5.9"></script>
+    <script src="/static/js/core/auth.js?v=1.5.9"></script>
+    <script src="/static/js/sdk/api-client.js?v=1.5.9"></script>
+    <script src="/static/js/sdk/workflow-sync.js?v=1.5.9"></script>
+    <script src="/static/js/sdk/ai-generator.js?v=1.5.9"></script>
+    <script src="/static/js/sdk/collaboration-client.js?v=1.5.9"></script>
+    <script src="/static/js/components/collaboration-panel.js?v=1.5.9"></script>
     
     <!-- Canvas V2 Main -->
-    <script src="/static/js/pages/canvas-v2.js?v=1.5.7"></script>
+    <script src="/static/js/pages/canvas-v2.js?v=1.5.9"></script>
 </head>
 <body>
     <!-- Loading Screen -->
     <div id="loading-screen">
         <div class="spinner"></div>
         <p style="margin-top: 20px; color: rgba(255, 255, 255, 0.7);">캔버스 로딩 중...</p>
+    </div>
+
+    <!-- Language Selector -->
+    <div id="lang-selector" style="position: fixed; top: 10px; right: 10px; z-index: 10000; display: none;">
+        <select id="lang-select" style="padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); cursor: pointer; font-size: 14px;">
+            <option value="ko">🇰🇷 한국어</option>
+            <option value="en">🇺🇸 English</option>
+            <option value="zh">🇨🇳 中文</option>
+            <option value="ja">🇯🇵 日本語</option>
+        </select>
     </div>
 
     <!-- Canvas V2 will render its UI here -->
@@ -244,6 +255,38 @@
                 
                 // Initialize Canvas V2 (no parameters needed, reads from sessionStorage)
                 await CanvasV2.init();
+                
+                // Force canvas resize and event reattachment after a short delay
+                setTimeout(() => {
+                    console.log('🔧 Post-init fixes...');
+                    
+                    // Force canvas resize
+                    if (CanvasV2.canvas && typeof CanvasV2.resizeCanvas === 'function') {
+                        CanvasV2.resizeCanvas();
+                        console.log('✅ Canvas resized:', CanvasV2.canvas.width, 'x', CanvasV2.canvas.height);
+                    }
+                    
+                    // Re-render to ensure everything is visible
+                    if (typeof CanvasV2.renderCanvas === 'function') {
+                        CanvasV2.renderCanvas();
+                        console.log('✅ Canvas re-rendered');
+                    }
+                }, 200);
+                
+                // Setup language selector
+                const langSelector = document.getElementById('lang-selector');
+                const langSelect = document.getElementById('lang-select');
+                
+                if (langSelector && langSelect && window.i18n) {
+                    langSelect.value = i18n.getLang();
+                    langSelector.style.display = 'block';
+                    
+                    langSelect.addEventListener('change', (e) => {
+                        i18n.setLang(e.target.value);
+                        // Reload to apply translations
+                        window.location.reload();
+                    });
+                }
                 
                 // Hide loading screen
                 setTimeout(() => {
