@@ -1509,18 +1509,16 @@ const CanvasV2 = {
    * Get node at position
    */
   getNodeAtPosition(canvasX, canvasY) {
-    const { x, y, zoom } = this.viewport;
+    // Convert canvas coordinates to world coordinates
+    const worldX = (canvasX - this.viewport.x) / this.viewport.zoom;
+    const worldY = (canvasY - this.viewport.y) / this.viewport.zoom;
     
     // Check in reverse order (top to bottom)
     for (let i = this.nodes.length - 1; i >= 0; i--) {
       const node = this.nodes[i];
-      const nodeX = node.x * zoom + x;
-      const nodeY = node.y * zoom + y;
-      const nodeWidth = node.width * zoom;
-      const nodeHeight = node.height * zoom;
       
-      if (canvasX >= nodeX && canvasX <= nodeX + nodeWidth &&
-          canvasY >= nodeY && canvasY <= nodeY + nodeHeight) {
+      if (worldX >= node.x && worldX <= node.x + node.width &&
+          worldY >= node.y && worldY <= node.y + node.height) {
         return node;
       }
     }
@@ -1792,17 +1790,14 @@ const CanvasV2 = {
    * Update entire UI
    */
   updateUI() {
-    const container = document.querySelector('[data-page="canvas"]');
-    if (container) {
-      container.remove();
-    }
+    console.log('🔄 Updating UI panels only (not full re-render)...');
     
-    this.render();
-    this.attachEvents();
+    // Only update panels, not the entire UI
+    this.updateLeftPanel();
+    this.updateRightPanel();
     
-    this.canvas = document.getElementById('main-canvas');
-    this.ctx = this.canvas.getContext('2d');
-    this.resizeCanvas();
+    // No need to recreate canvas or reattach events
+    console.log('✅ Panels updated');
   },
   
   /**
@@ -1831,13 +1826,18 @@ const CanvasV2 = {
    * Update right panel only
    */
   updateRightPanel() {
-    if (this.selectedNodes.length === 0) return;
+    // Find or create right panel
+    let rightPanel = document.querySelectorAll('.side-panel')[1];
+    const newPanelHTML = this.renderRightPanel();
     
-    const rightPanel = document.querySelectorAll('.side-panel')[1];
-    if (rightPanel) {
-      const newPanel = this.renderRightPanel();
-      if (newPanel) {
-        rightPanel.outerHTML = newPanel;
+    if (rightPanel && newPanelHTML) {
+      rightPanel.outerHTML = newPanelHTML;
+      this.attachRightPanelEvents();
+    } else if (newPanelHTML && !rightPanel) {
+      // Panel doesn't exist, add it
+      const mainContent = document.querySelector('[data-page="canvas"] > div > div:nth-child(2)');
+      if (mainContent) {
+        mainContent.insertAdjacentHTML('beforeend', newPanelHTML);
         this.attachRightPanelEvents();
       }
     }

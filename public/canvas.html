@@ -147,21 +147,21 @@
             cursor: grabbing;
         }
     </style>
-    <script src="/static/js/tracker.js?v=1.5.9"></script>
+    <script src="/static/js/tracker.js?v=1.6.0"></script>
     
     <!-- Canvas V2 Dependencies -->
-    <script src="/static/js/components/toast.js?v=1.5.9"></script>
-    <script src="/static/js/core/i18n.js?v=1.5.9"></script>
-    <script src="/static/js/core/router.js?v=1.5.9"></script>
-    <script src="/static/js/core/auth.js?v=1.5.9"></script>
-    <script src="/static/js/sdk/api-client.js?v=1.5.9"></script>
-    <script src="/static/js/sdk/workflow-sync.js?v=1.5.9"></script>
-    <script src="/static/js/sdk/ai-generator.js?v=1.5.9"></script>
-    <script src="/static/js/sdk/collaboration-client.js?v=1.5.9"></script>
-    <script src="/static/js/components/collaboration-panel.js?v=1.5.9"></script>
+    <script src="/static/js/components/toast.js?v=1.6.0"></script>
+    <script src="/static/js/core/i18n.js?v=1.6.0"></script>
+    <script src="/static/js/core/router.js?v=1.6.0"></script>
+    <script src="/static/js/core/auth.js?v=1.6.0"></script>
+    <script src="/static/js/sdk/api-client.js?v=1.6.0"></script>
+    <script src="/static/js/sdk/workflow-sync.js?v=1.6.0"></script>
+    <script src="/static/js/sdk/ai-generator.js?v=1.6.0"></script>
+    <script src="/static/js/sdk/collaboration-client.js?v=1.6.0"></script>
+    <script src="/static/js/components/collaboration-panel.js?v=1.6.0"></script>
     
     <!-- Canvas V2 Main -->
-    <script src="/static/js/pages/canvas-v2.js?v=1.5.9"></script>
+    <script src="/static/js/pages/canvas-v2.js?v=1.6.0"></script>
 </head>
 <body>
     <!-- Loading Screen -->
@@ -273,20 +273,41 @@
                     }
                 }, 200);
                 
-                // Setup language selector
-                const langSelector = document.getElementById('lang-selector');
-                const langSelect = document.getElementById('lang-select');
-                
-                if (langSelector && langSelect && window.i18n) {
-                    langSelect.value = i18n.getLang();
-                    langSelector.style.display = 'block';
+                // Setup language selector (do this early, before hiding loading screen)
+                setTimeout(() => {
+                    const langSelector = document.getElementById('lang-selector');
+                    const langSelect = document.getElementById('lang-select');
                     
-                    langSelect.addEventListener('change', (e) => {
-                        i18n.setLang(e.target.value);
-                        // Reload to apply translations
-                        window.location.reload();
-                    });
-                }
+                    if (langSelector && langSelect) {
+                        // Show language selector
+                        langSelector.style.display = 'block';
+                        console.log('✅ Language selector displayed');
+                        
+                        // Set current language if i18n is available
+                        if (window.i18n) {
+                            langSelect.value = i18n.getLang();
+                            console.log('🌍 Current language:', i18n.getLang());
+                        }
+                        
+                        // Add event listener
+                        langSelect.addEventListener('change', (e) => {
+                            const newLang = e.target.value;
+                            console.log('🌍 Changing language to:', newLang);
+                            
+                            if (window.i18n) {
+                                i18n.setLang(newLang);
+                            }
+                            
+                            // Save to localStorage directly
+                            localStorage.setItem('museflow_lang', newLang);
+                            
+                            // Reload to apply translations
+                            window.location.reload();
+                        });
+                    } else {
+                        console.error('❌ Language selector elements not found');
+                    }
+                }, 100);
                 
                 // Hide loading screen
                 setTimeout(() => {
