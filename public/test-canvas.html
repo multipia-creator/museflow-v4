@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Test - MuseFlow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        
+        .info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .info p {
+            margin: 8px 0;
+            line-height: 1.6;
+            color: #495057;
+        }
+        
+        .info strong {
+            color: #212529;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: #667eea;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .code {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Canvas 직접 테스트</h1>
+        
+        <div class="info">
+            <p><strong>문제:</strong> projects.html에서 캔버스로 이동이 안 되시나요?</p>
+            <p><strong>원인:</strong> 브라우저 캐시 문제</p>
+            <p><strong>해결:</strong> 아래 버튼을 클릭하거나 직접 URL을 사용하세요</p>
+        </div>
+        
+        <a href="/canvas.html?project=1" class="btn" id="test-btn">
+            🎨 Canvas 직접 열기 (프로젝트 ID: 1)
+        </a>
+        
+        <a href="/projects.html?nocache=1" class="btn btn-secondary">
+            📁 프로젝트 목록으로 (캐시 우회)
+        </a>
+        
+        <div class="info">
+            <p><strong>💡 Tip:</strong> 브라우저 캐시를 완전히 삭제하려면:</p>
+            <div class="code">
+                1. F12 → Console 열기<br>
+                2. 다음 명령 실행:<br>
+                localStorage.clear();<br>
+                sessionStorage.clear();<br>
+                location.reload(true);
+            </div>
+        </div>
+        
+        <div class="info">
+            <p><strong>🔗 직접 URL:</strong></p>
+            <div class="code" id="canvas-url">
+                클릭하면 URL이 표시됩니다
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Show current URL
+        document.getElementById('canvas-url').textContent = window.location.origin + '/canvas.html?project=1&t=' + Date.now();
+        
+        // Setup test button with proper project data
+        document.getElementById('test-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Create test project data
+            const testProject = {
+                id: 1,
+                name: 'Test Project',
+                description: 'Canvas test project',
+                status: 'active',
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            };
+            
+            // Save to sessionStorage
+            sessionStorage.setItem('museflow_current_project', JSON.stringify(testProject));
+            console.log('✅ Test project saved:', testProject);
+            
+            // Navigate to canvas
+            window.location.href = '/canvas.html?project=1&t=' + Date.now();
+        });
+    </script>
+</body>
+</html>
