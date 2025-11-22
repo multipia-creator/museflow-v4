@@ -589,6 +589,59 @@ For issues or questions:
 
 ---
 
+## 🐛 Bug Fixes (2025-11-22)
+
+### Critical JavaScript Errors Resolved
+
+1. **JavaScript Syntax Error (dashboard:1789)**
+   - ❌ **문제**: `Uncaught SyntaxError: Missing catch or finally after try`
+   - ✅ **해결**: weekly-activity-chart와 top-features 위젯에 catch 블록 추가
+   - **영향**: 대시보드 위젯 렌더링 오류 해결
+
+2. **Unauthorized API Errors**
+   - ❌ **문제**: `/api/behaviors/*` 엔드포인트에서 401 Unauthorized 에러
+   - ✅ **해결**: behaviors.ts에 JWT verifyAuth 함수 추가 및 모든 라우트에 적용
+   - **영향**: 행동 추적 및 인사이트 API 정상 작동
+
+3. **Button Click Not Working**
+   - ❌ **문제**: "새 프로젝트", "커스터마이즈" 버튼 클릭 무반응
+   - ✅ **해결**: 모든 이벤트 리스너를 DOMContentLoaded 안으로 이동
+   - **영향**: 모든 버튼 및 인터랙션 정상 작동
+
+4. **CORS Errors**
+   - ❌ **문제**: 브라우저 콘솔에 CORS 관련 403 에러
+   - ✅ **해결**: index.tsx에 전역 CORS 미들웨어 추가
+   - **영향**: API 요청 정상 처리
+
+5. **Login Redirect Issue**
+   - ❌ **문제**: `/login.html` 경로로 리다이렉트 시도
+   - ✅ **해결**: `/login`으로 변경 (Cloudflare Pages 표준)
+   - **영향**: 인증 플로우 정상 작동
+
+6. **Build Script Issue**
+   - ❌ **문제**: `public/dashboard.html` 변경사항이 `dist/`에 반영되지 않음
+   - ✅ **해결**: `copy:html` npm 스크립트 추가, 빌드 시 자동 복사
+   - **영향**: 모든 HTML 파일 변경사항 즉시 반영
+
+### Git Commits
+```
+0929e24 - fix: Add copy:html script to ensure HTML files are copied to dist
+0a85af0 - fix: Add JWT authentication to behaviors API routes
+7c7dd01 - fix: Add missing catch blocks to async try statements
+b244223 - fix: Move all event listeners to DOMContentLoaded to ensure DOM is ready
+400771e - fix: Add CORS middleware to resolve 403 errors
+0daeaa1 - fix: Fix JavaScript syntax error in login.html translations
+```
+
+### Test Results
+- ✅ 모든 JavaScript 에러 해결
+- ✅ API 인증 정상 작동
+- ✅ 버튼 클릭 이벤트 정상 작동
+- ✅ 위젯 렌더링 정상 작동
+- ✅ 빌드 프로세스 자동화
+
+---
+
 **Last Updated**: 2025-11-22  
-**Version**: 1.4.0  
-**Status**: ✅ 초개인화 대시보드 완성, 📊 AI-Powered Insights, 🔍 Behavior Tracking, 📱 Full Mobile Responsive
+**Version**: 1.4.1  
+**Status**: ✅ All Critical Bugs Fixed, 🎯 Production Ready, 📊 AI-Powered Insights, 🔍 Behavior Tracking
