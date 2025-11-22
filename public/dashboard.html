@@ -1837,6 +1837,38 @@
                             }
                         }
                     });
+                    } catch (error) {
+                        console.error('Error loading weekly activity chart:', error);
+                        // Display fallback chart with empty data
+                        const days = ['일', '월', '화', '수', '목', '금', '토'];
+                        const data = [0, 0, 0, 0, 0, 0, 0];
+                        
+                        new Chart(ctx.getContext('2d'), {
+                            type: 'line',
+                            data: {
+                                labels: days,
+                                datasets: [{
+                                    label: '활동 수',
+                                    data: data,
+                                    borderColor: '#8b5cf6',
+                                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                                    tension: 0.4,
+                                    fill: true
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: true,
+                                plugins: {
+                                    legend: { display: false }
+                                },
+                                scales: {
+                                    y: { beginAtZero: true, grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: 'rgba(255, 255, 255, 0.6)' } },
+                                    x: { grid: { display: false }, ticks: { color: 'rgba(255, 255, 255, 0.6)' } }
+                                }
+                            }
+                        });
+                    }
                 }
             },
             
@@ -1903,6 +1935,15 @@
                             `).join('')}
                         </div>
                     `;
+                    } catch (error) {
+                        console.error('Error loading top features:', error);
+                        return `
+                            <div style="text-align: center; padding: 2rem; color: rgba(255, 255, 255, 0.6);">
+                                <i class="fas fa-exclamation-circle" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5;"></i>
+                                <p>데이터를 불러올 수 없습니다</p>
+                            </div>
+                        `;
+                    }
                 }
             },
             
