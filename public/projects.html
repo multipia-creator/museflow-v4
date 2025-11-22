@@ -1048,17 +1048,34 @@
                         <span><i class="fas fa-calendar"></i> ${formatDate(project.created_at)}</span>
                     </div>
                     <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
-                        <button onclick="editProject(${project.id}, event)" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 8px; color: white; cursor: pointer; transition: all 0.3s;">
+                        <button class="edit-btn" data-project-id="${project.id}" style="padding: 0.5rem 1rem; font-size: 0.875rem; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 8px; color: white; cursor: pointer; transition: all 0.3s;">
                             <i class="fas fa-edit"></i> ${t.edit}
                         </button>
-                        <button onclick="deleteProject(${project.id}, event)" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; color: #ef4444; cursor: pointer; transition: all 0.3s;">
+                        <button class="delete-btn" data-project-id="${project.id}" style="padding: 0.5rem 1rem; font-size: 0.875rem; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; color: #ef4444; cursor: pointer; transition: all 0.3s;">
                             <i class="fas fa-trash"></i> ${t.delete}
                         </button>
                     </div>
                 `;
+                
+                // Card click - navigate to admin page
                 card.addEventListener('click', () => {
                     window.location.href = `/admin.html?project=${project.id}`;
                 });
+                
+                // Edit button click - prevent propagation
+                const editBtn = card.querySelector('.edit-btn');
+                editBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    window.location.href = `/admin.html?project=${project.id}`;
+                });
+                
+                // Delete button click - prevent propagation
+                const deleteBtn = card.querySelector('.delete-btn');
+                deleteBtn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    await deleteProject(project.id);
+                });
+                
                 projectsGrid.appendChild(card);
             });
         }
@@ -1170,15 +1187,8 @@
             }
         });
 
-        // Edit project function
-        window.editProject = function(projectId, event) {
-            event.stopPropagation();
-            window.location.href = `/admin.html?project=${projectId}`;
-        };
-
         // Delete project function
-        window.deleteProject = async function(projectId, event) {
-            event.stopPropagation();
+        window.deleteProject = async function(projectId) {
             const t = translations[currentLang];
             
             if (!confirm(t.deleteConfirm)) {
