@@ -516,6 +516,12 @@
     </div>
 
     <script>
+        // API Base URL Configuration
+        // For sandbox public URLs: https://8000-xxx.sandbox.novita.ai → https://3000-xxx.sandbox.novita.ai
+        // For localhost: http://localhost:8000 → http://localhost:3000
+        // API_BASE_URL is already declared in tracker.js (loaded above)
+        // No need to redeclare here
+        
         // i18n Translation System
         const translations = {
             ko: {
@@ -1174,7 +1180,7 @@
         // Check authentication
         const token = localStorage.getItem('authToken');
         if (!token) {
-            window.location.href = '/login';
+            window.location.href = '/login.html';
         }
 
         let allProjects = [];
@@ -1275,7 +1281,7 @@
                 projectsGrid.style.display = 'none';
                 emptyState.style.display = 'none';
 
-                const response = await fetch('/api/projects', {
+                const response = await fetch(API_BASE_URL + '/api/projects', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -1337,7 +1343,7 @@
             const description = document.getElementById('project-description').value.trim();
 
             try {
-                const response = await fetch('/api/projects', {
+                const response = await fetch(API_BASE_URL + '/api/projects', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -1379,7 +1385,7 @@
             }
 
             try {
-                const response = await fetch(`/api/projects/${projectId}`, {
+                const response = await fetch(API_BASE_URL + `/api/projects/${projectId}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -1443,7 +1449,7 @@
         async function loadDashboardStats() {
             try {
                 // Fetch project stats
-                const projectsResponse = await fetch('/api/projects/stats/summary', {
+                const projectsResponse = await fetch(API_BASE_URL + '/api/projects/stats/summary', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 
@@ -1457,7 +1463,7 @@
                 
                 // Fetch behavior insights
                 try {
-                    const insightsResponse = await fetch('/api/behaviors/insights', {
+                    const insightsResponse = await fetch(API_BASE_URL + '/api/behaviors/insights', {
                         headers: { 'Authorization': `Bearer ${token}` }
                     });
                     
@@ -1498,12 +1504,12 @@
             
             try {
                 // Get user data
-                const statsResponse = await fetch('/api/projects/stats/summary', {
+                const statsResponse = await fetch(API_BASE_URL + '/api/projects/stats/summary', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const stats = await statsResponse.json();
                 
-                const projectsResponse = await fetch('/api/projects', {
+                const projectsResponse = await fetch(API_BASE_URL + '/api/projects', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const projects = await projectsResponse.json();
@@ -1626,7 +1632,7 @@
         // Get user name from token
         async function loadUserName() {
             try {
-                const response = await fetch('/api/auth/me', {
+                const response = await fetch(API_BASE_URL + '/api/auth/me', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 
@@ -1680,7 +1686,7 @@
                 render: async () => {
                     try {
                         // Fetch real behavior data
-                        const response = await fetch('/api/behaviors/recent?limit=5', {
+                        const response = await fetch(API_BASE_URL + '/api/behaviors/recent?limit=5', {
                             headers: { 'Authorization': `Bearer ${token}` }
                         });
                         
@@ -1736,6 +1742,15 @@
                             `).join('')}
                         </div>
                     `;
+                    } catch (error) {
+                        console.error('Error loading recent activity:', error);
+                        return `
+                            <div style="text-align: center; padding: 2rem; color: rgba(255, 255, 255, 0.6);">
+                                <i class="fas fa-exclamation-circle" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5;"></i>
+                                <p>활동 데이터를 불러올 수 없습니다</p>
+                            </div>
+                        `;
+                    }
                 }
             },
             
@@ -1753,7 +1768,7 @@
                     
                     try {
                         // Fetch real insights data
-                        const response = await fetch('/api/behaviors/insights', {
+                        const response = await fetch(API_BASE_URL + '/api/behaviors/insights', {
                             headers: { 'Authorization': `Bearer ${token}` }
                         });
                         
@@ -1879,7 +1894,7 @@
                 color: '#f59e0b',
                 render: async () => {
                     try {
-                        const response = await fetch('/api/behaviors/insights', {
+                        const response = await fetch(API_BASE_URL + '/api/behaviors/insights', {
                             headers: { 'Authorization': `Bearer ${token}` }
                         });
                         
@@ -1953,7 +1968,7 @@
                 icon: 'fa-tachometer-alt',
                 color: '#10b981',
                 render: async () => {
-                    const stats = await fetch('/api/projects/stats/summary', {
+                    const stats = await fetch(API_BASE_URL + '/api/projects/stats/summary', {
                         headers: { 'Authorization': `Bearer ${token}` }
                     }).then(r => r.json()).catch(() => ({ total: 0, active: 0, draft: 0, completed: 0 }));
                     

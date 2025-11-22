@@ -345,6 +345,12 @@
     </div>
 
     <script>
+        // API Base URL Configuration
+        // Port 8000: Python HTTP server (static files)
+        // Port 3000: Wrangler Pages Dev (API endpoints)
+        // API_BASE_URL is already declared in tracker.js (loaded above)
+        // No need to redeclare here
+        
         // i18n Translation System
         const translations = {
             ko: {
@@ -541,7 +547,7 @@
                 loadingSpinner.style.display = 'block';
                 
                 // Load user profile
-                const response = await fetch('/api/auth/me', {
+                const response = await fetch(API_BASE_URL + '/api/auth/me', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -581,7 +587,7 @@
         // Load project statistics
         async function loadProjectStats() {
             try {
-                const response = await fetch('/api/projects/stats/summary', {
+                const response = await fetch(API_BASE_URL + '/api/projects/stats/summary', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -610,7 +616,7 @@
             }
 
             try {
-                const response = await fetch('/api/auth/profile', {
+                const response = await fetch(API_BASE_URL + '/api/auth/profile', {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -665,7 +671,7 @@
             }
 
             try {
-                const response = await fetch('/api/auth/password', {
+                const response = await fetch(API_BASE_URL + '/api/auth/password', {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -703,7 +709,7 @@
         // Logout
         document.getElementById('logout-btn').addEventListener('click', async () => {
             try {
-                await fetch('/api/auth/logout', {
+                await fetch(API_BASE_URL + '/api/auth/logout', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`

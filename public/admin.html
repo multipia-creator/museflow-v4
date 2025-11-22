@@ -242,13 +242,19 @@
     </div>
 
     <script>
+        // API Base URL Configuration
+        // Port 8000: Python HTTP server (static files)
+        // Port 3000: Wrangler Pages Dev (API endpoints)
+        // API_BASE_URL is already declared in tracker.js (loaded above)
+        // No need to redeclare here
+        
         // Load stats
         async function loadStats() {
             try {
                 const [cache, chatbot, iot] = await Promise.all([
-                    fetch('/api/performance/metrics').then(r => r.json()),
-                    fetch('/api/chatbot/stats').then(r => r.json()),
-                    fetch('/api/iot-sensors/alerts').then(r => r.json()).catch(() => ({success: false}))
+                    fetch(API_BASE_URL + '/api/performance/metrics').then(r => r.json()),
+                    fetch(API_BASE_URL + '/api/chatbot/stats').then(r => r.json()),
+                    fetch(API_BASE_URL + '/api/iot-sensors/alerts').then(r => r.json()).catch(() => ({success: false}))
                 ]);
 
                 if (cache.success) {
@@ -272,7 +278,7 @@
             if (!confirm('Clean expired cache entries?')) return;
             
             try {
-                const response = await fetch('/api/performance/cache/clean', { method: 'POST' });
+                const response = await fetch(API_BASE_URL + '/api/performance/cache/clean', { method: 'POST' });
                 const data = await response.json();
                 alert(`Cleaned ${data.cleaned} expired entries`);
                 loadStats();
@@ -286,7 +292,7 @@
             if (!confirm('Clear ALL cache? This cannot be undone.')) return;
             
             try {
-                await fetch('/api/performance/cache/clear', { method: 'POST' });
+                await fetch(API_BASE_URL + '/api/performance/cache/clear', { method: 'POST' });
                 alert('Cache cleared successfully');
                 loadStats();
             } catch (error) {

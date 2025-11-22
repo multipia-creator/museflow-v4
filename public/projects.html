@@ -339,6 +339,9 @@
     </div>
 
     <script>
+        // API_BASE_URL is already declared in tracker.js (loaded above)
+        // No need to redeclare here
+        
         // i18n Translation System
         const translations = {
             ko: {
@@ -1067,7 +1070,7 @@
                 projectsGrid.style.display = 'none';
                 emptyState.style.display = 'none';
 
-                const response = await fetch('/api/projects', {
+                const response = await fetch(API_BASE_URL + '/api/projects', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -1141,7 +1144,7 @@
             const description = document.getElementById('project-description').value.trim();
 
             try {
-                const response = await fetch('/api/projects', {
+                const response = await fetch(API_BASE_URL + '/api/projects', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -1183,7 +1186,7 @@
             }
 
             try {
-                const response = await fetch(`/api/projects/${projectId}`, {
+                const response = await fetch(API_BASE_URL + `/api/projects/${projectId}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`
