@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="version" content="1.5.7">
     <title>내 프로젝트 - MuseFlow</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -231,7 +235,27 @@
             min-height: 100px;
         }
     </style>
-    <script src="/static/js/tracker.js?v=1.5.3"></script>
+    <script src="/static/js/tracker.js?v=1.5.7"></script>
+    
+    <!-- Version Check and Cache Buster -->
+    <script>
+        // Check if we're using the latest version
+        const CURRENT_VERSION = '1.5.7';
+        const storedVersion = localStorage.getItem('projects_version');
+        
+        if (storedVersion !== CURRENT_VERSION) {
+            console.log('🔄 New version detected:', CURRENT_VERSION, '(old:', storedVersion + ')');
+            localStorage.setItem('projects_version', CURRENT_VERSION);
+            
+            // Only reload if there was a previous version (not first load)
+            if (storedVersion && !window.location.search.includes('nocache')) {
+                console.log('🔄 Forcing cache refresh...');
+                window.location.href = window.location.pathname + '?nocache=' + Date.now();
+            }
+        }
+        
+        console.log('✅ Projects page version:', CURRENT_VERSION);
+    </script>
 </head>
 <body>
     <!-- Navigation Bar -->
