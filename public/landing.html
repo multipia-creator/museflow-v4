@@ -1250,6 +1250,297 @@
                 font-size: 1.1rem;
             }
         }
+        
+        /* ========================================
+           MOBILE RESPONSIVE STYLES
+           ======================================== */
+        
+        /* Hamburger Menu */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 8px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu-toggle span {
+            width: 24px;
+            height: 2px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+        
+        .mobile-menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .mobile-menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+        
+        /* Mobile Navigation */
+        @media (max-width: 768px) {
+            /* Hide desktop nav links */
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                background: rgba(15, 10, 31, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                transition: left 0.3s ease;
+                z-index: 999;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                width: 100%;
+            }
+            
+            .nav-links a {
+                display: block;
+                padding: 1rem;
+                font-size: 1.25rem;
+                text-align: center;
+                background: rgba(139, 92, 246, 0.05);
+                border-radius: 12px;
+                border: 1px solid rgba(139, 92, 246, 0.2);
+            }
+            
+            /* Show hamburger menu */
+            .mobile-menu-toggle {
+                display: flex;
+            }
+            
+            /* Navigation container */
+            .nav-container {
+                padding: 1rem;
+            }
+            
+            .nav-logo-text {
+                font-size: 1.25rem;
+            }
+            
+            .nav-logo img {
+                width: 40px;
+                height: 40px;
+            }
+            
+            /* Auth buttons container */
+            .nav-container > div:last-child {
+                gap: 0.5rem !important;
+            }
+            
+            .nav-signup-btn, .nav-login-btn, .mypage-btn {
+                padding: 0.5rem 1rem !important;
+                font-size: 0.875rem !important;
+            }
+            
+            .lang-selector select {
+                padding: 0.5rem !important;
+                font-size: 0.875rem !important;
+            }
+        }
+        
+        /* Hero Section Mobile */
+        @media (max-width: 768px) {
+            .hero-section {
+                min-height: auto !important;
+                padding: 6rem 1.5rem 4rem !important;
+            }
+            
+            .hero-badge {
+                font-size: 0.875rem !important;
+                padding: 0.5rem 1rem !important;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem !important;
+                line-height: 1.2 !important;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem !important;
+                line-height: 1.6 !important;
+            }
+            
+            .hero-cta {
+                flex-direction: column !important;
+                gap: 1rem !important;
+            }
+            
+            .hero-cta button {
+                width: 100% !important;
+                padding: 1rem 2rem !important;
+                font-size: 1rem !important;
+            }
+            
+            .hero-stats {
+                flex-direction: column !important;
+                gap: 1.5rem !important;
+            }
+            
+            .stat-card {
+                width: 100% !important;
+            }
+        }
+        
+        /* AI Workspace Mobile */
+        @media (max-width: 768px) {
+            .ai-workspace-section {
+                padding: 4rem 1rem !important;
+            }
+            
+            .workspace-container {
+                max-width: 100% !important;
+                padding: 2rem 1rem !important;
+            }
+            
+            /* Search bar mobile */
+            .search-container {
+                flex-direction: column !important;
+                gap: 0.75rem !important;
+            }
+            
+            #ai-search {
+                width: 100% !important;
+                font-size: 1rem !important;
+                padding: 1rem !important;
+            }
+            
+            .voice-btn {
+                position: absolute !important;
+                right: 60px !important;
+                top: 50% !important;
+                transform: translateY(-50%) !important;
+            }
+            
+            .search-container button:not(.voice-btn) {
+                width: 100% !important;
+                padding: 1rem !important;
+            }
+            
+            /* AI Tools Grid Mobile - Horizontal Scroll */
+            .ai-tools-grid {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                overflow-x: auto !important;
+                gap: 1rem !important;
+                padding-bottom: 1rem !important;
+                scroll-snap-type: x mandatory !important;
+                -webkit-overflow-scrolling: touch !important;
+            }
+            
+            .ai-tool-btn {
+                flex: 0 0 280px !important;
+                scroll-snap-align: start !important;
+                font-size: 1rem !important;
+                padding: 1.25rem 1.5rem !important;
+            }
+            
+            /* Scrollbar styling for mobile */
+            .ai-tools-grid::-webkit-scrollbar {
+                height: 4px;
+            }
+            
+            .ai-tools-grid::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 4px;
+            }
+            
+            .ai-tools-grid::-webkit-scrollbar-thumb {
+                background: rgba(139, 92, 246, 0.5);
+                border-radius: 4px;
+            }
+        }
+        
+        /* Features Section Mobile */
+        @media (max-width: 768px) {
+            .agents-grid {
+                padding: 2rem 1rem !important;
+            }
+            
+            .feature-badge {
+                font-size: 0.875rem !important;
+            }
+            
+            .feature-title {
+                font-size: 2rem !important;
+            }
+            
+            .feature-description {
+                font-size: 1rem !important;
+            }
+        }
+        
+        /* Pricing Section Mobile */
+        @media (max-width: 768px) {
+            .pricing-grid {
+                grid-template-columns: 1fr !important;
+                gap: 2rem !important;
+                padding: 2rem 1rem !important;
+            }
+            
+            .pricing-card {
+                padding: 2rem !important;
+            }
+        }
+        
+        /* Modal Mobile */
+        @media (max-width: 768px) {
+            #tool-modal > div {
+                max-width: 90% !important;
+                padding: 2rem !important;
+                margin: 1rem !important;
+            }
+            
+            #modal-icon {
+                font-size: 3rem !important;
+            }
+            
+            #modal-title {
+                font-size: 1.5rem !important;
+            }
+            
+            #modal-desc {
+                font-size: 1rem !important;
+            }
+            
+            #modal-close {
+                top: 1rem !important;
+                right: 1rem !important;
+                width: 36px !important;
+                height: 36px !important;
+            }
+        }
+        
+        /* Footer Mobile */
+        @media (max-width: 768px) {
+            footer {
+                padding: 3rem 1.5rem !important;
+            }
+            
+            footer > div {
+                flex-direction: column !important;
+                text-align: center !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1260,7 +1551,15 @@
                 <img src="/static/images/logo-neon-m.png" alt="MuseFlow" style="box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);">
                 <span class="nav-logo-text">MuseFlow.life</span>
             </a>
-            <ul class="nav-links">
+            
+            <!-- Hamburger Menu Toggle -->
+            <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <ul class="nav-links" id="nav-links">
                 <li><a href="#hero">Home</a></li>
                 <li><a href="#modules">Modules</a></li>
                 <li><a href="#pricing">Pricing</a></li>
@@ -3729,6 +4028,33 @@
         
         // Initialize language on page load
         updateLanguage(currentLang);
+        
+        // Mobile Menu Toggle
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+        
+        if (mobileMenuToggle && navLinks) {
+            mobileMenuToggle.addEventListener('click', () => {
+                mobileMenuToggle.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+            
+            // Close mobile menu when clicking nav links
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenuToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                });
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                    mobileMenuToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                }
+            });
+        }
         
         // Voice Recognition with Web Speech API
         const voiceBtn = document.getElementById('voice-btn');
