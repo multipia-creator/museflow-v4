@@ -41,6 +41,15 @@ app.use('/static/*', serveStatic({ root: './' }))
 // Serve all HTML files as static files (must use public/ prefix in production)
 app.use('/*.html', serveStatic({ root: './' }))
 
+// Serve HTML files without .html extension - redirect to .html version
+app.get('/dashboard', (c) => c.redirect('/dashboard.html'))
+app.get('/login', (c) => c.redirect('/login.html'))
+app.get('/signup', (c) => c.redirect('/signup.html'))
+app.get('/projects', (c) => c.redirect('/projects.html'))
+app.get('/account', (c) => c.redirect('/account.html'))
+app.get('/admin', (c) => c.redirect('/admin.html'))
+app.get('/landing', (c) => c.redirect('/landing.html'))
+
 // Landing page - redirect to landing.html
 app.get('/', (c) => {
   return c.redirect('/landing.html')
