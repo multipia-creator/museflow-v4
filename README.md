@@ -591,7 +591,38 @@ For issues or questions:
 
 ## 🐛 Bug Fixes (2025-11-22)
 
-### 🔥 최신: API_BASE_URL 중복 선언 오류 해결 (v1.4.2) ⭐ CRITICAL
+### 🎉 최신: 프로필 사진 변경 기능 추가 (v1.4.3) ⭐ NEW
+
+#### 문제 증상
+- ❌ "사진 변경" 버튼 클릭 시 아무 반응 없음
+- ❌ 이벤트 리스너 미구현
+
+#### 해결 방법
+- ✅ **랜덤 색상 아바타 생성** 기능 구현
+- ✅ **8가지 배경색** 중 랜덤 선택 (Purple, Pink, Blue, Green, Amber, Red, Cyan)
+- ✅ **UI Avatars API** 활용 (이름 기반 이니셜 생성)
+- ✅ **성공 메시지** 9개 언어 지원
+- ✅ **즉시 변경** (새로고침 불필요)
+
+#### 코드 구현
+```javascript
+document.getElementById('change-avatar-btn').addEventListener('click', () => {
+    const colors = ['8b5cf6', 'ec4899', '3b82f6', '10b981', 'f59e0b', 'ef4444', '06b6d4'];
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    avatar.src = `https://ui-avatars.com/api/?name=${name}&size=120&background=${randomColor}&color=fff`;
+});
+```
+
+#### Git 커밋
+```
+7340af0 - feat: Add profile photo change functionality with random color avatars
+```
+
+**상세 보고서**: `PROFILE_PHOTO_FIX.md` 참조
+
+---
+
+### 🔥 API_BASE_URL 중복 선언 오류 해결 (v1.4.2) ⭐ CRITICAL
 
 #### 문제 증상
 ```
