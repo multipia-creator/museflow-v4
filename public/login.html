@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/mobile-responsive.css">
     
     <style>
         * {
@@ -226,6 +227,92 @@
             background: #1a0f2e;
             color: white;
         }
+        
+        /* OAuth Buttons */
+        .oauth-divider {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.875rem;
+        }
+        
+        .oauth-divider::before,
+        .oauth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .oauth-divider span {
+            padding: 0 1rem;
+        }
+        
+        .oauth-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .oauth-btn {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: white;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        
+        .oauth-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }
+        
+        .oauth-btn i {
+            font-size: 1.25rem;
+        }
+        
+        .oauth-btn.google {
+            background: rgba(66, 133, 244, 0.1);
+            border-color: rgba(66, 133, 244, 0.3);
+        }
+        
+        .oauth-btn.google:hover {
+            background: rgba(66, 133, 244, 0.2);
+            border-color: rgba(66, 133, 244, 0.5);
+        }
+        
+        .oauth-btn.naver {
+            background: rgba(3, 199, 90, 0.1);
+            border-color: rgba(3, 199, 90, 0.3);
+        }
+        
+        .oauth-btn.naver:hover {
+            background: rgba(3, 199, 90, 0.2);
+            border-color: rgba(3, 199, 90, 0.5);
+        }
+        
+        .oauth-btn.kakao {
+            background: rgba(254, 229, 0, 0.1);
+            border-color: rgba(254, 229, 0, 0.3);
+            color: #FEE500;
+        }
+        
+        .oauth-btn.kakao:hover {
+            background: rgba(254, 229, 0, 0.2);
+            border-color: rgba(254, 229, 0, 0.5);
+        }
     </style>
 </head>
 <body>
@@ -259,6 +346,31 @@
         <div id="error-message" class="error-message"></div>
         <div id="success-message" class="success-message"></div>
         
+        <!-- OAuth Social Login Buttons -->
+        <div class="oauth-buttons">
+            <button type="button" class="oauth-btn google" id="google-login-btn">
+                <i class="fab fa-google"></i>
+                <span data-i18n="oauthGoogle">Google로 계속하기</span>
+            </button>
+            <button type="button" class="oauth-btn naver" id="naver-login-btn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="flex-shrink: 0;">
+                    <path d="M13.6 0H6.4L6.4 10.7 13.6 0z"/>
+                    <path d="M13.6 20H6.4V9.3L13.6 20z"/>
+                </svg>
+                <span data-i18n="oauthNaver">Naver로 계속하기</span>
+            </button>
+            <button type="button" class="oauth-btn kakao" id="kakao-login-btn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="flex-shrink: 0;">
+                    <path d="M10 0C4.477 0 0 3.69 0 8.25c0 2.897 1.876 5.438 4.694 6.884-.194.711-.771 2.832-.886 3.273-.139.532.195.525.41.38.155-.104 2.485-1.674 3.445-2.324C8.426 16.796 9.198 16.86 10 16.86c5.523 0 10-3.69 10-8.25S15.523 0 10 0z"/>
+                </svg>
+                <span data-i18n="oauthKakao">Kakao로 계속하기</span>
+            </button>
+        </div>
+        
+        <div class="oauth-divider">
+            <span data-i18n="orDivider">또는</span>
+        </div>
+        
         <form id="login-form">
             <div class="form-group">
                 <label for="email" data-i18n="labelEmail">이메일</label>
@@ -275,7 +387,7 @@
                     <input type="checkbox" id="remember-me">
                     <span data-i18n="rememberMe">로그인 상태 유지</span>
                 </label>
-                <a href="#" style="color: rgba(255, 255, 255, 0.7);" data-i18n="forgotPassword">비밀번호 찾기</a>
+                <a href="/forgot-password.html" style="color: rgba(255, 255, 255, 0.7);" data-i18n="forgotPassword">비밀번호 찾기</a>
             </div>
             
             <button type="submit" class="submit-btn" id="submit-btn">
@@ -288,6 +400,9 @@
         </div>
     </div>
     
+    <script src="/static/js/core/toast.js"></script>
+    <script src="/static/js/core/loading.js"></script>
+    <script src="/static/js/core/oauth-manager.js"></script>
     <script>
         // API Base URL Configuration
         // For sandbox public URLs: https://8000-xxx.sandbox.novita.ai → https://3000-xxx.sandbox.novita.ai
@@ -313,8 +428,8 @@
         
         // i18n Translation System
         const translations = {
-            ko: {pageTitle:'로그인 - MuseFlow',backToHome:'홈으로 돌아가기',loginTitle:'로그인',loginSubtitle:'MuseFlow에 다시 오신 것을 환영합니다',labelEmail:'이메일',placeholderEmail:'your@email.com',labelPassword:'비밀번호',placeholderPassword:'비밀번호 입력',rememberMe:'로그인 상태 유지',forgotPassword:'비밀번호 찾기',buttonLogin:'로그인',noAccount:'계정이 없으신가요?',linkSignup:'회원가입',buttonProcessing:'처리 중...',successLogin:'로그인 성공! 프로젝트로 이동합니다...',errorLoginFailed:'로그인에 실패했습니다.',errorServerError:'서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'},
-            en: {pageTitle:'Login - MuseFlow',backToHome:'Back to Home',loginTitle:'Login',loginSubtitle:'Welcome back to MuseFlow',labelEmail:'Email',placeholderEmail:'your@email.com',labelPassword:'Password',placeholderPassword:'Enter password',rememberMe:'Remember me',forgotPassword:'Forgot password?',buttonLogin:'Login',noAccount:'Don\'t have an account?',linkSignup:'Sign Up',buttonProcessing:'Processing...',successLogin:'Login successful! Redirecting to projects...',errorLoginFailed:'Login failed.',errorServerError:'Server error occurred. Please try again later.'},
+            ko: {pageTitle:'로그인 - MuseFlow',backToHome:'홈으로 돌아가기',loginTitle:'로그인',loginSubtitle:'MuseFlow에 다시 오신 것을 환영합니다',labelEmail:'이메일',placeholderEmail:'your@email.com',labelPassword:'비밀번호',placeholderPassword:'비밀번호 입력',rememberMe:'로그인 상태 유지',forgotPassword:'비밀번호 찾기',buttonLogin:'로그인',noAccount:'계정이 없으신가요?',linkSignup:'회원가입',buttonProcessing:'처리 중...',successLogin:'로그인 성공! 프로젝트로 이동합니다...',errorLoginFailed:'로그인에 실패했습니다.',errorServerError:'서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',oauthGoogle:'Google로 계속하기',oauthNaver:'Naver로 계속하기',oauthKakao:'Kakao로 계속하기',orDivider:'또는'},
+            en: {pageTitle:'Login - MuseFlow',backToHome:'Back to Home',loginTitle:'Login',loginSubtitle:'Welcome back to MuseFlow',labelEmail:'Email',placeholderEmail:'your@email.com',labelPassword:'Password',placeholderPassword:'Enter password',rememberMe:'Remember me',forgotPassword:'Forgot password?',buttonLogin:'Login',noAccount:'Don\'t have an account?',linkSignup:'Sign Up',buttonProcessing:'Processing...',successLogin:'Login successful! Redirecting to projects...',errorLoginFailed:'Login failed.',errorServerError:'Server error occurred. Please try again later.',oauthGoogle:'Continue with Google',oauthNaver:'Continue with Naver',oauthKakao:'Continue with Kakao',orDivider:'or'},
             ja: {pageTitle:'ログイン - MuseFlow',backToHome:'ホームへ戻る',loginTitle:'ログイン',loginSubtitle:'MuseFlowへようこそ',labelEmail:'メール',placeholderEmail:'your@email.com',labelPassword:'パスワード',placeholderPassword:'パスワード入力',rememberMe:'ログイン状態を保持',forgotPassword:'パスワードを忘れた',buttonLogin:'ログイン',noAccount:'アカウントをお持ちでないですか？',linkSignup:'会員登録',buttonProcessing:'処理中...',successLogin:'ログイン成功！プロジェクトへ移動します...',errorLoginFailed:'ログインに失敗しました。',errorServerError:'サーバーエラーが発生しました。後でもう一度お試しください。'},
             'zh-CN': {pageTitle:'登录 - MuseFlow',backToHome:'返回主页',loginTitle:'登录',loginSubtitle:'欢迎回到MuseFlow',labelEmail:'邮箱',placeholderEmail:'your@email.com',labelPassword:'密码',placeholderPassword:'输入密码',rememberMe:'保持登录',forgotPassword:'忘记密码？',buttonLogin:'登录',noAccount:'没有账号？',linkSignup:'注册',buttonProcessing:'处理中...',successLogin:'登录成功！跳转到项目...',errorLoginFailed:'登录失败。',errorServerError:'服务器错误。请稍后重试。'},
             'zh-TW': {pageTitle:'登入 - MuseFlow',backToHome:'返回主頁',loginTitle:'登入',loginSubtitle:'歡迎回到MuseFlow',labelEmail:'郵箱',placeholderEmail:'your@email.com',labelPassword:'密碼',placeholderPassword:'輸入密碼',rememberMe:'保持登入',forgotPassword:'忘記密碼？',buttonLogin:'登入',noAccount:'沒有帳號？',linkSignup:'註冊',buttonProcessing:'處理中...',successLogin:'登入成功！跳轉到專案...',errorLoginFailed:'登入失敗。',errorServerError:'伺服器錯誤。請稍後重試。'},
@@ -349,6 +464,19 @@
         
         updateLanguage(currentLang);
         
+        // OAuth Button Handlers
+        document.getElementById('google-login-btn')?.addEventListener('click', () => {
+            OAuthManager.loginWithGoogle();
+        });
+        
+        document.getElementById('naver-login-btn')?.addEventListener('click', () => {
+            OAuthManager.loginWithNaver();
+        });
+        
+        document.getElementById('kakao-login-btn')?.addEventListener('click', () => {
+            OAuthManager.loginWithKakao();
+        });
+        
         const form = document.getElementById('login-form');
         const errorMsg = document.getElementById('error-message');
         const successMsg = document.getElementById('success-message');
@@ -372,15 +500,16 @@
             const password = document.getElementById('password').value;
             const rememberMe = document.getElementById('remember-me').checked;
             
-            // Disable button
+            // Show loading
+            const loaderId = Loading.show('Logging in...');
+            
             const t = translations[currentLang];
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
+            const originalHTML = submitBtn.innerHTML;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + t.buttonProcessing;
             
             try {
-                console.log('Login attempt:', email);
-                console.log('API URL:', API_BASE_URL + '/api/auth/login');
                 const response = await fetch(API_BASE_URL + '/api/auth/login', {
                     method: 'POST',
                     headers: {
@@ -389,31 +518,34 @@
                     body: JSON.stringify({ email, password, rememberMe })
                 });
                 
-                console.log('Response status:', response.status);
                 const data = await response.json();
-                console.log('Response data:', data);
+                
+                // Hide loading
+                Loading.hide(loaderId);
                 
                 if (response.ok) {
                     // Store token
                     localStorage.setItem('authToken', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     
-                    showSuccess(t.successLogin);
-                    console.log('Login successful, redirecting to dashboard...');
+                    // Show success toast
+                    Toast.success(t.successLogin);
+                    
                     setTimeout(() => {
-                        window.location.href = '/dashboard.html';
+                        window.location.href = '/projects.html';
                     }, 1000);
                 } else {
-                    console.error('Login failed:', data.error);
-                    showError(data.error || t.errorLoginFailed);
+                    // Show error toast
+                    Toast.error(data.error || t.errorLoginFailed);
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span data-i18n="buttonLogin">' + t.buttonLogin + '</span>';
+                    submitBtn.innerHTML = originalHTML;
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                showError(t.errorServerError);
+                Loading.hide(loaderId);
+                Toast.error(t.errorServerError);
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span data-i18n="buttonLogin">' + t.buttonLogin + '</span>';
+                submitBtn.innerHTML = originalHTML;
             }
         });
     </script>

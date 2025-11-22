@@ -1,0 +1,331 @@
+/**
+ * Mobile Responsive Styles
+ * Optimized layouts for mobile devices
+ */
+
+/* Mobile-first approach */
+@media (max-width: 768px) {
+  /* Global mobile optimizations */
+  body {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 1.75rem !important;
+  }
+
+  h2 {
+    font-size: 1.5rem !important;
+  }
+
+  h3 {
+    font-size: 1.25rem !important;
+  }
+
+  /* Auth Pages (login, signup) */
+  .auth-container {
+    padding: 2rem 1.5rem !important;
+    margin: 1rem !important;
+    max-width: 100% !important;
+  }
+
+  .auth-logo h1 {
+    font-size: 1.75rem !important;
+  }
+
+  .form-group input {
+    font-size: 16px !important; /* Prevent iOS zoom on focus */
+  }
+
+  .oauth-buttons {
+    gap: 0.5rem !important;
+  }
+
+  .oauth-btn {
+    padding: 0.75rem 1rem !important;
+    font-size: 0.875rem !important;
+  }
+
+  /* Landing Page */
+  .hero-section {
+    padding: 6rem 1rem 4rem !important;
+  }
+
+  .hero-title {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem !important;
+  }
+
+  .ai-search-container {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+
+  .ai-search-input {
+    width: 100% !important;
+  }
+
+  .voice-btn {
+    position: relative !important;
+    right: auto !important;
+    top: auto !important;
+  }
+
+  /* Features Section */
+  .features-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .feature-card {
+    padding: 1.5rem !important;
+  }
+
+  /* Agents Section */
+  .agent-card {
+    flex-direction: column !important;
+    text-align: center !important;
+  }
+
+  .agent-image {
+    width: 100% !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .agent-content {
+    padding: 0 !important;
+  }
+
+  /* Pricing Section */
+  .pricing-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .pricing-card {
+    max-width: 100% !important;
+  }
+
+  /* Projects Page */
+  .projects-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .project-card {
+    padding: 1rem !important;
+  }
+
+  /* Canvas Page */
+  .canvas-container {
+    height: calc(100vh - 60px) !important;
+  }
+
+  .canvas-toolbar {
+    flex-wrap: wrap !important;
+    padding: 0.5rem !important;
+    gap: 0.5rem !important;
+  }
+
+  .canvas-toolbar button {
+    min-width: 40px !important;
+    min-height: 40px !important;
+    padding: 0.5rem !important;
+  }
+
+  .node-palette {
+    width: 100% !important;
+    max-height: 40vh !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 100 !important;
+    border-radius: 16px 16px 0 0 !important;
+    transform: translateY(100%) !important;
+    transition: transform 0.3s ease !important;
+  }
+
+  .node-palette.active {
+    transform: translateY(0) !important;
+  }
+
+  .properties-panel {
+    width: 100% !important;
+    max-height: 50vh !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 100 !important;
+    border-radius: 16px 16px 0 0 !important;
+  }
+
+  /* Modal adjustments */
+  .modal-content {
+    width: 95% !important;
+    max-width: 95% !important;
+    max-height: 90vh !important;
+    margin: 1rem !important;
+    overflow-y: auto !important;
+  }
+
+  /* Navigation */
+  .navbar {
+    padding: 0.75rem 1rem !important;
+  }
+
+  .nav-links {
+    position: fixed !important;
+    top: 60px !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: rgba(15, 10, 31, 0.98) !important;
+    backdrop-filter: blur(20px) !important;
+    flex-direction: column !important;
+    padding: 1rem !important;
+    display: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .nav-links.active {
+    display: flex !important;
+  }
+
+  .mobile-menu-toggle {
+    display: block !important;
+    background: none !important;
+    border: none !important;
+    color: white !important;
+    font-size: 1.5rem !important;
+    cursor: pointer !important;
+    padding: 0.5rem !important;
+  }
+
+  /* Touch-friendly buttons */
+  button, .btn, a.btn {
+    min-height: 44px !important;
+    min-width: 44px !important;
+    padding: 0.75rem 1.5rem !important;
+  }
+
+  /* Form inputs - prevent zoom on iOS */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+
+  /* Reduce animations on mobile for performance */
+  * {
+    animation-duration: 0.2s !important;
+    transition-duration: 0.2s !important;
+  }
+
+  /* Hide decorative elements on mobile */
+  .decorative-bg,
+  .background-animation,
+  .particle-effect {
+    display: none !important;
+  }
+
+  /* Optimize images */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Footer */
+  .footer {
+    padding: 2rem 1rem !important;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+}
+
+/* Tablet landscape */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .features-grid,
+  .pricing-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .agent-card {
+    flex-direction: row !important;
+  }
+}
+
+/* Desktop small */
+@media (min-width: 1025px) and (max-width: 1280px) {
+  .container {
+    max-width: 1200px !important;
+  }
+}
+
+/* Desktop large */
+@media (min-width: 1281px) {
+  .container {
+    max-width: 1400px !important;
+  }
+}
+
+/* Touch device specific */
+@media (hover: none) and (pointer: coarse) {
+  /* Remove hover effects on touch devices */
+  .hover-effect:hover {
+    transform: none !important;
+  }
+
+  /* Increase button sizes for touch */
+  button, .btn {
+    min-height: 48px !important;
+    min-width: 48px !important;
+  }
+}
+
+/* Landscape mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  .hero-section {
+    padding: 4rem 1rem 2rem !important;
+  }
+
+  .canvas-container {
+    height: 100vh !important;
+  }
+
+  .node-palette,
+  .properties-panel {
+    max-height: 60vh !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .navbar,
+  .footer,
+  .oauth-buttons,
+  .canvas-toolbar,
+  .node-palette,
+  button {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+}

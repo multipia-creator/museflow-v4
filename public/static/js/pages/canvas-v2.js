@@ -48,6 +48,7 @@ const CanvasV2 = {
   rightPanelOpen: false,
   searchQuery: '',
   selectedCategory: 'all',
+  expandedSubcategories: new Set(['planning', 'installation', 'evaluation', 'program', 'execution', 'acquisition', 'preservation', 'research', 'content', 'production', 'fieldwork', 'analysis', 'strategic', 'operations', 'engagement']),
   
   // Node ID counter
   nodeIdCounter: 1,
@@ -350,7 +351,7 @@ const CanvasV2 = {
                   flex-shrink: 0;">
         
         <!-- Back Button -->
-        <button class="toolbar-btn" id="back-btn" title="Back to Projects"
+        <button class="toolbar-btn" id="back-btn" title="${i18n.t('backToProjects')}"
                 style="width: 36px; height: 36px; border: none; background: transparent;
                        border-radius: 8px; cursor: pointer; display: flex; align-items: center;
                        justify-content: center; color: #6b7280; font-size: 20px;">
@@ -359,22 +360,22 @@ const CanvasV2 = {
         
         <!-- Project Name -->
         <div style="flex: 1; font-weight: 600; color: #1f2937; font-size: 14px;">
-          ${this.currentProject?.name || 'Untitled Project'}
+          ${this.currentProject?.name || i18n.t('untitledProject')}
         </div>
         
         <!-- Tool Buttons -->
         <div style="display: flex; gap: 4px; padding: 0 8px; border-left: 1px solid #e5e7eb;">
-          <button class="toolbar-btn" id="tool-select" title="Select (V)"
+          <button class="toolbar-btn" id="tool-select" title="${i18n.t('selectTool')}"
                   style="width: 36px; height: 36px; border: none; background: #f3f4f6;
                          border-radius: 6px; cursor: pointer; font-size: 18px;">
             ⌖
           </button>
-          <button class="toolbar-btn" id="tool-hand" title="Hand (H)"
+          <button class="toolbar-btn" id="tool-hand" title="${i18n.t('handTool')}"
                   style="width: 36px; height: 36px; border: none; background: transparent;
                          border-radius: 6px; cursor: pointer; font-size: 18px;">
             ✋
           </button>
-          <button class="toolbar-btn" id="tool-comment" title="Comment (C)"
+          <button class="toolbar-btn" id="tool-comment" title="${i18n.t('commentTool')}"
                   style="width: 36px; height: 36px; border: none; background: transparent;
                          border-radius: 6px; cursor: pointer; font-size: 18px;">
             💬
@@ -383,17 +384,17 @@ const CanvasV2 = {
         
         <!-- View Controls -->
         <div style="display: flex; gap: 4px; padding: 0 8px; border-left: 1px solid #e5e7eb;">
-          <button class="toolbar-btn" id="zoom-out" title="Zoom Out (-)"
+          <button class="toolbar-btn" id="zoom-out" title="${i18n.t('zoomOut')}"
                   style="width: 36px; height: 36px; border: none; background: transparent;
                          border-radius: 6px; cursor: pointer; font-size: 18px;">
             −
           </button>
-          <button class="toolbar-btn" id="zoom-reset" title="Reset Zoom (0)"
+          <button class="toolbar-btn" id="zoom-reset" title="${i18n.t('resetView')}"
                   style="width: 36px; height: 36px; border: none; background: transparent;
                          border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600;">
             ${Math.round(this.viewport.zoom * 100)}%
           </button>
-          <button class="toolbar-btn" id="zoom-in" title="Zoom In (+)"
+          <button class="toolbar-btn" id="zoom-in" title="${i18n.t('zoomIn')}"
                   style="width: 36px; height: 36px; border: none; background: transparent;
                          border-radius: 6px; cursor: pointer; font-size: 18px;">
             +
@@ -402,34 +403,34 @@ const CanvasV2 = {
         
         <!-- Action Buttons -->
         <div style="display: flex; gap: 8px; padding: 0 8px; border-left: 1px solid #e5e7eb;">
-          <button class="toolbar-btn" id="undo-btn" title="Undo (Ctrl+Z)"
+          <button class="toolbar-btn" id="undo-btn" title="${i18n.t('undoAction')}"
                   style="padding: 8px 16px; border: none; background: transparent;
                          border-radius: 6px; cursor: pointer; font-size: 13px; 
                          font-weight: 600; color: #6b7280;">
-            ↶ Undo
+            ↶ ${i18n.t('undo')}
           </button>
-          <button class="toolbar-btn" id="redo-btn" title="Redo (Ctrl+Shift+Z)"
+          <button class="toolbar-btn" id="redo-btn" title="${i18n.t('redoAction')}"
                   style="padding: 8px 16px; border: none; background: transparent;
                          border-radius: 6px; cursor: pointer; font-size: 13px;
                          font-weight: 600; color: #6b7280;">
-            ↷ Redo
+            ↷ ${i18n.t('redo')}
           </button>
         </div>
         
         <!-- AI Generate Button -->
-        <button id="ai-generate-btn" title="AI Generate Workflow (Ctrl+G)"
+        <button id="ai-generate-btn" title="${i18n.t('aiGenerate')}"
                 style="padding: 8px 20px; background: linear-gradient(135deg, #3b82f6, #8b5cf6);
                        color: white; border: none; border-radius: 8px; cursor: pointer;
                        font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
-          🤖 AI Generate
+          🤖 ${i18n.t('aiGenerate').split(' ')[0]}
         </button>
         
         <!-- Save Button -->
-        <button id="save-btn" title="Save (Ctrl+S)"
+        <button id="save-btn" title="${i18n.t('saveCanvas')}"
                 style="padding: 8px 20px; background: linear-gradient(135deg, #667eea, #764ba2);
                        color: white; border: none; border-radius: 8px; cursor: pointer;
                        font-size: 13px; font-weight: 600;">
-          💾 Save
+          💾 ${i18n.t('save')}
         </button>
       </div>
     `;
@@ -460,7 +461,7 @@ const CanvasV2 = {
         <div style="padding: 16px; border-bottom: 1px solid #e5e7eb; display: flex;
                     align-items: center; justify-content: space-between;">
           <div style="font-weight: 600; color: #1f2937; font-size: 14px;">
-            📦 Nodes
+            📦 ${i18n.t('nodes')}
           </div>
           <button id="hide-left-panel" 
                   style="width: 28px; height: 28px; border: none; background: transparent;
@@ -471,7 +472,7 @@ const CanvasV2 = {
         
         <!-- Search Box -->
         <div style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb;">
-          <input type="text" id="node-search" placeholder="Search nodes..."
+          <input type="text" id="node-search" placeholder="${i18n.t('searchNodes')}"
                  style="width: 100%; padding: 8px 12px; border: 1px solid #e5e7eb;
                         border-radius: 6px; font-size: 13px; box-sizing: border-box;">
         </div>
@@ -495,13 +496,13 @@ const CanvasV2 = {
    */
   renderCategoryTabs() {
     const categories = [
-      { id: 'all', name: 'All', icon: '📋' },
-      { id: 'exhibition', name: 'Exhibition', icon: '🎨' },
-      { id: 'education', name: 'Education', icon: '📚' },
-      { id: 'archive', name: 'Archive', icon: '📦' },
-      { id: 'publication', name: 'Publication', icon: '📰' },
-      { id: 'research', name: 'Research', icon: '🔬' },
-      { id: 'admin', name: 'Admin', icon: '⚙️' }
+      { id: 'all', icon: '📋' },
+      { id: 'exhibition', icon: '🎨' },
+      { id: 'education', icon: '📚' },
+      { id: 'archive', icon: '📦' },
+      { id: 'publication', icon: '📰' },
+      { id: 'research', icon: '🔬' },
+      { id: 'admin', icon: '⚙️' }
     ];
     
     return categories.map(cat => `
@@ -512,13 +513,13 @@ const CanvasV2 = {
                      font-weight: ${this.selectedCategory === cat.id ? '600' : '500'};
                      color: ${this.selectedCategory === cat.id ? '#1f2937' : '#6b7280'};
                      white-space: nowrap;">
-        ${cat.icon} ${cat.name}
+        ${cat.icon} ${i18n.t(cat.id)}
       </button>
     `).join('');
   },
 
   /**
-   * Render nodes list
+   * Render nodes list with 2-level category structure
    */
   renderNodesList() {
     const nodes = this.getFilteredNodes();
@@ -527,29 +528,132 @@ const CanvasV2 = {
       return `
         <div style="text-align: center; padding: 40px 20px; color: #9ca3af;">
           <div style="font-size: 32px; margin-bottom: 8px;">🔍</div>
-          <div style="font-size: 13px;">No nodes found</div>
+          <div style="font-size: 13px;">${i18n.t('noNodesFound') || 'No nodes found'}</div>
         </div>
       `;
     }
     
-    return nodes.map(node => `
-      <div class="node-item" data-node-type="${node.id}" draggable="true"
-           style="padding: 10px 12px; margin-bottom: 4px; border-radius: 6px;
-                  cursor: grab; display: flex; align-items: center; gap: 10px;
-                  background: white; border: 1px solid transparent;">
-        <div style="font-size: 20px; flex-shrink: 0;">${node.icon}</div>
-        <div style="flex: 1; min-width: 0;">
-          <div style="font-size: 13px; font-weight: 500; color: #1f2937;
-                      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-            ${node.name}
+    // Group nodes by category and subcategory
+    const grouped = this.groupNodesBySubcategory(nodes);
+    
+    return Object.keys(grouped).map(subcat => {
+      const subcatNodes = grouped[subcat];
+      const isExpanded = this.expandedSubcategories?.has(subcat) !== false;
+      
+      return `
+        <!-- Subcategory Header -->
+        <div class="subcategory-header" data-subcategory="${subcat}"
+             style="padding: 8px 12px; margin: 12px 0 4px 0; cursor: pointer;
+                    display: flex; align-items: center; justify-content: space-between;
+                    border-radius: 6px; background: #f9fafb; user-select: none;">
+          <div style="font-size: 12px; font-weight: 600; color: #6b7280; letter-spacing: 0.05em;">
+            ${this.getSubcategoryName(subcat)}
           </div>
-          <div style="font-size: 11px; color: #9ca3af; margin-top: 2px;
-                      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-            ${node.category}
+          <div style="font-size: 14px; color: #9ca3af; transition: transform 0.2s;
+                     transform: rotate(${isExpanded ? '180deg' : '0deg'});">
+            ▼
           </div>
         </div>
-      </div>
-    `).join('');
+        
+        <!-- Subcategory Nodes -->
+        <div class="subcategory-nodes" data-subcategory="${subcat}"
+             style="display: ${isExpanded ? 'block' : 'none'}; margin-bottom: 8px;">
+          ${subcatNodes.map(node => `
+            <div class="node-item" data-node-type="${node.id}" draggable="true"
+                 style="padding: 10px 12px; margin-bottom: 4px; border-radius: 6px;
+                        cursor: grab; display: flex; align-items: center; gap: 10px;
+                        background: white; border: 1px solid transparent; transition: all 0.2s;">
+              <div style="font-size: 20px; flex-shrink: 0;">${node.icon}</div>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-size: 13px; font-weight: 500; color: #1f2937;
+                            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                  ${i18n.t(node.id)}
+                </div>
+                <div style="font-size: 11px; color: #9ca3af; margin-top: 2px;
+                            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                  ${i18n.t(node.category)}
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }).join('');
+  },
+  
+  /**
+   * Group nodes by subcategory
+   */
+  groupNodesBySubcategory(nodes) {
+    const grouped = {};
+    
+    nodes.forEach(node => {
+      const subcat = node.subcategory || 'other';
+      if (!grouped[subcat]) {
+        grouped[subcat] = [];
+      }
+      grouped[subcat].push(node);
+    });
+    
+    return grouped;
+  },
+  
+  /**
+   * Get subcategory display name
+   */
+  getSubcategoryName(subcatId) {
+    const subcategoryNames = {
+      'planning': i18n.currentLang === 'ko' ? '기획 & 큐레이팅' : 
+                  i18n.currentLang === 'zh' ? '策划与策展' :
+                  i18n.currentLang === 'ja' ? '企画とキュレーション' : 'Planning & Curation',
+      'installation': i18n.currentLang === 'ko' ? '설치 & 운영' :
+                      i18n.currentLang === 'zh' ? '安装与运营' :
+                      i18n.currentLang === 'ja' ? '設置と運営' : 'Installation & Operation',
+      'evaluation': i18n.currentLang === 'ko' ? '평가 & 피드백' :
+                    i18n.currentLang === 'zh' ? '评估与反馈' :
+                    i18n.currentLang === 'ja' ? '評価とフィードバック' : 'Evaluation & Feedback',
+      'program': i18n.currentLang === 'ko' ? '프로그램 개발' :
+                 i18n.currentLang === 'zh' ? '项目开发' :
+                 i18n.currentLang === 'ja' ? 'プログラム開発' : 'Program Development',
+      'execution': i18n.currentLang === 'ko' ? '실행 & 운영' :
+                   i18n.currentLang === 'zh' ? '执行与运营' :
+                   i18n.currentLang === 'ja' ? '実行と運営' : 'Execution & Operation',
+      'acquisition': i18n.currentLang === 'ko' ? '수집 & 등록' :
+                     i18n.currentLang === 'zh' ? '采集与登录' :
+                     i18n.currentLang === 'ja' ? '収集と登録' : 'Acquisition & Registration',
+      'preservation': i18n.currentLang === 'ko' ? '보존 & 관리' :
+                      i18n.currentLang === 'zh' ? '保存与管理' :
+                      i18n.currentLang === 'ja' ? '保存と管理' : 'Preservation & Management',
+      'research': i18n.currentLang === 'ko' ? '연구 & 활용' :
+                  i18n.currentLang === 'zh' ? '研究与利用' :
+                  i18n.currentLang === 'ja' ? '研究と活用' : 'Research & Utilization',
+      'content': i18n.currentLang === 'ko' ? '콘텐츠 제작' :
+                 i18n.currentLang === 'zh' ? '内容制作' :
+                 i18n.currentLang === 'ja' ? 'コンテンツ制作' : 'Content Creation',
+      'production': i18n.currentLang === 'ko' ? '제작 & 배포' :
+                    i18n.currentLang === 'zh' ? '制作与分发' :
+                    i18n.currentLang === 'ja' ? '制作と配布' : 'Production & Distribution',
+      'fieldwork': i18n.currentLang === 'ko' ? '현장 조사' :
+                   i18n.currentLang === 'zh' ? '现场调查' :
+                   i18n.currentLang === 'ja' ? 'フィールドワーク' : 'Fieldwork',
+      'analysis': i18n.currentLang === 'ko' ? '분석 & 보고' :
+                  i18n.currentLang === 'zh' ? '分析与报告' :
+                  i18n.currentLang === 'ja' ? '分析とレポート' : 'Analysis & Reporting',
+      'strategic': i18n.currentLang === 'ko' ? '전략 & 기획' :
+                   i18n.currentLang === 'zh' ? '战略与规划' :
+                   i18n.currentLang === 'ja' ? '戦略と企画' : 'Strategic Planning',
+      'operations': i18n.currentLang === 'ko' ? '운영 & 관리' :
+                    i18n.currentLang === 'zh' ? '运营与管理' :
+                    i18n.currentLang === 'ja' ? '運営と管理' : 'Operations & Management',
+      'engagement': i18n.currentLang === 'ko' ? '소통 & 서비스' :
+                    i18n.currentLang === 'zh' ? '沟通与服务' :
+                    i18n.currentLang === 'ja' ? 'コミュニケーションとサービス' : 'Engagement & Services',
+      'other': i18n.currentLang === 'ko' ? '기타' :
+               i18n.currentLang === 'zh' ? '其他' :
+               i18n.currentLang === 'ja' ? 'その他' : 'Other'
+    };
+    
+    return subcategoryNames[subcatId] || subcatId;
   },
 
   /**
@@ -701,7 +805,7 @@ const CanvasV2 = {
         <div style="padding: 16px; border-bottom: 1px solid #e5e7eb; display: flex;
                     align-items: center; justify-content: space-between;">
           <div style="font-weight: 600; color: #1f2937; font-size: 14px;">
-            ⚙️ Properties
+            ⚙️ ${i18n.t('properties')}
           </div>
           <button id="hide-right-panel" 
                   style="width: 28px; height: 28px; border: none; background: transparent;
@@ -737,7 +841,7 @@ const CanvasV2 = {
       <div style="margin-bottom: 16px;">
         <label style="display: block; font-size: 12px; font-weight: 600; 
                       color: #6b7280; margin-bottom: 6px;">
-          Title
+          ${i18n.t('title')}
         </label>
         <input type="text" id="node-title" value="${node.title || ''}"
                style="width: 100%; padding: 8px 12px; border: 1px solid #e5e7eb;
@@ -748,7 +852,7 @@ const CanvasV2 = {
       <div style="margin-bottom: 16px;">
         <label style="display: block; font-size: 12px; font-weight: 600;
                       color: #6b7280; margin-bottom: 6px;">
-          Description
+          ${i18n.t('description')}
         </label>
         <textarea id="node-description" rows="4"
                   style="width: 100%; padding: 8px 12px; border: 1px solid #e5e7eb;
@@ -760,14 +864,14 @@ const CanvasV2 = {
       <div style="margin-bottom: 16px;">
         <label style="display: block; font-size: 12px; font-weight: 600;
                       color: #6b7280; margin-bottom: 6px;">
-          Status
+          ${i18n.t('status')}
         </label>
         <select id="node-status" 
                 style="width: 100%; padding: 8px 12px; border: 1px solid #e5e7eb;
                        border-radius: 6px; font-size: 13px; box-sizing: border-box;">
-          <option value="todo" ${node.status === 'todo' ? 'selected' : ''}>To Do</option>
-          <option value="in-progress" ${node.status === 'in-progress' ? 'selected' : ''}>In Progress</option>
-          <option value="done" ${node.status === 'done' ? 'selected' : ''}>Done</option>
+          <option value="todo" ${node.status === 'todo' ? 'selected' : ''}>${i18n.t('todo')}</option>
+          <option value="in-progress" ${node.status === 'in-progress' ? 'selected' : ''}>${i18n.t('inProgress')}</option>
+          <option value="done" ${node.status === 'done' ? 'selected' : ''}>${i18n.t('done')}</option>
         </select>
       </div>
       
@@ -775,7 +879,7 @@ const CanvasV2 = {
       <div style="margin-bottom: 16px;">
         <label style="display: block; font-size: 12px; font-weight: 600;
                       color: #6b7280; margin-bottom: 6px;">
-          Color
+          ${i18n.t('color')}
         </label>
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           ${['#8b5cf6', '#6366f1', '#06b6d4', '#10b981', '#f59e0b', '#ec4899', '#ef4444'].map(color => `

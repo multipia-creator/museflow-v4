@@ -15,7 +15,8 @@ const Router = {
     '/billing': 'ProfileSettings',
     '/help': 'ProfileSettings',
     '/admin': 'AdminDashboard',
-    '/canvas': 'CanvasV2'
+    '/canvas': 'CanvasV3',  // ✅ FIXED: Changed from CanvasV2 to CanvasV3
+    '/canvas-v2': 'CanvasV2'  // Legacy route for Canvas V2
   },
   
   currentPage: null,

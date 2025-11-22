@@ -6,21 +6,23 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="1.6.2">
-    <title>Canvas - MuseFlow</title>
+    <meta name="version" content="1.8.0">
+    <title>Canvas V3 - MuseFlow</title>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     
     <!-- Dependencies -->
-    <script src="/static/js/tracker.js?v=1.6.2"></script>
-    <script src="/static/js/components/toast.js?v=1.6.2"></script>
-    <script src="/static/js/core/i18n.js?v=1.6.2"></script>
-    <script src="/static/js/core/router.js?v=1.6.2"></script>
-    <script src="/static/js/core/auth.js?v=1.6.2"></script>
-    <script src="/static/js/sdk/api-client.js?v=1.6.2"></script>
-    <script src="/static/js/sdk/workflow-sync.js?v=1.6.2"></script>
-    <script src="/static/js/sdk/ai-generator.js?v=1.6.2"></script>
-    <script src="/static/js/sdk/collaboration-client.js?v=1.6.2"></script>
-    <script src="/static/js/components/collaboration-panel.js?v=1.6.2"></script>
-    <script src="/static/js/pages/canvas-v2.js?v=1.6.2"></script>
+    <script src="/static/js/tracker.js?v=1.8.0"></script>
+    <script src="/static/js/components/toast.js?v=1.8.0"></script>
+    <script src="/static/js/core/i18n.js?v=1.8.0"></script>
+    <script src="/static/js/core/router.js?v=1.8.0"></script>
+    <script src="/static/js/core/auth.js?v=1.8.0"></script>
+    <script src="/static/js/sdk/api-client.js?v=1.8.0"></script>
+    <script src="/static/js/sdk/workflow-sync.js?v=1.8.0"></script>
+    <script src="/static/js/sdk/ai-generator.js?v=1.8.0"></script>
+    <script src="/static/js/core/canvas-engine.js?v=1.8.0"></script>
+    <script src="/static/js/pages/canvas-v3.js?v=1.8.0"></script>
     
     <style>
         * {
@@ -190,34 +192,41 @@
             };
         }
         
-        // Initialize Canvas V2
+        // Initialize Canvas V3
         window.addEventListener('DOMContentLoaded', async () => {
             try {
+                console.log('🎨 MuseFlow Canvas V3 - World-Class Edition');
                 console.log('📦 Checking project data...');
                 
                 // Get project data from sessionStorage
                 const projectData = sessionStorage.getItem('museflow_current_project');
                 if (!projectData) {
-                    throw new Error('프로젝트 데이터가 없습니다.');
+                    throw new Error(i18n.t('noProjectSelected') || '프로젝트 데이터가 없습니다.');
                 }
                 
                 const project = JSON.parse(projectData);
                 console.log('✅ Project loaded:', project.name);
                 
-                // Check if CanvasV2 is available
-                if (!window.CanvasV2) {
-                    throw new Error('Canvas V2를 로드할 수 없습니다.');
+                // Check if CanvasV3 is available
+                if (!window.CanvasV3) {
+                    throw new Error('Canvas V3를 로드할 수 없습니다.');
                 }
                 
-                console.log('🚀 Initializing Canvas V2...');
+                console.log('🚀 Initializing Canvas V3...');
                 
-                // Initialize Canvas V2
-                await CanvasV2.init();
+                // Initialize Canvas V3
+                await CanvasV3.init();
                 
-                console.log('✅ Canvas V2 initialized successfully');
+                console.log('✅ Canvas V3 initialized successfully');
                 
                 // Setup language selector
                 setupLanguageSelector();
+                
+                // Initialize Lucide icons
+                if (window.lucide) {
+                    lucide.createIcons();
+                    console.log('✅ Lucide icons initialized');
+                }
                 
                 // Hide loading screen
                 setTimeout(() => {
@@ -236,7 +245,7 @@
                     <div style="text-align: center; max-width: 500px; padding: 40px;">
                         <div style="font-size: 64px; margin-bottom: 24px;">⚠️</div>
                         <h2 style="color: white; font-size: 24px; margin-bottom: 16px;">
-                            캔버스 초기화 실패
+                            ${i18n.t('error') || '캔버스 초기화 실패'}
                         </h2>
                         <p style="color: rgba(255,255,255,0.8); margin-bottom: 32px; line-height: 1.6;">
                             ${error.message}
@@ -246,7 +255,7 @@
                             style="padding: 14px 28px; background: white; border: none; border-radius: 12px; 
                                    color: #667eea; font-size: 16px; font-weight: 600; cursor: pointer;
                                    box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: all 0.2s;">
-                            ← 프로젝트 목록으로
+                            ← ${i18n.t('backToProjects') || '프로젝트 목록으로'}
                         </button>
                     </div>
                 `;
