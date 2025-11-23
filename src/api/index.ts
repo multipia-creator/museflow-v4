@@ -17,6 +17,7 @@ import webxrRoutes from './webxr';
 import iotSensorsRoutes from './iot-sensors';
 import chatbotRoutes from './chatbot';
 import performanceRoutes from './performance';
+import helpRoutes from './help';
 
 type Bindings = {
   DB: D1Database;
@@ -60,6 +61,7 @@ api.route('/webxr', webxrRoutes);
 api.route('/iot-sensors', iotSensorsRoutes);
 api.route('/chatbot', chatbotRoutes);
 api.route('/performance', performanceRoutes);
+api.route('/help', helpRoutes);
 
 // 404 handler
 api.notFound((c) => {

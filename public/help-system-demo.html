@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Help System Demo - MuseFlow V4</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 48px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            opacity: 0.9;
+        }
+
+        .systems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .system-card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .system-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .system-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .system-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .system-description {
+            font-size: 15px;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .system-features {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+
+        .system-features li {
+            padding: 8px 0;
+            color: #374151;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .system-features li:before {
+            content: "✓";
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        .demo-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 32px;
+        }
+
+        .demo-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 20px;
+        }
+
+        .demo-form {
+            max-width: 600px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4f46e5;
+        }
+
+        .form-help {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        .stat-box {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #4f46e5;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .cta-section {
+            background: white;
+            border-radius: 20px;
+            padding: 48px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 16px;
+        }
+
+        .cta-description {
+            font-size: 18px;
+            color: #6b7280;
+            margin-bottom: 32px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cta-button-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        .cta-button-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+        }
+
+        .cta-button-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .cta-button-secondary:hover {
+            background: #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎯 Complete Help System Demo</h1>
+            <p class="subtitle">MuseFlow V4의 모든 도움말 시스템을 한 곳에서 체험하세요</p>
+        </div>
+
+        <!-- Systems Grid -->
+        <div class="systems-grid">
+            <div class="system-card">
+                <div class="system-icon">💬</div>
+                <h2 class="system-title">Smart Tooltips</h2>
+                <p class="system-description">200+ 인라인 도움말 정의로 즉시 맥락 파악</p>
+                <ul class="system-features">
+                    <li>3단계 표시 레벨 (hover/click/demo)</li>
+                    <li>한영 이중 언어 지원</li>
+                    <li>예시 코드 & 영상 링크</li>
+                </ul>
+            </div>
+
+            <div class="system-card">
+                <div class="system-icon">📱</div>
+                <h2 class="system-title">Context Help Panel</h2>
+                <p class="system-description">현재 페이지에 맞는 도움말 자동 표시</p>
+                <ul class="system-features">
+                    <li>20+ 컨텍스트별 콘텐츠</li>
+                    <li>Quick Actions & Tips</li>
+                    <li>관련 문서 & 튜토리얼</li>
+                </ul>
+            </div>
+
+            <div class="system-card">
+                <div class="system-icon">📚</div>
+                <h2 class="system-title">Help Center</h2>
+                <p class="system-description">80+ 도움말 문서의 중앙 허브</p>
+                <ul class="system-features">
+                    <li>10개 카테고리 체계</li>
+                    <li>전체 텍스트 검색</li>
+                    <li>역할 기반 필터링</li>
+                </ul>
+            </div>
+
+            <div class="system-card">
+                <div class="system-icon">🤖</div>
+                <h2 class="system-title">AI Assistant</h2>
+                <p class="system-description">Gemini 기반 대화형 FAQ 봇</p>
+                <ul class="system-features">
+                    <li>자연어 질문 이해</li>
+                    <li>의미 기반 문서 추천</li>
+                    <li>대화 이력 저장</li>
+                </ul>
+            </div>
+
+            <div class="system-card">
+                <div class="system-icon">🎯</div>
+                <h2 class="system-title">Behavior Detector</h2>
+                <p class="system-description">사용자 행동 패턴 자동 감지</p>
+                <ul class="system-features">
+                    <li>Idle/Stuck 감지</li>
+                    <li>폼 이탈 감지</li>
+                    <li>Proactive 도움 제공</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Interactive Demo Section -->
+        <div class="demo-section">
+            <h2 class="demo-title">🧪 Interactive Demo</h2>
+            <p style="color: #6b7280; margin-bottom: 24px;">아래 폼을 사용해 Behavior Detection을 테스트하세요. 30초 동안 입력하지 않으면 자동으로 도움말이 제공됩니다.</p>
+
+            <form class="demo-form" id="demo-form" data-tooltip="demo_form">
+                <div class="form-group">
+                    <label class="form-label" for="accession_number" data-tooltip="accession_number">
+                        소장번호 <span style="color: #ef4444;">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        class="form-input" 
+                        id="accession_number"
+                        name="accession_number"
+                        placeholder="YYYY.###"
+                        required
+                    />
+                    <div class="form-help">형식: YYYY.### (예: 2025.047)</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="title" data-tooltip="artwork_title">
+                        작품 제목 <span style="color: #ef4444;">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        class="form-input" 
+                        id="title"
+                        name="title"
+                        placeholder="작품의 공식 제목"
+                        required
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="artist" data-tooltip="artist_name">
+                        작가명 <span style="color: #ef4444;">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        class="form-input" 
+                        id="artist"
+                        name="artist"
+                        placeholder="Last Name, First Name"
+                        required
+                    />
+                </div>
+
+                <button type="submit" class="btn btn-primary">제출</button>
+            </form>
+
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-value" id="idle-count">0</div>
+                    <div class="stat-label">Idle 감지</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="help-count">0</div>
+                    <div class="stat-label">도움말 제공</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="error-count">0</div>
+                    <div class="stat-label">오류 감지</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2 class="cta-title">모든 기능을 직접 체험해보세요</h2>
+            <p class="cta-description">Phase 1의 5개 핵심 컴포넌트가 완벽히 통합되어 작동합니다</p>
+            
+            <div class="cta-buttons">
+                <button class="cta-button cta-button-primary" onclick="location.href='/help-center.html'">
+                    📚 Help Center 열기
+                </button>
+                <button class="cta-button cta-button-secondary" onclick="location.href='/behavior-analytics.html'">
+                    📊 Analytics Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/help/tooltip-system.js"></script>
+    <script src="/static/js/help/context-help-panel.js"></script>
+    <script src="/static/js/help/ai-assistant.js"></script>
+    <script src="/static/js/help/behavior-detector.js"></script>
+
+    <script>
+        // Initialize all help systems
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tooltip System
+            TooltipSystem.init();
+
+            // Context Help Panel (optional)
+            // ContextHelpPanel.init({
+            //     position: 'right',
+            //     defaultOpen: false
+            // });
+
+            // AI Assistant
+            AIAssistant.init({
+                apiEndpoint: '/api/help/ai-assistant',
+                position: 'bottom-right',
+                autoOpen: false
+            });
+
+            // Behavior Detector
+            BehaviorDetector.init({
+                idleTimeout: 30000,
+                enableProactiveHelp: true,
+                enableAnalytics: true,
+                debugMode: true
+            });
+
+            console.log('[Help System Demo] All systems initialized');
+
+            // Update stats display
+            updateStats();
+        });
+
+        // Listen to behavior events
+        window.addEventListener('behavior:detected', (e) => {
+            console.log('[Demo] Behavior detected:', e.detail);
+            updateStats();
+        });
+
+        // Update stats counters
+        function updateStats() {
+            const behaviors = JSON.parse(localStorage.getItem('behavior_data') || '[]');
+            
+            const idleCount = behaviors.filter(b => b.type === 'idle_detected').length;
+            const helpCount = behaviors.filter(b => b.type === 'help_offered').length;
+            const errorCount = behaviors.filter(b => b.type.includes('error')).length;
+
+            document.getElementById('idle-count').textContent = idleCount;
+            document.getElementById('help-count').textContent = helpCount;
+            document.getElementById('error-count').textContent = errorCount;
+        }
+
+        // Form submit handler
+        document.getElementById('demo-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('폼이 성공적으로 제출되었습니다! 🎉\n\nBehavior Detector가 "form_completed" 이벤트를 기록했습니다.');
+            e.target.reset();
+        });
+
+        // Update stats every second
+        setInterval(updateStats, 1000);
+    </script>
+</body>
+</html>
