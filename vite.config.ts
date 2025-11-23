@@ -8,6 +8,7 @@ export default defineConfig({
     build({
       exclude: [
         '/static/**',
+        // Exclude HTML files
         '/landing.html',
         '/login.html',
         '/signup.html',
@@ -15,7 +16,17 @@ export default defineConfig({
         '/projects.html',
         '/account.html',
         '/admin.html',
-        '/ar-vr-demo.html'
+        '/ar-vr-demo.html',
+        '/index.html',
+        // Exclude Pretty URL paths (Cloudflare Pages auto-redirects /page.html → /page)
+        '/landing',
+        '/login',
+        '/signup',
+        '/dashboard',
+        '/projects',
+        '/account',
+        '/admin',
+        '/ar-vr-demo'
       ]
     }),
     devServer({

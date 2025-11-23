@@ -36,7 +36,8 @@ app.use('*', cors({
 }))
 
 // Mount API routes ONLY
-// Note: Static files (HTML, CSS, JS) are served directly by Wrangler Pages Dev from dist/ folder
+// Note: Static files (HTML, CSS, JS) are served directly by Cloudflare Pages from dist/ folder
+// Root path (/) will serve index.html automatically
 app.route('/api', api)
 app.route('/api/auth', auth)
 app.route('/api/oauth', oauth)
