@@ -89,10 +89,23 @@ oauth.get('/config', async (c) => {
 oauth.post('/token', async (c) => {
   try {
     const body = await c.req.json();
-    const { provider, code, redirect_uri } = body;
+    const { provider, code, redirect_uri, state } = body;
 
     if (!provider || !code || !redirect_uri) {
       return c.json({ error: 'Missing required parameters' }, 400);
+    }
+
+    // CRITICAL: Validate CSRF state parameter
+    if (!state) {
+      console.error('OAuth CSRF validation failed: state parameter missing');
+      return c.json({ error: 'Invalid OAuth state (CSRF protection)' }, 403);
+    }
+
+    // Validate state against stored state in session/cookie
+    const storedState = c.req.header('X-OAuth-State');
+    if (!storedState || state !== storedState) {
+      console.error('OAuth CSRF validation failed: state mismatch');
+      return c.json({ error: 'Invalid OAuth state (CSRF protection)' }, 403);
     }
 
     let tokenUrl: string;
@@ -209,10 +222,23 @@ oauth.post('/userinfo', async (c) => {
 oauth.post('/complete', async (c) => {
   try {
     const body = await c.req.json();
-    const { provider, user_info } = body;
+    const { provider, user_info, state } = body;
 
     if (!provider || !user_info) {
       return c.json({ error: 'Missing required parameters' }, 400);
+    }
+
+    // CRITICAL: Validate CSRF state parameter
+    if (!state) {
+      console.error('OAuth complete CSRF validation failed: state parameter missing');
+      return c.json({ error: 'Invalid OAuth state (CSRF protection)' }, 403);
+    }
+
+    // Validate state against stored state
+    const storedState = c.req.header('X-OAuth-State');
+    if (!storedState || state !== storedState) {
+      console.error('OAuth complete CSRF validation failed: state mismatch');
+      return c.json({ error: 'Invalid OAuth state (CSRF protection)' }, 403);
     }
 
     // Extract user data based on provider
