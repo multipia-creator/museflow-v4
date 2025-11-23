@@ -5,7 +5,7 @@
     "dev": "vite",
     "dev:sandbox": "wrangler pages dev dist --ip 0.0.0.0 --port 3000",
     "build": "vite build && npm run copy:html",
-    "copy:html": "cp public/dashboard.html public/login.html public/signup.html public/landing.html public/projects.html public/account.html public/admin.html public/ar-vr-demo.html dist/ 2>/dev/null || true",
+    "copy:html": "cp public/dashboard.html public/login.html public/signup.html public/landing.html public/index.html public/projects.html public/account.html public/admin.html public/ar-vr-demo.html dist/ 2>/dev/null || true",
     "preview": "wrangler pages dev",
     "deploy": "npm run build && wrangler pages deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
