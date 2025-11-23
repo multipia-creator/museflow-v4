@@ -133,6 +133,41 @@ npm run deploy
 
 ---
 
+## 🌐 **Live URLs**
+
+### **Production (Cloudflare Pages)**
+- **Main Site**: https://museflow.pages.dev ✅
+- **Custom Domain**: https://museflow.life (DNS configuration pending)
+- **Latest Deployment**: https://eab36f06.museflow.pages.dev
+
+### **Application Pages**
+- **Landing Page**: https://museflow.pages.dev/ (Multi-language, 9 languages)
+- **Login**: https://museflow.pages.dev/login
+- **Sign Up**: https://museflow.pages.dev/signup
+- **Dashboard**: https://museflow.pages.dev/dashboard
+- **Projects**: https://museflow.pages.dev/projects
+- **Canvas V3**: https://museflow.pages.dev/canvas.html
+- **Help Center**: https://museflow.pages.dev/help-center
+- **Account Settings**: https://museflow.pages.dev/account
+- **Admin Panel**: https://museflow.pages.dev/admin
+
+### **API Endpoints**
+- **Base URL**: https://museflow.pages.dev/api
+- **Auth**: `/api/auth/*`
+- **OAuth**: `/api/oauth/*`
+- **Projects**: `/api/projects/*`
+- **Behaviors**: `/api/behaviors/*`
+- **Help**: `/api/help/*`
+
+### **Technical Details**
+- **Platform**: Cloudflare Pages + Workers
+- **Edge Locations**: 300+ cities worldwide
+- **Performance**: < 50ms latency globally
+- **SSL**: Auto-provisioned (Let's Encrypt)
+- **Pretty URLs**: Enabled (`.html` auto-removed)
+
+---
+
 ## 📁 **Project Structure**
 
 ```
