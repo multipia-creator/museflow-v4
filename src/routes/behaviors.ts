@@ -5,9 +5,11 @@
 
 import { Hono } from 'hono';
 import { verify } from 'hono/jwt';
+import { getJWTSecret } from '../utils/security';
 
 type Bindings = {
     DB: D1Database;
+    JWT_SECRET?: string;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -33,7 +35,7 @@ async function verifyAuth(c: any, bodyToken?: string): Promise<{ id: number; ema
       return null;
     }
     
-    const secret = 'museflow-secret-key-2024';
+    const secret = getJWTSecret(c.env.JWT_SECRET);
     const payload = await verify(token, secret);
     
     // Return user object with id and email

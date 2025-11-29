@@ -1,8 +1,10 @@
 import { Hono } from 'hono';
 import { verify } from 'hono/jwt';
+import { getJWTSecret } from '../utils/security';
 
 type Bindings = {
   DB: D1Database;
+  JWT_SECRET?: string;
 };
 
 const projects = new Hono<{ Bindings: Bindings }>();
@@ -17,12 +19,13 @@ async function verifyAuth(c: any): Promise<number | null> {
     }
     
     const token = authHeader.substring(7);
-    const secret = 'museflow-secret-key-2024';
+    const secret = getJWTSecret(c.env.JWT_SECRET);
     
     const payload = await verify(token, secret);
     return payload.userId as number;
     
   } catch (error) {
+    console.error('JWT verification failed:', error);
     return null;
   }
 }
