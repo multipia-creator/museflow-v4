@@ -1,0 +1,72 @@
+#!/usr/bin/env node
+/**
+ * Generate _routes.json for Cloudflare Pages
+ * Ensures all static assets and HTML files are excluded from Worker routing
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const DIST_DIR = path.join(__dirname, '../dist');
+const ROUTES_FILE = path.join(DIST_DIR, '_routes.json');
+
+// Manually define all exclude paths
+const exclude = [
+  // Static assets (highest priority)
+  '/static/*',
+  '/manifest.json',
+  '/sw.js',
+  
+  // Root path (CRITICAL)
+  '/',
+  
+  // All HTML files
+  '/account.html',
+  '/admin.html',
+  '/ai-assistant-demo.html',
+  '/ar-vr-demo.html',
+  '/behavior-analytics.html',
+  '/canvas.html',
+  '/dashboard.html',
+  '/forgot-password.html',
+  '/help-center.html',
+  '/help-system-demo.html',
+  '/index.html',
+  '/landing-mockup.html',
+  '/landing.html',
+  '/login.html',
+  '/oauth-callback.html',
+  '/projects.html',
+  '/signup.html',
+  '/test-api-url.html',
+  '/test-canvas.html',
+  
+  // Pretty URL paths (all)
+  '/account',
+  '/admin',
+  '/ar-vr-demo',
+  '/canvas',
+  '/dashboard',
+  '/forgot-password',
+  '/landing',
+  '/login',
+  '/projects',
+  '/signup'
+];
+
+const routes = {
+  version: 1,
+  include: ['/*'],
+  exclude: exclude.sort()
+};
+
+// Ensure dist directory exists
+if (!fs.existsSync(DIST_DIR)) {
+  fs.mkdirSync(DIST_DIR, { recursive: true });
+}
+
+// Write _routes.json
+fs.writeFileSync(ROUTES_FILE, JSON.stringify(routes, null, 2));
+
+console.log(`✅ Generated _routes.json with ${exclude.length} excluded paths`);
+console.log(`   Location: ${ROUTES_FILE}`);
