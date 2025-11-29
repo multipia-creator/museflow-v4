@@ -5,15 +5,14 @@
   "compatibility_flags": ["nodejs_compat"],
   "pages_build_output_dir": "./dist",
   
-  // D1 Database (Disabled for initial deployment - will be created separately)
-  // "d1_databases": [
-  //   {
-  //     "binding": "DB",
-  //     "database_name": "museflow-production",
-  //     "database_id": "to-be-created",
-  //     "migrations_dir": "./migrations"
-  //   }
-  // ],
+  // D1 Database
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "museflow-production",
+      "database_id": "f7b9a6c0-65e4-40d0-b1fa-3c7071f3122c"
+    }
+  ],
   
   // Durable Objects (Disabled for Pages deployment)
   // "durable_objects": {
