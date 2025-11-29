@@ -17,10 +17,20 @@ html {
 
 /* Mobile-first approach */
 @media (max-width: 768px) {
-  /* Add spacing for mobile nav */
-  body {
+  /* Add spacing for mobile nav - except for auth pages */
+  body:not(.auth-page) {
     padding-top: 60px !important;
   }
+  
+  /* Auth pages should remain centered */
+  body.auth-page {
+    padding-top: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 100vh !important;
+  }
+  
   /* Global mobile optimizations */
   body {
     font-size: 14px;
@@ -39,10 +49,16 @@ html {
   }
 
   /* Auth Pages (login, signup) */
-  .auth-container {
+  .auth-page .auth-container {
     padding: 2rem 1.5rem !important;
     margin: 1rem !important;
+    margin-top: 70px !important; /* Space for mobile nav header */
     max-width: 100% !important;
+  }
+  
+  /* Adjust auth page for mobile nav */
+  .auth-page {
+    padding-top: 0 !important;
   }
 
   .auth-logo h1 {
