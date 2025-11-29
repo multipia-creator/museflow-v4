@@ -25,6 +25,25 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>()
 
+// ==========================================
+// GLOBAL ERROR HANDLER
+// ==========================================
+app.onError((err, c) => {
+  console.error('❌ Global error:', err)
+  
+  // Log to monitoring service in production
+  if (c.env && typeof c.env === 'object' && 'ENVIRONMENT' in c.env && c.env.ENVIRONMENT === 'production') {
+    // TODO: Send to monitoring service (e.g., Sentry, Cloudflare Analytics)
+  }
+  
+  return c.json({
+    success: false,
+    error: 'Internal server error',
+    message: err.message,
+    timestamp: new Date().toISOString()
+  }, 500)
+})
+
 // Enable CORS for all routes
 app.use('*', cors({
   origin: '*',

@@ -1,409 +1,328 @@
-# 🚀 MuseFlow V4 - Production Deployment Guide
+# MuseFlow V4 Deployment Guide
 
-Complete guide for deploying MuseFlow V4 to Cloudflare Pages.
+## 📋 Pre-Deployment Checklist
 
----
+### 1. Environment Variables
+- [ ] Copy `.env.example` to `.dev.vars`
+- [ ] Fill in all required secrets in `.dev.vars`
+- [ ] Test locally with `npm run dev:sandbox`
 
-## 📋 Prerequisites
+### 2. Database Setup
+- [ ] Create D1 database: `npx wrangler d1 create museflow-production`
+- [ ] Update `wrangler.jsonc` with database ID
+- [ ] Apply migrations locally: `npm run db:migrate:local`
+- [ ] Verify migrations: `npm run validate:migrations`
 
-### 1. Cloudflare Account
-- Sign up at https://dash.cloudflare.com
-- Verify your email address
-- Add a payment method (required for Workers/Pages)
-
-### 2. API Keys
-- Gemini API Key (from Google AI Studio)
-- Cloudflare API Token (with Pages and D1 permissions)
-- Museum API Keys (optional):
-  - National Museum of Korea API Key
-  - Soma Museum API Key
-  - KCISA 3D API Key
-
-### 3. Local Environment
-```bash
-Node.js 20+
-npm or yarn
-wrangler CLI (will be installed via npm)
-```
+### 3. Build & Test
+- [ ] Run full build: `npm run build`
+- [ ] Verify build output in `dist/`
+- [ ] Check `dist/_routes.json` for Pretty URLs
+- [ ] Test locally: `npm run dev:sandbox`
 
 ---
 
-## 🔧 Step 1: Setup Cloudflare Authentication
+## 🚀 Deployment Methods
 
-### Option A: Using `setup_cloudflare_api_key` (Recommended)
-```bash
-# This tool will configure authentication automatically
-# Call setup_cloudflare_api_key in your development environment
-```
-
-### Option B: Manual Setup
-```bash
-# Login to Cloudflare
-npx wrangler login
-
-# Or use API token
-npx wrangler whoami
-```
-
----
-
-## 🗄️ Step 2: Create D1 Database
+### Method 1: Manual Deployment (Quickest)
 
 ```bash
-# Create production database
-npx wrangler d1 create museflow-production
-
-# Output will show:
-# database_id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-
-# Copy the database_id and update wrangler.jsonc
-```
-
-Update `wrangler.jsonc`:
-```jsonc
-{
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "museflow-production",
-      "database_id": "YOUR_DATABASE_ID_HERE",
-      "migrations_dir": "./migrations"
-    }
-  ]
-}
-```
-
----
-
-## 📦 Step 3: Apply Database Migrations
-
-```bash
-# Apply migrations to production database
-npx wrangler d1 migrations apply museflow-production
-
-# Verify migrations
-npx wrangler d1 execute museflow-production --command="SELECT name FROM sqlite_master WHERE type='table'"
-```
-
-Expected tables:
-- workflows
-- nodes
-- connections
-- agent_executions
-- collaboration_sessions
-- knowledge_entities
-- knowledge_relationships
-- workflow_events
-- ai_suggestions
-- museum_data_cache
-- notion_sync_state
-- nft_assets
-- nft_collections
-- nft_transfers
-
----
-
-## 💾 Step 4: Create KV Namespace (Optional but Recommended)
-
-```bash
-# Create KV namespace for caching
-npx wrangler kv:namespace create CACHE_KV
-
-# Output will show:
-# id: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-# Update wrangler.jsonc
-```
-
-Update `wrangler.jsonc`:
-```jsonc
-{
-  "kv_namespaces": [
-    {
-      "binding": "CACHE_KV",
-      "id": "YOUR_KV_ID_HERE"
-    }
-  ]
-}
-```
-
----
-
-## 🏗️ Step 5: Build the Project
-
-```bash
-# Install dependencies
-npm install
-
-# Build for production
+# 1. Build the project
 npm run build
 
-# Verify build output
-ls -lh dist/
-# Should contain: _worker.js, _routes.json, and static assets
+# 2. Deploy to Cloudflare Pages
+npx wrangler pages deploy dist --project-name museflow
+
+# 3. Apply production migrations
+npm run db:migrate:prod
+
+# 4. Set production secrets
+wrangler secret put JWT_SECRET
+wrangler secret put GEMINI_API_KEY
+wrangler secret put GOOGLE_CLIENT_ID
+wrangler secret put GOOGLE_CLIENT_SECRET
+wrangler secret put NAVER_CLIENT_ID
+wrangler secret put NAVER_CLIENT_SECRET
+wrangler secret put KAKAO_CLIENT_ID
+wrangler secret put KAKAO_CLIENT_SECRET
+wrangler secret put NOTION_API_KEY
+```
+
+### Method 2: GitHub Actions (Automated)
+
+1. **Add GitHub Secrets:**
+   - Go to: `Settings` → `Secrets and variables` → `Actions`
+   - Add:
+     - `CLOUDFLARE_API_TOKEN`
+     - `CLOUDFLARE_ACCOUNT_ID`
+
+2. **Push to main branch:**
+   ```bash
+   git add .
+   git commit -m "chore: Deploy to production"
+   git push origin main
+   ```
+
+3. **Verify deployment:**
+   - Check GitHub Actions tab for workflow status
+   - Visit: `https://museflow.pages.dev`
+
+---
+
+## 🌐 Custom Domain Setup
+
+### Option 1: Cloudflare Dashboard (Recommended)
+
+1. Go to: https://dash.cloudflare.com
+2. Navigate to: `Workers & Pages` → `museflow` → `Custom domains`
+3. Click: `Set up a custom domain`
+4. Enter: `museflow.life`
+5. Cloudflare will automatically configure DNS
+
+### Option 2: Manual DNS Configuration
+
+1. Go to: https://dash.cloudflare.com/YOUR_ZONE_ID/museflow.life/dns
+2. Add CNAME record:
+   - **Type:** CNAME
+   - **Name:** `@` (or `museflow.life`)
+   - **Target:** `museflow.pages.dev`
+   - **Proxy status:** Proxied (orange cloud)
+   - **TTL:** Auto
+
+3. Wait 5-10 minutes for DNS propagation
+4. Verify: `curl -I https://museflow.life`
+
+---
+
+## 🔐 Production Secrets Management
+
+### Set Secrets via Wrangler CLI:
+
+```bash
+# Security
+wrangler secret put JWT_SECRET
+# Enter: [Generate with: openssl rand -base64 32]
+
+# AI Services
+wrangler secret put GEMINI_API_KEY
+# Enter: [Your Gemini API key]
+
+# OAuth - Google
+wrangler secret put GOOGLE_CLIENT_ID
+wrangler secret put GOOGLE_CLIENT_SECRET
+
+# OAuth - Naver
+wrangler secret put NAVER_CLIENT_ID
+wrangler secret put NAVER_CLIENT_SECRET
+
+# OAuth - Kakao
+wrangler secret put KAKAO_CLIENT_ID
+wrangler secret put KAKAO_CLIENT_SECRET
+
+# Notion Integration
+wrangler secret put NOTION_API_KEY
+wrangler secret put NOTION_DATABASE_ID
+```
+
+### Verify Secrets:
+
+```bash
+wrangler secret list
 ```
 
 ---
 
-## 🌐 Step 6: Create Cloudflare Pages Project
+## 🗄️ Database Management
+
+### Local Development:
 
 ```bash
-# Create Pages project
-npx wrangler pages project create museflow-v4 \
-  --production-branch main \
-  --compatibility-date 2024-01-01
+# Apply migrations locally
+npm run db:migrate:local
 
-# Note: Use 'main' as production branch unless specifically required otherwise
+# Open local D1 console
+wrangler d1 execute museflow-production --local --command="SELECT * FROM users"
+```
+
+### Production:
+
+```bash
+# Apply migrations to production
+npm run db:migrate:prod
+
+# Open production D1 console
+wrangler d1 execute museflow-production --command="SELECT * FROM users"
+
+# Backup production database
+wrangler d1 export museflow-production --output=backup.sql
 ```
 
 ---
 
-## 🚀 Step 7: Deploy to Cloudflare Pages
+## 📊 Monitoring & Debugging
 
-```bash
-# Deploy dist directory
-npx wrangler pages deploy dist --project-name museflow-v4
-
-# Output will show:
-# ✨ Deployment complete!
-# URL: https://xxxxxxxx.museflow-v4.pages.dev
-```
-
----
-
-## 🔐 Step 8: Configure Environment Variables
-
-```bash
-# Required: Gemini API Key
-npx wrangler pages secret put GEMINI_API_KEY --project-name museflow-v4
-# Enter your Gemini API key when prompted
-
-# Optional: Museum API Keys
-npx wrangler pages secret put MUSEUM_API_KEY --project-name museflow-v4
-npx wrangler pages secret put SOMA_API_KEY --project-name museflow-v4
-npx wrangler pages secret put KCISA_API_KEY --project-name museflow-v4
-
-# Optional: Notion Integration
-npx wrangler pages secret put NOTION_API_KEY --project-name museflow-v4
-npx wrangler pages secret put NOTION_DATABASE_PROJECTS --project-name museflow-v4
-npx wrangler pages secret put NOTION_DATABASE_TASKS --project-name museflow-v4
-
-# List all secrets
-npx wrangler pages secret list --project-name museflow-v4
-```
-
----
-
-## 🔗 Step 9: Custom Domain (Optional)
-
-```bash
-# Add custom domain
-npx wrangler pages domain add yourdomain.com --project-name museflow-v4
-
-# Verify DNS settings in Cloudflare dashboard
-```
-
----
-
-## ✅ Step 10: Verify Deployment
-
-### Test Endpoints
-
-```bash
-# Health check
-curl https://your-deployment.pages.dev/api/health
-
-# AI test
-curl https://your-deployment.pages.dev/api/ai/test
-
-# Performance test
-curl https://your-deployment.pages.dev/api/performance/test
-
-# Chatbot test
-curl https://your-deployment.pages.dev/api/chatbot/stats
-```
-
-### Access URLs
-
-- **Production**: https://your-deployment.pages.dev
-- **Branch**: https://main.museflow-v4.pages.dev
-- **Dashboard**: https://dash.cloudflare.com/pages/museflow-v4
-
----
-
-## 🔄 Continuous Deployment
-
-### Update Deployment
-
-```bash
-# Build and deploy
-npm run build
-npx wrangler pages deploy dist --project-name museflow-v4
-```
-
-### Rollback Deployment
-
-```bash
-# View deployments
-npx wrangler pages deployment list --project-name museflow-v4
-
-# Rollback to specific deployment
-npx wrangler pages deployment rollback <DEPLOYMENT_ID> --project-name museflow-v4
-```
-
----
-
-## 📊 Monitoring & Analytics
-
-### View Logs
+### Check Logs:
 
 ```bash
 # Real-time logs
-npx wrangler pages deployment tail --project-name museflow-v4
+wrangler pages deployment tail
 
-# View specific deployment logs
-npx wrangler pages deployment logs <DEPLOYMENT_ID> --project-name museflow-v4
+# Specific deployment logs
+wrangler pages deployment list
+wrangler pages deployment logs DEPLOYMENT_ID
 ```
 
-### Analytics Dashboard
+### Health Check:
 
-Visit: https://dash.cloudflare.com/pages/museflow-v4/analytics
+```bash
+# Test root path
+curl -I https://museflow.pages.dev/
 
-Metrics available:
-- Requests per second
-- Bandwidth usage
-- Error rates
-- Response times
-- Geographic distribution
+# Test API endpoints
+curl https://museflow.pages.dev/api/health
+
+# Test authentication
+curl https://museflow.pages.dev/api/auth/check
+```
 
 ---
 
-## 🐛 Troubleshooting
+## 🔄 Rollback Procedure
 
-### Issue: Build Fails
+### If deployment fails:
 
 ```bash
-# Clear build cache
-rm -rf dist node_modules .wrangler
-npm install
+# 1. List deployments
+wrangler pages deployment list
+
+# 2. Rollback to previous deployment
+wrangler pages deployment rollback DEPLOYMENT_ID
+```
+
+### If database migration fails:
+
+```bash
+# 1. Restore from backup
+wrangler d1 execute museflow-production --file=backup.sql
+
+# 2. Re-apply migrations
+npm run db:migrate:prod
+```
+
+---
+
+## ✅ Post-Deployment Verification
+
+### 1. Verify Deployment:
+- [ ] Root path loads: `https://museflow.pages.dev/`
+- [ ] Landing page works: `https://museflow.pages.dev/landing`
+- [ ] Login page works: `https://museflow.pages.dev/login`
+- [ ] Dashboard loads: `https://museflow.pages.dev/dashboard`
+
+### 2. Verify API Endpoints:
+- [ ] Authentication: `https://museflow.pages.dev/api/auth/check`
+- [ ] OAuth config: `https://museflow.pages.dev/api/oauth/config`
+- [ ] Projects: `https://museflow.pages.dev/api/projects`
+
+### 3. Verify Database:
+- [ ] Migrations applied: `wrangler d1 migrations list museflow-production`
+- [ ] Tables exist: `wrangler d1 execute museflow-production --command="SELECT name FROM sqlite_master WHERE type='table'"`
+
+### 4. Verify Custom Domain:
+- [ ] DNS resolves: `nslookup museflow.life`
+- [ ] HTTPS works: `curl -I https://museflow.life`
+- [ ] SSL certificate valid: Check browser
+
+---
+
+## 🆘 Troubleshooting
+
+### Issue: 404 on root path
+
+**Solution:**
+```bash
+# Verify _routes.json excludes root path
+cat dist/_routes.json | grep '/'
+
+# Rebuild with route validation
 npm run build
+npm run validate:routes
 ```
 
-### Issue: D1 Database Not Found
+### Issue: API endpoints return 500
 
+**Solution:**
 ```bash
-# List all databases
-npx wrangler d1 list
+# Check environment variables
+wrangler secret list
 
-# Verify database_id in wrangler.jsonc matches
+# Verify database connection
+wrangler d1 execute museflow-production --command="SELECT 1"
+
+# Check Worker logs
+wrangler pages deployment tail
 ```
 
-### Issue: KV Namespace Not Working
+### Issue: OAuth login fails
 
+**Solution:**
 ```bash
-# List KV namespaces
-npx wrangler kv:namespace list
+# Verify OAuth credentials
+wrangler secret list | grep -E 'GOOGLE|NAVER|KAKAO'
 
-# Verify KV id in wrangler.jsonc matches
+# Check redirect URIs match production domain
+# Expected: https://museflow.pages.dev/oauth-callback.html
 ```
 
-### Issue: Secrets Not Working
+### Issue: Custom domain not working
 
+**Solution:**
 ```bash
-# Re-set secret
-npx wrangler pages secret put GEMINI_API_KEY --project-name museflow-v4
+# Check DNS records
+dig museflow.life +short
 
-# Verify secrets
-npx wrangler pages secret list --project-name museflow-v4
+# Verify CNAME points to museflow.pages.dev
+# Expected output: museflow.pages.dev
+
+# Re-add domain via Cloudflare Pages
+wrangler pages project add-domain museflow.life
 ```
-
-### Issue: CORS Errors
-
-Check that CORS middleware is properly configured in `src/api/index.ts`:
-```typescript
-api.use('/*', cors({
-  origin: '*',
-  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowHeaders: ['Content-Type', 'Authorization'],
-}));
-```
-
----
-
-## 📝 Post-Deployment Checklist
-
-- [ ] Health check endpoint returns 200
-- [ ] Database migrations applied
-- [ ] All secrets configured
-- [ ] KV namespace working (if used)
-- [ ] AI endpoints responding
-- [ ] Chatbot functional
-- [ ] Performance metrics available
-- [ ] Custom domain configured (if applicable)
-- [ ] SSL certificate active
-- [ ] Analytics tracking enabled
-
----
-
-## 🔒 Security Best Practices
-
-1. **Never commit secrets** to git
-   - Use `.dev.vars` for local development
-   - Use `wrangler pages secret put` for production
-
-2. **Rotate API keys** regularly
-   - Set reminders for key rotation
-   - Update secrets when compromised
-
-3. **Monitor usage** for anomalies
-   - Check Cloudflare Analytics
-   - Set up alerts for unusual traffic
-
-4. **Use HTTPS** everywhere
-   - Cloudflare Pages provides SSL automatically
-   - Enforce HTTPS redirects
-
-5. **Implement rate limiting**
-   - Use Cloudflare rate limiting rules
-   - Protect expensive AI endpoints
-
----
-
-## 💰 Cost Estimation
-
-### Cloudflare Pages (Free Tier)
-- 500 builds/month
-- Unlimited bandwidth
-- Unlimited requests
-
-### Cloudflare D1 (Free Tier)
-- 5GB storage
-- 5M read requests/day
-- 100K write requests/day
-
-### Cloudflare Workers (Free Tier)
-- 100K requests/day
-- 10ms CPU time per request
-
-### Gemini API
-- ~$0.0006 per workflow generation
-- ~$0.0002 per chatbot response
-
-**Estimated monthly cost** for moderate usage:
-- Cloudflare: $0 (free tier)
-- Gemini: $5-20 (depending on usage)
-- **Total: $5-20/month**
 
 ---
 
 ## 📞 Support
 
-- **Cloudflare Docs**: https://developers.cloudflare.com/pages
-- **Wrangler Docs**: https://developers.cloudflare.com/workers/wrangler
-- **D1 Docs**: https://developers.cloudflare.com/d1
-- **GitHub Issues**: Create issue in repository
+- **Documentation:** https://github.com/YOUR_GITHUB/museflow-v4
+- **Cloudflare Docs:** https://developers.cloudflare.com/pages/
+- **Wrangler CLI:** https://developers.cloudflare.com/workers/wrangler/
 
 ---
 
-*Last Updated: 2025-11-20*  
-*Version: 2.0.0*
+## 🎯 Quick Commands Reference
+
+```bash
+# Development
+npm run dev:sandbox          # Start local dev server
+npm run build                # Build for production
+npm run typecheck            # TypeScript validation
+
+# Deployment
+npm run deploy               # Build + Deploy to Cloudflare Pages
+
+# Database
+npm run db:migrate:local     # Apply migrations locally
+npm run db:migrate:prod      # Apply migrations to production
+
+# Validation
+npm run validate:migrations  # Validate SQL migrations
+npm run validate:routes      # Validate _routes.json
+
+# Monitoring
+wrangler pages deployment tail    # Real-time logs
+wrangler pages deployment list    # List deployments
+```
+
+---
+
+**Last Updated:** 2025-01-23  
+**Version:** 4.0.0  
+**Status:** ✅ Production Ready
