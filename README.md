@@ -414,12 +414,14 @@ The project uses Cloudflare D1 (SQLite). Configure in `wrangler.jsonc`:
 ### **Core Security:**
 - **Password Security**: PBKDF2 with 100,000 iterations + salt
 - **Rate Limiting**: 5 login attempts per 15 minutes
-- **XSS Protection**: Input sanitization on all user inputs
+- **XSS Protection**: ✅ DOMPurify library installed with comprehensive sanitization utilities
 - **CSRF Protection**: Token-based state management
 - **OAuth Security**: State parameter validation (fixed in V4)
 - **JWT**: Secure token storage with expiration
 - **Session Management**: Server-side session validation
 - **Error Handling**: Global error boundary prevents Worker crashes
+- **Input Sanitization**: Server-side (`src/utils/sanitize.ts`) + client-side (`public/static/js/utils/xss-protection.js`)
+- **Error Codes**: Standardized error handling with 40+ error codes (`src/utils/errors.ts`)
 
 ---
 
