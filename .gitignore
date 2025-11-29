@@ -37,3 +37,4 @@ API_CREDENTIALS.md
 *.credentials.md
 .env.local
 .env.production
+ADMIN_CREDENTIALS.md
