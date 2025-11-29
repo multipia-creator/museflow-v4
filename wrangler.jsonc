@@ -5,26 +5,26 @@
   "compatibility_flags": ["nodejs_compat"],
   "pages_build_output_dir": "./dist",
   
-  // D1 Database
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "museflow-production",
-      "database_id": "to-be-created",
-      "migrations_dir": "./migrations"
-    }
-  ],
+  // D1 Database (Disabled for initial deployment - will be created separately)
+  // "d1_databases": [
+  //   {
+  //     "binding": "DB",
+  //     "database_name": "museflow-production",
+  //     "database_id": "to-be-created",
+  //     "migrations_dir": "./migrations"
+  //   }
+  // ],
   
-  // Durable Objects
-  "durable_objects": {
-    "bindings": [
-      {
-        "name": "COLLABORATION_ROOM",
-        "class_name": "CollaborationRoom",
-        "script_name": "museflow-v4"
-      }
-    ]
-  },
+  // Durable Objects (Disabled for Pages deployment)
+  // "durable_objects": {
+  //   "bindings": [
+  //     {
+  //       "name": "COLLABORATION_ROOM",
+  //       "class_name": "CollaborationRoom",
+  //       "script_name": "museflow"
+  //     }
+  //   ]
+  // },
   
 
   
