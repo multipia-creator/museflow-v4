@@ -31,3 +31,9 @@ lerna-debug.log*
 
 # misc
 .DS_Store
+
+# Sensitive credentials
+API_CREDENTIALS.md
+*.credentials.md
+.env.local
+.env.production
