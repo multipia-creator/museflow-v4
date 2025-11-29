@@ -6,10 +6,11 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="1.6.2">
+    <meta name="version" content="2.0.0">
     <title>내 프로젝트 - MuseFlow</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="/static/css/mobile-responsive.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -30,12 +31,13 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .glass-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 48px rgba(139, 92, 246, 0.3);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4);
+            border-color: rgba(139, 92, 246, 0.5);
         }
 
         .gradient-text {
@@ -60,11 +62,61 @@
             height: 4px;
             background: linear-gradient(90deg, #8b5cf6, #ec4899);
             transform: scaleX(0);
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease;
         }
 
         .project-card:hover::before {
             transform: scaleX(1);
+        }
+
+        .project-thumbnail {
+            width: 100%;
+            height: 180px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .project-thumbnail::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(139, 92, 246, 0.3), transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .project-icon {
+            font-size: 4rem;
+            opacity: 0.4;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #8b5cf6, #ec4899);
+            border-radius: 100px;
+            transition: width 0.6s ease;
+            box-shadow: 0 0 12px rgba(139, 92, 246, 0.6);
         }
 
         .btn-primary {
@@ -77,11 +129,16 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 1rem;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.5);
+            box-shadow: 0 12px 32px rgba(139, 92, 246, 0.6);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
         }
 
         .nav-bar {
@@ -112,79 +169,99 @@
         }
 
         .status-badge {
-            padding: 0.25rem 0.75rem;
+            padding: 0.375rem 0.875rem;
             border-radius: 100px;
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         .status-draft {
-            background: rgba(107, 114, 128, 0.2);
-            color: #9ca3af;
+            background: linear-gradient(135deg, rgba(107, 114, 128, 0.3), rgba(107, 114, 128, 0.2));
+            color: #d1d5db;
+            border: 1px solid rgba(107, 114, 128, 0.4);
         }
 
         .status-active {
-            background: rgba(16, 185, 129, 0.2);
-            color: #10b981;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.2));
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.4);
         }
 
         .status-completed {
-            background: rgba(59, 130, 246, 0.2);
-            color: #3b82f6;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.2));
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.4);
         }
 
         .empty-state {
             text-align: center;
-            padding: 4rem 2rem;
+            padding: 6rem 2rem;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .empty-icon {
-            font-size: 5rem;
-            margin-bottom: 1.5rem;
-            opacity: 0.5;
+            font-size: 6rem;
+            margin-bottom: 2rem;
+            opacity: 0.3;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .search-box {
             position: relative;
+            flex: 1;
             max-width: 500px;
         }
 
         .search-box input {
             width: 100%;
-            padding: 0.875rem 3rem 0.875rem 1rem;
+            padding: 1rem 3.5rem 1rem 1.25rem;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
+            border-radius: 16px;
             color: white;
             font-size: 1rem;
+            transition: all 0.3s ease;
         }
 
         .search-box input:focus {
             outline: none;
             border-color: #8b5cf6;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
         }
 
         .search-box i {
             position: absolute;
-            right: 1rem;
+            right: 1.25rem;
             top: 50%;
             transform: translateY(-50%);
             color: rgba(255, 255, 255, 0.5);
+            font-size: 1.1rem;
         }
 
-        .loading-spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(139, 92, 246, 0.2);
-            border-top-color: #8b5cf6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .loading-skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s ease-in-out infinite;
+            border-radius: 16px;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
         .modal {
@@ -194,11 +271,17 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
             z-index: 1000;
             align-items: center;
             justify-content: center;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal.active {
@@ -207,47 +290,216 @@
 
         .modal-content {
             background: linear-gradient(135deg, #1a0f2e 0%, #0a0a0f 100%);
-            padding: 2rem;
+            padding: 2.5rem;
             border-radius: 24px;
-            max-width: 500px;
+            max-width: 600px;
             width: 90%;
             border: 1px solid rgba(139, 92, 246, 0.3);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+            animation: modalSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
-        .form-input {
+        @keyframes modalSlideUp {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .form-input, .form-textarea, .form-select {
             width: 100%;
-            padding: 0.875rem 1rem;
+            padding: 1rem 1.25rem;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 12px;
             color: white;
             font-size: 1rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
+            transition: all 0.3s ease;
         }
 
-        .form-input:focus {
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
             outline: none;
             border-color: #8b5cf6;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
         }
 
-        textarea.form-input {
+        .form-textarea {
             resize: vertical;
-            min-height: 100px;
+            min-height: 120px;
+        }
+
+        .form-select {
+            cursor: pointer;
+        }
+
+        .form-select option {
+            background: #1a0f2e;
+            color: white;
+        }
+
+        .project-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin: 1.25rem 0;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.75rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #8b5cf6;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.25rem;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.375rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .view-toggle-btn {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+
+        .view-toggle-btn.active {
+            background: rgba(139, 92, 246, 0.3);
+            color: white;
+        }
+
+        .view-toggle-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .list-view .project-card {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.5rem !important;
+        }
+
+        .list-view .project-thumbnail {
+            width: 160px;
+            height: 120px;
+            flex-shrink: 0;
+            margin-bottom: 0;
+        }
+
+        .list-view .project-content {
+            flex: 1;
+        }
+
+        .tag-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: #a78bfa;
+        }
+
+        /* Responsive Grid */
+        @media (max-width: 768px) {
+            .project-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .list-view .project-card {
+                flex-direction: column;
+            }
+            
+            .list-view .project-thumbnail {
+                width: 100%;
+            }
+        }
+
+        /* Tooltip */
+        [data-tooltip] {
+            position: relative;
+        }
+
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-8px);
+            padding: 0.5rem 0.75rem;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            font-size: 0.75rem;
+            border-radius: 8px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        [data-tooltip]:hover::after {
+            opacity: 1;
+        }
+
+        .filter-chip {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+
+        .filter-chip.active {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .filter-chip:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
     </style>
-    <script src="/static/js/tracker.js?v=1.6.2"></script>
+    <script src="/static/js/tracker.js?v=2.0.0"></script>
     
     <!-- Version Check and Cache Buster -->
     <script>
-        // Check if we're using the latest version
-        const CURRENT_VERSION = '1.6.2';
+        const CURRENT_VERSION = '2.0.0';
         const storedVersion = localStorage.getItem('projects_version');
         
         if (storedVersion !== CURRENT_VERSION) {
             console.log('🔄 New version detected:', CURRENT_VERSION, '(old:', storedVersion + ')');
             localStorage.setItem('projects_version', CURRENT_VERSION);
             
-            // Only reload if there was a previous version (not first load)
             if (storedVersion && !window.location.search.includes('nocache')) {
                 console.log('🔄 Forcing cache refresh...');
                 window.location.href = window.location.pathname + '?nocache=' + Date.now();
@@ -296,34 +548,59 @@
         <!-- Header -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; flex-wrap: wrap; gap: 1.5rem;">
             <div>
-                <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;" class="gradient-text" data-i18n="myProjects">
+                <h1 style="font-size: 2.75rem; font-weight: 800; margin-bottom: 0.5rem;" class="gradient-text" data-i18n="myProjects">
                     내 프로젝트
                 </h1>
-                <p style="color: rgba(255, 255, 255, 0.7);" data-i18n="projectsSubtitle">워크플로우 프로젝트를 관리하고 편집하세요</p>
+                <p style="color: rgba(255, 255, 255, 0.7); font-size: 1.1rem;" data-i18n="projectsSubtitle">워크플로우 프로젝트를 관리하고 편집하세요</p>
             </div>
-            <button id="new-project-btn" class="btn-primary">
-                <i class="fas fa-plus"></i> <span data-i18n="newProject">새 프로젝트</span>
-            </button>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <button id="new-project-btn" class="btn-primary">
+                    <i class="fas fa-plus"></i> <span data-i18n="newProject">새 프로젝트</span>
+                </button>
+            </div>
         </div>
 
-        <!-- Search and Filter -->
-        <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
-            <div class="search-box" style="flex: 1; min-width: 300px;">
-                <input type="text" id="search-input" placeholder="프로젝트 검색..." data-i18n-placeholder="searchPlaceholder">
-                <i class="fas fa-search"></i>
+        <!-- Stats Summary -->
+        <div id="stats-summary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+            <!-- Stats will be dynamically inserted -->
+        </div>
+
+        <!-- Search and Filter Toolbar -->
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 1.5rem; margin-bottom: 2.5rem;">
+            <div style="display: flex; gap: 1rem; margin-bottom: 1.25rem; flex-wrap: wrap; align-items: center;">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="프로젝트 검색..." data-i18n-placeholder="searchPlaceholder">
+                    <i class="fas fa-search"></i>
+                </div>
+                <select id="status-filter" class="filter-chip">
+                    <option value="all" data-i18n="statusAll">모든 상태</option>
+                    <option value="draft" data-i18n="statusDraft">초안</option>
+                    <option value="active" data-i18n="statusActive">활성</option>
+                    <option value="completed" data-i18n="statusCompleted">완료</option>
+                </select>
+                <select id="sort-select" class="filter-chip">
+                    <option value="updated">최근 수정순</option>
+                    <option value="created">생성일순</option>
+                    <option value="title">이름순</option>
+                </select>
+                <div class="view-toggle">
+                    <button class="view-toggle-btn active" data-view="grid" data-tooltip="Grid View">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-toggle-btn" data-view="list" data-tooltip="List View">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
             </div>
-            <select id="status-filter" style="padding: 0.875rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; cursor: pointer;">
-                <option value="all" data-i18n="statusAll">모든 상태</option>
-                <option value="draft" data-i18n="statusDraft">초안</option>
-                <option value="active" data-i18n="statusActive">활성</option>
-                <option value="completed" data-i18n="statusCompleted">완료</option>
-            </select>
         </div>
 
         <!-- Loading State -->
-        <div id="loading-state" style="text-align: center; padding: 4rem 0;">
-            <div class="loading-spinner" style="margin: 0 auto;"></div>
-            <p style="margin-top: 1rem; color: rgba(255, 255, 255, 0.7);" data-i18n="loadingProjects">프로젝트를 불러오는 중...</p>
+        <div id="loading-state" style="display: none;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem;">
+                <div class="loading-skeleton" style="height: 400px;"></div>
+                <div class="loading-skeleton" style="height: 400px;"></div>
+                <div class="loading-skeleton" style="height: 400px;"></div>
+            </div>
         </div>
 
         <!-- Projects Grid -->
@@ -334,33 +611,47 @@
         <!-- Empty State -->
         <div id="empty-state" class="empty-state" style="display: none;">
             <div class="empty-icon">📂</div>
-            <h2 style="font-size: 1.75rem; font-weight: 600; margin-bottom: 0.5rem;" data-i18n="noProjects">프로젝트가 없습니다</h2>
-            <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem;" data-i18n="createFirstProject">첫 번째 워크플로우 프로젝트를 만들어보세요</p>
-            <button id="empty-new-project-btn" class="btn-primary">
+            <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" data-i18n="noProjects">프로젝트가 없습니다</h2>
+            <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2.5rem; font-size: 1.1rem;" data-i18n="createFirstProject">첫 번째 워크플로우 프로젝트를 만들어보세요</p>
+            <button id="empty-new-project-btn" class="btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem;">
                 <i class="fas fa-plus"></i> <span data-i18n="createNewProject">새 프로젝트 만들기</span>
             </button>
         </div>
     </div>
 
-    <!-- New Project Modal -->
-    <div id="new-project-modal" class="modal">
+    <!-- New/Edit Project Modal -->
+    <div id="project-modal" class="modal">
         <div class="modal-content">
-            <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem;" class="gradient-text" data-i18n="createNewProject">
-                새 프로젝트 만들기
-            </h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 id="modal-title" style="font-size: 2rem; font-weight: 700;" class="gradient-text" data-i18n="createNewProject">
+                    새 프로젝트 만들기
+                </h2>
+                <button id="close-modal-btn" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.5rem; cursor: pointer; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; transition: all 0.3s;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
             
-            <form id="new-project-form">
-                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9);" data-i18n="projectTitle">프로젝트 제목</label>
+            <form id="project-form">
+                <input type="hidden" id="project-id">
+                
+                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;" data-i18n="projectTitle">프로젝트 제목</label>
                 <input type="text" id="project-title" class="form-input" placeholder="예: 2024 봄 특별전 기획" data-i18n-placeholder="projectTitlePlaceholder" required>
                 
-                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9);" data-i18n="projectDescription">프로젝트 설명 (선택)</label>
-                <textarea id="project-description" class="form-input" placeholder="프로젝트에 대한 간단한 설명을 입력하세요" data-i18n-placeholder="projectDescPlaceholder"></textarea>
+                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;" data-i18n="projectDescription">프로젝트 설명</label>
+                <textarea id="project-description" class="form-textarea" placeholder="프로젝트에 대한 간단한 설명을 입력하세요" data-i18n-placeholder="projectDescPlaceholder"></textarea>
                 
-                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                    <button type="submit" class="btn-primary" style="flex: 1;">
-                        <i class="fas fa-check"></i> <span data-i18n="create">생성</span>
+                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;" data-i18n="projectStatus">프로젝트 상태</label>
+                <select id="project-status" class="form-select">
+                    <option value="draft" data-i18n="statusDraft">초안</option>
+                    <option value="active" data-i18n="statusActive">활성</option>
+                    <option value="completed" data-i18n="statusCompleted">완료</option>
+                </select>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn-primary" style="flex: 1; padding: 1rem 1.75rem;">
+                        <i class="fas fa-check"></i> <span id="submit-btn-text" data-i18n="create">생성</span>
                     </button>
-                    <button type="button" id="cancel-modal-btn" style="flex: 1; padding: 0.875rem 1.75rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; color: white; cursor: pointer;">
+                    <button type="button" id="cancel-modal-btn" style="flex: 1; padding: 1rem 1.75rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; color: white; cursor: pointer; transition: all 0.3s; font-weight: 600;">
                         <span data-i18n="cancel">취소</span>
                     </button>
                 </div>
@@ -369,10 +660,7 @@
     </div>
 
     <script>
-        // API_BASE_URL is already declared in tracker.js (loaded above)
-        // No need to redeclare here
-        
-        // i18n Translation System
+        // i18n translations (same as before)
         const translations = {
             ko: {
                 myAccount: '내 계정',
@@ -389,54 +677,28 @@
                 noProjects: '프로젝트가 없습니다',
                 createFirstProject: '첫 번째 워크플로우 프로젝트를 만들어보세요',
                 createNewProject: '새 프로젝트 만들기',
+                editProject: '프로젝트 편집',
                 projectTitle: '프로젝트 제목',
                 projectTitlePlaceholder: '예: 2024 봄 특별전 기획',
-                projectDescription: '프로젝트 설명 (선택)',
+                projectDescription: '프로젝트 설명',
                 projectDescPlaceholder: '프로젝트에 대한 간단한 설명을 입력하세요',
+                projectStatus: '프로젝트 상태',
                 create: '생성',
+                save: '저장',
                 cancel: '취소',
-                noDescription: '설명이 없습니다.',
-                today: '오늘',
-                yesterday: '어제',
-                daysAgo: '일 전',
-                createFailed: '프로젝트 생성에 실패했습니다.',
-                serverError: '서버 오류가 발생했습니다.',
+                edit: '편집',
+                delete: '삭제',
                 deleteProject: '프로젝트 삭제',
                 deleteConfirm: '정말로 이 프로젝트를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.',
                 projectDeleted: '프로젝트가 삭제되었습니다.',
                 deleteFailed: '프로젝트 삭제에 실패했습니다.',
-                edit: '편집',
-                delete: '삭제',
-                // Dashboard specific
-                greetingMorning: '좋은 아침입니다',
-                greetingAfternoon: '안녕하세요',
-                greetingEvening: '좋은 저녁입니다',
-                greetingNight: '안녕하세요',
-                totalProjects: '총 프로젝트',
-                activeProjects: '활성 프로젝트',
-                weeklyActivity: '이번 주 활동',
-                productivityScore: '생산성 점수',
-                aiRecommendations: 'AI 추천 작업',
-                noRecommendations: '현재 추천 작업이 없습니다.',
-                recentActivity: '최근 활동',
-                weeklyChart: '주간 활동 차트',
-                topFeatures: '자주 사용하는 기능',
-                quickStats: '통계 요약',
-                widgetSettings: '위젯 설정',
-                resetLayout: '레이아웃 초기화',
-                minutesAgo: '분 전',
-                hoursAgo: '시간 전',
-                justNow: '방금 전',
-                project: '프로젝트',
-                workflow: '워크플로우',
-                canvas: '캔버스',
-                page: '페이지',
-                clickEvent: '클릭',
-                viewEvent: '조회',
-                editEvent: '편집',
-                deleteEvent: '삭제',
-                createEvent: '생성',
-                searchEvent: '검색'
+                noDescription: '설명이 없습니다.',
+                today: '오늘',
+                yesterday: '어제',
+                daysAgo: '일 전',
+                totalProjects: '전체 프로젝트',
+                activeCount: '활성',
+                completedCount: '완료'
             },
             en: {
                 myAccount: 'My Account',
@@ -453,537 +715,73 @@
                 noProjects: 'No Projects',
                 createFirstProject: 'Create your first workflow project',
                 createNewProject: 'Create New Project',
+                editProject: 'Edit Project',
                 projectTitle: 'Project Title',
                 projectTitlePlaceholder: 'e.g., 2024 Spring Exhibition Planning',
-                projectDescription: 'Project Description (Optional)',
+                projectDescription: 'Project Description',
                 projectDescPlaceholder: 'Enter a brief description of the project',
+                projectStatus: 'Project Status',
                 create: 'Create',
+                save: 'Save',
                 cancel: 'Cancel',
-                noDescription: 'No description.',
-                today: 'Today',
-                yesterday: 'Yesterday',
-                daysAgo: ' days ago',
-                createFailed: 'Failed to create project.',
-                serverError: 'Server error occurred.',
+                edit: 'Edit',
+                delete: 'Delete',
                 deleteProject: 'Delete Project',
                 deleteConfirm: 'Are you sure you want to delete this project? This action cannot be undone.',
                 projectDeleted: 'Project deleted successfully.',
                 deleteFailed: 'Failed to delete project.',
-                edit: 'Edit',
-                delete: 'Delete',
-                // Dashboard specific
-                greetingMorning: 'Good morning',
-                greetingAfternoon: 'Good afternoon',
-                greetingEvening: 'Good evening',
-                greetingNight: 'Hello',
+                noDescription: 'No description.',
+                today: 'Today',
+                yesterday: 'Yesterday',
+                daysAgo: ' days ago',
                 totalProjects: 'Total Projects',
-                activeProjects: 'Active Projects',
-                weeklyActivity: 'Weekly Activity',
-                productivityScore: 'Productivity Score',
-                aiRecommendations: 'AI Recommendations',
-                noRecommendations: 'No recommendations available.',
-                recentActivity: 'Recent Activity',
-                weeklyChart: 'Weekly Activity Chart',
-                topFeatures: 'Top Features',
-                quickStats: 'Quick Stats',
-                widgetSettings: 'Widget Settings',
-                resetLayout: 'Reset Layout',
-                minutesAgo: 'min ago',
-                hoursAgo: 'hr ago',
-                justNow: 'Just now',
-                project: 'Project',
-                workflow: 'Workflow',
-                canvas: 'Canvas',
-                page: 'Page',
-                clickEvent: 'Click',
-                viewEvent: 'View',
-                editEvent: 'Edit',
-                deleteEvent: 'Delete',
-                createEvent: 'Create',
-                searchEvent: 'Search'
-            },
-            ja: {
-                myAccount: 'マイアカウント',
-                dashboard: 'ダッシュボード',
-                myProjects: 'マイプロジェクト',
-                projectsSubtitle: 'ワークフロープロジェクトを管理・編集',
-                newProject: '新規プロジェクト',
-                searchPlaceholder: 'プロジェクトを検索...',
-                statusAll: 'すべてのステータス',
-                statusDraft: '下書き',
-                statusActive: 'アクティブ',
-                statusCompleted: '完了',
-                loadingProjects: 'プロジェクトを読み込み中...',
-                noProjects: 'プロジェクトがありません',
-                createFirstProject: '最初のワークフロープロジェクトを作成しましょう',
-                createNewProject: '新規プロジェクト作成',
-                projectTitle: 'プロジェクトタイトル',
-                projectTitlePlaceholder: '例：2024年春季特別展企画',
-                projectDescription: 'プロジェクト説明（任意）',
-                projectDescPlaceholder: 'プロジェクトの簡単な説明を入力',
-                create: '作成',
-                cancel: 'キャンセル',
-                noDescription: '説明がありません。',
-                today: '今日',
-                yesterday: '昨日',
-                daysAgo: '日前',
-                createFailed: 'プロジェクトの作成に失敗しました。',
-                serverError: 'サーバーエラーが発生しました。',
-                deleteProject: 'プロジェクトを削除',
-                deleteConfirm: '本当にこのプロジェクトを削除しますか？この操作は取り消せません。',
-                projectDeleted: 'プロジェクトが削除されました。',
-                deleteFailed: 'プロジェクトの削除に失敗しました。',
-                edit: '編集',
-                delete: '削除',
-                // Dashboard specific
-                greetingMorning: 'おはようございます',
-                greetingAfternoon: 'こんにちは',
-                greetingEvening: 'こんばんは',
-                greetingNight: 'こんにちは',
-                totalProjects: '総プロジェクト数',
-                activeProjects: 'アクティブプロジェクト',
-                weeklyActivity: '今週のアクティビティ',
-                productivityScore: '生産性スコア',
-                aiRecommendations: 'AIおすすめタスク',
-                noRecommendations: '現在おすすめはありません。',
-                recentActivity: '最近のアクティビティ',
-                weeklyChart: '週間アクティビティチャート',
-                topFeatures: 'よく使う機能',
-                quickStats: '統計サマリー',
-                widgetSettings: 'ウィジェット設定',
-                resetLayout: 'レイアウトをリセット',
-                minutesAgo: '分前',
-                hoursAgo: '時間前',
-                justNow: 'たった今',
-                project: 'プロジェクト',
-                workflow: 'ワークフロー',
-                canvas: 'キャンバス',
-                page: 'ページ',
-                clickEvent: 'クリック',
-                viewEvent: '表示',
-                editEvent: '編集',
-                deleteEvent: '削除',
-                createEvent: '作成',
-                searchEvent: '検索'
-            },
-            'zh-CN': {
-                myAccount: '我的账户',
-                dashboard: '仪表板',
-                myProjects: '我的项目',
-                projectsSubtitle: '管理和编辑您的工作流项目',
-                newProject: '新建项目',
-                searchPlaceholder: '搜索项目...',
-                statusAll: '全部状态',
-                statusDraft: '草稿',
-                statusActive: '活跃',
-                statusCompleted: '已完成',
-                loadingProjects: '正在加载项目...',
-                noProjects: '暂无项目',
-                createFirstProject: '创建您的第一个工作流项目',
-                createNewProject: '创建新项目',
-                projectTitle: '项目标题',
-                projectTitlePlaceholder: '例如：2024春季特展策划',
-                projectDescription: '项目描述（可选）',
-                projectDescPlaceholder: '输入项目的简要描述',
-                create: '创建',
-                cancel: '取消',
-                noDescription: '无描述。',
-                today: '今天',
-                yesterday: '昨天',
-                daysAgo: '天前',
-                createFailed: '创建项目失败。',
-                serverError: '服务器错误。',
-                deleteProject: '删除项目',
-                deleteConfirm: '确定要删除此项目吗？此操作无法撤销。',
-                projectDeleted: '项目已删除。',
-                deleteFailed: '删除项目失败。',
-                edit: '编辑',
-                delete: '删除',
-                // Dashboard specific
-                greetingMorning: '早上好',
-                greetingAfternoon: '下午好',
-                greetingEvening: '晚上好',
-                greetingNight: '您好',
-                totalProjects: '总项目数',
-                activeProjects: '活跃项目',
-                weeklyActivity: '本周活动',
-                productivityScore: '生产力评分',
-                aiRecommendations: 'AI推荐任务',
-                noRecommendations: '目前没有推荐。',
-                recentActivity: '最近活动',
-                weeklyChart: '周活动图表',
-                topFeatures: '常用功能',
-                quickStats: '快速统计',
-                widgetSettings: '小部件设置',
-                resetLayout: '重置布局',
-                minutesAgo: '分钟前',
-                hoursAgo: '小时前',
-                justNow: '刚刚',
-                project: '项目',
-                workflow: '工作流',
-                canvas: '画布',
-                page: '页面',
-                clickEvent: '点击',
-                viewEvent: '查看',
-                editEvent: '编辑',
-                deleteEvent: '删除',
-                createEvent: '创建',
-                searchEvent: '搜索'
-            },
-            'zh-TW': {
-                myAccount: '我的帳戶',
-                dashboard: '儀表板',
-                myProjects: '我的專案',
-                projectsSubtitle: '管理和編輯您的工作流程專案',
-                newProject: '新增專案',
-                searchPlaceholder: '搜尋專案...',
-                statusAll: '全部狀態',
-                statusDraft: '草稿',
-                statusActive: '活躍',
-                statusCompleted: '已完成',
-                loadingProjects: '正在載入專案...',
-                noProjects: '暫無專案',
-                createFirstProject: '建立您的第一個工作流程專案',
-                createNewProject: '建立新專案',
-                projectTitle: '專案標題',
-                projectTitlePlaceholder: '例如：2024春季特展策劃',
-                projectDescription: '專案描述（選填）',
-                projectDescPlaceholder: '輸入專案的簡要描述',
-                create: '建立',
-                cancel: '取消',
-                noDescription: '無描述。',
-                today: '今天',
-                yesterday: '昨天',
-                daysAgo: '天前',
-                createFailed: '建立專案失敗。',
-                serverError: '伺服器錯誤。',
-                deleteProject: '刪除專案',
-                deleteConfirm: '確定要刪除此專案嗎？此操作無法復原。',
-                projectDeleted: '專案已刪除。',
-                deleteFailed: '刪除專案失敗。',
-                edit: '編輯',
-                delete: '刪除',
-                // Dashboard specific
-                greetingMorning: '早安',
-                greetingAfternoon: '午安',
-                greetingEvening: '晚安',
-                greetingNight: '您好',
-                totalProjects: '總專案數',
-                activeProjects: '活躍專案',
-                weeklyActivity: '本週活動',
-                productivityScore: '生產力評分',
-                aiRecommendations: 'AI推薦任務',
-                noRecommendations: '目前沒有推薦。',
-                recentActivity: '最近活動',
-                weeklyChart: '週活動圖表',
-                topFeatures: '常用功能',
-                quickStats: '快速統計',
-                widgetSettings: '小工具設定',
-                resetLayout: '重置版面',
-                minutesAgo: '分鐘前',
-                hoursAgo: '小時前',
-                justNow: '剛剛',
-                project: '專案',
-                workflow: '工作流程',
-                canvas: '畫布',
-                page: '頁面',
-                clickEvent: '點擊',
-                viewEvent: '查看',
-                editEvent: '編輯',
-                deleteEvent: '刪除',
-                createEvent: '建立',
-                searchEvent: '搜尋'
-            },
-            fr: {
-                myAccount: 'Mon Compte',
-                dashboard: 'Tableau de bord',
-                myProjects: 'Mes Projets',
-                projectsSubtitle: 'Gérez et modifiez vos projets de workflow',
-                newProject: 'Nouveau Projet',
-                searchPlaceholder: 'Rechercher des projets...',
-                statusAll: 'Tous les statuts',
-                statusDraft: 'Brouillon',
-                statusActive: 'Actif',
-                statusCompleted: 'Terminé',
-                loadingProjects: 'Chargement des projets...',
-                noProjects: 'Aucun projet',
-                createFirstProject: 'Créez votre premier projet de workflow',
-                createNewProject: 'Créer un Nouveau Projet',
-                projectTitle: 'Titre du Projet',
-                projectTitlePlaceholder: 'Ex : Planification exposition printemps 2024',
-                projectDescription: 'Description du Projet (Optionnel)',
-                projectDescPlaceholder: 'Entrez une brève description du projet',
-                create: 'Créer',
-                cancel: 'Annuler',
-                noDescription: 'Aucune description.',
-                today: "Aujourd'hui",
-                yesterday: 'Hier',
-                daysAgo: ' jours',
-                createFailed: 'Échec de la création du projet.',
-                serverError: 'Erreur serveur.',
-                deleteProject: 'Supprimer le Projet',
-                deleteConfirm: 'Êtes-vous sûr de vouloir supprimer ce projet ? Cette action est irréversible.',
-                projectDeleted: 'Projet supprimé avec succès.',
-                deleteFailed: 'Échec de la suppression du projet.',
-                edit: 'Modifier',
-                delete: 'Supprimer',
-                // Dashboard specific
-                greetingMorning: 'Bonjour',
-                greetingAfternoon: 'Bon après-midi',
-                greetingEvening: 'Bonsoir',
-                greetingNight: 'Bonjour',
-                totalProjects: 'Projets totaux',
-                activeProjects: 'Projets actifs',
-                weeklyActivity: 'Activité hebdomadaire',
-                productivityScore: 'Score de productivité',
-                aiRecommendations: 'Recommandations IA',
-                noRecommendations: 'Aucune recommandation disponible.',
-                recentActivity: 'Activité récente',
-                weeklyChart: 'Graphique hebdomadaire',
-                topFeatures: 'Fonctions populaires',
-                quickStats: 'Statistiques rapides',
-                widgetSettings: 'Paramètres des widgets',
-                resetLayout: 'Réinitialiser la disposition',
-                minutesAgo: 'min',
-                hoursAgo: 'h',
-                justNow: 'À l\'instant',
-                project: 'Projet',
-                workflow: 'Flux de travail',
-                canvas: 'Toile',
-                page: 'Page',
-                clickEvent: 'Cliquer',
-                viewEvent: 'Voir',
-                editEvent: 'Modifier',
-                deleteEvent: 'Supprimer',
-                createEvent: 'Créer',
-                searchEvent: 'Rechercher'
-            },
-            de: {
-                myAccount: 'Mein Konto',
-                dashboard: 'Dashboard',
-                myProjects: 'Meine Projekte',
-                projectsSubtitle: 'Verwalten und bearbeiten Sie Ihre Workflow-Projekte',
-                newProject: 'Neues Projekt',
-                searchPlaceholder: 'Projekte suchen...',
-                statusAll: 'Alle Status',
-                statusDraft: 'Entwurf',
-                statusActive: 'Aktiv',
-                statusCompleted: 'Abgeschlossen',
-                loadingProjects: 'Projekte werden geladen...',
-                noProjects: 'Keine Projekte',
-                createFirstProject: 'Erstellen Sie Ihr erstes Workflow-Projekt',
-                createNewProject: 'Neues Projekt Erstellen',
-                projectTitle: 'Projekttitel',
-                projectTitlePlaceholder: 'z.B. Frühjahrsausstellung 2024 Planung',
-                projectDescription: 'Projektbeschreibung (Optional)',
-                projectDescPlaceholder: 'Geben Sie eine kurze Beschreibung des Projekts ein',
-                create: 'Erstellen',
-                cancel: 'Abbrechen',
-                noDescription: 'Keine Beschreibung.',
-                today: 'Heute',
-                yesterday: 'Gestern',
-                daysAgo: ' Tage',
-                createFailed: 'Projekt konnte nicht erstellt werden.',
-                serverError: 'Serverfehler aufgetreten.',
-                deleteProject: 'Projekt Löschen',
-                deleteConfirm: 'Möchten Sie dieses Projekt wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.',
-                projectDeleted: 'Projekt erfolgreich gelöscht.',
-                deleteFailed: 'Projekt konnte nicht gelöscht werden.',
-                edit: 'Bearbeiten',
-                delete: 'Löschen',
-                // Dashboard specific
-                greetingMorning: 'Guten Morgen',
-                greetingAfternoon: 'Guten Tag',
-                greetingEvening: 'Guten Abend',
-                greetingNight: 'Hallo',
-                totalProjects: 'Projekte insgesamt',
-                activeProjects: 'Aktive Projekte',
-                weeklyActivity: 'Wöchentliche Aktivität',
-                productivityScore: 'Produktivitätswert',
-                aiRecommendations: 'KI-Empfehlungen',
-                noRecommendations: 'Keine Empfehlungen verfügbar.',
-                recentActivity: 'Kürzliche Aktivität',
-                weeklyChart: 'Wöchentliches Diagramm',
-                topFeatures: 'Top-Funktionen',
-                quickStats: 'Schnellstatistiken',
-                widgetSettings: 'Widget-Einstellungen',
-                resetLayout: 'Layout zurücksetzen',
-                minutesAgo: 'Min',
-                hoursAgo: 'Std',
-                justNow: 'Gerade eben',
-                project: 'Projekt',
-                workflow: 'Workflow',
-                canvas: 'Leinwand',
-                page: 'Seite',
-                clickEvent: 'Klicken',
-                viewEvent: 'Ansehen',
-                editEvent: 'Bearbeiten',
-                deleteEvent: 'Löschen',
-                createEvent: 'Erstellen',
-                searchEvent: 'Suchen'
-            },
-            es: {
-                myAccount: 'Mi Cuenta',
-                dashboard: 'Panel de Control',
-                myProjects: 'Mis Proyectos',
-                projectsSubtitle: 'Gestiona y edita tus proyectos de flujo de trabajo',
-                newProject: 'Nuevo Proyecto',
-                searchPlaceholder: 'Buscar proyectos...',
-                statusAll: 'Todos los estados',
-                statusDraft: 'Borrador',
-                statusActive: 'Activo',
-                statusCompleted: 'Completado',
-                loadingProjects: 'Cargando proyectos...',
-                noProjects: 'Sin proyectos',
-                createFirstProject: 'Crea tu primer proyecto de flujo de trabajo',
-                createNewProject: 'Crear Nuevo Proyecto',
-                projectTitle: 'Título del Proyecto',
-                projectTitlePlaceholder: 'Ej: Planificación Exposición Primavera 2024',
-                projectDescription: 'Descripción del Proyecto (Opcional)',
-                projectDescPlaceholder: 'Ingrese una breve descripción del proyecto',
-                create: 'Crear',
-                cancel: 'Cancelar',
-                noDescription: 'Sin descripción.',
-                today: 'Hoy',
-                yesterday: 'Ayer',
-                daysAgo: ' días',
-                createFailed: 'Error al crear el proyecto.',
-                serverError: 'Error del servidor.',
-                deleteProject: 'Eliminar Proyecto',
-                deleteConfirm: '¿Está seguro de que desea eliminar este proyecto? Esta acción no se puede deshacer.',
-                projectDeleted: 'Proyecto eliminado correctamente.',
-                deleteFailed: 'Error al eliminar el proyecto.',
-                edit: 'Editar',
-                delete: 'Eliminar',
-                // Dashboard specific
-                greetingMorning: 'Buenos días',
-                greetingAfternoon: 'Buenas tardes',
-                greetingEvening: 'Buenas noches',
-                greetingNight: 'Hola',
-                totalProjects: 'Proyectos totales',
-                activeProjects: 'Proyectos activos',
-                weeklyActivity: 'Actividad semanal',
-                productivityScore: 'Puntuación de productividad',
-                aiRecommendations: 'Recomendaciones IA',
-                noRecommendations: 'No hay recomendaciones disponibles.',
-                recentActivity: 'Actividad reciente',
-                weeklyChart: 'Gráfico semanal',
-                topFeatures: 'Funciones principales',
-                quickStats: 'Estadísticas rápidas',
-                widgetSettings: 'Configuración de widgets',
-                resetLayout: 'Restablecer diseño',
-                minutesAgo: 'min',
-                hoursAgo: 'hr',
-                justNow: 'Justo ahora',
-                project: 'Proyecto',
-                workflow: 'Flujo de trabajo',
-                canvas: 'Lienzo',
-                page: 'Página',
-                clickEvent: 'Clic',
-                viewEvent: 'Ver',
-                editEvent: 'Editar',
-                deleteEvent: 'Eliminar',
-                createEvent: 'Crear',
-                searchEvent: 'Buscar'
-            },
-            it: {
-                myAccount: 'Il Mio Account',
-                dashboard: 'Dashboard',
-                myProjects: 'I Miei Progetti',
-                projectsSubtitle: 'Gestisci e modifica i tuoi progetti workflow',
-                newProject: 'Nuovo Progetto',
-                searchPlaceholder: 'Cerca progetti...',
-                statusAll: 'Tutti gli stati',
-                statusDraft: 'Bozza',
-                statusActive: 'Attivo',
-                statusCompleted: 'Completato',
-                loadingProjects: 'Caricamento progetti...',
-                noProjects: 'Nessun progetto',
-                createFirstProject: 'Crea il tuo primo progetto workflow',
-                createNewProject: 'Crea Nuovo Progetto',
-                projectTitle: 'Titolo del Progetto',
-                projectTitlePlaceholder: 'Es: Pianificazione Mostra Primavera 2024',
-                projectDescription: 'Descrizione del Progetto (Opzionale)',
-                projectDescPlaceholder: 'Inserisci una breve descrizione del progetto',
-                create: 'Crea',
-                cancel: 'Annulla',
-                noDescription: 'Nessuna descrizione.',
-                today: 'Oggi',
-                yesterday: 'Ieri',
-                daysAgo: ' giorni fa',
-                createFailed: 'Creazione progetto fallita.',
-                serverError: 'Errore del server.',
-                deleteProject: 'Elimina Progetto',
-                deleteConfirm: 'Sei sicuro di voler eliminare questo progetto? Questa azione non può essere annullata.',
-                projectDeleted: 'Progetto eliminato con successo.',
-                deleteFailed: 'Eliminazione progetto fallita.',
-                edit: 'Modifica',
-                delete: 'Elimina',
-                // Dashboard specific
-                greetingMorning: 'Buongiorno',
-                greetingAfternoon: 'Buon pomeriggio',
-                greetingEvening: 'Buonasera',
-                greetingNight: 'Ciao',
-                totalProjects: 'Progetti totali',
-                activeProjects: 'Progetti attivi',
-                weeklyActivity: 'Attività settimanale',
-                productivityScore: 'Punteggio produttività',
-                aiRecommendations: 'Raccomandazioni IA',
-                noRecommendations: 'Nessuna raccomandazione disponibile.',
-                recentActivity: 'Attività recente',
-                weeklyChart: 'Grafico settimanale',
-                topFeatures: 'Funzionalità più usate',
-                quickStats: 'Statistiche rapide',
-                widgetSettings: 'Impostazioni widget',
-                resetLayout: 'Ripristina layout',
-                minutesAgo: 'min fa',
-                hoursAgo: 'ore fa',
-                justNow: 'Proprio ora',
-                project: 'Progetto',
-                workflow: 'Flusso di lavoro',
-                canvas: 'Tela',
-                page: 'Pagina',
-                clickEvent: 'Clic',
-                viewEvent: 'Visualizza',
-                editEvent: 'Modifica',
-                deleteEvent: 'Elimina',
-                createEvent: 'Crea',
-                searchEvent: 'Cerca'
+                activeCount: 'Active',
+                completedCount: 'Completed'
             }
         };
 
         let currentLang = localStorage.getItem('museflow_language') || 'ko';
+        let allProjects = [];
+        let currentView = localStorage.getItem('projects_view') || 'grid';
 
+        // DOM elements
+        const projectsGrid = document.getElementById('projects-grid');
+        const loadingState = document.getElementById('loading-state');
+        const emptyState = document.getElementById('empty-state');
+        const searchInput = document.getElementById('search-input');
+        const statusFilter = document.getElementById('status-filter');
+        const sortSelect = document.getElementById('sort-select');
+        const projectModal = document.getElementById('project-modal');
+        const projectForm = document.getElementById('project-form');
+        const token = localStorage.getItem('authToken');
+
+        // Check authentication
+        if (!token) {
+            window.location.href = '/login.html';
+        }
+
+        // Update language
         function updateLanguage(lang) {
             currentLang = lang;
             localStorage.setItem('museflow_language', lang);
             document.getElementById('html-root').lang = lang;
-            const t = translations[lang];
+            const t = translations[lang] || translations['ko'];
             
-            // Update all elements with data-i18n
             document.querySelectorAll('[data-i18n]').forEach(element => {
                 const key = element.getAttribute('data-i18n');
-                if (t[key]) {
-                    element.innerHTML = t[key];
-                }
+                if (t[key]) element.textContent = t[key];
             });
 
-            // Update placeholders
             document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
                 const key = element.getAttribute('data-i18n-placeholder');
-                if (t[key]) {
-                    element.placeholder = t[key];
-                }
+                if (t[key]) element.placeholder = t[key];
             });
 
-            // Update language selector
             const langSelect = document.getElementById('lang-select');
-            if (langSelect) {
-                langSelect.value = lang;
-            }
+            if (langSelect) langSelect.value = lang;
 
-            // Re-render projects with updated language
             if (allProjects.length > 0) {
+                renderStats();
                 filterProjects();
             }
         }
@@ -994,37 +792,29 @@
             
             const langSelect = document.getElementById('lang-select');
             if (langSelect) {
-                langSelect.value = currentLang;
-                langSelect.addEventListener('change', (e) => {
-                    updateLanguage(e.target.value);
-                });
+                langSelect.addEventListener('change', (e) => updateLanguage(e.target.value));
             }
         });
 
-        // Check authentication
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-            window.location.href = '/login.html';
-        }
-
-        let allProjects = [];
-        const projectsGrid = document.getElementById('projects-grid');
-        const loadingState = document.getElementById('loading-state');
-        const emptyState = document.getElementById('empty-state');
-        const searchInput = document.getElementById('search-input');
-        const statusFilter = document.getElementById('status-filter');
-        const newProjectModal = document.getElementById('new-project-modal');
-        const newProjectForm = document.getElementById('new-project-form');
-
-        // Status badge mapping (will be translated dynamically)
-        function getStatusConfig(lang) {
-            const t = translations[lang];
-            return {
-                draft: { label: t.statusDraft, class: 'status-draft' },
-                active: { label: t.statusActive, class: 'status-active' },
-                completed: { label: t.statusCompleted, class: 'status-completed' }
-            };
-        }
+        // View toggle
+        document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const view = btn.getAttribute('data-view');
+                currentView = view;
+                localStorage.setItem('projects_view', view);
+                
+                document.querySelectorAll('.view-toggle-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                if (view === 'list') {
+                    projectsGrid.classList.add('list-view');
+                    projectsGrid.style.gridTemplateColumns = '1fr';
+                } else {
+                    projectsGrid.classList.remove('list-view');
+                    projectsGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(350px, 1fr))';
+                }
+            });
+        });
 
         // Format date
         function formatDate(dateString) {
@@ -1032,18 +822,64 @@
             const now = new Date();
             const diff = now - date;
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const t = translations[currentLang];
+            const t = translations[currentLang] || translations['ko'];
             
             if (days === 0) return t.today;
             if (days === 1) return t.yesterday;
             if (days < 7) return `${days}${t.daysAgo}`;
             
-            const locale = currentLang === 'ko' ? 'ko-KR' : 'en-US';
-            return date.toLocaleDateString(locale, {
+            return date.toLocaleDateString(currentLang === 'ko' ? 'ko-KR' : 'en-US', {
                 year: 'numeric',
                 month: currentLang === 'ko' ? 'long' : 'short',
                 day: 'numeric'
             });
+        }
+
+        // Render stats
+        function renderStats() {
+            const t = translations[currentLang] || translations['ko'];
+            const stats = {
+                total: allProjects.length,
+                draft: allProjects.filter(p => p.status === 'draft').length,
+                active: allProjects.filter(p => p.status === 'active').length,
+                completed: allProjects.filter(p => p.status === 'completed').length
+            };
+
+            document.getElementById('stats-summary').innerHTML = `
+                <div class="glass-card" style="padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3)); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                            📊
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 800; color: #8b5cf6;">${stats.total}</div>
+                            <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="totalProjects">${t.totalProjects}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card" style="padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.2)); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                            ⚡
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 800; color: #10b981;">${stats.active}</div>
+                            <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="activeCount">${t.activeCount}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card" style="padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.2)); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                            ✅
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 800; color: #3b82f6;">${stats.completed}</div>
+                            <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="completedCount">${t.completedCount}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
         // Render projects
@@ -1058,38 +894,57 @@
             projectsGrid.style.display = 'grid';
             projectsGrid.innerHTML = '';
 
+            const t = translations[currentLang] || translations['ko'];
+            const statusConfig = {
+                draft: { label: t.statusDraft, class: 'status-draft', icon: '📝' },
+                active: { label: t.statusActive, class: 'status-active', icon: '🚀' },
+                completed: { label: t.statusCompleted, class: 'status-completed', icon: '✅' }
+            };
+
             projects.forEach(project => {
-                const statusConfig = getStatusConfig(currentLang);
                 const status = statusConfig[project.status] || statusConfig.draft;
+                const progress = project.status === 'completed' ? 100 : (project.status === 'active' ? 60 : 20);
+                
                 const card = document.createElement('div');
                 card.className = 'glass-card project-card';
-                card.style.padding = '1.5rem';
-                const t = translations[currentLang];
+                card.style.padding = '0';
                 card.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <h3 style="font-size: 1.25rem; font-weight: 600; flex: 1;">${project.title}</h3>
-                        <span class="status-badge ${status.class}">${status.label}</span>
+                    <div class="project-thumbnail">
+                        <div class="project-icon">${status.icon}</div>
                     </div>
-                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 1.5rem; min-height: 3rem;">
-                        ${project.description || t.noDescription}
-                    </p>
-                    <div style="display: flex; justify-content: space-between; align-items: center; color: rgba(255, 255, 255, 0.5); font-size: 0.875rem; margin-bottom: 1rem;">
-                        <span><i class="fas fa-clock"></i> ${formatDate(project.updated_at)}</span>
-                        <span><i class="fas fa-calendar"></i> ${formatDate(project.created_at)}</span>
-                    </div>
-                    <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
-                        <button class="edit-btn" data-project-id="${project.id}" style="padding: 0.5rem 1rem; font-size: 0.875rem; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 8px; color: white; cursor: pointer; transition: all 0.3s;">
-                            <i class="fas fa-edit"></i> ${t.edit}
-                        </button>
-                        <button class="delete-btn" data-project-id="${project.id}" style="padding: 0.5rem 1rem; font-size: 0.875rem; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; color: #ef4444; cursor: pointer; transition: all 0.3s;">
-                            <i class="fas fa-trash"></i> ${t.delete}
-                        </button>
+                    <div style="padding: 0 1.5rem 1.5rem 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                            <h3 style="font-size: 1.375rem; font-weight: 700; flex: 1; line-height: 1.4;">${project.title}</h3>
+                            <span class="status-badge ${status.class}">${status.label}</span>
+                        </div>
+                        <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 1rem; min-height: 3rem; line-height: 1.6;">
+                            ${project.description || t.noDescription}
+                        </p>
+                        
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: ${progress}%;"></div>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; color: rgba(255, 255, 255, 0.5); font-size: 0.875rem; margin-bottom: 1.25rem;">
+                            <span><i class="fas fa-clock"></i> ${formatDate(project.updated_at)}</span>
+                            <span><i class="fas fa-calendar-plus"></i> ${formatDate(project.created_at)}</span>
+                        </div>
+                        
+                        <div style="display: flex; gap: 0.75rem;">
+                            <button class="edit-btn" data-project-id="${project.id}" style="flex: 1; padding: 0.75rem 1.25rem; font-size: 0.875rem; font-weight: 600; background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(236, 72, 153, 0.25)); border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 12px; color: white; cursor: pointer; transition: all 0.3s;">
+                                <i class="fas fa-edit"></i> ${t.edit}
+                            </button>
+                            <button class="delete-btn" data-project-id="${project.id}" style="padding: 0.75rem 1.25rem; font-size: 0.875rem; font-weight: 600; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 12px; color: #ef4444; cursor: pointer; transition: all 0.3s;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </div>
                 `;
                 
-                // Card click - navigate to canvas page
-                card.addEventListener('click', () => {
-                    // Save project to sessionStorage for Canvas V2
+                // Card click - navigate to canvas
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('.edit-btn') || e.target.closest('.delete-btn')) return;
+                    
                     const projectData = {
                         id: project.id,
                         name: project.title,
@@ -1099,38 +954,17 @@
                         updated_at: project.updated_at
                     };
                     sessionStorage.setItem('museflow_current_project', JSON.stringify(projectData));
-                    console.log('📦 Saved project to sessionStorage:', projectData);
-                    console.log('🔀 Navigating to canvas.html...');
-                    
-                    // Navigate to canvas (with timestamp to bypass cache)
                     window.location.href = `/canvas.html?project=${project.id}&t=${Date.now()}`;
                 });
                 
-                // Edit button click - prevent propagation
-                const editBtn = card.querySelector('.edit-btn');
-                editBtn.addEventListener('click', (e) => {
+                // Edit button
+                card.querySelector('.edit-btn').addEventListener('click', (e) => {
                     e.stopPropagation();
-                    
-                    // Save project to sessionStorage for Canvas V2
-                    const projectData = {
-                        id: project.id,
-                        name: project.title,
-                        description: project.description,
-                        status: project.status,
-                        created_at: project.created_at,
-                        updated_at: project.updated_at
-                    };
-                    sessionStorage.setItem('museflow_current_project', JSON.stringify(projectData));
-                    console.log('📦 Saved project to sessionStorage:', projectData);
-                    console.log('🔀 Navigating to canvas.html...');
-                    
-                    // Navigate to canvas (with timestamp to bypass cache)
-                    window.location.href = `/canvas.html?project=${project.id}&t=${Date.now()}`;
+                    openEditModal(project);
                 });
                 
-                // Delete button click - prevent propagation
-                const deleteBtn = card.querySelector('.delete-btn');
-                deleteBtn.addEventListener('click', async (e) => {
+                // Delete button
+                card.querySelector('.delete-btn').addEventListener('click', async (e) => {
                     e.stopPropagation();
                     await deleteProject(project.id);
                 });
@@ -1147,20 +981,17 @@
                 emptyState.style.display = 'none';
 
                 const response = await fetch(API_BASE_URL + '/api/projects', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
 
-                if (!response.ok) {
-                    throw new Error('Failed to load projects');
-                }
+                if (!response.ok) throw new Error('Failed to load projects');
 
                 const data = await response.json();
                 allProjects = data.projects;
 
                 loadingState.style.display = 'none';
-                renderProjects(allProjects);
+                renderStats();
+                filterProjects();
 
             } catch (error) {
                 console.error('Error loading projects:', error);
@@ -1169,23 +1000,26 @@
             }
         }
 
-        // Filter projects
+        // Filter and sort projects
         function filterProjects() {
             const searchTerm = searchInput.value.toLowerCase();
             const statusValue = statusFilter.value;
+            const sortValue = sortSelect.value;
 
-            let filtered = allProjects;
-
-            if (searchTerm) {
-                filtered = filtered.filter(p => 
+            let filtered = allProjects.filter(p => {
+                const matchesSearch = !searchTerm || 
                     p.title.toLowerCase().includes(searchTerm) ||
-                    (p.description && p.description.toLowerCase().includes(searchTerm))
-                );
-            }
+                    (p.description && p.description.toLowerCase().includes(searchTerm));
+                const matchesStatus = statusValue === 'all' || p.status === statusValue;
+                return matchesSearch && matchesStatus;
+            });
 
-            if (statusValue !== 'all') {
-                filtered = filtered.filter(p => p.status === statusValue);
-            }
+            // Sort
+            filtered.sort((a, b) => {
+                if (sortValue === 'title') return a.title.localeCompare(b.title);
+                if (sortValue === 'created') return new Date(b.created_at) - new Date(a.created_at);
+                return new Date(b.updated_at) - new Date(a.updated_at);
+            });
 
             renderProjects(filtered);
         }
@@ -1193,89 +1027,107 @@
         // Event listeners
         searchInput.addEventListener('input', filterProjects);
         statusFilter.addEventListener('change', filterProjects);
+        sortSelect.addEventListener('change', filterProjects);
 
         // Modal controls
         function openModal() {
-            newProjectModal.classList.add('active');
+            const t = translations[currentLang] || translations['ko'];
+            document.getElementById('modal-title').textContent = t.createNewProject;
+            document.getElementById('submit-btn-text').textContent = t.create;
+            document.getElementById('project-id').value = '';
+            projectForm.reset();
+            projectModal.classList.add('active');
+        }
+
+        function openEditModal(project) {
+            const t = translations[currentLang] || translations['ko'];
+            document.getElementById('modal-title').textContent = t.editProject;
+            document.getElementById('submit-btn-text').textContent = t.save;
+            document.getElementById('project-id').value = project.id;
+            document.getElementById('project-title').value = project.title;
+            document.getElementById('project-description').value = project.description || '';
+            document.getElementById('project-status').value = project.status;
+            projectModal.classList.add('active');
         }
 
         function closeModal() {
-            newProjectModal.classList.remove('active');
-            newProjectForm.reset();
+            projectModal.classList.remove('active');
+            projectForm.reset();
         }
 
         document.getElementById('new-project-btn').addEventListener('click', openModal);
         document.getElementById('empty-new-project-btn').addEventListener('click', openModal);
         document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
+        document.getElementById('close-modal-btn').addEventListener('click', closeModal);
         
-        newProjectModal.addEventListener('click', (e) => {
-            if (e.target === newProjectModal) closeModal();
+        projectModal.addEventListener('click', (e) => {
+            if (e.target === projectModal) closeModal();
         });
 
-        // Create new project
-        newProjectForm.addEventListener('submit', async (e) => {
+        // Create/Update project
+        projectForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const t = translations[currentLang] || translations['ko'];
 
+            const projectId = document.getElementById('project-id').value;
             const title = document.getElementById('project-title').value.trim();
             const description = document.getElementById('project-description').value.trim();
+            const status = document.getElementById('project-status').value;
 
             try {
-                const response = await fetch(API_BASE_URL + '/api/projects', {
-                    method: 'POST',
+                const url = projectId 
+                    ? `${API_BASE_URL}/api/projects/${projectId}`
+                    : `${API_BASE_URL}/api/projects`;
+                
+                const method = projectId ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method,
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ title, description })
+                    body: JSON.stringify({ title, description, status })
                 });
 
                 const data = await response.json();
 
-                const t = translations[currentLang];
                 if (response.ok) {
                     closeModal();
                     
-                    // Save project to sessionStorage for Canvas
-                    const projectData = {
-                        id: data.projectId,
-                        name: title,
-                        description: description,
-                        status: 'draft'
-                    };
-                    sessionStorage.setItem('museflow_current_project', JSON.stringify(projectData));
-                    
-                    // Show success message
-                    if (window.Toast) {
-                        Toast.success(t.createSuccess || '프로젝트가 생성되었습니다. 워크플로우 편집기로 이동합니다.');
+                    if (!projectId) {
+                        // New project - redirect to canvas
+                        const projectData = {
+                            id: data.projectId || data.id,
+                            name: title,
+                            description,
+                            status
+                        };
+                        sessionStorage.setItem('museflow_current_project', JSON.stringify(projectData));
+                        window.location.href = `/canvas.html?project=${projectData.id}&t=${Date.now()}`;
+                    } else {
+                        // Update - reload projects
+                        await loadProjects();
                     }
-                    
-                    // Redirect to canvas
-                    setTimeout(() => {
-                        window.location.href = `/canvas.html?project=${data.projectId}&t=${Date.now()}`;
-                    }, 1000);
                 } else {
-                    alert(data.error || t.createFailed);
+                    alert(data.error || 'Failed to save project');
                 }
             } catch (error) {
-                console.error('Error creating project:', error);
-                alert(t.serverError);
+                console.error('Error saving project:', error);
+                alert('Server error occurred');
             }
         });
 
-        // Delete project function
+        // Delete project
         window.deleteProject = async function(projectId) {
-            const t = translations[currentLang];
+            const t = translations[currentLang] || translations['ko'];
             
-            if (!confirm(t.deleteConfirm)) {
-                return;
-            }
+            if (!confirm(t.deleteConfirm)) return;
 
             try {
-                const response = await fetch(API_BASE_URL + `/api/projects/${projectId}`, {
+                const response = await fetch(`${API_BASE_URL}/api/projects/${projectId}`, {
                     method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
 
                 if (response.ok) {
@@ -1287,13 +1139,19 @@
                 }
             } catch (error) {
                 console.error('Error deleting project:', error);
-                alert(t.serverError);
+                alert('Server error occurred');
             }
         };
 
-        // Load projects on page load
+        // Initialize
         loadProjects();
+
+        // Set initial view
+        if (currentView === 'list') {
+            document.querySelector('[data-view="list"]').click();
+        }
     </script>
+    
     <!-- Mobile Navigation -->
     <script src="/static/js/components/mobile-nav.js"></script>
 </body>
