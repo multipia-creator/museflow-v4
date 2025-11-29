@@ -1363,9 +1363,21 @@
                 const t = translations[currentLang];
                 if (response.ok) {
                     closeModal();
-                    await loadProjects();
-                    // Optionally redirect to canvas
-                    // window.location.href = `/admin.html?project=${data.projectId}`;
+                    Toast.success('프로젝트가 생성되었습니다. 워크플로우 편집기로 이동합니다.');
+                    
+                    // Save project to sessionStorage for Canvas
+                    const projectData = {
+                        id: data.projectId,
+                        name: title,
+                        description: description,
+                        status: 'draft'
+                    };
+                    sessionStorage.setItem('museflow_current_project', JSON.stringify(projectData));
+                    
+                    // Redirect to canvas
+                    setTimeout(() => {
+                        window.location.href = `/canvas.html?project=${data.projectId}&t=${Date.now()}`;
+                    }, 1000);
                 } else {
                     alert(data.error || t.createFailed);
                 }

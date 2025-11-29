@@ -1234,9 +1234,25 @@
                 const t = translations[currentLang];
                 if (response.ok) {
                     closeModal();
-                    await loadProjects();
-                    // Optionally redirect to canvas
-                    // window.location.href = `/admin.html?project=${data.projectId}`;
+                    
+                    // Save project to sessionStorage for Canvas
+                    const projectData = {
+                        id: data.projectId,
+                        name: title,
+                        description: description,
+                        status: 'draft'
+                    };
+                    sessionStorage.setItem('museflow_current_project', JSON.stringify(projectData));
+                    
+                    // Show success message
+                    if (window.Toast) {
+                        Toast.success(t.createSuccess || '프로젝트가 생성되었습니다. 워크플로우 편집기로 이동합니다.');
+                    }
+                    
+                    // Redirect to canvas
+                    setTimeout(() => {
+                        window.location.href = `/canvas.html?project=${data.projectId}&t=${Date.now()}`;
+                    }, 1000);
                 } else {
                     alert(data.error || t.createFailed);
                 }
