@@ -968,15 +968,46 @@
                         </div>
                     `;
                 } else {
-                    container.innerHTML = phaseTasks.map(task => `
-                        <div class="task-card" onclick="editTask('${task.id}')">
-                            <div class="task-title">${task.title}</div>
-                            <div class="task-meta">
-                                ${task.assignee ? `<span><i class="fas fa-user"></i> ${task.assignee}</span>` : ''}
-                                ${task.dueDate ? `<span><i class="fas fa-calendar"></i> ${task.dueDate}</span>` : ''}
+                    container.innerHTML = phaseTasks.map(task => {
+                        // Calculate checklist progress
+                        let progressHtml = '';
+                        if (task.checklist && task.checklist.length > 0) {
+                            const total = task.checklist.length;
+                            const checked = task.checklist.filter(item => item.checked).length;
+                            const percentage = Math.round((checked / total) * 100);
+                            const isComplete = percentage === 100;
+                            
+                            progressHtml = `
+                                <div style="margin-top: 0.75rem; margin-bottom: 0.5rem;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                                        <span style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.6);">
+                                            <i class="fas fa-check-circle"></i> ${checked}/${total}
+                                        </span>
+                                        <span style="font-size: 0.75rem; font-weight: 700; color: ${isComplete ? '#10b981' : '#8b5cf6'};">
+                                            ${percentage}%
+                                        </span>
+                                    </div>
+                                    <div style="width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 100px; overflow: hidden;">
+                                        <div style="width: ${percentage}%; height: 100%; background: linear-gradient(90deg, ${isComplete ? '#10b981, #059669' : '#8b5cf6, #ec4899'}); border-radius: 100px; transition: width 0.3s ease;"></div>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        
+                        return `
+                            <div class="task-card" onclick="editTask('${task.id}')" style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                                    <div style="font-size: 1.25rem;">${phaseConfig[phase].icon}</div>
+                                    <div class="task-title" style="flex: 1;">${task.title}</div>
+                                </div>
+                                ${progressHtml}
+                                <div class="task-meta">
+                                    ${task.assignee ? `<span><i class="fas fa-user"></i> ${task.assignee}</span>` : ''}
+                                    ${task.dueDate ? `<span><i class="fas fa-calendar"></i> ${task.dueDate}</span>` : ''}
+                                </div>
                             </div>
-                        </div>
-                    `).join('');
+                        `;
+                    }).join('');
                 }
             });
         }
@@ -1120,7 +1151,7 @@
             }
         }
         
-        function updateChecklistProgress() {
+        async function updateChecklistProgress() {
             const container = document.getElementById('checklist-container');
             const items = container.querySelectorAll('.checklist-item');
             const total = items.length;
@@ -1140,6 +1171,61 @@
             
             document.getElementById('checklist-percentage').textContent = `${percentage}%`;
             document.getElementById('checklist-progress-bar').style.width = `${percentage}%`;
+            
+            // 🚀 자동 단계 진행: 체크리스트 100% 완료 시 다음 단계로 자동 이동
+            if (percentage === 100 && editingTaskId && total > 0) {
+                const task = tasks.find(t => t.id === editingTaskId);
+                if (task) {
+                    const nextPhase = getNextPhase(task.phase);
+                    if (nextPhase && nextPhase !== task.phase) {
+                        // Auto-advance to next phase
+                        await autoAdvancePhase(task, nextPhase);
+                    }
+                }
+            }
+        }
+        
+        // Get next phase in workflow
+        function getNextPhase(currentPhase) {
+            const phaseOrder = ['planning', 'preparation', 'execution', 'marketing', 'completed'];
+            const currentIndex = phaseOrder.indexOf(currentPhase);
+            if (currentIndex >= 0 && currentIndex < phaseOrder.length - 1) {
+                return phaseOrder[currentIndex + 1];
+            }
+            return null;
+        }
+        
+        // Auto-advance task to next phase
+        async function autoAdvancePhase(task, nextPhase) {
+            const phaseLabels = {
+                'planning': '💡 기획',
+                'preparation': '🔧 준비',
+                'execution': '🚀 진행',
+                'marketing': '📢 홍보',
+                'completed': '✅완료'
+            };
+            
+            // Show notification
+            if (window.notificationSystem) {
+                notificationSystem.addNotification({
+                    type: 'success',
+                    title: '🎉 자동 단계 진행',
+                    message: `"${task.title}" 작업이 ${phaseLabels[nextPhase]} 단계로 자동 이동했습니다!`,
+                    duration: 5000
+                });
+            }
+            
+            // Update task phase
+            task.phase = nextPhase;
+            document.getElementById('task-phase').value = nextPhase;
+            
+            // Save to API
+            try {
+                await window.apiClient.tasks.update(task.id, { phase: nextPhase });
+                console.log('✅ Auto-advanced to next phase:', nextPhase);
+            } catch (error) {
+                console.error('Error auto-advancing phase:', error);
+            }
         }
         
         function getChecklistData() {
