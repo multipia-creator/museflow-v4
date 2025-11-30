@@ -606,7 +606,7 @@
         
         /* Section Background Colors with Glow Effect */
         section[class^="section-"] {
-            padding: 3rem 0;
+            padding: 2rem;
             border-radius: 24px;
             margin-bottom: 2rem;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1050,152 +1050,7 @@
             </div>
         </section>
 
-        <!-- Exhibition Insights -->
-        <section style="margin-bottom: 3rem;">
-            <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
-                <i class="fas fa-lightbulb" style="color: #fbbf24;"></i>
-                전시 인사이트
-            </h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
-                <!-- Insight 1: Most Active Exhibition -->
-                <div class="glass-card" style="padding: 1.5rem;">
-                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas fa-fire" style="font-size: 1.5rem;"></i>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">가장 활발한 전시</div>
-                            <div style="font-size: 1.25rem; font-weight: 700;" id="insight-most-active">-</div>
-                        </div>
-                    </div>
-                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);" id="insight-most-active-desc">데이터를 분석하고 있습니다...</div>
-                </div>
-
-                <!-- Insight 2: Urgent Attention -->
-                <div class="glass-card" style="padding: 1.5rem;">
-                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem;"></i>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">주의 필요</div>
-                            <div style="font-size: 1.25rem; font-weight: 700; color: #f5576c;" id="insight-urgent-count">0</div>
-                        </div>
-                    </div>
-                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);" id="insight-urgent-desc">마감 임박 또는 예산 초과 전시</div>
-                </div>
-
-                <!-- Insight 3: Budget Status -->
-                <div class="glass-card" style="padding: 1.5rem;">
-                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas fa-won-sign" style="font-size: 1.5rem;"></i>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">전체 예산 현황</div>
-                            <div style="font-size: 1.25rem; font-weight: 700;" id="insight-budget-total">0억원</div>
-                        </div>
-                    </div>
-                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">
-                        <span id="insight-budget-used">0억원</span> 집행 (<span id="insight-budget-rate">0%</span>)
-                    </div>
-                </div>
-
-                <!-- Insight 4: Upcoming Events -->
-                <div class="glass-card" style="padding: 1.5rem;">
-                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas fa-calendar-alt" style="font-size: 1.5rem;"></i>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">이번 주 일정</div>
-                            <div style="font-size: 1.25rem; font-weight: 700;" id="insight-upcoming-count">0</div>
-                        </div>
-                    </div>
-                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);" id="insight-upcoming-desc">다가오는 전시 및 작업</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Projects Section -->
-        <section style="margin-bottom: 3rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <h2 style="font-size: 1.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.75rem;">
-                    <i class="fas fa-folder-open" style="color: var(--museum-pink);"></i>
-                    전시 관리
-                </h2>
-                <button class="btn-primary" onclick="openCreateModal()" style="background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; padding: 0.75rem 1.5rem; border-radius: 12px; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 0.5rem;">
-                    <i class="fas fa-plus"></i>
-                    새 전시 만들기
-                </button>
-            </div>
-            
-            <!-- Stats Cards -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-                <div class="glass-card" style="padding: 1.5rem; text-align: center;">
-                    <div style="font-size: 2rem; font-weight: 700; color: #a78bfa; margin-bottom: 0.5rem;" id="stat-total">0</div>
-                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">전체 전시</div>
-                </div>
-                <div class="glass-card" style="padding: 1.5rem; text-align: center;">
-                    <div style="font-size: 2rem; font-weight: 700; color: #f9a8d4; margin-bottom: 0.5rem;" id="stat-active">0</div>
-                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">진행 중</div>
-                </div>
-                <div class="glass-card" style="padding: 1.5rem; text-align: center;">
-                    <div style="font-size: 2rem; font-weight: 700; color: #fcd34d; margin-bottom: 0.5rem;" id="stat-urgent">0</div>
-                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">긴급 (D-7)</div>
-                </div>
-                <div class="glass-card" style="padding: 1.5rem; text-align: center;">
-                    <div style="font-size: 2rem; font-weight: 700; color: #6ee7b7; margin-bottom: 0.5rem;" id="stat-completed">0</div>
-                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">완료</div>
-                </div>
-            </div>
-            
-            <!-- Filters -->
-            <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
-                <input type="text" placeholder="🔍 전시 검색..." id="search-input" style="flex: 1; min-width: 250px; padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white; font-size: 0.875rem;">
-                <select id="type-filter" style="padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white; cursor: pointer;">
-                    <option value="all">전체 유형</option>
-                    <option value="permanent">🏛️ 상설전</option>
-                    <option value="special">✨ 특별전</option>
-                    <option value="traveling">🚌 순회전</option>
-                    <option value="event">🎭 기획전</option>
-                </select>
-                <select id="phase-filter" style="padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white; cursor: pointer;">
-                    <option value="all">전체 단계</option>
-                    <option value="planning">💡 기획</option>
-                    <option value="preparation">🔧 준비</option>
-                    <option value="execution">🚀 진행</option>
-                    <option value="marketing">📢 홍보</option>
-                    <option value="completed">✅ 완료</option>
-                </select>
-                <select id="sort-select" style="padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white; cursor: pointer;">
-                    <option value="updated">최근 수정순</option>
-                    <option value="dday">D-Day 순</option>
-                    <option value="title">제목순</option>
-                </select>
-            </div>
-            
-            <!-- Projects Grid -->
-            <div id="projects-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
-                <!-- Projects will be rendered here -->
-            </div>
-        </section>
-
-        <!-- Team Activity -->
-        <section class="glass-card" style="margin-bottom: 3rem;">
-            <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
-                <i class="fas fa-users" style="color: var(--info);"></i>
-                팀 활동
-            </h2>
-            <div id="team-activity">
-                <!-- Team activity feed will be dynamically inserted -->
-            </div>
-        </section>
-
-        <!-- Performance Metrics -->
-        <section style="margin-bottom: 3rem;">
-            <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
-                <i class="fas fa-chart-bar" style="color: var(--museum-gold);"></i>
+        <!-- (전시 인사이트, 전시 관리, 팀 활동 중복 섹션 제거됨) -->
                 성과 지표
             </h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
@@ -1241,56 +1096,6 @@
             </div>
         </section>
 
-        <!-- Top Contributors -->
-        <section class="glass-card">
-            <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
-                <i class="fas fa-trophy" style="color: var(--museum-gold);"></i>
-                이번 주 우수 기여자
-            </h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
-                <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.05)); padding: 1.5rem; border-radius: 16px; border: 2px solid rgba(245, 158, 11, 0.3);">
-                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                        <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b, #fb923c); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700;">🥇</div>
-                        <div>
-                            <div style="font-weight: 700; font-size: 1.125rem;">김큐레이터</div>
-                            <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">수석 큐레이터</div>
-                        </div>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.875rem;">
-                        <span>완료 작업: <strong>8개</strong></span>
-                        <span>기여도: <strong style="color: #f59e0b;">92%</strong></span>
-                    </div>
-                </div>
-
-                <div style="background: rgba(192, 192, 192, 0.1); padding: 1.5rem; border-radius: 16px; border: 2px solid rgba(192, 192, 192, 0.3);">
-                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                        <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #c0c0c0, #9ca3af); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700;">🥈</div>
-                        <div>
-                            <div style="font-weight: 700; font-size: 1.125rem;">이학예사</div>
-                            <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">학예연구사</div>
-                        </div>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.875rem;">
-                        <span>완료 작업: <strong>6개</strong></span>
-                        <span>기여도: <strong style="color: #9ca3af;">85%</strong></span>
-                    </div>
-                </div>
-
-                <div style="background: rgba(205, 127, 50, 0.1); padding: 1.5rem; border-radius: 16px; border: 2px solid rgba(205, 127, 50, 0.3);">
-                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                        <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #cd7f32, #92400e); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700;">🥉</div>
-                        <div>
-                            <div style="font-weight: 700; font-size: 1.125rem;">박디자이너</div>
-                            <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">전시 디자이너</div>
-                        </div>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.875rem;">
-                        <span>완료 작업: <strong>5개</strong></span>
-                        <span>기여도: <strong style="color: #cd7f32;">78%</strong></span>
-                    </div>
-                </div>
-            </div>
-        </section>
     </div>
 
     <script>
