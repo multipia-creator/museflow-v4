@@ -593,6 +593,9 @@
             <button class="view-btn" data-view="gallery">
                 <i class="fas fa-images"></i> 갤러리
             </button>
+            <button class="view-btn" onclick="openWorkflow()" style="background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none;">
+                <i class="fas fa-project-diagram"></i> 워크플로우
+            </button>
             <div style="position: relative; margin-left: 1rem;">
                 <button id="notification-btn" class="view-btn" onclick="toggleNotificationPanel()" style="position: relative;">
                     <i class="fas fa-bell"></i>
@@ -805,6 +808,8 @@
         // Get project ID from URL
         const urlParams = new URLSearchParams(window.location.search);
         const projectId = urlParams.get('project');
+        console.log('🔍 URL Search:', window.location.search);
+        console.log('🔍 Project ID:', projectId);
         
         let currentProject = null;
         let currentView = 'timeline';
@@ -856,8 +861,8 @@
                 
             } catch (error) {
                 console.error('Error loading project:', error);
-                alert('프로젝트를 불러올 수 없습니다. Projects 페이지로 이동합니다.');
-                window.location.href = '/projects.html';
+                alert('프로젝트를 불러올 수 없습니다. Dashboard로 이동합니다.');
+                window.location.href = '/dashboard';
             }
         }
         
@@ -1306,6 +1311,15 @@
             window.location.href = `/projects?edit=${projectId}`;
         }
         
+        // Open workflow for current project
+        function openWorkflow() {
+            if (!projectId) {
+                alert('프로젝트 ID가 없습니다.');
+                return;
+            }
+            window.location.href = `/workflow?project=${projectId}`;
+        }
+        
         // Initialize
         async function init() {
             // Validate project ID first
@@ -1335,7 +1349,7 @@
                 document.body.appendChild(message);
                 
                 setTimeout(() => {
-                    window.location.href = '/projects.html';
+                    window.location.href = '/dashboard';
                 }, 2000);
                 return; // Stop execution
             }

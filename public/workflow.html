@@ -543,7 +543,7 @@
                 document.body.appendChild(message);
                 
                 setTimeout(() => {
-                    window.location.href = '/projects.html';
+                    window.location.href = '/dashboard';
                 }, 2000);
                 return;
             }
@@ -573,8 +573,8 @@
                 }
             } catch (error) {
                 console.error('Error loading project:', error);
-                alert('Failed to load project. Redirecting to Projects page...');
-                window.location.href = '/projects';
+                alert('Failed to load project. Redirecting to Dashboard...');
+                window.location.href = '/dashboard';
             }
         }
         
