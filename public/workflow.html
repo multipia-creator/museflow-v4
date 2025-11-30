@@ -629,8 +629,8 @@
             <button class="view-btn" data-view="gallery">
                 <i class="fas fa-images"></i> 갤러리
             </button>
-            <button class="view-btn" onclick="openWorkflow()" style="background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none;">
-                <i class="fas fa-project-diagram"></i> 워크플로우
+            <button class="view-btn" onclick="openCanvasV3()" style="background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none;">
+                <i class="fas fa-project-diagram"></i> Canvas V3
             </button>
             <div style="position: relative; margin-left: 1rem;">
                 <button id="notification-btn" class="view-btn" onclick="toggleNotificationPanel()" style="position: relative;">
@@ -1408,6 +1408,15 @@
                 return;
             }
             window.location.href = `/workflow?project=${projectId}`;
+        }
+        
+        // Open Canvas V3 (Node Editor)
+        function openCanvasV3() {
+            if (!projectId) {
+                alert('프로젝트 ID가 없습니다.');
+                return;
+            }
+            window.location.href = `/canvas-v3?project=${projectId}`;
         }
         
         // Initialize
