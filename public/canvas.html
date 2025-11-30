@@ -887,38 +887,62 @@
             renderGalleryView();
         }
         
-        // Load tasks from workflowData
-        function loadTasks() {
+        // Load tasks from D1 Database via API
+        async function loadTasks() {
             try {
-                const workflowData = currentProject.workflowData ? JSON.parse(currentProject.workflowData) : {};
-                tasks = workflowData.tasks || [];
+                const result = await window.apiClient.tasks.list(projectId);
+                if (result.success) {
+                    tasks = result.data || [];
+                    console.log(`✅ Loaded ${tasks.length} tasks from D1 Database`);
+                } else {
+                    console.error('Failed to load tasks:', result.error);
+                    tasks = [];
+                }
             } catch (error) {
-                console.error('Error parsing workflowData:', error);
+                console.error('Error loading tasks:', error);
                 tasks = [];
             }
         }
         
-        // Save tasks to workflowData
-        async function saveTasks() {
+        // Create or Update Task via API
+        async function saveTaskToAPI(taskData) {
             try {
-                const workflowData = { tasks };
+                let result;
                 
-                const response = await fetch(`${API_BASE_URL}/api/projects/${projectId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        workflowData: JSON.stringify(workflowData)
-                    })
-                });
+                if (taskData.id && !taskData.id.startsWith('task_')) {
+                    // Update existing task (real DB ID)
+                    result = await window.apiClient.tasks.update(taskData.id, {
+                        title: taskData.title,
+                        description: taskData.description,
+                        phase: taskData.phase,
+                        assignee: taskData.assignee,
+                        dueDate: taskData.dueDate,
+                        checklist: JSON.stringify(taskData.checklist || [])
+                    });
+                } else {
+                    // Create new task
+                    result = await window.apiClient.tasks.create({
+                        project_id: projectId,
+                        user_id: 2, // Current user
+                        title: taskData.title,
+                        description: taskData.description,
+                        phase: taskData.phase,
+                        assignee: taskData.assignee,
+                        dueDate: taskData.dueDate,
+                        checklist: JSON.stringify(taskData.checklist || [])
+                    });
+                }
                 
-                if (!response.ok) throw new Error('Failed to save tasks');
-                
+                if (result.success) {
+                    console.log('✅ Task saved to D1 Database:', result.data);
+                    return result.data;
+                } else {
+                    throw new Error(result.error || 'Failed to save task');
+                }
             } catch (error) {
-                console.error('Error saving tasks:', error);
-                alert('작업 저장에 실패했습니다.');
+                console.error('Error saving task:', error);
+                alert('작업 저장에 실패했습니다: ' + error.message);
+                throw error;
             }
         }
         
@@ -1208,27 +1232,32 @@
             const checklist = getChecklistData();
             
             const taskData = {
-                id: editingTaskId || `task_${Date.now()}`,
+                id: editingTaskId,
                 title: document.getElementById('task-title').value,
                 description: document.getElementById('task-description').value,
                 phase: document.getElementById('task-phase').value,
                 assignee: document.getElementById('task-assignee').value,
                 dueDate: document.getElementById('task-duedate').value,
-                checklist: checklist,
-                createdAt: editingTaskId ? tasks.find(t => t.id === editingTaskId).createdAt : new Date().toISOString(),
-                updatedAt: new Date().toISOString()
+                checklist: checklist
             };
             
-            if (editingTaskId) {
-                const index = tasks.findIndex(t => t.id === editingTaskId);
-                if (index !== -1) tasks[index] = taskData;
-            } else {
-                tasks.push(taskData);
+            try {
+                // Save to D1 Database via API
+                const savedTask = await saveTaskToAPI(taskData);
+                
+                // Update local tasks array
+                if (editingTaskId && !editingTaskId.startsWith('task_')) {
+                    const index = tasks.findIndex(t => t.id === editingTaskId);
+                    if (index !== -1) tasks[index] = savedTask;
+                } else {
+                    tasks.push(savedTask);
+                }
+                
+                closeTaskModal();
+                renderAllViews();
+            } catch (error) {
+                // Error already handled in saveTaskToAPI
             }
-            
-            await saveTasks();
-            closeTaskModal();
-            renderAllViews();
         }
         
         // Drag & Drop functions
@@ -1253,10 +1282,21 @@
             const task = tasks.find(t => t.id === draggedTaskId);
             if (task && task.phase !== targetPhase) {
                 task.phase = targetPhase;
-                task.updatedAt = new Date().toISOString();
                 
-                await saveTasks();
-                renderAllViews();
+                try {
+                    // Update phase via API
+                    const result = await window.apiClient.tasks.update(task.id, {
+                        phase: targetPhase
+                    });
+                    
+                    if (result.success) {
+                        console.log('✅ Task phase updated:', result.data);
+                        renderAllViews();
+                    }
+                } catch (error) {
+                    console.error('Error updating task phase:', error);
+                    alert('작업 단계 변경에 실패했습니다.');
+                }
             }
             
             draggedTaskId = null;
@@ -1270,7 +1310,7 @@
         // Initialize
         async function init() {
             await loadProject();
-            loadTasks();
+            await loadTasks(); // Now async
             renderAllViews();
         }
         

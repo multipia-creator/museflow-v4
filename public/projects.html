@@ -892,7 +892,7 @@
             document.getElementById('project-modal').classList.remove('active');
         }
         
-        // Save project
+        // Save project (Using API Client)
         async function saveProject(event) {
             event.preventDefault();
             
@@ -908,53 +908,50 @@
                 budget_total: parseInt(document.getElementById('budget_total').value) || 0,
                 budget_used: parseInt(document.getElementById('budget_used').value) || 0,
                 artwork_count: parseInt(document.getElementById('artwork_count').value) || 0,
-                status: 'active'
+                status: 'active',
+                user_id: 2 // Current user
             };
             
             try {
-                const url = editingProjectId 
-                    ? `${API_BASE_URL}/api/projects/${editingProjectId}`
-                    : `${API_BASE_URL}/api/projects`;
+                let result;
                 
-                const method = editingProjectId ? 'PUT' : 'POST';
+                if (editingProjectId) {
+                    result = await window.apiClient.projects.update(editingProjectId, formData);
+                } else {
+                    result = await window.apiClient.projects.create(formData);
+                }
                 
-                const response = await fetch(url, {
-                    method,
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (!response.ok) throw new Error('Failed to save project');
-                
-                closeModal();
-                loadProjects();
+                if (result.success) {
+                    console.log('✅ Project saved to D1 Database:', result.data);
+                    closeModal();
+                    loadProjects();
+                } else {
+                    throw new Error(result.error || 'Failed to save project');
+                }
                 
             } catch (error) {
                 console.error('Error saving project:', error);
-                alert('프로젝트 저장에 실패했습니다.');
+                alert('프로젝트 저장에 실패했습니다: ' + error.message);
             }
         }
         
-        // Delete project
+        // Delete project (Using API Client)
         async function deleteProject(projectId) {
             if (!confirm('정말로 이 전시를 삭제하시겠습니까?')) return;
             
             try {
-                const response = await fetch(`${API_BASE_URL}/api/projects/${projectId}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
+                const result = await window.apiClient.projects.delete(projectId);
                 
-                if (!response.ok) throw new Error('Failed to delete project');
-                
-                loadProjects();
+                if (result.success) {
+                    console.log('✅ Project deleted from D1 Database');
+                    loadProjects();
+                } else {
+                    throw new Error(result.error || 'Failed to delete project');
+                }
                 
             } catch (error) {
                 console.error('Error deleting project:', error);
-                alert('프로젝트 삭제에 실패했습니다.');
+                alert('프로젝트 삭제에 실패했습니다: ' + error.message);
             }
         }
         
