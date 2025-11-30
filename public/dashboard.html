@@ -636,12 +636,12 @@
             <ul class="nav-links" id="nav-links">
                 <li><a href="/landing.html"><i class="fas fa-home"></i> Home</a></li>
                 <li><a href="/dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-                <li style="position: relative;" class="canvas-menu">
-                    <a href="#" onclick="event.preventDefault(); toggleCanvasMenu()" style="display: flex; align-items: center; gap: 0.5rem;">
-                        <i class="fas fa-project-diagram"></i> Canvas <i class="fas fa-chevron-down" style="font-size: 0.75rem;"></i>
+                <li style="position: relative;" class="workflow-menu">
+                    <a href="#" onclick="event.preventDefault(); toggleWorkflowMenu()" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-project-diagram"></i> Workflow <i class="fas fa-chevron-down" style="font-size: 0.75rem;"></i>
                     </a>
-                    <div id="canvas-dropdown" style="display: none; position: absolute; top: 100%; left: 0; background: rgba(10, 10, 15, 0.98); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 0.5rem 0; margin-top: 0.5rem; min-width: 200px; z-index: 1000; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);">
-                        <a href="/canvas.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.1)'; this.style.color='#fff'" onmouseout="this.style.background='transparent'; this.style.color='rgba(255, 255, 255, 0.8)'">
+                    <div id="workflow-dropdown" style="display: none; position: absolute; top: 100%; left: 0; background: rgba(10, 10, 15, 0.98); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 0.5rem 0; margin-top: 0.5rem; min-width: 200px; z-index: 1000; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);">
+                        <a href="/workflow.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.1)'; this.style.color='#fff'" onmouseout="this.style.background='transparent'; this.style.color='rgba(255, 255, 255, 0.8)'">
                             <i class="fas fa-tasks" style="width: 20px;"></i>
                             <div>
                                 <div style="font-weight: 500;">Tasks</div>
@@ -1332,7 +1332,7 @@
                         severity: 'urgent',
                         icon: '🚨',
                         message: `${p.title} - D-${dday === 0 ? 'Day' : dday}`,
-                        action: () => window.location.href = `/canvas.html?project=${p.id}`
+                        action: () => window.location.href = `/workflow.html?project=${p.id}`
                     });
                 }
                 
@@ -1432,7 +1432,7 @@
                 const dday = calculateDDay(p.end_date);
                 
                 return `
-                    <div class="exhibition-card" onclick="window.location.href='/canvas.html?project=${p.id}'">
+                    <div class="exhibition-card" onclick="window.location.href='/workflow.html?project=${p.id}'">
                         <div class="card-thumbnail">
                             <div class="card-icon">${type.icon}</div>
                         </div>
@@ -1561,7 +1561,7 @@
             }).sort((a, b) => calculateDDay(a.end_date) - calculateDDay(b.end_date));
             
             if (urgentProjects.length > 0) {
-                window.location.href = `/canvas.html?project=${urgentProjects[0].id}`;
+                window.location.href = `/workflow.html?project=${urgentProjects[0].id}`;
             }
         }
         
@@ -1970,17 +1970,17 @@
         });
         
         // Canvas dropdown toggle
-        function toggleCanvasMenu() {
-            const dropdown = document.getElementById('canvas-dropdown');
+        function toggleWorkflowMenu() {
+            const dropdown = document.getElementById('workflow-dropdown');
             dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
         }
         
         // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
-            const dropdown = document.getElementById('canvas-dropdown');
-            const canvasMenu = document.querySelector('.canvas-menu');
+            const dropdown = document.getElementById('workflow-dropdown');
+            const workflowMenu = document.querySelector('.workflow-menu');
             
-            if (canvasMenu && !canvasMenu.contains(e.target)) {
+            if (workflowMenu && !workflowMenu.contains(e.target)) {
                 dropdown.style.display = 'none';
             }
         });
