@@ -604,6 +604,113 @@
             transform: translateX(4px);
         }
         
+        /* Section Background Colors with Glow Effect */
+        section[class^="section-"] {
+            padding: 3rem 0;
+            border-radius: 24px;
+            margin-bottom: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        section[class^="section-"]:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* 1. Hero Section - Purple Glow */
+        .section-hero {
+            background: 
+                radial-gradient(circle at top center, rgba(139, 92, 246, 0.15), transparent 70%),
+                rgba(10, 10, 15, 0.6);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            backdrop-filter: blur(20px);
+        }
+        
+        .section-hero:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.2);
+        }
+        
+        /* 2. Quick Start - Glass */
+        .section-quickstart {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .section-quickstart:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+        
+        /* 3. Stats - Glass */
+        .section-stats {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .section-stats:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+        
+        /* 4. Calendar - Indigo Glow */
+        .section-calendar {
+            background: 
+                radial-gradient(circle at center, rgba(99, 102, 241, 0.1), transparent 70%),
+                rgba(10, 10, 15, 0.6);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            backdrop-filter: blur(20px);
+        }
+        
+        .section-calendar:hover {
+            border-color: rgba(99, 102, 241, 0.25);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.15);
+        }
+        
+        /* 5. Projects Management - Cyan Glow */
+        .section-projects {
+            background: 
+                radial-gradient(circle at bottom center, rgba(6, 182, 212, 0.1), transparent 70%),
+                rgba(10, 10, 15, 0.6);
+            border: 1px solid rgba(6, 182, 212, 0.15);
+            backdrop-filter: blur(20px);
+        }
+        
+        .section-projects:hover {
+            border-color: rgba(6, 182, 212, 0.25);
+            box-shadow: 0 8px 32px rgba(6, 182, 212, 0.15);
+        }
+        
+        /* 6. Team & Collaboration - Pink Glow */
+        .section-team {
+            background: 
+                radial-gradient(circle at top center, rgba(236, 72, 153, 0.1), transparent 70%),
+                rgba(10, 10, 15, 0.6);
+            border: 1px solid rgba(236, 72, 153, 0.15);
+            backdrop-filter: blur(20px);
+        }
+        
+        .section-team:hover {
+            border-color: rgba(236, 72, 153, 0.25);
+            box-shadow: 0 8px 32px rgba(236, 72, 153, 0.15);
+        }
+        
+        /* 7. Analytics - Gold Glow */
+        .section-analytics {
+            background: 
+                radial-gradient(circle at center, rgba(245, 158, 11, 0.08), transparent 70%),
+                rgba(10, 10, 15, 0.6);
+            border: 1px solid rgba(245, 158, 11, 0.15);
+            backdrop-filter: blur(20px);
+        }
+        
+        .section-analytics:hover {
+            border-color: rgba(245, 158, 11, 0.25);
+            box-shadow: 0 8px 32px rgba(245, 158, 11, 0.12);
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .hero-title { font-size: 2rem; }
@@ -618,6 +725,11 @@
                 width: 60px;
                 height: 60px;
                 font-size: 1.5rem;
+            }
+            
+            section[class^="section-"] {
+                padding: 2rem 0;
+                margin-bottom: 1.5rem;
             }
         }
     </style>
@@ -688,7 +800,7 @@
     <div style="max-width: 1600px; margin: 0 auto; padding: 6rem 2rem 3rem 2rem;">
         
         <!-- Hero Section - 오늘의 핵심 업무 (통합) -->
-        <section class="hero-mission" id="hero-mission">
+        <section class="hero-mission section-hero" id="hero-mission">
             <div class="hero-content">
                 <div class="hero-title">🎯 오늘의 핵심 업무</div>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem;">
@@ -733,7 +845,7 @@
         </section>
         
         <!-- Quick Start Section -->
-        <section style="margin-bottom: 3rem;">
+        <section class="section-quickstart">
             <div class="glass-card" style="padding: 1.5rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
                     <h3 style="font-size: 1.25rem; font-weight: 600; color: white; display: flex; align-items: center; gap: 0.5rem;">
@@ -753,7 +865,7 @@
         </section>
 
         <!-- Overview Statistics Cards -->
-        <section style="margin-bottom: 3rem;">
+        <section class="section-stats">
             <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
                 <i class="fas fa-chart-pie" style="color: var(--museum-purple);"></i>
                 프로젝트 현황
@@ -810,7 +922,7 @@
         </section>
 
         <!-- Project Calendar (FullCalendar) -->
-        <section style="margin-bottom: 3rem;">
+        <section class="section-calendar">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
                 <h2 style="font-size: 1.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.75rem;">
                     <i class="fas fa-calendar-alt" style="color: var(--museum-purple);"></i>
@@ -825,12 +937,12 @@
             </div>
         </section>
 
-        <!-- All Projects Grid (통합) -->
-        <section style="margin-bottom: 3rem;">
+        <!-- Projects Management (통합: 모든 프로젝트 + 전시 인사이트 + CRUD) -->
+        <section class="section-projects">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
                 <h2 style="font-size: 1.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.75rem;">
-                    <i class="fas fa-briefcase" style="color: var(--museum-gold);"></i>
-                    모든 프로젝트
+                    <i class="fas fa-folder-open" style="color: #06b6d4;"></i>
+                    프로젝트 관리
                 </h2>
                 <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                     <select id="type-filter" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem 1.25rem; border-radius: 12px; color: white; cursor: pointer;">
@@ -862,8 +974,39 @@
             </div>
         </section>
 
+        <!-- Team & Collaboration (통합) -->
+        <section class="section-team">
+            <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-users" style="color: #ec4899;"></i>
+                팀 & 협업
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
+                <!-- Team Activity Feed -->
+                <div class="glass-card">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-stream" style="color: #ec4899;"></i>
+                        팀 활동
+                    </h3>
+                    <div id="team-activity" style="max-height: 400px; overflow-y: auto;">
+                        <!-- Team activities will be inserted here -->
+                    </div>
+                </div>
+                
+                <!-- Top Contributors -->
+                <div class="glass-card">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-trophy" style="color: #f59e0b;"></i>
+                        이번 주 우수 기여자
+                    </h3>
+                    <div id="top-contributors">
+                        <!-- Top contributors will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Analytics Charts -->
-        <section style="margin-bottom: 3rem;">
+        <section class="section-analytics">
             <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
                 <i class="fas fa-chart-line" style="color: var(--museum-purple);"></i>
                 데이터 분석
@@ -2126,12 +2269,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; padding: 0.75rem 1.5rem; background: rgba(0, 0, 0, 0.2); border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                            <button onclick="event.stopPropagation(); openCanvas(${project.id}, 'tasks')" style="padding: 0.5rem; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 8px; color: #a78bfa; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(139, 92, 246, 0.3)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.2)'">
-                                <i class="fas fa-tasks"></i> Tasks
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; padding: 0.75rem 1.5rem; background: rgba(0, 0, 0, 0.2); border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                            <button onclick="event.stopPropagation(); openCanvas(${project.id}, 'workflow')" style="padding: 0.5rem; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 8px; color: #a78bfa; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(139, 92, 246, 0.3)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.2)'">
+                                <i class="fas fa-eye"></i> 보기
                             </button>
-                            <button onclick="event.stopPropagation(); openCanvas(${project.id}, 'workflow')" style="padding: 0.5rem; background: rgba(236, 72, 153, 0.2); border: 1px solid rgba(236, 72, 153, 0.3); border-radius: 8px; color: #f9a8d4; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(236, 72, 153, 0.3)'" onmouseout="this.style.background='rgba(236, 72, 153, 0.2)'">
-                                <i class="fas fa-project-diagram"></i> Workflow
+                            <button onclick="event.stopPropagation(); editProject(${project.id})" style="padding: 0.5rem; background: rgba(6, 182, 212, 0.2); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 8px; color: #22d3ee; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(6, 182, 212, 0.3)'" onmouseout="this.style.background='rgba(6, 182, 212, 0.2)'">
+                                <i class="fas fa-edit"></i> 수정
+                            </button>
+                            <button onclick="event.stopPropagation(); duplicateProject(${project.id})" style="padding: 0.5rem; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; color: #fbbf24; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(245, 158, 11, 0.3)'" onmouseout="this.style.background='rgba(245, 158, 11, 0.2)'">
+                                <i class="fas fa-copy"></i> 복제
+                            </button>
+                            <button onclick="event.stopPropagation(); deleteProject(${project.id})" style="padding: 0.5rem; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; color: #f87171; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(239, 68, 68, 0.3)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.2)'">
+                                <i class="fas fa-trash"></i> 삭제
                             </button>
                         </div>
                     </div>
@@ -2140,7 +2289,7 @@
         }
         
         // Open canvas with type selection
-        function openCanvas(projectId, type = 'tasks') {
+        function openCanvas(projectId, type = 'workflow') {
             console.log('🎨 Opening canvas:', { projectId, type });
             
             if (!projectId) {
@@ -2149,14 +2298,99 @@
                 return;
             }
             
-            if (type === 'workflow') {
-                const url = `/workflow.html?project=${projectId}`;
-                console.log('📍 Navigating to:', url);
-                window.location.href = url;
-            } else {
-                const url = `/canvas.html?project=${projectId}`;
-                console.log('📍 Navigating to:', url);
-                window.location.href = url;
+            const url = `/workflow.html?project=${projectId}`;
+            console.log('📍 Navigating to:', url);
+            window.location.href = url;
+        }
+        
+        // Edit Project
+        async function editProject(projectId) {
+            console.log('✏️ Editing project:', projectId);
+            
+            const project = allProjects.find(p => p.id === projectId);
+            if (!project) {
+                notificationSystem.showInAppNotification('프로젝트를 찾을 수 없습니다.', 'error');
+                return;
+            }
+            
+            // Simple prompt-based edit for now (can be upgraded to modal later)
+            const newTitle = prompt('프로젝트 제목:', project.title);
+            if (!newTitle || newTitle === project.title) return;
+            
+            const newDescription = prompt('프로젝트 설명:', project.description || '');
+            
+            try {
+                const result = await window.apiClient.projects.update(projectId, {
+                    title: newTitle,
+                    description: newDescription
+                });
+                
+                if (result.success) {
+                    notificationSystem.showInAppNotification('프로젝트가 수정되었습니다! ✅', 'success');
+                    loadProjects();
+                }
+            } catch (error) {
+                console.error('Error updating project:', error);
+                notificationSystem.showInAppNotification('프로젝트 수정 중 오류가 발생했습니다.', 'error');
+            }
+        }
+        
+        // Duplicate Project
+        async function duplicateProject(projectId) {
+            console.log('📋 Duplicating project:', projectId);
+            
+            const project = allProjects.find(p => p.id === projectId);
+            if (!project) {
+                notificationSystem.showInAppNotification('프로젝트를 찾을 수 없습니다.', 'error');
+                return;
+            }
+            
+            const confirm = window.confirm(`"${project.title}"을(를) 복제하시겠습니까?`);
+            if (!confirm) return;
+            
+            try {
+                const result = await window.apiClient.projects.create({
+                    title: `${project.title} (복사본)`,
+                    description: project.description,
+                    type: project.type,
+                    phase: 'planning',
+                    location: project.location,
+                    curator: project.curator
+                });
+                
+                if (result.success) {
+                    notificationSystem.showInAppNotification('프로젝트가 복제되었습니다! 📋', 'success');
+                    loadProjects();
+                }
+            } catch (error) {
+                console.error('Error duplicating project:', error);
+                notificationSystem.showInAppNotification('프로젝트 복제 중 오류가 발생했습니다.', 'error');
+            }
+        }
+        
+        // Delete Project
+        async function deleteProject(projectId) {
+            console.log('🗑️ Deleting project:', projectId);
+            
+            const project = allProjects.find(p => p.id === projectId);
+            if (!project) {
+                notificationSystem.showInAppNotification('프로젝트를 찾을 수 없습니다.', 'error');
+                return;
+            }
+            
+            const confirm = window.confirm(`정말로 "${project.title}"을(를) 삭제하시겠습니까?\n\n⚠️ 이 작업은 되돌릴 수 없습니다.`);
+            if (!confirm) return;
+            
+            try {
+                const result = await window.apiClient.projects.delete(projectId);
+                
+                if (result.success) {
+                    notificationSystem.showInAppNotification('프로젝트가 삭제되었습니다! 🗑️', 'success');
+                    loadProjects();
+                }
+            } catch (error) {
+                console.error('Error deleting project:', error);
+                notificationSystem.showInAppNotification('프로젝트 삭제 중 오류가 발생했습니다.', 'error');
             }
         }
         
