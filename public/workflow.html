@@ -6,11 +6,15 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="4.6.1">
-    <title>Workflow - MuseFlow.life</title>
+    <meta name="version" content="4.5.3">
+    <title>Workflow - MuseFlow</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="/static/js/tracker.js?v=4.0.0"></script>
+    
+    <!-- Lucide Icons (for nodes) -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- Canvas V3 Styles -->
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -18,1412 +22,517 @@
             --museum-purple: #8b5cf6;
             --museum-pink: #ec4899;
             --museum-gold: #f59e0b;
-            --urgent: #ef4444;
-            --warning: #f59e0b;
-            --success: #10b981;
-            --info: #3b82f6;
+            --bg-dark: #0a0a0f;
+            --bg-darker: #05050a;
+            --border-light: rgba(255, 255, 255, 0.1);
         }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0a0a0f 0%, #1a0f2e 50%, #0a0a0f 100%);
+            background: var(--bg-dark);
             color: #f5f5f7;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        /* Top Bar */
-        .top-bar {
-            background: rgba(10, 10, 15, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .project-title {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .back-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            padding: 0.5rem 1rem;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateX(-4px);
-        }
-        
-        .project-info h1 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .project-meta {
-            display: flex;
-            gap: 1.5rem;
-            font-size: 0.875rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 0.5rem;
-        }
-        
-        /* View Switcher */
-        .view-switcher {
-            display: flex;
-            gap: 0.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 0.5rem;
-        }
-        
-        .view-btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            border: none;
-            background: transparent;
-            color: rgba(255, 255, 255, 0.6);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .view-btn.active {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3));
-            color: white;
-            border: 1px solid rgba(139, 92, 246, 0.5);
-        }
-        
-        .view-btn:hover:not(.active) {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-        
-        /* Content Area */
-        .content-area {
-            padding: 2rem;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-        
-        /* Timeline View */
-        .timeline-view {
-            display: none;
-        }
-        
-        .timeline-view.active {
-            display: block;
-        }
-        
-        .timeline-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-        
-        .timeline-title {
-            font-size: 2rem;
-            font-weight: 700;
-        }
-        
-        .timeline-controls {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .timeline-grid {
-            display: grid;
-            grid-template-columns: 150px 1fr;
-            gap: 1rem;
-        }
-        
-        .timeline-phases {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-        
-        .phase-label {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 1.5rem 1rem;
-            text-align: center;
-            font-weight: 600;
-            height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        
-        .phase-icon {
-            font-size: 2rem;
-        }
-        
-        .timeline-tracks {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-        
-        .timeline-track {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 1.5rem;
-            min-height: 200px;
-            position: relative;
-        }
-        
-        .task-cards {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        
-        .task-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
-            padding: 1.25rem;
-            width: 260px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
             overflow: hidden;
+            height: 100vh;
         }
         
-        .task-card::before {
-            content: '';
-            position: absolute;
+        /* Top Toolbar */
+        .toolbar {
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.2), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            height: 60px;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1.5rem;
+            z-index: 1000;
         }
         
-        .task-card:hover::before {
-            opacity: 1;
+        .toolbar-left, .toolbar-center, .toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
         
-        .task-card:hover {
-            transform: translateY(-6px) scale(1.02);
-            box-shadow: 0 16px 40px rgba(139, 92, 246, 0.4);
-            border-color: rgba(139, 92, 246, 0.6);
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--museum-purple), var(--museum-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
         }
         
-        .task-title {
+        .project-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+        }
+        
+        .tool-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tool-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: var(--museum-purple);
+        }
+        
+        .tool-btn.active {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: var(--museum-purple);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+        }
+        
+        /* Left Panel - Node Library */
+        .left-panel {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 300px;
+            height: calc(100vh - 60px);
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-light);
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        
+        .left-panel.collapsed {
+            transform: translateX(-100%);
+        }
+        
+        .panel-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .panel-title {
+            font-size: 1.125rem;
             font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            color: #f5f5f7;
+            font-size: 0.875rem;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: var(--museum-purple);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .node-categories {
+            padding: 1rem;
+        }
+        
+        .category {
             margin-bottom: 0.5rem;
         }
         
-        .task-meta {
+        .category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .category-header:hover {
+            background: rgba(139, 92, 246, 0.1);
+        }
+        
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .subcategory-list {
+            padding: 0.5rem 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .category.expanded .subcategory-list {
+            max-height: 500px;
+        }
+        
+        .node-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.625rem 1rem;
+            margin: 0.25rem 0.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            cursor: grab;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+        
+        .node-item:hover {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: var(--museum-purple);
+            transform: translateX(4px);
+        }
+        
+        .node-item:active {
+            cursor: grabbing;
+        }
+        
+        .node-icon {
+            width: 20px;
+            height: 20px;
+            color: var(--museum-purple);
+        }
+        
+        /* Canvas Area */
+        .canvas-container {
+            position: fixed;
+            top: 60px;
+            left: 300px;
+            right: 300px;
+            height: calc(100vh - 60px);
+            background: 
+                linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 0 0;
+            overflow: hidden;
+            transition: left 0.3s ease, right 0.3s ease;
+        }
+        
+        .canvas-container.left-collapsed {
+            left: 0;
+        }
+        
+        .canvas-container.right-collapsed {
+            right: 0;
+        }
+        
+        #canvas {
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+        
+        #canvas.grabbing {
+            cursor: grabbing;
+        }
+        
+        /* Canvas Node */
+        .canvas-node {
+            position: absolute;
+            min-width: 200px;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            cursor: move;
+            transition: box-shadow 0.2s;
+        }
+        
+        .canvas-node:hover {
+            box-shadow: 0 12px 48px rgba(139, 92, 246, 0.3);
+        }
+        
+        .canvas-node.selected {
+            border-color: var(--museum-purple);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+        }
+        
+        .node-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .node-header-icon {
+            width: 24px;
+            height: 24px;
+            color: var(--museum-purple);
+        }
+        
+        .node-title {
+            flex: 1;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .node-content {
+            padding: 1rem;
+        }
+        
+        .node-description {
             font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.6);
-            display: flex;
-            gap: 1rem;
+            line-height: 1.5;
         }
         
-        /* Kanban View */
-        .kanban-view {
-            display: none;
-        }
-        
-        .kanban-view.active {
-            display: block;
-        }
-        
-        .kanban-board {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        .kanban-column {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 1.5rem;
-            min-height: 600px;
-        }
-        
-        .column-header {
+        .node-ports {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
         }
         
-        .column-title {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-        
-        .column-count {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 0.25rem 0.75rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-        
-        .kanban-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .kanban-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 18px;
-            padding: 1.75rem;
+        .node-port {
+            width: 12px;
+            height: 12px;
+            background: var(--museum-purple);
+            border: 2px solid rgba(10, 10, 15, 0.95);
+            border-radius: 50%;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.2s;
         }
         
-        .kanban-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        .node-port:hover {
+            transform: scale(1.3);
+            box-shadow: 0 0 12px var(--museum-purple);
+        }
+        
+        /* Right Panel - Properties */
+        .right-panel {
+            position: fixed;
+            top: 60px;
             right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.15), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            width: 300px;
+            height: calc(100vh - 60px);
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid var(--border-light);
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
         }
         
-        .kanban-card:hover::before {
-            opacity: 1;
+        .right-panel.collapsed {
+            transform: translateX(100%);
         }
         
-        .kanban-card:hover {
-            transform: translateY(-4px) scale(1.01);
-            box-shadow: 0 12px 32px rgba(139, 92, 246, 0.4);
-            border-color: rgba(139, 92, 246, 0.6);
-        }
-        
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-        
-        .card-type {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        
-        .type-permanent { background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.1)); color: #93c5fd; }
-        .type-special { background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(219, 39, 119, 0.1)); color: #f9a8d4; }
-        .type-traveling { background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.1)); color: #fcd34d; }
-        .type-event { background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1)); color: #6ee7b7; }
-        
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            line-height: 1.4;
-        }
-        
-        .card-description {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.875rem;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-        
-        .card-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-        }
-        
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .progress-info {
-            font-size: 0.875rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .progress-bar-container {
-            width: 100px;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 100px;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #8b5cf6, #ec4899);
-            border-radius: 100px;
-            transition: width 0.3s ease;
-        }
-        
-        /* Gallery View */
-        .gallery-view {
-            display: none;
-        }
-        
-        .gallery-view.active {
-            display: block;
-        }
-        
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        .gallery-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .gallery-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4);
-            border-color: rgba(139, 92, 246, 0.5);
-        }
-        
-        .gallery-thumbnail {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .gallery-thumbnail::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-            animation: shimmer 3s ease-in-out infinite;
-        }
-        
-        @keyframes shimmer {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(20px, 20px); }
-        }
-        
-        .gallery-content {
+        .properties-content {
             padding: 1.5rem;
         }
         
-        .gallery-type {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
+        .property-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .property-label {
+            display: block;
             font-size: 0.75rem;
             font-weight: 600;
-            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 0.5rem;
         }
         
-        .gallery-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-        }
-        
-        .gallery-description {
-            color: rgba(255, 255, 255, 0.7);
+        .property-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            color: #f5f5f7;
             font-size: 0.875rem;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
         }
         
-        .gallery-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            font-size: 0.875rem;
-            color: rgba(255, 255, 255, 0.7);
+        .property-input:focus {
+            outline: none;
+            border-color: var(--museum-purple);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
         }
         
-        /* Action Buttons */
-        .action-btn {
-            padding: 0.75rem 1.5rem;
+        /* Minimap */
+        .minimap {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 200px;
+            height: 150px;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-light);
             border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.5);
-        }
-        
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.15);
+            z-index: 200;
         }
         
         /* Empty State */
         .empty-state {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             text-align: center;
-            padding: 4rem 2rem;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.4);
         }
         
         .empty-icon {
             font-size: 4rem;
             margin-bottom: 1rem;
-            opacity: 0.5;
         }
         
         .empty-text {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 500;
         }
         
-        .empty-subtext {
+        .empty-hint {
             font-size: 0.875rem;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .top-bar {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: stretch;
-            }
-            
-            .view-switcher {
-                justify-content: stretch;
-            }
-            
-            .view-btn {
-                flex: 1;
-                justify-content: center;
-            }
-            
-            .timeline-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .kanban-board {
-                grid-template-columns: 1fr;
-            }
-            
-            .gallery-grid {
-                grid-template-columns: 1fr;
-            }
+            margin-top: 0.5rem;
         }
     </style>
 </head>
 <body>
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <div class="project-title">
-            <a href="/dashboard" class="back-btn">
-                <i class="fas fa-arrow-left"></i>
-                대시보드
-            </a>
+    <!-- Top Toolbar -->
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <a href="/dashboard" class="logo">🎨 MuseFlow</a>
             <div class="project-info">
-                <h1 id="project-title">전시 프로젝트</h1>
-                <div class="project-meta">
-                    <span id="project-type"><i class="fas fa-tag"></i> 전시 유형</span>
-                    <span id="project-phase"><i class="fas fa-tasks"></i> 진행 단계</span>
-                    <span id="project-dday"><i class="fas fa-calendar"></i> D-Day</span>
-                </div>
+                <i class="fas fa-palette"></i>
+                <span id="project-title">Loading...</span>
             </div>
         </div>
         
-        <div class="view-switcher">
-            <button class="view-btn active" data-view="timeline">
-                <i class="fas fa-stream"></i> 타임라인
+        <div class="toolbar-center">
+            <button class="tool-btn active" id="tool-select" title="Select (V)">
+                <i class="fas fa-mouse-pointer"></i>
             </button>
-            <button class="view-btn" data-view="kanban">
-                <i class="fas fa-th-large"></i> 칸반보드
+            <button class="tool-btn" id="tool-hand" title="Hand (H)">
+                <i class="fas fa-hand-paper"></i>
             </button>
-            <button class="view-btn" data-view="gallery">
-                <i class="fas fa-images"></i> 갤러리
+            <button class="tool-btn" id="tool-connection" title="Connection (C)">
+                <i class="fas fa-project-diagram"></i>
             </button>
-            <button class="view-btn" onclick="openCanvasV3()" style="background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none;">
-                <i class="fas fa-project-diagram"></i> Canvas V3
+            <div style="width: 1px; height: 24px; background: var(--border-light); margin: 0 0.5rem;"></div>
+            <button class="tool-btn" id="tool-zoom-in" title="Zoom In (+)">
+                <i class="fas fa-search-plus"></i>
             </button>
-            <div style="position: relative; margin-left: 1rem;">
-                <button id="notification-btn" class="view-btn" onclick="toggleNotificationPanel()" style="position: relative;">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge" style="display: none;">0</span>
-                </button>
-                <div id="notification-panel" class="notification-panel" style="display: none;"></div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Content Area -->
-    <div class="content-area">
-        <!-- Timeline View -->
-        <div class="timeline-view active" id="timeline-view">
-            <div class="timeline-header">
-                <h2 class="timeline-title">📅 프로젝트 타임라인</h2>
-                <div class="timeline-controls">
-                    <button class="action-btn btn-secondary" onclick="addTask()">
-                        <i class="fas fa-plus"></i> 작업 추가
-                    </button>
-                </div>
-            </div>
-            
-            <div class="timeline-grid">
-                <div class="timeline-phases">
-                    <div class="phase-label" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.05));">
-                        <div class="phase-icon">💡</div>
-                        <div>기획</div>
-                    </div>
-                    <div class="phase-label" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.05));">
-                        <div class="phase-icon">🔧</div>
-                        <div>준비</div>
-                    </div>
-                    <div class="phase-label" style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(219, 39, 119, 0.05));">
-                        <div class="phase-icon">🚀</div>
-                        <div>진행</div>
-                    </div>
-                    <div class="phase-label" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.05));">
-                        <div class="phase-icon">📢</div>
-                        <div>홍보</div>
-                    </div>
-                    <div class="phase-label" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));">
-                        <div class="phase-icon">✅</div>
-                        <div>완료</div>
-                    </div>
-                </div>
-                
-                <div class="timeline-tracks">
-                    <div class="timeline-track">
-                        <div class="task-cards" id="planning-tasks">
-                            <div class="empty-state" style="padding: 2rem;">
-                                <div class="empty-icon">💡</div>
-                                <div class="empty-text">기획 단계 작업 없음</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline-track">
-                        <div class="task-cards" id="preparation-tasks">
-                            <div class="empty-state" style="padding: 2rem;">
-                                <div class="empty-icon">🔧</div>
-                                <div class="empty-text">준비 단계 작업 없음</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline-track">
-                        <div class="task-cards" id="execution-tasks">
-                            <div class="empty-state" style="padding: 2rem;">
-                                <div class="empty-icon">🚀</div>
-                                <div class="empty-text">진행 단계 작업 없음</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline-track">
-                        <div class="task-cards" id="marketing-tasks">
-                            <div class="empty-state" style="padding: 2rem;">
-                                <div class="empty-icon">📢</div>
-                                <div class="empty-text">홍보 단계 작업 없음</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline-track">
-                        <div class="task-cards" id="completed-tasks">
-                            <div class="empty-state" style="padding: 2rem;">
-                                <div class="empty-icon">✅</div>
-                                <div class="empty-text">완료된 작업 없음</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <button class="tool-btn" id="tool-zoom-out" title="Zoom Out (-)">
+                <i class="fas fa-search-minus"></i>
+            </button>
+            <button class="tool-btn" id="tool-zoom-reset" title="Zoom Reset (0)">
+                <i class="fas fa-compress"></i>
+            </button>
         </div>
         
-        <!-- Kanban View -->
-        <div class="kanban-view" id="kanban-view">
-            <div class="timeline-header">
-                <h2 class="timeline-title">📋 칸반 보드</h2>
-                <div class="timeline-controls">
-                    <button class="action-btn btn-secondary" onclick="addTask()">
-                        <i class="fas fa-plus"></i> 작업 추가
-                    </button>
-                </div>
-            </div>
-            
-            <div class="kanban-board" id="kanban-board">
-                <!-- Kanban columns will be rendered here -->
-            </div>
+        <div class="toolbar-right">
+            <button class="tool-btn" id="toggle-left-panel">
+                <i class="fas fa-bars"></i>
+            </button>
+            <button class="tool-btn" id="toggle-right-panel">
+                <i class="fas fa-sliders-h"></i>
+            </button>
+            <button class="tool-btn" id="save-workflow" title="Save (Ctrl+S)">
+                <i class="fas fa-save"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Left Panel - Node Library -->
+    <div class="left-panel" id="left-panel">
+        <div class="panel-header">
+            <h3 class="panel-title">📦 Node Library</h3>
+            <input type="text" class="search-box" id="node-search" placeholder="Search nodes...">
         </div>
         
-        <!-- Gallery View -->
-        <div class="gallery-view" id="gallery-view">
-            <div class="timeline-header">
-                <h2 class="timeline-title">🎨 전시 갤러리</h2>
-                <div class="timeline-controls">
-                    <button class="action-btn btn-primary" onclick="editProject()">
-                        <i class="fas fa-edit"></i> 전시 편집
-                    </button>
-                </div>
-            </div>
-            
-            <div class="gallery-grid" id="gallery-grid">
-                <!-- Gallery items will be rendered here -->
-            </div>
+        <div class="node-categories" id="node-categories">
+            <!-- Node categories will be rendered here -->
         </div>
     </div>
     
-    <!-- Task Modal -->
-    <div class="modal" id="task-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 1000; align-items: center; justify-content: center;">
-        <div style="background: rgba(10, 10, 15, 0.95); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 2rem; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <h2 style="font-size: 1.75rem; font-weight: 700;" id="task-modal-title">새 작업 추가</h2>
-                <button onclick="closeTaskModal()" style="background: none; border: none; color: rgba(255, 255, 255, 0.7); font-size: 1.5rem; cursor: pointer;">&times;</button>
-            </div>
-            <form id="task-form" onsubmit="saveTask(event)">
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.875rem;">작업 제목 *</label>
-                    <input type="text" id="task-title" required style="width: 100%; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-size: 0.875rem;">
-                </div>
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.875rem;">설명</label>
-                    <textarea id="task-description" style="width: 100%; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-size: 0.875rem; resize: vertical; min-height: 80px;"></textarea>
-                </div>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.875rem;">진행 단계 *</label>
-                        <select id="task-phase" required style="width: 100%; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-size: 0.875rem;">
-                            <option value="planning">💡 기획</option>
-                            <option value="preparation">🔧 준비</option>
-                            <option value="execution">🚀 진행</option>
-                            <option value="marketing">📢 홍보</option>
-                            <option value="completed">✅ 완료</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.875rem;">담당자</label>
-                        <input type="text" id="task-assignee" style="width: 100%; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-size: 0.875rem;">
-                    </div>
-                </div>
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.875rem;">마감일</label>
-                    <input type="date" id="task-duedate" style="width: 100%; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-size: 0.875rem;">
-                </div>
-                
-                <!-- Checklist Section -->
-                <div style="margin-bottom: 1.5rem;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                        <label style="font-weight: 600; font-size: 0.875rem;">체크리스트</label>
-                        <button type="button" onclick="addChecklistItem()" style="background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.5); color: #a78bfa; padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
-                            <i class="fas fa-plus"></i> 항목 추가
-                        </button>
-                    </div>
-                    <div id="checklist-container" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 200px; overflow-y: auto;">
-                        <!-- Checklist items will be added here -->
-                    </div>
-                    <div id="checklist-progress" style="margin-top: 1rem; display: none;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                            <span style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">완료율</span>
-                            <span id="checklist-percentage" style="font-size: 0.875rem; font-weight: 700; color: #10b981;">0%</span>
-                        </div>
-                        <div style="width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 100px; overflow: hidden;">
-                            <div id="checklist-progress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #10b981, #059669); border-radius: 100px; transition: width 0.3s ease;"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                    <button type="button" class="btn-secondary" style="flex: 1;" onclick="closeTaskModal()">취소</button>
-                    <button type="submit" class="btn-primary" style="flex: 1;">저장</button>
-                </div>
-            </form>
-            
-            <!-- Comments Section (only shown when editing existing task) -->
-            <div class="comments-container" id="task-comments-container" style="display: none; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                <!-- Comments will be rendered here by collaborationSystem -->
-            </div>
+    <!-- Canvas Area -->
+    <div class="canvas-container" id="canvas-container">
+        <canvas id="canvas"></canvas>
+        
+        <!-- Empty State -->
+        <div class="empty-state" id="empty-state">
+            <div class="empty-icon">🎨</div>
+            <div class="empty-text">Visual Workflow Canvas</div>
+            <div class="empty-hint">Drag nodes from left panel to start building</div>
         </div>
     </div>
     
+    <!-- Right Panel - Properties -->
+    <div class="right-panel" id="right-panel">
+        <div class="panel-header">
+            <h3 class="panel-title">⚙️ Properties</h3>
+        </div>
+        
+        <div class="properties-content" id="properties-content">
+            <p style="text-align: center; color: rgba(255, 255, 255, 0.4); padding: 2rem 0;">
+                Select a node to edit properties
+            </p>
+        </div>
+    </div>
+    
+    <!-- Minimap -->
+    <div class="minimap" id="minimap">
+        <canvas id="minimap-canvas" width="200" height="150"></canvas>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="/static/js/api-client-d1.js"></script>
+    <script src="/static/js/pages/canvas-v3.js"></script>
     <script>
-        // Configuration (API_BASE_URL already defined by tracker.js)
-        let token = localStorage.getItem('museflow_token');
-        
-        // Check authentication (Demo mode - bypass for visualization)
-        if (!token) {
-            // Demo mode: create a dummy token
-            token = 'demo-token-12345';
-            localStorage.setItem('museflow_token', token);
-            console.log('🎨 Demo mode activated for canvas visualization');
-        }
-        
-        // Get project ID from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const projectId = urlParams.get('project');
-        
-        console.log('📋 Canvas page loaded - Project ID:', projectId);
-        
-        let currentProject = null;
-        let currentView = 'timeline';
-        let editingTaskId = null;
-        let tasks = [];
-        let currentChecklist = [];
-        
-        // Type configurations
-        const typeConfig = {
-            permanent: { label: '상설전', icon: '🏛️', class: 'type-permanent' },
-            special: { label: '특별전', icon: '✨', class: 'type-special' },
-            traveling: { label: '순회전', icon: '🚌', class: 'type-traveling' },
-            event: { label: '기획전', icon: '🎭', class: 'type-event' }
-        };
-        
-        const phaseConfig = {
-            planning: { label: '기획', icon: '💡', progress: 20 },
-            preparation: { label: '준비', icon: '🔧', progress: 40 },
-            execution: { label: '진행', icon: '🚀', progress: 60 },
-            marketing: { label: '홍보', icon: '📢', progress: 80 },
-            completed: { label: '완료', icon: '✅', progress: 100 }
-        };
-        
-        // Calculate D-Day
-        function calculateDDay(dateString) {
-            if (!dateString) return null;
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const targetDate = new Date(dateString);
-            targetDate.setHours(0, 0, 0, 0);
-            const diffTime = targetDate - today;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            return diffDays;
-        }
-        
-        // Load project data
-        async function loadProject() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/projects/${projectId}`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                
-                if (!response.ok) throw new Error('Failed to load project');
-                
-                const data = await response.json();
-                currentProject = data.project;
-                
-                renderProjectHeader();
-                
-            } catch (error) {
-                console.error('Error loading project:', error);
-                alert('프로젝트를 불러올 수 없습니다. Dashboard로 이동합니다.');
-                window.location.href = '/dashboard';
-            }
-        }
-        
-        // Render project header
-        function renderProjectHeader() {
-            const type = typeConfig[currentProject.type] || typeConfig.permanent;
-            const phase = phaseConfig[currentProject.phase] || phaseConfig.planning;
-            const dday = calculateDDay(currentProject.end_date);
+        // Initialize Canvas V3
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get project ID and module from URL
+            console.log('🔍 Canvas V3 - Full URL:', window.location.href);
+            console.log('🔍 Canvas V3 - Search params:', window.location.search);
             
-            document.getElementById('project-title').textContent = currentProject.title;
-            document.getElementById('project-type').innerHTML = `<i class="fas fa-tag"></i> ${type.icon} ${type.label}`;
-            document.getElementById('project-phase').innerHTML = `<i class="fas fa-tasks"></i> ${phase.icon} ${phase.label}`;
+            const params = new URLSearchParams(window.location.search);
+            const projectId = params.get('project');
+            const module = params.get('module');
             
-            if (dday !== null && dday >= 0) {
-                const ddayColor = dday <= 7 ? '#ef4444' : dday <= 14 ? '#f59e0b' : '#10b981';
-                document.getElementById('project-dday').innerHTML = `<i class="fas fa-calendar"></i> <span style="color: ${ddayColor}; font-weight: 700;">D-${dday}</span>`;
-            } else {
-                document.getElementById('project-dday').innerHTML = `<i class="fas fa-calendar"></i> 종료됨`;
-            }
-        }
-        
-        // Render all views
-        function renderAllViews() {
-            renderTimelineView();
-            renderKanbanView();
-            renderGalleryView();
-        }
-        
-        // Load tasks from D1 Database via API
-        async function loadTasks() {
-            try {
-                const result = await window.apiClient.tasks.list(projectId);
-                if (result.success) {
-                    tasks = result.data || [];
-                    console.log(`✅ Loaded ${tasks.length} tasks from D1 Database`);
-                } else {
-                    console.error('Failed to load tasks:', result.error);
-                    tasks = [];
-                }
-            } catch (error) {
-                console.error('Error loading tasks:', error);
-                tasks = [];
-            }
-        }
-        
-        // Create or Update Task via API
-        async function saveTaskToAPI(taskData) {
-            try {
-                let result;
-                
-                if (taskData.id && !taskData.id.startsWith('task_')) {
-                    // Update existing task (real DB ID)
-                    result = await window.apiClient.tasks.update(taskData.id, {
-                        title: taskData.title,
-                        description: taskData.description,
-                        phase: taskData.phase,
-                        assignee: taskData.assignee,
-                        dueDate: taskData.dueDate,
-                        checklist: JSON.stringify(taskData.checklist || [])
-                    });
-                } else {
-                    // Create new task
-                    result = await window.apiClient.tasks.create({
-                        project_id: projectId,
-                        user_id: 2, // Current user
-                        title: taskData.title,
-                        description: taskData.description,
-                        phase: taskData.phase,
-                        assignee: taskData.assignee,
-                        dueDate: taskData.dueDate,
-                        checklist: JSON.stringify(taskData.checklist || [])
-                    });
-                }
-                
-                if (result.success) {
-                    console.log('✅ Task saved to D1 Database:', result.data);
-                    return result.data;
-                } else {
-                    throw new Error(result.error || 'Failed to save task');
-                }
-            } catch (error) {
-                console.error('Error saving task:', error);
-                alert('작업 저장에 실패했습니다: ' + error.message);
-                throw error;
-            }
-        }
-        
-        // Render Timeline View
-        function renderTimelineView() {
-            const phases = ['planning', 'preparation', 'execution', 'marketing', 'completed'];
+            console.log('🔍 Canvas V3 - Project ID:', projectId);
+            console.log('🔍 Canvas V3 - Module:', module);
             
-            phases.forEach(phase => {
-                const container = document.getElementById(`${phase}-tasks`);
-                if (!container) return;
-                
-                const phaseTasks = tasks.filter(t => t.phase === phase);
-                
-                if (phaseTasks.length === 0) {
-                    container.innerHTML = `
-                        <div class="empty-state" style="padding: 2rem;">
-                            <div class="empty-icon">${phaseConfig[phase].icon}</div>
-                            <div class="empty-text">${phaseConfig[phase].label} 단계 작업 없음</div>
-                        </div>
-                    `;
-                } else {
-                    container.innerHTML = phaseTasks.map(task => `
-                        <div class="task-card" onclick="editTask('${task.id}')">
-                            <div class="task-title">${task.title}</div>
-                            <div class="task-meta">
-                                ${task.assignee ? `<span><i class="fas fa-user"></i> ${task.assignee}</span>` : ''}
-                                ${task.dueDate ? `<span><i class="fas fa-calendar"></i> ${task.dueDate}</span>` : ''}
-                            </div>
-                        </div>
-                    `).join('');
-                }
-            });
-        }
-        
-        // Render Kanban View
-        function renderKanbanView() {
-            const phases = [
-                { key: 'planning', label: '💡 기획', color: 'rgba(59, 130, 246, 0.1)' },
-                { key: 'preparation', label: '🔧 준비', color: 'rgba(245, 158, 11, 0.1)' },
-                { key: 'execution', label: '🚀 진행', color: 'rgba(236, 72, 153, 0.1)' },
-                { key: 'marketing', label: '📢 홍보', color: 'rgba(139, 92, 246, 0.1)' },
-                { key: 'completed', label: '✅ 완료', color: 'rgba(16, 185, 129, 0.1)' }
-            ];
-            
-            const board = document.getElementById('kanban-board');
-            board.innerHTML = phases.map(phase => {
-                const phaseTasks = tasks.filter(t => t.phase === phase.key);
-                
-                return `
-                    <div class="kanban-column" style="background: ${phase.color};" 
-                         ondragover="allowDrop(event)" 
-                         ondrop="drop(event, '${phase.key}')">
-                        <div class="column-header">
-                            <div class="column-title">${phase.label}</div>
-                            <div class="column-count">${phaseTasks.length}</div>
-                        </div>
-                        <div class="kanban-cards">
-                            ${phaseTasks.length === 0 ? `
-                                <div class="empty-state" style="padding: 3rem 1rem;">
-                                    <div class="empty-icon">${phase.label.split(' ')[0]}</div>
-                                    <div class="empty-text">작업 없음</div>
-                                </div>
-                            ` : phaseTasks.map(task => `
-                                <div class="kanban-card" 
-                                     draggable="true" 
-                                     ondragstart="drag(event, '${task.id}')"
-                                     onclick="editTask('${task.id}')">
-                                    <h4 style="font-weight: 600; margin-bottom: 0.5rem;">${task.title}</h4>
-                                    ${task.description ? `<p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.75rem;">${task.description}</p>` : ''}
-                                    ${task.checklist && task.checklist.length > 0 ? (() => {
-                                        const total = task.checklist.length;
-                                        const checked = task.checklist.filter(item => item.checked).length;
-                                        const percentage = Math.round((checked / total) * 100);
-                                        return `
-                                            <div style="margin-bottom: 0.75rem;">
-                                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
-                                                    <span style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.6);"><i class="fas fa-check-circle"></i> ${checked}/${total} 완료</span>
-                                                    <span style="font-size: 0.75rem; font-weight: 600; color: ${percentage === 100 ? '#10b981' : '#8b5cf6'};">${percentage}%</span>
-                                                </div>
-                                                <div style="width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 100px; overflow: hidden;">
-                                                    <div style="width: ${percentage}%; height: 100%; background: linear-gradient(90deg, ${percentage === 100 ? '#10b981' : '#8b5cf6'}, ${percentage === 100 ? '#059669' : '#ec4899'}); border-radius: 100px;"></div>
-                                                </div>
-                                            </div>
-                                        `;
-                                    })() : ''}
-                                    <div style="display: flex; gap: 1rem; font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">
-                                        ${task.assignee ? `<span><i class="fas fa-user"></i> ${task.assignee}</span>` : ''}
-                                        ${task.dueDate ? `<span><i class="fas fa-calendar"></i> ${task.dueDate}</span>` : ''}
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-        
-        // Render Gallery View
-        function renderGalleryView() {
-            const type = typeConfig[currentProject.type] || typeConfig.permanent;
-            const phase = phaseConfig[currentProject.phase] || phaseConfig.planning;
-            const dday = calculateDDay(currentProject.end_date);
-            
-            const grid = document.getElementById('gallery-grid');
-            grid.innerHTML = `
-                <div class="gallery-card" onclick="editProject()">
-                    <div class="gallery-thumbnail">
-                        <span style="position: relative; z-index: 1;">${type.icon}</span>
-                    </div>
-                    <div class="gallery-content">
-                        <span class="gallery-type ${type.class}">${type.icon} ${type.label}</span>
-                        <h3 class="gallery-title">${currentProject.title}</h3>
-                        <p class="gallery-description">${currentProject.description || '설명이 없습니다.'}</p>
-                        <div class="gallery-meta">
-                            ${currentProject.location ? `<span><i class="fas fa-map-marker-alt"></i> ${currentProject.location}</span>` : ''}
-                            ${currentProject.curator ? `<span><i class="fas fa-user-tie"></i> ${currentProject.curator}</span>` : ''}
-                            ${currentProject.artwork_count ? `<span><i class="fas fa-palette"></i> ${currentProject.artwork_count}점</span>` : ''}
-                            ${dday !== null && dday >= 0 ? `<span><i class="fas fa-calendar"></i> D-${dday}</span>` : ''}
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        // View switcher
-        document.querySelectorAll('.view-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const view = btn.dataset.view;
-                
-                // Update buttons
-                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                // Update views
-                document.querySelectorAll('.timeline-view, .kanban-view, .gallery-view').forEach(v => {
-                    v.classList.remove('active');
-                });
-                document.getElementById(`${view}-view`).classList.add('active');
-                
-                currentView = view;
-            });
-        });
-        
-        // Checklist functions
-        function addChecklistItem() {
-            const container = document.getElementById('checklist-container');
-            const itemId = `checklist_${Date.now()}`;
-            
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'checklist-item';
-            itemDiv.style.cssText = 'display: flex; gap: 0.75rem; align-items: center; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border-radius: 8px;';
-            itemDiv.dataset.id = itemId;
-            
-            itemDiv.innerHTML = `
-                <input type="checkbox" onchange="updateChecklistProgress()" style="width: 18px; height: 18px; cursor: pointer;">
-                <input type="text" placeholder="체크리스트 항목 입력..." style="flex: 1; background: transparent; border: none; color: white; font-size: 0.875rem; outline: none;">
-                <button type="button" onclick="removeChecklistItem('${itemId}')" style="background: none; border: none; color: rgba(255, 255, 255, 0.5); cursor: pointer; padding: 0.25rem;">
-                    <i class="fas fa-times"></i>
-                </button>
-            `;
-            
-            container.appendChild(itemDiv);
-            updateChecklistProgress();
-        }
-        
-        function removeChecklistItem(itemId) {
-            const item = document.querySelector(`[data-id="${itemId}"]`);
-            if (item) {
-                item.remove();
-                updateChecklistProgress();
-            }
-        }
-        
-        async function updateChecklistProgress() {
-            const container = document.getElementById('checklist-container');
-            const items = container.querySelectorAll('.checklist-item');
-            const total = items.length;
-            
-            if (total === 0) {
-                document.getElementById('checklist-progress').style.display = 'none';
-                return;
+            // Store module filter in CanvasV3 before initialization
+            if (module) {
+                console.log('🎯 Module filter detected:', module);
+                CanvasV3.moduleFilter = module;
+                CanvasV3.selectedCategory = module;
             }
             
-            document.getElementById('checklist-progress').style.display = 'block';
-            
-            const checked = Array.from(items).filter(item => 
-                item.querySelector('input[type="checkbox"]').checked
-            ).length;
-            
-            const percentage = total > 0 ? Math.round((checked / total) * 100) : 0;
-            
-            document.getElementById('checklist-percentage').textContent = `${percentage}%`;
-            document.getElementById('checklist-progress-bar').style.width = `${percentage}%`;
-            
-            // 🚀 자동 단계 진행: 체크리스트 100% 완료 시 다음 단계로 자동 이동
-            if (percentage === 100 && editingTaskId && total > 0) {
-                const task = tasks.find(t => t.id === editingTaskId);
-                if (task) {
-                    const nextPhase = getNextPhase(task.phase);
-                    if (nextPhase && nextPhase !== task.phase) {
-                        await autoAdvancePhase(task, nextPhase);
-                    }
-                }
-            }
-        }
-        
-        // Get next phase in workflow
-        function getNextPhase(currentPhase) {
-            const phaseOrder = ['planning', 'preparation', 'execution', 'marketing', 'completed'];
-            const currentIndex = phaseOrder.indexOf(currentPhase);
-            if (currentIndex >= 0 && currentIndex < phaseOrder.length - 1) {
-                return phaseOrder[currentIndex + 1];
-            }
-            return null;
-        }
-        
-        // Auto-advance task to next phase
-        async function autoAdvancePhase(task, nextPhase) {
-            const phaseLabels = {
-                'planning': '💡 기획',
-                'preparation': '🔧 준비',
-                'execution': '🚀 진행',
-                'marketing': '📢 홍보',
-                'completed': '✅ 완료'
-            };
-            
-            // Show notification
-            if (window.notificationSystem) {
-                notificationSystem.addNotification({
-                    type: 'success',
-                    title: '🎉 자동 단계 진행',
-                    message: `"${task.title}" 작업이 ${phaseLabels[nextPhase]} 단계로 자동 이동했습니다!`,
-                    duration: 5000
-                });
-            }
-            
-            // Update task phase
-            task.phase = nextPhase;
-            document.getElementById('task-phase').value = nextPhase;
-            
-            // Save to API
-            try {
-                await window.apiClient.tasks.update(task.id, { phase: nextPhase });
-                console.log('✅ Auto-advanced to next phase:', nextPhase);
-            } catch (error) {
-                console.error('Error auto-advancing phase:', error);
-            }
-        }
-        
-        function getChecklistData() {
-            const container = document.getElementById('checklist-container');
-            const items = container.querySelectorAll('.checklist-item');
-            
-            return Array.from(items).map(item => ({
-                id: item.dataset.id,
-                text: item.querySelector('input[type="text"]').value,
-                checked: item.querySelector('input[type="checkbox"]').checked
-            })).filter(item => item.text.trim() !== '');
-        }
-        
-        function renderChecklist(checklist) {
-            const container = document.getElementById('checklist-container');
-            container.innerHTML = '';
-            
-            if (!checklist || checklist.length === 0) {
-                document.getElementById('checklist-progress').style.display = 'none';
-                return;
-            }
-            
-            checklist.forEach(item => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'checklist-item';
-                itemDiv.style.cssText = 'display: flex; gap: 0.75rem; align-items: center; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border-radius: 8px;';
-                itemDiv.dataset.id = item.id;
-                
-                itemDiv.innerHTML = `
-                    <input type="checkbox" ${item.checked ? 'checked' : ''} onchange="updateChecklistProgress()" style="width: 18px; height: 18px; cursor: pointer;">
-                    <input type="text" value="${item.text || ''}" placeholder="체크리스트 항목 입력..." style="flex: 1; background: transparent; border: none; color: white; font-size: 0.875rem; outline: none;">
-                    <button type="button" onclick="removeChecklistItem('${item.id}')" style="background: none; border: none; color: rgba(255, 255, 255, 0.5); cursor: pointer; padding: 0.25rem;">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
-                
-                container.appendChild(itemDiv);
-            });
-            
-            updateChecklistProgress();
-        }
-        
-        // Task Modal functions
-        function addTask() {
-            editingTaskId = null;
-            currentChecklist = [];
-            document.getElementById('task-modal-title').textContent = '새 작업 추가';
-            document.getElementById('task-form').reset();
-            document.getElementById('checklist-container').innerHTML = '';
-            document.getElementById('checklist-progress').style.display = 'none';
-            
-            // Hide comments section for new tasks
-            const commentsContainer = document.getElementById('task-comments-container');
-            if (commentsContainer) {
-                commentsContainer.style.display = 'none';
-            }
-            
-            document.getElementById('task-modal').style.display = 'flex';
-        }
-        
-        function editTask(taskId) {
-            const task = tasks.find(t => t.id === taskId);
-            if (!task) return;
-            
-            editingTaskId = taskId;
-            currentChecklist = task.checklist || [];
-            
-            document.getElementById('task-modal-title').textContent = '작업 편집';
-            document.getElementById('task-title').value = task.title || '';
-            document.getElementById('task-description').value = task.description || '';
-            document.getElementById('task-phase').value = task.phase || 'planning';
-            document.getElementById('task-assignee').value = task.assignee || '';
-            document.getElementById('task-duedate').value = task.dueDate || '';
-            
-            renderChecklist(currentChecklist);
-            
-            // Show and render comments section for existing tasks
-            const commentsContainer = document.getElementById('task-comments-container');
-            if (commentsContainer && window.collaborationSystem) {
-                commentsContainer.style.display = 'block';
-                collaborationSystem.renderCommentsSection(taskId, currentProjectId, commentsContainer);
-            }
-            
-            document.getElementById('task-modal').style.display = 'flex';
-        }
-        
-        function closeTaskModal() {
-            document.getElementById('task-modal').style.display = 'none';
-        }
-        
-        async function saveTask(event) {
-            event.preventDefault();
-            
-            const checklist = getChecklistData();
-            
-            const taskData = {
-                id: editingTaskId,
-                title: document.getElementById('task-title').value,
-                description: document.getElementById('task-description').value,
-                phase: document.getElementById('task-phase').value,
-                assignee: document.getElementById('task-assignee').value,
-                dueDate: document.getElementById('task-duedate').value,
-                checklist: checklist
-            };
-            
-            try {
-                // Save to D1 Database via API
-                const savedTask = await saveTaskToAPI(taskData);
-                
-                // Update local tasks array
-                if (editingTaskId && !editingTaskId.startsWith('task_')) {
-                    const index = tasks.findIndex(t => t.id === editingTaskId);
-                    if (index !== -1) tasks[index] = savedTask;
-                } else {
-                    tasks.push(savedTask);
-                }
-                
-                closeTaskModal();
-                renderAllViews();
-            } catch (error) {
-                // Error already handled in saveTaskToAPI
-            }
-        }
-        
-        // Drag & Drop functions
-        let draggedTaskId = null;
-        
-        function drag(event, taskId) {
-            draggedTaskId = taskId;
-            event.dataTransfer.effectAllowed = 'move';
-        }
-        
-        function allowDrop(event) {
-            event.preventDefault();
-            event.dataTransfer.dropEffect = 'move';
-        }
-        
-        async function drop(event, targetPhase) {
-            event.preventDefault();
-            event.stopPropagation();
-            
-            if (!draggedTaskId) return;
-            
-            const task = tasks.find(t => t.id === draggedTaskId);
-            if (task && task.phase !== targetPhase) {
-                task.phase = targetPhase;
-                
-                try {
-                    // Update phase via API
-                    const result = await window.apiClient.tasks.update(task.id, {
-                        phase: targetPhase
-                    });
-                    
-                    if (result.success) {
-                        console.log('✅ Task phase updated:', result.data);
-                        renderAllViews();
-                    }
-                } catch (error) {
-                    console.error('Error updating task phase:', error);
-                    alert('작업 단계 변경에 실패했습니다.');
-                }
-            }
-            
-            draggedTaskId = null;
-        }
-        
-        // Action functions
-        function editProject() {
-            window.location.href = `/projects?edit=${projectId}`;
-        }
-        
-        // Open workflow for current project
-        function openWorkflow() {
             if (!projectId) {
-                alert('프로젝트 ID가 없습니다.');
-                return;
-            }
-            window.location.href = `/workflow?project=${projectId}`;
-        }
-        
-        // Open Canvas V3 (Node Editor)
-        function openCanvasV3() {
-            if (!projectId) {
-                alert('프로젝트 ID가 없습니다.');
-                return;
-            }
-            window.location.href = `/canvas-v3?project=${projectId}`;
-        }
-        
-        // Initialize
-        async function init() {
-            // Validate project ID first
-            if (!projectId) {
-                console.log('⚠️ No project ID in URL, redirecting to Projects page...');
+                console.log('⚠️ No project ID in URL, redirecting to Dashboard...');
+                // Show a friendly message
                 const message = document.createElement('div');
                 message.style.cssText = `
                     position: fixed;
@@ -1441,7 +550,7 @@
                     font-size: 1.1rem;
                 `;
                 message.innerHTML = `
-                    <i class="fas fa-tasks" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+                    <i class="fas fa-project-diagram" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
                     <div style="font-weight: 600; margin-bottom: 0.5rem;">프로젝트를 선택해주세요</div>
                     <div style="font-size: 0.9rem; opacity: 0.9;">프로젝트 페이지로 이동합니다...</div>
                 `;
@@ -1450,50 +559,91 @@
                 setTimeout(() => {
                     window.location.href = '/dashboard';
                 }, 2000);
-                return; // Stop execution
+                return;
             }
             
-            // Load project and tasks
-            console.log('📋 Loading Canvas for project:', projectId);
-            await loadProject();
-            await loadTasks(); // Now async
-            renderAllViews();
+            // Load project and initialize
+            loadProjectAndInit(projectId);
+        });
+        
+        async function loadProjectAndInit(projectId) {
+            try {
+                // Fetch project details
+                const result = await window.apiClient.projects.get(projectId);
+                
+                if (result.success && result.data) {
+                    // Store project in Canvas V3
+                    CanvasV3.currentProject = result.data;
+                    
+                    // Update toolbar
+                    document.getElementById('project-title').textContent = result.data.title;
+                    
+                    // Initialize Canvas V3
+                    await CanvasV3.init();
+                    
+                    console.log('✅ Canvas V3 initialized with project:', result.data);
+                } else {
+                    throw new Error('Failed to load project');
+                }
+            } catch (error) {
+                console.error('Error loading project:', error);
+                alert('Failed to load project. Redirecting to Dashboard...');
+                window.location.href = '/dashboard';
+            }
         }
         
-        init();
-    </script>
-    
-    <!-- Notification System -->
-    <script src="/static/js/notification-system.js"></script>
-    <script>
-        function toggleNotificationPanel() {
-            const panel = document.getElementById('notification-panel');
-            const isVisible = panel.style.display === 'block';
-            panel.style.display = isVisible ? 'none' : 'block';
-            
-            if (!isVisible) {
-                notificationSystem.renderNotificationPanel();
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Tool shortcuts
+            if (e.key === 'v' || e.key === 'V') {
+                CanvasV3.setTool('select');
+            } else if (e.key === 'h' || e.key === 'H') {
+                CanvasV3.setTool('hand');
+            } else if (e.key === 'c' || e.key === 'C') {
+                CanvasV3.setTool('connection');
             }
-        }
-
-        document.addEventListener('click', (e) => {
-            const panel = document.getElementById('notification-panel');
-            const btn = document.getElementById('notification-btn');
             
-            if (!btn.contains(e.target) && !panel.contains(e.target)) {
-                panel.style.display = 'none';
+            // Zoom shortcuts
+            if (e.key === '+' || e.key === '=') {
+                CanvasV3.zoomIn();
+            } else if (e.key === '-' || e.key === '_') {
+                CanvasV3.zoomOut();
+            } else if (e.key === '0') {
+                CanvasV3.zoomReset();
+            }
+            
+            // Save shortcut
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                CanvasV3.saveProjectData();
+            }
+            
+            // Delete shortcut
+            if (e.key === 'Delete' || e.key === 'Backspace') {
+                CanvasV3.deleteSelectedNodes();
             }
         });
+        
+        // Toolbar buttons
+        document.getElementById('tool-select').addEventListener('click', () => CanvasV3.setTool('select'));
+        document.getElementById('tool-hand').addEventListener('click', () => CanvasV3.setTool('hand'));
+        document.getElementById('tool-connection').addEventListener('click', () => CanvasV3.setTool('connection'));
+        
+        document.getElementById('tool-zoom-in').addEventListener('click', () => CanvasV3.zoomIn());
+        document.getElementById('tool-zoom-out').addEventListener('click', () => CanvasV3.zoomOut());
+        document.getElementById('tool-zoom-reset').addEventListener('click', () => CanvasV3.zoomReset());
+        
+        document.getElementById('toggle-left-panel').addEventListener('click', () => {
+            document.getElementById('left-panel').classList.toggle('collapsed');
+            document.getElementById('canvas-container').classList.toggle('left-collapsed');
+        });
+        
+        document.getElementById('toggle-right-panel').addEventListener('click', () => {
+            document.getElementById('right-panel').classList.toggle('collapsed');
+            document.getElementById('canvas-container').classList.toggle('right-collapsed');
+        });
+        
+        document.getElementById('save-workflow').addEventListener('click', () => CanvasV3.saveProjectData());
     </script>
-    
-    <!-- Collaboration System -->
-    <script src="/static/js/collaboration-system.js"></script>
-    
-    <!-- Floating Action Button -->
-    <script src="/static/js/components/floating-action.js"></script>
-    
-    <!-- Mobile Navigation -->
-    <script src="/static/js/components/mobile-nav.js"></script>
-    <script src="/static/js/api-client-d1.js"></script>
 </body>
 </html>
