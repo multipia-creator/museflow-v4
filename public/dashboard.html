@@ -16,6 +16,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- FullCalendar -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.10/index.global.min.js"></script>
+    
     <script src="/static/js/tracker.js?v=4.0.0"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -681,6 +687,71 @@
     <!-- Main Content -->
     <div style="max-width: 1600px; margin: 0 auto; padding: 6rem 2rem 3rem 2rem;">
         
+        <!-- Hero Section - 오늘의 핵심 업무 (통합) -->
+        <section class="hero-mission" id="hero-mission">
+            <div class="hero-content">
+                <div class="hero-title">🎯 오늘의 핵심 업무</div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem;">
+                    <!-- Left: Mission -->
+                    <div style="flex: 1; min-width: 300px;">
+                        <h2 id="mission-title" style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem; color: white;">
+                            로딩 중...
+                        </h2>
+                        <div id="mission-dday"></div>
+                        
+                        <!-- Urgent Alerts (통합) -->
+                        <div id="urgent-alerts-inline" style="margin-top: 1.5rem;">
+                            <!-- Top 3 urgent alerts will be inserted here -->
+                        </div>
+                        
+                        <div style="display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;">
+                            <button class="quick-action" onclick="viewMission()">
+                                <i class="fas fa-eye"></i> 상세 보기
+                            </button>
+                            <button class="quick-action" onclick="openChecklist()">
+                                <i class="fas fa-tasks"></i> 체크리스트
+                            </button>
+                            <button class="quick-action" onclick="contactTeam()">
+                                <i class="fas fa-comments"></i> 팀 채팅
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Progress Ring -->
+                    <div style="display: flex; align-items: center; gap: 2rem;">
+                        <div id="mission-progress" style="position: relative;">
+                            <!-- Progress ring will be inserted here -->
+                        </div>
+                        <div>
+                            <div id="mission-stats" style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.8);">
+                                <!-- Stats will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Quick Start Section -->
+        <section style="margin-bottom: 3rem;">
+            <div class="glass-card" style="padding: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                    <h3 style="font-size: 1.25rem; font-weight: 600; color: white; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-rocket" style="color: var(--museum-purple);"></i>
+                        빠른 시작
+                    </h3>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button onclick="openNewProjectModal()" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; border-radius: 12px; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(139, 92, 246, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                            <i class="fas fa-plus"></i> 새 프로젝트
+                        </button>
+                        <button onclick="openTemplateModal()" style="padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'">
+                            <i class="fas fa-layer-group"></i> 템플릿 선택
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Overview Statistics Cards -->
         <section style="margin-bottom: 3rem;">
             <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
@@ -737,62 +808,20 @@
                 </div>
             </div>
         </section>
-        
-        <!-- Hero Section - Today's Mission -->
-        <section class="hero-mission" id="hero-mission">
-            <div class="hero-content">
-                <div class="hero-title">🎯 오늘의 미션</div>
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem;">
-                    <div style="flex: 1; min-width: 300px;">
-                        <h2 id="mission-title" style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem; color: white;">
-                            로딩 중...
-                        </h2>
-                        <div id="mission-dday"></div>
-                        <div style="display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;">
-                            <button class="quick-action" onclick="viewMission()">
-                                <i class="fas fa-eye"></i> 상세 보기
-                            </button>
-                            <button class="quick-action" onclick="openChecklist()">
-                                <i class="fas fa-tasks"></i> 체크리스트
-                            </button>
-                            <button class="quick-action" onclick="contactTeam()">
-                                <i class="fas fa-comments"></i> 팀 채팅
-                            </button>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 2rem;">
-                        <div id="mission-progress" style="position: relative;">
-                            <!-- Progress ring will be inserted here -->
-                        </div>
-                        <div>
-                            <div id="mission-stats" style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.8);">
-                                <!-- Stats will be inserted here -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Urgent Alerts -->
-        <section style="margin-bottom: 3rem;" id="urgent-alerts-section">
-            <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
-                <i class="fas fa-exclamation-triangle" style="color: var(--urgent);"></i>
-                긴급 알림
-            </h2>
-            <div id="urgent-alerts">
-                <!-- Alerts will be dynamically inserted -->
-            </div>
-        </section>
-
-        <!-- Week Timeline -->
+        <!-- Project Calendar (FullCalendar) -->
         <section style="margin-bottom: 3rem;">
-            <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
-                <i class="fas fa-calendar-week" style="color: var(--museum-purple);"></i>
-                이번 주 일정
-            </h2>
-            <div class="timeline-container" id="week-timeline">
-                <!-- Timeline days will be dynamically inserted -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <h2 style="font-size: 1.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.75rem;">
+                    <i class="fas fa-calendar-alt" style="color: var(--museum-purple);"></i>
+                    프로젝트 캘린더
+                </h2>
+                <button onclick="syncGoogleCalendar()" style="padding: 0.75rem 1.5rem; background: rgba(66, 133, 244, 0.2); border: 1px solid rgba(66, 133, 244, 0.3); border-radius: 12px; color: #4285f4; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.background='rgba(66, 133, 244, 0.3)'" onmouseout="this.style.background='rgba(66, 133, 244, 0.2)'">
+                    <i class="fab fa-google"></i> 구글 캘린더 연동
+                </button>
+            </div>
+            <div class="glass-card" style="padding: 1.5rem;">
+                <div id="calendar"></div>
             </div>
         </section>
 
@@ -830,159 +859,6 @@
             </div>
             <div id="projects-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1.5rem;">
                 <!-- Project cards will be dynamically inserted -->
-            </div>
-        </section>
-
-        <!-- Museum Modules Section -->
-        <section style="margin-bottom: 3rem;">
-            <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
-                <i class="fas fa-layer-group" style="color: var(--museum-purple);"></i>
-                Museum 업무 모듈
-            </h2>
-            <div id="museum-modules-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem;">
-                <!-- Module 1: Exhibition (전시) -->
-                <div class="module-card" data-module="exhibition" onclick="openModuleCanvas('exhibition')">
-                    <div class="module-icon" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
-                        <i class="fas fa-palette"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">전시 관리</h3>
-                        <p class="module-description">전시 기획, 설치, 운영 및 평가</p>
-                        <div class="module-stats">
-                            <div class="stat-item">
-                                <span class="stat-label">워크플로우</span>
-                                <span class="stat-value" id="exhibition-workflows">15</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">활성 프로젝트</span>
-                                <span class="stat-value" id="exhibition-active">0</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="module-arrow">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
-
-                <!-- Module 2: Education (교육) -->
-                <div class="module-card" data-module="education" onclick="openModuleCanvas('education')">
-                    <div class="module-icon" style="background: linear-gradient(135deg, #06b6d4, #22d3ee);">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">교육 프로그램</h3>
-                        <p class="module-description">교육 프로그램 개발, 실행 및 평가</p>
-                        <div class="module-stats">
-                            <div class="stat-item">
-                                <span class="stat-label">워크플로우</span>
-                                <span class="stat-value" id="education-workflows">15</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">활성 프로젝트</span>
-                                <span class="stat-value" id="education-active">0</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="module-arrow">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
-
-                <!-- Module 3: Archive (수집/보존) -->
-                <div class="module-card" data-module="archive" onclick="openModuleCanvas('archive')">
-                    <div class="module-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
-                        <i class="fas fa-archive"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">수집 & 보존</h3>
-                        <p class="module-description">유물 수집, 등록, 보존 및 관리</p>
-                        <div class="module-stats">
-                            <div class="stat-item">
-                                <span class="stat-label">워크플로우</span>
-                                <span class="stat-value" id="archive-workflows">15</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">활성 프로젝트</span>
-                                <span class="stat-value" id="archive-active">0</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="module-arrow">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
-
-                <!-- Module 4: Publication (출판) -->
-                <div class="module-card" data-module="publication" onclick="openModuleCanvas('publication')">
-                    <div class="module-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">출판 & 콘텐츠</h3>
-                        <p class="module-description">도록, 뉴스레터, 디지털 콘텐츠 제작</p>
-                        <div class="module-stats">
-                            <div class="stat-item">
-                                <span class="stat-label">워크플로우</span>
-                                <span class="stat-value" id="publication-workflows">12</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">활성 프로젝트</span>
-                                <span class="stat-value" id="publication-active">0</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="module-arrow">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
-
-                <!-- Module 5: Research (연구) -->
-                <div class="module-card" data-module="research" onclick="openModuleCanvas('research')">
-                    <div class="module-icon" style="background: linear-gradient(135deg, #ec4899, #f472b6);">
-                        <i class="fas fa-microscope"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">연구 & 조사</h3>
-                        <p class="module-description">학술 연구, 현장 조사 및 보고서 작성</p>
-                        <div class="module-stats">
-                            <div class="stat-item">
-                                <span class="stat-label">워크플로우</span>
-                                <span class="stat-value" id="research-workflows">12</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">활성 프로젝트</span>
-                                <span class="stat-value" id="research-active">0</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="module-arrow">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
-
-                <!-- Module 6: Admin (행정) -->
-                <div class="module-card" data-module="admin" onclick="openModuleCanvas('admin')">
-                    <div class="module-icon" style="background: linear-gradient(135deg, #6366f1, #818cf8);">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <div class="module-content">
-                        <h3 class="module-title">행정 & 운영</h3>
-                        <p class="module-description">예산, 인사, 시설 관리 및 전략 기획</p>
-                        <div class="module-stats">
-                            <div class="stat-item">
-                                <span class="stat-label">워크플로우</span>
-                                <span class="stat-value" id="admin-workflows">19</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">활성 프로젝트</span>
-                                <span class="stat-value" id="admin-active">0</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="module-arrow">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -2014,9 +1890,8 @@
                 
                 console.log('🎨 Rendering dashboard sections...');
                 renderHeroMission();
-                renderUrgentAlerts();
-                renderWeekTimeline();
                 updateStats(); // Update Overview stats
+                initCalendar(); // Initialize FullCalendar
                 renderProjectsGrid(); // Render projects grid with filters
                 renderTeamActivity();
                 renderPerformanceMetrics(); // Add metrics rendering
@@ -2381,6 +2256,266 @@
         });
     </script>
     
+    <!-- Template Modal -->
+    <div id="template-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 2000; padding: 2rem; overflow-y: auto;">
+        <div style="max-width: 900px; margin: 0 auto; background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 24px; padding: 2rem; border: 1px solid rgba(255, 255, 255, 0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: white;">📋 템플릿 선택</h2>
+                <button onclick="closeTemplateModal()" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.5rem; cursor: pointer; padding: 0.5rem;">&times;</button>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                <!-- Exhibition -->
+                <div onclick="createProjectFromTemplate('exhibition')" style="background: rgba(139, 92, 246, 0.1); border: 2px solid rgba(139, 92, 246, 0.3); border-radius: 16px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(139, 92, 246, 0.6)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(139, 92, 246, 0.3)'; this.style.transform='translateY(0)'">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎨</div>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">전시 관리</h3>
+                    <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">전시 기획, 설치, 운영 및 평가</p>
+                </div>
+                
+                <!-- Education -->
+                <div onclick="createProjectFromTemplate('education')" style="background: rgba(6, 182, 212, 0.1); border: 2px solid rgba(6, 182, 212, 0.3); border-radius: 16px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(6, 182, 212, 0.6)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(6, 182, 212, 0.3)'; this.style.transform='translateY(0)'">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎓</div>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">교육 프로그램</h3>
+                    <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">교육 프로그램 개발 및 실행</p>
+                </div>
+                
+                <!-- Archive -->
+                <div onclick="createProjectFromTemplate('archive')" style="background: rgba(16, 185, 129, 0.1); border: 2px solid rgba(16, 185, 129, 0.3); border-radius: 16px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(16, 185, 129, 0.6)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(16, 185, 129, 0.3)'; this.style.transform='translateY(0)'">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📦</div>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">수집 & 보존</h3>
+                    <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">유물 수집, 등록 및 보존</p>
+                </div>
+                
+                <!-- Publication -->
+                <div onclick="createProjectFromTemplate('publication')" style="background: rgba(245, 158, 11, 0.1); border: 2px solid rgba(245, 158, 11, 0.3); border-radius: 16px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(245, 158, 11, 0.6)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(245, 158, 11, 0.3)'; this.style.transform='translateY(0)'">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📚</div>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">출판 & 콘텐츠</h3>
+                    <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">도록 및 콘텐츠 제작</p>
+                </div>
+                
+                <!-- Research -->
+                <div onclick="createProjectFromTemplate('research')" style="background: rgba(236, 72, 153, 0.1); border: 2px solid rgba(236, 72, 153, 0.3); border-radius: 16px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(236, 72, 153, 0.6)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(236, 72, 153, 0.3)'; this.style.transform='translateY(0)'">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔬</div>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">연구 & 조사</h3>
+                    <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">학술 연구 및 조사</p>
+                </div>
+                
+                <!-- Admin -->
+                <div onclick="createProjectFromTemplate('admin')" style="background: rgba(99, 102, 241, 0.1); border: 2px solid rgba(99, 102, 241, 0.3); border-radius: 16px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(99, 102, 241, 0.6)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(99, 102, 241, 0.3)'; this.style.transform='translateY(0)'">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🏛️</div>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">행정 & 운영</h3>
+                    <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">예산, 인사 및 시설 관리</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional JavaScript -->
+    <script>
+        // Template Modal Functions
+        function openTemplateModal() {
+            document.getElementById('template-modal').style.display = 'block';
+        }
+        
+        function closeTemplateModal() {
+            document.getElementById('template-modal').style.display = 'none';
+        }
+        
+        function openNewProjectModal() {
+            // Simple redirect to projects page with create action
+            window.location.href = '/projects.html?action=create';
+        }
+        
+        async function createProjectFromTemplate(module) {
+            const moduleNames = {
+                'exhibition': '전시 관리',
+                'education': '교육 프로그램',
+                'archive': '수집 & 보존',
+                'publication': '출판 & 콘텐츠',
+                'research': '연구 & 조사',
+                'admin': '행정 & 운영'
+            };
+            
+            const moduleDescriptions = {
+                'exhibition': '전시 기획부터 설치, 운영, 평가까지의 전체 워크플로우',
+                'education': '교육 프로그램 개발, 실행 및 평가 워크플로우',
+                'archive': '유물 수집, 등록, 보존 및 관리 워크플로우',
+                'publication': '도록, 뉴스레터, 디지털 콘텐츠 제작 워크플로우',
+                'research': '학술 연구, 현장 조사 및 보고서 작성 워크플로우',
+                'admin': '예산, 인사, 시설 관리 및 전략 기획 워크플로우'
+            };
+            
+            const moduleTypes = {
+                'exhibition': 'exhibition',
+                'education': 'education',
+                'archive': 'archive',
+                'publication': 'publication',
+                'research': 'research',
+                'admin': 'admin'
+            };
+            
+            try {
+                const result = await window.apiClient.projects.create({
+                    title: moduleNames[module],
+                    description: moduleDescriptions[module],
+                    type: moduleTypes[module],
+                    phase: 'planning'
+                });
+                
+                if (result.success && result.data) {
+                    closeTemplateModal();
+                    notificationSystem.showInAppNotification(`${moduleNames[module]} 프로젝트가 생성되었습니다! 🎉`, 'success');
+                    window.location.href = `/workflow.html?project=${result.data.id}&module=${module}`;
+                }
+            } catch (error) {
+                console.error('Error creating project:', error);
+                notificationSystem.showInAppNotification('프로젝트 생성 중 오류가 발생했습니다.', 'error');
+            }
+        }
+        
+        // Google Calendar Sync
+        function syncGoogleCalendar() {
+            notificationSystem.showInAppNotification('구글 캘린더 연동은 곧 추가될 예정입니다! 🗓️', 'info');
+        }
+        
+        // Initialize FullCalendar
+        let calendar;
+        function initCalendar() {
+            const calendarEl = document.getElementById('calendar');
+            if (!calendarEl) return;
+            
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                height: 600,
+                themeSystem: 'standard',
+                events: function(info, successCallback, failureCallback) {
+                    // Convert projects to calendar events
+                    const events = allProjects.map(project => ({
+                        title: project.title,
+                        start: project.start_date,
+                        end: project.end_date,
+                        backgroundColor: getPhaseColor(project.phase),
+                        borderColor: getPhaseColor(project.phase),
+                        url: `/workflow.html?project=${project.id}`
+                    })).filter(e => e.start || e.end);
+                    
+                    successCallback(events);
+                },
+                eventClick: function(info) {
+                    info.jsEvent.preventDefault();
+                    if (info.event.url) {
+                        window.location.href = info.event.url;
+                    }
+                }
+            });
+            
+            calendar.render();
+        }
+        
+        function getPhaseColor(phase) {
+            const colors = {
+                planning: '#8b5cf6',
+                preparation: '#06b6d4',
+                execution: '#10b981',
+                marketing: '#f59e0b',
+                completed: '#6366f1'
+            };
+            return colors[phase] || '#8b5cf6';
+        }
+        
+        // Integrate urgent alerts into hero section
+        function renderHeroMission() {
+            const urgent = allProjects
+                .filter(p => p.status === 'active')
+                .map(p => ({...p, dday: calculateDDay(p.end_date)}))
+                .filter(p => p.dday !== null && p.dday >= 0)
+                .sort((a, b) => a.dday - b.dday)[0];
+            
+            const missionTitle = document.getElementById('mission-title');
+            const missionDday = document.getElementById('mission-dday');
+            const missionProgress = document.getElementById('mission-progress');
+            const missionStats = document.getElementById('mission-stats');
+            
+            if (urgent) {
+                missionTitle.textContent = urgent.title;
+                
+                let ddayColor = '#10b981';
+                if (urgent.dday <= 7) ddayColor = '#ef4444';
+                else if (urgent.dday <= 14) ddayColor = '#f59e0b';
+                
+                missionDday.innerHTML = `<div class="dday-counter" style="background: ${ddayColor}; color: white; padding: 0.5rem 1rem; border-radius: 12px; display: inline-block; font-weight: 600; font-size: 1.25rem; animation: pulse 2s infinite;">D-${urgent.dday}</div>`;
+                
+                // Progress ring
+                const phaseProgress = {
+                    planning: 20,
+                    preparation: 40,
+                    execution: 60,
+                    marketing: 80,
+                    completed: 100
+                };
+                const progress = phaseProgress[urgent.phase] || 20;
+                
+                missionProgress.innerHTML = `
+                    <svg width="120" height="120">
+                        <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
+                        <circle cx="60" cy="60" r="54" fill="none" stroke="#8b5cf6" stroke-width="8" 
+                                stroke-dasharray="${2 * Math.PI * 54}" 
+                                stroke-dashoffset="${2 * Math.PI * 54 * (1 - progress / 100)}"
+                                transform="rotate(-90 60 60)"
+                                style="transition: stroke-dashoffset 1s ease;"/>
+                        <text x="60" y="60" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="24" font-weight="700">${progress}%</text>
+                    </svg>
+                `;
+                
+                missionStats.innerHTML = `
+                    <div style="margin-bottom: 0.5rem;">📍 ${urgent.location || '위치 미정'}</div>
+                    <div style="margin-bottom: 0.5rem;">👤 ${urgent.curator || '담당자 미정'}</div>
+                    <div>📅 ${urgent.start_date || '시작일 미정'}</div>
+                `;
+                
+                // Render top 3 urgent alerts inline
+                renderUrgentAlertsInline();
+            } else {
+                missionTitle.textContent = '진행 중인 긴급 업무가 없습니다';
+                missionDday.innerHTML = '';
+                missionProgress.innerHTML = '<div style="font-size: 4rem; opacity: 0.3;">✅</div>';
+                missionStats.innerHTML = '<div>모든 업무가 순조롭게 진행 중입니다!</div>';
+            }
+        }
+        
+        function renderUrgentAlertsInline() {
+            const urgentAlerts = allProjects
+                .filter(p => p.status === 'active')
+                .map(p => ({...p, dday: calculateDDay(p.end_date)}))
+                .filter(p => p.dday !== null && p.dday >= 0 && p.dday <= 7)
+                .sort((a, b) => a.dday - b.dday)
+                .slice(0, 3);
+            
+            const container = document.getElementById('urgent-alerts-inline');
+            
+            if (urgentAlerts.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+            
+            container.innerHTML = `
+                <div style="font-size: 0.875rem; font-weight: 600; color: rgba(255, 255, 255, 0.8); margin-bottom: 0.75rem;">
+                    <i class="fas fa-exclamation-triangle" style="color: #ef4444;"></i> 긴급 알림
+                </div>
+                ${urgentAlerts.map(alert => `
+                    <div style="background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444; padding: 0.75rem; border-radius: 8px; margin-bottom: 0.5rem;">
+                        <div style="font-size: 0.875rem; font-weight: 600; color: white; margin-bottom: 0.25rem;">${alert.title}</div>
+                        <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.6);">D-${alert.dday} • ${alert.type || '전시'}</div>
+                    </div>
+                `).join('')}
+            `;
+        }
+    </script>
+
     <!-- Floating Action Button -->
     <script src="/static/js/components/floating-action.js"></script>
     
