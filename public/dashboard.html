@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="4.5.0">
+    <meta name="version" content="4.7.0">
     <title>Dashboard - MuseFlow.life</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -492,7 +492,6 @@
             <ul class="nav-links" id="nav-links">
                 <li><a href="/landing.html"><i class="fas fa-home"></i> Home</a></li>
                 <li><a href="/dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-                <li><a href="/projects.html"><i class="fas fa-folder"></i> 전시</a></li>
                 <li style="position: relative;" class="canvas-menu">
                     <a href="#" onclick="event.preventDefault(); toggleCanvasMenu()" style="display: flex; align-items: center; gap: 0.5rem;">
                         <i class="fas fa-project-diagram"></i> Canvas <i class="fas fa-chevron-down" style="font-size: 0.75rem;"></i>
@@ -725,6 +724,70 @@
                     </div>
                     <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);" id="insight-upcoming-desc">다가오는 전시 및 작업</div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section style="margin-bottom: 3rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="font-size: 1.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.75rem;">
+                    <i class="fas fa-folder-open" style="color: var(--museum-pink);"></i>
+                    전시 관리
+                </h2>
+                <button class="btn-primary" onclick="openCreateModal()" style="background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; padding: 0.75rem 1.5rem; border-radius: 12px; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-plus"></i>
+                    새 전시 만들기
+                </button>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <div class="glass-card" style="padding: 1.5rem; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: 700; color: #a78bfa; margin-bottom: 0.5rem;" id="stat-total">0</div>
+                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">전체 전시</div>
+                </div>
+                <div class="glass-card" style="padding: 1.5rem; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: 700; color: #f9a8d4; margin-bottom: 0.5rem;" id="stat-active">0</div>
+                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">진행 중</div>
+                </div>
+                <div class="glass-card" style="padding: 1.5rem; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: 700; color: #fcd34d; margin-bottom: 0.5rem;" id="stat-urgent">0</div>
+                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">긴급 (D-7)</div>
+                </div>
+                <div class="glass-card" style="padding: 1.5rem; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: 700; color: #6ee7b7; margin-bottom: 0.5rem;" id="stat-completed">0</div>
+                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">완료</div>
+                </div>
+            </div>
+            
+            <!-- Filters -->
+            <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                <input type="text" placeholder="🔍 전시 검색..." id="search-input" style="flex: 1; min-width: 250px; padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white; font-size: 0.875rem;">
+                <select id="type-filter" style="padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white; cursor: pointer;">
+                    <option value="all">전체 유형</option>
+                    <option value="permanent">🏛️ 상설전</option>
+                    <option value="special">✨ 특별전</option>
+                    <option value="traveling">🚌 순회전</option>
+                    <option value="event">🎭 기획전</option>
+                </select>
+                <select id="phase-filter" style="padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white; cursor: pointer;">
+                    <option value="all">전체 단계</option>
+                    <option value="planning">💡 기획</option>
+                    <option value="preparation">🔧 준비</option>
+                    <option value="execution">🚀 진행</option>
+                    <option value="marketing">📢 홍보</option>
+                    <option value="completed">✅ 완료</option>
+                </select>
+                <select id="sort-select" style="padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white; cursor: pointer;">
+                    <option value="updated">최근 수정순</option>
+                    <option value="dday">D-Day 순</option>
+                    <option value="title">제목순</option>
+                </select>
+            </div>
+            
+            <!-- Projects Grid -->
+            <div id="projects-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+                <!-- Projects will be rendered here -->
             </div>
         </section>
 
@@ -1584,6 +1647,8 @@
                 renderWeekTimeline();
                 renderExhibitions();
                 renderExhibitionInsights(); // Add exhibition insights
+                updateStats(); // Update project stats
+                renderProjectsGrid(); // Render projects grid
                 renderTeamActivity();
                 renderPerformanceMetrics(); // Add metrics rendering
                 
@@ -1686,6 +1751,180 @@
                 sessionStorage.setItem('welcome_notification_shown', 'true');
             }, 2000);
         }
+        
+        // ========================================
+        // Projects Management Functions
+        // ========================================
+        
+        let editingProjectId = null;
+        
+        // Update project stats
+        function updateStats() {
+            const total = allProjects.length;
+            const active = allProjects.filter(p => p.status === 'active').length;
+            const urgent = allProjects.filter(p => {
+                const dday = calculateDDay(p.end_date);
+                return dday !== null && dday >= 0 && dday <= 7;
+            }).length;
+            const completed = allProjects.filter(p => p.phase === 'completed').length;
+            
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-active').textContent = active;
+            document.getElementById('stat-urgent').textContent = urgent;
+            document.getElementById('stat-completed').textContent = completed;
+        }
+        
+        // Render projects grid
+        function renderProjectsGrid() {
+            const search = document.getElementById('search-input')?.value.toLowerCase() || '';
+            const typeFilter = document.getElementById('type-filter')?.value || 'all';
+            const phaseFilter = document.getElementById('phase-filter')?.value || 'all';
+            const sortBy = document.getElementById('sort-select')?.value || 'updated';
+            
+            let filtered = allProjects.filter(p => {
+                const matchSearch = !search || p.title.toLowerCase().includes(search) || 
+                                   (p.description && p.description.toLowerCase().includes(search));
+                const matchType = typeFilter === 'all' || p.type === typeFilter;
+                const matchPhase = phaseFilter === 'all' || p.phase === phaseFilter;
+                return matchSearch && matchType && matchPhase;
+            });
+            
+            // Sort
+            filtered.sort((a, b) => {
+                if (sortBy === 'dday') {
+                    const ddayA = calculateDDay(a.end_date) ?? 9999;
+                    const ddayB = calculateDDay(b.end_date) ?? 9999;
+                    return ddayA - ddayB;
+                } else if (sortBy === 'title') {
+                    return a.title.localeCompare(b.title);
+                } else {
+                    return new Date(b.updated_at) - new Date(a.updated_at);
+                }
+            });
+            
+            const grid = document.getElementById('projects-grid');
+            if (!grid) return;
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div style="text-align: center; padding: 4rem 2rem; grid-column: 1 / -1;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;">🎨</div>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.8);">전시가 없습니다</h3>
+                        <p style="color: rgba(255, 255, 255, 0.6);">새 전시를 만들어보세요!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const typeConfig = {
+                permanent: { label: '상설전', icon: '🏛️', class: 'type-permanent' },
+                special: { label: '특별전', icon: '✨', class: 'type-special' },
+                traveling: { label: '순회전', icon: '🚌', class: 'type-traveling' },
+                event: { label: '기획전', icon: '🎭', class: 'type-event' }
+            };
+            
+            const phaseConfig = {
+                planning: { label: '기획', icon: '💡', progress: 20 },
+                preparation: { label: '준비', icon: '🔧', progress: 40 },
+                execution: { label: '진행', icon: '🚀', progress: 60 },
+                marketing: { label: '홍보', icon: '📢', progress: 80 },
+                completed: { label: '완료', icon: '✅', progress: 100 }
+            };
+            
+            grid.innerHTML = filtered.map(project => {
+                const type = typeConfig[project.type] || typeConfig.permanent;
+                const phase = phaseConfig[project.phase] || phaseConfig.planning;
+                const dday = calculateDDay(project.end_date);
+                
+                let ddayBadge = '';
+                if (dday !== null && dday >= 0) {
+                    let ddayColor = '#10b981';
+                    if (dday <= 7) ddayColor = '#ef4444';
+                    else if (dday <= 14) ddayColor = '#f59e0b';
+                    ddayBadge = `<span style="background: ${ddayColor}; color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">D-${dday}</span>`;
+                }
+                
+                return `
+                    <div class="glass-card" style="padding: 0; overflow: hidden; cursor: default;">
+                        <div style="padding: 1.5rem; padding-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                <span style="background: rgba(139, 92, 246, 0.2); color: #a78bfa; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">${type.icon} ${type.label}</span>
+                                ${ddayBadge}
+                            </div>
+                            <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; color: white;">${project.title}</h3>
+                            <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 1rem; line-height: 1.5;">${project.description || '설명이 없습니다.'}</p>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin-bottom: 1rem; font-size: 0.75rem; color: rgba(255, 255, 255, 0.7);">
+                                ${project.location ? `<div><i class="fas fa-map-marker-alt"></i> ${project.location}</div>` : '<div></div>'}
+                                ${project.curator ? `<div><i class="fas fa-user-tie"></i> ${project.curator}</div>` : '<div></div>'}
+                                ${project.artwork_count ? `<div><i class="fas fa-palette"></i> ${project.artwork_count}점</div>` : '<div></div>'}
+                                ${project.start_date ? `<div><i class="fas fa-calendar"></i> ${project.start_date}</div>` : '<div></div>'}
+                            </div>
+                            <div style="margin-bottom: 0.5rem;">
+                                <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 0.5rem;">${phase.icon} ${phase.label} (${phase.progress}%)</div>
+                                <div style="background: rgba(255, 255, 255, 0.1); height: 6px; border-radius: 9999px; overflow: hidden;">
+                                    <div style="background: linear-gradient(135deg, #8b5cf6, #ec4899); height: 100%; width: ${phase.progress}%; transition: width 0.3s ease;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; padding: 0.75rem 1.5rem; background: rgba(0, 0, 0, 0.2); border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                            <button onclick="event.stopPropagation(); openCanvas(${project.id}, 'tasks')" style="padding: 0.5rem; background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 8px; color: #a78bfa; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(139, 92, 246, 0.3)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.2)'">
+                                <i class="fas fa-tasks"></i> Tasks
+                            </button>
+                            <button onclick="event.stopPropagation(); openCanvas(${project.id}, 'workflow')" style="padding: 0.5rem; background: rgba(236, 72, 153, 0.2); border: 1px solid rgba(236, 72, 153, 0.3); border-radius: 8px; color: #f9a8d4; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(236, 72, 153, 0.3)'" onmouseout="this.style.background='rgba(236, 72, 153, 0.2)'">
+                                <i class="fas fa-project-diagram"></i> Workflow
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Open canvas with type selection
+        function openCanvas(projectId, type = 'tasks') {
+            console.log('🎨 Opening canvas:', { projectId, type });
+            
+            if (!projectId) {
+                console.error('❌ No project ID provided');
+                alert('프로젝트를 찾을 수 없습니다.');
+                return;
+            }
+            
+            if (type === 'workflow') {
+                const url = `/workflow.html?project=${projectId}`;
+                console.log('📍 Navigating to:', url);
+                window.location.href = url;
+            } else {
+                const url = `/canvas.html?project=${projectId}`;
+                console.log('📍 Navigating to:', url);
+                window.location.href = url;
+            }
+        }
+        
+        // Modal functions
+        function openCreateModal() {
+            editingProjectId = null;
+            const modal = document.getElementById('project-modal');
+            if (!modal) {
+                alert('프로젝트 생성 기능은 개발 중입니다.');
+                return;
+            }
+            document.getElementById('modal-title').textContent = '새 전시 만들기';
+            document.getElementById('project-form').reset();
+            modal.classList.add('active');
+        }
+        
+        // Add event listeners for filters
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('search-input');
+            const typeFilter = document.getElementById('type-filter');
+            const phaseFilter = document.getElementById('phase-filter');
+            const sortSelect = document.getElementById('sort-select');
+            
+            if (searchInput) searchInput.addEventListener('input', renderProjectsGrid);
+            if (typeFilter) typeFilter.addEventListener('change', renderProjectsGrid);
+            if (phaseFilter) phaseFilter.addEventListener('change', renderProjectsGrid);
+            if (sortSelect) sortSelect.addEventListener('change', renderProjectsGrid);
+        });
     </script>
     
     <!-- Floating Action Button -->
