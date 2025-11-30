@@ -564,7 +564,10 @@
         }
         
         // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load real data from D1 database
+            await loadRealBudgetData();
+            
             calculateSummary();
             renderBudgetTable();
             
@@ -574,6 +577,48 @@
                 renderBudgetDistributionChart();
             }, 100);
         });
+        
+        async function loadRealBudgetData() {
+            try {
+                // Fetch projects from API
+                const result = await window.apiClient.projects.list();
+                
+                if (result.success && result.data) {
+                    console.log('✅ Loaded real budget data:', result.data.length, 'projects');
+                    
+                    // Update budgetData with real projects
+                    budgetData.length = 0; // Clear demo data
+                    
+                    result.data.forEach(project => {
+                        budgetData.push({
+                            id: project.id,
+                            name: project.title,
+                            allocated: project.budget_total || 0,
+                            spent: project.budget_used || 0,
+                            category: project.type || 'exhibition',
+                            status: getProjectStatus(project),
+                            lastUpdated: project.updated_at || project.created_at
+                        });
+                    });
+                    
+                    console.log('✅ Budget data updated with', budgetData.length, 'real projects');
+                }
+            } catch (error) {
+                console.error('Error loading budget data:', error);
+                // Keep demo data if API fails
+            }
+        }
+        
+        function getProjectStatus(project) {
+            if (!project.budget_total || project.budget_total === 0) return '계획중';
+            
+            const usagePercent = (project.budget_used / project.budget_total) * 100;
+            
+            if (usagePercent >= 90) return '초과위험';
+            if (usagePercent >= 70) return '주의';
+            if (project.phase === 'completed') return '완료';
+            return '진행중';
+        }
     </script>
     
     <!-- Notification System -->
