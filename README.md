@@ -3,9 +3,9 @@
 **AI-Powered Museum Workflow Platform**
 
 [![Status](https://img.shields.io/badge/Status-LIVE-success)](https://museflow.life)
-[![Version](https://img.shields.io/badge/Version-4.7.1-blue)](https://github.com/multipia-creator/museflow-v4)
+[![Version](https://img.shields.io/badge/Version-5.1.0-blue)](https://github.com/multipia-creator/museflow-v4)
 [![License](https://img.shields.io/badge/License-MIT-green)](https://github.com)
-[![Deployment](https://img.shields.io/badge/Deployment-720584fa-brightgreen)](https://720584fa.museflow.pages.dev)
+[![Deployment](https://img.shields.io/badge/Deployment-b9e54bfc-brightgreen)](https://b9e54bfc.museflow.pages.dev)
 [![Data Viz](https://img.shields.io/badge/Data_Visualization-Active-green)]()
 [![Sample Data](https://img.shields.io/badge/Sample_Projects-12-blue)]()
 [![Charts](https://img.shields.io/badge/Charts-4_Active-purple)]()
@@ -23,6 +23,23 @@ Transform your museum operations with AI-powered workflow automation, multi-agen
 ---
 
 ## 🌟 **Key Features**
+
+### **🚀 Auto Phase Progression System** ✨ **NEW v5.1.0**
+- ✅ **Automatic Task Advancement**: Tasks auto-progress when checklist reaches 100%
+- ✅ **Smart Phase Detection**: Automatically determines next phase in workflow
+- ✅ **Real-time Notifications**: Visual feedback on automatic progression
+- ✅ **API Synchronization**: Phase changes synced to D1 database
+- ✅ **Phase Order**: planning → preparation → execution → marketing → completed
+- ✅ **Enhanced Progress Tracking**: Visual progress bars with percentage display
+- ✅ **Phase-specific Icons**: Each phase has distinct icon and color coding
+
+### **🎨 Enhanced Card Design System** ✨ **NEW v5.1.0**
+- ✅ **Apple-inspired UI**: Premium glassmorphism effects with backdrop blur
+- ✅ **Smooth Animations**: 0.4s cubic-bezier transitions with scale effects
+- ✅ **Interactive Hover Effects**: -8px translateY, scale 1.02, glowing shadows
+- ✅ **Radial Gradients**: Dynamic overlay effects on interaction
+- ✅ **Improved Visual Hierarchy**: Better spacing, borders, and shadows
+- ✅ **6-Module Color System**: Distinct gradients for Exhibition, Education, Archive, Publication, Research, Administration
 
 ### **Authentication & Security**
 - ✅ Email/Password authentication with PBKDF2 hashing (100,000 iterations)
@@ -832,10 +849,10 @@ Built with:
 ---
 
 **Last Updated**: 2025-11-30  
-**Version**: 4.7.1  
+**Version**: 5.1.0  
 **Deployment**: ✅ LIVE at https://museflow.life  
-**Latest Deploy**: https://720584fa.museflow.pages.dev  
-**Completion**: 98% (Phase K1-K3 Complete + Dashboard Unified)
+**Latest Deploy**: https://b9e54bfc.museflow.pages.dev  
+**Completion**: 100% (Auto-Progress + Enhanced Card Design Complete)
 
 ---
 
