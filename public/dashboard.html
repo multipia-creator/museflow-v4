@@ -747,10 +747,8 @@
     </div>
 
     <script>
-        // API Base URL
-        const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-            ? 'http://localhost:3000' 
-            : '';
+        // API Base URL (already defined by tracker.js, no need to redeclare)
+        // Use the global API_BASE_URL from tracker.js
         
         // Authentication (Demo mode - bypass for sample data visualization)
         let token = localStorage.getItem('authToken');
