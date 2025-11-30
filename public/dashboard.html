@@ -760,11 +760,11 @@
                     </a>
                     <div id="workflow-dropdown" style="display: none; position: absolute; top: 100%; left: 0; background: rgba(10, 10, 15, 0.98); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 0.5rem 0; margin-top: 0.5rem; min-width: 200px; z-index: 1000; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);">
 
-                        <a href="/workflow.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.1)'; this.style.color='#fff'" onmouseout="this.style.background='transparent'; this.style.color='rgba(255, 255, 255, 0.8)'">
+                        <a href="/canvas-v3.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.1)'; this.style.color='#fff'" onmouseout="this.style.background='transparent'; this.style.color='rgba(255, 255, 255, 0.8)'">
                             <i class="fas fa-project-diagram" style="width: 20px;"></i>
                             <div>
-                                <div style="font-weight: 500;">Workflow</div>
-                                <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5);">캔버스 에디터</div>
+                                <div style="font-weight: 500;">Canvas V3</div>
+                                <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5);">노드 에디터</div>
                             </div>
                         </a>
                     </div>
@@ -1224,7 +1224,7 @@
                         severity: 'urgent',
                         icon: '🚨',
                         message: `${p.title} - D-${dday === 0 ? 'Day' : dday}`,
-                        action: () => window.location.href = `/workflow.html?project=${p.id}`
+                        action: () => window.location.href = `/canvas-v3.html?project=${p.id}`
                     });
                 }
                 
@@ -1324,7 +1324,7 @@
                 const dday = calculateDDay(p.end_date);
                 
                 return `
-                    <div class="exhibition-card" onclick="window.location.href='/workflow.html?project=${p.id}'">
+                    <div class="exhibition-card" onclick="window.location.href='/canvas-v3.html?project=${p.id}'">
                         <div class="card-thumbnail">
                             <div class="card-icon">${type.icon}</div>
                         </div>
@@ -1453,7 +1453,7 @@
             }).sort((a, b) => calculateDDay(a.end_date) - calculateDDay(b.end_date));
             
             if (urgentProjects.length > 0) {
-                window.location.href = `/workflow.html?project=${urgentProjects[0].id}`;
+                window.location.href = `/canvas-v3.html?project=${urgentProjects[0].id}`;
             }
         }
         
@@ -2097,7 +2097,7 @@
                 return;
             }
             
-            const url = `/workflow.html?project=${projectId}`;
+            const url = `/canvas-v3.html?project=${projectId}`;
             console.log('📍 Navigating to:', url);
             window.location.href = url;
         }
@@ -2202,7 +2202,7 @@
             
             if (moduleProjectId) {
                 // Open existing module project
-                window.location.href = `/workflow.html?project=${moduleProjectId}&module=${module}`;
+                window.location.href = `/canvas-v3.html?project=${moduleProjectId}&module=${module}`;
             } else {
                 // Create new module project workflow
                 createModuleProject(module);
@@ -2252,7 +2252,7 @@
                     console.log(`✅ Created module project:`, projectId);
                     
                     // Navigate to workflow with module parameter
-                    window.location.href = `/workflow.html?project=${projectId}&module=${module}`;
+                    window.location.href = `/canvas-v3.html?project=${projectId}&module=${module}`;
                 } else {
                     throw new Error(result.error || 'Failed to create project');
                 }
@@ -2397,7 +2397,7 @@
                 if (result.success && result.data) {
                     closeTemplateModal();
                     notificationSystem.showInAppNotification(`${moduleNames[module]} 프로젝트가 생성되었습니다! 🎉`, 'success');
-                    window.location.href = `/workflow.html?project=${result.data.id}&module=${module}`;
+                    window.location.href = `/canvas-v3.html?project=${result.data.id}&module=${module}`;
                 }
             } catch (error) {
                 console.error('Error creating project:', error);
@@ -2433,7 +2433,7 @@
                         end: project.end_date,
                         backgroundColor: getPhaseColor(project.phase),
                         borderColor: getPhaseColor(project.phase),
-                        url: `/workflow.html?project=${project.id}`
+                        url: `/canvas-v3.html?project=${project.id}`
                     })).filter(e => e.start || e.end);
                     
                     successCallback(events);

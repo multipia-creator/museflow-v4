@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="version" content="4.5.3">
+    <title>Workflow - MuseFlow.life</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons (for nodes) -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- Canvas V3 Styles -->
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --museum-purple: #8b5cf6;
+            --museum-pink: #ec4899;
+            --museum-gold: #f59e0b;
+            --bg-dark: #0a0a0f;
+            --bg-darker: #05050a;
+            --border-light: rgba(255, 255, 255, 0.1);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: #f5f5f7;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        /* Top Toolbar */
+        .toolbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1.5rem;
+            z-index: 1000;
+        }
+        
+        .toolbar-left, .toolbar-center, .toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--museum-purple), var(--museum-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        
+        .project-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+        }
+        
+        .tool-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tool-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: var(--museum-purple);
+        }
+        
+        .tool-btn.active {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: var(--museum-purple);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+        }
+        
+        /* Left Panel - Node Library */
+        .left-panel {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 300px;
+            height: calc(100vh - 60px);
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-light);
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        
+        .left-panel.collapsed {
+            transform: translateX(-100%);
+        }
+        
+        .panel-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .panel-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            color: #f5f5f7;
+            font-size: 0.875rem;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: var(--museum-purple);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .node-categories {
+            padding: 1rem;
+        }
+        
+        .category {
+            margin-bottom: 0.5rem;
+        }
+        
+        .category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .category-header:hover {
+            background: rgba(139, 92, 246, 0.1);
+        }
+        
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .subcategory-list {
+            padding: 0.5rem 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .category.expanded .subcategory-list {
+            max-height: 500px;
+        }
+        
+        .node-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.625rem 1rem;
+            margin: 0.25rem 0.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            cursor: grab;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+        
+        .node-item:hover {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: var(--museum-purple);
+            transform: translateX(4px);
+        }
+        
+        .node-item:active {
+            cursor: grabbing;
+        }
+        
+        .node-icon {
+            width: 20px;
+            height: 20px;
+            color: var(--museum-purple);
+        }
+        
+        /* Canvas Area */
+        .canvas-container {
+            position: fixed;
+            top: 60px;
+            left: 300px;
+            right: 300px;
+            height: calc(100vh - 60px);
+            background: 
+                linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 0 0;
+            overflow: hidden;
+            transition: left 0.3s ease, right 0.3s ease;
+        }
+        
+        .canvas-container.left-collapsed {
+            left: 0;
+        }
+        
+        .canvas-container.right-collapsed {
+            right: 0;
+        }
+        
+        #canvas {
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+        
+        #canvas.grabbing {
+            cursor: grabbing;
+        }
+        
+        /* Canvas Node */
+        .canvas-node {
+            position: absolute;
+            min-width: 200px;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            cursor: move;
+            transition: box-shadow 0.2s;
+        }
+        
+        .canvas-node:hover {
+            box-shadow: 0 12px 48px rgba(139, 92, 246, 0.3);
+        }
+        
+        .canvas-node.selected {
+            border-color: var(--museum-purple);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+        }
+        
+        .node-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .node-header-icon {
+            width: 24px;
+            height: 24px;
+            color: var(--museum-purple);
+        }
+        
+        .node-title {
+            flex: 1;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .node-content {
+            padding: 1rem;
+        }
+        
+        .node-description {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.5;
+        }
+        
+        .node-ports {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 1rem;
+        }
+        
+        .node-port {
+            width: 12px;
+            height: 12px;
+            background: var(--museum-purple);
+            border: 2px solid rgba(10, 10, 15, 0.95);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .node-port:hover {
+            transform: scale(1.3);
+            box-shadow: 0 0 12px var(--museum-purple);
+        }
+        
+        /* Right Panel - Properties */
+        .right-panel {
+            position: fixed;
+            top: 60px;
+            right: 0;
+            width: 300px;
+            height: calc(100vh - 60px);
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid var(--border-light);
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        
+        .right-panel.collapsed {
+            transform: translateX(100%);
+        }
+        
+        .properties-content {
+            padding: 1.5rem;
+        }
+        
+        .property-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .property-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 0.5rem;
+        }
+        
+        .property-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            color: #f5f5f7;
+            font-size: 0.875rem;
+        }
+        
+        .property-input:focus {
+            outline: none;
+            border-color: var(--museum-purple);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        /* Minimap */
+        .minimap {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 200px;
+            height: 150px;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            z-index: 200;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .empty-text {
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+        
+        .empty-hint {
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Toolbar -->
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <a href="/dashboard" class="logo">🎨 MuseFlow</a>
+            <div class="project-info">
+                <i class="fas fa-palette"></i>
+                <span id="project-title">Loading...</span>
+            </div>
+        </div>
+        
+        <div class="toolbar-center">
+            <button class="tool-btn active" id="tool-select" title="Select (V)">
+                <i class="fas fa-mouse-pointer"></i>
+            </button>
+            <button class="tool-btn" id="tool-hand" title="Hand (H)">
+                <i class="fas fa-hand-paper"></i>
+            </button>
+            <button class="tool-btn" id="tool-connection" title="Connection (C)">
+                <i class="fas fa-project-diagram"></i>
+            </button>
+            <div style="width: 1px; height: 24px; background: var(--border-light); margin: 0 0.5rem;"></div>
+            <button class="tool-btn" id="tool-zoom-in" title="Zoom In (+)">
+                <i class="fas fa-search-plus"></i>
+            </button>
+            <button class="tool-btn" id="tool-zoom-out" title="Zoom Out (-)">
+                <i class="fas fa-search-minus"></i>
+            </button>
+            <button class="tool-btn" id="tool-zoom-reset" title="Zoom Reset (0)">
+                <i class="fas fa-compress"></i>
+            </button>
+        </div>
+        
+        <div class="toolbar-right">
+            <button class="tool-btn" id="toggle-left-panel">
+                <i class="fas fa-bars"></i>
+            </button>
+            <button class="tool-btn" id="toggle-right-panel">
+                <i class="fas fa-sliders-h"></i>
+            </button>
+            <button class="tool-btn" id="save-workflow" title="Save (Ctrl+S)">
+                <i class="fas fa-save"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Left Panel - Node Library -->
+    <div class="left-panel" id="left-panel">
+        <div class="panel-header">
+            <h3 class="panel-title">📦 Node Library</h3>
+            <input type="text" class="search-box" id="node-search" placeholder="Search nodes...">
+        </div>
+        
+        <div class="node-categories" id="node-categories">
+            <!-- Node categories will be rendered here -->
+        </div>
+    </div>
+    
+    <!-- Canvas Area -->
+    <div class="canvas-container" id="canvas-container">
+        <canvas id="canvas"></canvas>
+        
+        <!-- Empty State -->
+        <div class="empty-state" id="empty-state">
+            <div class="empty-icon">🎨</div>
+            <div class="empty-text">Visual Workflow Canvas</div>
+            <div class="empty-hint">Drag nodes from left panel to start building</div>
+        </div>
+    </div>
+    
+    <!-- Right Panel - Properties -->
+    <div class="right-panel" id="right-panel">
+        <div class="panel-header">
+            <h3 class="panel-title">⚙️ Properties</h3>
+        </div>
+        
+        <div class="properties-content" id="properties-content">
+            <p style="text-align: center; color: rgba(255, 255, 255, 0.4); padding: 2rem 0;">
+                Select a node to edit properties
+            </p>
+        </div>
+    </div>
+    
+    <!-- Minimap -->
+    <div class="minimap" id="minimap">
+        <canvas id="minimap-canvas" width="200" height="150"></canvas>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="/static/js/api-client-d1.js"></script>
+    <script src="/static/js/pages/canvas-v3.js"></script>
+    <script>
+        // Initialize Canvas V3
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get project ID and module from URL
+            const params = new URLSearchParams(window.location.search);
+            const projectId = params.get('project');
+            const module = params.get('module');
+            
+            // Store module filter in CanvasV3 before initialization
+            if (module) {
+                console.log('🎯 Module filter detected:', module);
+                CanvasV3.moduleFilter = module;
+                CanvasV3.selectedCategory = module;
+            }
+            
+            if (!projectId) {
+                console.log('⚠️ No project ID in URL, loading first available project...');
+                // Try to load the first project from the list
+                loadFirstProject();
+                return;
+            }
+            
+            // Load project and initialize
+            loadProjectAndInit(projectId);
+        });
+        
+        async function loadFirstProject() {
+            try {
+                console.log('🔍 Loading first available project...');
+                const result = await window.apiClient.projects.list();
+                
+                if (result.success && result.data && result.data.length > 0) {
+                    const firstProject = result.data[0];
+                    console.log('✅ Found first project:', firstProject);
+                    
+                    // Redirect to canvas-v3 with first project ID
+                    window.location.href = `/canvas-v3.html?project=${firstProject.id}`;
+                } else {
+                    // No projects found, show empty state
+                    console.log('⚠️ No projects found, showing empty state');
+                    showEmptyState();
+                }
+            } catch (error) {
+                console.error('Error loading projects:', error);
+                showEmptyState();
+            }
+        }
+        
+        function showEmptyState() {
+            const message = document.createElement('div');
+            message.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(139, 92, 246, 0.1);
+                backdrop-filter: blur(20px);
+                padding: 3rem;
+                border-radius: 20px;
+                border: 1px solid rgba(139, 92, 246, 0.3);
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                text-align: center;
+                z-index: 10000;
+                color: white;
+                max-width: 500px;
+            `;
+            message.innerHTML = `
+                <i class="fas fa-project-diagram" style="font-size: 4rem; margin-bottom: 1.5rem; display: block; opacity: 0.6;"></i>
+                <div style="font-weight: 600; font-size: 1.5rem; margin-bottom: 1rem;">프로젝트가 없습니다</div>
+                <div style="font-size: 1rem; opacity: 0.8; margin-bottom: 2rem; line-height: 1.6;">
+                    먼저 대시보드에서 프로젝트를 생성해주세요.<br>
+                    프로젝트를 생성한 후 다시 Canvas를 열어주세요.
+                </div>
+                <a href="/dashboard.html" style="
+                    display: inline-block;
+                    padding: 0.75rem 2rem;
+                    background: linear-gradient(135deg, var(--museum-purple), var(--museum-pink));
+                    border-radius: 12px;
+                    text-decoration: none;
+                    color: white;
+                    font-weight: 600;
+                    transition: all 0.3s;
+                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 30px rgba(139, 92, 246, 0.4)'"
+                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    <i class="fas fa-arrow-left" style="margin-right: 0.5rem;"></i>
+                    대시보드로 이동
+                </a>
+            `;
+            document.body.appendChild(message);
+        }
+        
+        async function loadProjectAndInit(projectId) {
+            try {
+                // Fetch project details
+                const result = await window.apiClient.projects.get(projectId);
+                
+                if (result.success && result.data) {
+                    // Store project in Canvas V3
+                    CanvasV3.currentProject = result.data;
+                    
+                    // Update toolbar
+                    document.getElementById('project-title').textContent = result.data.title;
+                    
+                    // Initialize Canvas V3
+                    await CanvasV3.init();
+                    
+                    console.log('✅ Canvas V3 initialized with project:', result.data);
+                } else {
+                    throw new Error('Failed to load project');
+                }
+            } catch (error) {
+                console.error('Error loading project:', error);
+                alert('프로젝트를 불러오는데 실패했습니다.');
+                showEmptyState();
+            }
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Tool shortcuts
+            if (e.key === 'v' || e.key === 'V') {
+                CanvasV3.setTool('select');
+            } else if (e.key === 'h' || e.key === 'H') {
+                CanvasV3.setTool('hand');
+            } else if (e.key === 'c' || e.key === 'C') {
+                CanvasV3.setTool('connection');
+            }
+            
+            // Zoom shortcuts
+            if (e.key === '+' || e.key === '=') {
+                CanvasV3.zoomIn();
+            } else if (e.key === '-' || e.key === '_') {
+                CanvasV3.zoomOut();
+            } else if (e.key === '0') {
+                CanvasV3.zoomReset();
+            }
+            
+            // Save shortcut
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                CanvasV3.saveProjectData();
+            }
+            
+            // Delete shortcut
+            if (e.key === 'Delete' || e.key === 'Backspace') {
+                CanvasV3.deleteSelectedNodes();
+            }
+        });
+        
+        // Toolbar buttons
+        document.getElementById('tool-select').addEventListener('click', () => CanvasV3.setTool('select'));
+        document.getElementById('tool-hand').addEventListener('click', () => CanvasV3.setTool('hand'));
+        document.getElementById('tool-connection').addEventListener('click', () => CanvasV3.setTool('connection'));
+        
+        document.getElementById('tool-zoom-in').addEventListener('click', () => CanvasV3.zoomIn());
+        document.getElementById('tool-zoom-out').addEventListener('click', () => CanvasV3.zoomOut());
+        document.getElementById('tool-zoom-reset').addEventListener('click', () => CanvasV3.zoomReset());
+        
+        document.getElementById('toggle-left-panel').addEventListener('click', () => {
+            document.getElementById('left-panel').classList.toggle('collapsed');
+            document.getElementById('canvas-container').classList.toggle('left-collapsed');
+        });
+        
+        document.getElementById('toggle-right-panel').addEventListener('click', () => {
+            document.getElementById('right-panel').classList.toggle('collapsed');
+            document.getElementById('canvas-container').classList.toggle('right-collapsed');
+        });
+        
+        document.getElementById('save-workflow').addEventListener('click', () => CanvasV3.saveProjectData());
+    </script>
+</body>
+</html>
