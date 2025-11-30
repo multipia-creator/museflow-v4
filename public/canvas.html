@@ -806,10 +806,17 @@
         }
         
         // Get project ID from URL
+        console.log('🌐 Full URL:', window.location.href);
+        console.log('🔍 URL Search:', window.location.search);
+        console.log('🔍 URL Hash:', window.location.hash);
+        
         const urlParams = new URLSearchParams(window.location.search);
         const projectId = urlParams.get('project');
-        console.log('🔍 URL Search:', window.location.search);
-        console.log('🔍 Project ID:', projectId);
+        
+        console.log('📦 URL Params Object:', Object.fromEntries(urlParams));
+        console.log('🎯 Project ID:', projectId);
+        console.log('❓ Project ID Type:', typeof projectId);
+        console.log('✅ Project ID Truthy?:', !!projectId);
         
         let currentProject = null;
         let currentView = 'timeline';

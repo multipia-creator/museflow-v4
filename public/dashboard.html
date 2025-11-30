@@ -464,11 +464,131 @@
             color: white;
         }
         
+        /* Museum Module Cards */
+        .module-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .module-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+        }
+        
+        .module-card:hover::before {
+            opacity: 1;
+        }
+        
+        .module-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .module-content {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .module-title {
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        
+        .module-description {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .module-stats {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .module-arrow {
+            position: relative;
+            z-index: 1;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .module-card:hover .module-arrow {
+            color: white;
+            transform: translateX(4px);
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .hero-title { font-size: 2rem; }
             .hero-mission { padding: 2rem; }
             .timeline-day { width: 150px; }
+            
+            .module-card {
+                padding: 1.5rem;
+            }
+            
+            .module-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
         }
     </style>
     
@@ -612,6 +732,159 @@
             </div>
             <div id="exhibitions-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1.5rem;">
                 <!-- Exhibition cards will be dynamically inserted -->
+            </div>
+        </section>
+
+        <!-- Museum Modules Section -->
+        <section style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-layer-group" style="color: var(--museum-purple);"></i>
+                박물관 업무 모듈
+            </h2>
+            <div id="museum-modules-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem;">
+                <!-- Module 1: Exhibition (전시) -->
+                <div class="module-card" data-module="exhibition" onclick="openModuleCanvas('exhibition')">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <div class="module-content">
+                        <h3 class="module-title">전시 관리</h3>
+                        <p class="module-description">전시 기획, 설치, 운영 및 평가</p>
+                        <div class="module-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">워크플로우</span>
+                                <span class="stat-value" id="exhibition-workflows">15</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">활성 프로젝트</span>
+                                <span class="stat-value" id="exhibition-active">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- Module 2: Education (교육) -->
+                <div class="module-card" data-module="education" onclick="openModuleCanvas('education')">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #06b6d4, #22d3ee);">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="module-content">
+                        <h3 class="module-title">교육 프로그램</h3>
+                        <p class="module-description">교육 프로그램 개발, 실행 및 평가</p>
+                        <div class="module-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">워크플로우</span>
+                                <span class="stat-value" id="education-workflows">15</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">활성 프로젝트</span>
+                                <span class="stat-value" id="education-active">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- Module 3: Archive (수집/보존) -->
+                <div class="module-card" data-module="archive" onclick="openModuleCanvas('archive')">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
+                        <i class="fas fa-archive"></i>
+                    </div>
+                    <div class="module-content">
+                        <h3 class="module-title">수집 & 보존</h3>
+                        <p class="module-description">유물 수집, 등록, 보존 및 관리</p>
+                        <div class="module-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">워크플로우</span>
+                                <span class="stat-value" id="archive-workflows">15</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">활성 프로젝트</span>
+                                <span class="stat-value" id="archive-active">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- Module 4: Publication (출판) -->
+                <div class="module-card" data-module="publication" onclick="openModuleCanvas('publication')">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="module-content">
+                        <h3 class="module-title">출판 & 콘텐츠</h3>
+                        <p class="module-description">도록, 뉴스레터, 디지털 콘텐츠 제작</p>
+                        <div class="module-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">워크플로우</span>
+                                <span class="stat-value" id="publication-workflows">12</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">활성 프로젝트</span>
+                                <span class="stat-value" id="publication-active">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- Module 5: Research (연구) -->
+                <div class="module-card" data-module="research" onclick="openModuleCanvas('research')">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #ec4899, #f472b6);">
+                        <i class="fas fa-microscope"></i>
+                    </div>
+                    <div class="module-content">
+                        <h3 class="module-title">연구 & 조사</h3>
+                        <p class="module-description">학술 연구, 현장 조사 및 보고서 작성</p>
+                        <div class="module-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">워크플로우</span>
+                                <span class="stat-value" id="research-workflows">12</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">활성 프로젝트</span>
+                                <span class="stat-value" id="research-active">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- Module 6: Admin (행정) -->
+                <div class="module-card" data-module="admin" onclick="openModuleCanvas('admin')">
+                    <div class="module-icon" style="background: linear-gradient(135deg, #6366f1, #818cf8);">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="module-content">
+                        <h3 class="module-title">행정 & 운영</h3>
+                        <p class="module-description">예산, 인사, 시설 관리 및 전략 기획</p>
+                        <div class="module-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">워크플로우</span>
+                                <span class="stat-value" id="admin-workflows">19</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">활성 프로젝트</span>
+                                <span class="stat-value" id="admin-active">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -1897,6 +2170,75 @@
                 const url = `/canvas.html?project=${projectId}`;
                 console.log('📍 Navigating to:', url);
                 window.location.href = url;
+            }
+        }
+        
+        // Open module-specific workflow canvas
+        function openModuleCanvas(module) {
+            console.log('🎯 Opening module canvas:', module);
+            
+            // Create a new project or use existing module project
+            const moduleProjectId = localStorage.getItem(`module_project_${module}`);
+            
+            if (moduleProjectId) {
+                // Open existing module project
+                window.location.href = `/workflow.html?project=${moduleProjectId}&module=${module}`;
+            } else {
+                // Create new module project workflow
+                createModuleProject(module);
+            }
+        }
+        
+        // Create module-specific project
+        async function createModuleProject(module) {
+            const moduleNames = {
+                'exhibition': '전시 관리',
+                'education': '교육 프로그램',
+                'archive': '수집 & 보존',
+                'publication': '출판 & 콘텐츠',
+                'research': '연구 & 조사',
+                'admin': '행정 & 운영'
+            };
+            
+            const moduleDescriptions = {
+                'exhibition': '전시 기획부터 설치, 운영, 평가까지의 전체 워크플로우',
+                'education': '교육 프로그램 개발, 실행 및 평가 워크플로우',
+                'archive': '유물 수집, 등록, 보존 및 관리 워크플로우',
+                'publication': '도록, 뉴스레터, 디지털 콘텐츠 제작 워크플로우',
+                'research': '학술 연구, 현장 조사 및 보고서 작성 워크플로우',
+                'admin': '예산, 인사, 시설 관리 및 전략 기획 워크플로우'
+            };
+            
+            const moduleTypes = {
+                'exhibition': 'special',
+                'education': 'event',
+                'archive': 'permanent',
+                'publication': 'event',
+                'research': 'special',
+                'admin': 'permanent'
+            };
+            
+            try {
+                const result = await window.apiClient.projects.create({
+                    title: moduleNames[module],
+                    description: moduleDescriptions[module],
+                    type: moduleTypes[module],
+                    phase: 'planning'
+                });
+                
+                if (result.success && result.data) {
+                    const projectId = result.data.id;
+                    localStorage.setItem(`module_project_${module}`, projectId);
+                    console.log(`✅ Created module project:`, projectId);
+                    
+                    // Navigate to workflow with module parameter
+                    window.location.href = `/workflow.html?project=${projectId}&module=${module}`;
+                } else {
+                    throw new Error(result.error || 'Failed to create project');
+                }
+            } catch (error) {
+                console.error('❌ Error creating module project:', error);
+                alert(`모듈 프로젝트 생성 실패: ${error.message}`);
             }
         }
         

@@ -512,9 +512,17 @@
     <script>
         // Initialize Canvas V3
         document.addEventListener('DOMContentLoaded', () => {
-            // Get project ID from URL
+            // Get project ID and module from URL
             const params = new URLSearchParams(window.location.search);
             const projectId = params.get('project');
+            const module = params.get('module');
+            
+            // Store module filter in CanvasV3 before initialization
+            if (module) {
+                console.log('🎯 Module filter detected:', module);
+                CanvasV3.moduleFilter = module;
+                CanvasV3.selectedCategory = module;
+            }
             
             if (!projectId) {
                 console.log('⚠️ No project ID in URL, redirecting to Projects page...');

@@ -50,6 +50,7 @@ const CanvasV3 = {
   rightPanelOpen: true,
   searchQuery: '',
   selectedCategory: 'all',
+  moduleFilter: null, // Filter by module: exhibition, education, archive, publication, research, admin
   expandedSubcategories: new Set(['planning', 'installation', 'evaluation', 'program', 'execution', 'acquisition', 'preservation', 'research', 'content', 'production', 'fieldwork', 'analysis', 'strategic', 'operations', 'engagement']),
   
   // Node ID counter
@@ -641,8 +642,13 @@ const CanvasV3 = {
   getFilteredNodes() {
     let nodes = this.getAllNodeTypes();
     
-    // Filter by category
-    if (this.selectedCategory !== 'all') {
+    // Filter by module (if moduleFilter is set from URL parameter)
+    if (this.moduleFilter) {
+      nodes = nodes.filter(n => n.category === this.moduleFilter);
+    }
+    
+    // Filter by category (manual selection)
+    if (this.selectedCategory !== 'all' && !this.moduleFilter) {
       nodes = nodes.filter(n => n.category === this.selectedCategory);
     }
     
