@@ -1135,7 +1135,10 @@
         // Render Monthly Trend Chart
         function renderMonthlyTrendChart() {
             const ctx = document.getElementById('monthlyTrendChart');
-            if (!ctx) return;
+            if (!ctx || typeof Chart === 'undefined') {
+                console.warn('Chart.js not available or canvas not found');
+                return;
+            }
             
             // Destroy existing chart
             if (charts.monthlyTrend) charts.monthlyTrend.destroy();
@@ -1199,7 +1202,7 @@
         // Render Type Distribution Chart
         function renderTypeDistributionChart() {
             const ctx = document.getElementById('typeDistributionChart');
-            if (!ctx) return;
+            if (!ctx || typeof Chart === 'undefined') return;
             
             if (charts.typeDistribution) charts.typeDistribution.destroy();
             
@@ -1253,7 +1256,7 @@
         // Render Budget Chart
         function renderBudgetChart() {
             const ctx = document.getElementById('budgetChart');
-            if (!ctx) return;
+            if (!ctx || typeof Chart === 'undefined') return;
             
             if (charts.budget) charts.budget.destroy();
             
@@ -1318,7 +1321,7 @@
         // Render Phase Distribution Chart
         function renderPhaseDistributionChart() {
             const ctx = document.getElementById('phaseDistributionChart');
-            if (!ctx) return;
+            if (!ctx || typeof Chart === 'undefined') return;
             
             if (charts.phaseDistribution) charts.phaseDistribution.destroy();
             
@@ -1508,8 +1511,15 @@
             }
         });
         
-        // Initialize
-        loadProjects();
+        // Initialize (wait for Chart.js to load)
+        if (typeof Chart !== 'undefined') {
+            loadProjects();
+        } else {
+            console.warn('Chart.js not loaded yet, waiting...');
+            window.addEventListener('load', () => {
+                setTimeout(loadProjects, 100);
+            });
+        }
     </script>
     
     <!-- PWA Service Worker Registration (Disabled to prevent blocking) -->
