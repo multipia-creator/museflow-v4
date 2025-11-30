@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="version" content="4.0.0">
+    <title>예산 관리 - MuseFlow</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/js/tracker.js?v=4.0.0"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --museum-purple: #8b5cf6;
+            --museum-pink: #ec4899;
+            --museum-gold: #f59e0b;
+            --urgent: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --info: #3b82f6;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a0f2e 50%, #0a0a0f 100%);
+            color: #f5f5f7;
+            min-height: 100vh;
+        }
+        
+        .nav-bar {
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: saturate(180%) blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+        
+        .content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .page-header {
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--museum-purple), var(--museum-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        .budget-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .summary-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+        
+        .summary-card h3 {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .summary-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .summary-change {
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .summary-change.positive {
+            color: var(--success);
+        }
+        
+        .summary-change.negative {
+            color: var(--urgent);
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .chart-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .budget-table {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .table-header {
+            background: rgba(139, 92, 246, 0.1);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        th {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-badge.over {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        .status-badge.warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+        
+        .status-badge.good {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 100px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-fill.over {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+        
+        .progress-fill.warning {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+        }
+        
+        .progress-fill.good {
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--museum-purple), var(--museum-pink));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-secondary {
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            color: #a78bfa;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .budget-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <a href="/dashboard" class="nav-logo">
+            <i class="fas fa-palette"></i>
+            <span>MuseFlow</span>
+        </a>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+            <a href="/dashboard" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="/projects" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
+                <i class="fas fa-folder"></i> 전시
+            </a>
+            <a href="/budget" style="color: rgba(139, 92, 246, 1); font-weight: 600; border-bottom: 2px solid rgba(139, 92, 246, 1); text-decoration: none;">
+                <i class="fas fa-dollar-sign"></i> 예산
+            </a>
+        </div>
+    </nav>
+    
+    <div class="content">
+        <div class="page-header">
+            <h1 class="page-title">💰 예산 관리</h1>
+            <p style="color: #999; font-size: 1.1rem;">전시별 예산 현황을 한눈에 확인하세요</p>
+        </div>
+        
+        <!-- Budget Summary -->
+        <div class="budget-summary">
+            <div class="summary-card">
+                <h3>총 예산</h3>
+                <div class="summary-amount" id="total-budget">₩0</div>
+                <div class="summary-change">
+                    <i class="fas fa-info-circle"></i>
+                    <span>2024년 전체 예산</span>
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <h3>총 지출</h3>
+                <div class="summary-amount" id="total-spent" style="color: var(--museum-pink);">₩0</div>
+                <div class="summary-change">
+                    <span id="spent-percentage">0%</span> 사용
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <h3>남은 예산</h3>
+                <div class="summary-amount" id="remaining-budget" style="color: var(--success);">₩0</div>
+                <div class="summary-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span id="remaining-percentage">0%</span> 잔여
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <h3>예산 초과</h3>
+                <div class="summary-amount" id="over-budget" style="color: var(--urgent);">₩0</div>
+                <div class="summary-change negative">
+                    <span id="over-budget-count">0</span>개 프로젝트
+                </div>
+            </div>
+        </div>
+        
+        <!-- Charts -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>월별 예산 사용 추이</h3>
+                    <button class="btn-secondary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
+                        <i class="fas fa-download"></i> 내보내기
+                    </button>
+                </div>
+                <canvas id="monthly-budget-chart"></canvas>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>전시 유형별 예산 분포</h3>
+                </div>
+                <canvas id="budget-distribution-chart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Budget Table -->
+        <div class="budget-table">
+            <div class="table-header">
+                <h3 style="font-size: 1.25rem; font-weight: 600;">전시별 예산 현황</h3>
+                <button class="btn-primary" onclick="exportBudgetReport()">
+                    <i class="fas fa-file-export"></i> 보고서 생성
+                </button>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>전시명</th>
+                        <th>유형</th>
+                        <th>예산</th>
+                        <th>지출</th>
+                        <th>진행률</th>
+                        <th>상태</th>
+                    </tr>
+                </thead>
+                <tbody id="budget-table-body">
+                    <!-- Data will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        // Mock budget data
+        const budgetData = {
+            projects: [
+                { id: 1, name: '한국 도자기 특별전', type: '특별전', budget: 50000000, spent: 45000000, status: 'warning' },
+                { id: 2, name: '현대 미술의 흐름', type: '상설전', budget: 30000000, spent: 28000000, status: 'good' },
+                { id: 3, name: '세계 문화 유산 순회전', type: '순회전', budget: 80000000, spent: 85000000, status: 'over' },
+                { id: 4, name: 'AI 아트 기획전', type: '기획전', budget: 40000000, spent: 35000000, status: 'good' },
+                { id: 5, name: '어린이 체험 교육전', type: '교육', budget: 25000000, spent: 20000000, status: 'good' }
+            ],
+            monthly: {
+                labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
+                budget: [35000000, 40000000, 45000000, 50000000, 55000000, 60000000],
+                spent: [32000000, 38000000, 42000000, 48000000, 53000000, 58000000]
+            }
+        };
+        
+        // Calculate summary
+        function calculateSummary() {
+            const totalBudget = budgetData.projects.reduce((sum, p) => sum + p.budget, 0);
+            const totalSpent = budgetData.projects.reduce((sum, p) => sum + p.spent, 0);
+            const remainingBudget = totalBudget - totalSpent;
+            const overBudgetProjects = budgetData.projects.filter(p => p.spent > p.budget);
+            const overBudgetAmount = overBudgetProjects.reduce((sum, p) => sum + (p.spent - p.budget), 0);
+            
+            document.getElementById('total-budget').textContent = formatCurrency(totalBudget);
+            document.getElementById('total-spent').textContent = formatCurrency(totalSpent);
+            document.getElementById('remaining-budget').textContent = formatCurrency(remainingBudget);
+            document.getElementById('over-budget').textContent = formatCurrency(overBudgetAmount);
+            
+            document.getElementById('spent-percentage').textContent = ((totalSpent / totalBudget) * 100).toFixed(1) + '%';
+            document.getElementById('remaining-percentage').textContent = ((remainingBudget / totalBudget) * 100).toFixed(1) + '%';
+            document.getElementById('over-budget-count').textContent = overBudgetProjects.length;
+        }
+        
+        // Format currency
+        function formatCurrency(amount) {
+            return '₩' + amount.toLocaleString();
+        }
+        
+        // Render budget table
+        function renderBudgetTable() {
+            const tbody = document.getElementById('budget-table-body');
+            tbody.innerHTML = budgetData.projects.map(project => {
+                const percentage = (project.spent / project.budget) * 100;
+                const statusClass = project.status;
+                const statusText = project.status === 'over' ? '초과' : project.status === 'warning' ? '주의' : '정상';
+                
+                return `
+                    <tr>
+                        <td><strong>${project.name}</strong></td>
+                        <td>${project.type}</td>
+                        <td>${formatCurrency(project.budget)}</td>
+                        <td>${formatCurrency(project.spent)}</td>
+                        <td>
+                            <div>${percentage.toFixed(1)}%</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill ${statusClass}" style="width: ${Math.min(percentage, 100)}%"></div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        // Monthly budget chart
+        function renderMonthlyBudgetChart() {
+            const ctx = document.getElementById('monthly-budget-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: budgetData.monthly.labels,
+                    datasets: [
+                        {
+                            label: '예산',
+                            data: budgetData.monthly.budget,
+                            borderColor: '#8b5cf6',
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: '지출',
+                            data: budgetData.monthly.spent,
+                            borderColor: '#ec4899',
+                            backgroundColor: 'rgba(236, 72, 153, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#f5f5f7' }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: { 
+                                color: '#999',
+                                callback: function(value) {
+                                    return '₩' + (value / 1000000) + 'M';
+                                }
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: '#999' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Budget distribution chart
+        function renderBudgetDistributionChart() {
+            const ctx = document.getElementById('budget-distribution-chart').getContext('2d');
+            
+            const typeData = {};
+            budgetData.projects.forEach(p => {
+                typeData[p.type] = (typeData[p.type] || 0) + p.budget;
+            });
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(typeData),
+                    datasets: [{
+                        data: Object.values(typeData),
+                        backgroundColor: [
+                            'rgba(139, 92, 246, 0.8)',
+                            'rgba(236, 72, 153, 0.8)',
+                            'rgba(245, 158, 11, 0.8)',
+                            'rgba(16, 185, 129, 0.8)',
+                            'rgba(59, 130, 246, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#f5f5f7', padding: 20 }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Export budget report
+        function exportBudgetReport() {
+            alert('예산 보고서를 생성 중입니다... (PDF 다운로드 예정)');
+            
+            if (window.notificationSystem) {
+                notificationSystem.showInAppNotification('예산 보고서가 생성되었습니다.', 'success');
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            calculateSummary();
+            renderBudgetTable();
+            
+            // Delay chart rendering to ensure canvas is ready
+            setTimeout(() => {
+                renderMonthlyBudgetChart();
+                renderBudgetDistributionChart();
+            }, 100);
+        });
+    </script>
+    
+    <!-- Notification System -->
+    <script src="/static/js/notification-system.js"></script>
+    
+    <!-- Floating Action Button -->
+    <script src="/static/js/components/floating-action.js"></script>
+</body>
+</html>

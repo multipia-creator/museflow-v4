@@ -380,6 +380,14 @@
             .timeline-day { width: 150px; }
         }
     </style>
+    
+    <!-- PWA Configuration -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#8b5cf6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="MuseFlow">
+    <link rel="apple-touch-icon" href="/static/images/logo-neon-m.png">
 </head>
 <body>
     <!-- Navigation -->
@@ -402,6 +410,13 @@
             <a href="/canvas.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
                 <i class="fas fa-project-diagram"></i> Canvas
             </a>
+            <div style="position: relative;">
+                <button id="notification-btn" style="background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); padding: 0.5rem 1rem; border-radius: 8px; color: white; cursor: pointer; position: relative;" onclick="toggleNotificationPanel()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" style="display: none;">0</span>
+                </button>
+                <div id="notification-panel" class="notification-panel" style="display: none;"></div>
+            </div>
             <a href="/account.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
                 <i class="fas fa-user"></i> 계정
             </a>
@@ -486,6 +501,51 @@
             </div>
             <div id="exhibitions-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1.5rem;">
                 <!-- Exhibition cards will be dynamically inserted -->
+            </div>
+        </section>
+
+        <!-- Analytics Charts -->
+        <section style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-chart-line" style="color: var(--museum-purple);"></i>
+                데이터 분석
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 1.5rem;">
+                <!-- Chart 1: Monthly Trend -->
+                <div class="glass-card">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-chart-line" style="color: #8b5cf6;"></i>
+                        월별 전시 트렌드
+                    </h3>
+                    <canvas id="monthlyTrendChart" style="max-height: 250px;"></canvas>
+                </div>
+                
+                <!-- Chart 2: Type Distribution -->
+                <div class="glass-card">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-chart-pie" style="color: #ec4899;"></i>
+                        전시 유형 분포
+                    </h3>
+                    <canvas id="typeDistributionChart" style="max-height: 250px;"></canvas>
+                </div>
+                
+                <!-- Chart 3: Budget Usage -->
+                <div class="glass-card">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-chart-bar" style="color: #f59e0b;"></i>
+                        예산 사용 현황
+                    </h3>
+                    <canvas id="budgetChart" style="max-height: 250px;"></canvas>
+                </div>
+                
+                <!-- Chart 4: Phase Distribution -->
+                <div class="glass-card">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-tasks" style="color: #10b981;"></i>
+                        진행 단계 분포
+                    </h3>
+                    <canvas id="phaseDistributionChart" style="max-height: 250px;"></canvas>
+                </div>
             </div>
         </section>
 
@@ -804,6 +864,257 @@
             alert('팀 채팅 기능은 곧 추가됩니다!');
         }
         
+        // Chart.js Configuration
+        Chart.defaults.color = 'rgba(255, 255, 255, 0.8)';
+        Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)';
+        
+        let charts = {
+            monthlyTrend: null,
+            typeDistribution: null,
+            budget: null,
+            phaseDistribution: null
+        };
+        
+        // Render Monthly Trend Chart
+        function renderMonthlyTrendChart() {
+            const ctx = document.getElementById('monthlyTrendChart');
+            if (!ctx) return;
+            
+            // Destroy existing chart
+            if (charts.monthlyTrend) charts.monthlyTrend.destroy();
+            
+            // Calculate monthly data (last 6 months)
+            const months = [];
+            const counts = [];
+            const now = new Date();
+            
+            for (let i = 5; i >= 0; i--) {
+                const month = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                const monthStr = month.toLocaleDateString('ko-KR', { month: 'short' });
+                months.push(monthStr);
+                
+                // Count projects created in this month
+                const count = allProjects.filter(p => {
+                    const created = new Date(p.created_at);
+                    return created.getMonth() === month.getMonth() && 
+                           created.getFullYear() === month.getFullYear();
+                }).length;
+                counts.push(count);
+            }
+            
+            charts.monthlyTrend = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: '전시 수',
+                        data: counts,
+                        borderColor: '#8b5cf6',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#8b5cf6',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 },
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Render Type Distribution Chart
+        function renderTypeDistributionChart() {
+            const ctx = document.getElementById('typeDistributionChart');
+            if (!ctx) return;
+            
+            if (charts.typeDistribution) charts.typeDistribution.destroy();
+            
+            const typeCounts = {
+                permanent: 0,
+                special: 0,
+                traveling: 0,
+                event: 0
+            };
+            
+            allProjects.forEach(p => {
+                if (typeCounts.hasOwnProperty(p.type)) {
+                    typeCounts[p.type]++;
+                }
+            });
+            
+            charts.typeDistribution = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['상설전', '특별전', '순회전', '기획전'],
+                    datasets: [{
+                        data: [typeCounts.permanent, typeCounts.special, typeCounts.traveling, typeCounts.event],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(236, 72, 153, 0.8)',
+                            'rgba(245, 158, 11, 0.8)',
+                            'rgba(16, 185, 129, 0.8)'
+                        ],
+                        borderColor: [
+                            '#3b82f6',
+                            '#ec4899',
+                            '#f59e0b',
+                            '#10b981'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { padding: 15 }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Render Budget Chart
+        function renderBudgetChart() {
+            const ctx = document.getElementById('budgetChart');
+            if (!ctx) return;
+            
+            if (charts.budget) charts.budget.destroy();
+            
+            // Get top 5 projects by budget
+            const budgetProjects = allProjects
+                .filter(p => p.budget_total > 0)
+                .sort((a, b) => b.budget_total - a.budget_total)
+                .slice(0, 5);
+            
+            const labels = budgetProjects.map(p => p.title.length > 15 ? p.title.substring(0, 15) + '...' : p.title);
+            const totalBudgets = budgetProjects.map(p => p.budget_total || 0);
+            const usedBudgets = budgetProjects.map(p => p.budget_used || 0);
+            
+            charts.budget = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '총 예산',
+                            data: totalBudgets,
+                            backgroundColor: 'rgba(139, 92, 246, 0.6)',
+                            borderColor: '#8b5cf6',
+                            borderWidth: 1
+                        },
+                        {
+                            label: '사용 예산',
+                            data: usedBudgets,
+                            backgroundColor: 'rgba(236, 72, 153, 0.6)',
+                            borderColor: '#ec4899',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { padding: 15 }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString() + '만원';
+                                }
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Render Phase Distribution Chart
+        function renderPhaseDistributionChart() {
+            const ctx = document.getElementById('phaseDistributionChart');
+            if (!ctx) return;
+            
+            if (charts.phaseDistribution) charts.phaseDistribution.destroy();
+            
+            const phaseCounts = {
+                planning: 0,
+                preparation: 0,
+                execution: 0,
+                marketing: 0,
+                completed: 0
+            };
+            
+            allProjects.forEach(p => {
+                if (phaseCounts.hasOwnProperty(p.phase)) {
+                    phaseCounts[p.phase]++;
+                }
+            });
+            
+            charts.phaseDistribution = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['기획', '준비', '진행', '홍보', '완료'],
+                    datasets: [{
+                        data: [phaseCounts.planning, phaseCounts.preparation, phaseCounts.execution, phaseCounts.marketing, phaseCounts.completed],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(245, 158, 11, 0.8)',
+                            'rgba(236, 72, 153, 0.8)',
+                            'rgba(139, 92, 246, 0.8)',
+                            'rgba(16, 185, 129, 0.8)'
+                        ],
+                        borderColor: [
+                            '#3b82f6',
+                            '#f59e0b',
+                            '#ec4899',
+                            '#8b5cf6',
+                            '#10b981'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { padding: 15 }
+                        }
+                    }
+                }
+            });
+        }
+        
         // Load Projects
         async function loadProjects() {
             try {
@@ -822,6 +1133,12 @@
                 renderExhibitions();
                 renderTeamActivity();
                 
+                // Render charts
+                renderMonthlyTrendChart();
+                renderTypeDistributionChart();
+                renderBudgetChart();
+                renderPhaseDistributionChart();
+                
             } catch (error) {
                 console.error('Error loading projects:', error);
             }
@@ -834,6 +1151,56 @@
         
         // Initialize
         loadProjects();
+    </script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('[PWA] Service Worker registered:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('[PWA] Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+    
+    <!-- Notification System -->
+    <script src="/static/js/notification-system.js"></script>
+    <script>
+        function toggleNotificationPanel() {
+            const panel = document.getElementById('notification-panel');
+            const isVisible = panel.style.display === 'block';
+            panel.style.display = isVisible ? 'none' : 'block';
+            
+            if (!isVisible) {
+                notificationSystem.renderNotificationPanel();
+            }
+        }
+
+        // Close panel when clicking outside
+        document.addEventListener('click', (e) => {
+            const panel = document.getElementById('notification-panel');
+            const btn = document.getElementById('notification-btn');
+            
+            if (!btn.contains(e.target) && !panel.contains(e.target)) {
+                panel.style.display = 'none';
+            }
+        });
+
+        // Test notification on page load (only once per session)
+        if (!sessionStorage.getItem('welcome_notification_shown')) {
+            setTimeout(() => {
+                notificationSystem.showInAppNotification(
+                    '환영합니다! 알림 시스템이 활성화되었습니다. 🎉',
+                    'success'
+                );
+                sessionStorage.setItem('welcome_notification_shown', 'true');
+            }, 2000);
+        }
     </script>
     
     <!-- Floating Action Button -->
