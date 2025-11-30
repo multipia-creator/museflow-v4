@@ -708,6 +708,50 @@
         </div>
     </div>
     
+    <!-- Task Modal -->
+    <div class="modal" id="task-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: rgba(10, 10, 15, 0.95); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 2rem; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="font-size: 1.75rem; font-weight: 700;" id="task-modal-title">새 작업 추가</h2>
+                <button onclick="closeTaskModal()" style="background: none; border: none; color: rgba(255, 255, 255, 0.7); font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+            <form id="task-form" onsubmit="saveTask(event)">
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.875rem;">작업 제목 *</label>
+                    <input type="text" id="task-title" required style="width: 100%; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-size: 0.875rem;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.875rem;">설명</label>
+                    <textarea id="task-description" style="width: 100%; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-size: 0.875rem; resize: vertical; min-height: 80px;"></textarea>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.875rem;">진행 단계 *</label>
+                        <select id="task-phase" required style="width: 100%; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-size: 0.875rem;">
+                            <option value="planning">💡 기획</option>
+                            <option value="preparation">🔧 준비</option>
+                            <option value="execution">🚀 진행</option>
+                            <option value="marketing">📢 홍보</option>
+                            <option value="completed">✅ 완료</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.875rem;">담당자</label>
+                        <input type="text" id="task-assignee" style="width: 100%; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-size: 0.875rem;">
+                    </div>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.875rem;">마감일</label>
+                    <input type="date" id="task-duedate" style="width: 100%; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 0.75rem 1rem; color: white; font-size: 0.875rem;">
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" class="btn-secondary" style="flex: 1;" onclick="closeTaskModal()">취소</button>
+                    <button type="submit" class="btn-primary" style="flex: 1;">저장</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     <script>
         // Configuration
         const API_BASE_URL = window.location.origin;
@@ -719,6 +763,8 @@
         
         let currentProject = null;
         let currentView = 'timeline';
+        let editingTaskId = null;
+        let tasks = [];
         
         // Check authentication
         if (!token) {
@@ -772,7 +818,6 @@
                 currentProject = data.project;
                 
                 renderProjectHeader();
-                renderAllViews();
                 
             } catch (error) {
                 console.error('Error loading project:', error);
@@ -806,21 +851,68 @@
             renderGalleryView();
         }
         
+        // Load tasks from workflowData
+        function loadTasks() {
+            try {
+                const workflowData = currentProject.workflowData ? JSON.parse(currentProject.workflowData) : {};
+                tasks = workflowData.tasks || [];
+            } catch (error) {
+                console.error('Error parsing workflowData:', error);
+                tasks = [];
+            }
+        }
+        
+        // Save tasks to workflowData
+        async function saveTasks() {
+            try {
+                const workflowData = { tasks };
+                
+                const response = await fetch(`${API_BASE_URL}/api/projects/${projectId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        workflowData: JSON.stringify(workflowData)
+                    })
+                });
+                
+                if (!response.ok) throw new Error('Failed to save tasks');
+                
+            } catch (error) {
+                console.error('Error saving tasks:', error);
+                alert('작업 저장에 실패했습니다.');
+            }
+        }
+        
         // Render Timeline View
         function renderTimelineView() {
             const phases = ['planning', 'preparation', 'execution', 'marketing', 'completed'];
             
-            // For now, showing empty state
-            // In production, this would load actual tasks from workflowData
             phases.forEach(phase => {
                 const container = document.getElementById(`${phase}-tasks`);
-                if (container) {
+                if (!container) return;
+                
+                const phaseTasks = tasks.filter(t => t.phase === phase);
+                
+                if (phaseTasks.length === 0) {
                     container.innerHTML = `
                         <div class="empty-state" style="padding: 2rem;">
                             <div class="empty-icon">${phaseConfig[phase].icon}</div>
                             <div class="empty-text">${phaseConfig[phase].label} 단계 작업 없음</div>
                         </div>
                     `;
+                } else {
+                    container.innerHTML = phaseTasks.map(task => `
+                        <div class="task-card" onclick="editTask('${task.id}')">
+                            <div class="task-title">${task.title}</div>
+                            <div class="task-meta">
+                                ${task.assignee ? `<span><i class="fas fa-user"></i> ${task.assignee}</span>` : ''}
+                                ${task.dueDate ? `<span><i class="fas fa-calendar"></i> ${task.dueDate}</span>` : ''}
+                            </div>
+                        </div>
+                    `).join('');
                 }
             });
         }
@@ -836,20 +928,40 @@
             ];
             
             const board = document.getElementById('kanban-board');
-            board.innerHTML = phases.map(phase => `
-                <div class="kanban-column" style="background: ${phase.color};">
-                    <div class="column-header">
-                        <div class="column-title">${phase.label}</div>
-                        <div class="column-count">0</div>
-                    </div>
-                    <div class="kanban-cards">
-                        <div class="empty-state" style="padding: 3rem 1rem;">
-                            <div class="empty-icon">${phase.label.split(' ')[0]}</div>
-                            <div class="empty-text">작업 없음</div>
+            board.innerHTML = phases.map(phase => {
+                const phaseTasks = tasks.filter(t => t.phase === phase.key);
+                
+                return `
+                    <div class="kanban-column" style="background: ${phase.color};" 
+                         ondragover="allowDrop(event)" 
+                         ondrop="drop(event, '${phase.key}')">
+                        <div class="column-header">
+                            <div class="column-title">${phase.label}</div>
+                            <div class="column-count">${phaseTasks.length}</div>
+                        </div>
+                        <div class="kanban-cards">
+                            ${phaseTasks.length === 0 ? `
+                                <div class="empty-state" style="padding: 3rem 1rem;">
+                                    <div class="empty-icon">${phase.label.split(' ')[0]}</div>
+                                    <div class="empty-text">작업 없음</div>
+                                </div>
+                            ` : phaseTasks.map(task => `
+                                <div class="kanban-card" 
+                                     draggable="true" 
+                                     ondragstart="drag(event, '${task.id}')"
+                                     onclick="editTask('${task.id}')">
+                                    <h4 style="font-weight: 600; margin-bottom: 0.5rem;">${task.title}</h4>
+                                    ${task.description ? `<p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.75rem;">${task.description}</p>` : ''}
+                                    <div style="display: flex; gap: 1rem; font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">
+                                        ${task.assignee ? `<span><i class="fas fa-user"></i> ${task.assignee}</span>` : ''}
+                                        ${task.dueDate ? `<span><i class="fas fa-calendar"></i> ${task.dueDate}</span>` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
         
         // Render Gallery View
@@ -898,18 +1010,107 @@
             });
         });
         
-        // Action functions
+        // Task Modal functions
         function addTask() {
-            alert('작업 추가 기능은 곧 추가됩니다!');
+            editingTaskId = null;
+            document.getElementById('task-modal-title').textContent = '새 작업 추가';
+            document.getElementById('task-form').reset();
+            document.getElementById('task-modal').style.display = 'flex';
         }
         
+        function editTask(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+            
+            editingTaskId = taskId;
+            document.getElementById('task-modal-title').textContent = '작업 편집';
+            document.getElementById('task-title').value = task.title || '';
+            document.getElementById('task-description').value = task.description || '';
+            document.getElementById('task-phase').value = task.phase || 'planning';
+            document.getElementById('task-assignee').value = task.assignee || '';
+            document.getElementById('task-duedate').value = task.dueDate || '';
+            
+            document.getElementById('task-modal').style.display = 'flex';
+        }
+        
+        function closeTaskModal() {
+            document.getElementById('task-modal').style.display = 'none';
+        }
+        
+        async function saveTask(event) {
+            event.preventDefault();
+            
+            const taskData = {
+                id: editingTaskId || `task_${Date.now()}`,
+                title: document.getElementById('task-title').value,
+                description: document.getElementById('task-description').value,
+                phase: document.getElementById('task-phase').value,
+                assignee: document.getElementById('task-assignee').value,
+                dueDate: document.getElementById('task-duedate').value,
+                createdAt: editingTaskId ? tasks.find(t => t.id === editingTaskId).createdAt : new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+            
+            if (editingTaskId) {
+                const index = tasks.findIndex(t => t.id === editingTaskId);
+                if (index !== -1) tasks[index] = taskData;
+            } else {
+                tasks.push(taskData);
+            }
+            
+            await saveTasks();
+            closeTaskModal();
+            renderAllViews();
+        }
+        
+        // Drag & Drop functions
+        let draggedTaskId = null;
+        
+        function drag(event, taskId) {
+            draggedTaskId = taskId;
+            event.dataTransfer.effectAllowed = 'move';
+        }
+        
+        function allowDrop(event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'move';
+        }
+        
+        async function drop(event, targetPhase) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            if (!draggedTaskId) return;
+            
+            const task = tasks.find(t => t.id === draggedTaskId);
+            if (task && task.phase !== targetPhase) {
+                task.phase = targetPhase;
+                task.updatedAt = new Date().toISOString();
+                
+                await saveTasks();
+                renderAllViews();
+            }
+            
+            draggedTaskId = null;
+        }
+        
+        // Action functions
         function editProject() {
             window.location.href = `/projects?edit=${projectId}`;
         }
         
         // Initialize
-        loadProject();
+        async function init() {
+            await loadProject();
+            loadTasks();
+            renderAllViews();
+        }
+        
+        init();
     </script>
+    
+    <!-- Floating Action Button -->
+    <script src="/static/js/components/floating-action.js"></script>
     
     <!-- Mobile Navigation -->
     <script src="/static/js/components/mobile-nav.js"></script>
