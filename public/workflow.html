@@ -531,40 +531,80 @@
             }
             
             if (!projectId) {
-                console.log('⚠️ No project ID in URL, redirecting to Dashboard...');
-                // Show a friendly message
-                const message = document.createElement('div');
-                message.style.cssText = `
-                    position: fixed;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    background: rgba(139, 92, 246, 0.95);
-                    backdrop-filter: blur(20px);
-                    padding: 2rem 3rem;
-                    border-radius: 20px;
-                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-                    text-align: center;
-                    z-index: 10000;
-                    color: white;
-                    font-size: 1.1rem;
-                `;
-                message.innerHTML = `
-                    <i class="fas fa-project-diagram" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
-                    <div style="font-weight: 600; margin-bottom: 0.5rem;">프로젝트를 선택해주세요</div>
-                    <div style="font-size: 0.9rem; opacity: 0.9;">프로젝트 페이지로 이동합니다...</div>
-                `;
-                document.body.appendChild(message);
-                
-                setTimeout(() => {
-                    window.location.href = '/dashboard';
-                }, 2000);
+                console.log('⚠️ No project ID in URL, loading first available project...');
+                // Try to load the first project from the list
+                loadFirstProject();
                 return;
             }
             
             // Load project and initialize
             loadProjectAndInit(projectId);
         });
+        
+        async function loadFirstProject() {
+            try {
+                console.log('🔍 Loading first available project...');
+                const result = await window.apiClient.projects.list();
+                
+                if (result.success && result.data && result.data.length > 0) {
+                    const firstProject = result.data[0];
+                    console.log('✅ Found first project:', firstProject);
+                    
+                    // Redirect to workflow with first project ID
+                    window.location.href = `/workflow.html?project=${firstProject.id}`;
+                } else {
+                    // No projects found, show empty state
+                    console.log('⚠️ No projects found, showing empty state');
+                    showEmptyState();
+                }
+            } catch (error) {
+                console.error('Error loading projects:', error);
+                showEmptyState();
+            }
+        }
+        
+        function showEmptyState() {
+            const message = document.createElement('div');
+            message.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(139, 92, 246, 0.1);
+                backdrop-filter: blur(20px);
+                padding: 3rem;
+                border-radius: 20px;
+                border: 1px solid rgba(139, 92, 246, 0.3);
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                text-align: center;
+                z-index: 10000;
+                color: white;
+                max-width: 500px;
+            `;
+            message.innerHTML = `
+                <i class="fas fa-project-diagram" style="font-size: 4rem; margin-bottom: 1.5rem; display: block; opacity: 0.6;"></i>
+                <div style="font-weight: 600; font-size: 1.5rem; margin-bottom: 1rem;">프로젝트가 없습니다</div>
+                <div style="font-size: 1rem; opacity: 0.8; margin-bottom: 2rem; line-height: 1.6;">
+                    먼저 대시보드에서 프로젝트를 생성해주세요.<br>
+                    프로젝트를 생성한 후 다시 Workflow를 열어주세요.
+                </div>
+                <a href="/dashboard.html" style="
+                    display: inline-block;
+                    padding: 0.75rem 2rem;
+                    background: linear-gradient(135deg, var(--museum-purple), var(--museum-pink));
+                    border-radius: 12px;
+                    text-decoration: none;
+                    color: white;
+                    font-weight: 600;
+                    transition: all 0.3s;
+                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 30px rgba(139, 92, 246, 0.4)'"
+                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    <i class="fas fa-arrow-left" style="margin-right: 0.5rem;"></i>
+                    대시보드로 이동
+                </a>
+            `;
+            document.body.appendChild(message);
+        }
         
         async function loadProjectAndInit(projectId) {
             try {
@@ -587,8 +627,8 @@
                 }
             } catch (error) {
                 console.error('Error loading project:', error);
-                alert('Failed to load project. Redirecting to Dashboard...');
-                window.location.href = '/dashboard';
+                alert('프로젝트를 불러오는데 실패했습니다.');
+                showEmptyState();
             }
         }
         
