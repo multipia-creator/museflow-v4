@@ -206,19 +206,37 @@
         }
         
         .task-card {
-            background: rgba(255, 255, 255, 0.08);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            padding: 1rem;
-            width: 250px;
+            border-radius: 16px;
+            padding: 1.25rem;
+            width: 260px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .task-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.2), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .task-card:hover::before {
+            opacity: 1;
         }
         
         .task-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(139, 92, 246, 0.3);
-            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 16px 40px rgba(139, 92, 246, 0.4);
+            border-color: rgba(139, 92, 246, 0.6);
         }
         
         .task-title {
@@ -288,18 +306,36 @@
         }
         
         .kanban-card {
-            background: rgba(255, 255, 255, 0.08);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
-            padding: 1.5rem;
+            border-radius: 18px;
+            padding: 1.75rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .kanban-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.15), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .kanban-card:hover::before {
+            opacity: 1;
         }
         
         .kanban-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
-            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 12px 32px rgba(139, 92, 246, 0.4);
+            border-color: rgba(139, 92, 246, 0.6);
         }
         
         .card-header {
@@ -968,46 +1004,15 @@
                         </div>
                     `;
                 } else {
-                    container.innerHTML = phaseTasks.map(task => {
-                        // Calculate checklist progress
-                        let progressHtml = '';
-                        if (task.checklist && task.checklist.length > 0) {
-                            const total = task.checklist.length;
-                            const checked = task.checklist.filter(item => item.checked).length;
-                            const percentage = Math.round((checked / total) * 100);
-                            const isComplete = percentage === 100;
-                            
-                            progressHtml = `
-                                <div style="margin-top: 0.75rem; margin-bottom: 0.5rem;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
-                                        <span style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.6);">
-                                            <i class="fas fa-check-circle"></i> ${checked}/${total}
-                                        </span>
-                                        <span style="font-size: 0.75rem; font-weight: 700; color: ${isComplete ? '#10b981' : '#8b5cf6'};">
-                                            ${percentage}%
-                                        </span>
-                                    </div>
-                                    <div style="width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 100px; overflow: hidden;">
-                                        <div style="width: ${percentage}%; height: 100%; background: linear-gradient(90deg, ${isComplete ? '#10b981, #059669' : '#8b5cf6, #ec4899'}); border-radius: 100px; transition: width 0.3s ease;"></div>
-                                    </div>
-                                </div>
-                            `;
-                        }
-                        
-                        return `
-                            <div class="task-card" onclick="editTask('${task.id}')" style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));">
-                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
-                                    <div style="font-size: 1.25rem;">${phaseConfig[phase].icon}</div>
-                                    <div class="task-title" style="flex: 1;">${task.title}</div>
-                                </div>
-                                ${progressHtml}
-                                <div class="task-meta">
-                                    ${task.assignee ? `<span><i class="fas fa-user"></i> ${task.assignee}</span>` : ''}
-                                    ${task.dueDate ? `<span><i class="fas fa-calendar"></i> ${task.dueDate}</span>` : ''}
-                                </div>
+                    container.innerHTML = phaseTasks.map(task => `
+                        <div class="task-card" onclick="editTask('${task.id}')">
+                            <div class="task-title">${task.title}</div>
+                            <div class="task-meta">
+                                ${task.assignee ? `<span><i class="fas fa-user"></i> ${task.assignee}</span>` : ''}
+                                ${task.dueDate ? `<span><i class="fas fa-calendar"></i> ${task.dueDate}</span>` : ''}
                             </div>
-                        `;
-                    }).join('');
+                        </div>
+                    `).join('');
                 }
             });
         }
@@ -1178,7 +1183,6 @@
                 if (task) {
                     const nextPhase = getNextPhase(task.phase);
                     if (nextPhase && nextPhase !== task.phase) {
-                        // Auto-advance to next phase
                         await autoAdvancePhase(task, nextPhase);
                     }
                 }
@@ -1202,7 +1206,7 @@
                 'preparation': '🔧 준비',
                 'execution': '🚀 진행',
                 'marketing': '📢 홍보',
-                'completed': '✅완료'
+                'completed': '✅ 완료'
             };
             
             // Show notification
