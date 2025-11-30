@@ -3,17 +3,22 @@
 **AI-Powered Museum Workflow Platform**
 
 [![Status](https://img.shields.io/badge/Status-LIVE-success)](https://museflow.life)
-[![Version](https://img.shields.io/badge/Version-4.3.0-blue)](https://github.com/multipia-creator/museflow-v4)
+[![Version](https://img.shields.io/badge/Version-4.3.4-blue)](https://github.com/multipia-creator/museflow-v4)
 [![License](https://img.shields.io/badge/License-MIT-green)](https://github.com)
 [![Deployment](https://img.shields.io/badge/Deployment-17baa50e-brightgreen)](https://17baa50e.museflow.pages.dev)
+[![Data Viz](https://img.shields.io/badge/Data_Visualization-Active-green)]()
+[![Sample Data](https://img.shields.io/badge/Sample_Projects-12-blue)]()
+[![Charts](https://img.shields.io/badge/Charts-4_Active-purple)]()
 
 Transform your museum operations with AI-powered workflow automation, multi-agent systems, and real-time collaboration.
 
 **🌐 Live URLs:**
 - **Main**: https://museflow.life
-- **Projects**: https://museflow.life/projects (✨ **NEW v2.0.0**)
-- **Dashboard**: https://museflow.life/dashboard
-- **Canvas**: https://museflow.life/canvas
+- **Dashboard**: https://museflow.life/dashboard ✨ **4 Active Charts**
+- **Projects**: https://museflow.life/projects (12 Sample Projects)
+- **Canvas**: https://museflow.life/canvas (Task Management)
+- **Workflow**: https://museflow.life/workflow (Node Editor)
+- **Sandbox**: https://3000-i71nxbnvqsqj65b78m7n0-2e1b9533.sandbox.novita.ai
 
 ---
 
@@ -27,6 +32,17 @@ Transform your museum operations with AI-powered workflow automation, multi-agen
 - ✅ XSS protection and CSRF tokens
 - ✅ Password reset flow
 
+### **📊 Data Visualization & Analytics** ✨ **NEW v4.3.4**
+- ✅ **4 Active Dashboard Charts** (Chart.js powered)
+  - **Monthly Trend Chart**: 6-month project timeline (Line chart)
+  - **Type Distribution**: Exhibition types breakdown (Doughnut chart)
+  - **Budget Analysis**: Top 5 projects budget vs spent (Bar chart)
+  - **Phase Distribution**: Project phases overview (Radar chart)
+- ✅ **Sample Data Ready**: 12 projects with diverse metrics
+- ✅ **Real-time Updates**: Charts refresh on data changes
+- ✅ **Responsive Design**: Mobile-optimized chart layouts
+- ✅ **Demo Mode**: Auto-authentication for visualization testing
+
 ### **Canvas V3 - Workflow Builder**
 - ✅ 88 museum workflow nodes across 6 categories
 - ✅ Drag & drop interface with Bezier connections
@@ -34,6 +50,17 @@ Transform your museum operations with AI-powered workflow automation, multi-agen
 - ✅ AI workflow generation
 - ✅ Properties panel with real-time updates
 - ✅ 60fps smooth rendering
+
+### **Dual Canvas System** 🆕 **v4.3.2**
+- ✅ **Task Canvas** (`/canvas`): Kanban board for task management
+  - Timeline view, Kanban view, Gallery view
+  - Drag & drop task phase changes
+  - Checklist & comments support
+- ✅ **Workflow Canvas** (`/workflow`): Figma-style node editor
+  - 88+ specialized museum workflow nodes
+  - Infinite canvas with zoom/pan
+  - Bezier connections & minimap
+- ✅ **Smart Navigation**: Project page buttons for both canvas types
 
 ### **Projects Page V2.0** ✨ **NEW**
 - ✅ **Professional UI/UX**: Glassmorphism design with 60fps animations
@@ -467,6 +494,61 @@ Language switcher available on all pages with localStorage persistence.
 - **Bundle Size**: < 500KB (gzipped)
 - **Cloudflare Workers**: < 10ms CPU time
 - **Database Queries**: < 50ms average
+
+---
+
+## 📈 **Sample Data & Visualization**
+
+### **Active Sample Projects (12)**
+
+**✅ Ready for Visual Testing**: All projects include realistic data for chart visualization.
+
+| ID | Project Title | Type | Phase | Budget (KRW) | Artworks | Status |
+|----|---------------|------|-------|--------------|----------|--------|
+| 5 | 한국 근현대 미술 특별전 | special | marketing | 80M | 145 | Active |
+| 6 | 조선 백자 상설전 | permanent | completed | 50M | 89 | Active |
+| 7 | 디지털 아트 순회전 | traveling | planning | 120M | 67 | Active |
+| 8 | 어린이 체험 기획전 | event | execution | 45M | 28 | Active |
+| 9 | 고려청자 특별전 | special | planning | 100M | 156 | Active |
+| 10 | 현대 조각 야외전 | event | marketing | 60M | 34 | Active |
+| 11 | 한복의 美 특별전 | special | planning | 90M | 112 | Active |
+| 12 | 불교 미술 순회전 | traveling | preparation | 135M | 234 | Active |
+
+**Plus 4 legacy projects** (IDs 1-4) from previous phases.
+
+### **Sample Data Statistics**
+
+- **Total Projects**: 12
+- **Total Budget**: 680,000,000 KRW (680M)
+- **Total Budget Used**: 450,000,000 KRW (450M)
+- **Average Budget Utilization**: 66%
+- **Total Artworks**: 925 pieces
+- **Total Curators**: 20+ assigned
+- **Total Tasks**: 31 (across all projects)
+
+### **Chart Data Coverage**
+
+✅ **All 4 Dashboard Charts Active:**
+1. **Monthly Trend Chart**: 6 months of project creation data
+2. **Type Distribution**: 
+   - Special (50%) - 6 projects
+   - Traveling (17%) - 2 projects
+   - Event (25%) - 3 projects
+   - Permanent (8%) - 1 project
+3. **Budget Chart**: Top 5 projects by budget (135M to 45M range)
+4. **Phase Distribution**:
+   - Planning: 5 projects (42%)
+   - Marketing: 3 projects (25%)
+   - Execution: 1 project (8%)
+   - Preparation: 1 project (8%)
+   - Completed: 1 project (8%)
+
+### **API Response Example**
+
+```bash
+curl https://museflow.life/api/projects
+# Returns: { success: true, projects: [12 items], count: 12 }
+```
 
 ---
 
