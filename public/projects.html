@@ -4,27 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta name="version" content="2.0.0">
-    <title>내 프로젝트 - MuseFlow</title>
+    <meta name="version" content="3.0.0">
+    <title>전시 관리 - MuseFlow</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="/static/css/mobile-responsive.css" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #0a0a0f 0%, #1a0f2e 50%, #0a0a0f 100%);
             color: #f5f5f7;
             min-height: 100vh;
         }
-
+        
+        /* Core Styles (same as v2.0) */
         .glass-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: saturate(180%) blur(20px);
@@ -33,141 +27,163 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         .glass-card:hover {
             transform: translateY(-8px) scale(1.02);
             box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4);
             border-color: rgba(139, 92, 246, 0.5);
         }
-
         .gradient-text {
             background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
-        .project-card {
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #8b5cf6, #ec4899);
-            transform: scaleX(0);
-            transition: transform 0.4s ease;
-        }
-
-        .project-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .project-thumbnail {
-            width: 100%;
-            height: 180px;
-            border-radius: 16px;
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.25rem;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .project-thumbnail::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 30% 50%, rgba(139, 92, 246, 0.3), transparent 70%);
-            animation: shimmer 3s ease-in-out infinite;
-        }
-
-        @keyframes shimmer {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        .project-icon {
-            font-size: 4rem;
-            opacity: 0.4;
-            position: relative;
-            z-index: 1;
-        }
-
-        .progress-bar-container {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 100px;
-            overflow: hidden;
-            margin: 1rem 0;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #8b5cf6, #ec4899);
-            border-radius: 100px;
-            transition: width 0.6s ease;
-            box-shadow: 0 0 12px rgba(139, 92, 246, 0.6);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            border: none;
-            padding: 0.875rem 1.75rem;
-            border-radius: 12px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(139, 92, 246, 0.6);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
         .nav-bar {
             background: rgba(10, 10, 15, 0.8);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: white; }
+        .nav-logo img { width: 40px; height: 40px; border-radius: 8px; }
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            border: none; padding: 0.875rem 1.75rem; border-radius: 12px;
+            color: white; font-weight: 600; cursor: pointer;
+            transition: all 0.3s ease; font-size: 1rem;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(139, 92, 246, 0.6);
+        }
+
+        /* NEW: Museum-Specific Styles */
+        .urgent-alert {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.15));
+            border: 2px solid rgba(239, 68, 68, 0.5);
+            border-radius: 20px;
+            padding: 1.25rem 1.75rem;
+            margin-bottom: 2rem;
+            display: flex; align-items: center; gap: 1rem;
+            animation: pulse-urgent 2s ease-in-out infinite;
+        }
+        @keyframes pulse-urgent {
+            0%, 100% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(239, 68, 68, 0.6); }
+        }
+        
+        /* Exhibition Type Badges */
+        .type-badge {
+            padding: 0.375rem 0.875rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .type-permanent { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; }
+        .type-special { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+        .type-touring { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .type-unique { background: linear-gradient(135deg, #ec4899, #db2777); color: white; }
+        
+        /* D-Day Counter */
+        .dday-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .dday-urgent { 
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(220, 38, 38, 0.2));
+            border: 2px solid rgba(239, 68, 68, 0.5);
+            color: #fca5a5;
+            animation: pulse-dday 1.5s ease-in-out infinite;
+        }
+        .dday-warning { 
+            background: linear-gradient(135deg, rgba(251, 146, 60, 0.3), rgba(249, 115, 22, 0.2));
+            border: 2px solid rgba(251, 146, 60, 0.5);
+            color: #fdba74;
+        }
+        .dday-normal { 
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(22, 163, 74, 0.2));
+            border: 2px solid rgba(34, 197, 94, 0.5);
+            color: #86efac;
+        }
+        @keyframes pulse-dday {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* 5-Stage Progress */
+        .progress-stages {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            margin: 1rem 0;
+            position: relative;
         }
-
-        .nav-logo {
+        .progress-stage {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 0.75rem;
-            text-decoration: none;
-            color: white;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 2;
         }
-
-        .nav-logo img {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+        .progress-stage-icon {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
         }
-
+        .progress-stage-icon.active {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border-color: #8b5cf6;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+        }
+        .progress-stage-label {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            white-space: nowrap;
+        }
+        .progress-stage-label.active { color: #8b5cf6; font-weight: 600; }
+        
+        /* Budget Bar */
+        .budget-container {
+            margin: 1rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+        .budget-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+        .budget-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #059669);
+            border-radius: 100px;
+            transition: width 0.6s ease;
+        }
+        .budget-fill.warning { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .budget-fill.danger { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        
+        /* Status Badges (same as v2.0) */
         .status-badge {
             padding: 0.375rem 0.875rem;
             border-radius: 100px;
@@ -175,137 +191,47 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
-
         .status-draft {
             background: linear-gradient(135deg, rgba(107, 114, 128, 0.3), rgba(107, 114, 128, 0.2));
             color: #d1d5db;
             border: 1px solid rgba(107, 114, 128, 0.4);
         }
-
         .status-active {
             background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.2));
             color: #34d399;
             border: 1px solid rgba(16, 185, 129, 0.4);
         }
-
         .status-completed {
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.2));
             color: #60a5fa;
             border: 1px solid rgba(59, 130, 246, 0.4);
         }
-
-        .empty-state {
-            text-align: center;
-            padding: 6rem 2rem;
-            animation: fadeIn 0.6s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .empty-icon {
-            font-size: 6rem;
-            margin-bottom: 2rem;
-            opacity: 0.3;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .search-box {
-            position: relative;
-            flex: 1;
-            max-width: 500px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 1rem 3.5rem 1rem 1.25rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
-            color: white;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: #8b5cf6;
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-        }
-
-        .search-box i {
-            position: absolute;
-            right: 1.25rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 1.1rem;
-        }
-
-        .loading-skeleton {
-            background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s ease-in-out infinite;
-            border-radius: 16px;
-        }
-
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
+        
+        /* Form Styles (same as v2.0) */
         .modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(12px);
             z-index: 1000;
             align-items: center;
             justify-content: center;
-            animation: modalFadeIn 0.3s ease;
         }
-
-        @keyframes modalFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
+        .modal.active { display: flex; }
         .modal-content {
             background: linear-gradient(135deg, #1a0f2e 0%, #0a0a0f 100%);
             padding: 2.5rem;
             border-radius: 24px;
-            max-width: 600px;
+            max-width: 800px;
             width: 90%;
             border: 1px solid rgba(139, 92, 246, 0.3);
             box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
-            animation: modalSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             max-height: 90vh;
             overflow-y: auto;
         }
-
-        @keyframes modalSlideUp {
-            from { opacity: 0; transform: translateY(40px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
         .form-input, .form-textarea, .form-select {
             width: 100%;
             padding: 1rem 1.25rem;
@@ -317,158 +243,51 @@
             margin-bottom: 1.25rem;
             transition: all 0.3s ease;
         }
-
         .form-input:focus, .form-textarea:focus, .form-select:focus {
             outline: none;
             border-color: #8b5cf6;
             background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
         }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .form-select {
-            cursor: pointer;
-        }
-
-        .form-select option {
-            background: #1a0f2e;
-            color: white;
-        }
-
-        .project-stats {
+        .form-textarea { resize: vertical; min-height: 100px; }
+        .form-select { cursor: pointer; }
+        .form-select option { background: #1a0f2e; color: white; }
+        .form-row {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.75rem;
-            margin: 1.25rem 0;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
         }
-
-        .stat-item {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 0.75rem;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #8b5cf6;
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.6);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 0.25rem;
-        }
-
-        .view-toggle {
-            display: flex;
-            gap: 0.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 0.375rem;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .view-toggle-btn {
-            padding: 0.5rem 1rem;
-            background: transparent;
-            border: none;
-            color: rgba(255, 255, 255, 0.6);
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            font-size: 0.875rem;
-        }
-
-        .view-toggle-btn.active {
-            background: rgba(139, 92, 246, 0.3);
-            color: white;
-        }
-
-        .view-toggle-btn:hover:not(.active) {
-            background: rgba(255, 255, 255, 0.05);
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .list-view .project-card {
-            display: flex;
-            gap: 1.5rem;
-            padding: 1.5rem !important;
-        }
-
-        .list-view .project-thumbnail {
-            width: 160px;
-            height: 120px;
-            flex-shrink: 0;
-            margin-bottom: 0;
-        }
-
-        .list-view .project-content {
-            flex: 1;
-        }
-
-        .tag-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background: rgba(139, 92, 246, 0.2);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 100px;
-            font-size: 0.75rem;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-            color: #a78bfa;
-        }
-
-        /* Responsive Grid */
         @media (max-width: 768px) {
-            .project-stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .list-view .project-card {
-                flex-direction: column;
-            }
-            
-            .list-view .project-thumbnail {
-                width: 100%;
-            }
+            .form-row { grid-template-columns: 1fr; }
         }
-
-        /* Tooltip */
-        [data-tooltip] {
+        
+        /* Search & Filter */
+        .search-box {
             position: relative;
+            flex: 1;
+            max-width: 500px;
         }
-
-        [data-tooltip]::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%) translateY(-8px);
-            padding: 0.5rem 0.75rem;
-            background: rgba(0, 0, 0, 0.9);
+        .search-box input {
+            width: 100%;
+            padding: 1rem 3.5rem 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
             color: white;
-            font-size: 0.75rem;
-            border-radius: 8px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            font-size: 1rem;
+            transition: all 0.3s ease;
         }
-
-        [data-tooltip]:hover::after {
-            opacity: 1;
+        .search-box input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            background: rgba(255, 255, 255, 0.08);
         }
-
+        .search-box i {
+            position: absolute;
+            right: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+        }
         .filter-chip {
             padding: 0.5rem 1rem;
             background: rgba(255, 255, 255, 0.05);
@@ -479,34 +298,43 @@
             transition: all 0.3s ease;
             font-size: 0.875rem;
         }
-
         .filter-chip.active {
             background: rgba(139, 92, 246, 0.3);
             border-color: rgba(139, 92, 246, 0.5);
         }
-
-        .filter-chip:hover {
-            background: rgba(255, 255, 255, 0.1);
+        
+        /* Loading & Empty State */
+        .loading-skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s ease-in-out infinite;
+            border-radius: 16px;
+        }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .empty-state {
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+        .empty-icon {
+            font-size: 6rem;
+            margin-bottom: 2rem;
+            opacity: 0.3;
         }
     </style>
-    <script src="/static/js/tracker.js?v=2.0.0"></script>
+    <script src="/static/js/tracker.js?v=3.0.0"></script>
     
-    <!-- Version Check and Cache Buster -->
     <script>
-        const CURRENT_VERSION = '2.0.0';
+        const CURRENT_VERSION = '3.0.0';
         const storedVersion = localStorage.getItem('projects_version');
-        
         if (storedVersion !== CURRENT_VERSION) {
-            console.log('🔄 New version detected:', CURRENT_VERSION, '(old:', storedVersion + ')');
             localStorage.setItem('projects_version', CURRENT_VERSION);
-            
             if (storedVersion && !window.location.search.includes('nocache')) {
-                console.log('🔄 Forcing cache refresh...');
                 window.location.href = window.location.pathname + '?nocache=' + Date.now();
             }
         }
-        
-        console.log('✅ Projects page version:', CURRENT_VERSION);
     </script>
 </head>
 <body>
@@ -517,27 +345,23 @@
             <span style="font-size: 1.25rem; font-weight: 700;">MuseFlow</span>
         </a>
         <div style="display: flex; gap: 1rem; align-items: center;">
-            <select id="lang-select" style="background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); padding: 0.5rem 1rem; border-radius: 8px; color: white; cursor: pointer; transition: all 0.3s; font-size: 0.875rem;">
+            <select id="lang-select" style="background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); padding: 0.5rem 1rem; border-radius: 8px; color: white; cursor: pointer; font-size: 0.875rem;">
                 <option value="ko">🇰🇷 한국어</option>
                 <option value="en">🇺🇸 English</option>
                 <option value="ja">🇯🇵 日本語</option>
                 <option value="zh-CN">🇨🇳 简体中文</option>
                 <option value="zh-TW">🇹🇼 繁體中文</option>
-                <option value="fr">🇫🇷 Français</option>
-                <option value="de">🇩🇪 Deutsch</option>
-                <option value="es">🇪🇸 Español</option>
-                <option value="it">🇮🇹 Italiano</option>
             </select>
-            <a href="/dashboard.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: all 0.3s;">
+            <a href="/dashboard.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
                 <i class="fas fa-chart-line"></i> <span data-i18n="dashboard">Dashboard</span>
             </a>
-            <a href="/projects.html" style="color: rgba(139, 92, 246, 1); text-decoration: none; font-weight: 600; border-bottom: 2px solid rgba(139, 92, 246, 1);">
-                <i class="fas fa-folder"></i> <span data-i18n="projects">프로젝트</span>
+            <a href="/projects.html" style="color: rgba(139, 92, 246, 1); font-weight: 600; border-bottom: 2px solid rgba(139, 92, 246, 1);">
+                <i class="fas fa-folder"></i> <span data-i18n="projects">전시 관리</span>
             </a>
-            <a href="/account.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: all 0.3s;">
+            <a href="/account.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
                 <i class="fas fa-user"></i> <span data-i18n="myAccount">내 계정</span>
             </a>
-            <a href="/admin.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: all 0.3s;">
+            <a href="/admin.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
                 <i class="fas fa-cog"></i> <span data-i18n="admin">관리자</span>
             </a>
         </div>
@@ -546,32 +370,38 @@
     <!-- Main Content -->
     <div style="max-width: 1400px; margin: 0 auto; padding: 3rem 2rem;">
         <!-- Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; flex-wrap: wrap; gap: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1.5rem;">
             <div>
-                <h1 style="font-size: 2.75rem; font-weight: 800; margin-bottom: 0.5rem;" class="gradient-text" data-i18n="myProjects">
-                    내 프로젝트
-                </h1>
-                <p style="color: rgba(255, 255, 255, 0.7); font-size: 1.1rem;" data-i18n="projectsSubtitle">워크플로우 프로젝트를 관리하고 편집하세요</p>
+                <h1 style="font-size: 2.75rem; font-weight: 800; margin-bottom: 0.5rem;" class="gradient-text" data-i18n="myProjects">전시 관리</h1>
+                <p style="color: rgba(255, 255, 255, 0.7); font-size: 1.1rem;" data-i18n="projectsSubtitle">전시 프로젝트를 직관적으로 관리하세요</p>
             </div>
-            <div style="display: flex; gap: 1rem; align-items: center;">
-                <button id="new-project-btn" class="btn-primary">
-                    <i class="fas fa-plus"></i> <span data-i18n="newProject">새 프로젝트</span>
-                </button>
-            </div>
+            <button id="new-project-btn" class="btn-primary">
+                <i class="fas fa-plus"></i> <span data-i18n="newProject">새 전시</span>
+            </button>
         </div>
 
-        <!-- Stats Summary -->
-        <div id="stats-summary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+        <!-- Urgent Alerts (D-7 이내 전시만 표시) -->
+        <div id="urgent-alerts"></div>
+
+        <!-- Exhibition Type Stats -->
+        <div id="type-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
             <!-- Stats will be dynamically inserted -->
         </div>
 
-        <!-- Search and Filter Toolbar -->
+        <!-- Search and Filter -->
         <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 1.5rem; margin-bottom: 2.5rem;">
-            <div style="display: flex; gap: 1rem; margin-bottom: 1.25rem; flex-wrap: wrap; align-items: center;">
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
                 <div class="search-box">
-                    <input type="text" id="search-input" placeholder="프로젝트 검색..." data-i18n-placeholder="searchPlaceholder">
+                    <input type="text" id="search-input" placeholder="전시 검색..." data-i18n-placeholder="searchPlaceholder">
                     <i class="fas fa-search"></i>
                 </div>
+                <select id="type-filter" class="filter-chip">
+                    <option value="all">전체 유형</option>
+                    <option value="permanent">상설전</option>
+                    <option value="special">특별전</option>
+                    <option value="touring">순회전</option>
+                    <option value="unique">기획전</option>
+                </select>
                 <select id="status-filter" class="filter-chip">
                     <option value="all" data-i18n="statusAll">모든 상태</option>
                     <option value="draft" data-i18n="statusDraft">초안</option>
@@ -579,42 +409,35 @@
                     <option value="completed" data-i18n="statusCompleted">완료</option>
                 </select>
                 <select id="sort-select" class="filter-chip">
+                    <option value="dday">D-Day 순</option>
                     <option value="updated">최근 수정순</option>
                     <option value="created">생성일순</option>
                     <option value="title">이름순</option>
                 </select>
-                <div class="view-toggle">
-                    <button class="view-toggle-btn active" data-view="grid" data-tooltip="Grid View">
-                        <i class="fas fa-th"></i>
-                    </button>
-                    <button class="view-toggle-btn" data-view="list" data-tooltip="List View">
-                        <i class="fas fa-list"></i>
-                    </button>
-                </div>
             </div>
         </div>
 
         <!-- Loading State -->
         <div id="loading-state" style="display: none;">
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem;">
-                <div class="loading-skeleton" style="height: 400px;"></div>
-                <div class="loading-skeleton" style="height: 400px;"></div>
-                <div class="loading-skeleton" style="height: 400px;"></div>
+                <div class="loading-skeleton" style="height: 500px;"></div>
+                <div class="loading-skeleton" style="height: 500px;"></div>
+                <div class="loading-skeleton" style="height: 500px;"></div>
             </div>
         </div>
 
         <!-- Projects Grid -->
-        <div id="projects-grid" style="display: none; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem;">
+        <div id="projects-grid" style="display: none; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1.5rem;">
             <!-- Projects will be dynamically inserted here -->
         </div>
 
         <!-- Empty State -->
         <div id="empty-state" class="empty-state" style="display: none;">
-            <div class="empty-icon">📂</div>
-            <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" data-i18n="noProjects">프로젝트가 없습니다</h2>
-            <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2.5rem; font-size: 1.1rem;" data-i18n="createFirstProject">첫 번째 워크플로우 프로젝트를 만들어보세요</p>
-            <button id="empty-new-project-btn" class="btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem;">
-                <i class="fas fa-plus"></i> <span data-i18n="createNewProject">새 프로젝트 만들기</span>
+            <div class="empty-icon">🎨</div>
+            <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem;" class="gradient-text" data-i18n="noProjects">전시가 없습니다</h2>
+            <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2.5rem; font-size: 1.1rem;" data-i18n="createFirstProject">첫 번째 전시 프로젝트를 만들어보세요</p>
+            <button id="empty-new-project-btn" class="btn-primary">
+                <i class="fas fa-plus"></i> <span data-i18n="createNewProject">새 전시 만들기</span>
             </button>
         </div>
     </div>
@@ -623,10 +446,8 @@
     <div id="project-modal" class="modal">
         <div class="modal-content">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                <h2 id="modal-title" style="font-size: 2rem; font-weight: 700;" class="gradient-text" data-i18n="createNewProject">
-                    새 프로젝트 만들기
-                </h2>
-                <button id="close-modal-btn" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.5rem; cursor: pointer; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; transition: all 0.3s;">
+                <h2 id="modal-title" style="font-size: 2rem; font-weight: 700;" class="gradient-text">새 전시 만들기</h2>
+                <button id="close-modal-btn" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.5rem; cursor: pointer;">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -634,25 +455,88 @@
             <form id="project-form">
                 <input type="hidden" id="project-id">
                 
-                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;" data-i18n="projectTitle">프로젝트 제목</label>
-                <input type="text" id="project-title" class="form-input" placeholder="예: 2024 봄 특별전 기획" data-i18n-placeholder="projectTitlePlaceholder" required>
+                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">전시 제목 *</label>
+                <input type="text" id="project-title" class="form-input" placeholder="예: 2024 봄 특별전" required>
                 
-                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;" data-i18n="projectDescription">프로젝트 설명</label>
-                <textarea id="project-description" class="form-textarea" placeholder="프로젝트에 대한 간단한 설명을 입력하세요" data-i18n-placeholder="projectDescPlaceholder"></textarea>
+                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">전시 설명</label>
+                <textarea id="project-description" class="form-textarea" placeholder="전시에 대한 간단한 설명"></textarea>
                 
-                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;" data-i18n="projectStatus">프로젝트 상태</label>
-                <select id="project-status" class="form-select">
-                    <option value="draft" data-i18n="statusDraft">초안</option>
-                    <option value="active" data-i18n="statusActive">활성</option>
-                    <option value="completed" data-i18n="statusCompleted">완료</option>
-                </select>
+                <div class="form-row">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">전시 유형 *</label>
+                        <select id="project-type" class="form-select" required>
+                            <option value="permanent">🏛️ 상설전</option>
+                            <option value="special">✨ 특별전</option>
+                            <option value="touring">🚌 순회전</option>
+                            <option value="unique">🎭 기획전</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">전시 상태</label>
+                        <select id="project-status" class="form-select">
+                            <option value="draft">초안</option>
+                            <option value="active">활성</option>
+                            <option value="completed">완료</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">시작일</label>
+                        <input type="date" id="project-start-date" class="form-input">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">종료일</label>
+                        <input type="date" id="project-end-date" class="form-input">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">진행 단계</label>
+                        <select id="project-phase" class="form-select">
+                            <option value="planning">기획</option>
+                            <option value="preparation">준비</option>
+                            <option value="progress">진행</option>
+                            <option value="marketing">홍보</option>
+                            <option value="completion">완료</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">장소</label>
+                        <input type="text" id="project-location" class="form-input" placeholder="예: 1층 대전시실">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">담당 학예사</label>
+                        <input type="text" id="project-curator" class="form-input" placeholder="예: 홍길동">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">작품 수</label>
+                        <input type="number" id="project-artwork-count" class="form-input" placeholder="0" min="0">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">총 예산 (만원)</label>
+                        <input type="number" id="project-budget-total" class="form-input" placeholder="0" min="0" step="0.01">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">사용 예산 (만원)</label>
+                        <input type="number" id="project-budget-used" class="form-input" placeholder="0" min="0" step="0.01">
+                    </div>
+                </div>
                 
                 <div style="display: flex; gap: 1rem; margin-top: 2rem;">
                     <button type="submit" class="btn-primary" style="flex: 1; padding: 1rem 1.75rem;">
-                        <i class="fas fa-check"></i> <span id="submit-btn-text" data-i18n="create">생성</span>
+                        <i class="fas fa-check"></i> <span id="submit-btn-text">생성</span>
                     </button>
-                    <button type="button" id="cancel-modal-btn" style="flex: 1; padding: 1rem 1.75rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; color: white; cursor: pointer; transition: all 0.3s; font-weight: 600;">
-                        <span data-i18n="cancel">취소</span>
+                    <button type="button" id="cancel-modal-btn" style="flex: 1; padding: 1rem 1.75rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; color: white; cursor: pointer; font-weight: 600;">
+                        취소
                     </button>
                 </div>
             </form>
@@ -660,95 +544,73 @@
     </div>
 
     <script>
-        // i18n translations (same as before)
+        // i18n translations
         const translations = {
             ko: {
                 myAccount: '내 계정',
                 dashboard: 'Dashboard',
-                myProjects: '내 프로젝트',
-                projectsSubtitle: '워크플로우 프로젝트를 관리하고 편집하세요',
-                newProject: '새 프로젝트',
-                searchPlaceholder: '프로젝트 검색...',
+                myProjects: '전시 관리',
+                projectsSubtitle: '전시 프로젝트를 직관적으로 관리하세요',
+                newProject: '새 전시',
+                searchPlaceholder: '전시 검색...',
                 statusAll: '모든 상태',
                 statusDraft: '초안',
                 statusActive: '활성',
                 statusCompleted: '완료',
-                loadingProjects: '프로젝트를 불러오는 중...',
-                noProjects: '프로젝트가 없습니다',
-                createFirstProject: '첫 번째 워크플로우 프로젝트를 만들어보세요',
-                createNewProject: '새 프로젝트 만들기',
-                editProject: '프로젝트 편집',
-                projectTitle: '프로젝트 제목',
-                projectTitlePlaceholder: '예: 2024 봄 특별전 기획',
-                projectDescription: '프로젝트 설명',
-                projectDescPlaceholder: '프로젝트에 대한 간단한 설명을 입력하세요',
-                projectStatus: '프로젝트 상태',
-                create: '생성',
-                save: '저장',
-                cancel: '취소',
+                noProjects: '전시가 없습니다',
+                createFirstProject: '첫 번째 전시 프로젝트를 만들어보세요',
+                createNewProject: '새 전시 만들기',
+                editProject: '전시 편집',
                 edit: '편집',
                 delete: '삭제',
-                deleteProject: '프로젝트 삭제',
-                deleteConfirm: '정말로 이 프로젝트를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.',
-                projectDeleted: '프로젝트가 삭제되었습니다.',
-                deleteFailed: '프로젝트 삭제에 실패했습니다.',
+                deleteConfirm: '정말로 이 전시를 삭제하시겠습니까?',
+                projectDeleted: '전시가 삭제되었습니다.',
+                deleteFailed: '전시 삭제에 실패했습니다.',
                 noDescription: '설명이 없습니다.',
                 today: '오늘',
                 yesterday: '어제',
                 daysAgo: '일 전',
-                totalProjects: '전체 프로젝트',
-                activeCount: '활성',
-                completedCount: '완료'
+                totalProjects: '전체 전시',
+                activeCount: '활성'
             },
             en: {
                 myAccount: 'My Account',
                 dashboard: 'Dashboard',
-                myProjects: 'My Projects',
-                projectsSubtitle: 'Manage and edit your workflow projects',
-                newProject: 'New Project',
-                searchPlaceholder: 'Search projects...',
+                myProjects: 'Exhibition Management',
+                projectsSubtitle: 'Manage your exhibitions intuitively',
+                newProject: 'New Exhibition',
+                searchPlaceholder: 'Search exhibitions...',
                 statusAll: 'All Status',
                 statusDraft: 'Draft',
                 statusActive: 'Active',
                 statusCompleted: 'Completed',
-                loadingProjects: 'Loading projects...',
-                noProjects: 'No Projects',
-                createFirstProject: 'Create your first workflow project',
-                createNewProject: 'Create New Project',
-                editProject: 'Edit Project',
-                projectTitle: 'Project Title',
-                projectTitlePlaceholder: 'e.g., 2024 Spring Exhibition Planning',
-                projectDescription: 'Project Description',
-                projectDescPlaceholder: 'Enter a brief description of the project',
-                projectStatus: 'Project Status',
-                create: 'Create',
-                save: 'Save',
-                cancel: 'Cancel',
+                noProjects: 'No Exhibitions',
+                createFirstProject: 'Create your first exhibition project',
+                createNewProject: 'Create New Exhibition',
+                editProject: 'Edit Exhibition',
                 edit: 'Edit',
                 delete: 'Delete',
-                deleteProject: 'Delete Project',
-                deleteConfirm: 'Are you sure you want to delete this project? This action cannot be undone.',
-                projectDeleted: 'Project deleted successfully.',
-                deleteFailed: 'Failed to delete project.',
+                deleteConfirm: 'Are you sure you want to delete this exhibition?',
+                projectDeleted: 'Exhibition deleted successfully.',
+                deleteFailed: 'Failed to delete exhibition.',
                 noDescription: 'No description.',
                 today: 'Today',
                 yesterday: 'Yesterday',
                 daysAgo: ' days ago',
-                totalProjects: 'Total Projects',
-                activeCount: 'Active',
-                completedCount: 'Completed'
+                totalProjects: 'Total Exhibitions',
+                activeCount: 'Active'
             }
         };
 
         let currentLang = localStorage.getItem('museflow_language') || 'ko';
         let allProjects = [];
-        let currentView = localStorage.getItem('projects_view') || 'grid';
 
         // DOM elements
         const projectsGrid = document.getElementById('projects-grid');
         const loadingState = document.getElementById('loading-state');
         const emptyState = document.getElementById('empty-state');
         const searchInput = document.getElementById('search-input');
+        const typeFilter = document.getElementById('type-filter');
         const statusFilter = document.getElementById('status-filter');
         const sortSelect = document.getElementById('sort-select');
         const projectModal = document.getElementById('project-modal');
@@ -781,7 +643,7 @@
             if (langSelect) langSelect.value = lang;
 
             if (allProjects.length > 0) {
-                renderStats();
+                renderTypeStats();
                 filterProjects();
             }
         }
@@ -789,32 +651,181 @@
         // Language selector
         document.addEventListener('DOMContentLoaded', () => {
             updateLanguage(currentLang);
-            
             const langSelect = document.getElementById('lang-select');
             if (langSelect) {
                 langSelect.addEventListener('change', (e) => updateLanguage(e.target.value));
             }
         });
 
-        // View toggle
-        document.querySelectorAll('.view-toggle-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const view = btn.getAttribute('data-view');
-                currentView = view;
-                localStorage.setItem('projects_view', view);
-                
-                document.querySelectorAll('.view-toggle-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                if (view === 'list') {
-                    projectsGrid.classList.add('list-view');
-                    projectsGrid.style.gridTemplateColumns = '1fr';
-                } else {
-                    projectsGrid.classList.remove('list-view');
-                    projectsGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(350px, 1fr))';
-                }
-            });
-        });
+        // Calculate D-Day
+        function calculateDDay(endDate) {
+            if (!endDate) return null;
+            const now = new Date();
+            const end = new Date(endDate);
+            const diff = Math.ceil((end - now) / (1000 * 60 * 60 * 24));
+            return diff;
+        }
+
+        // Render D-Day badge
+        function renderDDayBadge(dday) {
+            if (dday === null) return '';
+            
+            let badgeClass = 'dday-normal';
+            let icon = '📅';
+            
+            if (dday < 0) {
+                return `<span class="dday-badge dday-normal">
+                    <i class="fas fa-check-circle"></i> 종료됨
+                </span>`;
+            } else if (dday === 0) {
+                badgeClass = 'dday-urgent';
+                icon = '🚨';
+                return `<span class="dday-badge ${badgeClass}">
+                    ${icon} D-Day
+                </span>`;
+            } else if (dday <= 7) {
+                badgeClass = 'dday-urgent';
+                icon = '🚨';
+            } else if (dday <= 14) {
+                badgeClass = 'dday-warning';
+                icon = '⚠️';
+            }
+            
+            return `<span class="dday-badge ${badgeClass}">
+                ${icon} D-${dday}
+            </span>`;
+        }
+
+        // Render urgent alerts
+        function renderUrgentAlerts() {
+            const urgentProjects = allProjects.filter(p => {
+                const dday = calculateDDay(p.end_date);
+                return dday !== null && dday >= 0 && dday <= 7 && p.status === 'active';
+            }).sort((a, b) => calculateDDay(a.end_date) - calculateDDay(b.end_date));
+
+            const container = document.getElementById('urgent-alerts');
+            if (urgentProjects.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = urgentProjects.map(p => {
+                const dday = calculateDDay(p.end_date);
+                return `
+                    <div class="urgent-alert">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #fca5a5;"></i>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 700; font-size: 1.125rem; margin-bottom: 0.25rem;">
+                                ${p.title} ${dday === 0 ? '<span style="color: #fca5a5;">D-Day</span>' : `<span style="color: #fca5a5;">D-${dday}</span>`}
+                            </div>
+                            <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem;">
+                                종료일: ${new Date(p.end_date).toLocaleDateString('ko-KR')} | 담당: ${p.curator || '미지정'}
+                            </div>
+                        </div>
+                        <button onclick="viewProject(${p.id})" class="btn-primary" style="padding: 0.75rem 1.5rem;">
+                            <i class="fas fa-eye"></i> 보기
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render type statistics
+        function renderTypeStats() {
+            const stats = {
+                permanent: allProjects.filter(p => p.type === 'permanent').length,
+                special: allProjects.filter(p => p.type === 'special').length,
+                touring: allProjects.filter(p => p.type === 'touring').length,
+                unique: allProjects.filter(p => p.type === 'unique').length
+            };
+
+            const typeConfig = {
+                permanent: { label: '상설전', icon: '🏛️', gradient: 'linear-gradient(135deg, #6366f1, #4f46e5)' },
+                special: { label: '특별전', icon: '✨', gradient: 'linear-gradient(135deg, #f59e0b, #d97706)' },
+                touring: { label: '순회전', icon: '🚌', gradient: 'linear-gradient(135deg, #10b981, #059669)' },
+                unique: { label: '기획전', icon: '🎭', gradient: 'linear-gradient(135deg, #ec4899, #db2777)' }
+            };
+
+            document.getElementById('type-stats').innerHTML = Object.keys(stats).map(key => {
+                const config = typeConfig[key];
+                return `
+                    <div class="glass-card" style="padding: 1.5rem; cursor: pointer;" onclick="filterByType('${key}')">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 56px; height: 56px; background: ${config.gradient}; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                                ${config.icon}
+                            </div>
+                            <div>
+                                <div style="font-size: 2rem; font-weight: 800; color: white;">${stats[key]}</div>
+                                <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;">${config.label}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Filter by type
+        window.filterByType = function(type) {
+            typeFilter.value = type;
+            filterProjects();
+        };
+
+        // Render progress stages
+        function renderProgressStages(phase) {
+            const stages = [
+                { id: 'planning', icon: '📋', label: '기획' },
+                { id: 'preparation', icon: '🔧', label: '준비' },
+                { id: 'progress', icon: '🎨', label: '진행' },
+                { id: 'marketing', icon: '📢', label: '홍보' },
+                { id: 'completion', icon: '✅', label: '완료' }
+            ];
+            
+            const currentIndex = stages.findIndex(s => s.id === phase);
+            
+            return `
+                <div class="progress-stages">
+                    ${stages.map((stage, index) => `
+                        <div class="progress-stage">
+                            <div class="progress-stage-icon ${index <= currentIndex ? 'active' : ''}">
+                                ${stage.icon}
+                            </div>
+                            <div class="progress-stage-label ${index <= currentIndex ? 'active' : ''}">
+                                ${stage.label}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Render budget bar
+        function renderBudgetBar(total, used) {
+            if (!total || total <= 0) return '';
+            
+            const percentage = Math.min((used / total) * 100, 100);
+            let fillClass = '';
+            if (percentage >= 90) fillClass = 'danger';
+            else if (percentage >= 80) fillClass = 'warning';
+            
+            return `
+                <div class="budget-container">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <span style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">
+                            <i class="fas fa-won-sign"></i> 예산 사용률
+                        </span>
+                        <span style="font-weight: 700; color: ${percentage >= 90 ? '#ef4444' : percentage >= 80 ? '#f59e0b' : '#10b981'};">
+                            ${percentage.toFixed(1)}%
+                        </span>
+                    </div>
+                    <div class="budget-bar">
+                        <div class="budget-fill ${fillClass}" style="width: ${percentage}%;"></div>
+                    </div>
+                    <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.5rem;">
+                        ${used.toLocaleString()} / ${total.toLocaleString()} 만원
+                    </div>
+                </div>
+            `;
+        }
 
         // Format date
         function formatDate(dateString) {
@@ -835,53 +846,6 @@
             });
         }
 
-        // Render stats
-        function renderStats() {
-            const t = translations[currentLang] || translations['ko'];
-            const stats = {
-                total: allProjects.length,
-                draft: allProjects.filter(p => p.status === 'draft').length,
-                active: allProjects.filter(p => p.status === 'active').length,
-                completed: allProjects.filter(p => p.status === 'completed').length
-            };
-
-            document.getElementById('stats-summary').innerHTML = `
-                <div class="glass-card" style="padding: 1.5rem;">
-                    <div style="display: flex; align-items: center; gap: 1rem;">
-                        <div style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3)); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
-                            📊
-                        </div>
-                        <div>
-                            <div style="font-size: 2rem; font-weight: 800; color: #8b5cf6;">${stats.total}</div>
-                            <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="totalProjects">${t.totalProjects}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass-card" style="padding: 1.5rem;">
-                    <div style="display: flex; align-items: center; gap: 1rem;">
-                        <div style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.2)); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
-                            ⚡
-                        </div>
-                        <div>
-                            <div style="font-size: 2rem; font-weight: 800; color: #10b981;">${stats.active}</div>
-                            <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="activeCount">${t.activeCount}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass-card" style="padding: 1.5rem;">
-                    <div style="display: flex; align-items: center; gap: 1rem;">
-                        <div style="width: 56px; height: 56px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.2)); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
-                            ✅
-                        </div>
-                        <div>
-                            <div style="font-size: 2rem; font-weight: 800; color: #3b82f6;">${stats.completed}</div>
-                            <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="completedCount">${t.completedCount}</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
         // Render projects
         function renderProjects(projects) {
             if (projects.length === 0) {
@@ -896,65 +860,69 @@
 
             const t = translations[currentLang] || translations['ko'];
             const statusConfig = {
-                draft: { label: t.statusDraft, class: 'status-draft', icon: '📝' },
-                active: { label: t.statusActive, class: 'status-active', icon: '🚀' },
-                completed: { label: t.statusCompleted, class: 'status-completed', icon: '✅' }
+                draft: { label: t.statusDraft, class: 'status-draft' },
+                active: { label: t.statusActive, class: 'status-active' },
+                completed: { label: t.statusCompleted, class: 'status-completed' }
+            };
+            
+            const typeConfig = {
+                permanent: { label: '상설전', icon: '🏛️', class: 'type-permanent' },
+                special: { label: '특별전', icon: '✨', class: 'type-special' },
+                touring: { label: '순회전', icon: '🚌', class: 'type-touring' },
+                unique: { label: '기획전', icon: '🎭', class: 'type-unique' }
             };
 
             projects.forEach(project => {
                 const status = statusConfig[project.status] || statusConfig.draft;
-                const progress = project.status === 'completed' ? 100 : (project.status === 'active' ? 60 : 20);
+                const type = typeConfig[project.type || 'permanent'];
+                const dday = calculateDDay(project.end_date);
+                const phase = project.phase || 'planning';
                 
                 const card = document.createElement('div');
                 card.className = 'glass-card project-card';
-                card.style.padding = '0';
+                card.style.padding = '1.5rem';
+                card.style.cursor = 'pointer';
                 card.innerHTML = `
-                    <div class="project-thumbnail">
-                        <div class="project-icon">${status.icon}</div>
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span class="type-badge ${type.class}">${type.icon} ${type.label}</span>
+                            ${renderDDayBadge(dday)}
+                        </div>
+                        <span class="status-badge ${status.class}">${status.label}</span>
                     </div>
-                    <div style="padding: 0 1.5rem 1.5rem 1.5rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                            <h3 style="font-size: 1.375rem; font-weight: 700; flex: 1; line-height: 1.4;">${project.title}</h3>
-                            <span class="status-badge ${status.class}">${status.label}</span>
-                        </div>
-                        <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 1rem; min-height: 3rem; line-height: 1.6;">
-                            ${project.description || t.noDescription}
-                        </p>
-                        
-                        <div class="progress-bar-container">
-                            <div class="progress-bar" style="width: ${progress}%;"></div>
-                        </div>
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: center; color: rgba(255, 255, 255, 0.5); font-size: 0.875rem; margin-bottom: 1.25rem;">
-                            <span><i class="fas fa-clock"></i> ${formatDate(project.updated_at)}</span>
-                            <span><i class="fas fa-calendar-plus"></i> ${formatDate(project.created_at)}</span>
-                        </div>
-                        
-                        <div style="display: flex; gap: 0.75rem;">
-                            <button class="edit-btn" data-project-id="${project.id}" style="flex: 1; padding: 0.75rem 1.25rem; font-size: 0.875rem; font-weight: 600; background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(236, 72, 153, 0.25)); border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 12px; color: white; cursor: pointer; transition: all 0.3s;">
-                                <i class="fas fa-edit"></i> ${t.edit}
-                            </button>
-                            <button class="delete-btn" data-project-id="${project.id}" style="padding: 0.75rem 1.25rem; font-size: 0.875rem; font-weight: 600; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 12px; color: #ef4444; cursor: pointer; transition: all 0.3s;">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
+                    
+                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem; line-height: 1.4;">${project.title}</h3>
+                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 1rem; min-height: 2.5rem;">
+                        ${project.description || t.noDescription}
+                    </p>
+                    
+                    ${renderProgressStages(phase)}
+                    
+                    ${renderBudgetBar(project.budget_total, project.budget_used)}
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin: 1rem 0; font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">
+                        ${project.start_date ? `<div><i class="fas fa-calendar-alt"></i> ${new Date(project.start_date).toLocaleDateString('ko-KR')}</div>` : '<div></div>'}
+                        ${project.end_date ? `<div><i class="fas fa-calendar-check"></i> ${new Date(project.end_date).toLocaleDateString('ko-KR')}</div>` : '<div></div>'}
+                        ${project.location ? `<div><i class="fas fa-map-marker-alt"></i> ${project.location}</div>` : '<div></div>'}
+                        ${project.curator ? `<div><i class="fas fa-user-tie"></i> ${project.curator}</div>` : '<div></div>'}
+                        ${project.artwork_count ? `<div><i class="fas fa-palette"></i> 작품 ${project.artwork_count}점</div>` : '<div></div>'}
+                        <div><i class="fas fa-clock"></i> ${formatDate(project.updated_at)}</div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.75rem; margin-top: 1.25rem;">
+                        <button class="edit-btn" data-project-id="${project.id}" style="flex: 1; padding: 0.75rem; font-size: 0.875rem; font-weight: 600; background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(236, 72, 153, 0.25)); border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 12px; color: white; cursor: pointer;">
+                            <i class="fas fa-edit"></i> ${t.edit}
+                        </button>
+                        <button class="delete-btn" data-project-id="${project.id}" style="padding: 0.75rem; font-size: 0.875rem; font-weight: 600; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 12px; color: #ef4444; cursor: pointer;">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </div>
                 `;
                 
                 // Card click - navigate to canvas
                 card.addEventListener('click', (e) => {
                     if (e.target.closest('.edit-btn') || e.target.closest('.delete-btn')) return;
-                    
-                    const projectData = {
-                        id: project.id,
-                        name: project.title,
-                        description: project.description,
-                        status: project.status,
-                        created_at: project.created_at,
-                        updated_at: project.updated_at
-                    };
-                    sessionStorage.setItem('museflow_current_project', JSON.stringify(projectData));
-                    window.location.href = `/canvas.html?project=${project.id}&t=${Date.now()}`;
+                    viewProject(project.id);
                 });
                 
                 // Edit button
@@ -973,6 +941,30 @@
             });
         }
 
+        // View project
+        window.viewProject = function(projectId) {
+            const project = allProjects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            const projectData = {
+                id: project.id,
+                name: project.title,
+                description: project.description,
+                status: project.status,
+                type: project.type,
+                start_date: project.start_date,
+                end_date: project.end_date,
+                phase: project.phase,
+                location: project.location,
+                curator: project.curator,
+                budget_total: project.budget_total,
+                budget_used: project.budget_used,
+                artwork_count: project.artwork_count
+            };
+            sessionStorage.setItem('museflow_current_project', JSON.stringify(projectData));
+            window.location.href = `/canvas.html?project=${project.id}&t=${Date.now()}`;
+        };
+
         // Load projects
         async function loadProjects() {
             try {
@@ -990,7 +982,8 @@
                 allProjects = data.projects;
 
                 loadingState.style.display = 'none';
-                renderStats();
+                renderUrgentAlerts();
+                renderTypeStats();
                 filterProjects();
 
             } catch (error) {
@@ -1003,21 +996,32 @@
         // Filter and sort projects
         function filterProjects() {
             const searchTerm = searchInput.value.toLowerCase();
+            const typeValue = typeFilter.value;
             const statusValue = statusFilter.value;
             const sortValue = sortSelect.value;
 
             let filtered = allProjects.filter(p => {
                 const matchesSearch = !searchTerm || 
                     p.title.toLowerCase().includes(searchTerm) ||
-                    (p.description && p.description.toLowerCase().includes(searchTerm));
+                    (p.description && p.description.toLowerCase().includes(searchTerm)) ||
+                    (p.curator && p.curator.toLowerCase().includes(searchTerm)) ||
+                    (p.location && p.location.toLowerCase().includes(searchTerm));
+                const matchesType = typeValue === 'all' || p.type === typeValue;
                 const matchesStatus = statusValue === 'all' || p.status === statusValue;
-                return matchesSearch && matchesStatus;
+                return matchesSearch && matchesType && matchesStatus;
             });
 
             // Sort
             filtered.sort((a, b) => {
                 if (sortValue === 'title') return a.title.localeCompare(b.title);
                 if (sortValue === 'created') return new Date(b.created_at) - new Date(a.created_at);
+                if (sortValue === 'dday') {
+                    const ddayA = calculateDDay(a.end_date);
+                    const ddayB = calculateDDay(b.end_date);
+                    if (ddayA === null) return 1;
+                    if (ddayB === null) return -1;
+                    return ddayA - ddayB;
+                }
                 return new Date(b.updated_at) - new Date(a.updated_at);
             });
 
@@ -1026,6 +1030,7 @@
 
         // Event listeners
         searchInput.addEventListener('input', filterProjects);
+        typeFilter.addEventListener('change', filterProjects);
         statusFilter.addEventListener('change', filterProjects);
         sortSelect.addEventListener('change', filterProjects);
 
@@ -1033,7 +1038,7 @@
         function openModal() {
             const t = translations[currentLang] || translations['ko'];
             document.getElementById('modal-title').textContent = t.createNewProject;
-            document.getElementById('submit-btn-text').textContent = t.create;
+            document.getElementById('submit-btn-text').textContent = '생성';
             document.getElementById('project-id').value = '';
             projectForm.reset();
             projectModal.classList.add('active');
@@ -1042,11 +1047,20 @@
         function openEditModal(project) {
             const t = translations[currentLang] || translations['ko'];
             document.getElementById('modal-title').textContent = t.editProject;
-            document.getElementById('submit-btn-text').textContent = t.save;
+            document.getElementById('submit-btn-text').textContent = '저장';
             document.getElementById('project-id').value = project.id;
             document.getElementById('project-title').value = project.title;
             document.getElementById('project-description').value = project.description || '';
-            document.getElementById('project-status').value = project.status;
+            document.getElementById('project-status').value = project.status || 'draft';
+            document.getElementById('project-type').value = project.type || 'permanent';
+            document.getElementById('project-start-date').value = project.start_date || '';
+            document.getElementById('project-end-date').value = project.end_date || '';
+            document.getElementById('project-phase').value = project.phase || 'planning';
+            document.getElementById('project-location').value = project.location || '';
+            document.getElementById('project-curator').value = project.curator || '';
+            document.getElementById('project-artwork-count').value = project.artwork_count || '';
+            document.getElementById('project-budget-total').value = project.budget_total || '';
+            document.getElementById('project-budget-used').value = project.budget_used || '';
             projectModal.classList.add('active');
         }
 
@@ -1070,9 +1084,20 @@
             const t = translations[currentLang] || translations['ko'];
 
             const projectId = document.getElementById('project-id').value;
-            const title = document.getElementById('project-title').value.trim();
-            const description = document.getElementById('project-description').value.trim();
-            const status = document.getElementById('project-status').value;
+            const projectData = {
+                title: document.getElementById('project-title').value.trim(),
+                description: document.getElementById('project-description').value.trim(),
+                status: document.getElementById('project-status').value,
+                type: document.getElementById('project-type').value,
+                start_date: document.getElementById('project-start-date').value || null,
+                end_date: document.getElementById('project-end-date').value || null,
+                phase: document.getElementById('project-phase').value,
+                location: document.getElementById('project-location').value.trim() || null,
+                curator: document.getElementById('project-curator').value.trim() || null,
+                artwork_count: parseInt(document.getElementById('project-artwork-count').value) || null,
+                budget_total: parseFloat(document.getElementById('project-budget-total').value) || null,
+                budget_used: parseFloat(document.getElementById('project-budget-used').value) || null
+            };
 
             try {
                 const url = projectId 
@@ -1087,7 +1112,7 @@
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ title, description, status })
+                    body: JSON.stringify(projectData)
                 });
 
                 const data = await response.json();
@@ -1097,14 +1122,13 @@
                     
                     if (!projectId) {
                         // New project - redirect to canvas
-                        const projectData = {
+                        const newProjectData = {
                             id: data.projectId || data.id,
-                            name: title,
-                            description,
-                            status
+                            name: projectData.title,
+                            ...projectData
                         };
-                        sessionStorage.setItem('museflow_current_project', JSON.stringify(projectData));
-                        window.location.href = `/canvas.html?project=${projectData.id}&t=${Date.now()}`;
+                        sessionStorage.setItem('museflow_current_project', JSON.stringify(newProjectData));
+                        window.location.href = `/canvas.html?project=${newProjectData.id}&t=${Date.now()}`;
                     } else {
                         // Update - reload projects
                         await loadProjects();
@@ -1145,11 +1169,6 @@
 
         // Initialize
         loadProjects();
-
-        // Set initial view
-        if (currentView === 'list') {
-            document.querySelector('[data-view="list"]').click();
-        }
     </script>
     
     <!-- Mobile Navigation -->

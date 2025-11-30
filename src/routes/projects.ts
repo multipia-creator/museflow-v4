@@ -40,7 +40,10 @@ projects.get('/', async (c) => {
     }
     
     const result = await c.env.DB.prepare(
-      'SELECT id, title, description, status, created_at, updated_at FROM projects WHERE user_id = ? ORDER BY updated_at DESC'
+      `SELECT id, title, description, status, type, start_date, end_date, phase, 
+       location, curator, budget_total, budget_used, artwork_count, thumbnail_url, 
+       color_tag, created_at, updated_at 
+       FROM projects WHERE user_id = ? ORDER BY updated_at DESC`
     ).bind(userId).all();
     
     return c.json({
@@ -125,7 +128,11 @@ projects.put('/:id', async (c) => {
     }
     
     const projectId = c.req.param('id');
-    const { title, description, workflowData, status } = await c.req.json();
+    const { 
+      title, description, workflowData, status, type, start_date, end_date, phase,
+      location, curator, budget_total, budget_used, artwork_count,
+      thumbnail_url, color_tag
+    } = await c.req.json();
     
     // Check ownership
     const project = await c.env.DB.prepare(
@@ -138,12 +145,29 @@ projects.put('/:id', async (c) => {
     
     // Update project
     await c.env.DB.prepare(
-      'UPDATE projects SET title = ?, description = ?, workflow_data = ?, status = ?, updated_at = datetime("now") WHERE id = ?'
+      `UPDATE projects SET 
+       title = ?, description = ?, workflow_data = ?, status = ?, 
+       type = ?, start_date = ?, end_date = ?, phase = ?,
+       location = ?, curator = ?, budget_total = ?, budget_used = ?, 
+       artwork_count = ?, thumbnail_url = ?, color_tag = ?,
+       updated_at = datetime("now") 
+       WHERE id = ?`
     ).bind(
       title || null,
       description || null,
       workflowData ? JSON.stringify(workflowData) : null,
       status || 'draft',
+      type || 'permanent',
+      start_date || null,
+      end_date || null,
+      phase || 'planning',
+      location || null,
+      curator || null,
+      budget_total || null,
+      budget_used || null,
+      artwork_count || null,
+      thumbnail_url || null,
+      color_tag || null,
       projectId
     ).run();
     
