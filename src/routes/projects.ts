@@ -21,7 +21,7 @@ app.get('/', async (c: Context<{ Bindings: Bindings }>) => {
     
     // Get query parameters
     const status = c.req.query('status')
-    const userId = c.req.query('userId') || 1 // Default to admin user
+    const userId = c.req.query('userId') // Optional user filter
     
     // Build query
     let query = `
@@ -35,10 +35,15 @@ app.get('/', async (c: Context<{ Bindings: Bindings }>) => {
       FROM projects p
       LEFT JOIN project_budgets pb ON p.id = pb.project_id
       LEFT JOIN tasks t ON p.id = t.project_id
-      WHERE p.user_id = ?
+      WHERE 1=1
     `
     
-    const params: any[] = [userId]
+    const params: any[] = []
+    
+    if (userId) {
+      query += ` AND p.user_id = ?`
+      params.push(userId)
+    }
     
     if (status) {
       query += ` AND p.status = ?`
