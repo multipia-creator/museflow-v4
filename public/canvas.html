@@ -842,12 +842,6 @@
         
         // Load project data
         async function loadProject() {
-            if (!projectId) {
-                alert('프로젝트 ID가 없습니다.');
-                window.location.href = '/dashboard';
-                return;
-            }
-            
             try {
                 const response = await fetch(`${API_BASE_URL}/api/projects/${projectId}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
@@ -862,8 +856,8 @@
                 
             } catch (error) {
                 console.error('Error loading project:', error);
-                alert('프로젝트를 불러올 수 없습니다.');
-                window.location.href = '/dashboard';
+                alert('프로젝트를 불러올 수 없습니다. Projects 페이지로 이동합니다.');
+                window.location.href = '/projects.html';
             }
         }
         
