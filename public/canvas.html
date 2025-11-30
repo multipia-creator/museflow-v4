@@ -3,265 +3,914 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta name="version" content="1.8.0">
-    <title>Canvas V3 - MuseFlow</title>
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <!-- Dependencies -->
-    <script src="/static/js/tracker.js?v=1.8.0"></script>
-    <script src="/static/js/components/toast.js?v=1.8.0"></script>
-    <script src="/static/js/core/i18n.js?v=1.8.0"></script>
-    <script src="/static/js/core/router.js?v=1.8.0"></script>
-    <script src="/static/js/core/auth.js?v=1.8.0"></script>
-    <script src="/static/js/sdk/api-client.js?v=1.8.0"></script>
-    <script src="/static/js/sdk/workflow-sync.js?v=1.8.0"></script>
-    <script src="/static/js/sdk/ai-generator.js?v=1.8.0"></script>
-    <script src="/static/js/core/canvas-engine.js?v=1.8.0"></script>
-    <script src="/static/js/pages/canvas-v3.js?v=1.8.0"></script>
-    
+    <meta name="version" content="4.0.0">
+    <title>Visual Workflow - MuseFlow</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/static/js/tracker.js?v=4.0.0"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --museum-purple: #8b5cf6;
+            --museum-pink: #ec4899;
+            --museum-gold: #f59e0b;
+            --urgent: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --info: #3b82f6;
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a0f2e 50%, #0a0a0f 100%);
+            color: #f5f5f7;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
         
-        /* Loading Screen */
-        #loading-screen {
-            position: fixed;
+        /* Top Bar */
+        .top-bar {
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 100;
+        }
+        
+        .project-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 0.5rem 1rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(-4px);
+        }
+        
+        .project-info h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .project-meta {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 0.5rem;
+        }
+        
+        /* View Switcher */
+        .view-switcher {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 0.5rem;
+        }
+        
+        .view-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .view-btn.active {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3));
+            color: white;
+            border: 1px solid rgba(139, 92, 246, 0.5);
+        }
+        
+        .view-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        /* Content Area */
+        .content-area {
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        /* Timeline View */
+        .timeline-view {
+            display: none;
+        }
+        
+        .timeline-view.active {
+            display: block;
+        }
+        
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .timeline-title {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .timeline-controls {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 1rem;
+        }
+        
+        .timeline-phases {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .phase-label {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            font-weight: 600;
+            height: 200px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s;
+            gap: 0.5rem;
         }
         
-        #loading-screen.fade-out {
-            opacity: 0;
-            pointer-events: none;
+        .phase-icon {
+            font-size: 2rem;
         }
         
-        .spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .timeline-tracks {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
         }
         
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .timeline-track {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.5rem;
+            min-height: 200px;
+            position: relative;
         }
         
-        .loading-text {
-            margin-top: 24px;
-            color: white;
-            font-size: 18px;
-            font-weight: 500;
+        .task-cards {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
         
-        /* Language Selector */
-        #lang-selector {
-            position: fixed;
-            top: 80px;
-            right: 24px;
-            z-index: 10001;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-        
-        #lang-selector.visible {
-            opacity: 1;
-        }
-        
-        #lang-select {
-            padding: 12px 18px;
+        .task-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 12px;
-            border: 2px solid #e5e7eb;
-            background: white;
+            padding: 1rem;
+            width: 250px;
             cursor: pointer;
-            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .task-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+        
+        .task-title {
             font-weight: 600;
-            color: #1f2937;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 0.5rem;
         }
         
-        #lang-select:hover {
-            border-color: #667eea;
-            box-shadow: 0 12px 28px rgba(102, 126, 234, 0.25);
+        .task-meta {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            display: flex;
+            gap: 1rem;
+        }
+        
+        /* Kanban View */
+        .kanban-view {
+            display: none;
+        }
+        
+        .kanban-view.active {
+            display: block;
+        }
+        
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .kanban-column {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 1.5rem;
+            min-height: 600px;
+        }
+        
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .column-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        
+        .column-count {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .kanban-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .kanban-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .kanban-card:hover {
             transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.5);
         }
         
-        #lang-select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15), 0 12px 28px rgba(102, 126, 234, 0.25);
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
         }
         
-        #lang-select option {
-            padding: 10px;
-            font-size: 14px;
+        .card-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .type-permanent { background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.1)); color: #93c5fd; }
+        .type-special { background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(219, 39, 119, 0.1)); color: #f9a8d4; }
+        .type-traveling { background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.1)); color: #fcd34d; }
+        .type-event { background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1)); color: #6ee7b7; }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+        
+        .card-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .card-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .progress-info {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .progress-bar-container {
+            width: 100px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #8b5cf6, #ec4899);
+            border-radius: 100px;
+            transition: width 0.3s ease;
+        }
+        
+        /* Gallery View */
+        .gallery-view {
+            display: none;
+        }
+        
+        .gallery-view.active {
+            display: block;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .gallery-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+        
+        .gallery-thumbnail {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gallery-thumbnail::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, 20px); }
+        }
+        
+        .gallery-content {
+            padding: 1.5rem;
+        }
+        
+        .gallery-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .gallery-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        
+        .gallery-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .gallery-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* Action Buttons */
+        .action-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.5);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        .empty-text {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-subtext {
+            font-size: 0.875rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+            
+            .view-switcher {
+                justify-content: stretch;
+            }
+            
+            .view-btn {
+                flex: 1;
+                justify-content: center;
+            }
+            
+            .timeline-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .kanban-board {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <div class="spinner"></div>
-        <div class="loading-text">캔버스 초기화 중...</div>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="project-title">
+            <a href="/dashboard" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                대시보드
+            </a>
+            <div class="project-info">
+                <h1 id="project-title">전시 프로젝트</h1>
+                <div class="project-meta">
+                    <span id="project-type"><i class="fas fa-tag"></i> 전시 유형</span>
+                    <span id="project-phase"><i class="fas fa-tasks"></i> 진행 단계</span>
+                    <span id="project-dday"><i class="fas fa-calendar"></i> D-Day</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="view-switcher">
+            <button class="view-btn active" data-view="timeline">
+                <i class="fas fa-stream"></i> 타임라인
+            </button>
+            <button class="view-btn" data-view="kanban">
+                <i class="fas fa-th-large"></i> 칸반보드
+            </button>
+            <button class="view-btn" data-view="gallery">
+                <i class="fas fa-images"></i> 갤러리
+            </button>
+        </div>
     </div>
     
-    <!-- Language Selector -->
-    <div id="lang-selector">
-        <select id="lang-select">
-            <option value="ko">🇰🇷 한국어</option>
-            <option value="en">🇺🇸 English</option>
-            <option value="zh">🇨🇳 中文</option>
-            <option value="ja">🇯🇵 日本語</option>
-        </select>
+    <!-- Content Area -->
+    <div class="content-area">
+        <!-- Timeline View -->
+        <div class="timeline-view active" id="timeline-view">
+            <div class="timeline-header">
+                <h2 class="timeline-title">📅 프로젝트 타임라인</h2>
+                <div class="timeline-controls">
+                    <button class="action-btn btn-secondary" onclick="addTask()">
+                        <i class="fas fa-plus"></i> 작업 추가
+                    </button>
+                </div>
+            </div>
+            
+            <div class="timeline-grid">
+                <div class="timeline-phases">
+                    <div class="phase-label" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.05));">
+                        <div class="phase-icon">💡</div>
+                        <div>기획</div>
+                    </div>
+                    <div class="phase-label" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.05));">
+                        <div class="phase-icon">🔧</div>
+                        <div>준비</div>
+                    </div>
+                    <div class="phase-label" style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(219, 39, 119, 0.05));">
+                        <div class="phase-icon">🚀</div>
+                        <div>진행</div>
+                    </div>
+                    <div class="phase-label" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.05));">
+                        <div class="phase-icon">📢</div>
+                        <div>홍보</div>
+                    </div>
+                    <div class="phase-label" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));">
+                        <div class="phase-icon">✅</div>
+                        <div>완료</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-tracks">
+                    <div class="timeline-track">
+                        <div class="task-cards" id="planning-tasks">
+                            <div class="empty-state" style="padding: 2rem;">
+                                <div class="empty-icon">💡</div>
+                                <div class="empty-text">기획 단계 작업 없음</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-track">
+                        <div class="task-cards" id="preparation-tasks">
+                            <div class="empty-state" style="padding: 2rem;">
+                                <div class="empty-icon">🔧</div>
+                                <div class="empty-text">준비 단계 작업 없음</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-track">
+                        <div class="task-cards" id="execution-tasks">
+                            <div class="empty-state" style="padding: 2rem;">
+                                <div class="empty-icon">🚀</div>
+                                <div class="empty-text">진행 단계 작업 없음</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-track">
+                        <div class="task-cards" id="marketing-tasks">
+                            <div class="empty-state" style="padding: 2rem;">
+                                <div class="empty-icon">📢</div>
+                                <div class="empty-text">홍보 단계 작업 없음</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-track">
+                        <div class="task-cards" id="completed-tasks">
+                            <div class="empty-state" style="padding: 2rem;">
+                                <div class="empty-icon">✅</div>
+                                <div class="empty-text">완료된 작업 없음</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Kanban View -->
+        <div class="kanban-view" id="kanban-view">
+            <div class="timeline-header">
+                <h2 class="timeline-title">📋 칸반 보드</h2>
+                <div class="timeline-controls">
+                    <button class="action-btn btn-secondary" onclick="addTask()">
+                        <i class="fas fa-plus"></i> 작업 추가
+                    </button>
+                </div>
+            </div>
+            
+            <div class="kanban-board" id="kanban-board">
+                <!-- Kanban columns will be rendered here -->
+            </div>
+        </div>
+        
+        <!-- Gallery View -->
+        <div class="gallery-view" id="gallery-view">
+            <div class="timeline-header">
+                <h2 class="timeline-title">🎨 전시 갤러리</h2>
+                <div class="timeline-controls">
+                    <button class="action-btn btn-primary" onclick="editProject()">
+                        <i class="fas fa-edit"></i> 전시 편집
+                    </button>
+                </div>
+            </div>
+            
+            <div class="gallery-grid" id="gallery-grid">
+                <!-- Gallery items will be rendered here -->
+            </div>
+        </div>
     </div>
-    
-    <!-- Canvas V2 Container -->
-    <div id="app"></div>
     
     <script>
-        console.log('🎨 MuseFlow Canvas V4 - v1.6.1');
+        // Configuration
+        const API_BASE_URL = window.location.origin;
+        const token = localStorage.getItem('museflow_token');
         
-        // Setup language selector
-        function setupLanguageSelector() {
-            const langSelector = document.getElementById('lang-selector');
-            const langSelect = document.getElementById('lang-select');
-            
-            if (window.i18n) {
-                langSelect.value = i18n.getLang();
+        // Get project ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectId = urlParams.get('project');
+        
+        let currentProject = null;
+        let currentView = 'timeline';
+        
+        // Check authentication
+        if (!token) {
+            window.location.href = '/login';
+        }
+        
+        // Type configurations
+        const typeConfig = {
+            permanent: { label: '상설전', icon: '🏛️', class: 'type-permanent' },
+            special: { label: '특별전', icon: '✨', class: 'type-special' },
+            traveling: { label: '순회전', icon: '🚌', class: 'type-traveling' },
+            event: { label: '기획전', icon: '🎭', class: 'type-event' }
+        };
+        
+        const phaseConfig = {
+            planning: { label: '기획', icon: '💡', progress: 20 },
+            preparation: { label: '준비', icon: '🔧', progress: 40 },
+            execution: { label: '진행', icon: '🚀', progress: 60 },
+            marketing: { label: '홍보', icon: '📢', progress: 80 },
+            completed: { label: '완료', icon: '✅', progress: 100 }
+        };
+        
+        // Calculate D-Day
+        function calculateDDay(dateString) {
+            if (!dateString) return null;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const targetDate = new Date(dateString);
+            targetDate.setHours(0, 0, 0, 0);
+            const diffTime = targetDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays;
+        }
+        
+        // Load project data
+        async function loadProject() {
+            if (!projectId) {
+                alert('프로젝트 ID가 없습니다.');
+                window.location.href = '/dashboard';
+                return;
             }
             
-            langSelect.addEventListener('change', (e) => {
-                const newLang = e.target.value;
-                if (window.i18n) {
-                    i18n.setLang(newLang);
-                }
-                localStorage.setItem('museflow_lang', newLang);
-                window.location.reload();
-            });
-            
-            // Show after a short delay
-            setTimeout(() => {
-                langSelector.classList.add('visible');
-            }, 1000);
-        }
-        
-        // Setup Router fallback
-        if (!window.Router) {
-            window.Router = {
-                navigate: (path) => {
-                    if (path === '/project-manager' || path === '/projects') {
-                        window.location.href = '/projects.html';
-                    } else {
-                        window.location.href = path;
-                    }
-                }
-            };
-        }
-        
-        // Setup Toast fallback
-        if (!window.Toast) {
-            window.Toast = {
-                success: (msg) => console.log('✅', msg),
-                error: (msg) => console.error('❌', msg),
-                warning: (msg) => console.warn('⚠️', msg),
-                info: (msg) => console.info('ℹ️', msg)
-            };
-        }
-        
-        // Initialize Canvas V3
-        window.addEventListener('DOMContentLoaded', async () => {
             try {
-                console.log('🎨 MuseFlow Canvas V3 - World-Class Edition');
-                console.log('📦 Checking project data...');
+                const response = await fetch(`${API_BASE_URL}/api/projects/${projectId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
                 
-                // Get project data from sessionStorage
-                const projectData = sessionStorage.getItem('museflow_current_project');
-                if (!projectData) {
-                    throw new Error(i18n.t('noProjectSelected') || '프로젝트 데이터가 없습니다.');
-                }
+                if (!response.ok) throw new Error('Failed to load project');
                 
-                const project = JSON.parse(projectData);
-                console.log('✅ Project loaded:', project.name);
+                const data = await response.json();
+                currentProject = data.project;
                 
-                // Check if CanvasV3 is available
-                if (!window.CanvasV3) {
-                    throw new Error('Canvas V3를 로드할 수 없습니다.');
-                }
-                
-                console.log('🚀 Initializing Canvas V3...');
-                
-                // Initialize Canvas V3
-                await CanvasV3.init();
-                
-                console.log('✅ Canvas V3 initialized successfully');
-                
-                // Setup language selector
-                setupLanguageSelector();
-                
-                // Initialize Lucide icons
-                if (window.lucide) {
-                    lucide.createIcons();
-                    console.log('✅ Lucide icons initialized');
-                }
-                
-                // Hide loading screen
-                setTimeout(() => {
-                    const loadingScreen = document.getElementById('loading-screen');
-                    loadingScreen.classList.add('fade-out');
-                    setTimeout(() => {
-                        loadingScreen.style.display = 'none';
-                    }, 500);
-                }, 500);
+                renderProjectHeader();
+                renderAllViews();
                 
             } catch (error) {
-                console.error('❌ Canvas initialization failed:', error);
-                
-                const loadingScreen = document.getElementById('loading-screen');
-                loadingScreen.innerHTML = `
-                    <div style="text-align: center; max-width: 500px; padding: 40px;">
-                        <div style="font-size: 64px; margin-bottom: 24px;">⚠️</div>
-                        <h2 style="color: white; font-size: 24px; margin-bottom: 16px;">
-                            ${i18n.t('error') || '캔버스 초기화 실패'}
-                        </h2>
-                        <p style="color: rgba(255,255,255,0.8); margin-bottom: 32px; line-height: 1.6;">
-                            ${error.message}
-                        </p>
-                        <button 
-                            onclick="window.location.href='/projects.html'" 
-                            style="padding: 14px 28px; background: white; border: none; border-radius: 12px; 
-                                   color: #667eea; font-size: 16px; font-weight: 600; cursor: pointer;
-                                   box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: all 0.2s;">
-                            ← ${i18n.t('backToProjects') || '프로젝트 목록으로'}
-                        </button>
-                    </div>
-                `;
+                console.error('Error loading project:', error);
+                alert('프로젝트를 불러올 수 없습니다.');
+                window.location.href = '/dashboard';
             }
+        }
+        
+        // Render project header
+        function renderProjectHeader() {
+            const type = typeConfig[currentProject.type] || typeConfig.permanent;
+            const phase = phaseConfig[currentProject.phase] || phaseConfig.planning;
+            const dday = calculateDDay(currentProject.end_date);
+            
+            document.getElementById('project-title').textContent = currentProject.title;
+            document.getElementById('project-type').innerHTML = `<i class="fas fa-tag"></i> ${type.icon} ${type.label}`;
+            document.getElementById('project-phase').innerHTML = `<i class="fas fa-tasks"></i> ${phase.icon} ${phase.label}`;
+            
+            if (dday !== null && dday >= 0) {
+                const ddayColor = dday <= 7 ? '#ef4444' : dday <= 14 ? '#f59e0b' : '#10b981';
+                document.getElementById('project-dday').innerHTML = `<i class="fas fa-calendar"></i> <span style="color: ${ddayColor}; font-weight: 700;">D-${dday}</span>`;
+            } else {
+                document.getElementById('project-dday').innerHTML = `<i class="fas fa-calendar"></i> 종료됨`;
+            }
+        }
+        
+        // Render all views
+        function renderAllViews() {
+            renderTimelineView();
+            renderKanbanView();
+            renderGalleryView();
+        }
+        
+        // Render Timeline View
+        function renderTimelineView() {
+            const phases = ['planning', 'preparation', 'execution', 'marketing', 'completed'];
+            
+            // For now, showing empty state
+            // In production, this would load actual tasks from workflowData
+            phases.forEach(phase => {
+                const container = document.getElementById(`${phase}-tasks`);
+                if (container) {
+                    container.innerHTML = `
+                        <div class="empty-state" style="padding: 2rem;">
+                            <div class="empty-icon">${phaseConfig[phase].icon}</div>
+                            <div class="empty-text">${phaseConfig[phase].label} 단계 작업 없음</div>
+                        </div>
+                    `;
+                }
+            });
+        }
+        
+        // Render Kanban View
+        function renderKanbanView() {
+            const phases = [
+                { key: 'planning', label: '💡 기획', color: 'rgba(59, 130, 246, 0.1)' },
+                { key: 'preparation', label: '🔧 준비', color: 'rgba(245, 158, 11, 0.1)' },
+                { key: 'execution', label: '🚀 진행', color: 'rgba(236, 72, 153, 0.1)' },
+                { key: 'marketing', label: '📢 홍보', color: 'rgba(139, 92, 246, 0.1)' },
+                { key: 'completed', label: '✅ 완료', color: 'rgba(16, 185, 129, 0.1)' }
+            ];
+            
+            const board = document.getElementById('kanban-board');
+            board.innerHTML = phases.map(phase => `
+                <div class="kanban-column" style="background: ${phase.color};">
+                    <div class="column-header">
+                        <div class="column-title">${phase.label}</div>
+                        <div class="column-count">0</div>
+                    </div>
+                    <div class="kanban-cards">
+                        <div class="empty-state" style="padding: 3rem 1rem;">
+                            <div class="empty-icon">${phase.label.split(' ')[0]}</div>
+                            <div class="empty-text">작업 없음</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Render Gallery View
+        function renderGalleryView() {
+            const type = typeConfig[currentProject.type] || typeConfig.permanent;
+            const phase = phaseConfig[currentProject.phase] || phaseConfig.planning;
+            const dday = calculateDDay(currentProject.end_date);
+            
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = `
+                <div class="gallery-card" onclick="editProject()">
+                    <div class="gallery-thumbnail">
+                        <span style="position: relative; z-index: 1;">${type.icon}</span>
+                    </div>
+                    <div class="gallery-content">
+                        <span class="gallery-type ${type.class}">${type.icon} ${type.label}</span>
+                        <h3 class="gallery-title">${currentProject.title}</h3>
+                        <p class="gallery-description">${currentProject.description || '설명이 없습니다.'}</p>
+                        <div class="gallery-meta">
+                            ${currentProject.location ? `<span><i class="fas fa-map-marker-alt"></i> ${currentProject.location}</span>` : ''}
+                            ${currentProject.curator ? `<span><i class="fas fa-user-tie"></i> ${currentProject.curator}</span>` : ''}
+                            ${currentProject.artwork_count ? `<span><i class="fas fa-palette"></i> ${currentProject.artwork_count}점</span>` : ''}
+                            ${dday !== null && dday >= 0 ? `<span><i class="fas fa-calendar"></i> D-${dday}</span>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // View switcher
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const view = btn.dataset.view;
+                
+                // Update buttons
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Update views
+                document.querySelectorAll('.timeline-view, .kanban-view, .gallery-view').forEach(v => {
+                    v.classList.remove('active');
+                });
+                document.getElementById(`${view}-view`).classList.add('active');
+                
+                currentView = view;
+            });
         });
+        
+        // Action functions
+        function addTask() {
+            alert('작업 추가 기능은 곧 추가됩니다!');
+        }
+        
+        function editProject() {
+            window.location.href = `/projects?edit=${projectId}`;
+        }
+        
+        // Initialize
+        loadProject();
     </script>
+    
     <!-- Mobile Navigation -->
     <script src="/static/js/components/mobile-nav.js"></script>
 </body>
