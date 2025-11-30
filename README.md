@@ -3,9 +3,9 @@
 **AI-Powered Museum Workflow Platform**
 
 [![Status](https://img.shields.io/badge/Status-LIVE-success)](https://museflow.life)
-[![Version](https://img.shields.io/badge/Version-4.5.2-blue)](https://github.com/multipia-creator/museflow-v4)
+[![Version](https://img.shields.io/badge/Version-4.5.3-blue)](https://github.com/multipia-creator/museflow-v4)
 [![License](https://img.shields.io/badge/License-MIT-green)](https://github.com)
-[![Deployment](https://img.shields.io/badge/Deployment-d2ea883d-brightgreen)](https://d2ea883d.museflow.pages.dev)
+[![Deployment](https://img.shields.io/badge/Deployment-f8136c9b-brightgreen)](https://f8136c9b.museflow.pages.dev)
 [![Data Viz](https://img.shields.io/badge/Data_Visualization-Active-green)]()
 [![Sample Data](https://img.shields.io/badge/Sample_Projects-12-blue)]()
 [![Charts](https://img.shields.io/badge/Charts-4_Active-purple)]()
