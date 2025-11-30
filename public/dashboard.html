@@ -567,6 +567,73 @@
             </div>
         </section>
 
+        <!-- Exhibition Insights -->
+        <section style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fas fa-lightbulb" style="color: #fbbf24;"></i>
+                전시 인사이트
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+                <!-- Insight 1: Most Active Exhibition -->
+                <div class="glass-card" style="padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-fire" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">가장 활발한 전시</div>
+                            <div style="font-size: 1.25rem; font-weight: 700;" id="insight-most-active">-</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);" id="insight-most-active-desc">데이터를 분석하고 있습니다...</div>
+                </div>
+
+                <!-- Insight 2: Urgent Attention -->
+                <div class="glass-card" style="padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">주의 필요</div>
+                            <div style="font-size: 1.25rem; font-weight: 700; color: #f5576c;" id="insight-urgent-count">0</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);" id="insight-urgent-desc">마감 임박 또는 예산 초과 전시</div>
+                </div>
+
+                <!-- Insight 3: Budget Status -->
+                <div class="glass-card" style="padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-won-sign" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">전체 예산 현황</div>
+                            <div style="font-size: 1.25rem; font-weight: 700;" id="insight-budget-total">0억원</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">
+                        <span id="insight-budget-used">0억원</span> 집행 (<span id="insight-budget-rate">0%</span>)
+                    </div>
+                </div>
+
+                <!-- Insight 4: Upcoming Events -->
+                <div class="glass-card" style="padding: 1.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-calendar-alt" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">이번 주 일정</div>
+                            <div style="font-size: 1.25rem; font-weight: 700;" id="insight-upcoming-count">0</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);" id="insight-upcoming-desc">다가오는 전시 및 작업</div>
+                </div>
+            </div>
+        </section>
+
         <!-- Team Activity -->
         <section class="glass-card" style="margin-bottom: 3rem;">
             <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
@@ -1331,6 +1398,65 @@
             document.getElementById('metric-collaboration-value').textContent = collaborationCount;
         }
         
+        // Render Exhibition Insights
+        function renderExhibitionInsights() {
+            // 1. Most Active Exhibition (most tasks)
+            const mostActive = [...allProjects].sort((a, b) => (b.task_count || 0) - (a.task_count || 0))[0];
+            if (mostActive) {
+                document.getElementById('insight-most-active').textContent = mostActive.title;
+                document.getElementById('insight-most-active-desc').textContent = 
+                    `${mostActive.task_count || 0}개 작업 진행 중 • ${mostActive.curator || '담당자 미지정'}`;
+            }
+            
+            // 2. Urgent Attention (D-7 or budget > 90%)
+            const urgentProjects = allProjects.filter(p => {
+                const dday = calculateDDay(p.end_date);
+                const budgetRate = p.budget_total > 0 ? (p.budget_used / p.budget_total) : 0;
+                return (dday !== null && dday <= 7 && dday >= 0) || budgetRate > 0.9;
+            });
+            document.getElementById('insight-urgent-count').textContent = urgentProjects.length;
+            
+            if (urgentProjects.length > 0) {
+                const urgentNames = urgentProjects.slice(0, 2).map(p => p.title).join(', ');
+                document.getElementById('insight-urgent-desc').textContent = 
+                    `${urgentNames}${urgentProjects.length > 2 ? ` 외 ${urgentProjects.length - 2}건` : ''}`;
+            } else {
+                document.getElementById('insight-urgent-desc').textContent = '모든 전시가 순조롭게 진행 중입니다 ✓';
+            }
+            
+            // 3. Budget Status
+            const totalBudget = allProjects.reduce((sum, p) => sum + (p.budget_total || 0), 0);
+            const usedBudget = allProjects.reduce((sum, p) => sum + (p.budget_used || 0), 0);
+            const budgetRate = totalBudget > 0 ? Math.round((usedBudget / totalBudget) * 100) : 0;
+            
+            document.getElementById('insight-budget-total').textContent = (totalBudget / 100000000).toFixed(1) + '억원';
+            document.getElementById('insight-budget-used').textContent = (usedBudget / 100000000).toFixed(1) + '억원';
+            document.getElementById('insight-budget-rate').textContent = budgetRate + '%';
+            
+            // 4. Upcoming Events (this week)
+            const today = new Date();
+            const nextWeek = new Date(today);
+            nextWeek.setDate(today.getDate() + 7);
+            
+            const upcomingEvents = allProjects.filter(p => {
+                if (!p.start_date) return false;
+                const startDate = new Date(p.start_date);
+                return startDate >= today && startDate <= nextWeek;
+            });
+            
+            document.getElementById('insight-upcoming-count').textContent = upcomingEvents.length + '건';
+            
+            if (upcomingEvents.length > 0) {
+                const eventNames = upcomingEvents.slice(0, 2).map(p => {
+                    const date = new Date(p.start_date);
+                    return `${date.getMonth() + 1}/${date.getDate()} ${p.title}`;
+                }).join(', ');
+                document.getElementById('insight-upcoming-desc').textContent = eventNames;
+            } else {
+                document.getElementById('insight-upcoming-desc').textContent = '이번 주 예정된 전시가 없습니다';
+            }
+        }
+        
         async function loadProjects() {
             try {
                 const response = await fetch(`${API_BASE_URL}/api/projects`, {
@@ -1346,6 +1472,7 @@
                 renderUrgentAlerts();
                 renderWeekTimeline();
                 renderExhibitions();
+                renderExhibitionInsights(); // Add exhibition insights
                 renderTeamActivity();
                 renderPerformanceMetrics(); // Add metrics rendering
                 
