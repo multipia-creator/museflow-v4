@@ -4,6 +4,8 @@ import api from './api/index'
 import auth from './routes/auth'
 import oauth from './routes/oauth'
 import projects from './routes/projects'
+import tasks from './routes/tasks'
+import comments from './routes/comments'
 import behaviors from './routes/behaviors'
 
 // Export Durable Objects
@@ -61,6 +63,8 @@ app.route('/api', api)
 app.route('/api/auth', auth)
 app.route('/api/oauth', oauth)
 app.route('/api/projects', projects)
+app.route('/api/tasks', tasks)
+app.route('/api/comments', comments)
 app.route('/api/behaviors', behaviors)
 
 export default app

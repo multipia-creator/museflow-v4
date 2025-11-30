@@ -1,289 +1,365 @@
-import { Hono } from 'hono';
-import { verify } from 'hono/jwt';
-import { getJWTSecret } from '../utils/security';
+/**
+ * MuseFlow V4.0 - Projects API Routes
+ * CRUD operations for exhibition projects with D1 Database
+ */
+
+import { Hono } from 'hono'
+import type { Context } from 'hono'
 
 type Bindings = {
-  DB: D1Database;
-  JWT_SECRET?: string;
-};
-
-const projects = new Hono<{ Bindings: Bindings }>();
-
-// Middleware to verify JWT
-async function verifyAuth(c: any): Promise<number | null> {
-  try {
-    const authHeader = c.req.header('Authorization');
-    
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return null;
-    }
-    
-    const token = authHeader.substring(7);
-    const secret = getJWTSecret(c.env.JWT_SECRET);
-    
-    const payload = await verify(token, secret);
-    return payload.userId as number;
-    
-  } catch (error) {
-    console.error('JWT verification failed:', error);
-    return null;
-  }
+  DB: D1Database
 }
 
-// Get all projects for user
-projects.get('/', async (c) => {
-  try {
-    const userId = await verifyAuth(c);
-    
-    if (!userId) {
-      return c.json({ error: '인증이 필요합니다.' }, 401);
-    }
-    
-    const result = await c.env.DB.prepare(
-      `SELECT id, title, description, status, type, start_date, end_date, phase, 
-       location, curator, budget_total, budget_used, artwork_count, thumbnail_url, 
-       color_tag, created_at, updated_at 
-       FROM projects WHERE user_id = ? ORDER BY updated_at DESC`
-    ).bind(userId).all();
-    
-    return c.json({
-      projects: result.results || [],
-    });
-    
-  } catch (error) {
-    console.error('Get projects error:', error);
-    return c.json({ error: '서버 오류가 발생했습니다.' }, 500);
-  }
-});
+const app = new Hono<{ Bindings: Bindings }>()
 
-// Get single project
-projects.get('/:id', async (c) => {
+// ============================================================================
+// GET /api/projects - List all projects
+// ============================================================================
+app.get('/', async (c: Context<{ Bindings: Bindings }>) => {
   try {
-    const userId = await verifyAuth(c);
+    const { DB } = c.env
     
-    if (!userId) {
-      return c.json({ error: '인증이 필요합니다.' }, 401);
+    // Get query parameters
+    const status = c.req.query('status')
+    const userId = c.req.query('userId') || 1 // Default to admin user
+    
+    // Build query
+    let query = `
+      SELECT 
+        p.*,
+        pb.budget_amount,
+        pb.spent_amount,
+        pb.currency,
+        COUNT(DISTINCT t.id) as task_count,
+        SUM(CASE WHEN t.status = 'completed' THEN 1 ELSE 0 END) as completed_tasks
+      FROM projects p
+      LEFT JOIN project_budgets pb ON p.id = pb.project_id
+      LEFT JOIN tasks t ON p.id = t.project_id
+      WHERE p.user_id = ?
+    `
+    
+    const params: any[] = [userId]
+    
+    if (status) {
+      query += ` AND p.status = ?`
+      params.push(status)
     }
     
-    const projectId = c.req.param('id');
+    query += ` GROUP BY p.id ORDER BY p.updated_at DESC`
     
-    const project = await c.env.DB.prepare(
-      'SELECT * FROM projects WHERE id = ? AND user_id = ?'
-    ).bind(projectId, userId).first();
+    const { results } = await DB.prepare(query).bind(...params).all()
     
-    if (!project) {
-      return c.json({ error: '프로젝트를 찾을 수 없습니다.' }, 404);
-    }
-    
-    return c.json({ project });
-    
-  } catch (error) {
-    console.error('Get project error:', error);
-    return c.json({ error: '서버 오류가 발생했습니다.' }, 500);
-  }
-});
-
-// Create new project
-projects.post('/', async (c) => {
-  try {
-    const userId = await verifyAuth(c);
-    
-    if (!userId) {
-      return c.json({ error: '인증이 필요합니다.' }, 401);
-    }
-    
-    const { 
-      title, description, status, type, start_date, end_date, phase,
-      location, curator, budget_total, budget_used, artwork_count,
-      thumbnail_url, color_tag
-    } = await c.req.json();
-    
-    if (!title || title.trim().length === 0) {
-      return c.json({ error: '프로젝트 제목을 입력해주세요.' }, 400);
-    }
-    
-    const result = await c.env.DB.prepare(
-      `INSERT INTO projects (
-        user_id, title, description, status, type, start_date, end_date, phase,
-        location, curator, budget_total, budget_used, artwork_count,
-        thumbnail_url, color_tag
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    ).bind(
-      userId, 
-      title, 
-      description || '', 
-      status || 'draft',
-      type || 'permanent',
-      start_date || null,
-      end_date || null,
-      phase || 'planning',
-      location || null,
-      curator || null,
-      budget_total || null,
-      budget_used || null,
-      artwork_count || null,
-      thumbnail_url || null,
-      color_tag || null
-    ).run();
-    
-    if (!result.success) {
-      return c.json({ error: '프로젝트 생성에 실패했습니다.' }, 500);
-    }
+    // Parse workflow_data JSON
+    const projects = results.map((p: any) => ({
+      ...p,
+      workflow_data: p.workflow_data ? JSON.parse(p.workflow_data) : null,
+      budget: {
+        budget_amount: p.budget_amount || 0,
+        spent_amount: p.spent_amount || 0,
+        currency: p.currency || 'KRW'
+      },
+      stats: {
+        task_count: p.task_count || 0,
+        completed_tasks: p.completed_tasks || 0
+      }
+    }))
     
     return c.json({
       success: true,
-      projectId: result.meta?.last_row_id,
-      message: '프로젝트가 생성되었습니다.',
-    }, 201);
-    
-  } catch (error) {
-    console.error('Create project error:', error);
-    return c.json({ error: '서버 오류가 발생했습니다.' }, 500);
+      projects,
+      count: projects.length
+    })
+  } catch (error: any) {
+    console.error('Error fetching projects:', error)
+    return c.json({
+      success: false,
+      error: error.message || 'Failed to fetch projects'
+    }, 500)
   }
-});
+})
 
-// Update project
-projects.put('/:id', async (c) => {
+// ============================================================================
+// GET /api/projects/:id - Get single project
+// ============================================================================
+app.get('/:id', async (c: Context<{ Bindings: Bindings }>) => {
   try {
-    const userId = await verifyAuth(c);
+    const { DB } = c.env
+    const projectId = c.req.param('id')
     
-    if (!userId) {
-      return c.json({ error: '인증이 필요합니다.' }, 401);
+    const { results } = await DB.prepare(`
+      SELECT 
+        p.*,
+        pb.budget_amount,
+        pb.spent_amount,
+        pb.currency
+      FROM projects p
+      LEFT JOIN project_budgets pb ON p.id = pb.project_id
+      WHERE p.id = ?
+    `).bind(projectId).all()
+    
+    if (!results || results.length === 0) {
+      return c.json({
+        success: false,
+        error: 'Project not found'
+      }, 404)
     }
     
-    const projectId = c.req.param('id');
-    const { 
-      title, description, workflowData, status, type, start_date, end_date, phase,
-      location, curator, budget_total, budget_used, artwork_count,
-      thumbnail_url, color_tag
-    } = await c.req.json();
+    const project = results[0] as any
     
-    // Check ownership
-    const project = await c.env.DB.prepare(
-      'SELECT id FROM projects WHERE id = ? AND user_id = ?'
-    ).bind(projectId, userId).first();
-    
-    if (!project) {
-      return c.json({ error: '프로젝트를 찾을 수 없습니다.' }, 404);
+    // Parse workflow_data
+    if (project.workflow_data) {
+      project.workflow_data = JSON.parse(project.workflow_data)
     }
+    
+    // Get tasks
+    const { results: tasks } = await DB.prepare(`
+      SELECT * FROM tasks 
+      WHERE project_id = ? 
+      ORDER BY position ASC, created_at ASC
+    `).bind(projectId).all()
+    
+    // Parse checklist JSON in tasks
+    const parsedTasks = tasks.map((t: any) => ({
+      ...t,
+      checklist: t.checklist ? JSON.parse(t.checklist) : []
+    }))
+    
+    return c.json({
+      success: true,
+      project: {
+        ...project,
+        budget: {
+          budget_amount: project.budget_amount || 0,
+          spent_amount: project.spent_amount || 0,
+          currency: project.currency || 'KRW'
+        }
+      },
+      tasks: parsedTasks
+    })
+  } catch (error: any) {
+    console.error('Error fetching project:', error)
+    return c.json({
+      success: false,
+      error: error.message || 'Failed to fetch project'
+    }, 500)
+  }
+})
+
+// ============================================================================
+// POST /api/projects - Create new project
+// ============================================================================
+app.post('/', async (c: Context<{ Bindings: Bindings }>) => {
+  try {
+    const { DB } = c.env
+    const body = await c.req.json()
+    
+    const {
+      title,
+      description,
+      status = 'draft',
+      user_id = 1,
+      workflow_data = null,
+      budget_amount = 0,
+      exhibition_type,
+      start_date,
+      end_date
+    } = body
+    
+    // Validate required fields
+    if (!title) {
+      return c.json({
+        success: false,
+        error: 'Title is required'
+      }, 400)
+    }
+    
+    // Insert project
+    const projectResult = await DB.prepare(`
+      INSERT INTO projects (user_id, title, description, workflow_data, status, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now'))
+    `).bind(
+      user_id,
+      title,
+      description || '',
+      workflow_data ? JSON.stringify(workflow_data) : null,
+      status
+    ).run()
+    
+    const projectId = projectResult.meta.last_row_id
+    
+    // Insert budget if provided
+    if (budget_amount > 0) {
+      await DB.prepare(`
+        INSERT INTO project_budgets (project_id, budget_amount, spent_amount, currency, created_at, updated_at)
+        VALUES (?, ?, 0, 'KRW', datetime('now'), datetime('now'))
+      `).bind(projectId, budget_amount).run()
+    }
+    
+    // Log activity
+    await DB.prepare(`
+      INSERT INTO activity_log (user_id, project_id, activity_type, content, created_at)
+      VALUES (?, ?, 'project_create', ?, datetime('now'))
+    `).bind(user_id, projectId, `Created project: ${title}`).run()
+    
+    return c.json({
+      success: true,
+      project_id: projectId,
+      message: 'Project created successfully'
+    }, 201)
+  } catch (error: any) {
+    console.error('Error creating project:', error)
+    return c.json({
+      success: false,
+      error: error.message || 'Failed to create project'
+    }, 500)
+  }
+})
+
+// ============================================================================
+// PUT /api/projects/:id - Update project
+// ============================================================================
+app.put('/:id', async (c: Context<{ Bindings: Bindings }>) => {
+  try {
+    const { DB } = c.env
+    const projectId = c.req.param('id')
+    const body = await c.req.json()
+    
+    const {
+      title,
+      description,
+      status,
+      workflow_data,
+      budget_amount
+    } = body
     
     // Update project
-    await c.env.DB.prepare(
-      `UPDATE projects SET 
-       title = ?, description = ?, workflow_data = ?, status = ?, 
-       type = ?, start_date = ?, end_date = ?, phase = ?,
-       location = ?, curator = ?, budget_total = ?, budget_used = ?, 
-       artwork_count = ?, thumbnail_url = ?, color_tag = ?,
-       updated_at = datetime("now") 
-       WHERE id = ?`
-    ).bind(
+    await DB.prepare(`
+      UPDATE projects 
+      SET 
+        title = COALESCE(?, title),
+        description = COALESCE(?, description),
+        status = COALESCE(?, status),
+        workflow_data = COALESCE(?, workflow_data),
+        updated_at = datetime('now')
+      WHERE id = ?
+    `).bind(
       title || null,
-      description || null,
-      workflowData ? JSON.stringify(workflowData) : null,
-      status || 'draft',
-      type || 'permanent',
-      start_date || null,
-      end_date || null,
-      phase || 'planning',
-      location || null,
-      curator || null,
-      budget_total || null,
-      budget_used || null,
-      artwork_count || null,
-      thumbnail_url || null,
-      color_tag || null,
+      description !== undefined ? description : null,
+      status || null,
+      workflow_data ? JSON.stringify(workflow_data) : null,
       projectId
-    ).run();
+    ).run()
+    
+    // Update budget if provided
+    if (budget_amount !== undefined) {
+      await DB.prepare(`
+        INSERT INTO project_budgets (project_id, budget_amount, spent_amount, currency, created_at, updated_at)
+        VALUES (?, ?, 0, 'KRW', datetime('now'), datetime('now'))
+        ON CONFLICT(project_id) DO UPDATE SET
+          budget_amount = excluded.budget_amount,
+          updated_at = datetime('now')
+      `).bind(projectId, budget_amount).run()
+    }
+    
+    // Log activity
+    await DB.prepare(`
+      INSERT INTO activity_log (user_id, project_id, activity_type, content, created_at)
+      VALUES (1, ?, 'project_update', ?, datetime('now'))
+    `).bind(projectId, `Updated project: ${title || 'Untitled'}`).run()
     
     return c.json({
       success: true,
-      message: '프로젝트가 업데이트되었습니다.',
-    });
-    
-  } catch (error) {
-    console.error('Update project error:', error);
-    return c.json({ error: '서버 오류가 발생했습니다.' }, 500);
+      message: 'Project updated successfully'
+    })
+  } catch (error: any) {
+    console.error('Error updating project:', error)
+    return c.json({
+      success: false,
+      error: error.message || 'Failed to update project'
+    }, 500)
   }
-});
+})
 
-// Delete project
-projects.delete('/:id', async (c) => {
+// ============================================================================
+// DELETE /api/projects/:id - Delete project
+// ============================================================================
+app.delete('/:id', async (c: Context<{ Bindings: Bindings }>) => {
   try {
-    const userId = await verifyAuth(c);
+    const { DB } = c.env
+    const projectId = c.req.param('id')
     
-    if (!userId) {
-      return c.json({ error: '인증이 필요합니다.' }, 401);
+    // Get project title for logging
+    const { results } = await DB.prepare(`
+      SELECT title FROM projects WHERE id = ?
+    `).bind(projectId).all()
+    
+    if (!results || results.length === 0) {
+      return c.json({
+        success: false,
+        error: 'Project not found'
+      }, 404)
     }
     
-    const projectId = c.req.param('id');
+    const projectTitle = (results[0] as any).title
     
-    // Check ownership
-    const project = await c.env.DB.prepare(
-      'SELECT id FROM projects WHERE id = ? AND user_id = ?'
-    ).bind(projectId, userId).first();
+    // Delete project (cascade will delete related records)
+    await DB.prepare(`
+      DELETE FROM projects WHERE id = ?
+    `).bind(projectId).run()
     
-    if (!project) {
-      return c.json({ error: '프로젝트를 찾을 수 없습니다.' }, 404);
-    }
-    
-    // Delete project
-    await c.env.DB.prepare(
-      'DELETE FROM projects WHERE id = ?'
-    ).bind(projectId).run();
+    // Log activity
+    await DB.prepare(`
+      INSERT INTO activity_log (user_id, activity_type, content, created_at)
+      VALUES (1, 'project_delete', ?, datetime('now'))
+    `).bind(`Deleted project: ${projectTitle}`).run()
     
     return c.json({
       success: true,
-      message: '프로젝트가 삭제되었습니다.',
-    });
-    
-  } catch (error) {
-    console.error('Delete project error:', error);
-    return c.json({ error: '서버 오류가 발생했습니다.' }, 500);
+      message: 'Project deleted successfully'
+    })
+  } catch (error: any) {
+    console.error('Error deleting project:', error)
+    return c.json({
+      success: false,
+      error: error.message || 'Failed to delete project'
+    }, 500)
   }
-});
+})
 
-// Get project statistics
-projects.get('/stats/summary', async (c) => {
+// ============================================================================
+// GET /api/projects/urgent - Get urgent projects (D-7 or less)
+// ============================================================================
+app.get('/urgent', async (c: Context<{ Bindings: Bindings }>) => {
   try {
-    const userId = await verifyAuth(c);
+    const { DB } = c.env
     
-    if (!userId) {
-      return c.json({ error: '인증이 필요합니다.' }, 401);
-    }
-    
-    // Get total count
-    const totalResult = await c.env.DB.prepare(
-      'SELECT COUNT(*) as total FROM projects WHERE user_id = ?'
-    ).bind(userId).first();
-    
-    // Get active count
-    const activeResult = await c.env.DB.prepare(
-      'SELECT COUNT(*) as active FROM projects WHERE user_id = ? AND status = ?'
-    ).bind(userId, 'active').first();
-    
-    // Get count by status
-    const draftResult = await c.env.DB.prepare(
-      'SELECT COUNT(*) as draft FROM projects WHERE user_id = ? AND status = ?'
-    ).bind(userId, 'draft').first();
-    
-    const completedResult = await c.env.DB.prepare(
-      'SELECT COUNT(*) as completed FROM projects WHERE user_id = ? AND status = ?'
-    ).bind(userId, 'completed').first();
+    // Get projects ending within 7 days
+    const { results } = await DB.prepare(`
+      SELECT 
+        p.*,
+        pb.budget_amount,
+        pb.spent_amount,
+        julianday(p.end_date) - julianday('now') as days_left
+      FROM projects p
+      LEFT JOIN project_budgets pb ON p.id = pb.project_id
+      WHERE p.end_date IS NOT NULL
+        AND julianday(p.end_date) - julianday('now') <= 7
+        AND julianday(p.end_date) - julianday('now') >= 0
+        AND p.status != 'completed'
+      ORDER BY days_left ASC
+    `).all()
     
     return c.json({
       success: true,
-      stats: {
-        total: totalResult?.total || 0,
-        active: activeResult?.active || 0,
-        draft: draftResult?.draft || 0,
-        completed: completedResult?.completed || 0,
-      }
-    });
-    
-  } catch (error) {
-    console.error('Get project stats error:', error);
-    return c.json({ error: '서버 오류가 발생했습니다.' }, 500);
+      projects: results
+    })
+  } catch (error: any) {
+    console.error('Error fetching urgent projects:', error)
+    return c.json({
+      success: false,
+      error: error.message || 'Failed to fetch urgent projects'
+    }, 500)
   }
-});
+})
 
-export default projects;
+export default app
