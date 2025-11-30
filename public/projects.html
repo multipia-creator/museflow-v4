@@ -399,8 +399,8 @@
                     <option value="all">전체 유형</option>
                     <option value="permanent">상설전</option>
                     <option value="special">특별전</option>
-                    <option value="touring">순회전</option>
-                    <option value="unique">기획전</option>
+                    <option value="traveling">순회전</option>
+                    <option value="event">기획전</option>
                 </select>
                 <select id="status-filter" class="filter-chip">
                     <option value="all" data-i18n="statusAll">모든 상태</option>
@@ -467,8 +467,8 @@
                         <select id="project-type" class="form-select" required>
                             <option value="permanent">🏛️ 상설전</option>
                             <option value="special">✨ 특별전</option>
-                            <option value="touring">🚌 순회전</option>
-                            <option value="unique">🎭 기획전</option>
+                            <option value="traveling">🚌 순회전</option>
+                            <option value="event">🎭 기획전</option>
                         </select>
                     </div>
                     <div>
@@ -498,9 +498,9 @@
                         <select id="project-phase" class="form-select">
                             <option value="planning">기획</option>
                             <option value="preparation">준비</option>
-                            <option value="progress">진행</option>
+                            <option value="execution">진행</option>
                             <option value="marketing">홍보</option>
-                            <option value="completion">완료</option>
+                            <option value="completed">완료</option>
                         </select>
                     </div>
                     <div>
@@ -735,8 +735,8 @@
             const stats = {
                 permanent: allProjects.filter(p => p.type === 'permanent').length,
                 special: allProjects.filter(p => p.type === 'special').length,
-                touring: allProjects.filter(p => p.type === 'touring').length,
-                unique: allProjects.filter(p => p.type === 'unique').length
+                touring: allProjects.filter(p => p.type === 'traveling').length,
+                unique: allProjects.filter(p => p.type === 'event').length
             };
 
             const typeConfig = {
@@ -775,9 +775,9 @@
             const stages = [
                 { id: 'planning', icon: '📋', label: '기획' },
                 { id: 'preparation', icon: '🔧', label: '준비' },
-                { id: 'progress', icon: '🎨', label: '진행' },
+                { id: 'execution', icon: '🎨', label: '진행' },
                 { id: 'marketing', icon: '📢', label: '홍보' },
-                { id: 'completion', icon: '✅', label: '완료' }
+                { id: 'completed', icon: '✅', label: '완료' }
             ];
             
             const currentIndex = stages.findIndex(s => s.id === phase);
@@ -1175,3 +1175,4 @@
     <script src="/static/js/components/mobile-nav.js"></script>
 </body>
 </html>
+>

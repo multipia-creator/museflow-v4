@@ -92,15 +92,39 @@ projects.post('/', async (c) => {
       return c.json({ error: '인증이 필요합니다.' }, 401);
     }
     
-    const { title, description } = await c.req.json();
+    const { 
+      title, description, status, type, start_date, end_date, phase,
+      location, curator, budget_total, budget_used, artwork_count,
+      thumbnail_url, color_tag
+    } = await c.req.json();
     
     if (!title || title.trim().length === 0) {
       return c.json({ error: '프로젝트 제목을 입력해주세요.' }, 400);
     }
     
     const result = await c.env.DB.prepare(
-      'INSERT INTO projects (user_id, title, description, status) VALUES (?, ?, ?, ?)'
-    ).bind(userId, title, description || '', 'draft').run();
+      `INSERT INTO projects (
+        user_id, title, description, status, type, start_date, end_date, phase,
+        location, curator, budget_total, budget_used, artwork_count,
+        thumbnail_url, color_tag
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    ).bind(
+      userId, 
+      title, 
+      description || '', 
+      status || 'draft',
+      type || 'permanent',
+      start_date || null,
+      end_date || null,
+      phase || 'planning',
+      location || null,
+      curator || null,
+      budget_total || null,
+      budget_used || null,
+      artwork_count || null,
+      thumbnail_url || null,
+      color_tag || null
+    ).run();
     
     if (!result.success) {
       return c.json({ error: '프로젝트 생성에 실패했습니다.' }, 500);
