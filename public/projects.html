@@ -688,18 +688,18 @@
     <script>
         // Configuration
         const API_BASE_URL = window.location.origin;
-        const token = localStorage.getItem('museflow_token');
-        
-        let allProjects = [];
-        let editingProjectId = null;
+        let token = localStorage.getItem('museflow_token');
         
         // Check authentication (Demo mode - bypass for visualization)
         if (!token) {
             // Demo mode: create a dummy token
-            const demoToken = 'demo-token-12345';
-            localStorage.setItem('museflow_token', demoToken);
+            token = 'demo-token-12345';
+            localStorage.setItem('museflow_token', token);
             console.log('🎨 Demo mode activated for projects visualization');
         }
+        
+        let allProjects = [];
+        let editingProjectId = null;
         
         // Type & Phase Config
         const typeConfig = {
