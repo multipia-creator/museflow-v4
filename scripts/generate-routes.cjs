@@ -41,6 +41,7 @@ const exclude = [
   '/signup.html',
   '/test-api-url.html',
   '/test-canvas.html',
+  '/workflow.html',
   
   // Pretty URL paths (all)
   '/account',
@@ -53,7 +54,8 @@ const exclude = [
   '/landing',
   '/login',
   '/projects',
-  '/signup'
+  '/signup',
+  '/workflow'
 ];
 
 const routes = {
