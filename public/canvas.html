@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="4.5.3">
+    <meta name="version" content="4.6.1">
     <title>Canvas - MuseFlow.life</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -806,37 +806,6 @@
         const urlParams = new URLSearchParams(window.location.search);
         const projectId = urlParams.get('project');
         
-        // Validate project ID
-        if (!projectId) {
-            console.log('⚠️ No project ID in URL, redirecting to Projects page...');
-            const message = document.createElement('div');
-            message.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: rgba(139, 92, 246, 0.95);
-                backdrop-filter: blur(20px);
-                padding: 2rem 3rem;
-                border-radius: 20px;
-                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-                text-align: center;
-                z-index: 10000;
-                color: white;
-                font-size: 1.1rem;
-            `;
-            message.innerHTML = `
-                <i class="fas fa-tasks" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
-                <div style="font-weight: 600; margin-bottom: 0.5rem;">프로젝트를 선택해주세요</div>
-                <div style="font-size: 0.9rem; opacity: 0.9;">프로젝트 페이지로 이동합니다...</div>
-            `;
-            document.body.appendChild(message);
-            
-            setTimeout(() => {
-                window.location.href = '/projects.html';
-            }, 2000);
-        }
-        
         let currentProject = null;
         let currentView = 'timeline';
         let editingTaskId = null;
@@ -1345,6 +1314,40 @@
         
         // Initialize
         async function init() {
+            // Validate project ID first
+            if (!projectId) {
+                console.log('⚠️ No project ID in URL, redirecting to Projects page...');
+                const message = document.createElement('div');
+                message.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(139, 92, 246, 0.95);
+                    backdrop-filter: blur(20px);
+                    padding: 2rem 3rem;
+                    border-radius: 20px;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+                    text-align: center;
+                    z-index: 10000;
+                    color: white;
+                    font-size: 1.1rem;
+                `;
+                message.innerHTML = `
+                    <i class="fas fa-tasks" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+                    <div style="font-weight: 600; margin-bottom: 0.5rem;">프로젝트를 선택해주세요</div>
+                    <div style="font-size: 0.9rem; opacity: 0.9;">프로젝트 페이지로 이동합니다...</div>
+                `;
+                document.body.appendChild(message);
+                
+                setTimeout(() => {
+                    window.location.href = '/projects.html';
+                }, 2000);
+                return; // Stop execution
+            }
+            
+            // Load project and tasks
+            console.log('📋 Loading Canvas for project:', projectId);
             await loadProject();
             await loadTasks(); // Now async
             renderAllViews();
