@@ -1134,11 +1134,17 @@
         
         // Render Monthly Trend Chart
         function renderMonthlyTrendChart() {
+            console.log('📊 Rendering Monthly Trend Chart...');
             const ctx = document.getElementById('monthlyTrendChart');
-            if (!ctx || typeof Chart === 'undefined') {
-                console.warn('Chart.js not available or canvas not found');
+            if (!ctx) {
+                console.error('❌ Canvas element not found: monthlyTrendChart');
                 return;
             }
+            if (typeof Chart === 'undefined') {
+                console.error('❌ Chart.js not loaded');
+                return;
+            }
+            console.log('✅ Chart.js ready, projects count:', allProjects.length);
             
             // Destroy existing chart
             if (charts.monthlyTrend) charts.monthlyTrend.destroy();
@@ -1462,15 +1468,25 @@
         
         async function loadProjects() {
             try {
+                console.log('🔄 [Dashboard] Starting to load projects...');
+                console.log('📍 API URL:', `${API_BASE_URL}/api/projects`);
+                console.log('🔑 Token:', token ? 'Present' : 'Missing');
+                
                 const response = await fetch(`${API_BASE_URL}/api/projects`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
+                
+                console.log('📡 Response status:', response.status, response.statusText);
                 
                 if (!response.ok) throw new Error('Failed to load projects');
                 
                 const data = await response.json();
                 allProjects = data.projects;
                 
+                console.log('✅ Projects loaded:', allProjects.length);
+                console.log('📊 First project:', allProjects[0]?.title);
+                
+                console.log('🎨 Rendering dashboard sections...');
                 renderHeroMission();
                 renderUrgentAlerts();
                 renderWeekTimeline();
@@ -1480,13 +1496,17 @@
                 renderPerformanceMetrics(); // Add metrics rendering
                 
                 // Render charts
+                console.log('📈 Rendering charts...');
                 renderMonthlyTrendChart();
                 renderTypeDistributionChart();
                 renderBudgetChart();
                 renderPhaseDistributionChart();
                 
+                console.log('✨ Dashboard rendering complete!');
+                
             } catch (error) {
-                console.error('Error loading projects:', error);
+                console.error('❌ Error loading projects:', error);
+                console.error('Stack trace:', error.stack);
             }
         }
         
