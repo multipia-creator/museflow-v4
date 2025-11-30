@@ -1,1110 +1,915 @@
 <!DOCTYPE html>
-<html lang="ko" id="html-root">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta name="version" content="3.0.0">
+    <meta name="version" content="4.0.0">
     <title>전시 관리 - MuseFlow</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="/static/css/mobile-responsive.css" rel="stylesheet">
+    <script src="/static/js/tracker.js?v=4.0.0"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --museum-purple: #8b5cf6;
+            --museum-pink: #ec4899;
+            --museum-gold: #f59e0b;
+            --urgent: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+        }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #0a0a0f 0%, #1a0f2e 50%, #0a0a0f 100%);
             color: #f5f5f7;
             min-height: 100vh;
         }
         
-        /* Core Styles (same as v2.0) */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: saturate(180%) blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .glass-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4);
-            border-color: rgba(139, 92, 246, 0.5);
-        }
-        .gradient-text {
-            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
+        /* Navigation */
         .nav-bar {
-            background: rgba(10, 10, 15, 0.8);
+            background: rgba(10, 10, 15, 0.95);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 1rem 2rem;
-            display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 100;
-        }
-        .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: white; }
-        .nav-logo img { width: 40px; height: 40px; border-radius: 8px; }
-        .btn-primary {
-            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            border: none; padding: 0.875rem 1.75rem; border-radius: 12px;
-            color: white; font-weight: 600; cursor: pointer;
-            transition: all 0.3s ease; font-size: 1rem;
-            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(139, 92, 246, 0.6);
-        }
-
-        /* NEW: Museum-Specific Styles */
-        .urgent-alert {
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.15));
-            border: 2px solid rgba(239, 68, 68, 0.5);
-            border-radius: 20px;
-            padding: 1.25rem 1.75rem;
-            margin-bottom: 2rem;
-            display: flex; align-items: center; gap: 1rem;
-            animation: pulse-urgent 2s ease-in-out infinite;
-        }
-        @keyframes pulse-urgent {
-            0%, 100% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(239, 68, 68, 0.6); }
-        }
-        
-        /* Exhibition Type Badges */
-        .type-badge {
-            padding: 0.375rem 0.875rem;
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-        .type-permanent { background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; }
-        .type-special { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
-        .type-touring { background: linear-gradient(135deg, #10b981, #059669); color: white; }
-        .type-unique { background: linear-gradient(135deg, #ec4899, #db2777); color: white; }
-        
-        /* D-Day Counter */
-        .dday-badge {
-            padding: 0.5rem 1rem;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 0.875rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .dday-urgent { 
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(220, 38, 38, 0.2));
-            border: 2px solid rgba(239, 68, 68, 0.5);
-            color: #fca5a5;
-            animation: pulse-dday 1.5s ease-in-out infinite;
-        }
-        .dday-warning { 
-            background: linear-gradient(135deg, rgba(251, 146, 60, 0.3), rgba(249, 115, 22, 0.2));
-            border: 2px solid rgba(251, 146, 60, 0.5);
-            color: #fdba74;
-        }
-        .dday-normal { 
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(22, 163, 74, 0.2));
-            border: 2px solid rgba(34, 197, 94, 0.5);
-            color: #86efac;
-        }
-        @keyframes pulse-dday {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        /* 5-Stage Progress */
-        .progress-stages {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 1rem 0;
-            position: relative;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .progress-stage {
+        
+        .nav-logo {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            position: relative;
-            z-index: 2;
         }
-        .progress-stage-icon {
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1rem;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.05);
-            transition: all 0.3s;
-        }
-        .progress-stage-icon.active {
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            border-color: #8b5cf6;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
-        }
-        .progress-stage-label {
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.5);
-            text-align: center;
-            white-space: nowrap;
-        }
-        .progress-stage-label.active { color: #8b5cf6; font-weight: 600; }
         
-        /* Budget Bar */
-        .budget-container {
-            margin: 1rem 0;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 1rem;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.5);
         }
-        .budget-bar {
-            width: 100%;
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        /* Content */
+        .content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Header */
+        .page-header {
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.125rem;
+        }
+        
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+        
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.875rem;
+        }
+        
+        /* Filters */
+        .filters {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .filter-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .filter-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            color: white;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        
+        .search-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            color: white;
+            font-size: 0.875rem;
+        }
+        
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8b5cf6, #ec4899);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+        
+        .project-card:hover::before {
+            opacity: 1;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .type-permanent { background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.1)); color: #93c5fd; }
+        .type-special { background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(219, 39, 119, 0.1)); color: #f9a8d4; }
+        .type-traveling { background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.1)); color: #fcd34d; }
+        .type-event { background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1)); color: #6ee7b7; }
+        
+        .dday-badge {
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        .dday-urgent { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+        .dday-warning { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+        .dday-safe { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+        
+        .card-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .card-meta {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .progress-info {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .progress-bar-container {
+            width: 120px;
             height: 8px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 100px;
             overflow: hidden;
-            margin: 0.5rem 0;
         }
-        .budget-fill {
+        
+        .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, #10b981, #059669);
+            background: linear-gradient(90deg, #8b5cf6, #ec4899);
             border-radius: 100px;
-            transition: width 0.6s ease;
-        }
-        .budget-fill.warning { background: linear-gradient(90deg, #f59e0b, #d97706); }
-        .budget-fill.danger { background: linear-gradient(90deg, #ef4444, #dc2626); }
-        
-        /* Status Badges (same as v2.0) */
-        .status-badge {
-            padding: 0.375rem 0.875rem;
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .status-draft {
-            background: linear-gradient(135deg, rgba(107, 114, 128, 0.3), rgba(107, 114, 128, 0.2));
-            color: #d1d5db;
-            border: 1px solid rgba(107, 114, 128, 0.4);
-        }
-        .status-active {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.2));
-            color: #34d399;
-            border: 1px solid rgba(16, 185, 129, 0.4);
-        }
-        .status-completed {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.2));
-            color: #60a5fa;
-            border: 1px solid rgba(59, 130, 246, 0.4);
+            transition: width 0.3s ease;
         }
         
-        /* Form Styles (same as v2.0) */
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .action-btn-primary {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        }
+        
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(12px);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
             z-index: 1000;
             align-items: center;
             justify-content: center;
         }
-        .modal.active { display: flex; }
+        
+        .modal.active {
+            display: flex;
+        }
+        
         .modal-content {
-            background: linear-gradient(135deg, #1a0f2e 0%, #0a0a0f 100%);
-            padding: 2.5rem;
+            background: rgba(10, 10, 15, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
-            max-width: 800px;
+            padding: 2rem;
+            max-width: 600px;
             width: 90%;
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
             max-height: 90vh;
             overflow-y: auto;
         }
-        .form-input, .form-textarea, .form-select {
-            width: 100%;
-            padding: 1rem 1.25rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .close-btn:hover {
             color: white;
-            font-size: 1rem;
-            margin-bottom: 1.25rem;
-            transition: all 0.3s ease;
         }
-        .form-input:focus, .form-textarea:focus, .form-select:focus {
-            outline: none;
-            border-color: #8b5cf6;
-            background: rgba(255, 255, 255, 0.08);
+        
+        .form-group {
+            margin-bottom: 1.5rem;
         }
-        .form-textarea { resize: vertical; min-height: 100px; }
-        .form-select { cursor: pointer; }
-        .form-select option { background: #1a0f2e; color: white; }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            color: white;
+            font-size: 0.875rem;
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
         .form-row {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
         }
-        @media (max-width: 768px) {
-            .form-row { grid-template-columns: 1fr; }
-        }
         
-        /* Search & Filter */
-        .search-box {
-            position: relative;
-            flex: 1;
-            max-width: 500px;
-        }
-        .search-box input {
-            width: 100%;
-            padding: 1rem 3.5rem 1rem 1.25rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
-            color: white;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        .search-box input:focus {
-            outline: none;
-            border-color: #8b5cf6;
-            background: rgba(255, 255, 255, 0.08);
-        }
-        .search-box i {
-            position: absolute;
-            right: 1.25rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.5);
-        }
-        .filter-chip {
-            padding: 0.5rem 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.875rem;
-        }
-        .filter-chip.active {
-            background: rgba(139, 92, 246, 0.3);
-            border-color: rgba(139, 92, 246, 0.5);
-        }
-        
-        /* Loading & Empty State */
-        .loading-skeleton {
-            background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s ease-in-out infinite;
-            border-radius: 16px;
-        }
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
+        /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 6rem 2rem;
+            padding: 4rem 2rem;
+            color: rgba(255, 255, 255, 0.6);
         }
+        
         .empty-icon {
-            font-size: 6rem;
-            margin-bottom: 2rem;
-            opacity: 0.3;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
         }
-    </style>
-    <script src="/static/js/tracker.js?v=3.0.0"></script>
-    
-    <script>
-        const CURRENT_VERSION = '3.0.0';
-        const storedVersion = localStorage.getItem('projects_version');
-        if (storedVersion !== CURRENT_VERSION) {
-            localStorage.setItem('projects_version', CURRENT_VERSION);
-            if (storedVersion && !window.location.search.includes('nocache')) {
-                window.location.href = window.location.pathname + '?nocache=' + Date.now();
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-bar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
             }
         }
-    </script>
+    </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
+    <!-- Navigation -->
     <nav class="nav-bar">
-        <a href="/landing.html" class="nav-logo">
-            <img src="/static/images/logo-neon-m.png" alt="MuseFlow">
-            <span style="font-size: 1.25rem; font-weight: 700;">MuseFlow</span>
+        <a href="/dashboard" class="nav-logo">
+            <i class="fas fa-palette" style="font-size: 1.5rem;"></i>
+            <span>MuseFlow</span>
         </a>
-        <div style="display: flex; gap: 1rem; align-items: center;">
-            <select id="lang-select" style="background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); padding: 0.5rem 1rem; border-radius: 8px; color: white; cursor: pointer; font-size: 0.875rem;">
-                <option value="ko">🇰🇷 한국어</option>
-                <option value="en">🇺🇸 English</option>
-                <option value="ja">🇯🇵 日本語</option>
-                <option value="zh-CN">🇨🇳 简体中文</option>
-                <option value="zh-TW">🇹🇼 繁體中文</option>
-            </select>
-            <a href="/dashboard.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
-                <i class="fas fa-chart-line"></i> <span data-i18n="dashboard">Dashboard</span>
+        <div class="nav-actions">
+            <a href="/dashboard" class="btn-secondary">
+                <i class="fas fa-home"></i>
+                대시보드
             </a>
-            <a href="/projects.html" style="color: rgba(139, 92, 246, 1); font-weight: 600; border-bottom: 2px solid rgba(139, 92, 246, 1);">
-                <i class="fas fa-folder"></i> <span data-i18n="projects">전시 관리</span>
-            </a>
-            <a href="/account.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
-                <i class="fas fa-user"></i> <span data-i18n="myAccount">내 계정</span>
-            </a>
-            <a href="/admin.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
-                <i class="fas fa-cog"></i> <span data-i18n="admin">관리자</span>
-            </a>
+            <button class="btn-primary" onclick="openCreateModal()">
+                <i class="fas fa-plus"></i>
+                새 전시 만들기
+            </button>
         </div>
     </nav>
-
-    <!-- Main Content -->
-    <div style="max-width: 1400px; margin: 0 auto; padding: 3rem 2rem;">
+    
+    <!-- Content -->
+    <div class="content">
         <!-- Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1.5rem;">
-            <div>
-                <h1 style="font-size: 2.75rem; font-weight: 800; margin-bottom: 0.5rem;" class="gradient-text" data-i18n="myProjects">전시 관리</h1>
-                <p style="color: rgba(255, 255, 255, 0.7); font-size: 1.1rem;" data-i18n="projectsSubtitle">전시 프로젝트를 직관적으로 관리하세요</p>
-            </div>
-            <button id="new-project-btn" class="btn-primary">
-                <i class="fas fa-plus"></i> <span data-i18n="newProject">새 전시</span>
-            </button>
+        <div class="page-header">
+            <h1 class="page-title">🎨 전시 관리</h1>
+            <p class="page-subtitle">모든 전시를 한눈에 관리하세요</p>
         </div>
-
-        <!-- Urgent Alerts (D-7 이내 전시만 표시) -->
-        <div id="urgent-alerts"></div>
-
-        <!-- Exhibition Type Stats -->
-        <div id="type-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
-            <!-- Stats will be dynamically inserted -->
-        </div>
-
-        <!-- Search and Filter -->
-        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 1.5rem; margin-bottom: 2.5rem;">
-            <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
-                <div class="search-box">
-                    <input type="text" id="search-input" placeholder="전시 검색..." data-i18n-placeholder="searchPlaceholder">
-                    <i class="fas fa-search"></i>
+        
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.1));">
+                    <i class="fas fa-layer-group" style="color: #a78bfa;"></i>
                 </div>
-                <select id="type-filter" class="filter-chip">
-                    <option value="all">전체 유형</option>
-                    <option value="permanent">상설전</option>
-                    <option value="special">특별전</option>
-                    <option value="traveling">순회전</option>
-                    <option value="event">기획전</option>
+                <div class="stat-value" id="stat-total">0</div>
+                <div class="stat-label">전체 전시</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(219, 39, 119, 0.1));">
+                    <i class="fas fa-fire" style="color: #f9a8d4;"></i>
+                </div>
+                <div class="stat-value" id="stat-active">0</div>
+                <div class="stat-label">진행 중</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.1));">
+                    <i class="fas fa-exclamation-triangle" style="color: #fcd34d;"></i>
+                </div>
+                <div class="stat-value" id="stat-urgent">0</div>
+                <div class="stat-label">긴급 (D-7)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1));">
+                    <i class="fas fa-check-circle" style="color: #6ee7b7;"></i>
+                </div>
+                <div class="stat-value" id="stat-completed">0</div>
+                <div class="stat-label">완료</div>
+            </div>
+        </div>
+        
+        <!-- Filters -->
+        <div class="filters">
+            <input type="text" class="search-input" placeholder="🔍 전시 검색..." id="search-input">
+            <div class="filter-group">
+                <label class="filter-label">전시 유형</label>
+                <select class="filter-select" id="type-filter">
+                    <option value="all">전체</option>
+                    <option value="permanent">🏛️ 상설전</option>
+                    <option value="special">✨ 특별전</option>
+                    <option value="traveling">🚌 순회전</option>
+                    <option value="event">🎭 기획전</option>
                 </select>
-                <select id="status-filter" class="filter-chip">
-                    <option value="all" data-i18n="statusAll">모든 상태</option>
-                    <option value="draft" data-i18n="statusDraft">초안</option>
-                    <option value="active" data-i18n="statusActive">활성</option>
-                    <option value="completed" data-i18n="statusCompleted">완료</option>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">진행 단계</label>
+                <select class="filter-select" id="phase-filter">
+                    <option value="all">전체</option>
+                    <option value="planning">💡 기획</option>
+                    <option value="preparation">🔧 준비</option>
+                    <option value="execution">🚀 진행</option>
+                    <option value="marketing">📢 홍보</option>
+                    <option value="completed">✅ 완료</option>
                 </select>
-                <select id="sort-select" class="filter-chip">
-                    <option value="dday">D-Day 순</option>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">정렬</label>
+                <select class="filter-select" id="sort-select">
                     <option value="updated">최근 수정순</option>
-                    <option value="created">생성일순</option>
-                    <option value="title">이름순</option>
+                    <option value="dday">D-Day 순</option>
+                    <option value="title">제목순</option>
                 </select>
             </div>
         </div>
-
-        <!-- Loading State -->
-        <div id="loading-state" style="display: none;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem;">
-                <div class="loading-skeleton" style="height: 500px;"></div>
-                <div class="loading-skeleton" style="height: 500px;"></div>
-                <div class="loading-skeleton" style="height: 500px;"></div>
-            </div>
-        </div>
-
+        
         <!-- Projects Grid -->
-        <div id="projects-grid" style="display: none; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1.5rem;">
-            <!-- Projects will be dynamically inserted here -->
-        </div>
-
-        <!-- Empty State -->
-        <div id="empty-state" class="empty-state" style="display: none;">
-            <div class="empty-icon">🎨</div>
-            <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem;" class="gradient-text" data-i18n="noProjects">전시가 없습니다</h2>
-            <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2.5rem; font-size: 1.1rem;" data-i18n="createFirstProject">첫 번째 전시 프로젝트를 만들어보세요</p>
-            <button id="empty-new-project-btn" class="btn-primary">
-                <i class="fas fa-plus"></i> <span data-i18n="createNewProject">새 전시 만들기</span>
-            </button>
+        <div class="projects-grid" id="projects-grid">
+            <!-- Projects will be rendered here -->
         </div>
     </div>
-
-    <!-- New/Edit Project Modal -->
-    <div id="project-modal" class="modal">
+    
+    <!-- Create/Edit Modal -->
+    <div class="modal" id="project-modal">
         <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                <h2 id="modal-title" style="font-size: 2rem; font-weight: 700;" class="gradient-text">새 전시 만들기</h2>
-                <button id="close-modal-btn" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.5rem; cursor: pointer;">
-                    <i class="fas fa-times"></i>
-                </button>
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">새 전시 만들기</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
-            
-            <form id="project-form">
-                <input type="hidden" id="project-id">
-                
-                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">전시 제목 *</label>
-                <input type="text" id="project-title" class="form-input" placeholder="예: 2024 봄 특별전" required>
-                
-                <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">전시 설명</label>
-                <textarea id="project-description" class="form-textarea" placeholder="전시에 대한 간단한 설명"></textarea>
-                
+            <form id="project-form" onsubmit="saveProject(event)">
+                <div class="form-group">
+                    <label class="form-label">전시 제목 *</label>
+                    <input type="text" class="form-input" id="title" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">설명</label>
+                    <textarea class="form-textarea" id="description"></textarea>
+                </div>
                 <div class="form-row">
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">전시 유형 *</label>
-                        <select id="project-type" class="form-select" required>
+                    <div class="form-group">
+                        <label class="form-label">전시 유형 *</label>
+                        <select class="form-select" id="type" required>
                             <option value="permanent">🏛️ 상설전</option>
                             <option value="special">✨ 특별전</option>
                             <option value="traveling">🚌 순회전</option>
                             <option value="event">🎭 기획전</option>
                         </select>
                     </div>
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">전시 상태</label>
-                        <select id="project-status" class="form-select">
-                            <option value="draft">초안</option>
-                            <option value="active">활성</option>
-                            <option value="completed">완료</option>
+                    <div class="form-group">
+                        <label class="form-label">진행 단계 *</label>
+                        <select class="form-select" id="phase" required>
+                            <option value="planning">💡 기획</option>
+                            <option value="preparation">🔧 준비</option>
+                            <option value="execution">🚀 진행</option>
+                            <option value="marketing">📢 홍보</option>
+                            <option value="completed">✅ 완료</option>
                         </select>
                     </div>
                 </div>
-                
                 <div class="form-row">
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">시작일</label>
-                        <input type="date" id="project-start-date" class="form-input">
+                    <div class="form-group">
+                        <label class="form-label">시작일</label>
+                        <input type="date" class="form-input" id="start_date">
                     </div>
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">종료일</label>
-                        <input type="date" id="project-end-date" class="form-input">
+                    <div class="form-group">
+                        <label class="form-label">종료일</label>
+                        <input type="date" class="form-input" id="end_date">
                     </div>
                 </div>
-                
                 <div class="form-row">
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">진행 단계</label>
-                        <select id="project-phase" class="form-select">
-                            <option value="planning">기획</option>
-                            <option value="preparation">준비</option>
-                            <option value="execution">진행</option>
-                            <option value="marketing">홍보</option>
-                            <option value="completed">완료</option>
-                        </select>
+                    <div class="form-group">
+                        <label class="form-label">장소</label>
+                        <input type="text" class="form-input" id="location">
                     </div>
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">장소</label>
-                        <input type="text" id="project-location" class="form-input" placeholder="예: 1층 대전시실">
+                    <div class="form-group">
+                        <label class="form-label">큐레이터</label>
+                        <input type="text" class="form-input" id="curator">
                     </div>
                 </div>
-                
                 <div class="form-row">
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">담당 학예사</label>
-                        <input type="text" id="project-curator" class="form-input" placeholder="예: 홍길동">
+                    <div class="form-group">
+                        <label class="form-label">총 예산 (만원)</label>
+                        <input type="number" class="form-input" id="budget_total" min="0">
                     </div>
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">작품 수</label>
-                        <input type="number" id="project-artwork-count" class="form-input" placeholder="0" min="0">
+                    <div class="form-group">
+                        <label class="form-label">사용 예산 (만원)</label>
+                        <input type="number" class="form-input" id="budget_used" min="0">
                     </div>
                 </div>
-                
-                <div class="form-row">
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">총 예산 (만원)</label>
-                        <input type="number" id="project-budget-total" class="form-input" placeholder="0" min="0" step="0.01">
-                    </div>
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.9); font-weight: 600;">사용 예산 (만원)</label>
-                        <input type="number" id="project-budget-used" class="form-input" placeholder="0" min="0" step="0.01">
-                    </div>
+                <div class="form-group">
+                    <label class="form-label">작품 수</label>
+                    <input type="number" class="form-input" id="artwork_count" min="0">
                 </div>
-                
                 <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                    <button type="submit" class="btn-primary" style="flex: 1; padding: 1rem 1.75rem;">
-                        <i class="fas fa-check"></i> <span id="submit-btn-text">생성</span>
-                    </button>
-                    <button type="button" id="cancel-modal-btn" style="flex: 1; padding: 1rem 1.75rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; color: white; cursor: pointer; font-weight: 600;">
-                        취소
-                    </button>
+                    <button type="button" class="btn-secondary" style="flex: 1;" onclick="closeModal()">취소</button>
+                    <button type="submit" class="btn-primary" style="flex: 1;">저장</button>
                 </div>
             </form>
         </div>
     </div>
-
+    
     <script>
-        // i18n translations
-        const translations = {
-            ko: {
-                myAccount: '내 계정',
-                dashboard: 'Dashboard',
-                myProjects: '전시 관리',
-                projectsSubtitle: '전시 프로젝트를 직관적으로 관리하세요',
-                newProject: '새 전시',
-                searchPlaceholder: '전시 검색...',
-                statusAll: '모든 상태',
-                statusDraft: '초안',
-                statusActive: '활성',
-                statusCompleted: '완료',
-                noProjects: '전시가 없습니다',
-                createFirstProject: '첫 번째 전시 프로젝트를 만들어보세요',
-                createNewProject: '새 전시 만들기',
-                editProject: '전시 편집',
-                edit: '편집',
-                delete: '삭제',
-                deleteConfirm: '정말로 이 전시를 삭제하시겠습니까?',
-                projectDeleted: '전시가 삭제되었습니다.',
-                deleteFailed: '전시 삭제에 실패했습니다.',
-                noDescription: '설명이 없습니다.',
-                today: '오늘',
-                yesterday: '어제',
-                daysAgo: '일 전',
-                totalProjects: '전체 전시',
-                activeCount: '활성'
-            },
-            en: {
-                myAccount: 'My Account',
-                dashboard: 'Dashboard',
-                myProjects: 'Exhibition Management',
-                projectsSubtitle: 'Manage your exhibitions intuitively',
-                newProject: 'New Exhibition',
-                searchPlaceholder: 'Search exhibitions...',
-                statusAll: 'All Status',
-                statusDraft: 'Draft',
-                statusActive: 'Active',
-                statusCompleted: 'Completed',
-                noProjects: 'No Exhibitions',
-                createFirstProject: 'Create your first exhibition project',
-                createNewProject: 'Create New Exhibition',
-                editProject: 'Edit Exhibition',
-                edit: 'Edit',
-                delete: 'Delete',
-                deleteConfirm: 'Are you sure you want to delete this exhibition?',
-                projectDeleted: 'Exhibition deleted successfully.',
-                deleteFailed: 'Failed to delete exhibition.',
-                noDescription: 'No description.',
-                today: 'Today',
-                yesterday: 'Yesterday',
-                daysAgo: ' days ago',
-                totalProjects: 'Total Exhibitions',
-                activeCount: 'Active'
-            }
-        };
-
-        let currentLang = localStorage.getItem('museflow_language') || 'ko';
+        // Configuration
+        const API_BASE_URL = window.location.origin;
+        const token = localStorage.getItem('museflow_token');
+        
         let allProjects = [];
-
-        // DOM elements
-        const projectsGrid = document.getElementById('projects-grid');
-        const loadingState = document.getElementById('loading-state');
-        const emptyState = document.getElementById('empty-state');
-        const searchInput = document.getElementById('search-input');
-        const typeFilter = document.getElementById('type-filter');
-        const statusFilter = document.getElementById('status-filter');
-        const sortSelect = document.getElementById('sort-select');
-        const projectModal = document.getElementById('project-modal');
-        const projectForm = document.getElementById('project-form');
-        const token = localStorage.getItem('authToken');
-
+        let editingProjectId = null;
+        
         // Check authentication
         if (!token) {
-            window.location.href = '/login.html';
+            window.location.href = '/login';
         }
-
-        // Update language
-        function updateLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('museflow_language', lang);
-            document.getElementById('html-root').lang = lang;
-            const t = translations[lang] || translations['ko'];
-            
-            document.querySelectorAll('[data-i18n]').forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                if (t[key]) element.textContent = t[key];
-            });
-
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
-                const key = element.getAttribute('data-i18n-placeholder');
-                if (t[key]) element.placeholder = t[key];
-            });
-
-            const langSelect = document.getElementById('lang-select');
-            if (langSelect) langSelect.value = lang;
-
-            if (allProjects.length > 0) {
-                renderTypeStats();
-                filterProjects();
-            }
-        }
-
-        // Language selector
-        document.addEventListener('DOMContentLoaded', () => {
-            updateLanguage(currentLang);
-            const langSelect = document.getElementById('lang-select');
-            if (langSelect) {
-                langSelect.addEventListener('change', (e) => updateLanguage(e.target.value));
-            }
-        });
-
+        
+        // Type & Phase Config
+        const typeConfig = {
+            permanent: { label: '상설전', icon: '🏛️', class: 'type-permanent' },
+            special: { label: '특별전', icon: '✨', class: 'type-special' },
+            traveling: { label: '순회전', icon: '🚌', class: 'type-traveling' },
+            event: { label: '기획전', icon: '🎭', class: 'type-event' }
+        };
+        
+        const phaseConfig = {
+            planning: { label: '기획', icon: '💡', progress: 20 },
+            preparation: { label: '준비', icon: '🔧', progress: 40 },
+            execution: { label: '진행', icon: '🚀', progress: 60 },
+            marketing: { label: '홍보', icon: '📢', progress: 80 },
+            completed: { label: '완료', icon: '✅', progress: 100 }
+        };
+        
         // Calculate D-Day
-        function calculateDDay(endDate) {
-            if (!endDate) return null;
-            const now = new Date();
-            const end = new Date(endDate);
-            const diff = Math.ceil((end - now) / (1000 * 60 * 60 * 24));
-            return diff;
+        function calculateDDay(dateString) {
+            if (!dateString) return null;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const targetDate = new Date(dateString);
+            targetDate.setHours(0, 0, 0, 0);
+            const diffTime = targetDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays;
         }
-
-        // Render D-Day badge
-        function renderDDayBadge(dday) {
-            if (dday === null) return '';
-            
-            let badgeClass = 'dday-normal';
-            let icon = '📅';
-            
-            if (dday < 0) {
-                return `<span class="dday-badge dday-normal">
-                    <i class="fas fa-check-circle"></i> 종료됨
-                </span>`;
-            } else if (dday === 0) {
-                badgeClass = 'dday-urgent';
-                icon = '🚨';
-                return `<span class="dday-badge ${badgeClass}">
-                    ${icon} D-Day
-                </span>`;
-            } else if (dday <= 7) {
-                badgeClass = 'dday-urgent';
-                icon = '🚨';
-            } else if (dday <= 14) {
-                badgeClass = 'dday-warning';
-                icon = '⚠️';
-            }
-            
-            return `<span class="dday-badge ${badgeClass}">
-                ${icon} D-${dday}
-            </span>`;
-        }
-
-        // Render urgent alerts
-        function renderUrgentAlerts() {
-            const urgentProjects = allProjects.filter(p => {
-                const dday = calculateDDay(p.end_date);
-                return dday !== null && dday >= 0 && dday <= 7 && p.status === 'active';
-            }).sort((a, b) => calculateDDay(a.end_date) - calculateDDay(b.end_date));
-
-            const container = document.getElementById('urgent-alerts');
-            if (urgentProjects.length === 0) {
-                container.innerHTML = '';
-                return;
-            }
-
-            container.innerHTML = urgentProjects.map(p => {
-                const dday = calculateDDay(p.end_date);
-                return `
-                    <div class="urgent-alert">
-                        <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #fca5a5;"></i>
-                        <div style="flex: 1;">
-                            <div style="font-weight: 700; font-size: 1.125rem; margin-bottom: 0.25rem;">
-                                ${p.title} ${dday === 0 ? '<span style="color: #fca5a5;">D-Day</span>' : `<span style="color: #fca5a5;">D-${dday}</span>`}
-                            </div>
-                            <div style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem;">
-                                종료일: ${new Date(p.end_date).toLocaleDateString('ko-KR')} | 담당: ${p.curator || '미지정'}
-                            </div>
-                        </div>
-                        <button onclick="viewProject(${p.id})" class="btn-primary" style="padding: 0.75rem 1.5rem;">
-                            <i class="fas fa-eye"></i> 보기
-                        </button>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Render type statistics
-        function renderTypeStats() {
-            const stats = {
-                permanent: allProjects.filter(p => p.type === 'permanent').length,
-                special: allProjects.filter(p => p.type === 'special').length,
-                touring: allProjects.filter(p => p.type === 'traveling').length,
-                unique: allProjects.filter(p => p.type === 'event').length
-            };
-
-            const typeConfig = {
-                permanent: { label: '상설전', icon: '🏛️', gradient: 'linear-gradient(135deg, #6366f1, #4f46e5)' },
-                special: { label: '특별전', icon: '✨', gradient: 'linear-gradient(135deg, #f59e0b, #d97706)' },
-                touring: { label: '순회전', icon: '🚌', gradient: 'linear-gradient(135deg, #10b981, #059669)' },
-                unique: { label: '기획전', icon: '🎭', gradient: 'linear-gradient(135deg, #ec4899, #db2777)' }
-            };
-
-            document.getElementById('type-stats').innerHTML = Object.keys(stats).map(key => {
-                const config = typeConfig[key];
-                return `
-                    <div class="glass-card" style="padding: 1.5rem; cursor: pointer;" onclick="filterByType('${key}')">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div style="width: 56px; height: 56px; background: ${config.gradient}; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
-                                ${config.icon}
-                            </div>
-                            <div>
-                                <div style="font-size: 2rem; font-weight: 800; color: white;">${stats[key]}</div>
-                                <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;">${config.label}</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Filter by type
-        window.filterByType = function(type) {
-            typeFilter.value = type;
-            filterProjects();
-        };
-
-        // Render progress stages
-        function renderProgressStages(phase) {
-            const stages = [
-                { id: 'planning', icon: '📋', label: '기획' },
-                { id: 'preparation', icon: '🔧', label: '준비' },
-                { id: 'execution', icon: '🎨', label: '진행' },
-                { id: 'marketing', icon: '📢', label: '홍보' },
-                { id: 'completed', icon: '✅', label: '완료' }
-            ];
-            
-            const currentIndex = stages.findIndex(s => s.id === phase);
-            
-            return `
-                <div class="progress-stages">
-                    ${stages.map((stage, index) => `
-                        <div class="progress-stage">
-                            <div class="progress-stage-icon ${index <= currentIndex ? 'active' : ''}">
-                                ${stage.icon}
-                            </div>
-                            <div class="progress-stage-label ${index <= currentIndex ? 'active' : ''}">
-                                ${stage.label}
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        // Render budget bar
-        function renderBudgetBar(total, used) {
-            if (!total || total <= 0) return '';
-            
-            const percentage = Math.min((used / total) * 100, 100);
-            let fillClass = '';
-            if (percentage >= 90) fillClass = 'danger';
-            else if (percentage >= 80) fillClass = 'warning';
-            
-            return `
-                <div class="budget-container">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                        <span style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">
-                            <i class="fas fa-won-sign"></i> 예산 사용률
-                        </span>
-                        <span style="font-weight: 700; color: ${percentage >= 90 ? '#ef4444' : percentage >= 80 ? '#f59e0b' : '#10b981'};">
-                            ${percentage.toFixed(1)}%
-                        </span>
-                    </div>
-                    <div class="budget-bar">
-                        <div class="budget-fill ${fillClass}" style="width: ${percentage}%;"></div>
-                    </div>
-                    <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.5rem;">
-                        ${used.toLocaleString()} / ${total.toLocaleString()} 만원
-                    </div>
-                </div>
-            `;
-        }
-
-        // Format date
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            const now = new Date();
-            const diff = now - date;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const t = translations[currentLang] || translations['ko'];
-            
-            if (days === 0) return t.today;
-            if (days === 1) return t.yesterday;
-            if (days < 7) return `${days}${t.daysAgo}`;
-            
-            return date.toLocaleDateString(currentLang === 'ko' ? 'ko-KR' : 'en-US', {
-                year: 'numeric',
-                month: currentLang === 'ko' ? 'long' : 'short',
-                day: 'numeric'
-            });
-        }
-
-        // Render projects
-        function renderProjects(projects) {
-            if (projects.length === 0) {
-                projectsGrid.style.display = 'none';
-                emptyState.style.display = 'block';
-                return;
-            }
-
-            emptyState.style.display = 'none';
-            projectsGrid.style.display = 'grid';
-            projectsGrid.innerHTML = '';
-
-            const t = translations[currentLang] || translations['ko'];
-            const statusConfig = {
-                draft: { label: t.statusDraft, class: 'status-draft' },
-                active: { label: t.statusActive, class: 'status-active' },
-                completed: { label: t.statusCompleted, class: 'status-completed' }
-            };
-            
-            const typeConfig = {
-                permanent: { label: '상설전', icon: '🏛️', class: 'type-permanent' },
-                special: { label: '특별전', icon: '✨', class: 'type-special' },
-                touring: { label: '순회전', icon: '🚌', class: 'type-touring' },
-                unique: { label: '기획전', icon: '🎭', class: 'type-unique' }
-            };
-
-            projects.forEach(project => {
-                const status = statusConfig[project.status] || statusConfig.draft;
-                const type = typeConfig[project.type || 'permanent'];
-                const dday = calculateDDay(project.end_date);
-                const phase = project.phase || 'planning';
-                
-                const card = document.createElement('div');
-                card.className = 'glass-card project-card';
-                card.style.padding = '1.5rem';
-                card.style.cursor = 'pointer';
-                card.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
-                        <div style="display: flex; align-items: center; gap: 0.75rem;">
-                            <span class="type-badge ${type.class}">${type.icon} ${type.label}</span>
-                            ${renderDDayBadge(dday)}
-                        </div>
-                        <span class="status-badge ${status.class}">${status.label}</span>
-                    </div>
-                    
-                    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem; line-height: 1.4;">${project.title}</h3>
-                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 1rem; min-height: 2.5rem;">
-                        ${project.description || t.noDescription}
-                    </p>
-                    
-                    ${renderProgressStages(phase)}
-                    
-                    ${renderBudgetBar(project.budget_total, project.budget_used)}
-                    
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin: 1rem 0; font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">
-                        ${project.start_date ? `<div><i class="fas fa-calendar-alt"></i> ${new Date(project.start_date).toLocaleDateString('ko-KR')}</div>` : '<div></div>'}
-                        ${project.end_date ? `<div><i class="fas fa-calendar-check"></i> ${new Date(project.end_date).toLocaleDateString('ko-KR')}</div>` : '<div></div>'}
-                        ${project.location ? `<div><i class="fas fa-map-marker-alt"></i> ${project.location}</div>` : '<div></div>'}
-                        ${project.curator ? `<div><i class="fas fa-user-tie"></i> ${project.curator}</div>` : '<div></div>'}
-                        ${project.artwork_count ? `<div><i class="fas fa-palette"></i> 작품 ${project.artwork_count}점</div>` : '<div></div>'}
-                        <div><i class="fas fa-clock"></i> ${formatDate(project.updated_at)}</div>
-                    </div>
-                    
-                    <div style="display: flex; gap: 0.75rem; margin-top: 1.25rem;">
-                        <button class="edit-btn" data-project-id="${project.id}" style="flex: 1; padding: 0.75rem; font-size: 0.875rem; font-weight: 600; background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(236, 72, 153, 0.25)); border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 12px; color: white; cursor: pointer;">
-                            <i class="fas fa-edit"></i> ${t.edit}
-                        </button>
-                        <button class="delete-btn" data-project-id="${project.id}" style="padding: 0.75rem; font-size: 0.875rem; font-weight: 600; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 12px; color: #ef4444; cursor: pointer;">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                
-                // Card click - navigate to canvas
-                card.addEventListener('click', (e) => {
-                    if (e.target.closest('.edit-btn') || e.target.closest('.delete-btn')) return;
-                    viewProject(project.id);
-                });
-                
-                // Edit button
-                card.querySelector('.edit-btn').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    openEditModal(project);
-                });
-                
-                // Delete button
-                card.querySelector('.delete-btn').addEventListener('click', async (e) => {
-                    e.stopPropagation();
-                    await deleteProject(project.id);
-                });
-                
-                projectsGrid.appendChild(card);
-            });
-        }
-
-        // View project
-        window.viewProject = function(projectId) {
-            const project = allProjects.find(p => p.id === projectId);
-            if (!project) return;
-            
-            const projectData = {
-                id: project.id,
-                name: project.title,
-                description: project.description,
-                status: project.status,
-                type: project.type,
-                start_date: project.start_date,
-                end_date: project.end_date,
-                phase: project.phase,
-                location: project.location,
-                curator: project.curator,
-                budget_total: project.budget_total,
-                budget_used: project.budget_used,
-                artwork_count: project.artwork_count
-            };
-            sessionStorage.setItem('museflow_current_project', JSON.stringify(projectData));
-            window.location.href = `/canvas.html?project=${project.id}&t=${Date.now()}`;
-        };
-
+        
         // Load projects
         async function loadProjects() {
             try {
-                loadingState.style.display = 'block';
-                projectsGrid.style.display = 'none';
-                emptyState.style.display = 'none';
-
-                const response = await fetch(API_BASE_URL + '/api/projects', {
+                const response = await fetch(`${API_BASE_URL}/api/projects`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-
+                
                 if (!response.ok) throw new Error('Failed to load projects');
-
+                
                 const data = await response.json();
                 allProjects = data.projects;
-
-                loadingState.style.display = 'none';
-                renderUrgentAlerts();
-                renderTypeStats();
-                filterProjects();
-
+                
+                updateStats();
+                renderProjects();
+                
             } catch (error) {
                 console.error('Error loading projects:', error);
-                loadingState.style.display = 'none';
-                emptyState.style.display = 'block';
+                alert('프로젝트를 불러올 수 없습니다.');
             }
         }
-
-        // Filter and sort projects
-        function filterProjects() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const typeValue = typeFilter.value;
-            const statusValue = statusFilter.value;
-            const sortValue = sortSelect.value;
-
+        
+        // Update stats
+        function updateStats() {
+            const total = allProjects.length;
+            const active = allProjects.filter(p => p.status === 'active').length;
+            const urgent = allProjects.filter(p => {
+                const dday = calculateDDay(p.end_date);
+                return dday !== null && dday >= 0 && dday <= 7;
+            }).length;
+            const completed = allProjects.filter(p => p.phase === 'completed').length;
+            
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-active').textContent = active;
+            document.getElementById('stat-urgent').textContent = urgent;
+            document.getElementById('stat-completed').textContent = completed;
+        }
+        
+        // Render projects
+        function renderProjects() {
+            const search = document.getElementById('search-input').value.toLowerCase();
+            const typeFilter = document.getElementById('type-filter').value;
+            const phaseFilter = document.getElementById('phase-filter').value;
+            const sortBy = document.getElementById('sort-select').value;
+            
             let filtered = allProjects.filter(p => {
-                const matchesSearch = !searchTerm || 
-                    p.title.toLowerCase().includes(searchTerm) ||
-                    (p.description && p.description.toLowerCase().includes(searchTerm)) ||
-                    (p.curator && p.curator.toLowerCase().includes(searchTerm)) ||
-                    (p.location && p.location.toLowerCase().includes(searchTerm));
-                const matchesType = typeValue === 'all' || p.type === typeValue;
-                const matchesStatus = statusValue === 'all' || p.status === statusValue;
-                return matchesSearch && matchesType && matchesStatus;
+                const matchSearch = !search || p.title.toLowerCase().includes(search) || 
+                                   (p.description && p.description.toLowerCase().includes(search));
+                const matchType = typeFilter === 'all' || p.type === typeFilter;
+                const matchPhase = phaseFilter === 'all' || p.phase === phaseFilter;
+                return matchSearch && matchType && matchPhase;
             });
-
+            
             // Sort
             filtered.sort((a, b) => {
-                if (sortValue === 'title') return a.title.localeCompare(b.title);
-                if (sortValue === 'created') return new Date(b.created_at) - new Date(a.created_at);
-                if (sortValue === 'dday') {
-                    const ddayA = calculateDDay(a.end_date);
-                    const ddayB = calculateDDay(b.end_date);
-                    if (ddayA === null) return 1;
-                    if (ddayB === null) return -1;
+                if (sortBy === 'dday') {
+                    const ddayA = calculateDDay(a.end_date) ?? 9999;
+                    const ddayB = calculateDDay(b.end_date) ?? 9999;
                     return ddayA - ddayB;
+                } else if (sortBy === 'title') {
+                    return a.title.localeCompare(b.title);
+                } else {
+                    return new Date(b.updated_at) - new Date(a.updated_at);
                 }
-                return new Date(b.updated_at) - new Date(a.updated_at);
             });
-
-            renderProjects(filtered);
+            
+            const grid = document.getElementById('projects-grid');
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🎨</div>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">전시가 없습니다</h3>
+                        <p>새 전시를 만들어보세요!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = filtered.map(project => {
+                const type = typeConfig[project.type] || typeConfig.permanent;
+                const phase = phaseConfig[project.phase] || phaseConfig.planning;
+                const dday = calculateDDay(project.end_date);
+                
+                let ddayBadge = '';
+                if (dday !== null && dday >= 0) {
+                    let ddayClass = 'dday-safe';
+                    if (dday <= 7) ddayClass = 'dday-urgent';
+                    else if (dday <= 14) ddayClass = 'dday-warning';
+                    ddayBadge = `<span class="dday-badge ${ddayClass}">D-${dday}</span>`;
+                }
+                
+                return `
+                    <div class="project-card" onclick="openCanvas(${project.id})">
+                        <div class="card-header">
+                            <span class="type-badge ${type.class}">${type.icon} ${type.label}</span>
+                            ${ddayBadge}
+                        </div>
+                        <h3 class="card-title">${project.title}</h3>
+                        <p class="card-description">${project.description || '설명이 없습니다.'}</p>
+                        <div class="card-meta">
+                            ${project.location ? `<div class="meta-item"><i class="fas fa-map-marker-alt"></i> ${project.location}</div>` : '<div></div>'}
+                            ${project.curator ? `<div class="meta-item"><i class="fas fa-user-tie"></i> ${project.curator}</div>` : '<div></div>'}
+                            ${project.artwork_count ? `<div class="meta-item"><i class="fas fa-palette"></i> ${project.artwork_count}점</div>` : '<div></div>'}
+                            ${project.start_date ? `<div class="meta-item"><i class="fas fa-calendar"></i> ${project.start_date}</div>` : '<div></div>'}
+                        </div>
+                        <div class="card-footer">
+                            <div class="progress-info">${phase.icon} ${phase.label} (${phase.progress}%)</div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="width: ${phase.progress}%;"></div>
+                            </div>
+                        </div>
+                        <div class="card-actions" onclick="event.stopPropagation()">
+                            <button class="action-btn action-btn-primary" onclick="openCanvas(${project.id})">
+                                <i class="fas fa-paint-brush"></i> 캔버스
+                            </button>
+                            <button class="action-btn" onclick="editProject(${project.id})">
+                                <i class="fas fa-edit"></i> 편집
+                            </button>
+                            <button class="action-btn" onclick="deleteProject(${project.id})">
+                                <i class="fas fa-trash"></i> 삭제
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
-
-        // Event listeners
-        searchInput.addEventListener('input', filterProjects);
-        typeFilter.addEventListener('change', filterProjects);
-        statusFilter.addEventListener('change', filterProjects);
-        sortSelect.addEventListener('change', filterProjects);
-
-        // Modal controls
-        function openModal() {
-            const t = translations[currentLang] || translations['ko'];
-            document.getElementById('modal-title').textContent = t.createNewProject;
-            document.getElementById('submit-btn-text').textContent = '생성';
-            document.getElementById('project-id').value = '';
-            projectForm.reset();
-            projectModal.classList.add('active');
-        }
-
-        function openEditModal(project) {
-            const t = translations[currentLang] || translations['ko'];
-            document.getElementById('modal-title').textContent = t.editProject;
-            document.getElementById('submit-btn-text').textContent = '저장';
-            document.getElementById('project-id').value = project.id;
-            document.getElementById('project-title').value = project.title;
-            document.getElementById('project-description').value = project.description || '';
-            document.getElementById('project-status').value = project.status || 'draft';
-            document.getElementById('project-type').value = project.type || 'permanent';
-            document.getElementById('project-start-date').value = project.start_date || '';
-            document.getElementById('project-end-date').value = project.end_date || '';
-            document.getElementById('project-phase').value = project.phase || 'planning';
-            document.getElementById('project-location').value = project.location || '';
-            document.getElementById('project-curator').value = project.curator || '';
-            document.getElementById('project-artwork-count').value = project.artwork_count || '';
-            document.getElementById('project-budget-total').value = project.budget_total || '';
-            document.getElementById('project-budget-used').value = project.budget_used || '';
-            projectModal.classList.add('active');
-        }
-
-        function closeModal() {
-            projectModal.classList.remove('active');
-            projectForm.reset();
-        }
-
-        document.getElementById('new-project-btn').addEventListener('click', openModal);
-        document.getElementById('empty-new-project-btn').addEventListener('click', openModal);
-        document.getElementById('cancel-modal-btn').addEventListener('click', closeModal);
-        document.getElementById('close-modal-btn').addEventListener('click', closeModal);
         
-        projectModal.addEventListener('click', (e) => {
-            if (e.target === projectModal) closeModal();
-        });
-
-        // Create/Update project
-        projectForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const t = translations[currentLang] || translations['ko'];
-
-            const projectId = document.getElementById('project-id').value;
-            const projectData = {
-                title: document.getElementById('project-title').value.trim(),
-                description: document.getElementById('project-description').value.trim(),
-                status: document.getElementById('project-status').value,
-                type: document.getElementById('project-type').value,
-                start_date: document.getElementById('project-start-date').value || null,
-                end_date: document.getElementById('project-end-date').value || null,
-                phase: document.getElementById('project-phase').value,
-                location: document.getElementById('project-location').value.trim() || null,
-                curator: document.getElementById('project-curator').value.trim() || null,
-                artwork_count: parseInt(document.getElementById('project-artwork-count').value) || null,
-                budget_total: parseFloat(document.getElementById('project-budget-total').value) || null,
-                budget_used: parseFloat(document.getElementById('project-budget-used').value) || null
+        // Open canvas
+        function openCanvas(projectId) {
+            window.location.href = `/canvas?project=${projectId}`;
+        }
+        
+        // Modal functions
+        function openCreateModal() {
+            editingProjectId = null;
+            document.getElementById('modal-title').textContent = '새 전시 만들기';
+            document.getElementById('project-form').reset();
+            document.getElementById('project-modal').classList.add('active');
+        }
+        
+        function editProject(projectId) {
+            const project = allProjects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            editingProjectId = projectId;
+            document.getElementById('modal-title').textContent = '전시 편집';
+            
+            document.getElementById('title').value = project.title || '';
+            document.getElementById('description').value = project.description || '';
+            document.getElementById('type').value = project.type || 'special';
+            document.getElementById('phase').value = project.phase || 'planning';
+            document.getElementById('start_date').value = project.start_date || '';
+            document.getElementById('end_date').value = project.end_date || '';
+            document.getElementById('location').value = project.location || '';
+            document.getElementById('curator').value = project.curator || '';
+            document.getElementById('budget_total').value = project.budget_total || '';
+            document.getElementById('budget_used').value = project.budget_used || '';
+            document.getElementById('artwork_count').value = project.artwork_count || '';
+            
+            document.getElementById('project-modal').classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('project-modal').classList.remove('active');
+        }
+        
+        // Save project
+        async function saveProject(event) {
+            event.preventDefault();
+            
+            const formData = {
+                title: document.getElementById('title').value,
+                description: document.getElementById('description').value,
+                type: document.getElementById('type').value,
+                phase: document.getElementById('phase').value,
+                start_date: document.getElementById('start_date').value || null,
+                end_date: document.getElementById('end_date').value || null,
+                location: document.getElementById('location').value || null,
+                curator: document.getElementById('curator').value || null,
+                budget_total: parseInt(document.getElementById('budget_total').value) || 0,
+                budget_used: parseInt(document.getElementById('budget_used').value) || 0,
+                artwork_count: parseInt(document.getElementById('artwork_count').value) || 0,
+                status: 'active'
             };
-
+            
             try {
-                const url = projectId 
-                    ? `${API_BASE_URL}/api/projects/${projectId}`
+                const url = editingProjectId 
+                    ? `${API_BASE_URL}/api/projects/${editingProjectId}`
                     : `${API_BASE_URL}/api/projects`;
                 
-                const method = projectId ? 'PUT' : 'POST';
+                const method = editingProjectId ? 'PUT' : 'POST';
                 
                 const response = await fetch(url, {
                     method,
@@ -1112,61 +917,46 @@
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(projectData)
+                    body: JSON.stringify(formData)
                 });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    closeModal();
-                    
-                    if (!projectId) {
-                        // New project - redirect to canvas
-                        const newProjectData = {
-                            id: data.projectId || data.id,
-                            name: projectData.title,
-                            ...projectData
-                        };
-                        sessionStorage.setItem('museflow_current_project', JSON.stringify(newProjectData));
-                        window.location.href = `/canvas.html?project=${newProjectData.id}&t=${Date.now()}`;
-                    } else {
-                        // Update - reload projects
-                        await loadProjects();
-                    }
-                } else {
-                    alert(data.error || 'Failed to save project');
-                }
+                
+                if (!response.ok) throw new Error('Failed to save project');
+                
+                closeModal();
+                loadProjects();
+                
             } catch (error) {
                 console.error('Error saving project:', error);
-                alert('Server error occurred');
+                alert('프로젝트 저장에 실패했습니다.');
             }
-        });
-
+        }
+        
         // Delete project
-        window.deleteProject = async function(projectId) {
-            const t = translations[currentLang] || translations['ko'];
+        async function deleteProject(projectId) {
+            if (!confirm('정말로 이 전시를 삭제하시겠습니까?')) return;
             
-            if (!confirm(t.deleteConfirm)) return;
-
             try {
                 const response = await fetch(`${API_BASE_URL}/api/projects/${projectId}`, {
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-
-                if (response.ok) {
-                    alert(t.projectDeleted);
-                    await loadProjects();
-                } else {
-                    const data = await response.json();
-                    alert(data.error || t.deleteFailed);
-                }
+                
+                if (!response.ok) throw new Error('Failed to delete project');
+                
+                loadProjects();
+                
             } catch (error) {
                 console.error('Error deleting project:', error);
-                alert('Server error occurred');
+                alert('프로젝트 삭제에 실패했습니다.');
             }
-        };
-
+        }
+        
+        // Event listeners
+        document.getElementById('search-input').addEventListener('input', renderProjects);
+        document.getElementById('type-filter').addEventListener('change', renderProjects);
+        document.getElementById('phase-filter').addEventListener('change', renderProjects);
+        document.getElementById('sort-select').addEventListener('change', renderProjects);
+        
         // Initialize
         loadProjects();
     </script>
@@ -1175,4 +965,3 @@
     <script src="/static/js/components/mobile-nav.js"></script>
 </body>
 </html>
->
