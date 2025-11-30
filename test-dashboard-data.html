@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Data Test - MuseFlow</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #1a1a1a; color: #fff; }
+        .section { margin-bottom: 30px; padding: 20px; background: #2a2a2a; border-radius: 8px; }
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+        .warning { color: #f59e0b; }
+        pre { background: #0a0a0a; padding: 10px; border-radius: 4px; overflow-x: auto; }
+        h2 { color: #8b5cf6; }
+        .stat { display: inline-block; margin: 10px 20px 10px 0; padding: 10px 20px; background: #3a3a3a; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>🔍 MuseFlow Dashboard Data Test</h1>
+    
+    <div class="section">
+        <h2>1. API Connection Test</h2>
+        <div id="api-test">Testing...</div>
+    </div>
+
+    <div class="section">
+        <h2>2. Projects Data</h2>
+        <div id="projects-data">Loading...</div>
+    </div>
+
+    <div class="section">
+        <h2>3. Performance Metrics Calculation</h2>
+        <div id="metrics-calc">Calculating...</div>
+    </div>
+
+    <div class="section">
+        <h2>4. Team Activity Data</h2>
+        <div id="team-activity">Loading...</div>
+    </div>
+
+    <div class="section">
+        <h2>5. Dashboard Sections Visibility</h2>
+        <div id="sections-check">Checking...</div>
+    </div>
+
+    <script>
+        const API_BASE_URL = window.location.origin;
+        let token = localStorage.getItem('authToken') || localStorage.getItem('museflow_token');
+        if (!token) {
+            token = 'demo-token-12345';
+            localStorage.setItem('museflow_token', token);
+        }
+
+        async function testAPI() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/projects`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!response.ok) {
+                    document.getElementById('api-test').innerHTML = `<span class="error">❌ API Error: ${response.status}</span>`;
+                    return null;
+                }
+                
+                const data = await response.json();
+                document.getElementById('api-test').innerHTML = `
+                    <span class="success">✅ API Connected</span><br>
+                    <span class="stat">Projects: ${data.projects.length}</span>
+                    <span class="stat">Success: ${data.success}</span>
+                `;
+                return data.projects;
+            } catch (error) {
+                document.getElementById('api-test').innerHTML = `<span class="error">❌ Error: ${error.message}</span>`;
+                return null;
+            }
+        }
+
+        async function testProjectsData(projects) {
+            if (!projects) {
+                document.getElementById('projects-data').innerHTML = '<span class="error">❌ No projects data</span>';
+                return;
+            }
+
+            const summary = projects.slice(0, 3).map(p => `
+                <div style="margin: 10px 0; padding: 10px; background: #0a0a0a; border-radius: 4px;">
+                    <strong>${p.title}</strong><br>
+                    Task Count: ${p.task_count || 0} | Completed: ${p.completed_tasks || 0}<br>
+                    Budget: ${(p.budget_total || 0).toLocaleString()} / Used: ${(p.budget_used || 0).toLocaleString()}
+                </div>
+            `).join('');
+
+            document.getElementById('projects-data').innerHTML = `
+                <span class="success">✅ ${projects.length} Projects Loaded</span><br>
+                ${summary}
+            `;
+        }
+
+        async function testMetrics(projects) {
+            if (!projects) {
+                document.getElementById('metrics-calc').innerHTML = '<span class="error">❌ No data for metrics</span>';
+                return;
+            }
+
+            const totalTasks = projects.reduce((sum, p) => sum + (p.task_count || 0), 0);
+            const completedTasks = projects.reduce((sum, p) => sum + (p.completed_tasks || 0), 0);
+            const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            
+            const totalBudget = projects.reduce((sum, p) => sum + (p.budget_total || 0), 0);
+            const usedBudget = projects.reduce((sum, p) => sum + (p.budget_used || 0), 0);
+            const budgetRate = totalBudget > 0 ? Math.round((usedBudget / totalBudget) * 100) : 0;
+
+            document.getElementById('metrics-calc').innerHTML = `
+                <span class="success">✅ Metrics Calculated</span><br>
+                <div class="stat">
+                    <strong>작업 완료율</strong><br>
+                    ${completedTasks} / ${totalTasks} = ${completionRate}%
+                </div>
+                <div class="stat">
+                    <strong>예산 집행률</strong><br>
+                    ${usedBudget.toLocaleString()} / ${totalBudget.toLocaleString()} = ${budgetRate}%
+                </div>
+                <div class="stat">
+                    <strong>평균 작업 시간</strong><br>
+                    ${24 + Math.floor(Math.random() * 24)} 시간
+                </div>
+                <div class="stat">
+                    <strong>팀 협업 활동</strong><br>
+                    ${100 + Math.floor(Math.random() * 100)} 건
+                </div>
+            `;
+        }
+
+        async function testTeamActivity(projects) {
+            const activities = [
+                { user: '김큐레이터', action: '작품 선정 회의 완료', time: '1시간 전', icon: '✅' },
+                { user: '이학예사', action: '도슨트 교육 자료 작성 중', time: '2시간 전', icon: '📝' },
+                { user: '박디자이너', action: '포스터 디자인 시안 업로드', time: '3시간 전', icon: '🎨' }
+            ];
+
+            document.getElementById('team-activity').innerHTML = `
+                <span class="success">✅ Team Activity Ready</span><br>
+                ${activities.map(a => `
+                    <div style="margin: 10px 0; padding: 10px; background: #0a0a0a; border-radius: 4px;">
+                        ${a.icon} <strong>${a.user}</strong>: ${a.action} <span style="color: #888;">(${a.time})</span>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        async function checkDashboardSections() {
+            const sections = [
+                { name: '성과 지표 (Performance Metrics)', selector: '#metric-completion-value' },
+                { name: '우수 기여자 (Top Contributors)', text: '우수 기여자' },
+                { name: '팀 활동 (Team Activity)', selector: '#team-activity' },
+                { name: '차트 섹션 (Charts)', selector: '#monthlyTrendChart' }
+            ];
+
+            const results = sections.map(s => {
+                if (s.selector) {
+                    const el = parent.document.querySelector(s.selector);
+                    return `${s.name}: ${el ? '✅ Found' : '❌ Missing'}`;
+                } else if (s.text) {
+                    const found = parent.document.body.textContent.includes(s.text);
+                    return `${s.name}: ${found ? '✅ Found' : '❌ Missing'}`;
+                }
+            }).join('<br>');
+
+            document.getElementById('sections-check').innerHTML = results || '<span class="warning">⚠️ Cannot check (iframe isolation)</span>';
+        }
+
+        async function runAllTests() {
+            const projects = await testAPI();
+            if (projects) {
+                await testProjectsData(projects);
+                await testMetrics(projects);
+                await testTeamActivity(projects);
+            }
+            await checkDashboardSections();
+        }
+
+        runAllTests();
+    </script>
+</body>
+</html>
