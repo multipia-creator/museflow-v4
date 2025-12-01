@@ -22,6 +22,9 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.10/index.global.min.js"></script>
     
+    <!-- SheetJS for Excel Export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
     <script src="/static/js/tracker.js?v=4.0.0"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -3684,11 +3687,11 @@
                             </div>
                         </button>
 
-                        <button onclick="exportExcel()" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); border: none; padding: 1.25rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 1rem; transition: transform 0.2s; opacity: 0.6;" disabled onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        <button onclick="exportExcel()" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); border: none; padding: 1.25rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 1rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                             <i class="fas fa-file-excel" style="font-size: 1.5rem;"></i>
                             <div style="text-align: left;">
-                                <div style="font-size: 1.1rem;">Excel 형식 (곧 제공)</div>
-                                <div style="font-size: 0.85rem; opacity: 0.8;">상세 리포트 포함</div>
+                                <div style="font-size: 1.1rem;">Excel 형식</div>
+                                <div style="font-size: 0.85rem; opacity: 0.8;">상세 리포트 포함 (.xlsx)</div>
                             </div>
                         </button>
                     </div>
