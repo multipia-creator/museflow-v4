@@ -944,43 +944,70 @@
                     <i class="fas fa-folder-open" style="color: #06b6d4;"></i>
                     프로젝트 관리
                 </h2>
-                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <select id="type-filter" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem 1.25rem; border-radius: 12px; color: white; cursor: pointer;">
-                        <option value="all">전체 유형</option>
-                        <option value="exhibition">전시</option>
-                        <option value="education">교육</option>
-                        <option value="archive">수집/보존</option>
-                        <option value="publication">출판</option>
-                        <option value="research">연구</option>
-                        <option value="admin">행정</option>
-                    </select>
-                    <select id="phase-filter" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem 1.25rem; border-radius: 12px; color: white; cursor: pointer;">
-                        <option value="all">전체 단계</option>
-                        <option value="planning">기획</option>
-                        <option value="preparation">준비</option>
-                        <option value="execution">진행</option>
-                        <option value="marketing">홍보</option>
-                        <option value="completed">완료</option>
-                    </select>
-                    <select id="sort-order" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem 1.25rem; border-radius: 12px; color: white; cursor: pointer;">
-                        <option value="newest">최신순</option>
-                        <option value="oldest">오래된순</option>
-                        <option value="duedate">마감일순</option>
-                    </select>
-                    <!-- Export/Import Buttons -->
-                    <button onclick="exportProjectsMenu()" style="background: linear-gradient(135deg, #10b981, #059669); border: none; padding: 0.75rem 1.5rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: transform 0.2s;">
-                        <i class="fas fa-download"></i>
-                        내보내기
-                    </button>
-                    <button onclick="importProjectsMenu()" style="background: linear-gradient(135deg, #3b82f6, #2563eb); border: none; padding: 0.75rem 1.5rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: transform 0.2s;">
-                        <i class="fas fa-upload"></i>
-                        가져오기
-                    </button>
-                    <button onclick="openBatchOperations()" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); border: none; padding: 0.75rem 1.5rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: transform 0.2s;">
-                        <i class="fas fa-tasks"></i>
-                        일괄 작업
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+                    <!-- Search Bar -->
+                    <div style="position: relative; flex: 1; min-width: 250px; max-width: 400px;">
+                        <i class="fas fa-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: rgba(255, 255, 255, 0.5); pointer-events: none;"></i>
+                        <input id="project-search" type="text" placeholder="프로젝트 검색... (제목, 설명, 큐레이터)" style="width: 100%; padding: 0.75rem 1.25rem 0.75rem 2.75rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-size: 0.875rem; transition: all 0.3s;" onfocus="this.style.borderColor='rgba(139, 92, 246, 0.5)'; this.style.background='rgba(139, 92, 246, 0.05)'" onblur="this.style.borderColor='rgba(255, 255, 255, 0.15)'; this.style.background='rgba(255, 255, 255, 0.05)'">
+                        <button id="clear-search" onclick="clearSearch()" style="display: none; position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: rgba(239, 68, 68, 0.2); border: none; padding: 0.25rem 0.5rem; border-radius: 6px; color: #f87171; cursor: pointer; font-size: 0.75rem;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <button onclick="openAdvancedFilter()" style="background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.75rem 1.25rem; border-radius: 12px; color: #a78bfa; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.3)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.2)'">
+                        <i class="fas fa-filter"></i>
+                        고급 필터
                     </button>
                 </div>
+            </div>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                <select id="type-filter" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem 1.25rem; border-radius: 12px; color: white; cursor: pointer; font-size: 0.875rem;">
+                    <option value="all">전체 유형</option>
+                    <option value="exhibition">전시</option>
+                    <option value="education">교육</option>
+                    <option value="archive">수집/보존</option>
+                    <option value="publication">출판</option>
+                    <option value="research">연구</option>
+                    <option value="admin">행정</option>
+                </select>
+                <select id="phase-filter" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem 1.25rem; border-radius: 12px; color: white; cursor: pointer; font-size: 0.875rem;">
+                    <option value="all">전체 단계</option>
+                    <option value="planning">기획</option>
+                    <option value="preparation">준비</option>
+                    <option value="execution">진행</option>
+                    <option value="marketing">홍보</option>
+                    <option value="completed">완료</option>
+                </select>
+                <select id="sort-order" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem 1.25rem; border-radius: 12px; color: white; cursor: pointer; font-size: 0.875rem;">
+                    <option value="newest">최신순</option>
+                    <option value="oldest">오래된순</option>
+                    <option value="duedate">마감일순</option>
+                </select>
+                <!-- Export/Import/Batch Buttons -->
+                <button onclick="exportProjectsMenu()" style="background: linear-gradient(135deg, #10b981, #059669); border: none; padding: 0.75rem 1.5rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: transform 0.2s; font-size: 0.875rem;">
+                    <i class="fas fa-download"></i>
+                    내보내기
+                </button>
+                <button onclick="importProjectsMenu()" style="background: linear-gradient(135deg, #3b82f6, #2563eb); border: none; padding: 0.75rem 1.5rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: transform 0.2s; font-size: 0.875rem;">
+                    <i class="fas fa-upload"></i>
+                    가져오기
+                </button>
+                <button onclick="openBatchOperations()" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); border: none; padding: 0.75rem 1.5rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: transform 0.2s; font-size: 0.875rem;">
+                    <i class="fas fa-tasks"></i>
+                    일괄 작업
+                </button>
+            </div>
+            
+            <!-- Active Filters Display -->
+            <div id="active-filters" style="display: none; margin-bottom: 1rem; padding: 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <span style="color: #a78bfa; font-weight: 600; font-size: 0.875rem;">
+                        <i class="fas fa-filter"></i> 활성 필터
+                    </span>
+                    <button onclick="clearAllFilters()" style="background: rgba(239, 68, 68, 0.2); border: none; padding: 0.25rem 0.75rem; border-radius: 6px; color: #f87171; cursor: pointer; font-size: 0.75rem; font-weight: 600;">
+                        <i class="fas fa-times"></i> 모두 지우기
+                    </button>
+                </div>
+                <div id="filter-tags" style="display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
             </div>
             <div id="projects-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1.5rem;">
                 <!-- Project cards will be dynamically inserted -->
@@ -1880,6 +1907,20 @@
         document.getElementById('phase-filter')?.addEventListener('change', () => renderProjectsGrid());
         document.getElementById('sort-order')?.addEventListener('change', () => renderProjectsGrid());
         
+        // Search event listener (real-time)
+        document.getElementById('project-search')?.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.trim();
+            const clearBtn = document.getElementById('clear-search');
+            
+            if (searchTerm) {
+                clearBtn.style.display = 'block';
+            } else {
+                clearBtn.style.display = 'none';
+            }
+            
+            renderProjectsGrid();
+        });
+        
         // Canvas dropdown toggle
         function toggleWorkflowMenu() {
             const dropdown = document.getElementById('workflow-dropdown');
@@ -1995,11 +2036,23 @@
             const typeFilter = document.getElementById('type-filter')?.value || 'all';
             const phaseFilter = document.getElementById('phase-filter')?.value || 'all';
             const sortBy = document.getElementById('sort-order')?.value || 'newest';
+            const searchTerm = document.getElementById('project-search')?.value.toLowerCase().trim() || '';
             
             let filtered = allProjects.filter(p => {
                 const matchType = typeFilter === 'all' || p.type === typeFilter;
                 const matchPhase = phaseFilter === 'all' || p.phase === phaseFilter;
-                return matchType && matchPhase;
+                
+                // Search filter (title, description, curator, location)
+                let matchSearch = true;
+                if (searchTerm) {
+                    const titleMatch = (p.title || '').toLowerCase().includes(searchTerm);
+                    const descMatch = (p.description || '').toLowerCase().includes(searchTerm);
+                    const curatorMatch = (p.curator || '').toLowerCase().includes(searchTerm);
+                    const locationMatch = (p.location || '').toLowerCase().includes(searchTerm);
+                    matchSearch = titleMatch || descMatch || curatorMatch || locationMatch;
+                }
+                
+                return matchType && matchPhase && matchSearch;
             });
             
             // Sort
@@ -2914,6 +2967,166 @@
                         'success'
                     );
                 }
+            }
+        }
+
+        // Search & Filter Functions
+        function clearSearch() {
+            document.getElementById('project-search').value = '';
+            document.getElementById('clear-search').style.display = 'none';
+            renderProjectsGrid();
+        }
+
+        function clearAllFilters() {
+            document.getElementById('project-search').value = '';
+            document.getElementById('type-filter').value = 'all';
+            document.getElementById('phase-filter').value = 'all';
+            document.getElementById('clear-search').style.display = 'none';
+            document.getElementById('active-filters').style.display = 'none';
+            renderProjectsGrid();
+        }
+
+        // Advanced Filter Modal
+        function openAdvancedFilter() {
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); display: flex; align-items: center; justify-content: center; z-index: 10000; overflow-y: auto; padding: 2rem;';
+            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+
+            modal.innerHTML = \`
+                <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 2.5rem; border-radius: 20px; max-width: 700px; width: 90%; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.75rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
+                            <i class="fas fa-filter" style="color: #8b5cf6;"></i>
+                            고급 필터
+                        </h2>
+                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">✕</button>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <!-- Date Range Filter -->
+                        <div>
+                            <label style="display: block; color: rgba(255, 255, 255, 0.9); font-weight: 600; margin-bottom: 0.75rem;">
+                                <i class="fas fa-calendar-alt"></i> 날짜 범위
+                            </label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div>
+                                    <label style="display: block; color: rgba(255, 255, 255, 0.7); font-size: 0.875rem; margin-bottom: 0.5rem;">시작일</label>
+                                    <input id="filter-start-date" type="date" style="width: 100%; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: white; font-size: 0.875rem;">
+                                </div>
+                                <div>
+                                    <label style="display: block; color: rgba(255, 255, 255, 0.7); font-size: 0.875rem; margin-bottom: 0.5rem;">종료일</label>
+                                    <input id="filter-end-date" type="date" style="width: 100%; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: white; font-size: 0.875rem;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Keyword Filter -->
+                        <div>
+                            <label style="display: block; color: rgba(255, 255, 255, 0.9); font-weight: 600; margin-bottom: 0.75rem;">
+                                <i class="fas fa-tags"></i> 키워드 (쉼표로 구분)
+                            </label>
+                            <input id="filter-keywords" type="text" placeholder="예: 전시, 교육, 보존" style="width: 100%; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: white; font-size: 0.875rem;">
+                        </div>
+
+                        <!-- Curator Filter -->
+                        <div>
+                            <label style="display: block; color: rgba(255, 255, 255, 0.9); font-weight: 600; margin-bottom: 0.75rem;">
+                                <i class="fas fa-user-tie"></i> 큐레이터
+                            </label>
+                            <input id="filter-curator" type="text" placeholder="큐레이터 이름" style="width: 100%; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: white; font-size: 0.875rem;">
+                        </div>
+
+                        <!-- Location Filter -->
+                        <div>
+                            <label style="display: block; color: rgba(255, 255, 255, 0.9); font-weight: 600; margin-bottom: 0.75rem;">
+                                <i class="fas fa-map-marker-alt"></i> 장소
+                            </label>
+                            <input id="filter-location" type="text" placeholder="전시 장소" style="width: 100%; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: white; font-size: 0.875rem;">
+                        </div>
+
+                        <!-- Quick Presets -->
+                        <div>
+                            <label style="display: block; color: rgba(255, 255, 255, 0.9); font-weight: 600; margin-bottom: 0.75rem;">
+                                <i class="fas fa-bolt"></i> 빠른 필터
+                            </label>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+                                <button onclick="applyQuickFilter('this-week')" style="padding: 0.75rem; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 8px; color: #60a5fa; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(59, 130, 246, 0.3)'" onmouseout="this.style.background='rgba(59, 130, 246, 0.2)'">
+                                    이번 주
+                                </button>
+                                <button onclick="applyQuickFilter('this-month')" style="padding: 0.75rem; background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; color: #34d399; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(16, 185, 129, 0.3)'" onmouseout="this.style.background='rgba(16, 185, 129, 0.2)'">
+                                    이번 달
+                                </button>
+                                <button onclick="applyQuickFilter('urgent')" style="padding: 0.75rem; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; color: #f87171; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(239, 68, 68, 0.3)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.2)'">
+                                    긴급 (D-7)
+                                </button>
+                                <button onclick="applyQuickFilter('overdue')" style="padding: 0.75rem; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; color: #fbbf24; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(245, 158, 11, 0.3)'" onmouseout="this.style.background='rgba(245, 158, 11, 0.2)'">
+                                    기한 초과
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                            <button onclick="applyAdvancedFilter()" style="flex: 1; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border: none; padding: 1rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; font-size: 1rem;">
+                                <i class="fas fa-check"></i> 적용
+                            </button>
+                            <button onclick="resetAdvancedFilter()" style="flex: 1; background: rgba(255, 255, 255, 0.1); border: none; padding: 1rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; font-size: 1rem;">
+                                <i class="fas fa-redo"></i> 초기화
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            \`;
+            document.body.appendChild(modal);
+        }
+
+        function applyQuickFilter(preset) {
+            const now = new Date();
+            let startDate, endDate;
+
+            switch(preset) {
+                case 'this-week':
+                    const dayOfWeek = now.getDay();
+                    startDate = new Date(now);
+                    startDate.setDate(now.getDate() - dayOfWeek);
+                    endDate = new Date(now);
+                    endDate.setDate(now.getDate() + (6 - dayOfWeek));
+                    break;
+                case 'this-month':
+                    startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                    endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+                    break;
+                case 'urgent':
+                    startDate = now;
+                    endDate = new Date(now);
+                    endDate.setDate(now.getDate() + 7);
+                    break;
+                case 'overdue':
+                    startDate = new Date(2000, 0, 1);
+                    endDate = new Date(now);
+                    endDate.setDate(now.getDate() - 1);
+                    break;
+            }
+
+            document.getElementById('filter-start-date').value = startDate.toISOString().split('T')[0];
+            document.getElementById('filter-end-date').value = endDate.toISOString().split('T')[0];
+        }
+
+        function resetAdvancedFilter() {
+            document.getElementById('filter-start-date').value = '';
+            document.getElementById('filter-end-date').value = '';
+            document.getElementById('filter-keywords').value = '';
+            document.getElementById('filter-curator').value = '';
+            document.getElementById('filter-location').value = '';
+        }
+
+        function applyAdvancedFilter() {
+            // Close modal
+            document.querySelector('[style*="z-index: 10000"]')?.remove();
+            
+            // Show notification
+            if (window.showInAppNotification) {
+                window.showInAppNotification('고급 필터가 적용되었습니다. (구현 예정)', 'info');
             }
         }
         
