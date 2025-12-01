@@ -75,14 +75,6 @@
 </head>
 <body>
     <!-- Load Unified Navigation -->
-    <div id="unified-navbar-container"></div>
-    <script>
-        fetch('/static/components/unified-navbar.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('unified-navbar-container').innerHTML = html;
-            });
-    </script>
     <div class="flex h-screen">
         <!-- Sidebar -->
         <aside class="w-72 glass-card m-4 mr-0 rounded-r-none border-r-0">

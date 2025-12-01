@@ -1545,15 +1545,58 @@
     </style>
 </head>
 <body>
-    <!-- Load Unified Navigation -->
-    <div id="unified-navbar-container"></div>
-    <script>
-        fetch('/static/components/unified-navbar.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('unified-navbar-container').innerHTML = html;
-            });
-    </script>
+    <!-- Main Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo">
+                <img src="/static/images/logo-neon-m.png" alt="MuseFlow" style="box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);">
+                <span class="nav-logo-text">MuseFlow.life</span>
+            </a>
+            
+            <!-- Hamburger Menu Toggle -->
+            <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#modules">Modules</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <a href="/signup.html" class="nav-signup-btn">
+                    <i class="fas fa-sparkles"></i> 
+                    <span>MuseFlow 슈퍼 에이전트 잠금 해제</span>
+                    <i class="fas fa-arrow-right" style="font-size: 0.875rem;"></i>
+                </a>
+                <a href="/login.html" class="nav-login-btn">
+                    로그인
+                </a>
+                
+                <!-- Language Selector -->
+                <select id="lang-select" class="nav-lang-select" title="언어 선택">
+                    <option value="ko">🇰🇷 한국어</option>
+                    <option value="en">🇺🇸 English</option>
+                    <option value="ja">🇯🇵 日本語</option>
+                    <option value="zh-CN">🇨🇳 简体中文</option>
+                    <option value="zh-TW">🇹🇼 繁體中文</option>
+                    <option value="fr">🇫🇷 Français</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                    <option value="es">🇪🇸 Español</option>
+                    <option value="it">🇮🇹 Italiano</option>
+                </select>
+                
+                <!-- MyPage Button -->
+                <a href="/account.html" class="nav-icon-btn" title="내 계정">
+                    <span style="font-size: 1rem;">👤</span>
+                    <span class="mypage-text">내 계정</span>
+                </a>
+            </div>
+        </div>
+    </nav>
 
     <!-- Hero Section -->
     <section class="hero" id="hero">
