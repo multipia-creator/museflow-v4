@@ -400,6 +400,7 @@
                         <th>지출</th>
                         <th>진행률</th>
                         <th>상태</th>
+                        <th>편집</th>
                     </tr>
                 </thead>
                 <tbody id="budget-table-body">
@@ -458,11 +459,21 @@
                 const statusText = project.status === 'over' ? '초과' : project.status === 'warning' ? '주의' : '정상';
                 
                 return `
-                    <tr>
+                    <tr id="project-row-${project.id}">
                         <td><strong>${project.name}</strong></td>
                         <td>${project.type}</td>
-                        <td>${formatCurrency(project.budget)}</td>
-                        <td>${formatCurrency(project.spent)}</td>
+                        <td>
+                            <div class="inline-edit-container">
+                                <span class="display-value">${formatCurrency(project.budget)}</span>
+                                <input type="number" class="edit-input" data-field="budget" data-id="${project.id}" value="${project.budget}" style="display:none; width: 120px; padding: 0.5rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(139, 92, 246, 0.5); border-radius: 8px; color: white;">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="inline-edit-container">
+                                <span class="display-value">${formatCurrency(project.spent)}</span>
+                                <input type="number" class="edit-input" data-field="spent" data-id="${project.id}" value="${project.spent}" style="display:none; width: 120px; padding: 0.5rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(236, 72, 153, 0.5); border-radius: 8px; color: white;">
+                            </div>
+                        </td>
                         <td>
                             <div>${percentage.toFixed(1)}%</div>
                             <div class="progress-bar">
@@ -472,9 +483,105 @@
                         <td>
                             <span class="status-badge ${statusClass}">${statusText}</span>
                         </td>
+                        <td>
+                            <button class="edit-btn" onclick="enableEditMode(${project.id})" style="background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.5); color: #a78bfa; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                <i class="fas fa-edit"></i> 수정
+                            </button>
+                            <button class="save-btn" onclick="saveBudgetChanges(${project.id})" style="display:none; background: linear-gradient(135deg, #10b981, #059669); border: none; color: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                <i class="fas fa-save"></i> 저장
+                            </button>
+                            <button class="cancel-btn" onclick="cancelEditMode(${project.id})" style="display:none; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.5); color: #f87171; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </td>
                     </tr>
                 `;
             }).join('');
+        }
+        
+        // Enable inline edit mode for a project
+        function enableEditMode(projectId) {
+            const row = document.getElementById(`project-row-${projectId}`);
+            const displayValues = row.querySelectorAll('.display-value');
+            const editInputs = row.querySelectorAll('.edit-input');
+            const editBtn = row.querySelector('.edit-btn');
+            const saveBtn = row.querySelector('.save-btn');
+            const cancelBtn = row.querySelector('.cancel-btn');
+            
+            displayValues.forEach(el => el.style.display = 'none');
+            editInputs.forEach(el => el.style.display = 'inline-block');
+            editBtn.style.display = 'none';
+            saveBtn.style.display = 'inline-block';
+            cancelBtn.style.display = 'inline-block';
+        }
+        
+        // Cancel inline edit mode
+        function cancelEditMode(projectId) {
+            const row = document.getElementById(`project-row-${projectId}`);
+            const displayValues = row.querySelectorAll('.display-value');
+            const editInputs = row.querySelectorAll('.edit-input');
+            const editBtn = row.querySelector('.edit-btn');
+            const saveBtn = row.querySelector('.save-btn');
+            const cancelBtn = row.querySelector('.cancel-btn');
+            
+            displayValues.forEach(el => el.style.display = 'inline');
+            editInputs.forEach(el => el.style.display = 'none');
+            editBtn.style.display = 'inline-block';
+            saveBtn.style.display = 'none';
+            cancelBtn.style.display = 'none';
+        }
+        
+        // Save budget changes via API
+        async function saveBudgetChanges(projectId) {
+            const row = document.getElementById(`project-row-${projectId}`);
+            const budgetInput = row.querySelector('[data-field="budget"]');
+            const spentInput = row.querySelector('[data-field="spent"]');
+            
+            const newBudget = parseInt(budgetInput.value) || 0;
+            const newSpent = parseInt(spentInput.value) || 0;
+            
+            try {
+                const result = await window.apiClient.projects.update(projectId, {
+                    budget_total: newBudget,
+                    budget_used: newSpent
+                });
+                
+                if (result.success) {
+                    // Update local data
+                    const project = budgetData.projects.find(p => p.id === projectId);
+                    if (project) {
+                        project.budget = newBudget;
+                        project.spent = newSpent;
+                        
+                        // Recalculate status
+                        const percentage = (newSpent / newBudget) * 100;
+                        project.status = percentage >= 100 ? 'over' : percentage >= 90 ? 'warning' : 'good';
+                    }
+                    
+                    // Refresh UI
+                    renderBudgetTable();
+                    calculateSummary();
+                    
+                    if (window.notificationSystem) {
+                        window.notificationSystem.showInAppNotification('예산이 수정되었습니다! ✅', 'success');
+                    }
+                    
+                    // Warning if over budget
+                    if (newSpent > newBudget) {
+                        setTimeout(() => {
+                            if (window.notificationSystem) {
+                                window.notificationSystem.showInAppNotification('⚠️ 예산 초과! 사용 예산이 총 예산을 초과했습니다.', 'warning');
+                            }
+                        }, 500);
+                    }
+                }
+            } catch (error) {
+                console.error('Error updating budget:', error);
+                if (window.notificationSystem) {
+                    window.notificationSystem.showInAppNotification('예산 수정 중 오류가 발생했습니다.', 'error');
+                }
+                cancelEditMode(projectId);
+            }
         }
         
         // Monthly budget chart

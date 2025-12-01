@@ -2320,7 +2320,9 @@
             window.location.href = url;
         }
         
-        // Edit Project
+        // Edit Project - Open modal with budget fields
+        let currentEditProjectId = null;
+        
         async function editProject(projectId) {
             console.log('✏️ Editing project:', projectId);
             
@@ -2330,27 +2332,108 @@
                 return;
             }
             
-            // Simple prompt-based edit for now (can be upgraded to modal later)
-            const newTitle = prompt('프로젝트 제목:', project.title);
-            if (!newTitle || newTitle === project.title) return;
+            currentEditProjectId = projectId;
             
-            const newDescription = prompt('프로젝트 설명:', project.description || '');
+            // Fill modal with project data
+            document.getElementById('edit-title').value = project.title || '';
+            document.getElementById('edit-description').value = project.description || '';
+            document.getElementById('edit-type').value = project.type || 'exhibition';
+            document.getElementById('edit-phase').value = project.phase || 'planning';
+            document.getElementById('edit-budget-total').value = project.budget_total || '';
+            document.getElementById('edit-budget-used').value = project.budget_used || '';
+            document.getElementById('edit-start-date').value = project.start_date || '';
+            document.getElementById('edit-end-date').value = project.end_date || '';
+            document.getElementById('edit-curator').value = project.curator || '';
+            document.getElementById('edit-location').value = project.location || '';
+            
+            // Update budget indicator
+            updateBudgetIndicator();
+            
+            // Show modal
+            document.getElementById('edit-project-modal').style.display = 'block';
+        }
+        
+        function closeEditModal() {
+            document.getElementById('edit-project-modal').style.display = 'none';
+            currentEditProjectId = null;
+        }
+        
+        // Update budget usage indicator in real-time
+        function updateBudgetIndicator() {
+            const totalInput = document.getElementById('edit-budget-total');
+            const usedInput = document.getElementById('edit-budget-used');
+            const indicator = document.getElementById('budget-usage-indicator');
+            const percentSpan = document.getElementById('budget-usage-percent');
+            const bar = document.getElementById('budget-usage-bar');
+            
+            const total = parseFloat(totalInput.value) || 0;
+            const used = parseFloat(usedInput.value) || 0;
+            
+            if (total > 0 && used >= 0) {
+                const percent = (used / total) * 100;
+                indicator.style.display = 'block';
+                percentSpan.textContent = `${percent.toFixed(1)}%`;
+                bar.style.width = `${Math.min(percent, 100)}%`;
+                
+                // Color coding based on usage
+                if (percent >= 90) {
+                    bar.style.background = 'linear-gradient(90deg, #ef4444, #dc2626)';
+                    percentSpan.style.color = '#f87171';
+                } else if (percent >= 70) {
+                    bar.style.background = 'linear-gradient(90deg, #f59e0b, #d97706)';
+                    percentSpan.style.color = '#fbbf24';
+                } else {
+                    bar.style.background = 'linear-gradient(90deg, #10b981, #059669)';
+                    percentSpan.style.color = '#34d399';
+                }
+            } else {
+                indicator.style.display = 'none';
+            }
+        }
+        
+        // Handle edit form submission
+        document.getElementById('edit-project-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!currentEditProjectId) return;
+            
+            const updateData = {
+                title: document.getElementById('edit-title').value,
+                description: document.getElementById('edit-description').value,
+                type: document.getElementById('edit-type').value,
+                phase: document.getElementById('edit-phase').value,
+                budget_total: parseInt(document.getElementById('edit-budget-total').value) || 0,
+                budget_used: parseInt(document.getElementById('edit-budget-used').value) || 0,
+                start_date: document.getElementById('edit-start-date').value || null,
+                end_date: document.getElementById('edit-end-date').value || null,
+                curator: document.getElementById('edit-curator').value || null,
+                location: document.getElementById('edit-location').value || null
+            };
             
             try {
-                const result = await window.apiClient.projects.update(projectId, {
-                    title: newTitle,
-                    description: newDescription
-                });
+                const result = await window.apiClient.projects.update(currentEditProjectId, updateData);
                 
                 if (result.success) {
                     notificationSystem.showInAppNotification('프로젝트가 수정되었습니다! ✅', 'success');
+                    closeEditModal();
                     loadProjects();
+                    
+                    // Show warning if budget exceeded
+                    if (updateData.budget_total > 0 && updateData.budget_used > updateData.budget_total) {
+                        setTimeout(() => {
+                            notificationSystem.showInAppNotification('⚠️ 예산 초과! 사용 예산이 총 예산을 초과했습니다.', 'warning');
+                        }, 500);
+                    }
                 }
             } catch (error) {
                 console.error('Error updating project:', error);
                 notificationSystem.showInAppNotification('프로젝트 수정 중 오류가 발생했습니다.', 'error');
             }
-        }
+        });
+        
+        // Add real-time budget indicator updates
+        document.getElementById('edit-budget-total').addEventListener('input', updateBudgetIndicator);
+        document.getElementById('edit-budget-used').addEventListener('input', updateBudgetIndicator);
         
         // Duplicate Project
         async function duplicateProject(projectId) {
@@ -2637,6 +2720,109 @@
                     커스텀 템플릿 관리
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Project Edit Modal -->
+    <div id="edit-project-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 2000; padding: 2rem; overflow-y: auto;">
+        <div style="max-width: 700px; margin: 0 auto; background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 24px; padding: 2rem; border: 1px solid rgba(255, 255, 255, 0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: white;">✏️ 프로젝트 편집</h2>
+                <button onclick="closeEditModal()" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.5rem; cursor: pointer; padding: 0.5rem;">&times;</button>
+            </div>
+            
+            <form id="edit-project-form" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Title -->
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: rgba(255, 255, 255, 0.9);">프로젝트 제목 *</label>
+                    <input type="text" id="edit-title" required style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem; border-radius: 12px; color: white; font-size: 1rem;">
+                </div>
+                
+                <!-- Description -->
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: rgba(255, 255, 255, 0.9);">설명</label>
+                    <textarea id="edit-description" rows="3" style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem; border-radius: 12px; color: white; font-size: 1rem; resize: vertical;"></textarea>
+                </div>
+                
+                <!-- Type & Phase -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: rgba(255, 255, 255, 0.9);">유형</label>
+                        <select id="edit-type" style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem; border-radius: 12px; color: white;">
+                            <option value="exhibition">전시</option>
+                            <option value="education">교육</option>
+                            <option value="archive">수집/보존</option>
+                            <option value="publication">출판</option>
+                            <option value="research">연구</option>
+                            <option value="admin">행정</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: rgba(255, 255, 255, 0.9);">단계</label>
+                        <select id="edit-phase" style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem; border-radius: 12px; color: white;">
+                            <option value="planning">기획</option>
+                            <option value="preparation">준비</option>
+                            <option value="execution">진행</option>
+                            <option value="marketing">홍보</option>
+                            <option value="completed">완료</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Budget -->
+                <div style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px; padding: 1.5rem;">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; color: rgba(139, 92, 246, 1);">💰 예산 정보</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: rgba(255, 255, 255, 0.9);">총 예산 (원)</label>
+                            <input type="number" id="edit-budget-total" min="0" step="1000000" placeholder="50000000" style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem; border-radius: 12px; color: white;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: rgba(255, 255, 255, 0.9);">사용 예산 (원)</label>
+                            <input type="number" id="edit-budget-used" min="0" step="100000" placeholder="30000000" style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem; border-radius: 12px; color: white;">
+                        </div>
+                    </div>
+                    <div id="budget-usage-indicator" style="margin-top: 1rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border-radius: 8px; display: none;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="color: rgba(255, 255, 255, 0.7);">예산 사용률</span>
+                            <span id="budget-usage-percent" style="font-weight: 700;"></span>
+                        </div>
+                        <div style="width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 100px; overflow: hidden;">
+                            <div id="budget-usage-bar" style="height: 100%; border-radius: 100px; transition: width 0.3s, background 0.3s;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dates -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: rgba(255, 255, 255, 0.9);">시작일</label>
+                        <input type="date" id="edit-start-date" style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem; border-radius: 12px; color: white;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: rgba(255, 255, 255, 0.9);">종료일</label>
+                        <input type="date" id="edit-end-date" style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem; border-radius: 12px; color: white;">
+                    </div>
+                </div>
+                
+                <!-- Curator & Location -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: rgba(255, 255, 255, 0.9);">큐레이터</label>
+                        <input type="text" id="edit-curator" placeholder="담당자 이름" style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem; border-radius: 12px; color: white;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: rgba(255, 255, 255, 0.9);">장소</label>
+                        <input type="text" id="edit-location" placeholder="전시관, 위치" style="width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem; border-radius: 12px; color: white;">
+                    </div>
+                </div>
+                
+                <!-- Actions -->
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button type="button" onclick="closeEditModal()" style="flex: 1; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-weight: 600; cursor: pointer;">취소</button>
+                    <button type="submit" style="flex: 2; padding: 0.75rem; background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; border-radius: 12px; color: white; font-weight: 600; cursor: pointer;">저장</button>
+                </div>
+            </form>
         </div>
     </div>
 

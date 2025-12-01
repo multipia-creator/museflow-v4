@@ -234,10 +234,18 @@ app.put('/:id', async (c: Context<{ Bindings: Bindings }>) => {
       description,
       status,
       workflow_data,
-      budget_amount
+      budget_amount,
+      budget_total,
+      budget_used,
+      type,
+      phase,
+      curator,
+      location,
+      start_date,
+      end_date
     } = body
     
-    // Update project
+    // Update project with all fields
     await DB.prepare(`
       UPDATE projects 
       SET 
@@ -245,6 +253,14 @@ app.put('/:id', async (c: Context<{ Bindings: Bindings }>) => {
         description = COALESCE(?, description),
         status = COALESCE(?, status),
         workflow_data = COALESCE(?, workflow_data),
+        budget_total = COALESCE(?, budget_total),
+        budget_used = COALESCE(?, budget_used),
+        type = COALESCE(?, type),
+        phase = COALESCE(?, phase),
+        curator = COALESCE(?, curator),
+        location = COALESCE(?, location),
+        start_date = COALESCE(?, start_date),
+        end_date = COALESCE(?, end_date),
         updated_at = datetime('now')
       WHERE id = ?
     `).bind(
@@ -252,10 +268,18 @@ app.put('/:id', async (c: Context<{ Bindings: Bindings }>) => {
       description !== undefined ? description : null,
       status || null,
       workflow_data ? JSON.stringify(workflow_data) : null,
+      budget_total !== undefined ? budget_total : null,
+      budget_used !== undefined ? budget_used : null,
+      type || null,
+      phase || null,
+      curator || null,
+      location || null,
+      start_date || null,
+      end_date || null,
       projectId
     ).run()
     
-    // Update budget if provided
+    // Update budget if provided (for backward compatibility)
     if (budget_amount !== undefined) {
       await DB.prepare(`
         INSERT INTO project_budgets (project_id, budget_amount, spent_amount, currency, created_at, updated_at)
