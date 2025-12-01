@@ -39,6 +39,7 @@ export default defineConfig({
         '/test-api-url.html',
         '/test-canvas.html',
         '/workflow.html',
+        '/workflow-tools.html',
         
         // Pretty URL paths (Cloudflare Pages auto-redirects /page.html → /page)
         // CRITICAL: Must exclude ALL to prevent Worker 404 errors
@@ -63,7 +64,8 @@ export default defineConfig({
         '/signup',
         '/test-api-url',
         '/test-canvas',
-        '/workflow'
+        '/workflow',
+        '/workflow-tools'
       ]
     }),
     devServer({
