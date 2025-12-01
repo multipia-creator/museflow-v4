@@ -1,11 +1,11 @@
-# MuseFlow V9.2 🎨
+# MuseFlow V9.3 🎨
 
 **AI-Powered Museum Workflow Platform - Production Ready**
 
 [![Status](https://img.shields.io/badge/Status-LIVE-success)](https://museflow.life)
-[![Version](https://img.shields.io/badge/Version-9.2.0-blue)](https://github.com/multipia-creator/museflow-v4)
+[![Version](https://img.shields.io/badge/Version-9.3.0-blue)](https://github.com/multipia-creator/museflow-v4)
 [![License](https://img.shields.io/badge/License-MIT-green)](https://github.com)
-[![Features](https://img.shields.io/badge/Features-92+-purple)]()
+[![Features](https://img.shields.io/badge/Features-94+-purple)]()
 [![Tools](https://img.shields.io/badge/Workflow_Tools-6-orange)]()
 
 **세계 수준의 박물관 워크플로우 자동화 플랫폼 - 완전한 프로덕션 시스템**
@@ -16,8 +16,9 @@
 
 ### **Main Application**
 - 🚀 **Primary**: https://museflow.life
-- 🔗 **Latest Deploy**: https://2c77698f.museflow.pages.dev
+- 🔗 **Latest Deploy**: https://96def4a8.museflow.pages.dev
 - 📊 **Dashboard**: https://museflow.life/dashboard
+- 💰 **예산 관리**: https://museflow.life/budget
 - 🛠️ **Workflow Tools**: https://museflow.life/workflow-tools
 - 🎨 **Canvas V3**: https://museflow.life/canvas-v3
 - 📈 **Analytics**: https://museflow.life/behavior-analytics
@@ -25,11 +26,41 @@
 
 ### **GitHub Repository**
 - 📦 **Source**: https://github.com/multipia-creator/museflow-v4
-- 🎯 **Latest Commit**: `8485179` (V9.2.0)
+- 🎯 **Latest Commit**: `5b2deeb` (V9.3.0)
 
 ---
 
-## 🎯 **V9.1-9.2: Workflow Unification** ✨ **NEW**
+## 🎯 **V9.3.0: Budget Input System** ✨ **NEW**
+
+### **💰 예산 입력 기능 완성**
+- ✅ **Dashboard 편집 모달** - 프로젝트 수정 시 예산 입력 (총 예산, 사용 예산, 날짜, 큐레이터, 위치)
+- ✅ **예산 페이지 인라인 편집** - 예산 페이지에서 직접 수정 (편집/저장/취소 버튼)
+- ✅ **실시간 예산 사용률** - 자동 계산 및 색상 코딩 (정상/주의/초과)
+- ✅ **예산 초과 경고** - 예산 초과 시 자동 알림
+- ✅ **DB 마이그레이션** - `budget_total`, `budget_used`, `type`, `phase`, `curator`, `location`, `start_date`, `end_date` 필드 추가
+- ✅ **API 업데이트** - 모든 예산 필드 CRUD 지원
+
+### **예산 입력 방법**
+#### **Option A: Dashboard에서 입력** 
+1. Dashboard에서 프로젝트 카드의 **"수정"** 버튼 클릭
+2. 모달에서 **"💰 예산 정보"** 섹션 입력
+   - 총 예산 (원)
+   - 사용 예산 (원)
+   - 시작일 / 종료일
+   - 큐레이터 / 장소
+3. **"저장"** 버튼 클릭
+4. 실시간 예산 사용률 표시 (색상: 정상/주의/초과)
+
+#### **Option B: 예산 페이지에서 직접 입력**
+1. 예산 페이지 (`/budget`) 접속
+2. 예산 테이블에서 **"수정"** 버튼 클릭
+3. 총 예산과 사용 예산 입력 필드가 나타남
+4. 값 입력 후 **"저장"** 버튼 클릭
+5. 자동으로 예산 상태 업데이트 (정상/주의/초과)
+
+---
+
+## 🎯 **V9.1-9.2: Workflow Unification**
 
 ### **V9.1.0: 팝업 제거 & 페이지 통일**
 - ✅ **모달 제거** - 모든 팝업을 페이지 기반으로 전환
