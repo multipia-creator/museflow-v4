@@ -862,6 +862,10 @@
                         <button onclick="openTemplateModal()" style="padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'">
                             <i class="fas fa-layer-group"></i> 템플릿 선택
                         </button>
+                        <button onclick="openNotificationCenter()" style="position: relative; padding: 0.75rem 1.5rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'">
+                            <i class="fas fa-bell"></i> 알림
+                            <span id="notification-badge" style="display: none; position: absolute; top: 0.25rem; right: 0.25rem; background: #ef4444; color: white; font-size: 0.7rem; padding: 0.15rem 0.4rem; border-radius: 10px; font-weight: 700;"></span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2021,6 +2025,9 @@
                 renderAnalyticsTypeDistribution();
                 renderAnalyticsPhaseProgress();
                 renderAnalyticsTimelineStatus();
+                
+                // Initialize notification system
+                initNotificationSystem();
                 
                 console.log('✨ Dashboard rendering complete!');
                 
@@ -3665,6 +3672,172 @@
                     timelineGrouped ? '유형별 그룹화가 활성화되었습니다.' : '그룹화가 해제되었습니다.',
                     'info'
                 );
+            }
+        }
+
+        // Notification System
+        let notifications = [];
+
+        function initNotificationSystem() {
+            // Load notifications from localStorage
+            const saved = localStorage.getItem('museflow_notifications');
+            notifications = saved ? JSON.parse(saved) : [];
+            
+            // Generate notifications for upcoming deadlines
+            generateDeadlineNotifications();
+            
+            // Update badge
+            updateNotificationBadge();
+        }
+
+        function generateDeadlineNotifications() {
+            if (!allProjects || allProjects.length === 0) return;
+
+            const today = new Date();
+            const upcoming = allProjects.filter(p => {
+                if (!p.end_date || p.phase === 'completed') return false;
+                const endDate = new Date(p.end_date);
+                const daysLeft = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+                return daysLeft >= 0 && daysLeft <= 7;
+            });
+
+            upcoming.forEach(project => {
+                const endDate = new Date(project.end_date);
+                const daysLeft = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+                
+                // Check if notification already exists
+                const exists = notifications.some(n => 
+                    n.type === 'deadline' && n.projectId === project.id
+                );
+
+                if (!exists) {
+                    addNotification({
+                        type: 'deadline',
+                        projectId: project.id,
+                        title: '마감일 임박',
+                        message: `"${project.title}" 프로젝트가 ${daysLeft}일 남았습니다.`,
+                        timestamp: new Date().toISOString(),
+                        read: false,
+                        priority: daysLeft <= 3 ? 'high' : 'medium'
+                    });
+                }
+            });
+        }
+
+        function addNotification(notification) {
+            notifications.unshift(notification);
+            if (notifications.length > 50) {
+                notifications = notifications.slice(0, 50);
+            }
+            saveNotifications();
+            updateNotificationBadge();
+        }
+
+        function saveNotifications() {
+            localStorage.setItem('museflow_notifications', JSON.stringify(notifications));
+        }
+
+        function updateNotificationBadge() {
+            const unreadCount = notifications.filter(n => !n.read).length;
+            const badge = document.getElementById('notification-badge');
+            
+            if (badge) {
+                if (unreadCount > 0) {
+                    badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+                    badge.style.display = 'block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+
+        function openNotificationCenter() {
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); display: flex; align-items: center; justify-content: center; z-index: 10000; overflow-y: auto; padding: 2rem;';
+            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+
+            let notificationHTML = '';
+            if (notifications.length === 0) {
+                notificationHTML = `
+                    <div style="text-align: center; padding: 4rem; color: rgba(255, 255, 255, 0.5);">
+                        <i class="fas fa-bell-slash" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <p style="font-size: 1.125rem;">알림이 없습니다.</p>
+                    </div>
+                `;
+            } else {
+                notificationHTML = notifications.map((notif, index) => {
+                    const icon = notif.type === 'deadline' ? 'calendar-times' : 
+                                 notif.type === 'update' ? 'sync' : 'bell';
+                    const color = notif.priority === 'high' ? '#ef4444' : 
+                                  notif.priority === 'medium' ? '#f59e0b' : '#6b7280';
+                    const date = new Date(notif.timestamp).toLocaleDateString('ko-KR', {
+                        month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                    });
+
+                    return `
+                        <div onclick="markAsRead(${index})" style="background: ${notif.read ? 'rgba(255, 255, 255, 0.03)' : 'rgba(139, 92, 246, 0.1)'}; border: 1px solid ${notif.read ? 'rgba(255, 255, 255, 0.1)' : 'rgba(139, 92, 246, 0.3)'}; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(255, 255, 255, 0.08)'" onmouseout="this.style.background='${notif.read ? 'rgba(255, 255, 255, 0.03)' : 'rgba(139, 92, 246, 0.1)'}'">
+                            <div style="display: flex; gap: 1rem;">
+                                <div style="flex-shrink: 0;">
+                                    <i class="fas fa-${icon}" style="font-size: 1.5rem; color: ${color};"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                                        <h4 style="color: white; font-weight: 600; font-size: 1rem;">${notif.title}</h4>
+                                        <span style="color: rgba(255, 255, 255, 0.5); font-size: 0.75rem; white-space: nowrap; margin-left: 1rem;">${date}</span>
+                                    </div>
+                                    <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem; line-height: 1.5;">${notif.message}</p>
+                                    ${!notif.read ? '<span style="display: inline-block; margin-top: 0.5rem; padding: 0.25rem 0.75rem; background: rgba(139, 92, 246, 0.2); color: #a78bfa; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">새 알림</span>' : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            modal.innerHTML = `
+                <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 2.5rem; border-radius: 20px; max-width: 700px; width: 90%; max-height: 80vh; overflow-y: auto; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.75rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
+                            <i class="fas fa-bell" style="color: #8b5cf6;"></i>
+                            알림 센터 (${notifications.length})
+                        </h2>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button onclick="markAllAsRead()" style="background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.5rem 1rem; border-radius: 8px; color: #a78bfa; cursor: pointer; font-size: 0.875rem; font-weight: 600;">
+                                <i class="fas fa-check-double"></i> 모두 읽음
+                            </button>
+                            <button onclick="this.closest('div').parentElement.parentElement.parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">✕</button>
+                        </div>
+                    </div>
+                    ${notificationHTML}
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        function markAsRead(index) {
+            if (notifications[index]) {
+                notifications[index].read = true;
+                saveNotifications();
+                updateNotificationBadge();
+                
+                // Close and reopen modal to refresh
+                document.querySelector('[style*="z-index: 10000"]')?.remove();
+                openNotificationCenter();
+            }
+        }
+
+        function markAllAsRead() {
+            notifications.forEach(n => n.read = true);
+            saveNotifications();
+            updateNotificationBadge();
+            
+            // Close and reopen modal to refresh
+            document.querySelector('[style*="z-index: 10000"]')?.remove();
+            openNotificationCenter();
+            
+            if (window.showInAppNotification) {
+                window.showInAppNotification('모든 알림을 읽음으로 표시했습니다.', 'success');
             }
         }
 
