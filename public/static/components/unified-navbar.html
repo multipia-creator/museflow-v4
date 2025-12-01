@@ -223,6 +223,9 @@
             <li><a href="/analytics-dashboard.html" data-page="analytics" data-tooltip="Analytics">
                 <i class="fas fa-chart-bar"></i>
             </a></li>
+            <li><a href="/google-mcp.html" data-page="google-mcp" data-tooltip="Google AI">
+                <i class="fab fa-google"></i>
+            </a></li>
         </ul>
         
         <!-- Actions - Icon Only -->
@@ -269,7 +272,8 @@
                 (page === 'canvas' && currentPath.includes('canvas')) ||
                 (page === 'workflow' && currentPath.includes('workflow')) ||
                 (page === 'budget' && currentPath.includes('budget')) ||
-                (page === 'analytics' && currentPath.includes('analytics'))) {
+                (page === 'analytics' && currentPath.includes('analytics')) ||
+                (page === 'google-mcp' && currentPath.includes('google-mcp'))) {
                 link.classList.add('active');
             }
         });

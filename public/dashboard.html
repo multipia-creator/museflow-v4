@@ -714,6 +714,72 @@
             box-shadow: 0 8px 32px rgba(245, 158, 11, 0.12);
         }
         
+        /* Genspark AI Search Styles (NEW) */
+        .genspark-suggestion-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .genspark-suggestion-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.5);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+        
+        /* Quick Access Icons */
+        .genspark-icon-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .genspark-icon-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+        
+        .genspark-icon-wrapper {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .genspark-icon-card:hover .genspark-icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .genspark-icon-card span {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .hero-title { font-size: 1.4rem; }
@@ -733,6 +799,15 @@
             section[class^="section-"] {
                 padding: 2rem 0;
                 margin-bottom: 0.75rem;
+            }
+            
+            #genspark-search-section {
+                padding: 1.5rem !important;
+            }
+            
+            .genspark-suggestion-btn {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.8rem;
             }
         }
     </style>
@@ -759,6 +834,155 @@
 
     <!-- Main Content -->
     <div style="max-width: 1600px; margin: 0 auto; padding: 5rem 1.5rem 2rem 1.5rem;">
+        
+        <!-- Genspark AI Search Section (NEW) -->
+        <section id="genspark-search-section" style="margin-bottom: 2rem;">
+            <div style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.05)); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 24px; padding: 2rem; position: relative; overflow: hidden;">
+                <!-- Background Decoration -->
+                <div style="position: absolute; top: -100px; right: -100px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(139, 92, 246, 0.15), transparent); border-radius: 50%;"></div>
+                
+                <!-- AI Search Bar -->
+                <div style="position: relative; z-index: 1;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #8b5cf6, #ec4899); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                            🤖
+                        </div>
+                        <div>
+                            <h3 style="font-size: 1.25rem; font-weight: 700; color: white; margin: 0;">AI 어시스턴트</h3>
+                            <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); margin: 0;">무엇을 도와드릴까요?</p>
+                        </div>
+                    </div>
+                    
+                    <div style="position: relative;">
+                        <input 
+                            id="genspark-ai-search" 
+                            type="text" 
+                            placeholder="예: 전시 라벨 생성, 이번 주 우선순위 작업, SNS 콘텐츠 작성..." 
+                            style="width: 100%; padding: 1.25rem 3.5rem 1.25rem 1.5rem; background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 16px; color: white; font-size: 1rem; outline: none; transition: all 0.3s ease;"
+                            onfocus="this.style.borderColor='rgba(139, 92, 246, 0.5)'; this.style.background='rgba(255, 255, 255, 0.08)'"
+                            onblur="this.style.borderColor='rgba(255, 255, 255, 0.1)'; this.style.background='rgba(255, 255, 255, 0.05)'"
+                            onkeypress="if(event.key === 'Enter') handleGensparkSearch()"
+                        >
+                        <button 
+                            onclick="handleGensparkSearch()"
+                            style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; border-radius: 12px; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; transition: all 0.3s ease;"
+                            onmouseover="this.style.transform='translateY(-50%) scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(139, 92, 246, 0.4)'"
+                            onmouseout="this.style.transform='translateY(-50%) scale(1)'; this.style.boxShadow='none'"
+                        >
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Quick Suggestions -->
+                    <div style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
+                        <button class="genspark-suggestion-btn" onclick="setGensparkQuery('전시 라벨 생성')">
+                            <i class="fas fa-tag"></i> 전시 라벨
+                        </button>
+                        <button class="genspark-suggestion-btn" onclick="setGensparkQuery('우선순위 작업')">
+                            <i class="fas fa-sort-amount-up"></i> 우선순위
+                        </button>
+                        <button class="genspark-suggestion-btn" onclick="setGensparkQuery('SNS 콘텐츠')">
+                            <i class="fas fa-share-alt"></i> SNS
+                        </button>
+                        <button class="genspark-suggestion-btn" onclick="setGensparkQuery('이메일 초안')">
+                            <i class="fas fa-envelope"></i> 이메일
+                        </button>
+                        <button class="genspark-suggestion-btn" onclick="setGensparkQuery('일일 리포트')">
+                            <i class="fas fa-file-alt"></i> 리포트
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Quick Access Icons Grid (NEW) -->
+        <section id="genspark-quick-access" style="margin-bottom: 2rem;">
+            <h3 style="font-size: 1rem; font-weight: 600; color: rgba(255, 255, 255, 0.9); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas fa-rocket" style="color: var(--museum-purple);"></i>
+                빠른 실행
+            </h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem;">
+                <!-- Dashboard -->
+                <div class="genspark-icon-card" onclick="window.location.href='/dashboard.html'">
+                    <div class="genspark-icon-wrapper" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.1));">
+                        <i class="fas fa-chart-line" style="color: #8b5cf6;"></i>
+                    </div>
+                    <span>대시보드</span>
+                </div>
+                
+                <!-- Canvas -->
+                <div class="genspark-icon-card" onclick="window.location.href='/canvas-v3.html'">
+                    <div class="genspark-icon-wrapper" style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(236, 72, 153, 0.1));">
+                        <i class="fas fa-project-diagram" style="color: #ec4899;"></i>
+                    </div>
+                    <span>워크플로우</span>
+                </div>
+                
+                <!-- Label Generation -->
+                <div class="genspark-icon-card" onclick="handleLabelGeneration('전시 라벨 생성')">
+                    <div class="genspark-icon-wrapper" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1));">
+                        <i class="fas fa-tag" style="color: #f59e0b;"></i>
+                    </div>
+                    <span>라벨 생성</span>
+                </div>
+                
+                <!-- SNS Content -->
+                <div class="genspark-icon-card" onclick="handleSNSGeneration('SNS 콘텐츠 생성')">
+                    <div class="genspark-icon-wrapper" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));">
+                        <i class="fas fa-share-alt" style="color: #3b82f6;"></i>
+                    </div>
+                    <span>SNS</span>
+                </div>
+                
+                <!-- Email -->
+                <div class="genspark-icon-card" onclick="handleEmailGeneration('이메일 초안 작성')">
+                    <div class="genspark-icon-wrapper" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1));">
+                        <i class="fas fa-envelope" style="color: #10b981;"></i>
+                    </div>
+                    <span>이메일</span>
+                </div>
+                
+                <!-- Google MCP -->
+                <div class="genspark-icon-card" onclick="openGoogleMCP()">
+                    <div class="genspark-icon-wrapper" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1));">
+                        <i class="fab fa-google" style="color: #ef4444;"></i>
+                    </div>
+                    <span>Google AI</span>
+                </div>
+                
+                <!-- Budget -->
+                <div class="genspark-icon-card" onclick="window.location.href='/budget.html'">
+                    <div class="genspark-icon-wrapper" style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(168, 85, 247, 0.1));">
+                        <i class="fas fa-dollar-sign" style="color: #a855f7;"></i>
+                    </div>
+                    <span>예산</span>
+                </div>
+                
+                <!-- Analytics -->
+                <div class="genspark-icon-card" onclick="window.location.href='/analytics-dashboard.html'">
+                    <div class="genspark-icon-wrapper" style="background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(234, 179, 8, 0.1));">
+                        <i class="fas fa-chart-bar" style="color: #eab308;"></i>
+                    </div>
+                    <span>분석</span>
+                </div>
+                
+                <!-- Tools -->
+                <div class="genspark-icon-card" onclick="window.location.href='/workflow-tools.html'">
+                    <div class="genspark-icon-wrapper" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0.1));">
+                        <i class="fas fa-tools" style="color: #6366f1;"></i>
+                    </div>
+                    <span>도구</span>
+                </div>
+                
+                <!-- Settings -->
+                <div class="genspark-icon-card" onclick="openDashboardSettings()">
+                    <div class="genspark-icon-wrapper" style="background: linear-gradient(135deg, rgba(107, 114, 128, 0.2), rgba(107, 114, 128, 0.1));">
+                        <i class="fas fa-cog" style="color: #6b7280;"></i>
+                    </div>
+                    <span>설정</span>
+                </div>
+            </div>
+        </section>
         
         <!-- Hero Section - 오늘의 핵심 업무 (통합) -->
         <section class="hero-mission section-hero" id="hero-mission">
@@ -5058,6 +5282,168 @@
             
             onboardingTour.init(tourSteps);
         });
+    </script>
+    
+    <!-- Genspark AI Search Functions (NEW) -->
+    <script>
+        // Set search query from suggestion buttons
+        function setGensparkQuery(query) {
+            const searchInput = document.getElementById('genspark-ai-search');
+            if (searchInput) {
+                searchInput.value = query;
+                searchInput.focus();
+            }
+        }
+        
+        // Handle AI search
+        async function handleGensparkSearch() {
+            const searchInput = document.getElementById('genspark-ai-search');
+            const query = searchInput ? searchInput.value.trim() : '';
+            
+            if (!query) {
+                alert('검색어를 입력해주세요.');
+                return;
+            }
+            
+            console.log('[Genspark AI] Search query:', query);
+            
+            // Show loading notification
+            if (window.notificationSystem) {
+                window.notificationSystem.showInAppNotification(
+                    `🤖 AI 처리 중: "${query}"`, 
+                    'info'
+                );
+            }
+            
+            try {
+                // Determine the action based on query
+                if (query.includes('라벨') || query.includes('label')) {
+                    handleLabelGeneration(query);
+                } else if (query.includes('우선순위') || query.includes('priority')) {
+                    handlePriorityQuery(query);
+                } else if (query.includes('SNS') || query.includes('소셜')) {
+                    handleSNSGeneration(query);
+                } else if (query.includes('이메일') || query.includes('email')) {
+                    handleEmailGeneration(query);
+                } else if (query.includes('리포트') || query.includes('report')) {
+                    handleReportGeneration(query);
+                } else {
+                    // Generic AI query - show Google MCP modal
+                    handleGenericAIQuery(query);
+                }
+            } catch (error) {
+                console.error('[Genspark AI] Error:', error);
+                if (window.notificationSystem) {
+                    window.notificationSystem.showInAppNotification(
+                        '❌ AI 처리 중 오류가 발생했습니다.', 
+                        'error'
+                    );
+                }
+            }
+        }
+        
+        // Handle label generation
+        function handleLabelGeneration(query) {
+            console.log('[Genspark AI] Label generation:', query);
+            // Open Google MCP modal for label generation
+            if (window.notificationSystem) {
+                window.notificationSystem.showInAppNotification(
+                    '🏷️ 전시 라벨 생성 기능이 곧 제공됩니다!', 
+                    'success'
+                );
+            }
+        }
+        
+        // Handle priority query
+        function handlePriorityQuery(query) {
+            console.log('[Genspark AI] Priority query:', query);
+            // Scroll to mission section
+            const missionSection = document.getElementById('hero-mission');
+            if (missionSection) {
+                missionSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                missionSection.style.animation = 'pulse 1s ease-in-out';
+                setTimeout(() => {
+                    missionSection.style.animation = '';
+                }, 1000);
+            }
+            
+            if (window.notificationSystem) {
+                window.notificationSystem.showInAppNotification(
+                    '🎯 오늘의 우선순위 작업을 확인하세요!', 
+                    'info'
+                );
+            }
+        }
+        
+        // Handle SNS generation
+        function handleSNSGeneration(query) {
+            console.log('[Genspark AI] SNS generation:', query);
+            if (window.notificationSystem) {
+                window.notificationSystem.showInAppNotification(
+                    '📱 SNS 콘텐츠 생성 기능이 곧 제공됩니다!', 
+                    'success'
+                );
+            }
+        }
+        
+        // Handle email generation
+        function handleEmailGeneration(query) {
+            console.log('[Genspark AI] Email generation:', query);
+            if (window.notificationSystem) {
+                window.notificationSystem.showInAppNotification(
+                    '📧 이메일 초안 생성 기능이 곧 제공됩니다!', 
+                    'success'
+                );
+            }
+        }
+        
+        // Handle report generation
+        function handleReportGeneration(query) {
+            console.log('[Genspark AI] Report generation:', query);
+            if (window.notificationSystem) {
+                window.notificationSystem.showInAppNotification(
+                    '📄 일일 리포트 생성 기능이 곧 제공됩니다!', 
+                    'success'
+                );
+            }
+        }
+        
+        // Handle generic AI query
+        function handleGenericAIQuery(query) {
+            console.log('[Genspark AI] Generic query:', query);
+            if (window.notificationSystem) {
+                window.notificationSystem.showInAppNotification(
+                    `🤖 AI 어시스턴트: "${query}" 처리 중...`, 
+                    'info'
+                );
+            }
+            
+            // Show Google MCP modal (will be implemented later)
+            setTimeout(() => {
+                if (window.notificationSystem) {
+                    window.notificationSystem.showInAppNotification(
+                        '✨ Google MCP 통합이 곧 제공됩니다!', 
+                        'success'
+                    );
+                }
+            }, 1500);
+        }
+        
+        // Open Google MCP interface
+        function openGoogleMCP() {
+            console.log('[Genspark AI] Opening Google MCP...');
+            if (window.notificationSystem) {
+                window.notificationSystem.showInAppNotification(
+                    '🚀 Google AI Studio 통합 페이지로 이동합니다!', 
+                    'info'
+                );
+            }
+            
+            // Redirect to Google MCP page (will be created)
+            setTimeout(() => {
+                window.location.href = '/google-mcp.html';
+            }, 500);
+        }
     </script>
 </body>
 </html>
