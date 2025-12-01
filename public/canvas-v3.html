@@ -176,9 +176,10 @@
         }
         
         .panel-title {
-            font-size: 1.125rem;
-            font-weight: 600;
+            font-size: 1.25rem;
+            font-weight: 700;
             margin-bottom: 1rem;
+            letter-spacing: -0.02em;
         }
         
         .search-box {
@@ -263,9 +264,10 @@
         }
         
         .node-icon {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             color: var(--museum-purple);
+            flex-shrink: 0;
         }
         
         /* Canvas Area */
@@ -455,6 +457,12 @@
         .empty-icon {
             font-size: 4rem;
             margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
         
         .empty-text {
@@ -477,7 +485,7 @@
             background: rgba(10, 10, 15, 0.98);
             backdrop-filter: blur(20px);
             border-left: 1px solid var(--border-light);
-            z-index: 999;
+            z-index: 1001;
             display: flex;
             flex-direction: column;
             transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -914,8 +922,17 @@
         <!-- Empty State -->
         <div class="empty-state" id="empty-state">
             <div class="empty-icon">🎨</div>
-            <div class="empty-text">Visual Workflow Canvas</div>
-            <div class="empty-hint">Drag nodes from left panel to start building</div>
+            <div class="empty-text" style="font-weight: 700; letter-spacing: -0.02em;">Visual Workflow Canvas</div>
+            <div class="empty-hint" style="font-weight: 500; color: rgba(255, 255, 255, 0.6); margin-top: 0.75rem;">
+                <i class="fas fa-arrow-left" style="margin-right: 0.5rem; animation: bounce-left 2s ease-in-out infinite;"></i>
+                왼쪽 패널에서 노드를 드래그하여 시작하세요
+            </div>
+            <style>
+                @keyframes bounce-left {
+                    0%, 100% { transform: translateX(0); }
+                    50% { transform: translateX(-10px); }
+                }
+            </style>
         </div>
     </div>
     

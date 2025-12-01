@@ -83,8 +83,8 @@
         }
         
         .nav-logo img {
-            width: 48px;
-            height: 48px;
+            width: 44px;
+            height: 44px;
             border-radius: 12px;
             background: transparent;
             mix-blend-mode: screen;
@@ -229,12 +229,14 @@
         }
         
         .hero-title {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 800;
             background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 0.75rem;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
         }
         
         .dday-counter {
@@ -536,13 +538,13 @@
         }
         
         .module-icon {
-            width: 80px;
-            height: 80px;
+            width: 64px;
+            height: 64px;
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
+            font-size: 1.25rem;
             color: white;
             flex-shrink: 0;
             position: relative;
@@ -775,14 +777,15 @@
         }
         
         .genspark-icon-card span {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.875rem;
-            font-weight: 500;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
         }
         
         /* Responsive */
         @media (max-width: 768px) {
-            .hero-title { font-size: 1.4rem; }
+            .hero-title { font-size: 1.75rem; }
             .hero-mission { padding: 2rem; }
             .timeline-day { width: 150px; }
             
@@ -791,9 +794,19 @@
             }
             
             .module-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 1.1rem;
+                width: 56px;
+                height: 56px;
+                font-size: 1rem;
+            }
+            
+            .genspark-icon-wrapper {
+                width: 48px !important;
+                height: 48px !important;
+                font-size: 1.25rem !important;
+            }
+            
+            .panel-title {
+                font-size: 1.125rem !important;
             }
             
             section[class^="section-"] {
@@ -803,6 +816,11 @@
             
             #genspark-search-section {
                 padding: 1.5rem !important;
+                position: sticky;
+                top: 70px;
+                z-index: 900;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(20px);
             }
             
             .genspark-suggestion-btn {
@@ -1075,15 +1093,16 @@
                     </div>
                 </div>
                 
-                <!-- In Progress -->
-                <div class="glass-card" style="text-align: center; position: relative; overflow: hidden; padding: 1rem;">
-                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at center, rgba(6, 182, 212, 0.1), transparent); pointer-events: none;"></div>
+                <!-- In Progress - PRIMARY HIGHLIGHT -->
+                <div class="glass-card" style="text-align: center; position: relative; overflow: hidden; padding: 1rem; border: 2px solid rgba(139, 92, 246, 0.5); box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);">
+                    <div style="position: absolute; top: -20px; right: -20px; background: linear-gradient(135deg, #8b5cf6, #ec4899); width: 60px; height: 60px; border-radius: 50%; opacity: 0.1;"></div>
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at center, rgba(139, 92, 246, 0.2), transparent); pointer-events: none;"></div>
                     <div style="position: relative; z-index: 1;">
-                        <div style="font-size: 1.4rem; margin-bottom: 0.5rem;">
-                            <i class="fas fa-spinner" style="color: var(--cyan);"></i>
+                        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">
+                            <i class="fas fa-spinner fa-pulse" style="color: var(--museum-purple);"></i>
                         </div>
-                        <div style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.25rem;" id="stat-inprogress">0</div>
-                        <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.8rem;">진행중</div>
+                        <div style="font-size: 2rem; font-weight: 800; margin-bottom: 0.25rem; color: var(--museum-purple);" id="stat-inprogress">0</div>
+                        <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.875rem; font-weight: 600;">진행중 🔥</div>
                     </div>
                 </div>
                 
