@@ -175,7 +175,7 @@ class NotificationAutomation {
 
         topAlerts.forEach(alert => {
             // Show in-app notification
-            if (window.notificationSystem) {
+            if (window.notificationSystem && typeof window.notificationSystem.show === 'function') {
                 const icon = this.getAlertIcon(alert.type);
                 const color = this.getAlertColor(alert.priority);
                 
@@ -184,6 +184,9 @@ class NotificationAutomation {
                     alert.detail,
                     alert.priority === 'high' ? 'error' : alert.priority === 'medium' ? 'warning' : 'info'
                 );
+            } else {
+                // Fallback to console.log if notificationSystem not available
+                console.log(`📢 Alert: ${alert.message} - ${alert.detail}`);
             }
 
             // Show browser notification for high priority

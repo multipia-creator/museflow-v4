@@ -92,7 +92,7 @@
         }
         
         .nav-logo-text {
-            font-size: 1.1rem;
+            font-size: 1.5rem;
             font-weight: 800;
             background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
             -webkit-background-clip: text;
@@ -234,7 +234,7 @@
             background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
         }
         
         .dday-counter {
@@ -245,7 +245,7 @@
             border: 2px solid rgba(239, 68, 68, 0.5);
             border-radius: 16px;
             padding: 1rem 1.5rem;
-            font-size: 1.1rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #fca5a5;
             animation: pulse-dday 2s ease-in-out infinite;
@@ -265,7 +265,7 @@
             display: flex;
             align-items: center;
             gap: 1.5rem;
-            margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
             transition: all 0.3s ease;
             cursor: pointer;
         }
@@ -284,7 +284,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1.5rem;
             color: #fca5a5;
         }
         
@@ -339,9 +339,9 @@
         }
         
         .day-date {
-            font-size: 1.1rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
         }
         
         .day-event {
@@ -411,7 +411,7 @@
             border-radius: 100px;
             font-size: 0.875rem;
             font-weight: 700;
-            margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
         }
         
         .type-permanent {
@@ -542,7 +542,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
+            font-size: 2rem;
             color: white;
             flex-shrink: 0;
             position: relative;
@@ -566,7 +566,7 @@
         .module-description {
             font-size: 0.875rem;
             color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
             line-height: 1.5;
         }
         
@@ -589,7 +589,7 @@
         }
         
         .stat-value {
-            font-size: 1.1rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: white;
         }
@@ -598,7 +598,7 @@
             position: relative;
             z-index: 1;
             color: rgba(255, 255, 255, 0.3);
-            font-size: 1.1rem;
+            font-size: 1.5rem;
             transition: all 0.3s;
         }
         
@@ -716,7 +716,7 @@
         
         /* Responsive */
         @media (max-width: 768px) {
-            .hero-title { font-size: 1.4rem; }
+            .hero-title { font-size: 2rem; }
             .hero-mission { padding: 2rem; }
             .timeline-day { width: 150px; }
             
@@ -727,12 +727,12 @@
             .module-icon {
                 width: 60px;
                 height: 60px;
-                font-size: 1.1rem;
+                font-size: 1.5rem;
             }
             
             section[class^="section-"] {
                 padding: 2rem 0;
-                margin-bottom: 0.75rem;
+                margin-bottom: 1.5rem;
             }
         }
     </style>
@@ -767,7 +767,7 @@
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem;">
                     <!-- Left: Mission -->
                     <div style="flex: 1; min-width: 300px;">
-                        <h2 id="mission-title" style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.75rem; color: white;">
+                        <h2 id="mission-title" style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem; color: white;">
                             로딩 중...
                         </h2>
                         <div id="mission-dday"></div>
@@ -809,7 +809,7 @@
         <section class="section-quickstart">
             <div class="glass-card" style="padding: 1rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                    <h3 style="font-size: 1rem; font-weight: 600; color: white; display: flex; align-items: center; gap: 0.5rem;">
+                    <h3 style="font-size: 1.25rem; font-weight: 600; color: white; display: flex; align-items: center; gap: 0.5rem;">
                         <i class="fas fa-rocket" style="color: var(--museum-purple);"></i>
                         빠른 시작
                     </h3>
@@ -834,7 +834,7 @@
 
         <!-- Overview Statistics Cards -->
         <section class="section-stats">
-            <h2 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
                 <i class="fas fa-chart-pie" style="color: var(--museum-purple);"></i>
                 프로젝트 현황
             </h2>
@@ -843,10 +843,10 @@
                 <div class="glass-card" style="text-align: center; position: relative; overflow: hidden; padding: 1rem;">
                     <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at center, rgba(139, 92, 246, 0.1), transparent); pointer-events: none;"></div>
                     <div style="position: relative; z-index: 1;">
-                        <div style="font-size: 1.4rem; margin-bottom: 0.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">
                             <i class="fas fa-project-diagram" style="color: var(--museum-purple);"></i>
                         </div>
-                        <div style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.25rem;" id="stat-total">0</div>
+                        <div style="font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem;" id="stat-total">0</div>
                         <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.8rem;">전체 프로젝트</div>
                     </div>
                 </div>
@@ -855,10 +855,10 @@
                 <div class="glass-card" style="text-align: center; position: relative; overflow: hidden; padding: 1rem;">
                     <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at center, rgba(6, 182, 212, 0.1), transparent); pointer-events: none;"></div>
                     <div style="position: relative; z-index: 1;">
-                        <div style="font-size: 1.4rem; margin-bottom: 0.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">
                             <i class="fas fa-spinner" style="color: var(--cyan);"></i>
                         </div>
-                        <div style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.25rem;" id="stat-inprogress">0</div>
+                        <div style="font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem;" id="stat-inprogress">0</div>
                         <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.8rem;">진행중</div>
                     </div>
                 </div>
@@ -867,10 +867,10 @@
                 <div class="glass-card" style="text-align: center; position: relative; overflow: hidden; padding: 1rem;">
                     <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at center, rgba(16, 185, 129, 0.1), transparent); pointer-events: none;"></div>
                     <div style="position: relative; z-index: 1;">
-                        <div style="font-size: 1.4rem; margin-bottom: 0.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">
                             <i class="fas fa-check-circle" style="color: var(--green);"></i>
                         </div>
-                        <div style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.25rem;" id="stat-completed">0</div>
+                        <div style="font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem;" id="stat-completed">0</div>
                         <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.8rem;">완료</div>
                     </div>
                 </div>
@@ -879,10 +879,10 @@
                 <div class="glass-card" style="text-align: center; position: relative; overflow: hidden; padding: 1rem;">
                     <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at center, rgba(245, 158, 11, 0.1), transparent); pointer-events: none;"></div>
                     <div style="position: relative; z-index: 1;">
-                        <div style="font-size: 1.4rem; margin-bottom: 0.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">
                             <i class="fas fa-calendar-day" style="color: var(--museum-gold);"></i>
                         </div>
-                        <div style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.25rem;" id="stat-duethismonth">0</div>
+                        <div style="font-size: 2rem; font-weight: 700; margin-bottom: 0.25rem;" id="stat-duethismonth">0</div>
                         <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.8rem;">이번 달 마감</div>
                     </div>
                 </div>
@@ -891,8 +891,8 @@
 
         <!-- Project Calendar (FullCalendar) -->
         <section class="section-calendar">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 1rem;">
-                <h2 style="font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                <h2 style="font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;">
                     <i class="fas fa-calendar-alt" style="color: var(--museum-purple);"></i>
                     프로젝트 캘린더
                 </h2>
@@ -907,7 +907,7 @@
 
         <!-- Advanced Analytics -->
         <section class="section-analytics" style="background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border-radius: 24px; padding: 2rem; margin-bottom: 2rem; border: 1px solid rgba(255, 255, 255, 0.1);">
-            <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.75rem;">
+            <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
                 <i class="fas fa-chart-line" style="color: #10b981;"></i>
                 프로젝트 분석
             </h2>
@@ -916,8 +916,8 @@
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
                 <div style="background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 16px; padding: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
-                        <i class="fas fa-check-circle" style="font-size: 1.4rem; color: rgba(255, 255, 255, 0.9);"></i>
-                        <span id="completion-rate" style="font-size: 1.4rem; font-weight: 700; color: white;">0%</span>
+                        <i class="fas fa-check-circle" style="font-size: 2rem; color: rgba(255, 255, 255, 0.9);"></i>
+                        <span id="completion-rate" style="font-size: 2rem; font-weight: 700; color: white;">0%</span>
                     </div>
                     <div style="color: rgba(255, 255, 255, 0.9); font-weight: 600;">완료율</div>
                     <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem; margin-top: 0.25rem;">전체 프로젝트 대비</div>
@@ -925,8 +925,8 @@
                 
                 <div style="background: linear-gradient(135deg, #10b981, #059669); border-radius: 16px; padding: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
-                        <i class="fas fa-hourglass-half" style="font-size: 1.4rem; color: rgba(255, 255, 255, 0.9);"></i>
-                        <span id="avg-duration" style="font-size: 1.4rem; font-weight: 700; color: white;">0일</span>
+                        <i class="fas fa-hourglass-half" style="font-size: 2rem; color: rgba(255, 255, 255, 0.9);"></i>
+                        <span id="avg-duration" style="font-size: 2rem; font-weight: 700; color: white;">0일</span>
                     </div>
                     <div style="color: rgba(255, 255, 255, 0.9); font-weight: 600;">평균 기간</div>
                     <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem; margin-top: 0.25rem;">프로젝트당</div>
@@ -934,8 +934,8 @@
                 
                 <div style="background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 16px; padding: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
-                        <i class="fas fa-fire" style="font-size: 1.4rem; color: rgba(255, 255, 255, 0.9);"></i>
-                        <span id="active-projects" style="font-size: 1.4rem; font-weight: 700; color: white;">0</span>
+                        <i class="fas fa-fire" style="font-size: 2rem; color: rgba(255, 255, 255, 0.9);"></i>
+                        <span id="active-projects" style="font-size: 2rem; font-weight: 700; color: white;">0</span>
                     </div>
                     <div style="color: rgba(255, 255, 255, 0.9); font-weight: 600;">진행 중</div>
                     <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem; margin-top: 0.25rem;">현재 활성 프로젝트</div>
@@ -943,8 +943,8 @@
                 
                 <div style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 16px; padding: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
-                        <i class="fas fa-calendar-check" style="font-size: 1.4rem; color: rgba(255, 255, 255, 0.9);"></i>
-                        <span id="this-month-count" style="font-size: 1.4rem; font-weight: 700; color: white;">0</span>
+                        <i class="fas fa-calendar-check" style="font-size: 2rem; color: rgba(255, 255, 255, 0.9);"></i>
+                        <span id="this-month-count" style="font-size: 2rem; font-weight: 700; color: white;">0</span>
                     </div>
                     <div style="color: rgba(255, 255, 255, 0.9); font-weight: 600;">이번 달</div>
                     <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem; margin-top: 0.25rem;">신규 프로젝트</div>
@@ -955,7 +955,7 @@
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 1.5rem;">
                 <!-- Monthly Trend Chart -->
                 <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 1.5rem;">
-                    <h3 style="font-size: 0.95rem; font-weight: 600; color: white; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; color: white; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
                         <i class="fas fa-chart-line" style="color: #3b82f6;"></i>
                         월별 프로젝트 트렌드
                     </h3>
@@ -964,7 +964,7 @@
 
                 <!-- Type Distribution Chart -->
                 <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 1.5rem;">
-                    <h3 style="font-size: 0.95rem; font-weight: 600; color: white; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; color: white; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
                         <i class="fas fa-chart-pie" style="color: #10b981;"></i>
                         유형별 분포
                     </h3>
@@ -973,7 +973,7 @@
 
                 <!-- Phase Progress Chart -->
                 <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 1.5rem;">
-                    <h3 style="font-size: 0.95rem; font-weight: 600; color: white; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; color: white; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
                         <i class="fas fa-chart-bar" style="color: #f59e0b;"></i>
                         단계별 진행 현황
                     </h3>
@@ -982,7 +982,7 @@
 
                 <!-- Timeline Status Chart -->
                 <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 1.5rem;">
-                    <h3 style="font-size: 0.95rem; font-weight: 600; color: white; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; color: white; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
                         <i class="fas fa-tasks" style="color: #8b5cf6;"></i>
                         일정 상태
                     </h3>
@@ -993,8 +993,8 @@
 
         <!-- Projects Management (통합: 모든 프로젝트 + 전시 인사이트 + CRUD) -->
         <section class="section-projects">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 1rem;">
-                <h2 style="font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 0.75rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <h2 style="font-size: 1.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.75rem;">
                     <i class="fas fa-folder-open" style="color: #06b6d4;"></i>
                     프로젝트 관리
                 </h2>
@@ -1017,7 +1017,7 @@
                     </a>
                 </div>
             </div>
-            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
                 <select id="type-filter" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); padding: 0.75rem 1.25rem; border-radius: 12px; color: white; cursor: pointer; font-size: 0.875rem;">
                     <option value="all">전체 유형</option>
                     <option value="exhibition">전시</option>
@@ -1064,7 +1064,7 @@
             </div>
             
             <!-- Active Filters Display -->
-            <div id="active-filters" style="display: none; margin-bottom: 0.75rem; padding: 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px;">
+            <div id="active-filters" style="display: none; margin-bottom: 1rem; padding: 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                     <span style="color: #a78bfa; font-weight: 600; font-size: 0.875rem;">
                         <i class="fas fa-filter"></i> 활성 필터
@@ -1081,8 +1081,8 @@
             
             <!-- Timeline View -->
             <div id="projects-timeline" style="display: none; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 2rem; min-height: 600px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                    <h3 style="font-size: 1rem; font-weight: 600; color: white; display: flex; align-items: center; gap: 0.75rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="font-size: 1.25rem; font-weight: 600; color: white; display: flex; align-items: center; gap: 0.75rem;">
                         <i class="fas fa-stream" style="color: #06b6d4;"></i>
                         프로젝트 타임라인
                     </h3>
@@ -1101,14 +1101,14 @@
 
         <!-- Team & Collaboration (통합) -->
         <section class="section-team">
-            <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.75rem;">
+            <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
                 <i class="fas fa-users" style="color: #ec4899;"></i>
                 팀 & 협업
             </h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
                 <!-- Team Activity Feed -->
                 <div class="glass-card">
-                    <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
                         <i class="fas fa-stream" style="color: #ec4899;"></i>
                         팀 활동
                     </h3>
@@ -1119,7 +1119,7 @@
                 
                 <!-- Top Contributors -->
                 <div class="glass-card">
-                    <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
                         <i class="fas fa-trophy" style="color: #f59e0b;"></i>
                         이번 주 우수 기여자
                     </h3>
@@ -1132,14 +1132,14 @@
 
         <!-- Analytics Charts -->
         <section class="section-analytics">
-            <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.75rem;">
+            <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
                 <i class="fas fa-chart-line" style="color: var(--museum-purple);"></i>
                 데이터 분석
             </h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 1.5rem;">
                 <!-- Chart 1: Monthly Trend -->
                 <div class="glass-card">
-                    <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
                         <i class="fas fa-chart-line" style="color: #8b5cf6;"></i>
                         월별 전시 트렌드
                     </h3>
@@ -1148,7 +1148,7 @@
                 
                 <!-- Chart 2: Type Distribution -->
                 <div class="glass-card">
-                    <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
                         <i class="fas fa-chart-pie" style="color: #ec4899;"></i>
                         전시 유형 분포
                     </h3>
@@ -1157,7 +1157,7 @@
                 
                 <!-- Chart 3: Budget Usage -->
                 <div class="glass-card">
-                    <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
                         <i class="fas fa-chart-bar" style="color: #f59e0b;"></i>
                         예산 사용 현황
                     </h3>
@@ -1166,7 +1166,7 @@
                 
                 <!-- Chart 4: Phase Distribution -->
                 <div class="glass-card">
-                    <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
                         <i class="fas fa-tasks" style="color: #10b981;"></i>
                         진행 단계 분포
                     </h3>
@@ -1461,11 +1461,11 @@
                         </div>
                         <div class="card-content">
                             <span class="card-type ${type.class}">${type.icon} ${type.label}</span>
-                            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem;">${p.title}</h3>
-                            <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 0.75rem; line-height: 1.6;">
+                            <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem;">${p.title}</h3>
+                            <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 1rem; line-height: 1.6;">
                                 ${p.description || '설명 없음'}
                             </p>
-                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; font-size: 0.875rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 0.75rem;">
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; font-size: 0.875rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 1rem;">
                                 ${p.location ? `<div><i class="fas fa-map-marker-alt"></i> ${p.location}</div>` : ''}
                                 ${p.curator ? `<div><i class="fas fa-user-tie"></i> ${p.curator}</div>` : ''}
                                 ${p.artwork_count ? `<div><i class="fas fa-palette"></i> 작품 ${p.artwork_count}점</div>` : ''}
@@ -2172,8 +2172,8 @@
             if (filtered.length === 0) {
                 grid.innerHTML = `
                     <div style="text-align: center; padding: 4rem 2rem; grid-column: 1 / -1;">
-                        <div style="font-size: 4rem; margin-bottom: 0.75rem; opacity: 0.5;">🎨</div>
-                        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.8);">전시가 없습니다</h3>
+                        <div style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;">🎨</div>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.8);">전시가 없습니다</h3>
                         <p style="color: rgba(255, 255, 255, 0.6);">새 전시를 만들어보세요!</p>
                     </div>
                 `;
@@ -2211,18 +2211,18 @@
                 return `
                     <div class="glass-card" style="padding: 0; overflow: hidden; cursor: default;">
                         <div style="padding: 1.5rem; padding-bottom: 1rem;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                                 <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                    <button onclick="event.stopPropagation(); toggleFavorite(${project.id})" id="fav-${project.id}" style="background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                                    <button onclick="event.stopPropagation(); toggleFavorite(${project.id})" id="fav-${project.id}" style="background: none; border: none; cursor: pointer; font-size: 1.25rem; padding: 0; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
                                         <i class="fa${isFavorite(project.id) ? 's' : 'r'} fa-star" style="color: ${isFavorite(project.id) ? '#fbbf24' : 'rgba(255,255,255,0.3)'}"></i>
                                     </button>
                                     <span style="background: rgba(139, 92, 246, 0.2); color: #a78bfa; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">${type.icon} ${type.label}</span>
                                 </div>
                                 ${ddayBadge}
                             </div>
-                            <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; color: white;">${project.title}</h3>
-                            <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 0.75rem; line-height: 1.5;">${project.description || '설명이 없습니다.'}</p>
-                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin-bottom: 0.75rem; font-size: 0.75rem; color: rgba(255, 255, 255, 0.7);">
+                            <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; color: white;">${project.title}</h3>
+                            <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 1rem; line-height: 1.5;">${project.description || '설명이 없습니다.'}</p>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin-bottom: 1rem; font-size: 0.75rem; color: rgba(255, 255, 255, 0.7);">
                                 ${project.location ? `<div><i class="fas fa-map-marker-alt"></i> ${project.location}</div>` : '<div></div>'}
                                 ${project.curator ? `<div><i class="fas fa-user-tie"></i> ${project.curator}</div>` : '<div></div>'}
                                 ${project.artwork_count ? `<div><i class="fas fa-palette"></i> ${project.artwork_count}점</div>` : '<div></div>'}
@@ -2613,11 +2613,11 @@
             modal.innerHTML = `
                 <div style="max-width: 1000px; margin: 0 auto; background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 24px; padding: 2rem; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h2 style="font-size: 1rem; font-weight: 700; color: white;">
+                        <h2 style="font-size: 1.75rem; font-weight: 700; color: white;">
                             <i class="fas fa-robot" style="color: #8b5cf6;"></i>
                             AI 프로젝트 추천
                         </h2>
-                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.1rem; cursor: pointer; padding: 0.5rem;">&times;</button>
+                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.5rem; cursor: pointer; padding: 0.5rem;">&times;</button>
                     </div>
                     
                     <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem;">
@@ -2631,9 +2631,9 @@
                                 <div style="background: ${color.bg}; border: 1px solid ${color.border}; border-radius: 12px; padding: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
                                     <div style="flex: 1;">
                                         <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
-                                            <span style="font-size: 1.4rem;">${rec.icon}</span>
+                                            <span style="font-size: 2rem;">${rec.icon}</span>
                                             <div>
-                                                <h3 style="color: white; font-size: 0.95rem; font-weight: 600;">${rec.project.title}</h3>
+                                                <h3 style="color: white; font-size: 1.125rem; font-weight: 600;">${rec.project.title}</h3>
                                                 <span style="background: rgba(139, 92, 246, 0.2); color: #a78bfa; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">
                                                     ${rec.project.type}
                                                 </span>
@@ -2805,77 +2805,77 @@
     <div id="template-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 2000; padding: 2rem; overflow-y: auto;">
         <div style="max-width: 900px; margin: 0 auto; background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 24px; padding: 2rem; border: 1px solid rgba(255, 255, 255, 0.1);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                <h2 style="font-size: 1rem; font-weight: 700; color: white;">📋 템플릿 선택</h2>
-                <button onclick="closeTemplateModal()" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.1rem; cursor: pointer; padding: 0.5rem;">&times;</button>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: white;">📋 템플릿 선택</h2>
+                <button onclick="closeTemplateModal()" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.5rem; cursor: pointer; padding: 0.5rem;">&times;</button>
             </div>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
                 <!-- Exhibition -->
                 <div onclick="createProjectFromTemplate('exhibition')" style="background: rgba(139, 92, 246, 0.1); border: 2px solid rgba(139, 92, 246, 0.3); border-radius: 16px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(139, 92, 246, 0.6)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(139, 92, 246, 0.3)'; this.style.transform='translateY(0)'">
                     <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎨</div>
-                    <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">전시 관리</h3>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">전시 관리</h3>
                     <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">전시 기획, 설치, 운영 및 평가</p>
                 </div>
                 
                 <!-- Education -->
                 <div onclick="createProjectFromTemplate('education')" style="background: rgba(6, 182, 212, 0.1); border: 2px solid rgba(6, 182, 212, 0.3); border-radius: 16px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(6, 182, 212, 0.6)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(6, 182, 212, 0.3)'; this.style.transform='translateY(0)'">
                     <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎓</div>
-                    <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">교육 프로그램</h3>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">교육 프로그램</h3>
                     <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">교육 프로그램 개발 및 실행</p>
                 </div>
                 
                 <!-- Archive -->
                 <div onclick="createProjectFromTemplate('archive')" style="background: rgba(16, 185, 129, 0.1); border: 2px solid rgba(16, 185, 129, 0.3); border-radius: 16px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(16, 185, 129, 0.6)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(16, 185, 129, 0.3)'; this.style.transform='translateY(0)'">
                     <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📦</div>
-                    <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">수집 & 보존</h3>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">수집 & 보존</h3>
                     <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">유물 수집, 등록 및 보존</p>
                 </div>
                 
                 <!-- Publication -->
                 <div onclick="createProjectFromTemplate('publication')" style="background: rgba(245, 158, 11, 0.1); border: 2px solid rgba(245, 158, 11, 0.3); border-radius: 16px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(245, 158, 11, 0.6)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(245, 158, 11, 0.3)'; this.style.transform='translateY(0)'">
                     <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📚</div>
-                    <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">출판 & 콘텐츠</h3>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">출판 & 콘텐츠</h3>
                     <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">도록 및 콘텐츠 제작</p>
                 </div>
                 
                 <!-- Research -->
                 <div onclick="createProjectFromTemplate('research')" style="background: rgba(236, 72, 153, 0.1); border: 2px solid rgba(236, 72, 153, 0.3); border-radius: 16px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(236, 72, 153, 0.6)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(236, 72, 153, 0.3)'; this.style.transform='translateY(0)'">
                     <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔬</div>
-                    <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">연구 & 조사</h3>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">연구 & 조사</h3>
                     <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">학술 연구 및 조사</p>
                 </div>
                 
                 <!-- Admin -->
                 <div onclick="createProjectFromTemplate('admin')" style="background: rgba(99, 102, 241, 0.1); border: 2px solid rgba(99, 102, 241, 0.3); border-radius: 16px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(99, 102, 241, 0.6)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(99, 102, 241, 0.3)'; this.style.transform='translateY(0)'">
                     <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🏛️</div>
-                    <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">행정 & 운영</h3>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">행정 & 운영</h3>
                     <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">예산, 인사 및 시설 관리</p>
                 </div>
 
                 <!-- Digital Archive -->
                 <div onclick="createProjectFromTemplate('digital_archive')" style="background: rgba(20, 184, 166, 0.1); border: 2px solid rgba(20, 184, 166, 0.3); border-radius: 16px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(20, 184, 166, 0.6)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(20, 184, 166, 0.3)'; this.style.transform='translateY(0)'">
                     <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">💾</div>
-                    <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">디지털 아카이브</h3>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">디지털 아카이브</h3>
                     <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">소장품 디지털화 및 DB 구축</p>
                 </div>
 
                 <!-- Marketing -->
                 <div onclick="createProjectFromTemplate('marketing')" style="background: rgba(244, 63, 94, 0.1); border: 2px solid rgba(244, 63, 94, 0.3); border-radius: 16px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(244, 63, 94, 0.6)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(244, 63, 94, 0.3)'; this.style.transform='translateY(0)'">
                     <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📢</div>
-                    <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">마케팅 캠페인</h3>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">마케팅 캠페인</h3>
                     <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">전시/프로그램 홍보 및 마케팅</p>
                 </div>
 
                 <!-- Conservation -->
                 <div onclick="createProjectFromTemplate('conservation')" style="background: rgba(139, 92, 246, 0.1); border: 2px solid rgba(139, 92, 246, 0.3); border-radius: 16px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(139, 92, 246, 0.6)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(139, 92, 246, 0.3)'; this.style.transform='translateY(0)'">
                     <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🧪</div>
-                    <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">보존과학</h3>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">보존과학</h3>
                     <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">유물 보존처리 및 과학조사</p>
                 </div>
 
                 <!-- Community -->
                 <div onclick="createProjectFromTemplate('community')" style="background: rgba(6, 182, 212, 0.1); border: 2px solid rgba(6, 182, 212, 0.3); border-radius: 16px; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.borderColor='rgba(6, 182, 212, 0.6)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(6, 182, 212, 0.3)'; this.style.transform='translateY(0)'">
                     <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🤝</div>
-                    <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">커뮤니티 협력</h3>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: white;">커뮤니티 협력</h3>
                     <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.6);">지역사회 연계 프로그램</p>
                 </div>
             </div>
@@ -2896,8 +2896,8 @@
     <div id="edit-project-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 2000; padding: 2rem; overflow-y: auto;">
         <div style="max-width: 700px; margin: 0 auto; background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 24px; padding: 2rem; border: 1px solid rgba(255, 255, 255, 0.1);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                <h2 style="font-size: 1rem; font-weight: 700; color: white;">✏️ 프로젝트 편집</h2>
-                <button onclick="closeEditModal()" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.1rem; cursor: pointer; padding: 0.5rem;">&times;</button>
+                <h2 style="font-size: 1.75rem; font-weight: 700; color: white;">✏️ 프로젝트 편집</h2>
+                <button onclick="closeEditModal()" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.5rem; cursor: pointer; padding: 0.5rem;">&times;</button>
             </div>
             
             <form id="edit-project-form" style="display: flex; flex-direction: column; gap: 1.5rem;">
@@ -2940,7 +2940,7 @@
                 
                 <!-- Budget -->
                 <div style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px; padding: 1.5rem;">
-                    <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.75rem; color: rgba(139, 92, 246, 1);">💰 예산 정보</h3>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; color: rgba(139, 92, 246, 1);">💰 예산 정보</h3>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                         <div>
                             <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: rgba(255, 255, 255, 0.9);">총 예산 (원)</label>
@@ -3045,11 +3045,11 @@
             modal.innerHTML = `
                 <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 2.5rem; border-radius: 20px; max-width: 800px; width: 90%; border: 1px solid rgba(255, 255, 255, 0.1); max-height: 90vh; overflow-y: auto;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h2 style="font-size: 1rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
+                        <h2 style="font-size: 1.75rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
                             <i class="fas fa-cog" style="color: #3b82f6;"></i>
                             커스텀 템플릿 관리
                         </h2>
-                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer;">✕</button>
+                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">✕</button>
                     </div>
                     
                     <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem;">
@@ -3061,7 +3061,7 @@
                             ${customTemplatesList.map(template => `
                                 <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
                                     <div style="display: flex; align-items: center; gap: 1rem;">
-                                        <div style="font-size: 1.4rem;">${template.icon}</div>
+                                        <div style="font-size: 2rem;">${template.icon}</div>
                                         <div>
                                             <div style="color: white; font-weight: 600; font-size: 1.1rem;">${template.name}</div>
                                             <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem;">${template.description}</div>
@@ -3080,14 +3080,14 @@
                         </div>
                     ` : `
                         <div style="text-align: center; padding: 3rem; color: rgba(255, 255, 255, 0.5);">
-                            <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 0.75rem;"></i>
+                            <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem;"></i>
                             <p>아직 커스텀 템플릿이 없습니다.</p>
                             <p style="font-size: 0.875rem;">프로젝트를 템플릿으로 저장하여 재사용하세요!</p>
                         </div>
                     `}
 
                     <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                        <h3 style="color: white; font-size: 0.95rem; font-weight: 600; margin-bottom: 0.75rem;">💡 템플릿 저장 방법</h3>
+                        <h3 style="color: white; font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem;">💡 템플릿 저장 방법</h3>
                         <ol style="color: rgba(255, 255, 255, 0.7); line-height: 1.8; padding-left: 1.5rem;">
                             <li>프로젝트 카드에서 <strong style="color: white;">"템플릿으로 저장"</strong> 버튼 클릭</li>
                             <li>템플릿 이름과 설명 입력</li>
@@ -3117,11 +3117,11 @@
             modal.innerHTML = `
                 <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 2.5rem; border-radius: 20px; max-width: 600px; width: 90%; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h2 style="font-size: 1rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
+                        <h2 style="font-size: 1.75rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
                             <i class="fas fa-tasks" style="color: #8b5cf6;"></i>
                             일괄 작업
                         </h2>
-                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer;">✕</button>
+                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">✕</button>
                     </div>
                     
                     <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem;">
@@ -3130,7 +3130,7 @@
 
                     <div style="display: flex; flex-direction: column; gap: 1rem;">
                         <button onclick="batchUpdatePhase()" style="background: linear-gradient(135deg, #3b82f6, #2563eb); border: none; padding: 1.25rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 1rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                            <i class="fas fa-sync-alt" style="font-size: 1.1rem;"></i>
+                            <i class="fas fa-sync-alt" style="font-size: 1.5rem;"></i>
                             <div style="text-align: left;">
                                 <div style="font-size: 1.1rem;">단계 일괄 변경</div>
                                 <div style="font-size: 0.85rem; opacity: 0.8;">여러 프로젝트의 단계를 한번에 변경</div>
@@ -3138,7 +3138,7 @@
                         </button>
 
                         <button onclick="batchUpdateType()" style="background: linear-gradient(135deg, #10b981, #059669); border: none; padding: 1.25rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 1rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                            <i class="fas fa-tag" style="font-size: 1.1rem;"></i>
+                            <i class="fas fa-tag" style="font-size: 1.5rem;"></i>
                             <div style="text-align: left;">
                                 <div style="font-size: 1.1rem;">유형 일괄 변경</div>
                                 <div style="font-size: 0.85rem; opacity: 0.8;">여러 프로젝트의 유형을 한번에 변경</div>
@@ -3146,7 +3146,7 @@
                         </button>
 
                         <button onclick="batchDeleteProjects()" style="background: linear-gradient(135deg, #ef4444, #dc2626); border: none; padding: 1.25rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 1rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                            <i class="fas fa-trash-alt" style="font-size: 1.1rem;"></i>
+                            <i class="fas fa-trash-alt" style="font-size: 1.5rem;"></i>
                             <div style="text-align: left;">
                                 <div style="font-size: 1.1rem;">프로젝트 일괄 삭제</div>
                                 <div style="font-size: 0.85rem; opacity: 0.8;">완료된 프로젝트를 한번에 삭제</div>
@@ -3154,7 +3154,7 @@
                         </button>
 
                         <button onclick="batchArchiveProjects()" style="background: linear-gradient(135deg, #f59e0b, #d97706); border: none; padding: 1.25rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 1rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                            <i class="fas fa-archive" style="font-size: 1.1rem;"></i>
+                            <i class="fas fa-archive" style="font-size: 1.5rem;"></i>
                             <div style="text-align: left;">
                                 <div style="font-size: 1.1rem;">프로젝트 일괄 보관</div>
                                 <div style="font-size: 0.85rem; opacity: 0.8;">완료된 프로젝트를 보관함으로 이동</div>
@@ -3344,11 +3344,11 @@
             modal.innerHTML = \`
                 <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 2.5rem; border-radius: 20px; max-width: 600px; width: 90%; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h2 style="font-size: 1rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
+                        <h2 style="font-size: 1.75rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
                             <i class="fas fa-save" style="color: #10b981;"></i>
                             템플릿으로 저장
                         </h2>
-                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer;">✕</button>
+                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">✕</button>
                     </div>
                     
                     <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem;">
@@ -3376,7 +3376,7 @@
                             </label>
                             <div style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 0.5rem;">
                                 ${['🎨', '🎓', '📦', '📚', '🔬', '🏛️', '💾', '📢', '🧪', '🤝', '🎭', '📋', '🌟', '💡', '🚀', '⚡'].map(icon => \`
-                                    <button onclick="selectTemplateIcon('\${icon}')" style="padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; font-size: 1.1rem; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.2)'; this.style.borderColor='rgba(139, 92, 246, 0.5)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor='rgba(255, 255, 255, 0.15)'">
+                                    <button onclick="selectTemplateIcon('\${icon}')" style="padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; font-size: 1.5rem; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.2)'; this.style.borderColor='rgba(139, 92, 246, 0.5)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor='rgba(255, 255, 255, 0.15)'">
                                         \${icon}
                                     </button>
                                 \`).join('')}
@@ -3493,11 +3493,11 @@
             modal.innerHTML = \`
                 <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 2.5rem; border-radius: 20px; max-width: 700px; width: 90%; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h2 style="font-size: 1rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
+                        <h2 style="font-size: 1.75rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
                             <i class="fas fa-filter" style="color: #8b5cf6;"></i>
                             고급 필터
                         </h2>
-                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer;">✕</button>
+                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">✕</button>
                     </div>
 
                     <div style="display: flex; flex-direction: column; gap: 1.5rem;">
@@ -3694,8 +3694,8 @@
             if (searches.length === 0) {
                 searchListHTML = `
                     <div style="text-align: center; padding: 3rem; color: rgba(255, 255, 255, 0.5);">
-                        <i class="fas fa-bookmark" style="font-size: 3rem; margin-bottom: 0.75rem;"></i>
-                        <p style="font-size: 0.95rem;">저장된 검색이 없습니다.</p>
+                        <i class="fas fa-bookmark" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <p style="font-size: 1.125rem;">저장된 검색이 없습니다.</p>
                         <p style="font-size: 0.875rem; margin-top: 0.5rem;">검색 조건을 설정한 후 "검색 저장" 버튼을 클릭하세요.</p>
                     </div>
                 `;
@@ -3703,10 +3703,10 @@
                 searchListHTML = searches.map(search => {
                     const createdDate = new Date(search.createdAt).toLocaleDateString('ko-KR');
                     return `
-                        <div style="background: rgba(255, 255, 255, 0.05); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 0.75rem; transition: all 0.3s;" onmouseover="this.style.background='rgba(255, 255, 255, 0.08)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'">
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 1rem; transition: all 0.3s;" onmouseover="this.style.background='rgba(255, 255, 255, 0.08)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'">
                             <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.75rem;">
                                 <div style="flex: 1;">
-                                    <h3 style="color: white; font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem;">
+                                    <h3 style="color: white; font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">
                                         <i class="fas fa-bookmark" style="color: #10b981; margin-right: 0.5rem;"></i>
                                         ${search.name}
                                     </h3>
@@ -3738,11 +3738,11 @@
             modal.innerHTML = `
                 <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 2.5rem; border-radius: 20px; max-width: 800px; width: 90%; max-height: 80vh; overflow-y: auto; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h2 style="font-size: 1rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
+                        <h2 style="font-size: 1.75rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
                             <i class="fas fa-bookmark" style="color: #10b981;"></i>
                             저장된 검색 (${searches.length})
                         </h2>
-                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer;">✕</button>
+                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">✕</button>
                     </div>
                     ${searchListHTML}
                 </div>
@@ -3875,8 +3875,8 @@
             if (!allProjects || allProjects.length === 0) {
                 container.innerHTML = `
                     <div style="text-align: center; padding: 4rem; color: rgba(255, 255, 255, 0.5);">
-                        <i class="fas fa-calendar-times" style="font-size: 3rem; margin-bottom: 0.75rem;"></i>
-                        <p style="font-size: 0.95rem;">프로젝트가 없습니다.</p>
+                        <i class="fas fa-calendar-times" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <p style="font-size: 1.125rem;">프로젝트가 없습니다.</p>
                     </div>
                 `;
                 countElement.textContent = '0';
@@ -3890,8 +3890,8 @@
             if (projectsWithDates.length === 0) {
                 container.innerHTML = `
                     <div style="text-align: center; padding: 4rem; color: rgba(255, 255, 255, 0.5);">
-                        <i class="fas fa-calendar-times" style="font-size: 3rem; margin-bottom: 0.75rem;"></i>
-                        <p style="font-size: 0.95rem;">날짜가 설정된 프로젝트가 없습니다.</p>
+                        <i class="fas fa-calendar-times" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <p style="font-size: 1.125rem;">날짜가 설정된 프로젝트가 없습니다.</p>
                     </div>
                 `;
                 return;
@@ -3957,7 +3957,7 @@
             }
 
             return `
-                <div style="display: flex; border-bottom: 2px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem; margin-bottom: 0.75rem;">
+                <div style="display: flex; border-bottom: 2px solid rgba(255, 255, 255, 0.1); padding-bottom: 0.5rem; margin-bottom: 1rem;">
                     <div style="width: 200px; flex-shrink: 0;"></div>
                     <div style="flex: 1; display: flex;">
                         ${months.map(m => `
@@ -4069,11 +4069,11 @@
             modal.innerHTML = `
                 <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 2.5rem; border-radius: 20px; max-width: 500px; width: 90%; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h2 style="font-size: 1rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
+                        <h2 style="font-size: 1.75rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
                             <i class="fas fa-sliders-h" style="color: #8b5cf6;"></i>
                             대시보드 설정
                         </h2>
-                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer;">✕</button>
+                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">✕</button>
                     </div>
                     
                     <div style="display: flex; flex-direction: column; gap: 1rem;">
@@ -4226,8 +4226,8 @@
             if (notifications.length === 0) {
                 notificationHTML = `
                     <div style="text-align: center; padding: 4rem; color: rgba(255, 255, 255, 0.5);">
-                        <i class="fas fa-bell-slash" style="font-size: 3rem; margin-bottom: 0.75rem;"></i>
-                        <p style="font-size: 0.95rem;">알림이 없습니다.</p>
+                        <i class="fas fa-bell-slash" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <p style="font-size: 1.125rem;">알림이 없습니다.</p>
                     </div>
                 `;
             } else {
@@ -4241,10 +4241,10 @@
                     });
 
                     return `
-                        <div onclick="markAsRead(${index})" style="background: ${notif.read ? 'rgba(255, 255, 255, 0.03)' : 'rgba(139, 92, 246, 0.1)'}; border: 1px solid ${notif.read ? 'rgba(255, 255, 255, 0.1)' : 'rgba(139, 92, 246, 0.3)'}; border-radius: 12px; padding: 1.25rem; margin-bottom: 0.75rem; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(255, 255, 255, 0.08)'" onmouseout="this.style.background='${notif.read ? 'rgba(255, 255, 255, 0.03)' : 'rgba(139, 92, 246, 0.1)'}'">
+                        <div onclick="markAsRead(${index})" style="background: ${notif.read ? 'rgba(255, 255, 255, 0.03)' : 'rgba(139, 92, 246, 0.1)'}; border: 1px solid ${notif.read ? 'rgba(255, 255, 255, 0.1)' : 'rgba(139, 92, 246, 0.3)'}; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(255, 255, 255, 0.08)'" onmouseout="this.style.background='${notif.read ? 'rgba(255, 255, 255, 0.03)' : 'rgba(139, 92, 246, 0.1)'}'">
                             <div style="display: flex; gap: 1rem;">
                                 <div style="flex-shrink: 0;">
-                                    <i class="fas fa-${icon}" style="font-size: 1.1rem; color: ${color};"></i>
+                                    <i class="fas fa-${icon}" style="font-size: 1.5rem; color: ${color};"></i>
                                 </div>
                                 <div style="flex: 1;">
                                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
@@ -4263,7 +4263,7 @@
             modal.innerHTML = `
                 <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 2.5rem; border-radius: 20px; max-width: 700px; width: 90%; max-height: 80vh; overflow-y: auto; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h2 style="font-size: 1rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
+                        <h2 style="font-size: 1.75rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
                             <i class="fas fa-bell" style="color: #8b5cf6;"></i>
                             알림 센터 (${notifications.length})
                         </h2>
@@ -4271,7 +4271,7 @@
                             <button onclick="markAllAsRead()" style="background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.5rem 1rem; border-radius: 8px; color: #a78bfa; cursor: pointer; font-size: 0.875rem; font-weight: 600;">
                                 <i class="fas fa-check-double"></i> 모두 읽음
                             </button>
-                            <button onclick="this.closest('div').parentElement.parentElement.parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer;">✕</button>
+                            <button onclick="this.closest('div').parentElement.parentElement.parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">✕</button>
                         </div>
                     </div>
                     ${notificationHTML}
@@ -4722,7 +4722,7 @@
                 if (urgent.dday <= 7) ddayColor = '#ef4444';
                 else if (urgent.dday <= 14) ddayColor = '#f59e0b';
                 
-                missionDday.innerHTML = `<div class="dday-counter" style="background: ${ddayColor}; color: white; padding: 0.5rem 1rem; border-radius: 12px; display: inline-block; font-weight: 600; font-size: 1rem; animation: pulse 2s infinite;">D-${urgent.dday}</div>`;
+                missionDday.innerHTML = `<div class="dday-counter" style="background: ${ddayColor}; color: white; padding: 0.5rem 1rem; border-radius: 12px; display: inline-block; font-weight: 600; font-size: 1.25rem; animation: pulse 2s infinite;">D-${urgent.dday}</div>`;
                 
                 // Progress ring
                 const phaseProgress = {
@@ -4834,34 +4834,34 @@
                 color: white;
             `;
             modal.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                    <h2 style="font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2 style="font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
                         <i class="fas fa-magic"></i> AI Assistant
                     </h2>
-                    <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer;">
+                    <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                <div style="margin-bottom: 0.75rem;">
+                <div style="margin-bottom: 1.5rem;">
                     <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.6;">
                         AI 기능을 사용하여 워크플로우를 최적화하고 작업을 자동화하세요.
                     </p>
                 </div>
                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
                     <a href="/ai-assistant-demo.html" style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem; padding: 1.5rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px; text-decoration: none; color: white; transition: all 0.3s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.2)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.1)'; this.style.transform='translateY(0)'">
-                        <i class="fas fa-robot" style="font-size: 1.4rem; color: #8b5cf6;"></i>
+                        <i class="fas fa-robot" style="font-size: 2rem; color: #8b5cf6;"></i>
                         <span style="font-weight: 600;">AI Chat</span>
                     </a>
                     <a href="/canvas-v3.html" style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem; padding: 1.5rem; background: rgba(236, 72, 153, 0.1); border: 1px solid rgba(236, 72, 153, 0.3); border-radius: 12px; text-decoration: none; color: white; transition: all 0.3s;" onmouseover="this.style.background='rgba(236, 72, 153, 0.2)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.background='rgba(236, 72, 153, 0.1)'; this.style.transform='translateY(0)'">
-                        <i class="fas fa-project-diagram" style="font-size: 1.4rem; color: #ec4899;"></i>
+                        <i class="fas fa-project-diagram" style="font-size: 2rem; color: #ec4899;"></i>
                         <span style="font-weight: 600;">Workflow Gen</span>
                     </a>
                     <a href="/behavior-analytics.html" style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem; padding: 1.5rem; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; text-decoration: none; color: white; transition: all 0.3s;" onmouseover="this.style.background='rgba(245, 158, 11, 0.2)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.background='rgba(245, 158, 11, 0.1)'; this.style.transform='translateY(0)'">
-                        <i class="fas fa-chart-line" style="font-size: 1.4rem; color: #f59e0b;"></i>
+                        <i class="fas fa-chart-line" style="font-size: 2rem; color: #f59e0b;"></i>
                         <span style="font-weight: 600;">Analytics</span>
                     </a>
                     <a href="/ar-vr-demo.html" style="display: flex; flex-direction: column; align-items: center; gap: 0.75rem; padding: 1.5rem; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 12px; text-decoration: none; color: white; transition: all 0.3s;" onmouseover="this.style.background='rgba(6, 182, 212, 0.2)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.background='rgba(6, 182, 212, 0.1)'; this.style.transform='translateY(0)'">
-                        <i class="fas fa-vr-cardboard" style="font-size: 1.4rem; color: #06b6d4;"></i>
+                        <i class="fas fa-vr-cardboard" style="font-size: 2rem; color: #06b6d4;"></i>
                         <span style="font-weight: 600;">AR/VR</span>
                     </a>
                 </div>
@@ -4878,11 +4878,11 @@
             modal.innerHTML = `
                 <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 2.5rem; border-radius: 20px; max-width: 500px; width: 90%; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h2 style="font-size: 1rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
+                        <h2 style="font-size: 1.75rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
                             <i class="fas fa-download" style="color: #10b981;"></i>
                             프로젝트 내보내기
                         </h2>
-                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer;">✕</button>
+                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">✕</button>
                     </div>
                     
                     <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem;">
@@ -4891,7 +4891,7 @@
 
                     <div style="display: flex; flex-direction: column; gap: 1rem;">
                         <button onclick="exportJSON()" style="background: linear-gradient(135deg, #10b981, #059669); border: none; padding: 1.25rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 1rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                            <i class="fas fa-file-code" style="font-size: 1.1rem;"></i>
+                            <i class="fas fa-file-code" style="font-size: 1.5rem;"></i>
                             <div style="text-align: left;">
                                 <div style="font-size: 1.1rem;">JSON 형식</div>
                                 <div style="font-size: 0.85rem; opacity: 0.8;">전체 데이터 백업 (가져오기 가능)</div>
@@ -4899,7 +4899,7 @@
                         </button>
 
                         <button onclick="exportCSV()" style="background: linear-gradient(135deg, #3b82f6, #2563eb); border: none; padding: 1.25rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 1rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                            <i class="fas fa-table" style="font-size: 1.1rem;"></i>
+                            <i class="fas fa-table" style="font-size: 1.5rem;"></i>
                             <div style="text-align: left;">
                                 <div style="font-size: 1.1rem;">CSV 형식</div>
                                 <div style="font-size: 0.85rem; opacity: 0.8;">엑셀에서 열기 가능한 목록</div>
@@ -4907,7 +4907,7 @@
                         </button>
 
                         <button onclick="exportExcel()" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); border: none; padding: 1.25rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 1rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                            <i class="fas fa-file-excel" style="font-size: 1.1rem;"></i>
+                            <i class="fas fa-file-excel" style="font-size: 1.5rem;"></i>
                             <div style="text-align: left;">
                                 <div style="font-size: 1.1rem;">Excel 형식</div>
                                 <div style="font-size: 0.85rem; opacity: 0.8;">상세 리포트 포함 (.xlsx)</div>
@@ -4927,11 +4927,11 @@
             modal.innerHTML = `
                 <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 2.5rem; border-radius: 20px; max-width: 500px; width: 90%; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h2 style="font-size: 1rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
+                        <h2 style="font-size: 1.75rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.75rem;">
                             <i class="fas fa-upload" style="color: #3b82f6;"></i>
                             프로젝트 가져오기
                         </h2>
-                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer;">✕</button>
+                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">✕</button>
                     </div>
                     
                     <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem;">
@@ -4940,7 +4940,7 @@
 
                     <div style="display: flex; flex-direction: column; gap: 1rem;">
                         <button onclick="importJSON('skip')" style="background: linear-gradient(135deg, #10b981, #059669); border: none; padding: 1.25rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 1rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                            <i class="fas fa-plus-circle" style="font-size: 1.1rem;"></i>
+                            <i class="fas fa-plus-circle" style="font-size: 1.5rem;"></i>
                             <div style="text-align: left;">
                                 <div style="font-size: 1.1rem;">새 프로젝트로 추가</div>
                                 <div style="font-size: 0.85rem; opacity: 0.8;">기존 프로젝트는 유지</div>
@@ -4948,7 +4948,7 @@
                         </button>
 
                         <button onclick="importJSON('replace')" style="background: linear-gradient(135deg, #f59e0b, #d97706); border: none; padding: 1.25rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 1rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                            <i class="fas fa-sync-alt" style="font-size: 1.1rem;"></i>
+                            <i class="fas fa-sync-alt" style="font-size: 1.5rem;"></i>
                             <div style="text-align: left;">
                                 <div style="font-size: 1.1rem;">중복 시 교체</div>
                                 <div style="font-size: 0.85rem; opacity: 0.8;">같은 ID는 덮어쓰기</div>
@@ -4956,7 +4956,7 @@
                         </button>
 
                         <button onclick="importJSON('merge')" style="background: linear-gradient(135deg, #3b82f6, #2563eb); border: none; padding: 1.25rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 1rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                            <i class="fas fa-code-branch" style="font-size: 1.1rem;"></i>
+                            <i class="fas fa-code-branch" style="font-size: 1.5rem;"></i>
                             <div style="text-align: left;">
                                 <div style="font-size: 1.1rem;">병합 모드</div>
                                 <div style="font-size: 0.85rem; opacity: 0.8;">기존 데이터와 병합</div>
