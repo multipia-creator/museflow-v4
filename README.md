@@ -7,10 +7,11 @@
 [![License](https://img.shields.io/badge/License-MIT-green)](https://github.com)
 [![Features](https://img.shields.io/badge/Features-120+-purple)]()
 [![UX_Score](https://img.shields.io/badge/UX_Score-98%2F100-brightgreen)]()
-[![Real_Data](https://img.shields.io/badge/Real_Data-8_Projects-orange)]()
-[![Budget](https://img.shields.io/badge/Budget-₩465M-gold)]()
+[![Real_Data](https://img.shields.io/badge/Real_Data-18_Projects-orange)]()
+[![Budget](https://img.shields.io/badge/Budget-₩1.145B-gold)]()
+[![Production_DB](https://img.shields.io/badge/Production_DB-Live-green)]()
 
-**실전 배치 완료! 실제 박물관 프로젝트 데이터 기반 차세대 워크플로우 플랫폼**
+**프로덕션 DB 배포 완료! 실제 박물관 프로젝트 18개 운영 중 - 차세대 워크플로우 플랫폼**
 
 ---
 
