@@ -24,6 +24,7 @@ const exclude = [
   '/account.html',
   '/admin.html',
   '/ai-assistant-demo.html',
+  '/analytics-dashboard.html',
   '/ar-vr-demo.html',
   '/behavior-analytics.html',
   '/canvas.html',
