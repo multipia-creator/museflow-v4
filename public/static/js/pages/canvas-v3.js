@@ -65,10 +65,19 @@ const CanvasV3 = {
     // Load project from session storage
     this.loadProject();
     
+    // Create default project if none exists
     if (!this.currentProject) {
-      Toast.error(i18n.t('noProjectSelected'));
-      Router.navigate('/projects');
-      return;
+      console.log('⚠️ No project found, creating default project...');
+      this.currentProject = {
+        id: 'default-' + Date.now(),
+        name: 'Untitled Workflow',
+        description: 'A new workflow project',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+      // Save to session storage
+      sessionStorage.setItem('museflow_current_project', JSON.stringify(this.currentProject));
+      console.log('✅ Default project created:', this.currentProject.name);
     }
     
     // Render UI

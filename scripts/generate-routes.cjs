@@ -49,6 +49,7 @@ const exclude = [
   // Pretty URL paths (all)
   '/account',
   '/admin',
+  '/analytics-dashboard',
   '/ar-vr-demo',
   '/canvas',
   '/canvas-v3',

@@ -834,7 +834,46 @@
                 
             } catch (error) {
                 console.error('Failed to fetch projects:', error);
-                alert('Failed to load projects. Please try again.');
+                
+                // Show default project option
+                const dropdown = document.createElement('div');
+                dropdown.id = 'project-dropdown';
+                dropdown.style.cssText = `
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    margin-top: 0.5rem;
+                    background: rgba(10, 10, 15, 0.95);
+                    backdrop-filter: blur(20px);
+                    border: 1px solid rgba(139, 92, 246, 0.3);
+                    border-radius: 12px;
+                    padding: 0.5rem;
+                    min-width: 250px;
+                    z-index: 1001;
+                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+                `;
+                
+                dropdown.innerHTML = `
+                    <div style="padding: 1rem; text-align: center; color: rgba(255, 255, 255, 0.7);">
+                        <i class="fas fa-info-circle" style="color: var(--museum-purple); margin-bottom: 0.5rem;"></i>
+                        <div style="font-size: 0.9rem;">Using default project</div>
+                        <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.25rem;">
+                            Connect to dashboard to see all projects
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('project-dropdown')?.remove();
+                document.querySelector('.project-info').appendChild(dropdown);
+                
+                const closeDropdown = (event) => {
+                    if (!dropdown.contains(event.target) && event.target !== e.target) {
+                        dropdown.remove();
+                        document.removeEventListener('click', closeDropdown);
+                    }
+                };
+                
+                setTimeout(() => document.addEventListener('click', closeDropdown), 100);
             }
         });
         
