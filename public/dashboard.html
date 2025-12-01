@@ -747,67 +747,15 @@
 </head>
 <body>
     <!-- Navigation - Landing Page Style -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="/landing.html" class="nav-logo">
-                <img src="/static/images/logo-neon-m.png" alt="MuseFlow" style="box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);">
-                <span class="nav-logo-text">MuseFlow.life</span>
-            </a>
-            
-            <ul class="nav-links" id="nav-links">
-                <li><a href="/landing.html"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="/dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-                <li style="position: relative;" class="workflow-menu">
-                    <a href="#" onclick="event.preventDefault(); toggleWorkflowMenu()" style="display: flex; align-items: center; gap: 0.5rem;">
-                        <i class="fas fa-project-diagram"></i> Workflow <i class="fas fa-chevron-down" style="font-size: 0.75rem;"></i>
-                    </a>
-                    <div id="workflow-dropdown" style="display: none; position: absolute; top: 100%; left: 0; background: rgba(10, 10, 15, 0.98); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 0.5rem 0; margin-top: 0.5rem; min-width: 200px; z-index: 1000; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);">
-
-                        <a href="/canvas-v3.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.1)'; this.style.color='#fff'" onmouseout="this.style.background='transparent'; this.style.color='rgba(255, 255, 255, 0.8)'">
-                            <i class="fas fa-project-diagram" style="width: 20px;"></i>
-                            <div>
-                                <div style="font-weight: 500;">Canvas V3</div>
-                                <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5);">노드 에디터</div>
-                            </div>
-                        </a>
-                    </div>
-                </li>
-                <li><a href="/budget.html"><i class="fas fa-dollar-sign"></i> Budget</a></li>
-                <li><a href="/help-center.html"><i class="fas fa-question-circle"></i> Help</a></li>
-            </ul>
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <!-- AI Recommendations Button (NEW!) -->
-                <button onclick="showAIRecommendations()" style="background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; padding: 0.5rem 1rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(139, 92, 246, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'" title="AI가 추천하는 주의가 필요한 프로젝트">
-                    <i class="fas fa-robot"></i> AI 추천
-                </button>
-                
-                <!-- Favorites Filter Button (NEW!) -->
-                <button onclick="filterFavorites()" style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 0.5rem 1rem; border-radius: 12px; color: #fbbf24; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s;" onmouseover="this.style.background='rgba(245, 158, 11, 0.2)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(245, 158, 11, 0.1)'; this.style.transform='translateY(0)'" title="즐겨찾기한 프로젝트만 표시">
-                    <i class="fas fa-star"></i> 즐겨찾기
-                </button>
-                
-                <button id="ai-assistant-btn" onclick="openAIAssistant()" style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.5rem 1rem; border-radius: 12px; color: #a78bfa; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.2)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.1)'; this.style.transform='translateY(0)'">
-                    <i class="fas fa-magic"></i> AI 어시스턴트
-                </button>
-                
-                <select id="lang-select" style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.5rem 1rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 500;">
-                    <option value="ko">🇰🇷 한국어</option>
-                    <option value="en">🇺🇸 English</option>
-                </select>
-                
-                <button id="notification-btn" class="nav-icon-btn" onclick="toggleNotificationPanel()" style="position: relative;">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge" style="display: none;">0</span>
-                </button>
-                <div id="notification-panel" class="notification-panel" style="display: none; position: absolute; top: 100%; right: 0; margin-top: 0.5rem; z-index: 1001;"></div>
-                
-                <a href="/account.html" class="nav-icon-btn" title="내 계정">
-                    <i class="fas fa-user"></i>
-                    <span>계정</span>
-                </a>
-            </div>
-        </div>
-    </nav>
+    <!-- Load Unified Navigation -->
+    <div id="unified-navbar-container"></div>
+    <script>
+        fetch('/static/components/unified-navbar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('unified-navbar-container').innerHTML = html;
+            });
+    </script>
 
     <!-- Main Content -->
     <div style="max-width: 1600px; margin: 0 auto; padding: 6rem 2rem 3rem 2rem;">

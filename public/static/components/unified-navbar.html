@@ -1,4 +1,4 @@
-<!-- MuseFlow Unified Navigation Bar Component -->
+<!-- MuseFlow Unified Navigation Bar Component - V10.5.1 -->
 <style>
     .unified-navbar {
         position: fixed;
@@ -65,49 +65,79 @@
     .unified-nav-links a {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1rem;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
         color: rgba(255, 255, 255, 0.7);
         text-decoration: none;
         border-radius: 12px;
         transition: all 0.3s;
-        font-weight: 500;
+        font-size: 1.2rem;
+        position: relative;
     }
     
     .unified-nav-links a:hover {
-        background: rgba(139, 92, 246, 0.1);
+        background: rgba(139, 92, 246, 0.2);
         color: white;
+        transform: scale(1.05);
     }
     
     .unified-nav-links a.active {
-        background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3));
         color: white;
+        border: 1px solid rgba(139, 92, 246, 0.5);
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+    }
+    
+    /* Tooltip on hover */
+    .unified-nav-links a::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: -35px;
+        left: 50%;
+        transform: translateX(-50%) scale(0.8);
+        background: rgba(10, 10, 15, 0.95);
+        color: white;
+        padding: 0.5rem 0.75rem;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s;
         border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+    
+    .unified-nav-links a:hover::after {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
     }
     
     .unified-nav-actions {
         display: flex;
         align-items: center;
-        gap: 0.75rem;
+        gap: 0.5rem;
     }
     
     .unified-nav-btn {
         background: rgba(139, 92, 246, 0.1);
         border: 1px solid rgba(139, 92, 246, 0.3);
-        padding: 0.5rem 1rem;
+        width: 44px;
+        height: 44px;
         border-radius: 12px;
         color: white;
         cursor: pointer;
-        font-weight: 600;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        justify-content: center;
         transition: all 0.3s;
+        font-size: 1.1rem;
+        position: relative;
     }
     
     .unified-nav-btn:hover {
         background: rgba(139, 92, 246, 0.2);
-        transform: translateY(-2px);
+        transform: translateY(-2px) scale(1.05);
         box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
     }
     
@@ -120,21 +150,47 @@
         box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
     }
     
+    /* Tooltip for action buttons */
+    .unified-nav-btn::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: -35px;
+        left: 50%;
+        transform: translateX(-50%) scale(0.8);
+        background: rgba(10, 10, 15, 0.95);
+        color: white;
+        padding: 0.5rem 0.75rem;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+    
+    .unified-nav-btn:hover::after {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    
     @media (max-width: 768px) {
         .unified-nav-container {
             padding: 0.5rem 1rem;
         }
         
         .unified-nav-links {
-            display: none; /* Mobile: Hide main links, show hamburger menu */
+            display: none;
         }
         
         .unified-nav-actions {
             gap: 0.5rem;
         }
         
-        .unified-nav-btn span {
-            display: none; /* Hide text on mobile, keep icons only */
+        .unified-nav-btn, .unified-nav-links a {
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
         }
     }
 </style>
@@ -144,49 +200,55 @@
         <!-- Logo -->
         <a href="/landing.html" class="unified-nav-logo">
             <img src="/static/images/logo-neon-m.png" alt="MuseFlow" loading="lazy">
-            <span>MuseFlow.life</span>
+            <span>MuseFlow</span>
         </a>
         
-        <!-- Main Navigation -->
+        <!-- Main Navigation - Icon Only -->
         <ul class="unified-nav-links">
-            <li><a href="/landing.html" data-page="home">
-                <i class="fas fa-home"></i> Home
+            <li><a href="/landing.html" data-page="home" data-tooltip="Home">
+                <i class="fas fa-home"></i>
             </a></li>
-            <li><a href="/dashboard.html" data-page="dashboard">
-                <i class="fas fa-chart-line"></i> Dashboard
+            <li><a href="/dashboard.html" data-page="dashboard" data-tooltip="Dashboard">
+                <i class="fas fa-chart-line"></i>
             </a></li>
-            <li><a href="/canvas-v3.html" data-page="canvas">
-                <i class="fas fa-project-diagram"></i> Canvas
+            <li><a href="/canvas-v3.html" data-page="canvas" data-tooltip="Canvas">
+                <i class="fas fa-project-diagram"></i>
             </a></li>
-            <li><a href="/workflow-tools.html" data-page="workflow">
-                <i class="fas fa-tools"></i> Tools
+            <li><a href="/workflow-tools.html" data-page="workflow" data-tooltip="Tools">
+                <i class="fas fa-tools"></i>
             </a></li>
-            <li><a href="/budget.html" data-page="budget">
-                <i class="fas fa-dollar-sign"></i> Budget
+            <li><a href="/budget.html" data-page="budget" data-tooltip="Budget">
+                <i class="fas fa-dollar-sign"></i>
+            </a></li>
+            <li><a href="/analytics-dashboard.html" data-page="analytics" data-tooltip="Analytics">
+                <i class="fas fa-chart-bar"></i>
             </a></li>
         </ul>
         
-        <!-- Actions -->
+        <!-- Actions - Icon Only -->
         <div class="unified-nav-actions">
-            <!-- AI Recommendations Button (NEW!) -->
-            <button class="unified-nav-btn primary" onclick="showAIRecommendations()" title="AI 프로젝트 추천">
+            <!-- AI Recommendations -->
+            <button class="unified-nav-btn primary" onclick="showAIRecommendations()" data-tooltip="AI 추천">
                 <i class="fas fa-robot"></i>
-                <span>AI 추천</span>
             </button>
             
-            <!-- Favorites Filter Button (NEW!) -->
-            <button class="unified-nav-btn" onclick="filterFavorites()" title="즐겨찾기 필터">
+            <!-- Favorites -->
+            <button class="unified-nav-btn" onclick="filterFavorites()" data-tooltip="즐겨찾기">
                 <i class="fas fa-star"></i>
-                <span>즐겨찾기</span>
             </button>
             
-            <!-- Notification -->
-            <button class="unified-nav-btn" onclick="toggleNotifications()" title="알림">
+            <!-- Notifications -->
+            <button class="unified-nav-btn" onclick="toggleNotifications()" data-tooltip="알림">
                 <i class="fas fa-bell"></i>
             </button>
             
+            <!-- Help -->
+            <a href="/help-center.html" class="unified-nav-btn" data-tooltip="도움말">
+                <i class="fas fa-question-circle"></i>
+            </a>
+            
             <!-- Account -->
-            <a href="/account.html" class="unified-nav-btn" title="내 계정">
+            <a href="/account.html" class="unified-nav-btn" data-tooltip="내 계정">
                 <i class="fas fa-user"></i>
             </a>
         </div>
@@ -202,8 +264,12 @@
         navLinks.forEach(link => {
             const page = link.getAttribute('data-page');
             if (currentPath.includes(page) || 
-                (page === 'home' && currentPath === '/') ||
-                (page === 'dashboard' && currentPath.includes('dashboard'))) {
+                (page === 'home' && (currentPath === '/' || currentPath === '/index.html')) ||
+                (page === 'dashboard' && currentPath.includes('dashboard')) ||
+                (page === 'canvas' && currentPath.includes('canvas')) ||
+                (page === 'workflow' && currentPath.includes('workflow')) ||
+                (page === 'budget' && currentPath.includes('budget')) ||
+                (page === 'analytics' && currentPath.includes('analytics'))) {
                 link.classList.add('active');
             }
         });
@@ -214,17 +280,36 @@
     
     // Fallback functions if not defined on page
     window.showAIRecommendations = window.showAIRecommendations || function() {
-        alert('AI 추천 기능은 Dashboard에서 사용 가능합니다.');
-        window.location.href = '/dashboard.html';
+        console.log('[Navbar] AI Recommendations clicked');
+        if (window.location.pathname.includes('dashboard')) {
+            // If on dashboard, trigger AI recommendations
+            if (window.showAIProjectRecommendations) {
+                window.showAIProjectRecommendations();
+            }
+        } else {
+            window.location.href = '/dashboard.html';
+        }
     };
     
     window.filterFavorites = window.filterFavorites || function() {
-        alert('즐겨찾기 필터는 Dashboard에서 사용 가능합니다.');
-        window.location.href = '/dashboard.html';
+        console.log('[Navbar] Favorites clicked');
+        if (window.location.pathname.includes('dashboard')) {
+            // If on dashboard, trigger favorites filter
+            if (window.toggleFavoritesFilter) {
+                window.toggleFavoritesFilter();
+            }
+        } else {
+            window.location.href = '/dashboard.html';
+        }
     };
     
     window.toggleNotifications = window.toggleNotifications || function() {
-        window.notificationSystem && window.notificationSystem.showInAppNotification('알림 센터', 'info');
+        console.log('[Navbar] Notifications clicked');
+        if (window.notificationSystem) {
+            window.notificationSystem.showInAppNotification('알림 센터', 'info');
+        } else {
+            alert('알림 센터가 곧 열립니다.');
+        }
     };
     
     // Scroll Animation - Hide/Show Navbar
@@ -233,6 +318,8 @@
     
     window.addEventListener('scroll', function() {
         const navbar = document.querySelector('.unified-navbar');
+        if (!navbar) return;
+        
         const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
         
         // Add scrolled class for shadow effect
@@ -244,10 +331,8 @@
         
         // Hide navbar on scroll down, show on scroll up
         if (currentScroll > lastScrollTop && currentScroll > 100) {
-            // Scrolling down
             navbar.classList.add('navbar-hidden');
         } else {
-            // Scrolling up
             navbar.classList.remove('navbar-hidden');
         }
         
