@@ -1970,17 +1970,19 @@ const CanvasV3 = {
     }
     
     // Fallback to localStorage
-    const currentUser = Auth.getCurrentUser();
-    if (currentUser) {
-      const storageKey = `museflow_canvas_${currentUser.id}_${this.currentProject.id}`;
-      const stored = localStorage.getItem(storageKey);
-      
-      if (stored) {
-        const data = JSON.parse(stored);
-        this.nodes = data.nodes || [];
-        this.connections = data.connections || [];
-        console.log('✅ Data loaded from localStorage');
-        return;
+    if (typeof Auth !== 'undefined' && Auth.getCurrentUser) {
+      const currentUser = Auth.getCurrentUser();
+      if (currentUser) {
+        const storageKey = `museflow_canvas_${currentUser.id}_${this.currentProject.id}`;
+        const stored = localStorage.getItem(storageKey);
+        
+        if (stored) {
+          const data = JSON.parse(stored);
+          this.nodes = data.nodes || [];
+          this.connections = data.connections || [];
+          console.log('✅ Data loaded from localStorage');
+          return;
+        }
       }
     }
     
@@ -2081,13 +2083,15 @@ const CanvasV3 = {
     }
     
     // Fallback to localStorage
-    const currentUser = Auth.getCurrentUser();
-    if (currentUser) {
-      const storageKey = `museflow_canvas_${currentUser.id}_${this.currentProject.id}`;
-      localStorage.setItem(storageKey, JSON.stringify(data));
-      console.log('✅ Data saved to localStorage');
-      console.log('✅ Canvas saved');
+    if (typeof Auth !== 'undefined' && Auth.getCurrentUser) {
+      const currentUser = Auth.getCurrentUser();
+      if (currentUser) {
+        const storageKey = `museflow_canvas_${currentUser.id}_${this.currentProject.id}`;
+        localStorage.setItem(storageKey, JSON.stringify(data));
+        console.log('✅ Data saved to localStorage');
+      }
     }
+    console.log('✅ Canvas saved');
   }
 };
 
