@@ -401,6 +401,7 @@
                         <th>진행률</th>
                         <th>상태</th>
                         <th>편집</th>
+                        <th>이력</th>
                     </tr>
                 </thead>
                 <tbody id="budget-table-body">
@@ -494,6 +495,11 @@
                                 <i class="fas fa-times"></i>
                             </button>
                         </td>
+                        <td>
+                            <button onclick="showBudgetHistory(${project.id}, '${project.name}')" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.5); color: #60a5fa; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                <i class="fas fa-history"></i> 이력
+                            </button>
+                        </td>
                     </tr>
                 `;
             }).join('');
@@ -549,6 +555,9 @@
                 if (result.success) {
                     // Update local data
                     const project = budgetData.projects.find(p => p.id === projectId);
+                    const oldBudget = project ? project.budget : 0;
+                    const oldSpent = project ? project.spent : 0;
+                    
                     if (project) {
                         project.budget = newBudget;
                         project.spent = newSpent;
@@ -557,6 +566,15 @@
                         const percentage = (newSpent / newBudget) * 100;
                         project.status = percentage >= 100 ? 'over' : percentage >= 90 ? 'warning' : 'good';
                     }
+                    
+                    // Save budget history to LocalStorage
+                    saveBudgetHistory(projectId, project.name, {
+                        oldBudget,
+                        newBudget,
+                        oldSpent,
+                        newSpent,
+                        timestamp: new Date().toISOString()
+                    });
                     
                     // Refresh UI
                     renderBudgetTable();
@@ -897,6 +915,121 @@
             if (usagePercent >= 70) return '주의';
             if (project.phase === 'completed') return '완료';
             return '진행중';
+        }
+        
+        // ========================================================================
+        // Budget History Tracking
+        // ========================================================================
+        
+        function saveBudgetHistory(projectId, projectName, change) {
+            const historyKey = `budget_history_${projectId}`;
+            let history = JSON.parse(localStorage.getItem(historyKey) || '[]');
+            
+            history.unshift({
+                ...change,
+                projectName,
+                user: 'admin@museflow.com',
+                timestamp: change.timestamp || new Date().toISOString()
+            });
+            
+            // Keep last 50 records
+            if (history.length > 50) history = history.slice(0, 50);
+            
+            localStorage.setItem(historyKey, JSON.stringify(history));
+        }
+        
+        function showBudgetHistory(projectId, projectName) {
+            const historyKey = `budget_history_${projectId}`;
+            const history = JSON.parse(localStorage.getItem(historyKey) || '[]');
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 3000; padding: 2rem; overflow-y: auto;';
+            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+            
+            modal.innerHTML = `
+                <div style="max-width: 900px; margin: 0 auto; background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 24px; padding: 2rem; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.75rem; font-weight: 700; color: white;">
+                            <i class="fas fa-history" style="color: #60a5fa;"></i>
+                            예산 변경 이력 - ${projectName}
+                        </h2>
+                        <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.5rem; cursor: pointer; padding: 0.5rem;">&times;</button>
+                    </div>
+                    
+                    ${history.length === 0 ? `
+                        <div style="text-align: center; padding: 4rem; color: rgba(255, 255, 255, 0.5);">
+                            <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                            <p style="font-size: 1.1rem;">아직 예산 변경 이력이 없습니다.</p>
+                            <p style="font-size: 0.9rem; margin-top: 0.5rem;">예산을 수정하면 자동으로 기록됩니다.</p>
+                        </div>
+                    ` : `
+                        <div style="position: relative; padding-left: 2rem;">
+                            <div style="position: absolute; left: 0.5rem; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, #60a5fa, rgba(96, 165, 250, 0.1));"></div>
+                            
+                            ${history.map((record, index) => {
+                                const budgetChange = record.newBudget - record.oldBudget;
+                                const spentChange = record.newSpent - record.oldSpent;
+                                const date = new Date(record.timestamp);
+                                const dateStr = date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                                
+                                return `
+                                    <div style="position: relative; margin-bottom: 2rem; padding-left: 2rem;">
+                                        <div style="position: absolute; left: -0.75rem; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: linear-gradient(135deg, #60a5fa, #3b82f6); border: 3px solid #1a1a2e;"></div>
+                                        
+                                        <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 1.5rem;">
+                                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                                <div>
+                                                    <div style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;">
+                                                        <i class="fas fa-clock"></i> ${dateStr}
+                                                    </div>
+                                                    <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.8rem; margin-top: 0.25rem;">
+                                                        <i class="fas fa-user"></i> ${record.user || 'System'}
+                                                    </div>
+                                                </div>
+                                                <span style="background: rgba(59, 130, 246, 0.2); padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.8rem; color: #60a5fa; font-weight: 600;">
+                                                    #${history.length - index}
+                                                </span>
+                                            </div>
+                                            
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                                <div>
+                                                    <div style="color: rgba(255, 255, 255, 0.5); font-size: 0.8rem; margin-bottom: 0.5rem;">총 예산</div>
+                                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                                        <span style="color: rgba(255, 255, 255, 0.7);">₩${(record.oldBudget / 1000000).toFixed(1)}M</span>
+                                                        <i class="fas fa-arrow-right" style="color: rgba(255, 255, 255, 0.3); font-size: 0.8rem;"></i>
+                                                        <span style="color: white; font-weight: 600;">₩${(record.newBudget / 1000000).toFixed(1)}M</span>
+                                                        ${budgetChange !== 0 ? `
+                                                            <span style="color: ${budgetChange > 0 ? '#10b981' : '#ef4444'}; font-size: 0.9rem; font-weight: 600;">
+                                                                ${budgetChange > 0 ? '+' : ''}${(budgetChange / 1000000).toFixed(1)}M
+                                                            </span>
+                                                        ` : ''}
+                                                    </div>
+                                                </div>
+                                                
+                                                <div>
+                                                    <div style="color: rgba(255, 255, 255, 0.5); font-size: 0.8rem; margin-bottom: 0.5rem;">사용 예산</div>
+                                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                                        <span style="color: rgba(255, 255, 255, 0.7);">₩${(record.oldSpent / 1000000).toFixed(1)}M</span>
+                                                        <i class="fas fa-arrow-right" style="color: rgba(255, 255, 255, 0.3); font-size: 0.8rem;"></i>
+                                                        <span style="color: white; font-weight: 600;">₩${(record.newSpent / 1000000).toFixed(1)}M</span>
+                                                        ${spentChange !== 0 ? `
+                                                            <span style="color: ${spentChange > 0 ? '#ef4444' : '#10b981'}; font-size: 0.9rem; font-weight: 600;">
+                                                                ${spentChange > 0 ? '+' : ''}${(spentChange / 1000000).toFixed(1)}M
+                                                            </span>
+                                                        ` : ''}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `}
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
         }
     </script>
     
