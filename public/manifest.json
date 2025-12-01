@@ -1,29 +1,114 @@
 {
-  "name": "MuseFlow - Museum Workflow Manager",
+  "name": "MuseFlow - Museum Workflow Platform",
   "short_name": "MuseFlow",
-  "description": "세계적인 큐레이터를 위한 전시 관리 시스템",
+  "description": "AI-Powered Museum Workflow Management Platform",
   "start_url": "/dashboard",
   "display": "standalone",
-  "background_color": "#0a0a0f",
+  "background_color": "#0f0f23",
   "theme_color": "#8b5cf6",
-  "orientation": "portrait-primary",
+  "orientation": "any",
   "icons": [
     {
-      "src": "/static/images/logo-neon-m.png",
+      "src": "/static/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/static/images/logo-neon-m.png",
+      "src": "/static/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
   ],
-  "categories": ["productivity", "business"],
-  "lang": "ko-KR",
-  "dir": "ltr",
-  "scope": "/",
+  "screenshots": [
+    {
+      "src": "/static/screenshots/dashboard.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "label": "Dashboard View"
+    },
+    {
+      "src": "/static/screenshots/budget.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "label": "Budget Management"
+    }
+  ],
+  "categories": ["productivity", "business", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View all projects",
+      "url": "/dashboard",
+      "icons": [
+        {
+          "src": "/static/icons/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Budget",
+      "short_name": "Budget",
+      "description": "Manage budgets",
+      "url": "/budget",
+      "icons": [
+        {
+          "src": "/static/icons/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Canvas",
+      "short_name": "Canvas",
+      "description": "Workflow editor",
+      "url": "/canvas-v3",
+      "icons": [
+        {
+          "src": "/static/icons/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
   "prefer_related_applications": false
 }
