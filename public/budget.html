@@ -596,6 +596,11 @@
         
         // Monthly budget chart
         function renderMonthlyBudgetChart() {
+            // Destroy existing chart to prevent memory leaks
+            if (monthlyChart) {
+                monthlyChart.destroy();
+            }
+            
             const ctx = document.getElementById('monthly-budget-chart').getContext('2d');
             monthlyChart = new Chart(ctx, {
                 type: 'line',
@@ -623,6 +628,9 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    animation: {
+                        duration: 750 // Faster animation (default: 1000ms)
+                    },
                     plugins: {
                         legend: {
                             labels: { color: '#f5f5f7' }
@@ -649,6 +657,11 @@
         
         // Budget distribution chart
         function renderBudgetDistributionChart() {
+            // Destroy existing chart to prevent memory leaks
+            if (distributionChart) {
+                distributionChart.destroy();
+            }
+            
             const ctx = document.getElementById('budget-distribution-chart').getContext('2d');
             
             const typeData = {};
@@ -674,6 +687,9 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    animation: {
+                        duration: 750 // Faster animation
+                    },
                     plugins: {
                         legend: {
                             position: 'bottom',
@@ -1027,6 +1043,9 @@
     
     <!-- Notification System -->
     <script src="/static/js/notification-system.js"></script>
+    
+    <!-- Error Logger -->
+    <script src="/static/js/error-logger.js"></script>
     
     <!-- Floating Action Button -->
     <script src="/static/js/components/floating-action.js"></script>
