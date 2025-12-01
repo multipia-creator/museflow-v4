@@ -942,7 +942,461 @@
         </div>
         
         <div class="node-categories" id="node-categories">
-            <!-- Node categories will be rendered here -->
+            <!-- 1. 전시 Exhibition (11 nodes) -->
+            <div class="category expanded">
+                <div class="category-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <div class="category-title">
+                        <span>🎨</span>
+                        <span>전시 Exhibition</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="subcategory-list">
+                    <div class="node-item" draggable="true" data-node-id="ex-01">
+                        <span class="node-icon">📝</span>
+                        <span>기획안 작성</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ex-02">
+                        <span class="node-icon">💰</span>
+                        <span>예산 편성</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ex-03">
+                        <span class="node-icon">📅</span>
+                        <span>일정 관리</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ex-04">
+                        <span class="node-icon">🖼️</span>
+                        <span>작품 선정</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ex-05">
+                        <span class="node-icon">📐</span>
+                        <span>공간 배치</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ex-06">
+                        <span class="node-icon">💡</span>
+                        <span>조명 설계</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ex-07">
+                        <span class="node-icon">🛡️</span>
+                        <span>안전 점검</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ex-08">
+                        <span class="node-icon">📢</span>
+                        <span>홍보 계획</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ex-09">
+                        <span class="node-icon">📖</span>
+                        <span>도록 제작</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ex-10">
+                        <span class="node-icon">🎉</span>
+                        <span>오프닝 준비</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ex-11">
+                        <span class="node-icon">📊</span>
+                        <span>평가 보고서</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. 교육 Education (11 nodes) -->
+            <div class="category">
+                <div class="category-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <div class="category-title">
+                        <span>📚</span>
+                        <span>교육 Education</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="subcategory-list">
+                    <div class="node-item" draggable="true" data-node-id="ed-01">
+                        <span class="node-icon">🎯</span>
+                        <span>프로그램 기획</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ed-02">
+                        <span class="node-icon">📋</span>
+                        <span>커리큘럼 개발</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ed-03">
+                        <span class="node-icon">📚</span>
+                        <span>교재 제작</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ed-04">
+                        <span class="node-icon">👨‍🏫</span>
+                        <span>강사 섭외</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ed-05">
+                        <span class="node-icon">📣</span>
+                        <span>참가자 모집</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ed-06">
+                        <span class="node-icon">🗓️</span>
+                        <span>일정 조정</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ed-07">
+                        <span class="node-icon">🏛️</span>
+                        <span>공간 예약</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ed-08">
+                        <span class="node-icon">🎥</span>
+                        <span>장비 준비</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ed-09">
+                        <span class="node-icon">📝</span>
+                        <span>만족도 조사</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ed-10">
+                        <span class="node-icon">🎓</span>
+                        <span>수료증 발급</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ed-11">
+                        <span class="node-icon">📈</span>
+                        <span>성과 분석</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 아카이브 Archive (11 nodes) -->
+            <div class="category">
+                <div class="category-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <div class="category-title">
+                        <span>📦</span>
+                        <span>아카이브 Archive</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="subcategory-list">
+                    <div class="node-item" draggable="true" data-node-id="ar-01">
+                        <span class="node-icon">📥</span>
+                        <span>자료 수집</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ar-02">
+                        <span class="node-icon">📝</span>
+                        <span>등록 처리</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ar-03">
+                        <span class="node-icon">🗂️</span>
+                        <span>분류 체계</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ar-04">
+                        <span class="node-icon">💾</span>
+                        <span>디지털화</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ar-05">
+                        <span class="node-icon">🏷️</span>
+                        <span>메타데이터</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ar-06">
+                        <span class="node-icon">🛡️</span>
+                        <span>보존 처리</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ar-07">
+                        <span class="node-icon">🌡️</span>
+                        <span>환경 모니터링</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ar-08">
+                        <span class="node-icon">🔍</span>
+                        <span>검색 시스템</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ar-09">
+                        <span class="node-icon">📖</span>
+                        <span>열람 서비스</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ar-10">
+                        <span class="node-icon">🔄</span>
+                        <span>대여 관리</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ar-11">
+                        <span class="node-icon">📊</span>
+                        <span>통계 보고</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. 출판 Publication (11 nodes) -->
+            <div class="category">
+                <div class="category-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <div class="category-title">
+                        <span>📖</span>
+                        <span>출판 Publication</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="subcategory-list">
+                    <div class="node-item" draggable="true" data-node-id="pb-01">
+                        <span class="node-icon">💡</span>
+                        <span>출판 기획</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="pb-02">
+                        <span class="node-icon">📄</span>
+                        <span>원고 수집</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="pb-03">
+                        <span class="node-icon">✏️</span>
+                        <span>편집 작업</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="pb-04">
+                        <span class="node-icon">🎨</span>
+                        <span>디자인</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="pb-05">
+                        <span class="node-icon">🖼️</span>
+                        <span>이미지 편집</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="pb-06">
+                        <span class="node-icon">🔍</span>
+                        <span>교정 교열</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="pb-07">
+                        <span class="node-icon">🖨️</span>
+                        <span>인쇄 발주</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="pb-08">
+                        <span class="node-icon">🏷️</span>
+                        <span>ISBN 등록</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="pb-09">
+                        <span class="node-icon">📦</span>
+                        <span>배포 계획</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="pb-10">
+                        <span class="node-icon">📢</span>
+                        <span>홍보 활동</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="pb-11">
+                        <span class="node-icon">💳</span>
+                        <span>판매 관리</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. 연구 Research (11 nodes) -->
+            <div class="category">
+                <div class="category-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <div class="category-title">
+                        <span>🔬</span>
+                        <span>연구 Research</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="subcategory-list">
+                    <div class="node-item" draggable="true" data-node-id="rs-01">
+                        <span class="node-icon">🎯</span>
+                        <span>연구 주제</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="rs-02">
+                        <span class="node-icon">📚</span>
+                        <span>문헌 조사</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="rs-03">
+                        <span class="node-icon">📋</span>
+                        <span>연구 계획</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="rs-04">
+                        <span class="node-icon">📊</span>
+                        <span>데이터 수집</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="rs-05">
+                        <span class="node-icon">🔍</span>
+                        <span>현장 조사</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="rs-06">
+                        <span class="node-icon">📈</span>
+                        <span>분석 작업</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="rs-07">
+                        <span class="node-icon">🧪</span>
+                        <span>실험 설계</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="rs-08">
+                        <span class="node-icon">📝</span>
+                        <span>논문 작성</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="rs-09">
+                        <span class="node-icon">👥</span>
+                        <span>동료 검토</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="rs-10">
+                        <span class="node-icon">🎤</span>
+                        <span>학회 발표</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="rs-11">
+                        <span class="node-icon">📄</span>
+                        <span>출판 신청</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. 관리 Admin (11 nodes) -->
+            <div class="category">
+                <div class="category-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <div class="category-title">
+                        <span>⚙️</span>
+                        <span>관리 Admin</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="subcategory-list">
+                    <div class="node-item" draggable="true" data-node-id="ad-01">
+                        <span class="node-icon">💰</span>
+                        <span>예산 수립</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ad-02">
+                        <span class="node-icon">👥</span>
+                        <span>인사 관리</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ad-03">
+                        <span class="node-icon">🏢</span>
+                        <span>시설 관리</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ad-04">
+                        <span class="node-icon">🖥️</span>
+                        <span>장비 관리</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ad-05">
+                        <span class="node-icon">🛒</span>
+                        <span>구매 발주</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ad-06">
+                        <span class="node-icon">📜</span>
+                        <span>계약 관리</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ad-07">
+                        <span class="node-icon">⚖️</span>
+                        <span>법무 검토</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ad-08">
+                        <span class="node-icon">🛡️</span>
+                        <span>보험 관리</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ad-09">
+                        <span class="node-icon">🔒</span>
+                        <span>보안 관리</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ad-10">
+                        <span class="node-icon">📊</span>
+                        <span>재무 보고</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="ad-11">
+                        <span class="node-icon">📋</span>
+                        <span>감사 대응</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. 참여 Engagement (11 nodes) -->
+            <div class="category">
+                <div class="category-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <div class="category-title">
+                        <span>👥</span>
+                        <span>참여 Engagement</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="subcategory-list">
+                    <div class="node-item" draggable="true" data-node-id="eg-01">
+                        <span class="node-icon">📊</span>
+                        <span>관람객 조사</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="eg-02">
+                        <span class="node-icon">💳</span>
+                        <span>멤버십</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="eg-03">
+                        <span class="node-icon">🎉</span>
+                        <span>이벤트 기획</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="eg-04">
+                        <span class="node-icon">📱</span>
+                        <span>SNS 운영</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="eg-05">
+                        <span class="node-icon">📧</span>
+                        <span>뉴스레터</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="eg-06">
+                        <span class="node-icon">🤝</span>
+                        <span>자원봉사</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="eg-07">
+                        <span class="node-icon">💝</span>
+                        <span>후원 유치</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="eg-08">
+                        <span class="node-icon">👨‍👩‍👧‍👦</span>
+                        <span>커뮤니티</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="eg-09">
+                        <span class="node-icon">💬</span>
+                        <span>피드백</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="eg-10">
+                        <span class="node-icon">⭐</span>
+                        <span>만족도 조사</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="eg-11">
+                        <span class="node-icon">🎁</span>
+                        <span>리워드</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. 기술 Technology (11 nodes) -->
+            <div class="category">
+                <div class="category-header" onclick="this.parentElement.classList.toggle('expanded')">
+                    <div class="category-title">
+                        <span>💻</span>
+                        <span>기술 Technology</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="subcategory-list">
+                    <div class="node-item" draggable="true" data-node-id="tc-01">
+                        <span class="node-icon">🌐</span>
+                        <span>웹사이트</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="tc-02">
+                        <span class="node-icon">📱</span>
+                        <span>모바일 앱</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="tc-03">
+                        <span class="node-icon">🥽</span>
+                        <span>AR/VR</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="tc-04">
+                        <span class="node-icon">💾</span>
+                        <span>데이터베이스</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="tc-05">
+                        <span class="node-icon">🔌</span>
+                        <span>API 연동</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="tc-06">
+                        <span class="node-icon">🤖</span>
+                        <span>AI 분석</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="tc-07">
+                        <span class="node-icon">🔒</span>
+                        <span>보안 시스템</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="tc-08">
+                        <span class="node-icon">💿</span>
+                        <span>백업 복구</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="tc-09">
+                        <span class="node-icon">☁️</span>
+                        <span>클라우드</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="tc-10">
+                        <span class="node-icon">📡</span>
+                        <span>IoT 센서</span>
+                    </div>
+                    <div class="node-item" draggable="true" data-node-id="tc-11">
+                        <span class="node-icon">📊</span>
+                        <span>분석 대시보드</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -1012,24 +1466,47 @@
         <div class="ai-content" id="ai-content">
             <!-- Quick Actions Tab -->
             <div class="ai-tab-content active" id="tab-quick">
+                <!-- Dashboard Quick Links Section (NEW) -->
+                <div class="ai-section">
+                    <h4 class="ai-section-title">🚀 빠른 실행</h4>
+                    <div class="ai-action-grid">
+                        <button class="ai-action-card" onclick="window.location.href='/dashboard.html'">
+                            <i class="fas fa-chart-line" style="color: #8b5cf6;"></i>
+                            <span>대시보드</span>
+                        </button>
+                        <button class="ai-action-card" onclick="window.location.href='/budget.html'">
+                            <i class="fas fa-dollar-sign" style="color: #a855f7;"></i>
+                            <span>예산 관리</span>
+                        </button>
+                        <button class="ai-action-card" onclick="window.location.href='/analytics-dashboard.html'">
+                            <i class="fas fa-chart-bar" style="color: #eab308;"></i>
+                            <span>분석</span>
+                        </button>
+                        <button class="ai-action-card" onclick="window.location.href='/workflow-tools.html'">
+                            <i class="fas fa-tools" style="color: #6366f1;"></i>
+                            <span>도구</span>
+                        </button>
+                    </div>
+                </div>
+                
                 <div class="ai-section">
                     <h4 class="ai-section-title">🏷️ Content Generation</h4>
                     <div class="ai-action-grid">
                         <button class="ai-action-card" onclick="aiGenerateLabel()">
-                            <i class="fas fa-tag"></i>
-                            <span>Exhibition Label</span>
+                            <i class="fas fa-tag" style="color: #f59e0b;"></i>
+                            <span>라벨 생성</span>
                         </button>
                         <button class="ai-action-card" onclick="aiGenerateSNS()">
-                            <i class="fas fa-share-alt"></i>
-                            <span>SNS Post</span>
+                            <i class="fas fa-share-alt" style="color: #3b82f6;"></i>
+                            <span>SNS 콘텐츠</span>
                         </button>
                         <button class="ai-action-card" onclick="aiGenerateEmail()">
-                            <i class="fas fa-envelope"></i>
-                            <span>Email Draft</span>
+                            <i class="fas fa-envelope" style="color: #10b981;"></i>
+                            <span>이메일 초안</span>
                         </button>
                         <button class="ai-action-card" onclick="aiGenerateReport()">
-                            <i class="fas fa-file-alt"></i>
-                            <span>Daily Report</span>
+                            <i class="fas fa-file-alt" style="color: #ec4899;"></i>
+                            <span>일일 리포트</span>
                         </button>
                     </div>
                 </div>
@@ -1039,19 +1516,19 @@
                     <div class="ai-action-grid">
                         <button class="ai-action-card" onclick="aiAnalyzeNode()">
                             <i class="fas fa-search"></i>
-                            <span>Analyze Node</span>
+                            <span>노드 분석</span>
                         </button>
                         <button class="ai-action-card" onclick="aiImproveText()">
                             <i class="fas fa-magic"></i>
-                            <span>Improve Text</span>
+                            <span>텍스트 개선</span>
                         </button>
                         <button class="ai-action-card" onclick="aiTranslate()">
                             <i class="fas fa-language"></i>
-                            <span>Translate</span>
+                            <span>번역</span>
                         </button>
                         <button class="ai-action-card" onclick="aiSummarize()">
                             <i class="fas fa-compress-alt"></i>
-                            <span>Summarize</span>
+                            <span>요약</span>
                         </button>
                     </div>
                 </div>
@@ -1059,7 +1536,7 @@
                 <div class="ai-section">
                     <div class="ai-selected-node" id="ai-selected-node">
                         <i class="fas fa-info-circle"></i>
-                        <span>Select a node to use AI features</span>
+                        <span>노드를 선택하여 AI 기능 사용</span>
                     </div>
                 </div>
             </div>
