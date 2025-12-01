@@ -10,6 +10,16 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         z-index: 1000;
         padding: 0;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .unified-navbar.navbar-hidden {
+        transform: translateY(-100%);
+    }
+    
+    .unified-navbar.navbar-scrolled {
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        background: rgba(10, 10, 15, 0.98);
     }
     
     .unified-nav-container {
@@ -133,7 +143,7 @@
     <div class="unified-nav-container">
         <!-- Logo -->
         <a href="/landing.html" class="unified-nav-logo">
-            <img src="/static/images/logo-neon-m.png" alt="MuseFlow">
+            <img src="/static/images/logo-neon-m.png" alt="MuseFlow" loading="lazy">
             <span>MuseFlow.life</span>
         </a>
         
@@ -216,4 +226,69 @@
     window.toggleNotifications = window.toggleNotifications || function() {
         window.notificationSystem && window.notificationSystem.showInAppNotification('알림 센터', 'info');
     };
+    
+    // Scroll Animation - Hide/Show Navbar
+    let lastScrollTop = 0;
+    let scrollTimeout;
+    
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.unified-navbar');
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Add scrolled class for shadow effect
+        if (currentScroll > 50) {
+            navbar.classList.add('navbar-scrolled');
+        } else {
+            navbar.classList.remove('navbar-scrolled');
+        }
+        
+        // Hide navbar on scroll down, show on scroll up
+        if (currentScroll > lastScrollTop && currentScroll > 100) {
+            // Scrolling down
+            navbar.classList.add('navbar-hidden');
+        } else {
+            // Scrolling up
+            navbar.classList.remove('navbar-hidden');
+        }
+        
+        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+        
+        // Show navbar when user stops scrolling
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            navbar.classList.remove('navbar-hidden');
+        }, 1500);
+    });
+    
+    // Page Transition Animation
+    document.querySelectorAll('.unified-nav-links a, .unified-nav-logo').forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            
+            // Skip animation for external links or anchors
+            if (!href || href.startsWith('#') || href.startsWith('http')) {
+                return;
+            }
+            
+            e.preventDefault();
+            
+            // Add fade-out animation
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.3s ease';
+            
+            // Navigate after animation
+            setTimeout(() => {
+                window.location.href = href;
+            }, 300);
+        });
+    });
+    
+    // Fade-in animation on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        document.body.style.opacity = '0';
+        requestAnimationFrame(() => {
+            document.body.style.transition = 'opacity 0.5s ease';
+            document.body.style.opacity = '1';
+        });
+    });
 </script>

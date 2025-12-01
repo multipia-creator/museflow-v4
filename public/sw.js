@@ -3,20 +3,28 @@
  * Purpose: PWA support - offline caching, background sync, push notifications
  */
 
-const CACHE_NAME = 'museflow-v10.0';
-const RUNTIME_CACHE = 'museflow-runtime-v10.0';
+const CACHE_NAME = 'museflow-v10.4';
+const RUNTIME_CACHE = 'museflow-runtime-v10.4';
+const IMAGE_CACHE = 'museflow-images-v10.4';
+const API_CACHE = 'museflow-api-v10.4';
 
 // Assets to cache on install
 const PRECACHE_ASSETS = [
     '/dashboard',
     '/budget',
     '/canvas-v3',
+    '/landing.html',
     '/static/js/api-client-d1.js',
     '/static/js/notification-system.js',
     '/static/js/error-logger.js',
     '/static/js/notification-automation.js',
     '/static/js/onboarding-tour.js',
-    '/manifest.json'
+    '/static/js/advanced-features.js',
+    '/static/components/unified-navbar.html',
+    '/static/images/logo-neon-m.png',
+    '/manifest.json',
+    'https://cdn.tailwindcss.com',
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
 ];
 
 // Install event - pre-cache assets
@@ -43,13 +51,22 @@ self.addEventListener('activate', (event) => {
                 return Promise.all(
                     cacheNames
                         .filter(cacheName => {
-                            return cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE;
+                            // Keep current version caches
+                            return cacheName !== CACHE_NAME && 
+                                   cacheName !== RUNTIME_CACHE &&
+                                   cacheName !== IMAGE_CACHE &&
+                                   cacheName !== API_CACHE;
                         })
                         .map(cacheName => {
                             console.log('[Service Worker] Deleting old cache:', cacheName);
                             return caches.delete(cacheName);
                         })
                 );
+            })
+            .then(() => {
+                // Limit cache sizes
+                limitCacheSize(IMAGE_CACHE, 50); // Max 50 images
+                limitCacheSize(RUNTIME_CACHE, 100); // Max 100 assets
             })
             .then(() => self.clients.claim())
     );
@@ -114,11 +131,50 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // Cache-first strategy for static assets
+    // Image-specific caching strategy
+    if (request.destination === 'image') {
+        event.respondWith(
+            caches.match(request)
+                .then(cachedResponse => {
+                    if (cachedResponse) {
+                        return cachedResponse;
+                    }
+
+                    return fetch(request).then(response => {
+                        // Cache images with longer expiry
+                        if (response.ok) {
+                            const responseClone = response.clone();
+                            caches.open(IMAGE_CACHE).then(cache => {
+                                cache.put(request, responseClone);
+                            });
+                        }
+                        return response;
+                    }).catch(() => {
+                        // Fallback placeholder image
+                        return new Response('<svg>...</svg>', {
+                            headers: { 'Content-Type': 'image/svg+xml' }
+                        });
+                    });
+                })
+        );
+        return;
+    }
+
+    // Cache-first strategy for static assets (JS, CSS)
     event.respondWith(
         caches.match(request)
             .then(cachedResponse => {
                 if (cachedResponse) {
+                    // Return cached version immediately
+                    // But also fetch update in background (stale-while-revalidate)
+                    fetch(request).then(response => {
+                        if (response.ok) {
+                            caches.open(RUNTIME_CACHE).then(cache => {
+                                cache.put(request, response);
+                            });
+                        }
+                    }).catch(() => {});
+                    
                     return cachedResponse;
                 }
 
@@ -197,6 +253,25 @@ async function syncProjects() {
         }
     } catch (error) {
         console.error('[Service Worker] Sync failed:', error);
+    }
+}
+
+// Helper: Limit cache size
+async function limitCacheSize(cacheName, maxItems) {
+    try {
+        const cache = await caches.open(cacheName);
+        const keys = await cache.keys();
+        
+        if (keys.length > maxItems) {
+            // Delete oldest items (FIFO)
+            const itemsToDelete = keys.length - maxItems;
+            for (let i = 0; i < itemsToDelete; i++) {
+                await cache.delete(keys[i]);
+            }
+            console.log(`[Service Worker] Trimmed ${cacheName}: removed ${itemsToDelete} items`);
+        }
+    } catch (error) {
+        console.error('[Service Worker] Cache size limit failed:', error);
     }
 }
 
