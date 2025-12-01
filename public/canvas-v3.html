@@ -694,27 +694,45 @@
         
         async function loadProjectAndInit(projectId) {
             try {
-                // Fetch project details
-                const result = await window.apiClient.projects.get(projectId);
+                // Try to fetch project details from API if available
+                if (window.apiClient && window.apiClient.projects) {
+                    const result = await window.apiClient.projects.get(projectId);
+                    
+                    if (result.success && result.data) {
+                        // Store project in Canvas V3
+                        CanvasV3.currentProject = result.data;
+                        
+                        // Update toolbar
+                        document.getElementById('project-title').textContent = result.data.title;
+                        
+                        // Initialize Canvas V3
+                        await CanvasV3.init();
+                        
+                        console.log('✅ Canvas V3 initialized with project:', result.data);
+                        return;
+                    }
+                }
                 
-                if (result.success && result.data) {
-                    // Store project in Canvas V3
-                    CanvasV3.currentProject = result.data;
+                // Fallback: Use default project from sessionStorage
+                const storedProject = sessionStorage.getItem('museflow_current_project');
+                if (storedProject) {
+                    CanvasV3.currentProject = JSON.parse(storedProject);
                     
                     // Update toolbar
-                    document.getElementById('project-title').textContent = result.data.title;
+                    document.getElementById('project-title').textContent = CanvasV3.currentProject.name;
                     
                     // Initialize Canvas V3
                     await CanvasV3.init();
                     
-                    console.log('✅ Canvas V3 initialized with project:', result.data);
+                    console.log('✅ Canvas V3 initialized with default project:', CanvasV3.currentProject.name);
                 } else {
-                    throw new Error('Failed to load project');
+                    throw new Error('No project data available');
                 }
             } catch (error) {
                 console.error('Error loading project:', error);
-                alert('프로젝트를 불러오는데 실패했습니다.');
-                showEmptyState();
+                // Don't show alert, just initialize with default
+                console.log('⚠️ Initializing with empty canvas...');
+                await CanvasV3.init();
             }
         }
         
