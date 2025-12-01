@@ -776,8 +776,18 @@
                 <li><a href="/help-center.html"><i class="fas fa-question-circle"></i> Help</a></li>
             </ul>
             <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <button id="ai-assistant-btn" onclick="openAIAssistant()" style="background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; padding: 0.5rem 1rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(139, 92, 246, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                    <i class="fas fa-magic"></i> AI
+                <!-- AI Recommendations Button (NEW!) -->
+                <button onclick="showAIRecommendations()" style="background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; padding: 0.5rem 1rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(139, 92, 246, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'" title="AI가 추천하는 주의가 필요한 프로젝트">
+                    <i class="fas fa-robot"></i> AI 추천
+                </button>
+                
+                <!-- Favorites Filter Button (NEW!) -->
+                <button onclick="filterFavorites()" style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 0.5rem 1rem; border-radius: 12px; color: #fbbf24; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s;" onmouseover="this.style.background='rgba(245, 158, 11, 0.2)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(245, 158, 11, 0.1)'; this.style.transform='translateY(0)'" title="즐겨찾기한 프로젝트만 표시">
+                    <i class="fas fa-star"></i> 즐겨찾기
+                </button>
+                
+                <button id="ai-assistant-btn" onclick="openAIAssistant()" style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.5rem 1rem; border-radius: 12px; color: #a78bfa; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.2)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.1)'; this.style.transform='translateY(0)'">
+                    <i class="fas fa-magic"></i> AI 어시스턴트
                 </button>
                 
                 <select id="lang-select" style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.5rem 1rem; border-radius: 12px; color: white; cursor: pointer; font-weight: 500;">
@@ -5046,6 +5056,48 @@
                 console.error('Import error:', error);
             }
         }
+    </script>
+    
+    <!-- Onboarding Tour -->
+    <script src="/static/js/onboarding-tour.js"></script>
+    <script>
+        // Initialize onboarding tour for Dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            const tourSteps = [
+                {
+                    target: '.navbar',
+                    icon: '🎯',
+                    title: 'MuseFlow에 오신 것을 환영합니다!',
+                    description: '박물관 워크플로우를 AI와 함께 관리하는 스마트 플랫폼입니다. 간단한 투어로 주요 기능을 알아보세요!'
+                },
+                {
+                    target: '[onclick="showAIRecommendations()"]',
+                    icon: '🤖',
+                    title: 'AI 추천',
+                    description: 'AI가 긴급한 프로젝트, 예산 초과, 장기 미진행 등을 자동으로 분석하여 추천해드립니다.'
+                },
+                {
+                    target: '[onclick="filterFavorites()"]',
+                    icon: '⭐',
+                    title: '즐겨찾기',
+                    description: '중요한 프로젝트를 즐겨찾기에 추가하고 빠르게 필터링할 수 있습니다.'
+                },
+                {
+                    target: '#hero-mission',
+                    icon: '📋',
+                    title: '오늘의 핵심 업무',
+                    description: '오늘 집중해야 할 프로젝트와 긴급 알림을 확인하세요.'
+                },
+                {
+                    target: '#projects-grid',
+                    icon: '📁',
+                    title: '프로젝트 관리',
+                    description: '모든 프로젝트를 한눈에 보고 관리할 수 있습니다. 카드를 클릭하여 상세 정보를 확인하세요!'
+                }
+            ];
+            
+            onboardingTour.init(tourSteps);
+        });
     </script>
 </body>
 </html>

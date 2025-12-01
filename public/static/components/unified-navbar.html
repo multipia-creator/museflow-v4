@@ -1,0 +1,219 @@
+<!-- MuseFlow Unified Navigation Bar Component -->
+<style>
+    .unified-navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(10, 10, 15, 0.95);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 1000;
+        padding: 0;
+    }
+    
+    .unified-nav-container {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 0.75rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .unified-nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: white;
+        font-weight: 700;
+        font-size: 1.25rem;
+        transition: all 0.3s;
+    }
+    
+    .unified-nav-logo:hover {
+        transform: translateY(-2px);
+    }
+    
+    .unified-nav-logo img {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+    }
+    
+    .unified-nav-links {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .unified-nav-links a {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        border-radius: 12px;
+        transition: all 0.3s;
+        font-weight: 500;
+    }
+    
+    .unified-nav-links a:hover {
+        background: rgba(139, 92, 246, 0.1);
+        color: white;
+    }
+    
+    .unified-nav-links a.active {
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+        color: white;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+    
+    .unified-nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .unified-nav-btn {
+        background: rgba(139, 92, 246, 0.1);
+        border: 1px solid rgba(139, 92, 246, 0.3);
+        padding: 0.5rem 1rem;
+        border-radius: 12px;
+        color: white;
+        cursor: pointer;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s;
+    }
+    
+    .unified-nav-btn:hover {
+        background: rgba(139, 92, 246, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    }
+    
+    .unified-nav-btn.primary {
+        background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        border: none;
+    }
+    
+    .unified-nav-btn.primary:hover {
+        box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+    }
+    
+    @media (max-width: 768px) {
+        .unified-nav-container {
+            padding: 0.5rem 1rem;
+        }
+        
+        .unified-nav-links {
+            display: none; /* Mobile: Hide main links, show hamburger menu */
+        }
+        
+        .unified-nav-actions {
+            gap: 0.5rem;
+        }
+        
+        .unified-nav-btn span {
+            display: none; /* Hide text on mobile, keep icons only */
+        }
+    }
+</style>
+
+<nav class="unified-navbar">
+    <div class="unified-nav-container">
+        <!-- Logo -->
+        <a href="/landing.html" class="unified-nav-logo">
+            <img src="/static/images/logo-neon-m.png" alt="MuseFlow">
+            <span>MuseFlow.life</span>
+        </a>
+        
+        <!-- Main Navigation -->
+        <ul class="unified-nav-links">
+            <li><a href="/landing.html" data-page="home">
+                <i class="fas fa-home"></i> Home
+            </a></li>
+            <li><a href="/dashboard.html" data-page="dashboard">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a></li>
+            <li><a href="/canvas-v3.html" data-page="canvas">
+                <i class="fas fa-project-diagram"></i> Canvas
+            </a></li>
+            <li><a href="/workflow-tools.html" data-page="workflow">
+                <i class="fas fa-tools"></i> Tools
+            </a></li>
+            <li><a href="/budget.html" data-page="budget">
+                <i class="fas fa-dollar-sign"></i> Budget
+            </a></li>
+        </ul>
+        
+        <!-- Actions -->
+        <div class="unified-nav-actions">
+            <!-- AI Recommendations Button (NEW!) -->
+            <button class="unified-nav-btn primary" onclick="showAIRecommendations()" title="AI 프로젝트 추천">
+                <i class="fas fa-robot"></i>
+                <span>AI 추천</span>
+            </button>
+            
+            <!-- Favorites Filter Button (NEW!) -->
+            <button class="unified-nav-btn" onclick="filterFavorites()" title="즐겨찾기 필터">
+                <i class="fas fa-star"></i>
+                <span>즐겨찾기</span>
+            </button>
+            
+            <!-- Notification -->
+            <button class="unified-nav-btn" onclick="toggleNotifications()" title="알림">
+                <i class="fas fa-bell"></i>
+            </button>
+            
+            <!-- Account -->
+            <a href="/account.html" class="unified-nav-btn" title="내 계정">
+                <i class="fas fa-user"></i>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<script>
+    // Auto-highlight active page
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.unified-nav-links a');
+        
+        navLinks.forEach(link => {
+            const page = link.getAttribute('data-page');
+            if (currentPath.includes(page) || 
+                (page === 'home' && currentPath === '/') ||
+                (page === 'dashboard' && currentPath.includes('dashboard'))) {
+                link.classList.add('active');
+            }
+        });
+        
+        // Add padding to body to account for fixed navbar
+        document.body.style.paddingTop = '80px';
+    });
+    
+    // Fallback functions if not defined on page
+    window.showAIRecommendations = window.showAIRecommendations || function() {
+        alert('AI 추천 기능은 Dashboard에서 사용 가능합니다.');
+        window.location.href = '/dashboard.html';
+    };
+    
+    window.filterFavorites = window.filterFavorites || function() {
+        alert('즐겨찾기 필터는 Dashboard에서 사용 가능합니다.');
+        window.location.href = '/dashboard.html';
+    };
+    
+    window.toggleNotifications = window.toggleNotifications || function() {
+        window.notificationSystem && window.notificationSystem.showInAppNotification('알림 센터', 'info');
+    };
+</script>

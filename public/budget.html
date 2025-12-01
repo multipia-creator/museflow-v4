@@ -293,23 +293,15 @@
     </style>
 </head>
 <body>
-    <nav class="nav-bar">
-        <a href="/dashboard" class="nav-logo">
-            <i class="fas fa-palette"></i>
-            <span>MuseFlow</span>
-        </a>
-        <div style="display: flex; gap: 1rem; align-items: center;">
-            <a href="/dashboard" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
-                <i class="fas fa-home"></i> Dashboard
-            </a>
-            <a href="/projects" style="color: rgba(255, 255, 255, 0.8); text-decoration: none;">
-                <i class="fas fa-folder"></i> 전시
-            </a>
-            <a href="/budget" style="color: rgba(139, 92, 246, 1); font-weight: 600; border-bottom: 2px solid rgba(139, 92, 246, 1); text-decoration: none;">
-                <i class="fas fa-dollar-sign"></i> 예산
-            </a>
-        </div>
-    </nav>
+    <!-- Load Unified Navigation -->
+    <div id="unified-navbar-container"></div>
+    <script>
+        fetch('/static/components/unified-navbar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('unified-navbar-container').innerHTML = html;
+            });
+    </script>
     
     <div class="content">
         <div class="page-header">
