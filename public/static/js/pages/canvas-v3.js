@@ -119,29 +119,34 @@ const CanvasV3 = {
   async initBackendIntegration() {
     try {
       // Initialize API client
-      if (!window.MuseFlowAPI) {
+      if (typeof initMuseFlowAPI === 'function') {
         initMuseFlowAPI();
       }
       
       // Initialize Workflow Sync
-      if (!window.WorkflowSync) {
+      if (typeof initWorkflowSync === 'function' && window.MuseFlowAPI) {
         initWorkflowSync(window.MuseFlowAPI);
       }
       
       // Initialize AI Generator
-      if (!window.AIGenerator) {
+      if (typeof initAIGenerator === 'function' && window.MuseFlowAPI) {
         initAIGenerator(window.MuseFlowAPI);
       }
       
       // Test AI connection
-      const isAIReady = await window.AIGenerator.testConnection();
-      console.log('🤖 AI Status:', isAIReady ? '✅ Ready' : '⚠️ Not available');
+      if (window.AIGenerator && typeof window.AIGenerator.testConnection === 'function') {
+        const isAIReady = await window.AIGenerator.testConnection();
+        console.log('🤖 AI Status:', isAIReady ? '✅ Ready' : '⚠️ Not available');
+      }
       
       console.log('✅ Backend integration completed');
       
     } catch (error) {
       console.warn('⚠️ Backend integration warning:', error.message);
-      Toast.warning('Running in offline mode');
+      // Don't use Toast if not available
+      if (typeof Toast !== 'undefined' && Toast.warning) {
+        Toast.warning('Running in offline mode');
+      }
     }
   },
   
@@ -175,7 +180,7 @@ const CanvasV3 = {
    * Initialize canvas element
    */
   initCanvas() {
-    this.canvasElement = document.getElementById('main-canvas');
+    this.canvasElement = document.getElementById('canvas');
     if (!this.canvasElement) {
       console.error('❌ Canvas element not found');
       return;
@@ -1317,12 +1322,12 @@ const CanvasV3 = {
     if (aiGenerateBtn) {
       aiGenerateBtn.addEventListener('click', async () => {
         if (!window.AIGenerator) {
-          Toast.error('AI features not available');
+          console.warn('⚠️ AI features not available');
           return;
         }
         
         try {
-          Toast.info(i18n.t('aiGenerating'));
+          console.log('🤖 AI generating workflow...');
           
           // Get AI suggestions based on project context
           const context = {
@@ -1370,12 +1375,12 @@ const CanvasV3 = {
             
             CanvasEngine.needsRedraw = true;
             this.saveProjectData();
-            Toast.success('AI workflow generated! ✨');
+            console.log('✅ AI workflow generated! ✨');
           }
           
         } catch (error) {
           console.error('AI generation failed:', error);
-          Toast.error('AI generation failed. Please try again.');
+          console.error('❌ AI generation failed. Please try again.');
         }
       });
     }
@@ -1392,7 +1397,7 @@ const CanvasV3 = {
     const exportBtn = document.getElementById('export-btn');
     if (exportBtn) {
       exportBtn.addEventListener('click', () => {
-        Toast.info('Export feature coming soon! 📤');
+        console.log('📤 Export feature coming soon!');
       });
     }
   },
@@ -1680,7 +1685,7 @@ const CanvasV3 = {
         });
         
         console.log('🔗 Connection created:', this.connectionStart, '→', targetNode.id);
-        Toast.success('Connection created!');
+        console.log('✅ Connection created!');
       }
       
       this.isConnecting = false;
@@ -1886,7 +1891,7 @@ const CanvasV3 = {
     );
     
     console.log('🗑️ Deleted nodes:', this.selectedNodes.length);
-    Toast.success(`${this.selectedNodes.length} node(s) deleted`);
+    console.log(`✅ ${this.selectedNodes.length} node(s) deleted`);
     
     this.selectedNodes = [];
     this.rightPanelOpen = false;
@@ -2068,7 +2073,7 @@ const CanvasV3 = {
       
       if (response.ok) {
         console.log('✅ Data saved to D1');
-        Toast.success(i18n.t('canvasSaved'));
+        console.log('✅ Canvas saved');
         return;
       }
     } catch (error) {
@@ -2081,7 +2086,7 @@ const CanvasV3 = {
       const storageKey = `museflow_canvas_${currentUser.id}_${this.currentProject.id}`;
       localStorage.setItem(storageKey, JSON.stringify(data));
       console.log('✅ Data saved to localStorage');
-      Toast.success(i18n.t('canvasSaved'));
+      console.log('✅ Canvas saved');
     }
   }
 };
