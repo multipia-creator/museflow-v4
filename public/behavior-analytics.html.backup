@@ -199,15 +199,6 @@
     </style>
 </head>
 <body>
-    <!-- Load Unified Navigation -->
-    <div id="unified-navbar-container"></div>
-    <script>
-        fetch('/static/components/unified-navbar.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('unified-navbar-container').innerHTML = html;
-            });
-    </script>
     <div class="container">
         <h1>📊 Behavior Analytics</h1>
         <p class="subtitle">사용자 행동 패턴 분석 대시보드</p>

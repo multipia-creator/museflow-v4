@@ -206,15 +206,6 @@
     </style>
 </head>
 <body>
-    <!-- Load Unified Navigation -->
-    <div id="unified-navbar-container"></div>
-    <script>
-        fetch('/static/components/unified-navbar.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('unified-navbar-container').innerHTML = html;
-            });
-    </script>
     <!-- Announcement Banner -->
     <div class="announcement-banner">
         🎉 MuseFlow V4가 출시되었습니다! <a href="/help/whats-new">새로운 기능 살펴보기 →</a>

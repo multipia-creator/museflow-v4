@@ -75,15 +75,6 @@
     </style>
 </head>
 <body>
-    <!-- Load Unified Navigation -->
-    <div id="unified-navbar-container"></div>
-    <script>
-        fetch('/static/components/unified-navbar.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('unified-navbar-container').innerHTML = html;
-            });
-    </script>
     <div class="redirect-message">
         <div class="redirect-icon">🎨</div>
         <h1>전시 관리가 Dashboard로 통합되었습니다</h1>

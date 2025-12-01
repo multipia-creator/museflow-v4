@@ -330,6 +330,16 @@
     </style>
 </head>
 <body class="auth-page">
+    <!-- Load Unified Navigation -->
+    <div id="unified-navbar-container"></div>
+    <script>
+        fetch('/static/components/unified-navbar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('unified-navbar-container').innerHTML = html;
+            });
+    </script>
+    
     <!-- Language Selector -->
     <div class="lang-selector">
         <select id="lang-select" class="lang-select">
