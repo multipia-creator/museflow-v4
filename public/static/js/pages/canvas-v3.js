@@ -1975,8 +1975,76 @@ const CanvasV3 = {
         this.nodes = data.nodes || [];
         this.connections = data.connections || [];
         console.log('✅ Data loaded from localStorage');
+        return;
       }
     }
+    
+    // If no data, load sample workflow for demo
+    if (this.nodes.length === 0 && this.currentProject.name === '샘플 워크플로우') {
+      console.log('📋 Loading sample workflow...');
+      this.loadSampleWorkflow();
+    }
+  },
+  
+  /**
+   * Load sample workflow for demo/tutorial
+   */
+  loadSampleWorkflow() {
+    // Sample Workflow 1: Exhibition Planning Process (전시 기획 프로세스)
+    this.nodes = [
+      // Planning Phase
+      { id: 1, type: 'exhibition-concept', category: 'exhibition', x: 100, y: 100, label: '전시 컨셉 기획' },
+      { id: 2, type: 'exhibition-research', category: 'exhibition', x: 100, y: 220, label: '전시 조사' },
+      { id: 3, type: 'budget-planning', category: 'admin', x: 100, y: 340, label: '예산 편성' },
+      
+      // Design Phase
+      { id: 4, type: 'exhibition-design', category: 'exhibition', x: 400, y: 100, label: '전시 디자인' },
+      { id: 5, type: 'space-planning', category: 'exhibition', x: 400, y: 220, label: '공간 계획' },
+      
+      // Content Phase
+      { id: 6, type: 'artifact-selection', category: 'archive', x: 700, y: 100, label: '유물 선정' },
+      { id: 7, type: 'label-writing', category: 'publication', x: 700, y: 220, label: '레이블 작성' },
+      { id: 8, type: 'catalog-writing', category: 'publication', x: 700, y: 340, label: '도록 작성' },
+      
+      // Installation Phase
+      { id: 9, type: 'exhibition-installation', category: 'exhibition', x: 1000, y: 100, label: '전시 설치' },
+      { id: 10, type: 'lighting-setup', category: 'exhibition', x: 1000, y: 220, label: '조명 설치' },
+      
+      // Opening Phase
+      { id: 11, type: 'opening-event', category: 'engagement', x: 1300, y: 160, label: '오프닝 행사' },
+      
+      // Education Programs
+      { id: 12, type: 'education-program', category: 'education', x: 1000, y: 340, label: '교육 프로그램' },
+      { id: 13, type: 'docent-training', category: 'education', x: 1000, y: 460, label: '도슨트 교육' }
+    ];
+    
+    this.connections = [
+      // Planning → Design
+      { from: 1, to: 4 },
+      { from: 2, to: 4 },
+      { from: 3, to: 5 },
+      
+      // Design → Content
+      { from: 4, to: 6 },
+      { from: 5, to: 6 },
+      { from: 6, to: 7 },
+      { from: 6, to: 8 },
+      
+      // Content → Installation
+      { from: 7, to: 9 },
+      { from: 8, to: 9 },
+      { from: 9, to: 10 },
+      
+      // Installation → Opening
+      { from: 10, to: 11 },
+      
+      // Opening → Education
+      { from: 11, to: 12 },
+      { from: 12, to: 13 }
+    ];
+    
+    console.log('✅ Sample workflow loaded:', this.nodes.length, 'nodes');
+    this.render();
   },
   
   /**

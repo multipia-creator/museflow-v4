@@ -597,6 +597,19 @@
         async function loadFirstProject() {
             try {
                 console.log('🔍 Loading first available project...');
+                
+                // Wait for apiClient to be ready
+                if (!window.apiClient) {
+                    console.log('⏳ Waiting for API Client...');
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+                
+                if (!window.apiClient || !window.apiClient.projects) {
+                    console.log('⚠️ API Client not available, creating default project');
+                    createDefaultProjectAndInit();
+                    return;
+                }
+                
                 const result = await window.apiClient.projects.list();
                 
                 if (result.success && result.data && result.data.length > 0) {
@@ -606,14 +619,34 @@
                     // Redirect to canvas-v3 with first project ID
                     window.location.href = `/canvas-v3.html?project=${firstProject.id}`;
                 } else {
-                    // No projects found, show empty state
-                    console.log('⚠️ No projects found, showing empty state');
-                    showEmptyState();
+                    // No projects found, create default project
+                    console.log('⚠️ No projects found, creating default project');
+                    createDefaultProjectAndInit();
                 }
             } catch (error) {
                 console.error('Error loading projects:', error);
-                showEmptyState();
+                createDefaultProjectAndInit();
             }
+        }
+        
+        function createDefaultProjectAndInit() {
+            // Create a default project for standalone mode
+            const defaultProject = {
+                id: Date.now(),
+                name: '샘플 워크플로우',
+                description: '전시 기획 프로세스 예시',
+                created_at: new Date().toISOString()
+            };
+            
+            // Store in session
+            sessionStorage.setItem('museflow_current_project', JSON.stringify(defaultProject));
+            
+            // Initialize canvas with sample workflow
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('project', defaultProject.id);
+            window.history.replaceState({}, '', `${window.location.pathname}?${urlParams}`);
+            
+            loadProjectAndInit(defaultProject.id);
         }
         
         function showEmptyState() {
