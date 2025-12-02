@@ -932,63 +932,7 @@
                 </div>
             </div>
             
-            <!-- 관람객 증가율 (고급 차트, 위치 교체) -->
-            <div class="card chart-card">
-                <div class="card-header">
-                    <h3 class="card-title">관람객 증가율</h3>
-                    <span class="card-action">
-                        <select style="border: none; background: none; cursor: pointer; color: #6B7280; font-size: 0.875rem;">
-                            <option>지난 7일</option>
-                            <option>지난 30일</option>
-                            <option>지난 90일</option>
-                        </select>
-                    </span>
-                </div>
-                <div class="chart-container">
-                    <canvas id="visitorChart"></canvas>
-                </div>
-            </div>
-            
-            <!-- 예산 사용 현황 (6개 항목 세분화) -->
-            <div class="card budget-card">
-                <div class="card-header">
-                    <h3 class="card-title">예산 사용 현황</h3>
-                    <span class="card-action">
-                        <select id="budgetViewToggle" style="border: none; background: none; cursor: pointer; color: #6B7280; font-size: 0.875rem;">
-                            <option value="category">항목별</option>
-                            <option value="cost">비용별</option>
-                        </select>
-                    </span>
-                </div>
-                <div class="budget-container">
-                    <canvas id="budgetChart"></canvas>
-                </div>
-                <div class="budget-legend" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem;">
-                    <div class="budget-legend-item">
-                        <div class="budget-legend-label">
-                            <span class="budget-legend-color" style="background: #8B5CF6;"></span>
-                            인건비
-                        </div>
-                        <div class="budget-legend-value">₩1.5M (50%)</div>
-                    </div>
-                    <div class="budget-legend-item">
-                        <div class="budget-legend-label">
-                            <span class="budget-legend-color" style="background: #3B82F6;"></span>
-                            직접비
-                        </div>
-                        <div class="budget-legend-value">₩0.9M (30%)</div>
-                    </div>
-                    <div class="budget-legend-item">
-                        <div class="budget-legend-label">
-                            <span class="budget-legend-color" style="background: #10B981;"></span>
-                            간접비
-                        </div>
-                        <div class="budget-legend-value">₩0.6M (20%)</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Google Workspace 통합 카드 -->
+            <!-- Google Workspace 통합 카드 (위치 교체: 위로 이동) -->
             <div class="card workspace-card">
                 <div class="card-header">
                     <h3 class="card-title">
@@ -1045,6 +989,62 @@
                         <div class="workspace-label">Slides</div>
                         <div class="workspace-count">4 프레젠테이션</div>
                     </div>
+                </div>
+            </div>
+            
+            <!-- 예산 사용 현황 (6개 항목 세분화) -->
+            <div class="card budget-card">
+                <div class="card-header">
+                    <h3 class="card-title">예산 사용 현황</h3>
+                    <span class="card-action">
+                        <select id="budgetViewToggle" style="border: none; background: none; cursor: pointer; color: #6B7280; font-size: 0.875rem;">
+                            <option value="category">항목별</option>
+                            <option value="cost">비용별</option>
+                        </select>
+                    </span>
+                </div>
+                <div class="budget-container">
+                    <canvas id="budgetChart"></canvas>
+                </div>
+                <div class="budget-legend" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem;">
+                    <div class="budget-legend-item">
+                        <div class="budget-legend-label">
+                            <span class="budget-legend-color" style="background: #8B5CF6;"></span>
+                            인건비
+                        </div>
+                        <div class="budget-legend-value">₩1.5M (50%)</div>
+                    </div>
+                    <div class="budget-legend-item">
+                        <div class="budget-legend-label">
+                            <span class="budget-legend-color" style="background: #3B82F6;"></span>
+                            직접비
+                        </div>
+                        <div class="budget-legend-value">₩0.9M (30%)</div>
+                    </div>
+                    <div class="budget-legend-item">
+                        <div class="budget-legend-label">
+                            <span class="budget-legend-color" style="background: #10B981;"></span>
+                            간접비
+                        </div>
+                        <div class="budget-legend-value">₩0.6M (20%)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 관람객 증가율 (고급 차트, 위치 교체: 아래로 이동) -->
+            <div class="card chart-card">
+                <div class="card-header">
+                    <h3 class="card-title">관람객 증가율</h3>
+                    <span class="card-action">
+                        <select style="border: none; background: none; cursor: pointer; color: #6B7280; font-size: 0.875rem;">
+                            <option>지난 7일</option>
+                            <option>지난 30일</option>
+                            <option>지난 90일</option>
+                        </select>
+                    </span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="visitorChart"></canvas>
                 </div>
             </div>
         </div>
