@@ -714,116 +714,120 @@
             
             // 라인 차트
             if (type === 'line-chart' || type === 'visitor-chart') {
-                const chartId = `chart-${widget.user_widget_id || Date.now()}-${Math.floor(Math.random() * 1000)}`;
-                return `
-                    <canvas id="${chartId}" style="max-height: 200px;"></canvas>
-                    <script>
-                        (function() {
-                            setTimeout(() => {
-                                const ctx = document.getElementById('${chartId}');
-                                if (ctx && typeof Chart !== 'undefined') {
-                                    new Chart(ctx, {
-                                        type: 'line',
-                                        data: {
-                                            labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
-                                            datasets: [{
-                                                label: '방문자',
-                                                data: [3200, 3800, 4100, 4500, 5200, 5800],
-                                                borderColor: '#8B5CF6',
-                                                backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                                                tension: 0.4,
-                                                fill: true
-                                            }]
-                                        },
-                                        options: {
-                                            responsive: true,
-                                            maintainAspectRatio: false,
-                                            plugins: { legend: { display: false } },
-                                            scales: {
-                                                y: { beginAtZero: true, grid: { color: '#E5E7EB' } },
-                                                x: { grid: { display: false } }
-                                            }
-                                        }
-                                    });
+                const chartId = `chart-${widget.user_widget_id || widget.id || Date.now()}-${Math.floor(Math.random() * 10000)}`;
+                // Store chart config for later initialization
+                setTimeout(() => {
+                    const ctx = document.getElementById(chartId);
+                    if (ctx && typeof Chart !== 'undefined') {
+                        // Check if chart already exists
+                        const existingChart = Chart.getChart(ctx);
+                        if (existingChart) {
+                            existingChart.destroy();
+                        }
+                        
+                        new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
+                                datasets: [{
+                                    label: '방문자',
+                                    data: [3200, 3800, 4100, 4500, 5200, 5800],
+                                    borderColor: '#8B5CF6',
+                                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                                    tension: 0.4,
+                                    fill: true
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: { legend: { display: false } },
+                                scales: {
+                                    y: { beginAtZero: true, grid: { color: '#E5E7EB' } },
+                                    x: { grid: { display: false } }
                                 }
-                            }, 500);
-                        })();
-                    </script>
-                `;
+                            }
+                        });
+                    }
+                }, 1000);
+                
+                return `<canvas id="${chartId}" style="max-height: 200px;"></canvas>`;
             }
             
             // 도넛 차트
             if (type === 'donut-chart' || type === 'budget-chart') {
-                const chartId = `donut-${widget.user_widget_id || Date.now()}-${Math.floor(Math.random() * 1000)}`;
-                return `
-                    <canvas id="${chartId}" style="max-height: 250px;"></canvas>
-                    <script>
-                        (function() {
-                            setTimeout(() => {
-                                const ctx = document.getElementById('${chartId}');
-                                if (ctx && typeof Chart !== 'undefined') {
-                                    new Chart(ctx, {
-                                        type: 'doughnut',
-                                        data: {
-                                            labels: ['전시', '교육', '보존', '연구'],
-                                            datasets: [{
-                                                data: [35, 25, 25, 15],
-                                                backgroundColor: ['#8B5CF6', '#10B981', '#F59E0B', '#3B82F6']
-                                            }]
-                                        },
-                                        options: {
-                                            responsive: true,
-                                            maintainAspectRatio: false,
-                                            plugins: {
-                                                legend: {
-                                                    position: 'bottom',
-                                                    labels: { color: '#6B7280' }
-                                                }
-                                            }
-                                        }
-                                    });
+                const chartId = `donut-${widget.user_widget_id || widget.id || Date.now()}-${Math.floor(Math.random() * 10000)}`;
+                
+                setTimeout(() => {
+                    const ctx = document.getElementById(chartId);
+                    if (ctx && typeof Chart !== 'undefined') {
+                        const existingChart = Chart.getChart(ctx);
+                        if (existingChart) {
+                            existingChart.destroy();
+                        }
+                        
+                        new Chart(ctx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['전시', '교육', '보존', '연구'],
+                                datasets: [{
+                                    data: [35, 25, 25, 15],
+                                    backgroundColor: ['#8B5CF6', '#10B981', '#F59E0B', '#3B82F6']
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: { color: '#6B7280' }
+                                    }
                                 }
-                            }, 500);
-                        })();
-                    </script>
-                `;
+                            }
+                        });
+                    }
+                }, 1000);
+                
+                return `<canvas id="${chartId}" style="max-height: 250px;"></canvas>`;
             }
             
             // 막대 차트
             if (type === 'bar-chart') {
-                const chartId = `bar-${widget.user_widget_id || Date.now()}-${Math.floor(Math.random() * 1000)}`;
-                return `
-                    <canvas id="${chartId}" style="max-height: 200px;"></canvas>
-                    <script>
-                        (function() {
-                            setTimeout(() => {
-                                const ctx = document.getElementById('${chartId}');
-                                if (ctx && typeof Chart !== 'undefined') {
-                                    new Chart(ctx, {
-                                        type: 'bar',
-                                        data: {
-                                            labels: ['전시', '교육', '수집', '보존', '출판', '연구'],
-                                            datasets: [{
-                                                label: '활동 수',
-                                                data: [12, 24, 1247, 892, 45, 18],
-                                                backgroundColor: '#8B5CF6'
-                                            }]
-                                        },
-                                        options: {
-                                            responsive: true,
-                                            maintainAspectRatio: false,
-                                            plugins: { legend: { display: false } },
-                                            scales: {
-                                                y: { beginAtZero: true, grid: { color: '#E5E7EB' } },
-                                                x: { grid: { display: false } }
-                                        }
-                                    }
-                                });
+                const chartId = `bar-${widget.user_widget_id || widget.id || Date.now()}-${Math.floor(Math.random() * 10000)}`;
+                
+                setTimeout(() => {
+                    const ctx = document.getElementById(chartId);
+                    if (ctx && typeof Chart !== 'undefined') {
+                        const existingChart = Chart.getChart(ctx);
+                        if (existingChart) {
+                            existingChart.destroy();
+                        }
+                        
+                        new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: ['전시', '교육', '수집', '보존', '출판', '연구'],
+                                datasets: [{
+                                    label: '활동 수',
+                                    data: [12, 24, 1247, 892, 45, 18],
+                                    backgroundColor: '#8B5CF6'
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: { legend: { display: false } },
+                                scales: {
+                                    y: { beginAtZero: true, grid: { color: '#E5E7EB' } },
+                                    x: { grid: { display: false } }
+                                }
                             }
-                        }, 500);
-                    })();
-                    </script>
-                `;
+                        });
+                    }
+                }, 1000);
+                
+                return `<canvas id="${chartId}" style="max-height: 200px;"></canvas>`;
             }
             
             // 타임라인
