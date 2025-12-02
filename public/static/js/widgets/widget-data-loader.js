@@ -111,102 +111,6 @@ const WidgetDataLoader = {
   },
 
   /**
-   * Load event calendar
-   */
-  async loadEventCalendar(limit = 5) {
-    const cacheKey = `event-calendar-${limit}`;
-    
-    if (this.isCacheValid(cacheKey)) {
-      return this.cache.get(cacheKey);
-    }
-
-    try {
-      const response = await fetch(`/api/widgets/data/event-calendar?limit=${limit}`);
-      
-      if (!response.ok) {
-        throw new Error(`Event calendar API error: ${response.status}`);
-      }
-
-      const result = await response.json();
-      
-      if (!result.success) {
-        throw new Error(result.error || 'Failed to load events');
-      }
-
-      this.setCache(cacheKey, result.data, this.defaultCacheDuration);
-      return result.data;
-
-    } catch (error) {
-      console.error('❌ Failed to load event calendar:', error);
-      return this.getMockEventCalendar(limit);
-    }
-  },
-
-  /**
-   * Load notifications
-   */
-  async loadNotifications() {
-    const cacheKey = 'notifications';
-    
-    if (this.isCacheValid(cacheKey)) {
-      return this.cache.get(cacheKey);
-    }
-
-    try {
-      const response = await fetch('/api/widgets/data/notifications');
-      
-      if (!response.ok) {
-        throw new Error(`Notifications API error: ${response.status}`);
-      }
-
-      const result = await response.json();
-      
-      if (!result.success) {
-        throw new Error(result.error || 'Failed to load notifications');
-      }
-
-      this.setCache(cacheKey, result.data, 30000); // 30 sec cache
-      return result.data;
-
-    } catch (error) {
-      console.error('❌ Failed to load notifications:', error);
-      return this.getMockNotifications();
-    }
-  },
-
-  /**
-   * Load task summary
-   */
-  async loadTaskSummary() {
-    const cacheKey = 'task-summary';
-    
-    if (this.isCacheValid(cacheKey)) {
-      return this.cache.get(cacheKey);
-    }
-
-    try {
-      const response = await fetch('/api/widgets/data/task-summary');
-      
-      if (!response.ok) {
-        throw new Error(`Task summary API error: ${response.status}`);
-      }
-
-      const result = await response.json();
-      
-      if (!result.success) {
-        throw new Error(result.error || 'Failed to load task summary');
-      }
-
-      this.setCache(cacheKey, result.data, this.defaultCacheDuration);
-      return result.data;
-
-    } catch (error) {
-      console.error('❌ Failed to load task summary:', error);
-      return this.getMockTaskSummary();
-    }
-  },
-
-  /**
    * Load quick statistics
    */
   async loadQuickStats() {
@@ -295,7 +199,10 @@ const WidgetDataLoader = {
         { name: '특별전: 조선시대 도자기', visitors: 340 },
         { name: '상설전: 한국 미술', visitors: 280 }
       ],
-      hourly_data: [],
+      hourly_data: Array.from({ length: 12 }, (_, i) => ({
+        hour: `${9 + i}:00`,
+        visitors: Math.round(50 + Math.random() * 150)
+      })),
       period: 'today',
       updated_at: new Date().toISOString()
     };
@@ -309,50 +216,10 @@ const WidgetDataLoader = {
       in_storage: 11220,
       categories: [
         { name: '도자기', count: 3450, percentage: 27.7 },
-        { name: '회화', count: 2890, percentage: 23.2 }
+        { name: '회화', count: 2890, percentage: 23.2 },
+        { name: '조각', count: 2120, percentage: 17.0 }
       ],
       recent_acquisitions: [],
-      updated_at: new Date().toISOString()
-    };
-  },
-
-  getMockEventCalendar(limit) {
-    return [
-      {
-        id: 1,
-        title: '큐레이터 도슨트',
-        type: 'tour',
-        start_time: new Date(Date.now() + 3600000).toISOString(),
-        duration: 60,
-        location: '1층 특별전시실',
-        capacity: 20,
-        registered: 15
-      }
-    ].slice(0, limit);
-  },
-
-  getMockNotifications() {
-    return [
-      {
-        id: 1,
-        type: 'info',
-        title: '시스템 알림',
-        message: 'Mock 데이터를 사용 중입니다.',
-        timestamp: new Date().toISOString(),
-        read: false
-      }
-    ];
-  },
-
-  getMockTaskSummary() {
-    return {
-      total_tasks: 28,
-      completed: 15,
-      in_progress: 8,
-      pending: 5,
-      overdue: 2,
-      due_today: [],
-      completion_rate: 54,
       updated_at: new Date().toISOString()
     };
   },
