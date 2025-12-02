@@ -924,6 +924,1046 @@
                 `;
             }
             
+            // ==========================================
+            // 데이터 분석 & 시각화 위젯 (Advanced Charts)
+            // ==========================================
+            
+            // 히트맵 차트
+            if (type === 'heatmap-chart') {
+                return `
+                    <div style="padding: 1rem;">
+                        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 0.5rem;">
+                            ${['월', '화', '수', '목', '금', '토', '일'].map(day => `
+                                <div style="text-align: center; font-size: var(--font-size-xs); color: var(--text-secondary); font-weight: 600;">${day}</div>
+                            `).join('')}
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;">
+                            ${Array.from({length: 35}, (_, i) => {
+                                const intensity = Math.floor(Math.random() * 5);
+                                const colors = ['#F3F4F6', '#DBEAFE', '#BFDBFE', '#93C5FD', '#60A5FA'];
+                                return `<div style="aspect-ratio: 1; background: ${colors[intensity]}; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #1F2937;">${Math.floor(Math.random() * 100)}</div>`;
+                            }).join('')}
+                        </div>
+                        <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 0.5rem; font-size: var(--font-size-xs);">
+                            <span style="color: var(--text-tertiary);">낮음</span>
+                            <div style="display: flex; gap: 2px;">
+                                ${['#F3F4F6', '#DBEAFE', '#BFDBFE', '#93C5FD', '#60A5FA'].map(color => 
+                                    `<div style="width: 12px; height: 12px; background: ${color}; border-radius: 2px;"></div>`
+                                ).join('')}
+                            </div>
+                            <span style="color: var(--text-tertiary);">높음</span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 레이더 차트
+            if (type === 'radar-chart') {
+                const chartId = 'radar-' + (widget.user_widget_id || widget.id || Date.now()) + '-' + Math.floor(Math.random() * 10000);
+                chartQueue.push({
+                    chartId: chartId,
+                    options: {
+                        type: 'radar',
+                        data: {
+                            labels: ['전시', '교육', '수집', '보존', '출판', '연구'],
+                            datasets: [{
+                                label: '현재 성과',
+                                data: [85, 70, 90, 75, 60, 80],
+                                borderColor: '#8B5CF6',
+                                backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                                borderWidth: 2
+                            }, {
+                                label: '목표',
+                                data: [90, 85, 95, 90, 80, 90],
+                                borderColor: '#10B981',
+                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                borderWidth: 2,
+                                borderDash: [5, 5]
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                r: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    ticks: { stepSize: 20 }
+                                }
+                            }
+                        }
+                    }
+                });
+                return '<canvas id="' + chartId + '" style="max-height: 300px;"></canvas>';
+            }
+            
+            // 버블 차트
+            if (type === 'bubble-chart') {
+                const chartId = 'bubble-' + (widget.user_widget_id || widget.id || Date.now()) + '-' + Math.floor(Math.random() * 10000);
+                chartQueue.push({
+                    chartId: chartId,
+                    options: {
+                        type: 'bubble',
+                        data: {
+                            datasets: [{
+                                label: '전시 성과',
+                                data: [
+                                    {x: 5000, y: 85, r: 15},
+                                    {x: 3000, y: 70, r: 10},
+                                    {x: 8000, y: 90, r: 20},
+                                    {x: 4500, y: 75, r: 12},
+                                    {x: 6000, y: 80, r: 18}
+                                ],
+                                backgroundColor: 'rgba(139, 92, 246, 0.6)',
+                                borderColor: '#8B5CF6'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                x: { title: { display: true, text: '방문자 수' } },
+                                y: { title: { display: true, text: '만족도 (%)' } }
+                            }
+                        }
+                    }
+                });
+                return '<canvas id="' + chartId + '" style="max-height: 300px;"></canvas>';
+            }
+            
+            // 간트 차트
+            if (type === 'gantt-chart') {
+                return `
+                    <div style="padding: 1rem; overflow-x: auto;">
+                        <div style="min-width: 600px;">
+                            ${[
+                                {name: '고려청자 특별전', start: 10, duration: 60, color: '#8B5CF6'},
+                                {name: '현대미술전', start: 30, duration: 80, color: '#10B981'},
+                                {name: '기획전 준비', start: 0, duration: 40, color: '#F59E0B'},
+                                {name: '소장품 정리', start: 50, duration: 30, color: '#3B82F6'}
+                            ].map(task => `
+                                <div style="margin-bottom: 0.75rem;">
+                                    <div style="font-size: var(--font-size-sm); color: var(--text-primary); margin-bottom: 0.25rem; font-weight: 500;">${task.name}</div>
+                                    <div style="position: relative; height: 24px; background: var(--bg-tertiary); border-radius: 4px;">
+                                        <div style="position: absolute; left: ${task.start}%; width: ${task.duration}%; height: 100%; background: ${task.color}; border-radius: 4px; display: flex; align-items: center; padding: 0 0.5rem; font-size: 10px; color: white; font-weight: 600;">
+                                            ${task.duration}일
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 지오맵
+            if (type === 'geo-map') {
+                return `
+                    <div style="padding: 1rem; text-align: center;">
+                        <div style="width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                            <i class="fas fa-globe" style="font-size: 4rem; color: rgba(255,255,255,0.3);"></i>
+                            ${[
+                                {left: '20%', top: '30%', label: '서울', count: 450},
+                                {left: '60%', top: '40%', label: '도쿄', count: 280},
+                                {left: '40%', top: '60%', label: '베이징', count: 320},
+                                {left: '75%', top: '25%', label: '뉴욕', count: 180}
+                            ].map(marker => `
+                                <div style="position: absolute; left: ${marker.left}; top: ${marker.top}; transform: translate(-50%, -50%);">
+                                    <div style="width: 12px; height: 12px; background: #10B981; border: 2px solid white; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>
+                                    <div style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); white-space: nowrap; background: rgba(0,0,0,0.8); color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px;">
+                                        ${marker.label}: ${marker.count}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 1rem; font-size: var(--font-size-sm);">
+                            <div><i class="fas fa-users" style="color: #10B981;"></i> 총 관람객: 1,230명</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 워드 클라우드
+            if (type === 'wordcloud') {
+                const words = [
+                    {text: '감동', size: 32, color: '#10B981'},
+                    {text: '멋진', size: 28, color: '#10B981'},
+                    {text: '훌륭한', size: 24, color: '#10B981'},
+                    {text: '아름다운', size: 26, color: '#10B981'},
+                    {text: '좋았어요', size: 30, color: '#10B981'},
+                    {text: '추천', size: 22, color: '#10B981'},
+                    {text: '복잡', size: 18, color: '#EF4444'},
+                    {text: '혼잡', size: 16, color: '#EF4444'}
+                ];
+                return `
+                    <div style="padding: 2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1rem; min-height: 200px;">
+                        ${words.map(word => `
+                            <span style="font-size: ${word.size}px; color: ${word.color}; font-weight: 600; opacity: 0.8; cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
+                                ${word.text}
+                            </span>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            // ==========================================
+            // 박물관 전문 위젯
+            // ==========================================
+            
+            // 전시 상태 보드
+            if (type === 'exhibition-status') {
+                const statuses = [
+                    {name: '기획중', items: ['미래 미술전', '고미술 특별전'], color: '#F59E0B'},
+                    {name: '준비중', items: ['세계 문화유산전'], color: '#3B82F6'},
+                    {name: '전시중', items: ['고려청자전', '현대미술전'], color: '#10B981'},
+                    {name: '철거중', items: ['조각 특별전'], color: '#EF4444'},
+                    {name: '완료', items: ['역사 상설전'], color: '#6B7280'}
+                ];
+                return `
+                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; padding: 1rem; overflow-x: auto;">
+                        ${statuses.map(status => `
+                            <div style="min-width: 120px;">
+                                <div style="background: ${status.color}; color: white; padding: 0.5rem; border-radius: var(--radius-md) var(--radius-md) 0 0; text-align: center; font-weight: 600; font-size: var(--font-size-sm);">
+                                    ${status.name} (${status.items.length})
+                                </div>
+                                <div style="background: var(--bg-tertiary); padding: 0.5rem; border-radius: 0 0 var(--radius-md) var(--radius-md); min-height: 100px;">
+                                    ${status.items.map(item => `
+                                        <div style="background: var(--surface); padding: 0.5rem; margin-bottom: 0.5rem; border-radius: var(--radius-sm); font-size: var(--font-size-xs); cursor: move; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                            ${item}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            // 소장품 검색
+            if (type === 'collection-search') {
+                return `
+                    <div style="padding: 1rem;">
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                            <input type="text" placeholder="소장품 검색 (제목, 작가, 번호)..." 
+                                   style="flex: 1; padding: 0.75rem; border: 2px solid var(--border-primary); border-radius: var(--radius-md); background: var(--surface); color: var(--text-primary);">
+                            <button style="padding: 0.75rem 1.5rem; background: var(--primary); color: white; border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600;">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+                            ${[
+                                {title: '청자 상감운학문 매병', number: 'AC-2024-001', img: '🏺'},
+                                {title: '백자 달항아리', number: 'AC-2024-002', img: '🏺'}
+                            ].map(item => `
+                                <div style="background: var(--bg-tertiary); padding: 0.75rem; border-radius: var(--radius-md); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                                    <div style="font-size: 2rem; text-align: center; margin-bottom: 0.5rem;">${item.img}</div>
+                                    <div style="font-weight: 600; font-size: var(--font-size-sm); color: var(--text-primary); margin-bottom: 0.25rem;">${item.title}</div>
+                                    <div style="font-size: var(--font-size-xs); color: var(--text-secondary);">${item.number}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 보존 모니터
+            if (type === 'conservation-monitor') {
+                return `
+                    <div style="padding: 1rem;">
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                            ${[
+                                {label: '온도', value: '22.5°C', icon: 'fa-temperature-half', status: 'good'},
+                                {label: '습도', value: '55%', icon: 'fa-droplet', status: 'good'},
+                                {label: '조도', value: '150 lux', icon: 'fa-sun', status: 'warning'}
+                            ].map(metric => `
+                                <div style="text-align: center;">
+                                    <i class="fas ${metric.icon}" style="font-size: 2rem; color: ${metric.status === 'good' ? '#10B981' : '#F59E0B'}; margin-bottom: 0.5rem;"></i>
+                                    <div style="font-size: var(--font-size-2xl); font-weight: 700; color: var(--text-primary);">${metric.value}</div>
+                                    <div style="font-size: var(--font-size-sm); color: var(--text-secondary);">${metric.label}</div>
+                                    <div style="margin-top: 0.5rem; font-size: var(--font-size-xs); color: ${metric.status === 'good' ? '#10B981' : '#F59E0B'};">
+                                        ${metric.status === 'good' ? '정상' : '주의'}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: var(--radius-md); font-size: var(--font-size-xs); color: var(--text-secondary);">
+                            <i class="fas fa-clock"></i> 마지막 업데이트: 5분 전
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 대여 추적기
+            if (type === 'loan-tracker') {
+                return `
+                    <div style="padding: 1rem;">
+                        ${[
+                            {title: '청자 매병', museum: '도쿄국립박물관', dday: 'D-45', status: 'out'},
+                            {title: '백자 항아리', museum: '메트로폴리탄 미술관', dday: 'D-12', status: 'return-soon'},
+                            {title: '고려 불상', museum: '루브르 박물관', dday: '대여중', status: 'out'}
+                        ].map(loan => `
+                            <div style="background: var(--bg-tertiary); padding: 0.75rem; margin-bottom: 0.75rem; border-radius: var(--radius-md); border-left: 4px solid ${loan.status === 'return-soon' ? '#F59E0B' : '#3B82F6'};">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                                    <div>
+                                        <div style="font-weight: 600; color: var(--text-primary);">${loan.title}</div>
+                                        <div style="font-size: var(--font-size-xs); color: var(--text-secondary); margin-top: 0.25rem;">
+                                            <i class="fas fa-building"></i> ${loan.museum}
+                                        </div>
+                                    </div>
+                                    <div style="background: ${loan.status === 'return-soon' ? '#F59E0B' : '#3B82F6'}; color: white; padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); font-size: var(--font-size-xs); font-weight: 600;">
+                                        ${loan.dday}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            // 전시 캘린더
+            if (type === 'exhibition-calendar') {
+                const today = new Date();
+                const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+                return `
+                    <div style="padding: 1rem;">
+                        <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 1rem;">
+                            <h3 style="font-size: var(--font-size-lg); font-weight: 600; color: var(--text-primary);">
+                                ${today.getFullYear()}년 ${today.getMonth() + 1}월
+                            </h3>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 0.5rem;">
+                            ${['일', '월', '화', '수', '목', '금', '토'].map((day, i) => `
+                                <div style="text-align: center; font-size: var(--font-size-xs); color: ${i === 0 ? '#EF4444' : i === 6 ? '#3B82F6' : 'var(--text-secondary)'}; font-weight: 600; padding: 0.25rem;">
+                                    ${day}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;">
+                            ${Array.from({length: daysInMonth}, (_, i) => {
+                                const hasEvent = Math.random() > 0.7;
+                                return `
+                                    <div style="aspect-ratio: 1; background: ${hasEvent ? '#DDD6FE' : 'var(--bg-tertiary)'}; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: var(--font-size-sm); color: var(--text-primary); cursor: pointer; position: relative;" ${hasEvent ? 'title="전시 일정 있음"' : ''}>
+                                        ${i + 1}
+                                        ${hasEvent ? '<div style="position: absolute; bottom: 2px; width: 4px; height: 4px; background: #8B5CF6; border-radius: 50%;"></div>' : ''}
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 방문객 프로필
+            if (type === 'visitor-profile') {
+                const chartId = 'visitor-profile-' + (widget.user_widget_id || widget.id || Date.now()) + '-' + Math.floor(Math.random() * 10000);
+                chartQueue.push({
+                    chartId: chartId,
+                    options: {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['20대', '30대', '40대', '50대', '60대+'],
+                            datasets: [{
+                                data: [25, 30, 20, 15, 10],
+                                backgroundColor: ['#8B5CF6', '#10B981', '#F59E0B', '#3B82F6', '#EF4444']
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { position: 'bottom' }
+                            }
+                        }
+                    }
+                });
+                return '<div style="padding: 1rem;"><div style="font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">연령대별 분포</div><canvas id="' + chartId + '" style="max-height: 250px;"></canvas></div>';
+            }
+            
+            // ==========================================
+            // 알림 & 작업 관리 위젯
+            // ==========================================
+            
+            // 우선순위 매트릭스
+            if (type === 'priority-matrix') {
+                return `
+                    <div style="padding: 1rem;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; height: 100%;">
+                            <div style="background: linear-gradient(135deg, #FEE2E2, #FECACA); padding: 1rem; border-radius: var(--radius-md); border: 2px solid #EF4444;">
+                                <div style="font-weight: 600; color: #991B1B; margin-bottom: 0.5rem; font-size: var(--font-size-sm);">
+                                    <i class="fas fa-exclamation-circle"></i> 긴급 & 중요
+                                </div>
+                                <div style="font-size: var(--font-size-xs); color: #7F1D1D;">• 예산 승인 (오늘)</div>
+                                <div style="font-size: var(--font-size-xs); color: #7F1D1D;">• 전시 오픈 (내일)</div>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #FEF3C7, #FDE68A); padding: 1rem; border-radius: var(--radius-md); border: 2px solid #F59E0B;">
+                                <div style="font-weight: 600; color: #92400E; margin-bottom: 0.5rem; font-size: var(--font-size-sm);">
+                                    <i class="fas fa-clock"></i> 중요 & 긴급하지 않음
+                                </div>
+                                <div style="font-size: var(--font-size-xs); color: #78350F;">• 소장품 정리</div>
+                                <div style="font-size: var(--font-size-xs); color: #78350F;">• 보고서 작성</div>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #DBEAFE, #BFDBFE); padding: 1rem; border-radius: var(--radius-md); border: 2px solid #3B82F6;">
+                                <div style="font-weight: 600; color: #1E3A8A; margin-bottom: 0.5rem; font-size: var(--font-size-sm);">
+                                    <i class="fas fa-bolt"></i> 긴급 & 중요하지 않음
+                                </div>
+                                <div style="font-size: var(--font-size-xs); color: #1E40AF;">• 이메일 답장</div>
+                                <div style="font-size: var(--font-size-xs); color: #1E40AF;">• 전화 회신</div>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #F3F4F6, #E5E7EB); padding: 1rem; border-radius: var(--radius-md); border: 2px solid #9CA3AF;">
+                                <div style="font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: var(--font-size-sm);">
+                                    <i class="fas fa-trash-alt"></i> 긴급하지도 중요하지도 않음
+                                </div>
+                                <div style="font-size: var(--font-size-xs); color: #6B7280;">• 잡지 읽기</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 승인 대기 큐
+            if (type === 'approval-queue') {
+                return `
+                    <div style="padding: 1rem;">
+                        ${[
+                            {title: '세계문화유산전 예산', type: '예산', amount: '₩50,000,000', date: '2일 전'},
+                            {title: '홍보물 디자인', type: '디자인', amount: '', date: '1일 전'},
+                            {title: '소장품 대여 계약', type: '계약', amount: '', date: '5시간 전'}
+                        ].map(item => `
+                            <div style="background: var(--bg-tertiary); padding: 1rem; margin-bottom: 0.75rem; border-radius: var(--radius-md); border-left: 4px solid #F59E0B;">
+                                <div style="display: flex; justify-content: between; align-items: start; margin-bottom: 0.75rem;">
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">${item.title}</div>
+                                        <div style="font-size: var(--font-size-xs); color: var(--text-secondary);">
+                                            <span style="background: #DBEAFE; color: #1E40AF; padding: 0.125rem 0.5rem; border-radius: var(--radius-sm); margin-right: 0.5rem;">${item.type}</span>
+                                            ${item.amount}
+                                        </div>
+                                    </div>
+                                    <div style="font-size: var(--font-size-xs); color: var(--text-tertiary);">${item.date}</div>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <button style="flex: 1; padding: 0.5rem; background: #10B981; color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: var(--font-size-xs); font-weight: 600;">
+                                        <i class="fas fa-check"></i> 승인
+                                    </button>
+                                    <button style="flex: 1; padding: 0.5rem; background: #EF4444; color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: var(--font-size-xs); font-weight: 600;">
+                                        <i class="fas fa-times"></i> 거부
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            // 데드라인 타이머
+            if (type === 'deadline-timer') {
+                return `
+                    <div style="padding: 1rem; text-align: center;">
+                        ${[
+                            {title: '전시 오픈', days: 2, color: '#EF4444'},
+                            {title: '예산 제출', days: 7, color: '#F59E0B'},
+                            {title: '보고서 마감', days: 14, color: '#3B82F6'}
+                        ].map(deadline => `
+                            <div style="background: var(--bg-tertiary); padding: 1rem; margin-bottom: 0.75rem; border-radius: var(--radius-md); border: 2px solid ${deadline.color};">
+                                <div style="font-size: var(--font-size-3xl); font-weight: 700; color: ${deadline.color};">D-${deadline.days}</div>
+                                <div style="font-size: var(--font-size-sm); color: var(--text-primary); margin-top: 0.5rem; font-weight: 500;">${deadline.title}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            // 팀 활동 피드
+            if (type === 'activity-feed') {
+                return `
+                    <div style="padding: 1rem; max-height: 400px; overflow-y: auto;">
+                        ${[
+                            {user: '김큐레이터', action: '전시 계획서를 업로드했습니다', time: '5분 전', icon: 'fa-file-upload', color: '#8B5CF6'},
+                            {user: '이관장', action: '예산안을 승인했습니다', time: '1시간 전', icon: 'fa-check-circle', color: '#10B981'},
+                            {user: '박연구원', action: '소장품 3건을 등록했습니다', time: '2시간 전', icon: 'fa-plus-circle', color: '#3B82F6'},
+                            {user: '최보존가', action: '온습도 경고 알림', time: '3시간 전', icon: 'fa-exclamation-triangle', color: '#F59E0B'},
+                            {user: '정교육팀', action: '교육 프로그램을 수정했습니다', time: '4시간 전', icon: 'fa-edit', color: '#6366F1'}
+                        ].map(activity => `
+                            <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-primary);">
+                                <div style="flex-shrink: 0;">
+                                    <div style="width: 40px; height: 40px; background: ${activity.color}; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                                        <i class="fas ${activity.icon}"></i>
+                                    </div>
+                                </div>
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="font-weight: 600; color: var(--text-primary); font-size: var(--font-size-sm);">${activity.user}</div>
+                                    <div style="font-size: var(--font-size-xs); color: var(--text-secondary); margin-top: 0.25rem;">${activity.action}</div>
+                                    <div style="font-size: var(--font-size-xs); color: var(--text-tertiary); margin-top: 0.25rem;">
+                                        <i class="fas fa-clock"></i> ${activity.time}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            // ==========================================
+            // AI & 스마트 기능 위젯
+            // ==========================================
+            
+            // AI 추천 엔진
+            if (type === 'ai-recommendations') {
+                return `
+                    <div style="padding: 1rem;">
+                        <div style="background: linear-gradient(135deg, #8B5CF6, #7C3AED); padding: 1rem; border-radius: var(--radius-lg); color: white; margin-bottom: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                                <i class="fas fa-magic" style="font-size: 1.5rem;"></i>
+                                <span style="font-weight: 600; font-size: var(--font-size-lg);">AI 추천</span>
+                            </div>
+                            <div style="font-size: var(--font-size-sm); opacity: 0.9;">데이터 분석을 통한 맞춤 제안</div>
+                        </div>
+                        ${[
+                            {title: '다음 전시 주제', suggestion: '근현대 한국 미술', confidence: 92, reason: '최근 관람객 선호도 증가'},
+                            {title: '최적 전시 기간', suggestion: '3월 중순 ~ 5월 말', confidence: 88, reason: '과거 방문자 패턴 분석'},
+                            {title: '추천 소장품', suggestion: '청자 상감운학문 매병', confidence: 85, reason: 'SNS 언급 빈도 상위'}
+                        ].map(rec => `
+                            <div style="background: var(--bg-tertiary); padding: 1rem; margin-bottom: 0.75rem; border-radius: var(--radius-md);">
+                                <div style="display: flex; justify-content: between; align-items: start; margin-bottom: 0.5rem;">
+                                    <div style="font-weight: 600; color: var(--text-primary); font-size: var(--font-size-sm);">${rec.title}</div>
+                                    <div style="background: #10B981; color: white; padding: 0.125rem 0.5rem; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600;">
+                                        ${rec.confidence}%
+                                    </div>
+                                </div>
+                                <div style="color: var(--primary); font-weight: 600; margin-bottom: 0.5rem;">${rec.suggestion}</div>
+                                <div style="font-size: var(--font-size-xs); color: var(--text-secondary);">
+                                    <i class="fas fa-lightbulb"></i> ${rec.reason}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            // 스마트 인사이트
+            if (type === 'smart-insights') {
+                return `
+                    <div style="padding: 1rem;">
+                        ${[
+                            {insight: '관람객이 지난 달 대비 23% 증가했습니다', icon: 'fa-arrow-up', color: '#10B981'},
+                            {insight: '주말 관람객이 평일보다 2.5배 많습니다', icon: 'fa-calendar-week', color: '#3B82F6'},
+                            {insight: '20-30대 관람객이 전체의 55%를 차지합니다', icon: 'fa-users', color: '#8B5CF6'},
+                            {insight: '오후 2-4시가 가장 혼잡한 시간대입니다', icon: 'fa-clock', color: '#F59E0B'}
+                        ].map(item => `
+                            <div style="display: flex; gap: 1rem; align-items: start; padding: 1rem; background: var(--bg-tertiary); margin-bottom: 0.75rem; border-radius: var(--radius-md);">
+                                <div style="flex-shrink: 0;">
+                                    <div style="width: 48px; height: 48px; background: ${item.color}; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem;">
+                                        <i class="fas ${item.icon}"></i>
+                                    </div>
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="font-size: var(--font-size-sm); color: var(--text-primary); line-height: 1.6;">${item.insight}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            // 감성 분석
+            if (type === 'sentiment-analysis') {
+                const chartId = 'sentiment-' + (widget.user_widget_id || widget.id || Date.now()) + '-' + Math.floor(Math.random() * 10000);
+                chartQueue.push({
+                    chartId: chartId,
+                    options: {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['긍정', '중립', '부정'],
+                            datasets: [{
+                                data: [65, 25, 10],
+                                backgroundColor: ['#10B981', '#F59E0B', '#EF4444']
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { position: 'bottom' } }
+                        }
+                    }
+                });
+                return `
+                    <div style="padding: 1rem;">
+                        <div style="font-weight: 600; margin-bottom: 1rem; color: var(--text-primary);">SNS 감성 분석</div>
+                        <canvas id="${chartId}" style="max-height: 200px;"></canvas>
+                        <div style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: var(--radius-md); font-size: var(--font-size-sm);">
+                            <div style="color: var(--text-primary); font-weight: 600; margin-bottom: 0.5rem;">주요 키워드</div>
+                            <div style="display: flex; flex-wrap: gap; gap: 0.5rem;">
+                                ${['멋진', '감동', '추천', '좋았어요', '훌륭한'].map(word => `
+                                    <span style="background: #DDD6FE; color: #5B21B6; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: var(--font-size-xs);">
+                                        ${word}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 이미지 인식
+            if (type === 'image-recognition') {
+                return `
+                    <div style="padding: 1rem; text-align: center;">
+                        <div style="border: 2px dashed var(--border-primary); border-radius: var(--radius-lg); padding: 2rem; background: var(--bg-tertiary); cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#8B5CF6'; this.style.background='#F5F3FF'" onmouseout="this.style.borderColor='var(--border-primary)'; this.style.background='var(--bg-tertiary)'">
+                            <i class="fas fa-camera" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">사진을 드래그하거나 클릭하세요</div>
+                            <div style="font-size: var(--font-size-xs); color: var(--text-secondary);">AI가 자동으로 소장품 정보를 추출합니다</div>
+                        </div>
+                        <div style="margin-top: 1rem; text-align: left;">
+                            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; font-size: var(--font-size-sm);">최근 분석</div>
+                            <div style="background: var(--bg-tertiary); padding: 0.75rem; border-radius: var(--radius-md); font-size: var(--font-size-xs);">
+                                <div style="color: var(--text-primary);"><strong>청자 상감운학문 매병</strong></div>
+                                <div style="color: var(--text-secondary); margin-top: 0.25rem;">시대: 고려, 재질: 청자, 신뢰도: 94%</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // ==========================================
+            // 재무 & 예산 위젯
+            // ==========================================
+            
+            // 예산 비교
+            if (type === 'budget-comparison') {
+                const chartId = 'budget-comp-' + (widget.user_widget_id || widget.id || Date.now()) + '-' + Math.floor(Math.random() * 10000);
+                chartQueue.push({
+                    chartId: chartId,
+                    options: {
+                        type: 'bar',
+                        data: {
+                            labels: ['전시', '교육', '수집', '보존', '출판', '연구'],
+                            datasets: [{
+                                label: '계획',
+                                data: [50, 30, 40, 35, 20, 25],
+                                backgroundColor: '#93C5FD'
+                            }, {
+                                label: '실제',
+                                data: [48, 32, 38, 40, 18, 27],
+                                backgroundColor: '#8B5CF6'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: { beginAtZero: true, title: { display: true, text: '백만원' } }
+                            }
+                        }
+                    }
+                });
+                return '<div style="padding: 1rem;"><canvas id="' + chartId + '" style="max-height: 250px;"></canvas></div>';
+            }
+            
+            // 수익 분석
+            if (type === 'revenue-analysis') {
+                const chartId = 'revenue-' + (widget.user_widget_id || widget.id || Date.now()) + '-' + Math.floor(Math.random() * 10000);
+                chartQueue.push({
+                    chartId: chartId,
+                    options: {
+                        type: 'bar',
+                        data: {
+                            labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
+                            datasets: [{
+                                label: '입장권',
+                                data: [35, 42, 38, 45, 52, 48],
+                                backgroundColor: '#8B5CF6',
+                                stack: 'stack0'
+                            }, {
+                                label: '굿즈',
+                                data: [12, 15, 13, 18, 20, 17],
+                                backgroundColor: '#10B981',
+                                stack: 'stack0'
+                            }, {
+                                label: '후원',
+                                data: [8, 10, 12, 9, 15, 11],
+                                backgroundColor: '#F59E0B',
+                                stack: 'stack0'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: { beginAtZero: true, stacked: true, title: { display: true, text: '백만원' } },
+                                x: { stacked: true }
+                            }
+                        }
+                    }
+                });
+                return '<div style="padding: 1rem;"><canvas id="' + chartId + '" style="max-height: 250px;"></canvas></div>';
+            }
+            
+            // ROI 계산기
+            if (type === 'roi-calculator') {
+                return `
+                    <div style="padding: 1rem;">
+                        <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1rem;">
+                            <div style="margin-bottom: 0.75rem;">
+                                <label style="display: block; font-size: var(--font-size-sm); color: var(--text-secondary); margin-bottom: 0.25rem;">투자 금액 (만원)</label>
+                                <input type="number" value="5000" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-primary); border-radius: var(--radius-sm); background: var(--surface); color: var(--text-primary);">
+                            </div>
+                            <div style="margin-bottom: 0.75rem;">
+                                <label style="display: block; font-size: var(--font-size-sm); color: var(--text-secondary); margin-bottom: 0.25rem;">수익 (만원)</label>
+                                <input type="number" value="7500" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-primary); border-radius: var(--radius-sm); background: var(--surface); color: var(--text-primary);">
+                            </div>
+                            <button style="width: 100%; padding: 0.75rem; background: var(--primary); color: white; border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600;">
+                                <i class="fas fa-calculator"></i> 계산하기
+                            </button>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #8B5CF6, #7C3AED); padding: 1.5rem; border-radius: var(--radius-lg); text-align: center; color: white;">
+                            <div style="font-size: var(--font-size-xs); opacity: 0.9; margin-bottom: 0.5rem;">ROI (투자 대비 수익률)</div>
+                            <div style="font-size: var(--font-size-4xl); font-weight: 700;">+50%</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 후원자 관리
+            if (type === 'donor-management') {
+                return `
+                    <div style="padding: 1rem;">
+                        ${[
+                            {name: '김후원', tier: '플래티넘', amount: '₩10,000,000', color: '#8B5CF6'},
+                            {name: '이기부', tier: '골드', amount: '₩5,000,000', color: '#F59E0B'},
+                            {name: '박지원', tier: '실버', amount: '₩2,000,000', color: '#9CA3AF'},
+                            {name: '최도움', tier: '브론즈', amount: '₩1,000,000', color: '#CD7F32'}
+                        ].map(donor => `
+                            <div style="background: var(--bg-tertiary); padding: 1rem; margin-bottom: 0.75rem; border-radius: var(--radius-md); display: flex; justify-content: between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div style="width: 48px; height: 48px; background: ${donor.color}; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: var(--font-size-lg);">
+                                        ${donor.name[0]}
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600; color: var(--text-primary);">${donor.name}</div>
+                                        <div style="font-size: var(--font-size-xs); color: var(--text-secondary);">
+                                            <span style="background: ${donor.color}; color: white; padding: 0.125rem 0.5rem; border-radius: var(--radius-sm);">${donor.tier}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="font-weight: 700; color: var(--primary); font-size: var(--font-size-lg);">${donor.amount}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            // ==========================================
+            // 통합 & 연동 위젯
+            // ==========================================
+            
+            // Microsoft 365
+            if (type === 'workspace-microsoft') {
+                return `
+                    <div style="padding: 1rem;">
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+                            ${[
+                                {name: 'Outlook', icon: 'fa-envelope', color: '#0078D4', count: '8 읽지 않음'},
+                                {name: 'OneDrive', icon: 'fa-cloud', color: '#0078D4', count: '15.2 GB 사용'},
+                                {name: 'Teams', icon: 'fa-comments', color: '#6264A7', count: '3 알림'},
+                                {name: 'Word', icon: 'fa-file-word', color: '#2B579A', count: '5 문서'}
+                            ].map(app => `
+                                <div style="padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md); text-align: center; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                                    <i class="fas ${app.icon}" style="font-size: 1.5rem; color: ${app.color}; margin-bottom: 0.5rem;"></i>
+                                    <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">${app.name}</div>
+                                    <div style="font-size: var(--font-size-xs); color: var(--text-secondary);">${app.count}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Slack 알림
+            if (type === 'slack-notifications') {
+                return `
+                    <div style="padding: 1rem;">
+                        ${[
+                            {channel: '#전시팀', message: '고려청자전 준비 완료!', user: '김큐레이터', time: '5분 전'},
+                            {channel: '#교육팀', message: '다음 주 체험 프로그램 신청 마감', user: '이교육', time: '30분 전'},
+                            {channel: '#보존팀', message: '온습도 체크 완료', user: '박보존', time: '1시간 전'}
+                        ].map(msg => `
+                            <div style="background: var(--bg-tertiary); padding: 1rem; margin-bottom: 0.75rem; border-radius: var(--radius-md); border-left: 4px solid #4A154B;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                    <span style="font-weight: 600; color: #4A154B;">${msg.channel}</span>
+                                    <span style="font-size: var(--font-size-xs); color: var(--text-tertiary);">${msg.time}</span>
+                                </div>
+                                <div style="color: var(--text-primary); font-size: var(--font-size-sm); margin-bottom: 0.25rem;">${msg.message}</div>
+                                <div style="font-size: var(--font-size-xs); color: var(--text-secondary);">— ${msg.user}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            // SNS 통합
+            if (type === 'social-media') {
+                return `
+                    <div style="padding: 1rem;">
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem;">
+                            ${[
+                                {name: 'Instagram', icon: 'fab fa-instagram', color: '#E4405F', count: '2.5K'},
+                                {name: 'Facebook', icon: 'fab fa-facebook', color: '#1877F2', count: '4.1K'},
+                                {name: 'Twitter', icon: 'fab fa-twitter', color: '#1DA1F2', count: '1.8K'}
+                            ].map(social => `
+                                <div style="text-align: center; padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                                    <i class="${social.icon}" style="font-size: 2rem; color: ${social.color}; margin-bottom: 0.5rem;"></i>
+                                    <div style="font-weight: 700; font-size: var(--font-size-xl); color: var(--text-primary);">${social.count}</div>
+                                    <div style="font-size: var(--font-size-xs); color: var(--text-secondary);">팔로워</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button style="width: 100%; padding: 0.75rem; background: var(--primary); color: white; border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600;">
+                            <i class="fas fa-plus"></i> 새 포스트 작성
+                        </button>
+                    </div>
+                `;
+            }
+            
+            // QR 코드 생성
+            if (type === 'qr-generator') {
+                return `
+                    <div style="padding: 1rem; text-align: center;">
+                        <div style="width: 150px; height: 150px; margin: 0 auto 1rem; background: white; border: 2px solid var(--border-primary); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-qrcode" style="font-size: 5rem; color: #1F2937;"></i>
+                        </div>
+                        <input type="text" placeholder="URL 입력..." style="width: 100%; padding: 0.75rem; margin-bottom: 0.75rem; border: 1px solid var(--border-primary); border-radius: var(--radius-md); background: var(--surface); color: var(--text-primary);">
+                        <button style="width: 100%; padding: 0.75rem; background: var(--primary); color: white; border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600;">
+                            <i class="fas fa-magic"></i> QR 코드 생성
+                        </button>
+                    </div>
+                `;
+            }
+            
+            // 날씨
+            if (type === 'weather-widget') {
+                return `
+                    <div style="padding: 1rem; text-align: center;">
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1.5rem; border-radius: var(--radius-lg); color: white;">
+                            <i class="fas fa-cloud-sun" style="font-size: 3rem; margin-bottom: 0.5rem;"></i>
+                            <div style="font-size: var(--font-size-3xl); font-weight: 700; margin-bottom: 0.25rem;">22°C</div>
+                            <div style="opacity: 0.9;">맑음</div>
+                            <div style="margin-top: 1rem; font-size: var(--font-size-sm); opacity: 0.8;">
+                                <i class="fas fa-location-dot"></i> 서울특별시
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                            <div style="display: flex; justify-content: space-around; font-size: var(--font-size-xs);">
+                                ${['월', '화', '수', '목', '금'].map((day, i) => `
+                                    <div style="text-align: center;">
+                                        <div style="color: var(--text-secondary); margin-bottom: 0.25rem;">${day}</div>
+                                        <i class="fas ${i % 2 === 0 ? 'fa-sun' : 'fa-cloud'}" style="color: ${i % 2 === 0 ? '#F59E0B' : '#9CA3AF'}; font-size: 1.25rem; margin: 0.25rem 0;"></i>
+                                        <div style="color: var(--text-primary); font-weight: 600;">${20 + i}°</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // ==========================================
+            // 미디어 & 콘텐츠 위젯
+            // ==========================================
+            
+            // 이미지 갤러리
+            if (type === 'image-gallery') {
+                return `
+                    <div style="padding: 1rem;">
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;">
+                            ${Array.from({length: 6}, (_, i) => `
+                                <div style="aspect-ratio: 1; background: linear-gradient(135deg, ${['#667eea', '#764ba2', '#f093fb', '#4facfe', '#fa709a', '#fee140'][i]}, ${['#764ba2', '#667eea', '#4facfe', '#00f2fe', '#fee140', '#fa709a'][i]}); border-radius: var(--radius-md); cursor: pointer; position: relative; overflow: hidden;" onmouseover="this.querySelector('.overlay').style.opacity='1'" onmouseout="this.querySelector('.overlay').style.opacity='0'">
+                                    <div class="overlay" style="position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s;">
+                                        <i class="fas fa-search-plus" style="color: white; font-size: 1.5rem;"></i>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button style="width: 100%; margin-top: 1rem; padding: 0.75rem; background: var(--bg-tertiary); border: 2px dashed var(--border-primary); border-radius: var(--radius-md); cursor: pointer; color: var(--text-secondary); font-weight: 600;">
+                            <i class="fas fa-plus"></i> 이미지 추가
+                        </button>
+                    </div>
+                `;
+            }
+            
+            // 비디오 플레이어
+            if (type === 'video-player') {
+                return `
+                    <div style="padding: 1rem;">
+                        <div style="width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #1F2937, #374151); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer;">
+                            <div style="text-align: center; color: white;">
+                                <i class="fas fa-play-circle" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.8;"></i>
+                                <div style="font-weight: 600;">홍보 영상</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <input type="text" placeholder="YouTube/Vimeo URL 입력..." style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-primary); border-radius: var(--radius-md); background: var(--surface); color: var(--text-primary);">
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 문서 뷰어
+            if (type === 'document-viewer') {
+                return `
+                    <div style="padding: 1rem;">
+                        <div style="border: 2px solid var(--border-primary); border-radius: var(--radius-md); min-height: 300px; background: white; position: relative; overflow: hidden;">
+                            <div style="background: var(--bg-secondary); padding: 0.75rem; border-bottom: 1px solid var(--border-primary); display: flex; justify-content: between; align-items: center;">
+                                <div style="font-weight: 600; color: var(--text-primary); font-size: var(--font-size-sm);">
+                                    <i class="fas fa-file-pdf" style="color: #EF4444;"></i> 2024년 전시 보고서.pdf
+                                </div>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <button style="padding: 0.25rem 0.5rem; background: var(--bg-tertiary); border: none; border-radius: var(--radius-sm); cursor: pointer;">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button style="padding: 0.25rem 0.5rem; background: var(--bg-tertiary); border: none; border-radius: var(--radius-sm); cursor: pointer;">
+                                        <i class="fas fa-print"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div style="padding: 2rem; text-align: center; color: var(--text-secondary);">
+                                <i class="fas fa-file-pdf" style="font-size: 4rem; color: #EF4444; opacity: 0.5; margin-bottom: 1rem;"></i>
+                                <div>PDF 문서를 로드하려면 파일을 선택하세요</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 메모 패드
+            if (type === 'notepad') {
+                return `
+                    <div style="padding: 1rem;">
+                        <textarea placeholder="메모를 입력하세요... (Markdown 지원)" 
+                                  style="width: 100%; min-height: 200px; padding: 1rem; border: 1px solid var(--border-primary); border-radius: var(--radius-md); background: var(--surface); color: var(--text-primary); font-family: var(--font-mono); font-size: var(--font-size-sm); resize: vertical;"></textarea>
+                        <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem;">
+                            <button style="flex: 1; padding: 0.5rem; background: var(--primary); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600;">
+                                <i class="fas fa-save"></i> 저장
+                            </button>
+                            <button style="padding: 0.5rem 1rem; background: var(--bg-tertiary); border: none; border-radius: var(--radius-sm); cursor: pointer;">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // RSS 피드
+            if (type === 'rss-feed') {
+                return `
+                    <div style="padding: 1rem; max-height: 400px; overflow-y: auto;">
+                        ${[
+                            {title: '루브르 박물관, 새로운 전시 개막', source: 'Art News', time: '2시간 전'},
+                            {title: '메트로폴리탄, AI 큐레이션 도입', source: 'Museum Today', time: '5시간 전'},
+                            {title: '한국 미술, 글로벌 주목받아', source: 'Korea Art', time: '1일 전'},
+                            {title: '디지털 아카이브 혁신', source: 'Tech Museum', time: '2일 전'}
+                        ].map(article => `
+                            <div style="padding: 1rem; background: var(--bg-tertiary); margin-bottom: 0.75rem; border-radius: var(--radius-md); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateX(4px)'" onmouseout="this.style.transform='translateX(0)'">
+                                <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem; font-size: var(--font-size-sm);">${article.title}</div>
+                                <div style="display: flex; justify-content: between; font-size: var(--font-size-xs); color: var(--text-secondary);">
+                                    <span><i class="fas fa-rss"></i> ${article.source}</span>
+                                    <span><i class="fas fa-clock"></i> ${article.time}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            // ==========================================
+            // 시스템 & 유틸리티 위젯
+            // ==========================================
+            
+            // 시스템 모니터
+            if (type === 'system-monitor') {
+                return `
+                    <div style="padding: 1rem;">
+                        ${[
+                            {label: 'CPU', value: 45, color: '#8B5CF6'},
+                            {label: '메모리', value: 62, color: '#10B981'},
+                            {label: '스토리지', value: 78, color: '#F59E0B'}
+                        ].map(metric => `
+                            <div style="margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span style="font-weight: 600; color: var(--text-primary); font-size: var(--font-size-sm);">${metric.label}</span>
+                                    <span style="font-weight: 700; color: ${metric.color};">${metric.value}%</span>
+                                </div>
+                                <div style="width: 100%; height: 8px; background: var(--bg-tertiary); border-radius: var(--radius-full); overflow: hidden;">
+                                    <div style="height: 100%; background: ${metric.color}; width: ${metric.value}%; transition: width 0.3s;"></div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            // 바로가기 런처
+            if (type === 'quick-launcher') {
+                return `
+                    <div style="padding: 1rem;">
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;">
+                            ${[
+                                {name: '대시보드', icon: 'fa-home', color: '#8B5CF6'},
+                                {name: '소장품', icon: 'fa-archive', color: '#10B981'},
+                                {name: '전시', icon: 'fa-image', color: '#F59E0B'},
+                                {name: '예산', icon: 'fa-wallet', color: '#3B82F6'},
+                                {name: '보고서', icon: 'fa-file-alt', color: '#EF4444'},
+                                {name: '설정', icon: 'fa-cog', color: '#6B7280'}
+                            ].map(app => `
+                                <div style="aspect-ratio: 1; background: var(--bg-tertiary); border-radius: var(--radius-lg); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.transform='scale(1.05)'; this.style.background='${app.color}'; this.style.color='white'" onmouseout="this.style.transform='scale(1)'; this.style.background='var(--bg-tertiary)'; this.style.color='inherit'">
+                                    <i class="fas ${app.icon}" style="font-size: 1.5rem; margin-bottom: 0.5rem; color: ${app.color};"></i>
+                                    <div style="font-size: var(--font-size-xs); font-weight: 600;">${app.name}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 시계 & 타이머
+            if (type === 'clock-timer') {
+                const now = new Date();
+                return `
+                    <div style="padding: 1rem; text-align: center;">
+                        <div style="font-size: var(--font-size-4xl); font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">
+                            ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}
+                        </div>
+                        <div style="font-size: var(--font-size-sm); color: var(--text-secondary); margin-bottom: 1rem;">
+                            ${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일
+                        </div>
+                        <div style="display: flex; gap: 0.5rem; justify-content: center;">
+                            <button style="flex: 1; padding: 0.75rem; background: var(--primary); color: white; border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600; font-size: var(--font-size-xs);">
+                                <i class="fas fa-stopwatch"></i> 타이머
+                            </button>
+                            <button style="flex: 1; padding: 0.75rem; background: var(--bg-tertiary); border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600; font-size: var(--font-size-xs);">
+                                <i class="fas fa-clock"></i> 알람
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 계산기
+            if (type === 'calculator') {
+                return `
+                    <div style="padding: 1rem;">
+                        <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 0.75rem; text-align: right; min-height: 60px; display: flex; align-items: center; justify-content: flex-end;">
+                            <span style="font-size: var(--font-size-3xl); font-weight: 700; color: var(--text-primary);">0</span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;">
+                            ${['7', '8', '9', '÷', '4', '5', '6', '×', '1', '2', '3', '-', '0', '.', '=', '+'].map(btn => `
+                                <button style="aspect-ratio: 1; background: ${['÷', '×', '-', '+', '='].includes(btn) ? 'var(--primary)' : 'var(--bg-tertiary)'}; color: ${['÷', '×', '-', '+', '='].includes(btn) ? 'white' : 'var(--text-primary)'}; border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600; font-size: var(--font-size-lg);">
+                                    ${btn}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
             // 기본 템플릿
             return `
                 <div style="text-align: center; padding: 2rem; color: var(--text-tertiary);">
