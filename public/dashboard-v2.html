@@ -871,6 +871,143 @@
             color: var(--primary);
         }
         
+        /* Project Context Menu */
+        .project-context-menu {
+            position: fixed;
+            background: var(--surface);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            padding: 0.5rem 0;
+            min-width: 180px;
+            z-index: 9999;
+            display: none;
+        }
+        
+        .project-context-menu.active {
+            display: block;
+        }
+        
+        .context-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+        
+        .context-menu-item:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .context-menu-item i {
+            width: 16px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        
+        .context-menu-item.danger {
+            color: var(--color-error);
+        }
+        
+        .context-menu-item.danger i {
+            color: var(--color-error);
+        }
+        
+        .context-menu-divider {
+            height: 1px;
+            background: var(--border-primary);
+            margin: 0.5rem 0;
+        }
+        
+        /* Project Search & Filter Bar */
+        .projects-toolbar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .project-search-wrapper {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+        
+        .project-search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+        
+        .project-search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .project-search-icon {
+            position: absolute;
+            left: 0.875rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+        
+        .project-filters {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .filter-btn {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .filter-btn:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .sort-dropdown {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .sort-dropdown:hover {
+            background: var(--bg-tertiary);
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .dashboard-container {
@@ -899,6 +1036,15 @@
             
             .projects-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .projects-toolbar {
+                flex-direction: column;
+            }
+            
+            .project-filters {
+                width: 100%;
+                overflow-x: auto;
             }
         }
     </style>
@@ -995,6 +1141,42 @@
                     <i class="fas fa-plus"></i>
                     <span>새 프로젝트</span>
                 </button>
+            </div>
+            
+            <!-- Search & Filter Toolbar -->
+            <div class="projects-toolbar">
+                <div class="project-search-wrapper">
+                    <i class="fas fa-search project-search-icon"></i>
+                    <input 
+                        type="text" 
+                        class="project-search-input" 
+                        id="projectSearchInput"
+                        placeholder="프로젝트 검색..."
+                        oninput="filterProjects()"
+                    />
+                </div>
+                <div class="project-filters">
+                    <button class="filter-btn active" data-type="all" onclick="filterByType('all')">
+                        <i class="fas fa-th"></i> 전체
+                    </button>
+                    <button class="filter-btn" data-type="exhibition" onclick="filterByType('exhibition')">
+                        <i class="fas fa-palette"></i> 전시
+                    </button>
+                    <button class="filter-btn" data-type="education" onclick="filterByType('education')">
+                        <i class="fas fa-chalkboard-teacher"></i> 교육
+                    </button>
+                    <button class="filter-btn" data-type="marketing" onclick="filterByType('marketing')">
+                        <i class="fas fa-bullhorn"></i> 마케팅
+                    </button>
+                    <button class="filter-btn" data-type="research" onclick="filterByType('research')">
+                        <i class="fas fa-flask"></i> 연구
+                    </button>
+                </div>
+                <select class="sort-dropdown" id="projectSortSelect" onchange="sortProjects()">
+                    <option value="recent">최근 수정일순</option>
+                    <option value="oldest">오래된순</option>
+                    <option value="name">이름순</option>
+                </select>
             </div>
             
             <div class="projects-grid" id="projectsGrid">
@@ -1121,6 +1303,117 @@
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
+    
+    <!-- Edit Project Modal -->
+    <div class="widget-library-modal" id="editProjectModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2 class="modal-title"><i class="fas fa-edit"></i> 프로젝트 편집</h2>
+                <button class="modal-close" onclick="closeEditProjectModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editProjectForm" onsubmit="handleUpdateProject(event)">
+                    <input type="hidden" id="editProjectId" />
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">
+                            프로젝트 이름 <span style="color: #ef4444;">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="editProjectName" 
+                            required
+                            placeholder="예: 2024 봄 특별전"
+                            style="width: 100%; padding: 0.75rem; border: 2px solid var(--border-primary); border-radius: var(--radius-md); font-size: 1rem;"
+                        />
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">
+                            설명 (선택)
+                        </label>
+                        <textarea 
+                            id="editProjectDescription" 
+                            rows="3"
+                            placeholder="프로젝트에 대한 간단한 설명을 입력하세요"
+                            style="width: 100%; padding: 0.75rem; border: 2px solid var(--border-primary); border-radius: var(--radius-md); font-size: 1rem; resize: vertical;"
+                        ></textarea>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-primary);">
+                            프로젝트 유형
+                        </label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                            <label class="project-type-option">
+                                <input type="radio" name="editProjectType" value="exhibition" />
+                                <div class="type-card">
+                                    <i class="fas fa-palette"></i>
+                                    <span>전시</span>
+                                </div>
+                            </label>
+                            <label class="project-type-option">
+                                <input type="radio" name="editProjectType" value="education" />
+                                <div class="type-card">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <span>교육</span>
+                                </div>
+                            </label>
+                            <label class="project-type-option">
+                                <input type="radio" name="editProjectType" value="marketing" />
+                                <div class="type-card">
+                                    <i class="fas fa-bullhorn"></i>
+                                    <span>마케팅</span>
+                                </div>
+                            </label>
+                            <label class="project-type-option">
+                                <input type="radio" name="editProjectType" value="research" />
+                                <div class="type-card">
+                                    <i class="fas fa-microscope"></i>
+                                    <span>연구</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.75rem; margin-top: 2rem;">
+                        <button 
+                            type="button" 
+                            onclick="closeEditProjectModal()"
+                            style="flex: 1; padding: 0.75rem; background: var(--bg-secondary); color: var(--text-primary); border: 1px solid var(--border-primary); border-radius: var(--radius-md); cursor: pointer; font-weight: 600;"
+                        >
+                            취소
+                        </button>
+                        <button 
+                            type="submit"
+                            style="flex: 1; padding: 0.75rem; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600;"
+                        >
+                            <i class="fas fa-check"></i> 저장
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Project Context Menu -->
+    <div class="project-context-menu" id="projectContextMenu">
+        <div class="context-menu-item" onclick="handleEditProject()">
+            <i class="fas fa-edit"></i>
+            <span>편집</span>
+        </div>
+        <div class="context-menu-item" onclick="handleDuplicateProject()">
+            <i class="fas fa-copy"></i>
+            <span>복제</span>
+        </div>
+        <div class="context-menu-divider"></div>
+        <div class="context-menu-item danger" onclick="handleDeleteProject()">
+            <i class="fas fa-trash"></i>
+            <span>삭제</span>
         </div>
     </div>
     
@@ -3801,15 +4094,19 @@
                     projectsEmpty.style.display = 'none';
                     projectsCount.textContent = data.projects.length;
                     
+                    // Store all projects for filtering/sorting
+                    allProjects = data.projects;
+                    
                     // Render project cards
                     data.projects.forEach(project => {
                         const card = createProjectCard({
                             id: project.id,
                             title: project.title,
                             description: project.description,
-                            type: project.type || 'special',
+                            type: project.type || 'exhibition',
                             updated_at: formatRelativeTime(project.updated_at),
-                            icon: getProjectIcon(project.type || 'special')
+                            updated_at_raw: project.updated_at,
+                            icon: getProjectIcon(project.type || 'exhibition')
                         });
                         projectsGrid.appendChild(card);
                     });
@@ -3825,6 +4122,8 @@
         function createProjectCard(project) {
             const card = document.createElement('div');
             card.className = 'project-card';
+            card.setAttribute('data-type', project.type || 'exhibition');
+            card.setAttribute('data-timestamp', new Date(project.updated_at_raw || Date.now()).getTime());
             card.innerHTML = `
                 <div class="project-card-icon">${project.icon || '📁'}</div>
                 <div class="project-card-title">${project.title}</div>
@@ -3913,11 +4212,292 @@
             window.location.href = `/canvas-v3.html?project=${projectId}`;
         }
         
+        // Global variable for current context menu project
+        let currentContextProjectId = null;
+        let allProjects = [];  // Cache all projects
+        let currentFilter = 'all';
+        let currentSort = 'recent';
+        
         // Show project context menu
         function showProjectMenu(projectId, event) {
             event.stopPropagation();
-            // TODO: Implement context menu (rename, duplicate, delete)
-            alert(`프로젝트 메뉴 (ID: ${projectId})\n\n• 이름 변경\n• 복제\n• 삭제`);
+            event.preventDefault();
+            
+            currentContextProjectId = projectId;
+            
+            const menu = document.getElementById('projectContextMenu');
+            menu.classList.add('active');
+            
+            // Position menu near click
+            const x = event.clientX;
+            const y = event.clientY;
+            
+            menu.style.left = `${x}px`;
+            menu.style.top = `${y}px`;
+            
+            // Close menu when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', closeContextMenu);
+            }, 10);
+        }
+        
+        function closeContextMenu() {
+            const menu = document.getElementById('projectContextMenu');
+            menu.classList.remove('active');
+            document.removeEventListener('click', closeContextMenu);
+        }
+        
+        // Edit project
+        async function handleEditProject() {
+            closeContextMenu();
+            
+            if (!currentContextProjectId) return;
+            
+            try {
+                // Fetch project details
+                const response = await fetch(`/api/projects/${currentContextProjectId}`);
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to load project');
+                }
+                
+                const project = data.project;
+                
+                // Populate edit form
+                document.getElementById('editProjectId').value = project.id;
+                document.getElementById('editProjectName').value = project.title;
+                document.getElementById('editProjectDescription').value = project.description || '';
+                
+                // Set type radio button
+                const typeRadio = document.querySelector(`input[name="editProjectType"][value="${project.type || 'exhibition'}"]`);
+                if (typeRadio) {
+                    typeRadio.checked = true;
+                }
+                
+                // Open modal
+                const modal = document.getElementById('editProjectModal');
+                modal.classList.add('active');
+            } catch (error) {
+                console.error('Failed to load project for editing:', error);
+                alert('프로젝트를 불러오는데 실패했습니다.');
+            }
+        }
+        
+        function closeEditProjectModal() {
+            const modal = document.getElementById('editProjectModal');
+            modal.classList.remove('active');
+        }
+        
+        async function handleUpdateProject(event) {
+            event.preventDefault();
+            
+            const projectId = document.getElementById('editProjectId').value;
+            const title = document.getElementById('editProjectName').value;
+            const description = document.getElementById('editProjectDescription').value;
+            const type = document.querySelector('input[name="editProjectType"]:checked').value;
+            
+            try {
+                const response = await fetch(`/api/projects/${projectId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, description, type })
+                });
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to update project');
+                }
+                
+                console.log('✅ Project updated:', data);
+                
+                // Close modal
+                closeEditProjectModal();
+                
+                // Reload projects
+                await reloadProjects();
+                
+                alert(`✅ 프로젝트 "${title}"가 업데이트되었습니다!`);
+            } catch (error) {
+                console.error('Failed to update project:', error);
+                alert('❌ 프로젝트 업데이트에 실패했습니다.\n\n' + error.message);
+            }
+        }
+        
+        // Duplicate project
+        async function handleDuplicateProject() {
+            closeContextMenu();
+            
+            if (!currentContextProjectId) return;
+            
+            if (!confirm('이 프로젝트를 복제하시겠습니까?')) return;
+            
+            try {
+                // Fetch original project
+                const response = await fetch(`/api/projects/${currentContextProjectId}`);
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to load project');
+                }
+                
+                const original = data.project;
+                
+                // Create duplicate
+                const duplicateResponse = await fetch('/api/projects', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: `${original.title} (사본)`,
+                        description: original.description,
+                        type: original.type,
+                        status: 'draft',
+                        user_id: 1
+                    })
+                });
+                
+                const duplicateData = await duplicateResponse.json();
+                
+                if (!duplicateData.success) {
+                    throw new Error(duplicateData.error || 'Failed to duplicate project');
+                }
+                
+                console.log('✅ Project duplicated:', duplicateData);
+                
+                // Reload projects
+                await reloadProjects();
+                
+                alert(`✅ 프로젝트가 복제되었습니다!`);
+            } catch (error) {
+                console.error('Failed to duplicate project:', error);
+                alert('❌ 프로젝트 복제에 실패했습니다.\n\n' + error.message);
+            }
+        }
+        
+        // Delete project
+        async function handleDeleteProject() {
+            closeContextMenu();
+            
+            if (!currentContextProjectId) return;
+            
+            if (!confirm('⚠️ 정말로 이 프로젝트를 삭제하시겠습니까?\n\n삭제된 프로젝트는 복구할 수 없습니다.')) return;
+            
+            try {
+                const response = await fetch(`/api/projects/${currentContextProjectId}`, {
+                    method: 'DELETE'
+                });
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to delete project');
+                }
+                
+                console.log('✅ Project deleted:', data);
+                
+                // Reload projects
+                await reloadProjects();
+                
+                alert('✅ 프로젝트가 삭제되었습니다.');
+            } catch (error) {
+                console.error('Failed to delete project:', error);
+                alert('❌ 프로젝트 삭제에 실패했습니다.\n\n' + error.message);
+            }
+        }
+        
+        // Reload projects helper
+        async function reloadProjects() {
+            const projectsGrid = document.getElementById('projectsGrid');
+            projectsGrid.innerHTML = '<div class="projects-loading" id="projectsLoading"><i class="fas fa-spinner fa-spin"></i><p>프로젝트를 불러오는 중...</p></div>';
+            await loadProjects();
+        }
+        
+        // Filter by type
+        function filterByType(type) {
+            currentFilter = type;
+            
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-type') === type) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            filterProjects();
+        }
+        
+        // Filter and search projects
+        function filterProjects() {
+            const searchQuery = document.getElementById('projectSearchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.project-card');
+            let visibleCount = 0;
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.project-card-title').textContent.toLowerCase();
+                const desc = card.querySelector('.project-card-desc').textContent.toLowerCase();
+                const type = card.getAttribute('data-type');
+                
+                const matchesSearch = title.includes(searchQuery) || desc.includes(searchQuery);
+                const matchesFilter = currentFilter === 'all' || type === currentFilter;
+                
+                if (matchesSearch && matchesFilter) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Update count
+            document.getElementById('projectsCount').textContent = visibleCount;
+            
+            // Show/hide empty state
+            const projectsEmpty = document.getElementById('projectsEmpty');
+            if (visibleCount === 0 && cards.length > 0) {
+                projectsEmpty.style.display = 'block';
+                projectsEmpty.querySelector('h4').textContent = '검색 결과가 없습니다';
+                projectsEmpty.querySelector('p').textContent = '다른 검색어나 필터를 시도해보세요';
+            } else {
+                projectsEmpty.style.display = 'none';
+            }
+        }
+        
+        // Sort projects
+        function sortProjects() {
+            const sortValue = document.getElementById('projectSortSelect').value;
+            currentSort = sortValue;
+            
+            const projectsGrid = document.getElementById('projectsGrid');
+            const cards = Array.from(projectsGrid.querySelectorAll('.project-card'));
+            
+            cards.sort((a, b) => {
+                if (sortValue === 'name') {
+                    const aName = a.querySelector('.project-card-title').textContent;
+                    const bName = b.querySelector('.project-card-title').textContent;
+                    return aName.localeCompare(bName);
+                } else if (sortValue === 'recent') {
+                    const aTime = a.getAttribute('data-timestamp') || '0';
+                    const bTime = b.getAttribute('data-timestamp') || '0';
+                    return bTime - aTime;  // Newest first
+                } else if (sortValue === 'oldest') {
+                    const aTime = a.getAttribute('data-timestamp') || '0';
+                    const bTime = b.getAttribute('data-timestamp') || '0';
+                    return aTime - bTime;  // Oldest first
+                }
+                return 0;
+            });
+            
+            // Clear and re-append sorted cards
+            const loading = projectsGrid.querySelector('.projects-loading');
+            const empty = projectsGrid.querySelector('.projects-empty');
+            
+            projectsGrid.innerHTML = '';
+            if (loading) projectsGrid.appendChild(loading);
+            if (empty) projectsGrid.appendChild(empty);
+            
+            cards.forEach(card => projectsGrid.appendChild(card));
         }
         
         // ==========================================

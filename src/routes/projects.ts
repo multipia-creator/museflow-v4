@@ -356,6 +356,84 @@ app.delete('/:id', async (c: Context<{ Bindings: Bindings }>) => {
 })
 
 // ============================================================================
+// GET /api/projects/:id/canvas - Get canvas workflow data
+// ============================================================================
+app.get('/:id/canvas', async (c: Context<{ Bindings: Bindings }>) => {
+  try {
+    const { DB } = c.env
+    const projectId = c.req.param('id')
+    
+    // Get project's workflow_data
+    const { results } = await DB.prepare(`
+      SELECT workflow_data FROM projects WHERE id = ?
+    `).bind(projectId).all()
+    
+    if (!results || results.length === 0) {
+      return c.json({
+        success: false,
+        error: 'Project not found'
+      }, 404)
+    }
+    
+    const project = results[0] as any
+    const workflowData = project.workflow_data ? JSON.parse(project.workflow_data) : { nodes: [], connections: [] }
+    
+    return c.json({
+      success: true,
+      ...workflowData
+    })
+  } catch (error: any) {
+    console.error('Error loading canvas data:', error)
+    return c.json({
+      success: false,
+      error: error.message || 'Failed to load canvas data'
+    }, 500)
+  }
+})
+
+// ============================================================================
+// POST /api/projects/:id/canvas - Save canvas workflow data
+// ============================================================================
+app.post('/:id/canvas', async (c: Context<{ Bindings: Bindings }>) => {
+  try {
+    const { DB } = c.env
+    const projectId = c.req.param('id')
+    const body = await c.req.json()
+    
+    const { nodes, connections } = body
+    
+    // Update project's workflow_data field
+    await DB.prepare(`
+      UPDATE projects 
+      SET 
+        workflow_data = ?,
+        updated_at = datetime('now')
+      WHERE id = ?
+    `).bind(
+      JSON.stringify({ nodes, connections }),
+      projectId
+    ).run()
+    
+    // Log activity
+    await DB.prepare(`
+      INSERT INTO activity_log (user_id, project_id, activity_type, content, created_at)
+      VALUES (1, ?, 'canvas_update', 'Updated canvas workflow', datetime('now'))
+    `).bind(projectId).run()
+    
+    return c.json({
+      success: true,
+      message: 'Canvas data saved successfully'
+    })
+  } catch (error: any) {
+    console.error('Error saving canvas data:', error)
+    return c.json({
+      success: false,
+      error: error.message || 'Failed to save canvas data'
+    }, 500)
+  }
+})
+
+// ============================================================================
 // GET /api/projects/urgent - Get urgent projects (D-7 or less)
 // ============================================================================
 app.get('/urgent', async (c: Context<{ Bindings: Bindings }>) => {
