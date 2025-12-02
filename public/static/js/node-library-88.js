@@ -154,6 +154,26 @@ const NODE_LIBRARY_88 = {
       { id: 'tc-10', name: 'IoT 센서', icon: '📡', desc: 'IoT 시스템' },
       { id: 'tc-11', name: '분석 대시보드', icon: '📊', desc: '데이터 분석' }
     ]
+  },
+  
+  // AI Automation Category (NEW)
+  ai: {
+    name: 'AI 자동화 AI Automation',
+    icon: '🤖',
+    color: '#a855f7',
+    nodes: [
+      { id: 'ai-gemini-generate', name: 'Gemini 생성', icon: '✨', desc: 'Gemini로 콘텐츠 생성' },
+      { id: 'ai-gemini-improve', name: 'Gemini 개선', icon: '🪄', desc: 'Gemini로 텍스트 개선' },
+      { id: 'ai-gemini-translate', name: 'Gemini 번역', icon: '🌐', desc: 'Gemini로 번역' },
+      { id: 'ai-gemini-summarize', name: 'Gemini 요약', icon: '📝', desc: 'Gemini로 요약' },
+      { id: 'ai-google-docs', name: 'Google Docs', icon: '📄', desc: 'Google 문서 생성' },
+      { id: 'ai-gmail-draft', name: 'Gmail 초안', icon: '📧', desc: 'Gmail 초안 작성' },
+      { id: 'ai-calendar-event', name: 'Calendar 일정', icon: '📅', desc: 'Calendar 이벤트 생성' },
+      { id: 'ai-data-analysis', name: '데이터 분석', icon: '📊', desc: 'AI 데이터 분석' },
+      { id: 'ai-image-generate', name: '이미지 생성', icon: '🎨', desc: 'AI 이미지 생성' },
+      { id: 'ai-workflow-automate', name: '워크플로우 자동화', icon: '⚡', desc: '자동화 설정' },
+      { id: 'ai-custom-plugin', name: '커스텀 플러그인', icon: '🔌', desc: '사용자 정의 AI' }
+    ]
   }
 };
 

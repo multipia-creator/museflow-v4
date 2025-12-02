@@ -106,6 +106,11 @@ const CanvasV3 = {
     // Auto-save every 10 seconds
     setInterval(() => this.saveProjectData(), 10000);
     
+    // Initialize AI Orchestrator
+    if (window.AIOrchestrator) {
+      window.AIOrchestrator.init();
+    }
+    
     // Initialize Lucide icons
     if (window.lucide) {
       lucide.createIcons();
@@ -486,6 +491,7 @@ const CanvasV3 = {
   renderCategoryTabs() {
     const categories = [
       { id: 'all', icon: 'list' },
+      { id: 'ai', icon: 'sparkles' },
       { id: 'exhibition', icon: 'palette' },
       { id: 'education', icon: 'book-open' },
       { id: 'archive', icon: 'archive' },
@@ -803,7 +809,20 @@ const CanvasV3 = {
       { id: 'visitor-services', category: 'admin', subcategory: 'engagement', icon: 'heart-handshake', color: '#6366f1' },
       { id: 'ticketing', category: 'admin', subcategory: 'engagement', icon: 'ticket', color: '#6366f1' },
       { id: 'membership', category: 'admin', subcategory: 'engagement', icon: 'credit-card', color: '#6366f1' },
-      { id: 'evaluation', category: 'admin', subcategory: 'engagement', icon: 'chart-bar', color: '#6366f1' }
+      { id: 'evaluation', category: 'admin', subcategory: 'engagement', icon: 'chart-bar', color: '#6366f1' },
+      
+      // AI Automation nodes (11) - NEW
+      { id: 'ai-gemini-generate', category: 'ai', subcategory: 'ai-automation', icon: 'sparkles', color: '#a855f7' },
+      { id: 'ai-gemini-improve', category: 'ai', subcategory: 'ai-automation', icon: 'wand-2', color: '#a855f7' },
+      { id: 'ai-gemini-translate', category: 'ai', subcategory: 'ai-automation', icon: 'languages', color: '#a855f7' },
+      { id: 'ai-gemini-summarize', category: 'ai', subcategory: 'ai-automation', icon: 'minimize-2', color: '#a855f7' },
+      { id: 'ai-google-docs', category: 'ai', subcategory: 'ai-automation', icon: 'file-text', color: '#4285f4' },
+      { id: 'ai-gmail-draft', category: 'ai', subcategory: 'ai-automation', icon: 'mail', color: '#ea4335' },
+      { id: 'ai-calendar-event', category: 'ai', subcategory: 'ai-automation', icon: 'calendar-plus', color: '#34a853' },
+      { id: 'ai-data-analysis', category: 'ai', subcategory: 'ai-automation', icon: 'bar-chart-2', color: '#a855f7' },
+      { id: 'ai-image-generate', category: 'ai', subcategory: 'ai-automation', icon: 'image', color: '#a855f7' },
+      { id: 'ai-workflow-automate', category: 'ai', subcategory: 'ai-automation', icon: 'zap', color: '#a855f7' },
+      { id: 'ai-custom-plugin', category: 'ai', subcategory: 'ai-automation', icon: 'puzzle', color: '#a855f7' }
     ];
   },
   
@@ -1697,13 +1716,31 @@ const CanvasV3 = {
       
       if (targetNode && targetNode.id !== this.connectionStart) {
         // Create connection
-        this.connections.push({
+        const newConnection = {
           id: `conn-${Date.now()}`,
           from: this.connectionStart,
           to: targetNode.id
-        });
+        };
+        
+        this.connections.push(newConnection);
         
         console.log('🔗 Connection created:', this.connectionStart, '→', targetNode.id);
+        
+        // Auto-execute AI workflow if target is AI node
+        if (targetNode.type.startsWith('ai-')) {
+          console.log('🤖 AI node detected, triggering auto-execution...');
+          
+          const sourceNode = this.nodes.find(n => n.id === this.connectionStart);
+          
+          if (window.AIOrchestrator && sourceNode) {
+            // Execute AI workflow asynchronously
+            setTimeout(async () => {
+              await window.AIOrchestrator.executeWorkflow(sourceNode, targetNode);
+              CanvasEngine.needsRedraw = true;
+            }, 100);
+          }
+        }
+        
         console.log('✅ Connection created!');
       }
       
