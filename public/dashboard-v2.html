@@ -561,12 +561,14 @@
         }
         
         .widget-card {
+            position: relative;
             padding: 1.5rem;
             background: var(--surface);
             border: 2px solid var(--border-primary);
             border-radius: var(--radius-lg);
             cursor: pointer;
             transition: all var(--duration-fast) var(--ease-smooth);
+            overflow: hidden;
         }
         
         .widget-card:hover {
@@ -3064,12 +3066,32 @@
                     const card = document.createElement('div');
                     card.className = 'widget-card';
                     card.onclick = () => addNewWidget(widget);
+                    
+                    // 무료/유료 구분 (현재는 전체 무료 이벤트)
+                    const isPremium = widget.is_premium === 1;
+                    const isFreeEvent = true; // 현재 전체 무료 이벤트 중
+                    
                     card.innerHTML = `
+                        ${isPremium && !isFreeEvent ? `
+                            <div style="position: absolute; top: 0.5rem; right: 0.5rem; padding: 0.25rem 0.5rem; background: linear-gradient(135deg, #F59E0B, #D97706); color: white; border-radius: var(--radius-md); font-size: var(--font-size-xs); font-weight: bold; display: flex; align-items: center; gap: 0.25rem;">
+                                <i class="fas fa-crown"></i> PRO
+                            </div>
+                        ` : ''}
+                        ${isFreeEvent && isPremium ? `
+                            <div style="position: absolute; top: 0.5rem; right: 0.5rem; padding: 0.25rem 0.5rem; background: linear-gradient(135deg, #10B981, #059669); color: white; border-radius: var(--radius-md); font-size: var(--font-size-xs); font-weight: bold; animation: pulse 2s ease-in-out infinite;">
+                                <i class="fas fa-gift"></i> 무료
+                            </div>
+                        ` : ''}
                         <div class="widget-card-icon">
                             <i class="fas ${widget.icon}"></i>
                         </div>
                         <div class="widget-card-title">${widget.name}</div>
                         <div class="widget-card-description">${widget.description || ''}</div>
+                        ${isFreeEvent && isPremium ? `
+                            <div style="margin-top: 0.5rem; padding: 0.5rem; background: var(--bg-tertiary); border-radius: var(--radius-md); font-size: var(--font-size-xs); color: var(--text-secondary); text-align: center;">
+                                <i class="fas fa-party-horn"></i> 오픈 기념 무료 제공
+                            </div>
+                        ` : ''}
                     `;
                     widgetGrid.appendChild(card);
                 });
