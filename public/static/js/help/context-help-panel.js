@@ -1221,7 +1221,7 @@ const ContextHelpPanel = {
     }));
 
     // TODO: Implement video overlay player (Phase 3)
-    alert(`튜토리얼 영상 재생: ${videoId}\n\n(Video Overlay Player는 Phase 3에서 구현 예정)`);
+    console.log(`튜토리얼 영상 재생: ${videoId}\n\n(Video Overlay Player는 Phase 3에서 구현 예정)`);
   },
 
   /**

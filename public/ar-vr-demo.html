@@ -265,53 +265,53 @@
             setTimeout(() => {
                 currentModel = modelId;
                 loadingDiv.style.display = 'none';
-                alert(`Model "${modelId}" loaded!\n\nNote: This is a demo. In production, actual 3D models from KCISA API would be loaded using Three.js.`);
+                console.log(`Model "${modelId}" loaded!\n\nNote: This is a demo. In production, actual 3D models from KCISA API would be loaded using Three.js.`);
             }, 1000);
         }
 
         // Enter AR mode
         async function enterAR() {
             if (!arSupported) {
-                alert('AR is not supported on this device.');
+                console.log('AR is not supported on this device.');
                 return;
             }
 
             if (!currentModel) {
-                alert('Please select a 3D model first.');
+                console.log('Please select a 3D model first.');
                 return;
             }
 
             try {
-                alert('Starting AR session...\n\nNote: In production, this would initialize WebXR AR session and allow you to place the model in your physical space.');
+                console.log('Starting AR session...\n\nNote: In production, this would initialize WebXR AR session and allow you to place the model in your physical space.');
                 
                 // In production, this would call:
                 // const response = await fetch('/api/webxr/session/ar', { method: 'POST', ... });
             } catch (error) {
                 console.error('Failed to start AR:', error);
-                alert('Failed to start AR session.');
+                console.log('Failed to start AR session.');
             }
         }
 
         // Enter VR mode
         async function enterVR() {
             if (!vrSupported) {
-                alert('VR is not supported on this device.');
+                console.log('VR is not supported on this device.');
                 return;
             }
 
             if (!currentModel) {
-                alert('Please select a 3D model first.');
+                console.log('Please select a 3D model first.');
                 return;
             }
 
             try {
-                alert('Entering VR mode...\n\nNote: In production, this would launch an immersive VR environment where you can explore the 3D model in virtual reality.');
+                console.log('Entering VR mode...\n\nNote: In production, this would launch an immersive VR environment where you can explore the 3D model in virtual reality.');
                 
                 // In production, this would call:
                 // const response = await fetch('/api/webxr/session/vr', { method: 'POST', ... });
             } catch (error) {
                 console.error('Failed to start VR:', error);
-                alert('Failed to enter VR mode.');
+                console.log('Failed to enter VR mode.');
             }
         }
 

@@ -678,7 +678,7 @@ const TooltipSystem = {
     if (typeof VideoOverlayPlayer !== 'undefined') {
       VideoOverlayPlayer.playVideo(videoId, 'tooltip');
     } else {
-      alert('비디오 플레이어가 아직 구현되지 않았습니다.');
+      console.log('비디오 플레이어가 아직 구현되지 않았습니다.');
     }
   },
   

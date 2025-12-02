@@ -298,10 +298,10 @@
             try {
                 const response = await fetch(API_BASE_URL + '/api/performance/cache/clean', { method: 'POST' });
                 const data = await response.json();
-                alert(`Cleaned ${data.cleaned} expired entries`);
+                console.log(`Cleaned ${data.cleaned} expired entries`);
                 loadStats();
             } catch (error) {
-                alert('Failed to clean cache');
+                console.log('Failed to clean cache');
             }
         }
 
@@ -311,10 +311,10 @@
             
             try {
                 await fetch(API_BASE_URL + '/api/performance/cache/clear', { method: 'POST' });
-                alert('Cache cleared successfully');
+                console.log('Cache cleared successfully');
                 loadStats();
             } catch (error) {
-                alert('Failed to clear cache');
+                console.log('Failed to clear cache');
             }
         }
 
@@ -403,11 +403,11 @@
                     }
                 } else {
                     console.error('Failed to load project:', response.status);
-                    alert('프로젝트를 불러올 수 없습니다.');
+                    console.log('프로젝트를 불러올 수 없습니다.');
                 }
             } catch (error) {
                 console.error('Error loading project:', error);
-                alert('프로젝트 로드 중 오류가 발생했습니다.');
+                console.log('프로젝트 로드 중 오류가 발생했습니다.');
             }
         }
 

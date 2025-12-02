@@ -1014,7 +1014,7 @@ const TutorialEngine = {
    * Show prerequisites warning
    */
   showPrerequisitesWarning() {
-    alert(`이 튜토리얼을 시작하려면 먼저 다음 튜토리얼을 완료해야 합니다:\n\n${
+    console.log(`이 튜토리얼을 시작하려면 먼저 다음 튜토리얼을 완료해야 합니다:\n\n${
       this.currentTutorial.prerequisites.map(id => `- ${this.tutorials[id]?.title || id}`).join('\n')
     }`);
   },

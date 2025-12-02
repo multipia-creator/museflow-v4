@@ -390,7 +390,7 @@ class CollaborationSystem {
         
         const content = input.value.trim();
         if (!content) {
-            alert('댓글 내용을 입력해주세요.');
+            console.log('댓글 내용을 입력해주세요.');
             return;
         }
         

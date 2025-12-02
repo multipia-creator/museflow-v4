@@ -4332,7 +4332,7 @@
         
         function aiAnalyzeNode() {
             if (!window.CanvasV3 || !window.CanvasV3.selectedNode) {
-                alert('Please select a node first!');
+                console.log('Please select a node first!');
                 return;
             }
             const node = window.CanvasV3.selectedNode;
@@ -4345,7 +4345,7 @@
         
         function aiImproveText() {
             if (!window.CanvasV3 || !window.CanvasV3.selectedNode) {
-                alert('Please select a node first!');
+                console.log('Please select a node first!');
                 return;
             }
             const node = window.CanvasV3.selectedNode;
@@ -4370,7 +4370,7 @@
         
         function aiTranslate() {
             if (!window.CanvasV3 || !window.CanvasV3.selectedNode) {
-                alert('Please select a node first!');
+                console.log('Please select a node first!');
                 return;
             }
             const result = document.getElementById('gemini-result');
@@ -4382,7 +4382,7 @@
         
         function aiSummarize() {
             if (!window.CanvasV3 || !window.CanvasV3.selectedNode) {
-                alert('Please select a node first!');
+                console.log('Please select a node first!');
                 return;
             }
             const result = document.getElementById('gemini-result');

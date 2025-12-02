@@ -473,7 +473,7 @@
             const behaviors = JSON.parse(localStorage.getItem('behavior_data') || '[]');
             
             if (behaviors.length === 0) {
-                alert('내보낼 데이터가 없습니다.');
+                console.log('내보낼 데이터가 없습니다.');
                 return;
             }
 

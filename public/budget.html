@@ -804,11 +804,11 @@
                 if (window.notificationSystem) {
                     notificationSystem.showInAppNotification('✅ 예산 보고서가 생성되었습니다!', 'success');
                 } else {
-                    alert('✅ 예산 보고서가 다운로드되었습니다!');
+                    console.log('✅ 예산 보고서가 다운로드되었습니다!');
                 }
             } catch (error) {
                 console.error('Export error:', error);
-                alert('❌ 보고서 생성 실패: ' + error.message);
+                console.log('❌ 보고서 생성 실패: ' + error.message);
             }
         }
         

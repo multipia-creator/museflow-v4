@@ -284,7 +284,7 @@ function showError(message) {
     if (window.notificationSystem) {
         notificationSystem.showInAppNotification(message, 'error')
     } else {
-        alert(message)
+        console.error(message)
     }
 }
 

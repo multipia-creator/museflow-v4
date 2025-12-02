@@ -457,7 +457,7 @@
         async function createProjectFromTemplate(templateType) {
             const token = localStorage.getItem('token');
             if (!token) {
-                alert('로그인이 필요합니다.');
+                console.log('로그인이 필요합니다.');
                 window.location.href = '/login.html';
                 return;
             }
@@ -474,14 +474,14 @@
                 
                 if (response.ok) {
                     const project = await response.json();
-                    alert(`✅ 프로젝트가 생성되었습니다!`);
+                    console.log(`✅ 프로젝트가 생성되었습니다!`);
                     window.location.href = '/dashboard.html';
                 } else {
                     throw new Error('Failed to create project');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('❌ 프로젝트 생성에 실패했습니다.');
+                console.log('❌ 프로젝트 생성에 실패했습니다.');
             }
         }
         
@@ -520,7 +520,7 @@
             
             // Save to sessionStorage and redirect to dashboard
             sessionStorage.setItem('pendingFilters', JSON.stringify(filters));
-            alert('필터가 적용되었습니다! 대시보드로 이동합니다.');
+            console.log('필터가 적용되었습니다! 대시보드로 이동합니다.');
             window.location.href = '/dashboard.html';
         }
         
@@ -565,7 +565,7 @@
             const search = searches.find(s => s.id === id);
             if (search) {
                 sessionStorage.setItem('pendingFilters', JSON.stringify(search.conditions));
-                alert('검색이 불러와졌습니다! 대시보드로 이동합니다.');
+                console.log('검색이 불러와졌습니다! 대시보드로 이동합니다.');
                 window.location.href = '/dashboard.html';
             }
         }
@@ -576,7 +576,7 @@
                 searches = searches.filter(s => s.id !== id);
                 localStorage.setItem('museflow_saved_searches', JSON.stringify(searches));
                 loadSavedSearches();
-                alert('검색이 삭제되었습니다.');
+                console.log('검색이 삭제되었습니다.');
             }
         }
         
@@ -584,7 +584,7 @@
         async function exportJSON() {
             const token = localStorage.getItem('token');
             if (!token) {
-                alert('로그인이 필요합니다.');
+                console.log('로그인이 필요합니다.');
                 window.location.href = '/login.html';
                 return;
             }
@@ -604,17 +604,17 @@
                 link.click();
                 URL.revokeObjectURL(url);
                 
-                alert('✅ JSON 파일이 다운로드되었습니다!');
+                console.log('✅ JSON 파일이 다운로드되었습니다!');
             } catch (error) {
                 console.error('Export error:', error);
-                alert('❌ 내보내기 실패');
+                console.log('❌ 내보내기 실패');
             }
         }
         
         async function exportCSV() {
             const token = localStorage.getItem('token');
             if (!token) {
-                alert('로그인이 필요합니다.');
+                console.log('로그인이 필요합니다.');
                 window.location.href = '/login.html';
                 return;
             }
@@ -645,15 +645,15 @@
                 link.click();
                 URL.revokeObjectURL(url);
                 
-                alert('✅ CSV 파일이 다운로드되었습니다!');
+                console.log('✅ CSV 파일이 다운로드되었습니다!');
             } catch (error) {
                 console.error('Export error:', error);
-                alert('❌ 내보내기 실패');
+                console.log('❌ 내보내기 실패');
             }
         }
         
         async function exportExcel() {
-            alert('Excel 내보내기는 Dashboard에서 이용 가능합니다.');
+            console.log('Excel 내보내기는 Dashboard에서 이용 가능합니다.');
             window.location.href = '/dashboard.html';
         }
         
@@ -673,7 +673,7 @@
                     
                     const token = localStorage.getItem('token');
                     if (!token) {
-                        alert('로그인이 필요합니다.');
+                        console.log('로그인이 필요합니다.');
                         window.location.href = '/login.html';
                         return;
                     }
@@ -696,11 +696,11 @@
                         }
                     }
                     
-                    alert(`✅ ${success}/${projects.length}개 프로젝트가 가져와졌습니다!`);
+                    console.log(`✅ ${success}/${projects.length}개 프로젝트가 가져와졌습니다!`);
                     window.location.href = '/dashboard.html';
                 } catch (error) {
                     console.error('Parse error:', error);
-                    alert('❌ 파일 형식이 올바르지 않습니다.');
+                    console.log('❌ 파일 형식이 올바르지 않습니다.');
                 }
             };
             

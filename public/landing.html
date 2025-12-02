@@ -4118,9 +4118,9 @@
                 console.error('🎤 Voice recognition error:', event.error);
                 
                 if (event.error === 'no-speech') {
-                    alert(currentLang === 'ko' ? '음성이 감지되지 않았습니다.' : 'No speech detected.');
+                    console.warn(currentLang === 'ko' ? '음성이 감지되지 않았습니다.' : 'No speech detected.');
                 } else if (event.error === 'not-allowed') {
-                    alert(currentLang === 'ko' ? '마이크 권한이 필요합니다.' : 'Microphone permission is required.');
+                    console.warn(currentLang === 'ko' ? '마이크 권한이 필요합니다.' : 'Microphone permission is required.');
                 }
             };
         } else if (voiceBtn) {
@@ -4172,10 +4172,10 @@
                     localStorage.setItem('museflow_demo_notifications', JSON.stringify(notifications));
                 }
                 
-                alert(`✅ 감사합니다! ${email} 주소로 데모 영상 공개 시 알림을 보내드리겠습니다.\n\nThank you! We'll notify you at ${email} when the demo is ready.`);
+                console.log(`✅ 감사합니다! ${email} 주소로 데모 영상 공개 시 알림을 보내드리겠습니다.\n\nThank you! We'll notify you at ${email} when the demo is ready.`);
                 console.log('📧 Email notification registered:', email);
             } else if (email) {
-                alert('❌ 올바른 이메일 주소를 입력해주세요.\n\nPlease enter a valid email address.');
+                console.log('❌ 올바른 이메일 주소를 입력해주세요.\n\nPlease enter a valid email address.');
             }
         });
         

@@ -1132,7 +1132,7 @@ const HelpCenter = {
         } else {
           // Fallback: copy to clipboard
           navigator.clipboard.writeText(url);
-          alert('링크가 클립보드에 복사되었습니다!');
+          console.log('링크가 클립보드에 복사되었습니다!');
         }
         this.trackEvent('article_share', { articleId: article.id });
         break;
@@ -1152,7 +1152,7 @@ const HelpCenter = {
     }));
     
     // TODO: Implement video overlay player (Phase 3)
-    alert(`튜토리얼 영상 재생: ${videoId}\n\n(Video Overlay Player는 Phase 3에서 구현 예정)`);
+    console.log(`튜토리얼 영상 재생: ${videoId}\n\n(Video Overlay Player는 Phase 3에서 구현 예정)`);
   },
 
   /**
