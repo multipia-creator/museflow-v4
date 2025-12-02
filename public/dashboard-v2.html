@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuseFlow - Customizable Dashboard</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- GridStack -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@10.0.0/dist/gridstack.min.css">
+    
+    <!-- Design System -->
+    <link href="/static/css/design-system.css" rel="stylesheet">
+    <link href="/static/css/unified-navbar.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: background var(--duration-normal) var(--ease-smooth),
+                        color var(--duration-normal) var(--ease-smooth);
+        }
+        
+        /* Dashboard Container */
+        .dashboard-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 6rem 2rem 2rem 2rem;
+        }
+        
+        /* Dashboard Toolbar */
+        .dashboard-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem 1.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-xl);
+        }
+        
+        .toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .toolbar-title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--text-primary);
+        }
+        
+        .toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        /* Theme Toggle Button */
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            background: var(--surface);
+            border: 1px solid var(--border-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--duration-fast) var(--ease-smooth);
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+        
+        .theme-toggle i {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+        
+        .dark .theme-toggle .fa-moon {
+            display: none;
+        }
+        
+        body:not(.dark) .theme-toggle .fa-sun {
+            display: none;
+        }
+        
+        /* Edit Mode Toggle */
+        .btn-edit-mode {
+            padding: 0.625rem 1.25rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-weight: var(--font-weight-semibold);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-smooth);
+        }
+        
+        .btn-edit-mode:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-edit-mode.active {
+            background: var(--color-success);
+        }
+        
+        /* Edit Mode Actions */
+        .edit-mode-actions {
+            display: none;
+            gap: 0.5rem;
+        }
+        
+        .edit-mode-actions.active {
+            display: flex;
+        }
+        
+        .btn-action {
+            padding: 0.625rem 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-smooth);
+        }
+        
+        .btn-action:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        /* GridStack Grid */
+        .grid-stack {
+            min-height: 400px;
+        }
+        
+        .grid-stack-item-content {
+            background: var(--surface);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            transition: all var(--duration-normal) var(--ease-smooth);
+            overflow: hidden;
+        }
+        
+        .grid-stack-item-content:hover {
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* Widget Header */
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-primary);
+        }
+        
+        .widget-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+        }
+        
+        .widget-icon {
+            font-size: 1rem;
+            color: var(--primary);
+        }
+        
+        /* Widget Controls */
+        .widget-controls {
+            display: none;
+            gap: 0.25rem;
+        }
+        
+        body.edit-mode .widget-controls {
+            display: flex;
+        }
+        
+        .widget-controls button {
+            width: 28px;
+            height: 28px;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--duration-fast) var(--ease-smooth);
+        }
+        
+        .widget-controls button:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .widget-controls button i {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .widget-controls .btn-remove:hover {
+            background: var(--color-error-light);
+        }
+        
+        .widget-controls .btn-remove:hover i {
+            color: var(--color-error);
+        }
+        
+        /* Widget Content */
+        .widget-content {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+        
+        /* Stat Card */
+        .stat-value {
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--text-primary);
+            margin: 1rem 0 0.5rem 0;
+        }
+        
+        .stat-label {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .stat-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin: 0.75rem 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--color-primary-400));
+            border-radius: var(--radius-full);
+            transition: width var(--duration-slow) var(--ease-smooth);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-tertiary);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        /* Widget Library Modal */
+        .widget-library-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: var(--z-modal);
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .widget-library-modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--surface);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-2xl);
+            max-width: 800px;
+            width: 100%;
+            max-height: 80vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .modal-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--text-primary);
+        }
+        
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-close:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        .modal-body {
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .widget-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .widget-card {
+            padding: 1.5rem;
+            background: var(--surface);
+            border: 2px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-smooth);
+        }
+        
+        .widget-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .widget-card-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+        
+        .widget-card-title {
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .widget-card-description {
+            font-size: var(--font-size-xs);
+            color: var(--text-secondary);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .grid-stack-item {
+            animation: fadeIn var(--duration-normal) var(--ease-smooth);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 5rem 1rem 1rem 1rem;
+            }
+            
+            .dashboard-toolbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .widget-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Unified Navbar (from existing) -->
+    <div id="navbar-placeholder"></div>
+    
+    <div class="dashboard-container">
+        <!-- Dashboard Toolbar -->
+        <div class="dashboard-toolbar">
+            <div class="toolbar-left">
+                <h1 class="toolbar-title">커스터마이징 대시보드</h1>
+            </div>
+            
+            <div class="toolbar-right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" onclick="toggleTheme()" title="테마 전환">
+                    <i class="fas fa-moon"></i>
+                    <i class="fas fa-sun"></i>
+                </button>
+                
+                <!-- Edit Mode Toggle -->
+                <button class="btn-edit-mode" onclick="toggleEditMode()">
+                    <i class="fas fa-edit"></i>
+                    <span class="mode-text">편집 모드</span>
+                </button>
+                
+                <!-- Edit Mode Actions -->
+                <div class="edit-mode-actions" id="editModeActions">
+                    <button class="btn-action" onclick="openWidgetLibrary()">
+                        <i class="fas fa-plus"></i> 위젯 추가
+                    </button>
+                    <button class="btn-action" onclick="saveLayout()">
+                        <i class="fas fa-save"></i> 저장
+                    </button>
+                    <button class="btn-action" onclick="resetLayout()">
+                        <i class="fas fa-undo"></i> 초기화
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- GridStack Container -->
+        <div class="grid-stack" id="grid-stack">
+            <!-- Widgets will be dynamically loaded here -->
+        </div>
+        
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <i class="fas fa-th"></i>
+            <h3>위젯이 없습니다</h3>
+            <p>"위젯 추가" 버튼을 클릭하여 대시보드를 구성하세요</p>
+        </div>
+    </div>
+    
+    <!-- Widget Library Modal -->
+    <div class="widget-library-modal" id="widgetLibraryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">위젯 라이브러리</h2>
+                <button class="modal-close" onclick="closeWidgetLibrary()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="widget-grid" id="widgetGrid">
+                    <!-- Widget cards will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- GridStack JS -->
+    <script src="https://cdn.jsdelivr.net/npm/gridstack@10.0.0/dist/gridstack-all.js"></script>
+    
+    <script>
+        // ==========================================
+        // GLOBAL STATE
+        // ==========================================
+        let grid;
+        let isEditMode = false;
+        
+        // ==========================================
+        // THEME MANAGEMENT
+        // ==========================================
+        function toggleTheme() {
+            document.body.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+        
+        // Load saved theme
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark');
+            }
+        });
+        
+        // ==========================================
+        // EDIT MODE
+        // ==========================================
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            document.body.classList.toggle('edit-mode', isEditMode);
+            
+            const btn = document.querySelector('.btn-edit-mode');
+            const modeText = btn.querySelector('.mode-text');
+            const actions = document.getElementById('editModeActions');
+            
+            if (isEditMode) {
+                btn.classList.add('active');
+                modeText.textContent = '편집 완료';
+                actions.classList.add('active');
+                grid.enable();
+            } else {
+                btn.classList.remove('active');
+                modeText.textContent = '편집 모드';
+                actions.classList.remove('active');
+                grid.disable();
+            }
+        }
+        
+        // ==========================================
+        // GRIDSTACK INITIALIZATION
+        // ==========================================
+        function initGridStack() {
+            grid = GridStack.init({
+                column: 12,
+                cellHeight: 80,
+                margin: 16,
+                float: true,
+                resizable: {
+                    handles: 'se'
+                },
+                draggable: {
+                    handle: '.widget-header'
+                },
+                disableOneColumnMode: false,
+                animate: true
+            });
+            
+            grid.disable(); // Start in view mode
+            
+            // Event listeners
+            grid.on('change', (event, items) => {
+                console.log('Layout changed:', items);
+            });
+            
+            // Load widgets from server
+            loadWidgets();
+        }
+        
+        // ==========================================
+        // WIDGET MANAGEMENT
+        // ==========================================
+        async function loadWidgets() {
+            try {
+                const response = await fetch('/api/widgets');
+                const data = await response.json();
+                
+                if (data.widgets && data.widgets.length > 0) {
+                    data.widgets.forEach(widget => {
+                        addWidgetToGrid(widget);
+                    });
+                    document.getElementById('emptyState').style.display = 'none';
+                } else {
+                    document.getElementById('emptyState').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Failed to load widgets:', error);
+                // Show default widgets
+                showDefaultWidgets();
+            }
+        }
+        
+        function showDefaultWidgets() {
+            const defaultWidgets = [
+                { type: 'stat-card-exhibition', name: '전시', icon: 'fa-image', x: 0, y: 0, w: 2, h: 3 },
+                { type: 'stat-card-education', name: '교육', icon: 'fa-graduation-cap', x: 2, y: 0, w: 2, h: 3 },
+                { type: 'stat-card-collection', name: '수집', icon: 'fa-folder-plus', x: 4, y: 0, w: 2, h: 3 },
+                { type: 'stat-card-conservation', name: '보존', icon: 'fa-shield-alt', x: 6, y: 0, w: 2, h: 3 },
+                { type: 'stat-card-publication', name: '출판', icon: 'fa-book', x: 8, y: 0, w: 2, h: 3 },
+                { type: 'stat-card-research', name: '연구', icon: 'fa-microscope', x: 10, y: 0, w: 2, h: 3 }
+            ];
+            
+            defaultWidgets.forEach(widget => {
+                addWidgetToGrid(widget);
+            });
+        }
+        
+        function addWidgetToGrid(widget) {
+            const widgetHTML = generateWidgetHTML(widget);
+            
+            grid.addWidget({
+                x: widget.x || 0,
+                y: widget.y || 0,
+                w: widget.w || 4,
+                h: widget.h || 3,
+                content: widgetHTML,
+                id: widget.user_widget_id || widget.type
+            });
+        }
+        
+        function generateWidgetHTML(widget) {
+            const iconClass = widget.icon || 'fa-cube';
+            const widgetName = widget.name || '위젯';
+            
+            return `
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <i class="widget-icon fas ${iconClass}"></i>
+                        <span>${widgetName}</span>
+                    </div>
+                    <div class="widget-controls">
+                        <button onclick="refreshWidget('${widget.type}')" title="새로고침">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button onclick="configWidget('${widget.type}')" title="설정">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                        <button class="btn-remove" onclick="removeWidget(this)" title="삭제">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    ${generateWidgetContent(widget)}
+                </div>
+            `;
+        }
+        
+        function generateWidgetContent(widget) {
+            // Stat card template
+            if (widget.type && widget.type.startsWith('stat-card')) {
+                return `
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">활성 항목</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%"></div>
+                    </div>
+                    <div class="stat-footer">
+                        <span>16개 중 12개</span>
+                        <span style="color: var(--color-success)">+3 신규</span>
+                    </div>
+                `;
+            }
+            
+            return `<p>위젯 콘텐츠</p>`;
+        }
+        
+        function removeWidget(btn) {
+            const gridItem = btn.closest('.grid-stack-item');
+            grid.removeWidget(gridItem);
+        }
+        
+        function refreshWidget(type) {
+            console.log('Refreshing widget:', type);
+            // TODO: Implement refresh logic
+        }
+        
+        function configWidget(type) {
+            console.log('Config widget:', type);
+            // TODO: Show config modal
+        }
+        
+        // ==========================================
+        // WIDGET LIBRARY
+        // ==========================================
+        async function openWidgetLibrary() {
+            const modal = document.getElementById('widgetLibraryModal');
+            modal.classList.add('active');
+            
+            // Load widget catalog
+            try {
+                const response = await fetch('/api/widgets/catalog');
+                const data = await response.json();
+                
+                const widgetGrid = document.getElementById('widgetGrid');
+                widgetGrid.innerHTML = '';
+                
+                data.widgets.forEach(widget => {
+                    const card = document.createElement('div');
+                    card.className = 'widget-card';
+                    card.onclick = () => addNewWidget(widget);
+                    card.innerHTML = `
+                        <div class="widget-card-icon">
+                            <i class="fas ${widget.icon}"></i>
+                        </div>
+                        <div class="widget-card-title">${widget.name}</div>
+                        <div class="widget-card-description">${widget.description || ''}</div>
+                    `;
+                    widgetGrid.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Failed to load widget catalog:', error);
+            }
+        }
+        
+        function closeWidgetLibrary() {
+            const modal = document.getElementById('widgetLibraryModal');
+            modal.classList.remove('active');
+        }
+        
+        async function addNewWidget(widget) {
+            try {
+                const response = await fetch('/api/widgets', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        widgetType: widget.type,
+                        config: {},
+                        layout: {
+                            x: 0,
+                            y: 0,
+                            w: widget.default_width,
+                            h: widget.default_height
+                        }
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    addWidgetToGrid(data.widget);
+                    closeWidgetLibrary();
+                    document.getElementById('emptyState').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Failed to add widget:', error);
+            }
+        }
+        
+        // ==========================================
+        // LAYOUT MANAGEMENT
+        // ==========================================
+        async function saveLayout() {
+            const widgets = grid.save(false);
+            
+            try {
+                const response = await fetch('/api/widgets/layout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ widgets })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('레이아웃이 저장되었습니다!');
+                }
+            } catch (error) {
+                console.error('Failed to save layout:', error);
+                alert('레이아웃 저장에 실패했습니다.');
+            }
+        }
+        
+        function resetLayout() {
+            if (confirm('대시보드를 초기화하시겠습니까?')) {
+                grid.removeAll();
+                showDefaultWidgets();
+            }
+        }
+        
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', () => {
+            // Load navbar
+            fetch('/static/navbar.html')
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('navbar-placeholder').innerHTML = html;
+                });
+            
+            // Initialize GridStack
+            initGridStack();
+        });
+    </script>
+</body>
+</html>

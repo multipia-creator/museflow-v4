@@ -7,6 +7,7 @@ import projects from './routes/projects'
 import tasks from './routes/tasks'
 import comments from './routes/comments'
 import behaviors from './routes/behaviors'
+import widgets from './routes/widgets'
 
 // Export Durable Objects
 export { CollaborationRoom } from './durable-objects/collaboration-room'
@@ -66,5 +67,6 @@ app.route('/api/projects', projects)
 app.route('/api/tasks', tasks)
 app.route('/api/comments', comments)
 app.route('/api/behaviors', behaviors)
+app.route('/', widgets)
 
 export default app
