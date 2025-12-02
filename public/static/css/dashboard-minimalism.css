@@ -60,6 +60,38 @@
 }
 
 /* ======================================
+   🎯 Text Visibility Fix (CRITICAL)
+   ====================================== */
+
+/* Force all text elements to be visible */
+body *, 
+.main-container *, 
+.performance-card *, 
+.quick-access-card *, 
+.project-card *, 
+.chart-container *,
+nav * {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Ensure text has proper color contrast */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--gray-900) !important;
+    font-weight: 600 !important;
+}
+
+p, span, div:not(.chart-container), label, a {
+    color: var(--gray-700) !important;
+}
+
+/* Remove any hidden/transparent text */
+* {
+    -webkit-text-fill-color: inherit !important;
+    background-clip: initial !important;
+}
+
+/* ======================================
    🧭 Navigation (Clean White)
    ====================================== */
 

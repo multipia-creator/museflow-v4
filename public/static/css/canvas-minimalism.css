@@ -67,8 +67,25 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-weight: 600;
-    color: var(--gray-900);
+    font-weight: 600 !important;
+    color: var(--gray-900) !important;
+}
+
+/* Text visibility fix */
+p, span, div, label, button, input, textarea, select {
+    color: inherit;
+}
+
+/* Ensure text is always visible */
+.empty-text,
+.empty-hint,
+.node-name,
+.node-description,
+.category-title,
+.panel-title,
+.property-label {
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
 /* ================================
