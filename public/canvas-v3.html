@@ -91,6 +91,108 @@
             box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(139, 92, 246, 0.4);
         }
         
+        /* AI Quick Action Panel (NEW) */
+        .ai-quick-panel {
+            position: fixed;
+            right: 2rem;
+            bottom: 2rem;
+            z-index: 998;
+        }
+        
+        .ai-quick-toggle {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.5), 0 0 0 4px rgba(139, 92, 246, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: ai-button-glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes ai-button-glow {
+            0%, 100% { box-shadow: 0 8px 24px rgba(139, 92, 246, 0.5), 0 0 0 4px rgba(139, 92, 246, 0.1); }
+            50% { box-shadow: 0 8px 32px rgba(139, 92, 246, 0.7), 0 0 0 6px rgba(139, 92, 246, 0.2); }
+        }
+        
+        .ai-quick-toggle:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 32px rgba(139, 92, 246, 0.7), 0 0 0 6px rgba(139, 92, 246, 0.2);
+        }
+        
+        .ai-quick-toggle:active {
+            transform: scale(0.95);
+        }
+        
+        .ai-quick-actions {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            min-width: 220px;
+            background: white;
+            border-radius: 16px;
+            padding: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .ai-quick-panel:hover .ai-quick-actions,
+        .ai-quick-actions:hover {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+        
+        .ai-quick-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        
+        .ai-quick-action {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #4b5563;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        
+        .ai-quick-action:hover {
+            background: linear-gradient(135deg, #f3e8ff, #fce7f3);
+            color: #8b5cf6;
+            transform: translateX(4px);
+        }
+        
+        .ai-quick-action i {
+            color: #8b5cf6;
+            transition: all 0.2s;
+        }
+        
+        .ai-quick-action:hover i {
+            transform: scale(1.1);
+        }
+        
         .toolbar-left, .toolbar-center, .toolbar-right {
             display: flex;
             align-items: center;
@@ -1153,9 +1255,143 @@
                 grid-template-columns: 1fr;
             }
         }
+        
+        /* ===== AI NODE VISUAL ENHANCEMENT ===== */
+        
+        /* AI Node Base Style */
+        .canvas-node.ai-node {
+            border: 2px solid transparent;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.15));
+            position: relative;
+            overflow: visible;
+        }
+        
+        .canvas-node.ai-node::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 12px;
+            padding: 2px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+        
+        .canvas-node.ai-node:hover::before {
+            opacity: 1;
+        }
+        
+        /* AI Node Processing State */
+        .canvas-node.ai-node.processing {
+            animation: ai-node-pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes ai-node-pulse {
+            0%, 100% {
+                box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3), 0 0 0 0 rgba(139, 92, 246, 0);
+            }
+            50% {
+                box-shadow: 0 8px 32px rgba(139, 92, 246, 0.5), 0 0 0 8px rgba(139, 92, 246, 0.2);
+            }
+        }
+        
+        .canvas-node.ai-node.processing::after {
+            content: '⚡';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            animation: ai-badge-spin 2s linear infinite;
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.5);
+        }
+        
+        @keyframes ai-badge-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* AI Node Completed State */
+        .canvas-node.ai-node.completed {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
+        }
+        
+        .canvas-node.ai-node.completed::before {
+            background: linear-gradient(135deg, #10b981, #059669);
+            opacity: 0.7;
+        }
+        
+        .canvas-node.ai-node.completed::after {
+            content: '✓';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.5);
+        }
+        
+        /* AI Connection Visual Enhancement */
+        .ai-connection {
+            stroke: url(#ai-gradient);
+            stroke-width: 3;
+            stroke-dasharray: 8, 4;
+            animation: ai-connection-flow 2s linear infinite;
+        }
+        
+        @keyframes ai-connection-flow {
+            to { stroke-dashoffset: -24; }
+        }
+        
+        /* AI Node Hover Effect */
+        .canvas-node.ai-node:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.4);
+        }
+        
+        /* AI Quick Action Button Enhancement */
+        .ai-quick-toggle .ai-glow {
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
+            animation: ai-glow-pulse 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes ai-glow-pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
     </style>
 </head>
 <body>
+    <!-- AI Status Bar (NEW) -->
+    <div class="ai-status-bar" id="ai-status-bar" style="display: none;">
+        <div class="ai-status-summary">
+            <i data-lucide="zap" style="width: 16px; height: 16px;"></i>
+            <span id="ai-status-text">AI Ready</span>
+        </div>
+        <div class="ai-task-chips" id="ai-task-chips"></div>
+    </div>
+    
     <!-- Top Toolbar -->
     <div class="toolbar">
         <div class="toolbar-left">
@@ -1877,6 +2113,52 @@
         <button class="tool-btn" id="tool-zoom-reset" title="Zoom Reset (0)" style="margin: 0;">
             <i data-lucide="maximize-2" style="width: 18px; height: 18px;"></i>
         </button>
+    </div>
+    
+    <!-- AI Quick Action Panel (NEW) -->
+    <div class="ai-quick-panel" id="ai-quick-panel">
+        <button class="ai-quick-toggle" id="ai-quick-toggle" title="AI Quick Actions">
+            <i data-lucide="sparkles" style="width: 24px; height: 24px; color: white;"></i>
+        </button>
+        
+        <div class="ai-quick-actions" id="ai-quick-actions">
+            <div class="ai-quick-header">
+                <i data-lucide="sparkles" style="width: 16px; height: 16px;"></i>
+                <span>AI Quick Actions</span>
+            </div>
+            
+            <button class="ai-quick-action" data-action="gemini-generate" title="Generate with Gemini">
+                <i data-lucide="sparkles" style="width: 20px; height: 20px;"></i>
+                <span>Generate</span>
+            </button>
+            
+            <button class="ai-quick-action" data-action="gemini-improve" title="Improve Text">
+                <i data-lucide="wand-2" style="width: 20px; height: 20px;"></i>
+                <span>Improve</span>
+            </button>
+            
+            <button class="ai-quick-action" data-action="gemini-translate" title="Translate">
+                <i data-lucide="languages" style="width: 20px; height: 20px;"></i>
+                <span>Translate</span>
+            </button>
+            
+            <div style="height: 1px; background: #e5e7eb; margin: 8px 0;"></div>
+            
+            <button class="ai-quick-action" data-action="google-docs" title="Create Google Doc">
+                <i data-lucide="file-text" style="width: 20px; height: 20px;"></i>
+                <span>Google Doc</span>
+            </button>
+            
+            <button class="ai-quick-action" data-action="gmail-draft" title="Draft Email">
+                <i data-lucide="mail" style="width: 20px; height: 20px;"></i>
+                <span>Gmail</span>
+            </button>
+            
+            <button class="ai-quick-action" data-action="calendar-event" title="Create Event">
+                <i data-lucide="calendar-plus" style="width: 20px; height: 20px;"></i>
+                <span>Calendar</span>
+            </button>
+        </div>
     </div>
     
     <!-- Context Menu -->

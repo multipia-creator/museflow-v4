@@ -1009,17 +1009,39 @@ const CanvasV3 = {
       const cp2x = toX - 100;
       const cp2y = toY;
       
-      ctx.strokeStyle = '#9ca3af';
-      ctx.lineWidth = 2;
+      // Check if AI-related connection
+      const isAIConnection = (fromNode.type && fromNode.type.startsWith('ai-')) || 
+                            (toNode.type && toNode.type.startsWith('ai-'));
+      
+      if (isAIConnection) {
+        // AI Connection with gradient
+        const gradient = ctx.createLinearGradient(fromX, fromY, toX, toY);
+        gradient.addColorStop(0, '#8b5cf6');
+        gradient.addColorStop(0.5, '#ec4899');
+        gradient.addColorStop(1, '#8b5cf6');
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 3;
+        
+        // Animated dash
+        const dashOffset = (Date.now() / 50) % 24;
+        ctx.setLineDash([8, 4]);
+        ctx.lineDashOffset = -dashOffset;
+      } else {
+        ctx.strokeStyle = '#9ca3af';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([]);
+      }
+      
       ctx.beginPath();
       ctx.moveTo(fromX, fromY);
       ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, toX, toY);
       ctx.stroke();
+      ctx.setLineDash([]);
       
       // Arrow
-      const arrowSize = 8;
+      const arrowSize = isAIConnection ? 10 : 8;
       const angle = Math.atan2(toY - cp2y, toX - cp2x);
-      ctx.fillStyle = '#9ca3af';
+      ctx.fillStyle = isAIConnection ? '#8b5cf6' : '#9ca3af';
       ctx.beginPath();
       ctx.moveTo(toX, toY);
       ctx.lineTo(
@@ -1069,9 +1091,17 @@ const CanvasV3 = {
     this.nodes.forEach(node => {
       const isSelected = this.selectedNodes.includes(node.id);
       const isHovered = this.hoveredNode === node.id;
+      const isAINode = node.type && (node.type.startsWith('ai-') || node.category === 'ai');
       
-      // Node shadow
-      if (isSelected || isHovered) {
+      // AI Node Enhanced Shadow
+      if (isAINode) {
+        ctx.shadowColor = node.aiState === 'processing' 
+          ? 'rgba(139, 92, 246, 0.5)' 
+          : 'rgba(139, 92, 246, 0.3)';
+        ctx.shadowBlur = node.aiState === 'processing' ? 20 : 12;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 4;
+      } else if (isSelected || isHovered) {
         ctx.shadowColor = 'rgba(0, 0, 0, 0.1)';
         ctx.shadowBlur = 12;
         ctx.shadowOffsetX = 0;
@@ -1079,9 +1109,24 @@ const CanvasV3 = {
       }
       
       // Node background
-      ctx.fillStyle = 'white';
-      ctx.strokeStyle = isSelected ? node.color : '#e5e7eb';
-      ctx.lineWidth = isSelected ? 2 : 1;
+      if (isAINode) {
+        // AI Node gradient background
+        const gradient = ctx.createLinearGradient(node.x, node.y, node.x + node.width, node.y + node.height);
+        gradient.addColorStop(0, 'rgba(139, 92, 246, 0.05)');
+        gradient.addColorStop(1, 'rgba(236, 72, 153, 0.05)');
+        ctx.fillStyle = gradient;
+      } else {
+        ctx.fillStyle = 'white';
+      }
+      
+      // AI Node border with gradient
+      if (isAINode) {
+        ctx.strokeStyle = node.aiState === 'completed' ? '#10b981' : '#8b5cf6';
+        ctx.lineWidth = 2;
+      } else {
+        ctx.strokeStyle = isSelected ? node.color : '#e5e7eb';
+        ctx.lineWidth = isSelected ? 2 : 1;
+      }
       
       this.roundRect(ctx, node.x, node.y, node.width, node.height, 8);
       ctx.fill();
@@ -1091,8 +1136,28 @@ const CanvasV3 = {
       ctx.shadowBlur = 0;
       
       // Node header (color bar)
-      ctx.fillStyle = node.color;
+      ctx.fillStyle = isAINode ? (node.aiState === 'completed' ? '#10b981' : '#8b5cf6') : node.color;
       ctx.fillRect(node.x, node.y, node.width, 4);
+      
+      // AI Node Badge
+      if (isAINode) {
+        const badgeX = node.x + node.width - 20;
+        const badgeY = node.y - 8;
+        const badgeEmoji = node.aiState === 'processing' ? '⚡' : (node.aiState === 'completed' ? '✓' : '🤖');
+        
+        ctx.fillStyle = node.aiState === 'completed' ? '#10b981' : '#8b5cf6';
+        ctx.beginPath();
+        ctx.arc(badgeX, badgeY, 12, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = 'white';
+        ctx.font = '600 14px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(badgeEmoji, badgeX, badgeY);
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'alphabetic';
+      }
       
       // Node title
       ctx.fillStyle = '#1f2937';

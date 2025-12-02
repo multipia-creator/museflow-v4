@@ -271,18 +271,61 @@ const CanvasV3Complete = {
       const cp2x = toX - 100;
       const cp2y = toY;
       
-      // Draw curve
-      ctx.strokeStyle = '#9ca3af';
-      ctx.lineWidth = 2;
+      // Check if target is AI node
+      const isAIConnection = toNode.type && toNode.type.startsWith('ai-');
+      const aiStatus = toNode.aiStatus || 'idle';
+      
+      // Draw curve with gradient for AI connections
+      if (isAIConnection) {
+        const gradient = ctx.createLinearGradient(fromX, fromY, toX, toY);
+        
+        if (aiStatus === 'processing') {
+          gradient.addColorStop(0, '#8b5cf6');
+          gradient.addColorStop(0.5, '#f59e0b');
+          gradient.addColorStop(1, '#f59e0b');
+          ctx.lineWidth = 3;
+          ctx.setLineDash([10, 5]);
+        } else if (aiStatus === 'completed') {
+          gradient.addColorStop(0, '#8b5cf6');
+          gradient.addColorStop(1, '#10b981');
+          ctx.lineWidth = 3;
+          ctx.setLineDash([]);
+        } else {
+          gradient.addColorStop(0, '#8b5cf6');
+          gradient.addColorStop(1, '#ec4899');
+          ctx.lineWidth = 3;
+          ctx.setLineDash([]);
+        }
+        
+        ctx.strokeStyle = gradient;
+      } else {
+        ctx.strokeStyle = '#9ca3af';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([]);
+      }
+      
       ctx.beginPath();
       ctx.moveTo(fromX, fromY);
       ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, toX, toY);
       ctx.stroke();
+      ctx.setLineDash([]);
       
       // Draw arrow
-      const arrowSize = 8;
+      const arrowSize = isAIConnection ? 10 : 8;
       const angle = Math.atan2(toY - cp2y, toX - cp2x);
-      ctx.fillStyle = '#9ca3af';
+      
+      if (isAIConnection) {
+        if (aiStatus === 'processing') {
+          ctx.fillStyle = '#f59e0b';
+        } else if (aiStatus === 'completed') {
+          ctx.fillStyle = '#10b981';
+        } else {
+          ctx.fillStyle = '#ec4899';
+        }
+      } else {
+        ctx.fillStyle = '#9ca3af';
+      }
+      
       ctx.beginPath();
       ctx.moveTo(toX, toY);
       ctx.lineTo(
@@ -332,19 +375,75 @@ const CanvasV3Complete = {
     this.nodes.forEach(node => {
       const isSelected = this.selectedNodes.includes(node.id);
       const isHovered = this.hoveredNode === node.id;
+      const isAINode = node.type && node.type.startsWith('ai-');
+      const aiStatus = node.aiStatus || 'idle';
       
-      // Node shadow
-      if (isSelected || isHovered) {
+      // AI Node enhanced shadow and glow
+      if (isAINode) {
+        if (aiStatus === 'processing') {
+          // Pulsing golden glow for processing
+          const pulseIntensity = 0.3 + 0.2 * Math.sin(Date.now() / 500);
+          ctx.shadowColor = `rgba(245, 158, 11, ${pulseIntensity})`;
+          ctx.shadowBlur = 25;
+          ctx.shadowOffsetX = 0;
+          ctx.shadowOffsetY = 0;
+        } else if (aiStatus === 'completed') {
+          // Green glow for completed
+          ctx.shadowColor = 'rgba(16, 185, 129, 0.4)';
+          ctx.shadowBlur = 20;
+          ctx.shadowOffsetX = 0;
+          ctx.shadowOffsetY = 0;
+        } else {
+          // Purple glow for idle AI nodes
+          ctx.shadowColor = 'rgba(168, 85, 247, 0.3)';
+          ctx.shadowBlur = 20;
+          ctx.shadowOffsetX = 0;
+          ctx.shadowOffsetY = 0;
+        }
+      } else if (isSelected || isHovered) {
         ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
         ctx.shadowBlur = 15;
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 5;
       }
       
-      // Node background
-      ctx.fillStyle = 'white';
-      ctx.strokeStyle = isSelected ? node.color : '#e5e7eb';
-      ctx.lineWidth = isSelected ? 2 : 1;
+      // Node background with gradient for AI nodes
+      if (isAINode) {
+        const gradient = ctx.createLinearGradient(node.x, node.y, node.x, node.y + node.height);
+        if (aiStatus === 'processing') {
+          gradient.addColorStop(0, '#ffffff');
+          gradient.addColorStop(1, '#fef3c7');
+        } else if (aiStatus === 'completed') {
+          gradient.addColorStop(0, '#ffffff');
+          gradient.addColorStop(1, '#d1fae5');
+        } else {
+          gradient.addColorStop(0, '#ffffff');
+          gradient.addColorStop(1, '#f3e8ff');
+        }
+        ctx.fillStyle = gradient;
+      } else {
+        ctx.fillStyle = 'white';
+      }
+      
+      // Border color based on status
+      if (isAINode) {
+        if (aiStatus === 'processing') {
+          ctx.strokeStyle = '#f59e0b';
+          ctx.lineWidth = 3;
+        } else if (aiStatus === 'completed') {
+          ctx.strokeStyle = '#10b981';
+          ctx.lineWidth = 2;
+        } else if (aiStatus === 'failed') {
+          ctx.strokeStyle = '#ef4444';
+          ctx.lineWidth = 2;
+        } else {
+          ctx.strokeStyle = '#a855f7';
+          ctx.lineWidth = 2;
+        }
+      } else {
+        ctx.strokeStyle = isSelected ? node.color : '#e5e7eb';
+        ctx.lineWidth = isSelected ? 2 : 1;
+      }
       
       this.roundRect(ctx, node.x, node.y, node.width, node.height, 8);
       ctx.fill();
