@@ -469,7 +469,7 @@
                 column: 12,
                 cellHeight: 80,
                 margin: 16,
-                float: true,
+                float: false,  // Enable auto-compact (automatic alignment)
                 resizable: {
                     handles: 'se'
                 },
@@ -485,6 +485,17 @@
             // Event listeners
             grid.on('change', (event, items) => {
                 console.log('Layout changed:', items);
+            });
+            
+            // Auto-compact after drag/resize
+            grid.on('dragstop', () => {
+                grid.compact();
+                console.log('Auto-aligned after drag');
+            });
+            
+            grid.on('resizestop', () => {
+                grid.compact();
+                console.log('Auto-aligned after resize');
             });
             
             // Load widgets from server
@@ -1919,6 +1930,12 @@
         function removeWidget(btn) {
             const gridItem = btn.closest('.grid-stack-item');
             grid.removeWidget(gridItem);
+            
+            // Auto-compact after removal
+            setTimeout(() => {
+                grid.compact();
+                console.log('Auto-aligned after widget removal');
+            }, 100);
         }
         
         function refreshWidget(type) {
