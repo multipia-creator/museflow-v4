@@ -3747,7 +3747,39 @@
         // PROJECTS MANAGEMENT
         // ==========================================
         
-        // Load projects
+        // Helper: Get project icon by type
+        function getProjectIcon(type) {
+            const icons = {
+                'exhibition': '🎨',
+                'education': '📚',
+                'marketing': '📢',
+                'research': '🔬',
+                'special': '⭐'
+            };
+            return icons[type] || '📁';
+        }
+        
+        // Helper: Format relative time
+        function formatRelativeTime(dateString) {
+            if (!dateString) return '알 수 없음';
+            
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 1) return '방금 전';
+            if (diffMins < 60) return `${diffMins}분 전`;
+            if (diffHours < 24) return `${diffHours}시간 전`;
+            if (diffDays < 7) return `${diffDays}일 전`;
+            if (diffDays < 30) return `${Math.floor(diffDays / 7)}주 전`;
+            if (diffDays < 365) return `${Math.floor(diffDays / 30)}개월 전`;
+            return `${Math.floor(diffDays / 365)}년 전`;
+        }
+        
+        // Load projects from API
         async function loadProjects() {
             const projectsGrid = document.getElementById('projectsGrid');
             const projectsLoading = document.getElementById('projectsLoading');
@@ -3755,56 +3787,36 @@
             const projectsCount = document.getElementById('projectsCount');
             
             try {
-                // Mock API call - replace with real API
-                // const response = await fetch('/api/projects');
-                // const data = await response.json();
-                
-                // Mock data for demo
-                const mockProjects = [
-                    {
-                        id: 1,
-                        title: '2024 봄 특별전',
-                        description: '봄을 주제로 한 특별 전시 기획',
-                        type: 'exhibition',
-                        updated_at: '2일 전',
-                        icon: '🎨'
-                    },
-                    {
-                        id: 2,
-                        title: '어린이 교육 프로그램',
-                        description: '초등학생 대상 미술 교육 과정',
-                        type: 'education',
-                        updated_at: '1주 전',
-                        icon: '📚'
-                    },
-                    {
-                        id: 3,
-                        title: 'SNS 마케팅 캠페인',
-                        description: '소셜미디어 홍보 전략 및 실행',
-                        type: 'marketing',
-                        updated_at: '3일 전',
-                        icon: '📢'
-                    }
-                ];
+                // Call real API
+                const response = await fetch('/api/projects');
+                const data = await response.json();
                 
                 // Hide loading
                 projectsLoading.style.display = 'none';
                 
-                if (mockProjects.length === 0) {
+                if (!data.success || !data.projects || data.projects.length === 0) {
                     projectsEmpty.style.display = 'block';
                     projectsCount.textContent = '0';
                 } else {
                     projectsEmpty.style.display = 'none';
-                    projectsCount.textContent = mockProjects.length;
+                    projectsCount.textContent = data.projects.length;
                     
                     // Render project cards
-                    mockProjects.forEach(project => {
-                        const card = createProjectCard(project);
+                    data.projects.forEach(project => {
+                        const card = createProjectCard({
+                            id: project.id,
+                            title: project.title,
+                            description: project.description,
+                            type: project.type || 'special',
+                            updated_at: formatRelativeTime(project.updated_at),
+                            icon: getProjectIcon(project.type || 'special')
+                        });
                         projectsGrid.appendChild(card);
                     });
                 }
             } catch (error) {
                 console.error('Failed to load projects:', error);
+                projectsLoading.style.display = 'none';
                 projectsLoading.innerHTML = '<p style="color: #ef4444;">프로젝트를 불러오는데 실패했습니다</p>';
             }
         }
@@ -3852,21 +3864,31 @@
         async function handleCreateProject(event) {
             event.preventDefault();
             
-            const name = document.getElementById('projectName').value;
+            const title = document.getElementById('projectName').value;
             const description = document.getElementById('projectDescription').value;
             const type = document.querySelector('input[name="projectType"]:checked').value;
             
             try {
-                // Mock API call - replace with real API
-                // const response = await fetch('/api/projects', {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify({ name, description, type })
-                // });
-                // const data = await response.json();
+                // Call real API
+                const response = await fetch('/api/projects', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        title, 
+                        description, 
+                        type,
+                        status: 'draft',
+                        user_id: 1 // TODO: Get from auth session
+                    })
+                });
                 
-                // Mock success
-                console.log('Creating project:', { name, description, type });
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to create project');
+                }
+                
+                console.log('✅ Project created:', data);
                 
                 // Close modal
                 closeCreateProjectModal();
@@ -3874,13 +3896,15 @@
                 // Reload projects
                 const projectsGrid = document.getElementById('projectsGrid');
                 projectsGrid.innerHTML = '<div class="projects-loading"><i class="fas fa-spinner fa-spin"></i><p>프로젝트를 불러오는 중...</p></div>';
-                setTimeout(() => loadProjects(), 500);
+                await loadProjects();
                 
-                // Show success message
-                alert('✅ 프로젝트가 생성되었습니다!');
+                // Show success message with option to open
+                if (confirm(`✅ 프로젝트 "${title}"가 생성되었습니다!\n\n지금 바로 열어보시겠습니까?`)) {
+                    openProject(data.project_id);
+                }
             } catch (error) {
                 console.error('Failed to create project:', error);
-                alert('❌ 프로젝트 생성에 실패했습니다.');
+                alert('❌ 프로젝트 생성에 실패했습니다.\n\n' + error.message);
             }
         }
         
