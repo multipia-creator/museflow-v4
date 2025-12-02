@@ -2207,8 +2207,8 @@
         // INITIALIZATION
         // ==========================================
         window.addEventListener('DOMContentLoaded', () => {
-            // Load navbar
-            fetch('/static/components/unified-navbar.html')
+            // Load navbar (without .html extension for Cloudflare Pages)
+            fetch('/static/components/unified-navbar')
                 .then(res => res.text())
                 .then(html => {
                     document.getElementById('navbar-placeholder').innerHTML = html;
