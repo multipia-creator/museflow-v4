@@ -610,6 +610,110 @@ const Collaboration = {
       hour: '2-digit',
       minute: '2-digit'
     });
+  },
+  
+  /**
+   * Version History System
+   */
+  versionHistory: [],
+  
+  async saveVersion(changeDescription = 'Auto-save') {
+    if (!window.CanvasV3 || !window.CanvasV3.currentProject) return;
+    
+    const version = {
+      id: 'v-' + Date.now(),
+      timestamp: new Date().toISOString(),
+      author: this.getCurrentUser(),
+      description: changeDescription,
+      snapshot: {
+        nodes: JSON.parse(JSON.stringify(CanvasV3.nodes)),
+        connections: JSON.parse(JSON.stringify(CanvasV3.connections)),
+        projectName: CanvasV3.currentProject.name
+      }
+    };
+    
+    this.versionHistory.unshift(version);
+    if (this.versionHistory.length > 20) {
+      this.versionHistory = this.versionHistory.slice(0, 20);
+    }
+    
+    try {
+      await fetch('/api/versions/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          projectId: CanvasV3.currentProject.id,
+          version
+        })
+      });
+    } catch (error) {
+      console.warn('Version save to DB failed, stored locally only:', error);
+    }
+  },
+  
+  getCurrentUser() {
+    return {
+      name: localStorage.getItem('userName') || 'You',
+      email: localStorage.getItem('userEmail') || 'user@museum.org'
+    };
+  },
+  
+  showVersionHistory() {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+      <div class="modal-content version-history-modal">
+        <div class="modal-header">
+          <h3>📜 버전 기록</h3>
+          <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">
+            <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="version-timeline" id="version-timeline">
+            ${this.renderVersionTimeline()}
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    if (window.lucide) lucide.createIcons();
+  },
+  
+  renderVersionTimeline() {
+    if (this.versionHistory.length === 0) {
+      return `<div class="empty-state"><p>버전 기록이 없습니다</p></div>`;
+    }
+    
+    return this.versionHistory.map((version, index) => {
+      const timeAgo = this.formatTimeAgoShort(new Date(version.timestamp));
+      const isCurrent = index === 0;
+      
+      return `
+        <div class="version-item ${isCurrent ? 'current' : ''}">
+          <div class="version-content">
+            <div class="version-header">
+              <strong>${version.author.name}</strong>
+              <span>${timeAgo}</span>
+              ${isCurrent ? '<span class="current-badge">현재</span>' : ''}
+            </div>
+            <div class="version-description">${version.description}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+  
+  formatTimeAgoShort(date) {
+    const diff = new Date() - date;
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    
+    if (minutes < 60) return `${minutes}분 전`;
+    if (hours < 24) return `${hours}시간 전`;
+    if (days < 7) return `${days}일 전`;
+    return date.toLocaleDateString('ko-KR');
   }
 };
 
