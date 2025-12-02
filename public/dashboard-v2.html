@@ -2105,25 +2105,25 @@
         // COLOR PICKER
         // ==========================================
         const colorPresets = [
-            { name: 'Purple', value: '#8B5CF6' },
-            { name: 'Blue', value: '#3B82F6' },
-            { name: 'Green', value: '#10B981' },
-            { name: 'Yellow', value: '#F59E0B' },
-            { name: 'Red', value: '#EF4444' },
-            { name: 'Pink', value: '#EC4899' },
-            { name: 'Indigo', value: '#6366F1' },
-            { name: 'Teal', value: '#14B8A6' },
-            { name: 'Orange', value: '#F97316' },
-            { name: 'Gray', value: '#6B7280' }
+            { name: 'Lavender', value: '#E9D5FF' },      // 연한 라벤더
+            { name: 'Sky Blue', value: '#BFDBFE' },      // 하늘색
+            { name: 'Mint', value: '#BBF7D0' },          // 민트
+            { name: 'Peach', value: '#FED7AA' },         // 피치
+            { name: 'Rose', value: '#FBCFE8' },          // 로즈
+            { name: 'Lemon', value: '#FEF3C7' },         // 레몬
+            { name: 'Periwinkle', value: '#DDD6FE' },    // 페리윙클
+            { name: 'Aqua', value: '#CCFBF1' },          // 아쿠아
+            { name: 'Coral', value: '#FECACA' },         // 코랄
+            { name: 'Lilac', value: '#F3E8FF' }          // 라일락
         ];
         
         const gradientPresets = [
-            { name: 'Purple Dream', value: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
-            { name: 'Sunny Morning', value: 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)' },
-            { name: 'Ocean Blue', value: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
-            { name: 'Green Beach', value: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
-            { name: 'Pink Sunset', value: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
-            { name: 'Night Sky', value: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)' }
+            { name: 'Soft Purple', value: 'linear-gradient(135deg, #E9D5FF 0%, #DDD6FE 100%)' },
+            { name: 'Pastel Rainbow', value: 'linear-gradient(135deg, #FECACA 0%, #FED7AA 50%, #FEF3C7 100%)' },
+            { name: 'Ocean Breeze', value: 'linear-gradient(135deg, #BFDBFE 0%, #CCFBF1 100%)' },
+            { name: 'Spring Garden', value: 'linear-gradient(135deg, #BBF7D0 0%, #BFDBFE 100%)' },
+            { name: 'Cotton Candy', value: 'linear-gradient(135deg, #FBCFE8 0%, #E9D5FF 100%)' },
+            { name: 'Sunset Glow', value: 'linear-gradient(135deg, #FED7AA 0%, #FBCFE8 100%)' }
         ];
         
         function openColorPicker(btn) {
@@ -2162,22 +2162,41 @@
         
         function applyWidgetColor(color) {
             if (currentWidgetForColor) {
-                // Apply color to widget header
-                const header = currentWidgetForColor.querySelector('.widget-header');
-                if (header) {
-                    header.style.background = color;
+                // Apply color to entire widget background
+                const gridItemContent = currentWidgetForColor.querySelector('.grid-stack-item-content');
+                if (gridItemContent) {
+                    gridItemContent.style.background = color;
                     
                     // Adjust text color based on background
                     const isGradient = color.includes('gradient');
-                    if (isGradient || isDarkColor(color)) {
-                        header.style.color = 'white';
+                    const isDark = isGradient || isDarkColor(color);
+                    
+                    // For pastel colors, use dark text
+                    const textColor = isDark ? 'white' : '#1F2937';
+                    const secondaryColor = isDark ? 'rgba(255,255,255,0.8)' : '#6B7280';
+                    
+                    gridItemContent.style.color = textColor;
+                    
+                    // Update header text color
+                    const header = currentWidgetForColor.querySelector('.widget-header');
+                    if (header) {
+                        header.style.color = textColor;
                         header.querySelectorAll('button').forEach(btn => {
-                            btn.style.color = 'white';
+                            btn.style.color = isDark ? 'rgba(255,255,255,0.9)' : '#6B7280';
                         });
-                    } else {
-                        header.style.color = 'var(--text-primary)';
-                        header.querySelectorAll('button').forEach(btn => {
-                            btn.style.color = 'var(--text-secondary)';
+                    }
+                    
+                    // Update content text colors
+                    const content = currentWidgetForColor.querySelector('.widget-content');
+                    if (content) {
+                        content.style.color = textColor;
+                        
+                        // Update all text elements
+                        content.querySelectorAll('*').forEach(el => {
+                            const computedStyle = window.getComputedStyle(el);
+                            if (computedStyle.color.includes('rgb')) {
+                                el.style.color = textColor;
+                            }
                         });
                     }
                 }
@@ -2216,17 +2235,31 @@
             Object.keys(savedColors).forEach(widgetId => {
                 const widget = document.querySelector(`[gs-id="${widgetId}"]`);
                 if (widget) {
-                    const header = widget.querySelector('.widget-header');
-                    if (header) {
-                        const color = savedColors[widgetId];
-                        header.style.background = color;
+                    const color = savedColors[widgetId];
+                    const gridItemContent = widget.querySelector('.grid-stack-item-content');
+                    
+                    if (gridItemContent) {
+                        gridItemContent.style.background = color;
                         
                         const isGradient = color.includes('gradient');
-                        if (isGradient || isDarkColor(color)) {
-                            header.style.color = 'white';
+                        const isDark = isGradient || isDarkColor(color);
+                        const textColor = isDark ? 'white' : '#1F2937';
+                        
+                        gridItemContent.style.color = textColor;
+                        
+                        // Update header
+                        const header = widget.querySelector('.widget-header');
+                        if (header) {
+                            header.style.color = textColor;
                             header.querySelectorAll('button').forEach(btn => {
-                                btn.style.color = 'white';
+                                btn.style.color = isDark ? 'rgba(255,255,255,0.9)' : '#6B7280';
                             });
+                        }
+                        
+                        // Update content
+                        const content = widget.querySelector('.widget-content');
+                        if (content) {
+                            content.style.color = textColor;
                         }
                     }
                 }
