@@ -36,6 +36,32 @@
         
         <!-- Actions - Icon Only -->
         <div class="unified-nav-actions">
+            <!-- Dashboard-specific controls (visible only on dashboard-v2) -->
+            <div id="dashboard-controls" style="display: none; align-items: center; gap: 0.5rem; margin-right: 1rem;">
+                <!-- Theme Toggle -->
+                <button class="unified-nav-btn" onclick="toggleTheme && toggleTheme()" data-tooltip="테마 전환" id="navThemeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                
+                <!-- Edit Mode Toggle -->
+                <button class="unified-nav-btn primary" onclick="toggleEditMode && toggleEditMode()" data-tooltip="편집 모드" id="navEditModeBtn">
+                    <i class="fas fa-edit"></i>
+                </button>
+                
+                <!-- Edit Mode Actions (visible only in edit mode) -->
+                <div id="navEditModeActions" style="display: none; align-items: center; gap: 0.5rem;">
+                    <button class="unified-nav-btn" onclick="openWidgetLibrary && openWidgetLibrary()" data-tooltip="위젯 추가">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button class="unified-nav-btn" onclick="saveLayout && saveLayout()" data-tooltip="저장">
+                        <i class="fas fa-save"></i>
+                    </button>
+                    <button class="unified-nav-btn" onclick="resetLayout && resetLayout()" data-tooltip="초기화">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                </div>
+            </div>
+            
             <!-- AI Recommendations -->
             <button class="unified-nav-btn primary" onclick="showAIRecommendations()" data-tooltip="AI 추천">
                 <i class="fas fa-robot"></i>
@@ -190,5 +216,13 @@
             document.body.style.transition = 'opacity 0.5s ease';
             document.body.style.opacity = '1';
         });
+        
+        // Show dashboard controls if on dashboard-v2 page
+        if (window.location.pathname.includes('dashboard-v2')) {
+            const dashboardControls = document.getElementById('dashboard-controls');
+            if (dashboardControls) {
+                dashboardControls.style.display = 'flex';
+            }
+        }
     });
 </script>

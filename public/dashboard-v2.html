@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MuseFlow - Customizable Dashboard</title>
+    <title>MuseFlow - Dashboard</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,116 +42,7 @@
         .dashboard-container {
             max-width: 1600px;
             margin: 0 auto;
-            padding: 6rem 2rem 2rem 2rem;
-        }
-        
-        /* Dashboard Toolbar */
-        .dashboard-toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding: 1rem 1.5rem;
-            background: var(--surface);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius-xl);
-        }
-        
-        .toolbar-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .toolbar-title {
-            font-size: var(--font-size-xl);
-            font-weight: var(--font-weight-bold);
-            color: var(--text-primary);
-        }
-        
-        .toolbar-right {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        /* Theme Toggle Button */
-        .theme-toggle {
-            width: 40px;
-            height: 40px;
-            border-radius: var(--radius-full);
-            background: var(--surface);
-            border: 1px solid var(--border-primary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all var(--duration-fast) var(--ease-smooth);
-        }
-        
-        .theme-toggle:hover {
-            transform: scale(1.05);
-            border-color: var(--primary);
-        }
-        
-        .theme-toggle i {
-            font-size: 1rem;
-            color: var(--text-secondary);
-        }
-        
-        .dark .theme-toggle .fa-moon {
-            display: none;
-        }
-        
-        body:not(.dark) .theme-toggle .fa-sun {
-            display: none;
-        }
-        
-        /* Edit Mode Toggle */
-        .btn-edit-mode {
-            padding: 0.625rem 1.25rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: var(--radius-lg);
-            font-weight: var(--font-weight-semibold);
-            cursor: pointer;
-            transition: all var(--duration-fast) var(--ease-smooth);
-        }
-        
-        .btn-edit-mode:hover {
-            background: var(--primary-hover);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-        
-        .btn-edit-mode.active {
-            background: var(--color-success);
-        }
-        
-        /* Edit Mode Actions */
-        .edit-mode-actions {
-            display: none;
-            gap: 0.5rem;
-        }
-        
-        .edit-mode-actions.active {
-            display: flex;
-        }
-        
-        .btn-action {
-            padding: 0.625rem 1rem;
-            background: var(--surface);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius-lg);
-            font-weight: var(--font-weight-medium);
-            cursor: pointer;
-            transition: all var(--duration-fast) var(--ease-smooth);
-        }
-        
-        .btn-action:hover {
-            border-color: var(--primary);
-            color: var(--primary);
+            padding: 8rem 2rem 2rem 2rem;
         }
         
         /* GridStack Grid */
@@ -437,40 +328,6 @@
     <div id="navbar-placeholder"></div>
     
     <div class="dashboard-container">
-        <!-- Dashboard Toolbar -->
-        <div class="dashboard-toolbar">
-            <div class="toolbar-left">
-                <h1 class="toolbar-title">커스터마이징 대시보드</h1>
-            </div>
-            
-            <div class="toolbar-right">
-                <!-- Theme Toggle -->
-                <button class="theme-toggle" onclick="toggleTheme()" title="테마 전환">
-                    <i class="fas fa-moon"></i>
-                    <i class="fas fa-sun"></i>
-                </button>
-                
-                <!-- Edit Mode Toggle -->
-                <button class="btn-edit-mode" onclick="toggleEditMode()">
-                    <i class="fas fa-edit"></i>
-                    <span class="mode-text">편집 모드</span>
-                </button>
-                
-                <!-- Edit Mode Actions -->
-                <div class="edit-mode-actions" id="editModeActions">
-                    <button class="btn-action" onclick="openWidgetLibrary()">
-                        <i class="fas fa-plus"></i> 위젯 추가
-                    </button>
-                    <button class="btn-action" onclick="saveLayout()">
-                        <i class="fas fa-save"></i> 저장
-                    </button>
-                    <button class="btn-action" onclick="resetLayout()">
-                        <i class="fas fa-undo"></i> 초기화
-                    </button>
-                </div>
-            </div>
-        </div>
-        
         <!-- GridStack Container -->
         <div class="grid-stack" id="grid-stack">
             <!-- Widgets will be dynamically loaded here -->
@@ -554,6 +411,15 @@
             document.body.classList.toggle('dark');
             const isDark = document.body.classList.contains('dark');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            
+            // Update navbar theme toggle icon
+            const navThemeToggle = document.getElementById('navThemeToggle');
+            if (navThemeToggle) {
+                const icon = navThemeToggle.querySelector('i');
+                if (icon) {
+                    icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+                }
+            }
         }
         
         // Load saved theme
@@ -561,6 +427,15 @@
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark') {
                 document.body.classList.add('dark');
+            }
+            
+            // Update navbar theme icon on load
+            const navThemeToggle = document.getElementById('navThemeToggle');
+            if (navThemeToggle) {
+                const icon = navThemeToggle.querySelector('i');
+                if (icon) {
+                    icon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
             }
         });
         
@@ -571,19 +446,17 @@
             isEditMode = !isEditMode;
             document.body.classList.toggle('edit-mode', isEditMode);
             
-            const btn = document.querySelector('.btn-edit-mode');
-            const modeText = btn.querySelector('.mode-text');
-            const actions = document.getElementById('editModeActions');
+            // Update navbar buttons
+            const navBtn = document.getElementById('navEditModeBtn');
+            const navActions = document.getElementById('navEditModeActions');
             
             if (isEditMode) {
-                btn.classList.add('active');
-                modeText.textContent = '편집 완료';
-                actions.classList.add('active');
+                if (navBtn) navBtn.classList.add('active');
+                if (navActions) navActions.style.display = 'flex';
                 grid.enable();
             } else {
-                btn.classList.remove('active');
-                modeText.textContent = '편집 모드';
-                actions.classList.remove('active');
+                if (navBtn) navBtn.classList.remove('active');
+                if (navActions) navActions.style.display = 'none';
                 grid.disable();
             }
         }
