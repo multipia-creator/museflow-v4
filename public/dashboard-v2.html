@@ -195,6 +195,126 @@
             flex: 1;
         }
         
+        /* AI Search Container */
+        .ai-search-container {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .ai-search-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: var(--surface);
+            border: 2px solid var(--border-primary);
+            border-radius: var(--radius-xl);
+            padding: 0.75rem 1.25rem;
+            transition: all var(--duration-fast) var(--ease-smooth);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .ai-search-input-wrapper:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.15);
+            transform: translateY(-1px);
+        }
+        
+        .search-icon {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-right: 0.75rem;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+        
+        .ai-search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: var(--font-size-base);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            padding: 0.25rem 0;
+        }
+        
+        .ai-search-input::placeholder {
+            color: var(--text-tertiary);
+        }
+        
+        .voice-input-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            border: none;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--duration-fast) var(--ease-smooth);
+            margin-left: 0.5rem;
+        }
+        
+        .voice-input-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+        
+        .voice-input-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .voice-input-btn.recording {
+            animation: recordPulse 1s ease-in-out infinite;
+            background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+        }
+        
+        @keyframes recordPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+        }
+        
+        .ai-search-suggestions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .suggestion-chip {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-smooth);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+        
+        .suggestion-chip:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+        }
+        
+        .suggestion-chip i {
+            font-size: 0.875rem;
+        }
+        
         /* Responsive Weather Header */
         @media (max-width: 1024px) {
             .weather-greeting-header {
@@ -512,6 +632,34 @@
                     </div>
                 </div>
                 <p class="mood-message" id="moodMessage">오늘의 날씨와 기분은 어떠신가요?</p>
+                
+                <!-- AI Search Input -->
+                <div class="ai-search-container">
+                    <div class="ai-search-input-wrapper">
+                        <i class="fas fa-sparkles search-icon"></i>
+                        <input 
+                            type="text" 
+                            class="ai-search-input" 
+                            id="aiSearchInput"
+                            placeholder="AI에게 무엇이든 물어보세요..."
+                            autocomplete="off"
+                        />
+                        <button class="voice-input-btn" id="voiceInputBtn" title="음성 입력">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                    </div>
+                    <div class="ai-search-suggestions">
+                        <button class="suggestion-chip" onclick="handleSuggestion('전시 관람객 통계')">
+                            <i class="fas fa-chart-line"></i> 전시 관람객 통계
+                        </button>
+                        <button class="suggestion-chip" onclick="handleSuggestion('예산 현황')">
+                            <i class="fas fa-dollar-sign"></i> 예산 현황
+                        </button>
+                        <button class="suggestion-chip" onclick="handleSuggestion('소장품 검색')">
+                            <i class="fas fa-search"></i> 소장품 검색
+                        </button>
+                    </div>
+                </div>
             </div>
             
             <!-- Right Section: Urgent Tasks -->
@@ -857,6 +1005,68 @@
             else {
                 return '오늘도 활기찬 하루 되세요! 화이팅! 💪';
             }
+        }
+        
+        // ==========================================
+        // AI SEARCH & VOICE INPUT
+        // ==========================================
+        function initAISearch() {
+            const searchInput = document.getElementById('aiSearchInput');
+            const voiceBtn = document.getElementById('voiceInputBtn');
+            
+            // Enter key to search
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleAISearch(searchInput.value);
+                }
+            });
+            
+            // Voice input
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                recognition.lang = 'ko-KR';
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                
+                voiceBtn.addEventListener('click', () => {
+                    voiceBtn.classList.add('recording');
+                    recognition.start();
+                });
+                
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    searchInput.value = transcript;
+                    voiceBtn.classList.remove('recording');
+                    handleAISearch(transcript);
+                };
+                
+                recognition.onerror = (event) => {
+                    console.error('Speech recognition error:', event.error);
+                    voiceBtn.classList.remove('recording');
+                };
+                
+                recognition.onend = () => {
+                    voiceBtn.classList.remove('recording');
+                };
+            } else {
+                voiceBtn.style.display = 'none';
+                console.warn('Speech recognition not supported');
+            }
+        }
+        
+        function handleAISearch(query) {
+            if (!query || query.trim() === '') return;
+            
+            console.log('AI Search Query:', query);
+            // TODO: Implement AI search functionality
+            alert(`AI 검색: "${query}"\n\n이 기능은 곧 구현될 예정입니다.`);
+        }
+        
+        function handleSuggestion(query) {
+            const searchInput = document.getElementById('aiSearchInput');
+            searchInput.value = query;
+            handleAISearch(query);
         }
         
         // ==========================================
@@ -2624,6 +2834,9 @@
         window.addEventListener('DOMContentLoaded', () => {
             // Initialize weather and greeting
             initWeatherGreeting();
+            
+            // Initialize AI search and voice input
+            initAISearch();
             
             // Load navbar (without .html extension for Cloudflare Pages)
             fetch('/static/components/unified-navbar')
