@@ -553,6 +553,124 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ================================
+   Icons - Lucide Minimalism Style
+   ================================ */
+/* Lucide Icon Base Styles */
+[data-lucide] {
+    stroke: currentColor !important;
+    stroke-width: 2 !important; /* Consistent stroke */
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+    fill: none !important;
+}
+
+/* Icon Colors by Context */
+.toolbar [data-lucide] {
+    color: var(--gray-600) !important;
+    stroke-width: 2 !important;
+}
+
+.toolbar .tool-btn:hover [data-lucide] {
+    color: var(--gray-900) !important;
+}
+
+.toolbar .tool-btn.active [data-lucide] {
+    color: white !important;
+}
+
+.toolbar .ai-btn [data-lucide] {
+    color: white !important;
+}
+
+/* Node Icons - Purple Accent */
+.node-icon[data-lucide] {
+    color: var(--primary) !important;
+    stroke-width: 2 !important;
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.node-item:hover .node-icon[data-lucide] {
+    color: var(--primary-dark) !important;
+}
+
+/* Category Icons */
+.category-icon[data-lucide] {
+    color: var(--gray-500) !important;
+    stroke-width: 2 !important;
+}
+
+.category-header:hover .category-icon[data-lucide] {
+    color: var(--gray-700) !important;
+}
+
+/* AI Panel Icons */
+.ai-sidebar [data-lucide] {
+    color: var(--primary) !important;
+    stroke-width: 2 !important;
+}
+
+/* Status Icons */
+.save-status [data-lucide] {
+    stroke-width: 2 !important;
+}
+
+.save-status.saved [data-lucide] {
+    color: var(--success) !important;
+}
+
+.save-status.saving [data-lucide] {
+    color: var(--warning) !important;
+}
+
+/* Icon Animations - Subtle */
+[data-lucide].lucide-spin {
+    animation: icon-spin 2s linear infinite !important;
+}
+
+@keyframes icon-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Hover Scale Animation - Subtle */
+.tool-btn:hover [data-lucide],
+.node-item:hover [data-lucide] {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+}
+
+/* Icon Sizing Standardization */
+.toolbar [data-lucide] {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.panel-header [data-lucide] {
+    width: 18px !important;
+    height: 18px !important;
+}
+
+.context-menu [data-lucide] {
+    width: 16px !important;
+    height: 16px !important;
+    margin-right: 0.5rem !important;
+}
+
+/* AI Quick Toggle Icon */
+.ai-quick-toggle [data-lucide] {
+    width: 28px !important;
+    height: 28px !important;
+    color: white !important;
+    stroke-width: 2.5 !important;
+}
+
+/* Remove Font Awesome (not used) */
+.fa, .fas, .far, .fal, .fab {
+    display: none !important;
+}
+
+/* ================================
    Performance Optimizations
    ================================ */
 * {

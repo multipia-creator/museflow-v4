@@ -687,3 +687,165 @@ canvas {
 *::-webkit-scrollbar-thumb:hover {
     background: var(--gray-400) !important;
 }
+
+/* ================================
+   Icons - Font Awesome Minimalism
+   ================================ */
+/* Icon Base Styles - Consistent sizing */
+.fa, .fas, .far, .fal, .fab {
+    font-weight: 400 !important; /* Lighter weight for minimalism */
+    line-height: 1 !important;
+}
+
+/* Icon Colors by Context */
+/* Navigation Icons */
+nav .fa {
+    color: var(--gray-600) !important;
+    font-size: 1.125rem !important;
+}
+
+nav .fa:hover {
+    color: var(--primary) !important;
+}
+
+/* Performance Card Icons - Purple Accent */
+.performance-card .fa,
+.stat-card .fa,
+[class*="metric"] .fa,
+[class*="stats"] .fa {
+    color: var(--primary) !important;
+    font-size: 1.5rem !important;
+    font-weight: 300 !important; /* Extra light */
+}
+
+/* Quick Access Icons */
+.quick-access-card .fa,
+.action-card .fa,
+[class*="quick-"] .fa {
+    color: var(--primary) !important;
+    font-size: 1.25rem !important;
+}
+
+.quick-access-card:hover .fa,
+.action-card:hover .fa {
+    color: var(--primary-dark) !important;
+    transform: scale(1.1);
+}
+
+/* Project Card Icons */
+.project-card .fa,
+[class*="project"] .fa {
+    color: var(--gray-500) !important;
+    font-size: 0.875rem !important;
+}
+
+/* Chart Icons */
+.chart-container .fa,
+[class*="chart"] .fa {
+    color: var(--gray-500) !important;
+    font-size: 1rem !important;
+}
+
+/* Button Icons */
+button .fa {
+    font-size: 0.875rem !important;
+    margin-right: 0.375rem !important;
+}
+
+/* Override inline color styles with CSS variables */
+.fa-rocket {
+    color: var(--primary) !important;
+}
+
+.fa-chart-line,
+.fa-chart-bar {
+    color: var(--primary) !important;
+}
+
+.fa-project-diagram {
+    color: var(--primary) !important;
+}
+
+.fa-dollar-sign {
+    color: var(--success) !important;
+}
+
+.fa-tools,
+.fa-cog {
+    color: var(--gray-600) !important;
+}
+
+.fa-envelope {
+    color: var(--success) !important;
+}
+
+.fa-tag {
+    color: var(--warning) !important;
+}
+
+.fa-share-alt {
+    color: var(--info) !important;
+}
+
+.fa-google {
+    color: var(--error) !important;
+}
+
+/* Icon Hover Animation - Subtle */
+.fa {
+    transition: all 0.2s ease !important;
+}
+
+button:hover .fa,
+a:hover .fa,
+.clickable:hover .fa {
+    transform: scale(1.05);
+}
+
+/* Icon Spacing Standardization */
+.fa + span,
+.fa + div,
+.fa + p {
+    margin-left: 0.5rem;
+}
+
+/* Remove aggressive icon effects */
+.fa-spin {
+    animation: fa-spin 2s linear infinite !important; /* Slower spin */
+}
+
+@keyframes fa-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Icon alignment in flex containers */
+.flex .fa,
+.grid .fa {
+    flex-shrink: 0;
+}
+
+/* Ensure icons don't break minimalist spacing */
+.fa[style*="margin"],
+.fa[style*="padding"] {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Search icon specific */
+.fa-search {
+    color: var(--gray-400) !important;
+    font-size: 1rem !important;
+}
+
+/* Calendar/Event icons */
+.fa-calendar,
+.fa-clock {
+    color: var(--gray-500) !important;
+}
+
+/* User/Team icons */
+.fa-user,
+.fa-users {
+    color: var(--gray-500) !important;
+}
