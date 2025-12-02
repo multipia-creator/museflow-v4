@@ -740,36 +740,41 @@
                 </div>
             </div>
             
-            <!-- 예산 사용 현황 (Donut Chart) -->
+            <!-- 예산 사용 현황 (6개 항목 세분화) -->
             <div class="card budget-card">
                 <div class="card-header">
                     <h3 class="card-title">예산 사용 현황</h3>
-                    <span class="card-action"><i class="fas fa-download"></i></span>
+                    <span class="card-action">
+                        <select id="budgetViewToggle" style="border: none; background: none; cursor: pointer; color: #6B7280; font-size: 0.875rem;">
+                            <option value="category">항목별</option>
+                            <option value="cost">비용별</option>
+                        </select>
+                    </span>
                 </div>
                 <div class="budget-container">
                     <canvas id="budgetChart"></canvas>
                 </div>
-                <div class="budget-legend">
+                <div class="budget-legend" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem;">
                     <div class="budget-legend-item">
                         <div class="budget-legend-label">
                             <span class="budget-legend-color" style="background: #8B5CF6;"></span>
-                            사용됨
+                            인건비
                         </div>
-                        <div class="budget-legend-value">₩1.3M (42%)</div>
+                        <div class="budget-legend-value">₩1.5M (50%)</div>
                     </div>
                     <div class="budget-legend-item">
                         <div class="budget-legend-label">
                             <span class="budget-legend-color" style="background: #3B82F6;"></span>
-                            예정
+                            직접비
                         </div>
-                        <div class="budget-legend-value">₩0.9M (31%)</div>
+                        <div class="budget-legend-value">₩0.9M (30%)</div>
                     </div>
                     <div class="budget-legend-item">
                         <div class="budget-legend-label">
                             <span class="budget-legend-color" style="background: #10B981;"></span>
-                            남음
+                            간접비
                         </div>
-                        <div class="budget-legend-value">₩0.8M (27%)</div>
+                        <div class="budget-legend-value">₩0.6M (20%)</div>
                     </div>
                 </div>
             </div>
@@ -924,30 +929,56 @@
             }
         });
         
-        // 2. 예산 사용 현황 - Donut Chart
+        // 2. 예산 사용 현황 - 6개 항목 세분화 (전시/교육/수집/보존/출판/연구)
         const budgetCtx = document.getElementById('budgetChart').getContext('2d');
-        new Chart(budgetCtx, {
-            type: 'doughnut',
+        
+        // 예산 데이터 (총 3M)
+        const budgetData = {
+            categories: ['전시', '교육', '수집', '보존', '출판', '연구'],
+            personnel: [500, 250, 200, 150, 200, 200],    // 인건비 (1.5M = 50%)
+            direct: [300, 150, 120, 90, 120, 120],        // 직접비 (0.9M = 30%)
+            indirect: [200, 100, 80, 60, 80, 80],         // 간접비 (0.6M = 20%)
+            colors: {
+                personnel: '#8B5CF6',  // Purple
+                direct: '#3B82F6',     // Blue
+                indirect: '#10B981'    // Green
+            }
+        };
+        
+        const budgetChart = new Chart(budgetCtx, {
+            type: 'bar',
             data: {
-                labels: ['사용됨', '예정', '남음'],
-                datasets: [{
-                    data: [42, 31, 27],
-                    backgroundColor: [
-                        '#8B5CF6', // Purple
-                        '#3B82F6', // Blue
-                        '#10B981'  // Green
-                    ],
-                    borderWidth: 0,
-                    hoverOffset: 10
-                }]
+                labels: budgetData.categories,
+                datasets: [
+                    {
+                        label: '인건비',
+                        data: budgetData.personnel,
+                        backgroundColor: budgetData.colors.personnel,
+                        borderRadius: 6,
+                        borderSkipped: false
+                    },
+                    {
+                        label: '직접비',
+                        data: budgetData.direct,
+                        backgroundColor: budgetData.colors.direct,
+                        borderRadius: 6,
+                        borderSkipped: false
+                    },
+                    {
+                        label: '간접비',
+                        data: budgetData.indirect,
+                        backgroundColor: budgetData.colors.indirect,
+                        borderRadius: 6,
+                        borderSkipped: false
+                    }
+                ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '70%',
                 plugins: {
                     legend: {
-                        display: false
+                        display: false  // Custom legend below
                     },
                     tooltip: {
                         backgroundColor: '#111827',
@@ -959,49 +990,130 @@
                         displayColors: true,
                         callbacks: {
                             label: function(context) {
-                                const label = context.label || '';
-                                const value = context.parsed || 0;
-                                return label + ': ' + value + '%';
+                                const label = context.dataset.label || '';
+                                const value = context.parsed.y;
+                                return label + ': ₩' + (value / 1000).toFixed(1) + 'K';
+                            },
+                            footer: function(tooltipItems) {
+                                let total = 0;
+                                tooltipItems.forEach(item => {
+                                    total += item.parsed.y;
+                                });
+                                return '합계: ₩' + (total / 1000).toFixed(1) + 'K';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#6B7280',
+                            font: {
+                                size: 12,
+                                weight: 600
+                            }
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        grid: {
+                            color: '#E5E7EB',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#6B7280',
+                            font: {
+                                size: 12
+                            },
+                            callback: function(value) {
+                                return '₩' + (value / 1000).toFixed(0) + 'K';
                             }
                         }
                     }
                 },
                 animation: {
-                    animateRotate: true,
-                    animateScale: true,
                     duration: 2000,
                     easing: 'easeInOutQuart'
                 }
-            },
-            plugins: [{
-                id: 'centerText',
-                beforeDraw: function(chart) {
-                    const width = chart.width;
-                    const height = chart.height;
-                    const ctx = chart.ctx;
-                    ctx.restore();
-                    
-                    const fontSize = (height / 114).toFixed(2);
-                    ctx.font = 'bold ' + fontSize + 'em Inter';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillStyle = '#111827';
-                    
-                    const text = '총 ₩3M';
-                    const textX = Math.round((width - ctx.measureText(text).width) / 2);
-                    const textY = height / 2 - 10;
-                    
-                    ctx.fillText(text, textX, textY);
-                    
-                    ctx.font = (fontSize * 0.6) + 'em Inter';
-                    ctx.fillStyle = '#6B7280';
-                    const subtext = '2025년 예산';
-                    const subtextX = Math.round((width - ctx.measureText(subtext).width) / 2);
-                    const subtextY = height / 2 + 15;
-                    ctx.fillText(subtext, subtextX, subtextY);
-                    
-                    ctx.save();
-                }
-            }]
+            }
+        });
+        
+        // Toggle between category view and cost view
+        document.getElementById('budgetViewToggle').addEventListener('change', function(e) {
+            const view = e.target.value;
+            
+            if (view === 'cost') {
+                // Group by cost type
+                budgetChart.data.labels = ['인건비', '직접비', '간접비'];
+                budgetChart.data.datasets = [
+                    {
+                        label: '전시',
+                        data: [500, 300, 200],
+                        backgroundColor: '#8B5CF6',
+                        borderRadius: 6
+                    },
+                    {
+                        label: '교육',
+                        data: [250, 150, 100],
+                        backgroundColor: '#EC4899',
+                        borderRadius: 6
+                    },
+                    {
+                        label: '수집',
+                        data: [200, 120, 80],
+                        backgroundColor: '#F59E0B',
+                        borderRadius: 6
+                    },
+                    {
+                        label: '보존',
+                        data: [150, 90, 60],
+                        backgroundColor: '#10B981',
+                        borderRadius: 6
+                    },
+                    {
+                        label: '출판',
+                        data: [200, 120, 80],
+                        backgroundColor: '#3B82F6',
+                        borderRadius: 6
+                    },
+                    {
+                        label: '연구',
+                        data: [200, 120, 80],
+                        backgroundColor: '#6366F1',
+                        borderRadius: 6
+                    }
+                ];
+            } else {
+                // Group by category (default)
+                budgetChart.data.labels = budgetData.categories;
+                budgetChart.data.datasets = [
+                    {
+                        label: '인건비',
+                        data: budgetData.personnel,
+                        backgroundColor: budgetData.colors.personnel,
+                        borderRadius: 6
+                    },
+                    {
+                        label: '직접비',
+                        data: budgetData.direct,
+                        backgroundColor: budgetData.colors.direct,
+                        borderRadius: 6
+                    },
+                    {
+                        label: '간접비',
+                        data: budgetData.indirect,
+                        backgroundColor: budgetData.colors.indirect,
+                        borderRadius: 6
+                    }
+                ];
+            }
+            
+            budgetChart.update();
         });
         
         // 3. Navbar Functions - Enhanced with real functionality
