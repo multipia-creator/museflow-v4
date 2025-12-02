@@ -242,16 +242,23 @@
         .alert-section,
         .task-section {
             background: #F9FAFB;
-            padding: 1rem;
+            padding: 0.875rem 1rem;
             border-radius: 12px;
             border: 1px solid #E5E7EB;
+        }
+        
+        .alerts-list,
+        .tasks-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
         
         .section-title {
             font-size: 0.8125rem;
             font-weight: 700;
             color: #111827;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.625rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             display: flex;
@@ -265,25 +272,23 @@
         
         .alert-item,
         .task-item {
-            padding: 0.625rem 0.75rem;
+            padding: 0.5rem 0.625rem;
             border-radius: 8px;
-            margin-bottom: 0.5rem;
             background: white;
             border: 1px solid #E5E7EB;
-            font-size: 0.8125rem;
-            line-height: 1.4;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.625rem;
+            font-size: 0.75rem;
+            line-height: 1.3;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             transition: all 0.2s;
+            white-space: nowrap;
         }
         
         .alert-item strong,
         .task-item strong {
             color: #111827;
             font-weight: 600;
-            display: block;
-            margin-bottom: 0.125rem;
         }
         
         .alert-item,
@@ -297,22 +302,28 @@
             border-color: #8B5CF6;
         }
         
-        .alert-item:last-child,
-        .task-item:last-child {
-            margin-bottom: 0;
+        .alert-item-content,
+        .task-item-content {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .alert-item-content span,
+        .task-item-content span {
+            color: #6B7280;
         }
         
         .alert-icon {
             flex-shrink: 0;
-            font-size: 1rem;
+            font-size: 0.875rem;
             line-height: 1;
         }
         
         .task-checkbox {
             flex-shrink: 0;
-            width: 18px;
-            height: 18px;
-            margin-top: 0.125rem;
+            width: 16px;
+            height: 16px;
             border: 2px solid #D1D5DB;
             border-radius: 4px;
             cursor: pointer;
@@ -740,25 +751,27 @@
                                 <i class="fas fa-exclamation-circle"></i>
                                 중요 알림
                             </div>
-                            <div class="alert-item">
-                                <span class="alert-icon">🔴</span>
-                                <div>
-                                    <strong>예산 초과 경고</strong><br>
-                                    세계 문화유산전 - ₩5M 초과
+                            <div class="alerts-list">
+                                <div class="alert-item">
+                                    <span class="alert-icon">🔴</span>
+                                    <div class="alert-item-content">
+                                        <strong>예산 초과 경고</strong>
+                                        <span>세계 문화유산전 ₩5M</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="alert-item">
-                                <span class="alert-icon">⚠️</span>
-                                <div>
-                                    <strong>마감일 임박</strong><br>
-                                    고려청자전 라벨 작성 - 2일 남음
+                                <div class="alert-item">
+                                    <span class="alert-icon">⚠️</span>
+                                    <div class="alert-item-content">
+                                        <strong>마감일 임박</strong>
+                                        <span>고려청자전 라벨 2일</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="alert-item">
-                                <span class="alert-icon">📧</span>
-                                <div>
-                                    <strong>승인 대기</strong><br>
-                                    조선시대 회화전 예산안 검토 필요
+                                <div class="alert-item">
+                                    <span class="alert-icon">📧</span>
+                                    <div class="alert-item-content">
+                                        <strong>승인 대기</strong>
+                                        <span>조선회화전 예산안</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -769,25 +782,27 @@
                                 <i class="fas fa-tasks"></i>
                                 해야할 일
                             </div>
-                            <div class="task-item">
-                                <div class="task-checkbox"></div>
-                                <div>
-                                    <strong>전시 라벨 초안 작성</strong><br>
-                                    고려청자 특별전 - 오늘까지
+                            <div class="tasks-list">
+                                <div class="task-item">
+                                    <div class="task-checkbox"></div>
+                                    <div class="task-item-content">
+                                        <strong>전시 라벨 초안</strong>
+                                        <span>고려청자 오늘</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="task-item">
-                                <div class="task-checkbox"></div>
-                                <div>
-                                    <strong>소장품 대여 계약 검토</strong><br>
-                                    국립중앙박물관 - 내일 회의
+                                <div class="task-item">
+                                    <div class="task-checkbox"></div>
+                                    <div class="task-item-content">
+                                        <strong>대여 계약 검토</strong>
+                                        <span>국립중앙 내일</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="task-item">
-                                <div class="task-checkbox"></div>
-                                <div>
-                                    <strong>홍보물 디자인 승인</strong><br>
-                                    현대미술전 포스터 - 이번 주
+                                <div class="task-item">
+                                    <div class="task-checkbox"></div>
+                                    <div class="task-item-content">
+                                        <strong>디자인 승인</strong>
+                                        <span>현대미술 이번주</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
