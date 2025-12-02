@@ -101,7 +101,7 @@
             color: #8B5CF6;
         }
         
-        /* Hero Card - Like FinGuard's Blue Card */
+        /* Hero Card - This Week Card with Alerts */
         .hero-card {
             grid-column: span 12;
             background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
@@ -145,15 +145,80 @@
         .hero-title {
             font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
         }
         
-        .hero-description {
-            font-size: 1rem;
-            opacity: 0.9;
+        /* Alerts & Tasks Section */
+        .hero-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
         }
         
-        /* Stat Cards - Profile Completion Style */
+        .alert-section,
+        .task-section {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .section-title {
+            font-size: 0.875rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .alert-item,
+        .task-item {
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            background: rgba(255,255,255,0.15);
+            font-size: 0.875rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            transition: all 0.2s;
+        }
+        
+        .alert-item:hover,
+        .task-item:hover {
+            background: rgba(255,255,255,0.25);
+        }
+        
+        .alert-item:last-child,
+        .task-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .alert-icon,
+        .task-checkbox {
+            flex-shrink: 0;
+        }
+        
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .task-checkbox:hover {
+            border-color: white;
+            background: rgba(255,255,255,0.2);
+        }
+        
+        /* Stat Cards - 주요 지표 */
         .stat-card {
             grid-column: span 4;
         }
@@ -191,17 +256,18 @@
             color: #9CA3AF;
         }
         
-        /* Chart Card - Transaction Success Rate Style */
+        /* Chart Card - Advanced Design */
         .chart-card {
             grid-column: span 6;
         }
         
         .chart-container {
-            height: 250px;
+            height: 300px;
             margin-top: 1rem;
+            position: relative;
         }
         
-        /* Timeline Card - Transaction History Style */
+        /* Timeline Card - 진행 프로젝트 */
         .timeline-card {
             grid-column: span 6;
         }
@@ -271,6 +337,106 @@
             color: #3730A3;
         }
         
+        /* Google Workspace Integration Card */
+        .workspace-card {
+            grid-column: span 6;
+        }
+        
+        .workspace-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .workspace-item {
+            background: #F9FAFB;
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .workspace-item:hover {
+            background: white;
+            border-color: #8B5CF6;
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+        }
+        
+        .workspace-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 0.75rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .workspace-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.25rem;
+        }
+        
+        .workspace-count {
+            font-size: 0.75rem;
+            color: #6B7280;
+        }
+        
+        .workspace-count.highlight {
+            color: #DC2626;
+            font-weight: 700;
+        }
+        
+        /* Budget Donut Chart Card */
+        .budget-card {
+            grid-column: span 6;
+        }
+        
+        .budget-container {
+            height: 300px;
+            margin-top: 1rem;
+            position: relative;
+        }
+        
+        .budget-legend {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #E5E7EB;
+        }
+        
+        .budget-legend-item {
+            text-align: center;
+        }
+        
+        .budget-legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+        
+        .budget-legend-label {
+            font-size: 0.75rem;
+            color: #6B7280;
+            margin-bottom: 0.25rem;
+        }
+        
+        .budget-legend-value {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #111827;
+        }
+        
         /* Wide Card */
         .wide-card {
             grid-column: span 12;
@@ -292,6 +458,10 @@
             .third-card {
                 grid-column: span 6;
             }
+            
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
         }
         
         @media (max-width: 768px) {
@@ -303,13 +473,54 @@
             .chart-card,
             .timeline-card,
             .half-card,
-            .third-card {
+            .third-card,
+            .workspace-card,
+            .budget-card {
                 grid-column: span 12;
             }
             
             .dashboard-grid {
                 gap: 1rem;
             }
+            
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .workspace-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Animation Keyframes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        /* Notification Badge for Navbar */
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #DC2626;
+            color: white;
+            font-size: 0.625rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
         }
     </style>
 </head>
@@ -321,6 +532,18 @@
             .then(response => response.text())
             .then(html => {
                 document.getElementById('unified-navbar-container').innerHTML = html;
+                
+                // Add notification badge after navbar loads
+                setTimeout(() => {
+                    const notificationBtn = document.querySelector('[data-tooltip="알림"]');
+                    if (notificationBtn && !notificationBtn.querySelector('.notification-badge')) {
+                        const badge = document.createElement('span');
+                        badge.className = 'notification-badge';
+                        badge.textContent = '3';
+                        notificationBtn.style.position = 'relative';
+                        notificationBtn.appendChild(badge);
+                    }
+                }, 100);
             });
     </script>
     
@@ -329,77 +552,120 @@
         <!-- Header -->
         <div class="dashboard-header">
             <h1 class="dashboard-title">Curator Dashboard</h1>
-            <p class="dashboard-subtitle">Today, November 2024</p>
+            <p class="dashboard-subtitle">Today, December 2, 2025</p>
         </div>
         
         <!-- Grid Layout -->
         <div class="dashboard-grid">
-            <!-- Hero Card - 워크플로우 진행 현황 -->
+            <!-- Hero Card - This Week with Alerts & Tasks -->
             <div class="card hero-card">
                 <div class="hero-content">
                     <span class="hero-badge">📊 This Week</span>
                     <h2 class="hero-title">전시 프로젝트 진행률이 15% 증가했습니다</h2>
-                    <p class="hero-description">총 5개 프로젝트 중 3개가 예정대로 진행되고 있습니다.</p>
+                    
+                    <div class="hero-grid">
+                        <!-- 중요 알림 Section -->
+                        <div class="alert-section">
+                            <div class="section-title">
+                                <i class="fas fa-exclamation-circle"></i>
+                                중요 알림
+                            </div>
+                            <div class="alert-item">
+                                <span class="alert-icon">🔴</span>
+                                <div>
+                                    <strong>예산 초과 경고</strong><br>
+                                    세계 문화유산전 - ₩5M 초과
+                                </div>
+                            </div>
+                            <div class="alert-item">
+                                <span class="alert-icon">⚠️</span>
+                                <div>
+                                    <strong>마감일 임박</strong><br>
+                                    고려청자전 라벨 작성 - 2일 남음
+                                </div>
+                            </div>
+                            <div class="alert-item">
+                                <span class="alert-icon">📧</span>
+                                <div>
+                                    <strong>승인 대기</strong><br>
+                                    조선시대 회화전 예산안 검토 필요
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 해야할 일 Section -->
+                        <div class="task-section">
+                            <div class="section-title">
+                                <i class="fas fa-tasks"></i>
+                                해야할 일
+                            </div>
+                            <div class="task-item">
+                                <div class="task-checkbox"></div>
+                                <div>
+                                    <strong>전시 라벨 초안 작성</strong><br>
+                                    고려청자 특별전 - 오늘까지
+                                </div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-checkbox"></div>
+                                <div>
+                                    <strong>소장품 대여 계약 검토</strong><br>
+                                    국립중앙박물관 - 내일 회의
+                                </div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-checkbox"></div>
+                                <div>
+                                    <strong>홍보물 디자인 승인</strong><br>
+                                    현대미술전 포스터 - 이번 주
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
             <!-- Stat Cards - 주요 지표 -->
             <div class="card stat-card">
                 <div class="card-header">
-                    <h3 class="card-title">완료율</h3>
-                    <span class="card-action">View all</span>
+                    <h3 class="card-title">활성 전시</h3>
+                    <span class="card-action"><i class="fas fa-chart-line"></i></span>
                 </div>
-                <div class="stat-value">87%</div>
-                <div class="stat-label">You're almost there!</div>
-                <div class="stat-progress">
-                    <div class="stat-progress-bar" style="width: 87%"></div>
-                </div>
-                <div class="stat-footer">전시 기획안 → 예산 편성 → 소장품 선정</div>
-            </div>
-            
-            <div class="card stat-card">
-                <div class="card-header">
-                    <h3 class="card-title">활성 프로젝트</h3>
-                    <span class="card-action"><i class="fas fa-ellipsis-h"></i></span>
-                </div>
-                <div class="stat-value">5</div>
+                <div class="stat-value">12</div>
                 <div class="stat-label">진행 중인 전시</div>
                 <div class="stat-progress">
-                    <div class="stat-progress-bar" style="width: 60%"></div>
+                    <div class="stat-progress-bar" style="width: 75%"></div>
                 </div>
-                <div class="stat-footer">3개 정상, 2개 주의 필요</div>
+                <div class="stat-footer">전체 16개 중 12개 진행 중</div>
             </div>
             
             <div class="card stat-card">
                 <div class="card-header">
-                    <h3 class="card-title">예산 집행률</h3>
-                    <span class="card-action">Details</span>
+                    <h3 class="card-title">소장품</h3>
+                    <span class="card-action"><i class="fas fa-box-open"></i></span>
                 </div>
-                <div class="stat-value">₩2.5M</div>
-                <div class="stat-label">총 예산의 45%</div>
+                <div class="stat-value">1,247</div>
+                <div class="stat-label">등록된 소장품</div>
                 <div class="stat-progress">
-                    <div class="stat-progress-bar" style="width: 45%"></div>
+                    <div class="stat-progress-bar" style="width: 62%"></div>
                 </div>
-                <div class="stat-footer">남은 예산: ₩3.1M</div>
+                <div class="stat-footer">이번 달 +23건 추가</div>
             </div>
             
-            <!-- Chart Card - 성과 분석 -->
-            <div class="card chart-card">
+            <div class="card stat-card">
                 <div class="card-header">
-                    <h3 class="card-title">관람객 증가율</h3>
-                    <span class="card-action">
-                        <select style="border: none; background: none; cursor: pointer;">
-                            <option>November</option>
-                            <option>October</option>
-                        </select>
-                    </span>
+                    <h3 class="card-title">전시 방문객</h3>
+                    <span class="card-action"><i class="fas fa-users"></i></span>
                 </div>
-                <div class="chart-container">
-                    <canvas id="visitorChart"></canvas>
+                <div class="stat-value">45.8K</div>
+                <div class="stat-label">이번 달 방문객</div>
+                <div class="stat-progress">
+                    <div class="stat-progress-bar" style="width: 91%"></div>
                 </div>
+                <div class="stat-footer">전월 대비 +18% 증가</div>
             </div>
             
-            <!-- Timeline Card - 진행 프로젝트 -->
+            <!-- 진행 중인 작업 (위치 교체) -->
             <div class="card timeline-card">
                 <div class="card-header">
                     <h3 class="card-title">진행 중인 작업</h3>
@@ -451,18 +717,90 @@
                 </div>
             </div>
             
-            <!-- Spending Overview Card -->
-            <div class="card half-card">
+            <!-- 관람객 증가율 (고급 차트, 위치 교체) -->
+            <div class="card chart-card">
                 <div class="card-header">
-                    <h3 class="card-title">예산 사용 현황</h3>
+                    <h3 class="card-title">관람객 증가율</h3>
                     <span class="card-action">
-                        <select style="border: none; background: none; cursor: pointer;">
-                            <option>November</option>
+                        <select style="border: none; background: none; cursor: pointer; color: #6B7280; font-size: 0.875rem;">
+                            <option>지난 7일</option>
+                            <option>지난 30일</option>
+                            <option>지난 90일</option>
                         </select>
                     </span>
                 </div>
                 <div class="chart-container">
+                    <canvas id="visitorChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- 예산 사용 현황 (Donut Chart) -->
+            <div class="card budget-card">
+                <div class="card-header">
+                    <h3 class="card-title">예산 사용 현황</h3>
+                    <span class="card-action"><i class="fas fa-download"></i></span>
+                </div>
+                <div class="budget-container">
                     <canvas id="budgetChart"></canvas>
+                </div>
+                <div class="budget-legend">
+                    <div class="budget-legend-item">
+                        <div class="budget-legend-label">
+                            <span class="budget-legend-color" style="background: #8B5CF6;"></span>
+                            사용됨
+                        </div>
+                        <div class="budget-legend-value">₩4.2M (42%)</div>
+                    </div>
+                    <div class="budget-legend-item">
+                        <div class="budget-legend-label">
+                            <span class="budget-legend-color" style="background: #3B82F6;"></span>
+                            예정
+                        </div>
+                        <div class="budget-legend-value">₩3.1M (31%)</div>
+                    </div>
+                    <div class="budget-legend-item">
+                        <div class="budget-legend-label">
+                            <span class="budget-legend-color" style="background: #10B981;"></span>
+                            남음
+                        </div>
+                        <div class="budget-legend-value">₩2.7M (27%)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Google Workspace 통합 카드 -->
+            <div class="card workspace-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fab fa-google" style="color: #4285F4; margin-right: 0.5rem;"></i>
+                        Google Workspace
+                    </h3>
+                    <span class="card-action">설정 <i class="fas fa-cog"></i></span>
+                </div>
+                <div class="workspace-grid">
+                    <div class="workspace-item" onclick="window.open('https://mail.google.com', '_blank')">
+                        <div class="workspace-icon" style="background: #FEF3C7;">
+                            <i class="fas fa-envelope" style="color: #EA4335;"></i>
+                        </div>
+                        <div class="workspace-label">Gmail</div>
+                        <div class="workspace-count highlight">12 미확인</div>
+                    </div>
+                    
+                    <div class="workspace-item" onclick="window.open('https://calendar.google.com', '_blank')">
+                        <div class="workspace-icon" style="background: #DBEAFE;">
+                            <i class="fas fa-calendar-alt" style="color: #4285F4;"></i>
+                        </div>
+                        <div class="workspace-label">Calendar</div>
+                        <div class="workspace-count">5 일정</div>
+                    </div>
+                    
+                    <div class="workspace-item" onclick="window.open('https://drive.google.com', '_blank')">
+                        <div class="workspace-icon" style="background: #D1FAE5;">
+                            <i class="fas fa-folder" style="color: #0F9D58;"></i>
+                        </div>
+                        <div class="workspace-label">Drive</div>
+                        <div class="workspace-count">2.4 GB 사용</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -470,72 +808,218 @@
     
     <!-- Chart.js Initialization -->
     <script>
-        // Visitor Chart
+        // 1. 관람객 증가율 - 고급 Gradient Line Chart with Animation
         const visitorCtx = document.getElementById('visitorChart').getContext('2d');
+        const visitorGradient = visitorCtx.createLinearGradient(0, 0, 0, 300);
+        visitorGradient.addColorStop(0, 'rgba(139, 92, 246, 0.4)');
+        visitorGradient.addColorStop(1, 'rgba(139, 92, 246, 0.0)');
+        
         new Chart(visitorCtx, {
-            type: 'bar',
+            type: 'line',
             data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                labels: ['월', '화', '수', '목', '금', '토', '일'],
                 datasets: [{
-                    label: 'Retry success rate',
-                    data: [45, 52, 48, 67, 69, 55, 49],
-                    backgroundColor: ['#E5E7EB', '#E5E7EB', '#E5E7EB', '#E5E7EB', '#FF6B35', '#E5E7EB', '#E5E7EB'],
-                    borderRadius: 8,
-                    barThickness: 'flex',
+                    label: '방문객 수',
+                    data: [3200, 4100, 3800, 5200, 4700, 6800, 7200],
+                    backgroundColor: visitorGradient,
+                    borderColor: '#8B5CF6',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    pointBackgroundColor: '#8B5CF6',
+                    pointBorderColor: '#FFFFFF',
+                    pointBorderWidth: 3,
+                    pointHoverBackgroundColor: '#7C3AED',
+                    pointHoverBorderColor: '#FFFFFF',
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { display: false }
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#111827',
+                        titleColor: '#FFFFFF',
+                        bodyColor: '#FFFFFF',
+                        padding: 12,
+                        borderColor: '#8B5CF6',
+                        borderWidth: 2,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y.toLocaleString() + '명';
+                            }
+                        }
+                    }
                 },
                 scales: {
-                    y: { 
+                    y: {
                         beginAtZero: true,
-                        grid: { display: false },
-                        ticks: { color: '#9CA3AF' }
+                        grid: {
+                            color: '#E5E7EB',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#6B7280',
+                            font: {
+                                size: 12
+                            },
+                            callback: function(value) {
+                                return value >= 1000 ? (value / 1000) + 'K' : value;
+                            }
+                        }
                     },
-                    x: { 
-                        grid: { display: false },
-                        ticks: { color: '#9CA3AF' }
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#6B7280',
+                            font: {
+                                size: 12,
+                                weight: 600
+                            }
+                        }
                     }
+                },
+                animation: {
+                    duration: 2000,
+                    easing: 'easeInOutQuart'
                 }
             }
         });
         
-        // Budget Chart
+        // 2. 예산 사용 현황 - Donut Chart
         const budgetCtx = document.getElementById('budgetChart').getContext('2d');
         new Chart(budgetCtx, {
-            type: 'bar',
+            type: 'doughnut',
             data: {
-                labels: ['전시', '교육', '소장품', '홍보'],
+                labels: ['사용됨', '예정', '남음'],
                 datasets: [{
-                    label: 'Budget',
-                    data: [67, 53, 45, 38],
-                    backgroundColor: ['#8B5CF6', '#E5E7EB', '#E5E7EB', '#E5E7EB'],
-                    borderRadius: 12,
-                    barThickness: 40,
+                    data: [42, 31, 27],
+                    backgroundColor: [
+                        '#8B5CF6', // Purple
+                        '#3B82F6', // Blue
+                        '#10B981'  // Green
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 10
                 }]
             },
             options: {
-                indexAxis: 'y',
                 responsive: true,
                 maintainAspectRatio: false,
+                cutout: '70%',
                 plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    x: { 
-                        grid: { display: false },
-                        ticks: { display: false }
+                    legend: {
+                        display: false
                     },
-                    y: { 
-                        grid: { display: false },
-                        ticks: { color: '#111827', font: { weight: 600 } }
+                    tooltip: {
+                        backgroundColor: '#111827',
+                        titleColor: '#FFFFFF',
+                        bodyColor: '#FFFFFF',
+                        padding: 12,
+                        borderColor: '#8B5CF6',
+                        borderWidth: 2,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed || 0;
+                                return label + ': ' + value + '%';
+                            }
+                        }
                     }
+                },
+                animation: {
+                    animateRotate: true,
+                    animateScale: true,
+                    duration: 2000,
+                    easing: 'easeInOutQuart'
                 }
+            },
+            plugins: [{
+                beforeDraw: function(chart) {
+                    const width = chart.width;
+                    const height = chart.height;
+                    const ctx = chart.ctx;
+                    ctx.restore();
+                    
+                    const fontSize = (height / 114).toFixed(2);
+                    ctx.font = 'bold ' + fontSize + 'em Inter';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillStyle = '#111827';
+                    
+                    const text = '총 ₩10M';
+                    const textX = Math.round((width - ctx.measureText(text).width) / 2);
+                    const textY = height / 2 - 10;
+                    
+                    ctx.fillText(text, textX, textY);
+                    
+                    ctx.font = (fontSize * 0.6) + 'em Inter';
+                    ctx.fillStyle = '#6B7280';
+                    const subtext = '2025년 예산';
+                    const subtextX = Math.round((width - ctx.measureText(subtext).width) / 2);
+                    const subtextY = height / 2 + 15;
+                    ctx.fillText(subtext, subtextX, subtextY);
+                    
+                    ctx.save();
+                }
+            }]
+        });
+        
+        // 3. Navbar Functions - Enhanced with real functionality
+        window.showAIRecommendations = function() {
+            console.log('[Dashboard] AI Recommendations activated');
+            alert('🤖 AI 추천 시스템\n\n추천 작업:\n1. 고려청자전 라벨 작성 완료 필요\n2. 현대미술전 홍보물 검토\n3. 세계문화유산전 예산 재검토');
+        };
+        
+        window.filterFavorites = function() {
+            console.log('[Dashboard] Favorites filter activated');
+            alert('⭐ 즐겨찾기 필터\n\n즐겨찾기한 프로젝트:\n• 고려청자 특별전\n• 조선시대 회화전\n• 현대미술 기획전');
+        };
+        
+        window.toggleNotifications = function() {
+            console.log('[Dashboard] Notifications panel opened');
+            alert('🔔 알림 센터\n\n• 예산 초과 경고 (세계 문화유산전)\n• 마감일 임박 (고려청자전 라벨)\n• 승인 대기 (조선시대 회화전 예산안)');
+        };
+        
+        // 4. Task Checkbox Interaction
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('task-checkbox')) {
+                e.target.style.background = 'rgba(16, 185, 129, 0.8)';
+                e.target.innerHTML = '<i class="fas fa-check" style="color: white; font-size: 0.75rem;"></i>';
+                e.target.parentElement.style.opacity = '0.6';
+                
+                setTimeout(() => {
+                    e.target.parentElement.style.transition = 'all 0.5s ease';
+                    e.target.parentElement.style.transform = 'translateX(100%)';
+                    e.target.parentElement.style.opacity = '0';
+                }, 300);
             }
+        });
+        
+        // 5. Workspace Items Click Animation
+        document.querySelectorAll('.workspace-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+        
+        // 6. Card Animation on Load
+        window.addEventListener('load', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = (index * 0.05) + 's';
+            });
         });
     </script>
 </body>
