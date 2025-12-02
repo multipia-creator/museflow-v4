@@ -137,7 +137,89 @@
             font-size: 1.5rem;
             font-weight: 700;
             color: #111827;
+            margin-bottom: 1rem;
+        }
+        
+        /* AI Search Box */
+        .ai-search-container {
+            position: relative;
             margin-bottom: 1.5rem;
+            max-width: 800px;
+        }
+        
+        .ai-search-box {
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .ai-search-box:focus-within {
+            border-color: #8B5CF6;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+        }
+        
+        .ai-search-icon {
+            color: #8B5CF6;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        
+        .ai-search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            color: #111827;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .ai-search-input::placeholder {
+            color: #9CA3AF;
+        }
+        
+        .ai-voice-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        
+        .ai-voice-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+        
+        .ai-voice-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .ai-voice-btn.recording {
+            animation: pulse 1.5s ease-in-out infinite;
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
         }
         
         /* Alerts & Tasks Section */
@@ -512,6 +594,19 @@
             .workspace-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .ai-search-input {
+                font-size: 0.875rem;
+            }
+            
+            .ai-search-input::placeholder {
+                font-size: 0.75rem;
+            }
+            
+            .ai-voice-btn {
+                width: 36px;
+                height: 36px;
+            }
         }
         
         /* Animation Keyframes */
@@ -584,6 +679,22 @@
                 <div class="hero-content">
                     <span class="hero-badge">📊 This Week</span>
                     <h2 class="hero-title">전시 프로젝트 진행률이 15% 증가했습니다</h2>
+                    
+                    <!-- AI Search Box -->
+                    <div class="ai-search-container">
+                        <div class="ai-search-box">
+                            <i class="fas fa-sparkles ai-search-icon"></i>
+                            <input 
+                                type="text" 
+                                class="ai-search-input" 
+                                placeholder="AI에게 무엇이든 물어보세요... (예: 이번 달 전시 현황, 예산 분석, 소장품 검색)"
+                                id="aiSearchInput"
+                            />
+                            <button class="ai-voice-btn" id="aiVoiceBtn" title="음성 입력">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                        </div>
+                    </div>
                     
                     <div class="hero-grid">
                         <!-- 중요 알림 Section -->
@@ -1241,6 +1352,88 @@
                 card.style.animationDelay = (index * 0.05) + 's';
             });
         });
+        
+        // 7. AI Search Functionality
+        const aiSearchInput = document.getElementById('aiSearchInput');
+        const aiVoiceBtn = document.getElementById('aiVoiceBtn');
+        let isRecording = false;
+        let recognition = null;
+        
+        // Initialize Speech Recognition
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'ko-KR';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            
+            recognition.onstart = function() {
+                isRecording = true;
+                aiVoiceBtn.classList.add('recording');
+                aiVoiceBtn.innerHTML = '<i class="fas fa-stop"></i>';
+                console.log('[AI Search] Voice recording started');
+            };
+            
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                aiSearchInput.value = transcript;
+                console.log('[AI Search] Voice input:', transcript);
+                performAISearch(transcript);
+            };
+            
+            recognition.onerror = function(event) {
+                console.error('[AI Search] Voice recognition error:', event.error);
+                alert('음성 인식 오류가 발생했습니다: ' + event.error);
+            };
+            
+            recognition.onend = function() {
+                isRecording = false;
+                aiVoiceBtn.classList.remove('recording');
+                aiVoiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                console.log('[AI Search] Voice recording ended');
+            };
+        }
+        
+        // Voice Button Click Handler
+        aiVoiceBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            if (!recognition) {
+                alert('이 브라우저는 음성 인식을 지원하지 않습니다.\n\nChrome, Edge, Safari 브라우저를 사용해주세요.');
+                return;
+            }
+            
+            if (isRecording) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+        });
+        
+        // Search Input Enter Key Handler
+        aiSearchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const query = this.value.trim();
+                if (query) {
+                    performAISearch(query);
+                }
+            }
+        });
+        
+        // Perform AI Search
+        function performAISearch(query) {
+            console.log('[AI Search] Searching for:', query);
+            
+            // Show search animation
+            aiSearchInput.value = query;
+            aiSearchInput.blur();
+            
+            // Simulate AI response (replace with actual API call in production)
+            setTimeout(() => {
+                alert(`🤖 AI 검색 결과\n\n질문: "${query}"\n\n답변:\n• 검색 중입니다...\n• 실제 환경에서는 AI API와 연동하여 실시간 답변을 제공합니다.\n• Google Gemini, OpenAI GPT 등과 연동 가능합니다.`);
+            }, 500);
+        }
     </script>
 </body>
 </html>
