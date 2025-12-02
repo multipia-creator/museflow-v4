@@ -622,43 +622,67 @@
         // WIDGET MANAGEMENT
         // ==========================================
         async function loadWidgets() {
-            try {
-                const response = await fetch('/api/widgets');
-                const data = await response.json();
-                
-                if (data.widgets && data.widgets.length > 0) {
-                    data.widgets.forEach(widget => {
-                        addWidgetToGrid(widget);
-                    });
-                    document.getElementById('emptyState').style.display = 'none';
-                } else {
-                    document.getElementById('emptyState').style.display = 'block';
+            // Check if user has saved layout
+            const hasCustomLayout = localStorage.getItem('hasCustomLayout') === 'true';
+            
+            if (hasCustomLayout) {
+                // Load saved layout from API
+                try {
+                    const response = await fetch('/api/widgets');
+                    const data = await response.json();
+                    
+                    if (data.widgets && data.widgets.length > 0) {
+                        data.widgets.forEach(widget => {
+                            addWidgetToGrid(widget);
+                        });
+                        document.getElementById('emptyState').style.display = 'none';
+                    } else {
+                        // No widgets in API, show default
+                        showDefaultWidgets();
+                    }
+                } catch (error) {
+                    console.error('Failed to load widgets:', error);
+                    // Show default widgets on error
+                    showDefaultWidgets();
                 }
-                
-                // Initialize all charts after widgets are loaded
-                initializeCharts();
-                
-                // Load saved widget colors
-                setTimeout(() => loadSavedColors(), 500);
-            } catch (error) {
-                console.error('Failed to load widgets:', error);
-                // Show default widgets
+            } else {
+                // First time user - show default professional layout
                 showDefaultWidgets();
-                initializeCharts();
-                
-                // Load saved widget colors
-                setTimeout(() => loadSavedColors(), 500);
+                document.getElementById('emptyState').style.display = 'none';
             }
+            
+            // Initialize all charts after widgets are loaded
+            initializeCharts();
+            
+            // Load saved widget colors
+            setTimeout(() => loadSavedColors(), 500);
         }
         
         function showDefaultWidgets() {
+            // 스크린샷 기반 초기 레이아웃
             const defaultWidgets = [
-                { type: 'stat-card-exhibition', name: '전시', icon: 'fa-image', x: 0, y: 0, w: 2, h: 3 },
-                { type: 'stat-card-education', name: '교육', icon: 'fa-graduation-cap', x: 2, y: 0, w: 2, h: 3 },
-                { type: 'stat-card-collection', name: '수집', icon: 'fa-folder-plus', x: 4, y: 0, w: 2, h: 3 },
-                { type: 'stat-card-conservation', name: '보존', icon: 'fa-shield-alt', x: 6, y: 0, w: 2, h: 3 },
-                { type: 'stat-card-publication', name: '출판', icon: 'fa-book', x: 8, y: 0, w: 2, h: 3 },
-                { type: 'stat-card-research', name: '연구', icon: 'fa-microscope', x: 10, y: 0, w: 2, h: 3 }
+                // Row 1: AI 검색 (전체 너비)
+                { type: 'ai-search', name: 'AI 검색', icon: 'fa-sparkles', x: 0, y: 0, w: 12, h: 2 },
+                
+                // Row 2: 주요 작업 (좌측 6칸) + 현재 진행 작업 (우측 6칸)
+                { type: 'todo-list', name: '주요 작업', icon: 'fa-tasks', x: 0, y: 2, w: 6, h: 5 },
+                { type: 'alert-list', name: '현재 진행 중', icon: 'fa-bell', x: 6, y: 2, w: 6, h: 5 },
+                
+                // Row 3: 진행 중인 작업 (좌측 6칸) + Google Workspace (우측 6칸)
+                { type: 'timeline', name: '진행 중인 작업', icon: 'fa-clock', x: 0, y: 7, w: 6, h: 5 },
+                { type: 'workspace-google', name: 'Google Workspace', icon: 'fab fa-google', x: 6, y: 7, w: 6, h: 5 },
+                
+                // Row 4: 6개 Stat Cards (각 2칸씩)
+                { type: 'stat-card-exhibition', name: '전시', icon: 'fa-image', x: 0, y: 12, w: 2, h: 3 },
+                { type: 'stat-card-education', name: '교육', icon: 'fa-graduation-cap', x: 2, y: 12, w: 2, h: 3 },
+                { type: 'stat-card-collection', name: '수집', icon: 'fa-folder-plus', x: 4, y: 12, w: 2, h: 3 },
+                { type: 'stat-card-conservation', name: '보존', icon: 'fa-shield-alt', x: 6, y: 12, w: 2, h: 3 },
+                { type: 'stat-card-publication', name: '출판', icon: 'fa-book', x: 8, y: 12, w: 2, h: 3 },
+                { type: 'stat-card-research', name: '연구', icon: 'fa-microscope', x: 10, y: 12, w: 2, h: 3 },
+                
+                // Row 5: 예산 차트 (좌측 6칸) + 관람객 차트 (우측 6칸)
+                { type: 'bar-chart', name: '예산 사용 현황', icon: 'fa-chart-bar', x: 0, y: 15, w: 6, h: 5 },
+                { type: 'visitor-chart', name: '관람객 추이', icon: 'fa-users', x: 6, y: 15, w: 6, h: 5 }
             ];
             
             defaultWidgets.forEach(widget => {
@@ -2282,6 +2306,8 @@
                 const data = await response.json();
                 
                 if (data.success) {
+                    // Mark that user has customized layout
+                    localStorage.setItem('hasCustomLayout', 'true');
                     alert('레이아웃이 저장되었습니다!');
                 }
             } catch (error) {
@@ -2291,9 +2317,16 @@
         }
         
         function resetLayout() {
-            if (confirm('대시보드를 초기화하시겠습니까?')) {
+            if (confirm('대시보드를 초기 레이아웃으로 복원하시겠습니까?\n\n스크린샷 기반의 전문적인 초기 레이아웃으로 되돌아갑니다.')) {
+                // Remove custom layout flag
+                localStorage.removeItem('hasCustomLayout');
+                localStorage.removeItem('widgetColors');
+                
+                // Clear grid and show default layout
                 grid.removeAll();
                 showDefaultWidgets();
+                
+                alert('✅ 초기 레이아웃으로 복원되었습니다!');
             }
         }
         
