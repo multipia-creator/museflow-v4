@@ -228,9 +228,9 @@
             background: #F3F4F6;
         }
         
-        /* Stat Cards - 주요 지표 */
+        /* Stat Cards - 주요 지표 (6개 카테고리) */
         .stat-card {
-            grid-column: span 4;
+            grid-column: span 2;
         }
         
         .stat-value {
@@ -470,7 +470,10 @@
         
         /* Responsive */
         @media (max-width: 1024px) {
-            .stat-card,
+            .stat-card {
+                grid-column: span 4; /* Tablet: 3개씩 표시 */
+            }
+            
             .third-card {
                 grid-column: span 6;
             }
@@ -485,7 +488,10 @@
                 padding: 5rem 1rem 1rem 1rem;
             }
             
-            .stat-card,
+            .stat-card {
+                grid-column: span 6; /* Mobile: 2개씩 표시 */
+            }
+            
             .chart-card,
             .timeline-card,
             .half-card,
@@ -641,44 +647,89 @@
                 </div>
             </div>
             
-            <!-- Stat Cards - 주요 지표 -->
+            <!-- Stat Cards - 6개 주요 카테고리 -->
+            <!-- 1. 전시 -->
             <div class="card stat-card">
                 <div class="card-header">
-                    <h3 class="card-title">활성 전시</h3>
-                    <span class="card-action"><i class="fas fa-chart-line"></i></span>
+                    <h3 class="card-title">전시</h3>
+                    <span class="card-action"><i class="fas fa-image"></i></span>
                 </div>
                 <div class="stat-value">12</div>
-                <div class="stat-label">진행 중인 전시</div>
+                <div class="stat-label">활성 전시</div>
                 <div class="stat-progress">
                     <div class="stat-progress-bar" style="width: 75%"></div>
                 </div>
-                <div class="stat-footer">전체 16개 중 12개 진행 중</div>
+                <div class="stat-footer">16개 중 12개 진행</div>
             </div>
             
+            <!-- 2. 교육 -->
             <div class="card stat-card">
                 <div class="card-header">
-                    <h3 class="card-title">소장품</h3>
-                    <span class="card-action"><i class="fas fa-box-open"></i></span>
+                    <h3 class="card-title">교육</h3>
+                    <span class="card-action"><i class="fas fa-graduation-cap"></i></span>
+                </div>
+                <div class="stat-value">24</div>
+                <div class="stat-label">교육 프로그램</div>
+                <div class="stat-progress">
+                    <div class="stat-progress-bar" style="width: 80%"></div>
+                </div>
+                <div class="stat-footer">이번 달 +3개 신규</div>
+            </div>
+            
+            <!-- 3. 수집 -->
+            <div class="card stat-card">
+                <div class="card-header">
+                    <h3 class="card-title">수집</h3>
+                    <span class="card-action"><i class="fas fa-folder-plus"></i></span>
                 </div>
                 <div class="stat-value">1,247</div>
-                <div class="stat-label">등록된 소장품</div>
+                <div class="stat-label">소장품 총계</div>
                 <div class="stat-progress">
                     <div class="stat-progress-bar" style="width: 62%"></div>
                 </div>
-                <div class="stat-footer">이번 달 +23건 추가</div>
+                <div class="stat-footer">이번 달 +23건</div>
             </div>
             
+            <!-- 4. 보존 -->
             <div class="card stat-card">
                 <div class="card-header">
-                    <h3 class="card-title">전시 방문객</h3>
-                    <span class="card-action"><i class="fas fa-users"></i></span>
+                    <h3 class="card-title">보존</h3>
+                    <span class="card-action"><i class="fas fa-shield-alt"></i></span>
                 </div>
-                <div class="stat-value">45.8K</div>
-                <div class="stat-label">이번 달 방문객</div>
+                <div class="stat-value">89</div>
+                <div class="stat-label">보존 처리 중</div>
                 <div class="stat-progress">
-                    <div class="stat-progress-bar" style="width: 91%"></div>
+                    <div class="stat-progress-bar" style="width: 67%"></div>
                 </div>
-                <div class="stat-footer">전월 대비 +18% 증가</div>
+                <div class="stat-footer">132개 중 89개</div>
+            </div>
+            
+            <!-- 5. 출판 -->
+            <div class="card stat-card">
+                <div class="card-header">
+                    <h3 class="card-title">출판</h3>
+                    <span class="card-action"><i class="fas fa-book"></i></span>
+                </div>
+                <div class="stat-value">8</div>
+                <div class="stat-label">출판물 제작</div>
+                <div class="stat-progress">
+                    <div class="stat-progress-bar" style="width: 53%"></div>
+                </div>
+                <div class="stat-footer">15개 중 8개 완료</div>
+            </div>
+            
+            <!-- 6. 연구 -->
+            <div class="card stat-card">
+                <div class="card-header">
+                    <h3 class="card-title">연구</h3>
+                    <span class="card-action"><i class="fas fa-microscope"></i></span>
+                </div>
+                <div class="stat-value">16</div>
+                <div class="stat-label">연구 프로젝트</div>
+                <div class="stat-progress">
+                    <div class="stat-progress-bar" style="width: 72%"></div>
+                </div>
+                <div class="stat-footer">22개 중 16개 진행</div>
             </div>
             
             <!-- 진행 중인 작업 (위치 교체) -->
