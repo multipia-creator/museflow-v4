@@ -1,0 +1,565 @@
+/**
+ * MuseFlow Canvas V3 - 2025 Minimalism Design
+ * 
+ * Philosophy: "Less is More × Function-First"
+ * - Clean white canvas
+ * - Subtle grid (already optimized)
+ * - High contrast nodes
+ * - Generous whitespace
+ * - Functional over decorative
+ * 
+ * Design System:
+ * - Typography: Inter (400, 500, 600)
+ * - Spacing: 8px grid (0.5rem - 2rem)
+ * - Shadows: Subtle only
+ * - Borders: 1px, #E5E7EB
+ * - Radius: 8px, 12px
+ */
+
+/* ================================
+   Design System Variables
+   ================================ */
+:root {
+    /* Primary Colors - Minimalist Palette */
+    --primary: #8B5CF6;
+    --primary-light: #A78BFA;
+    --primary-dark: #7C3AED;
+    
+    /* Neutrals - High Contrast */
+    --gray-50: #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-300: #D1D5DB;
+    --gray-400: #9CA3AF;
+    --gray-500: #6B7280;
+    --gray-600: #4B5563;
+    --gray-700: #374151;
+    --gray-800: #1F2937;
+    --gray-900: #111827;
+    
+    /* Semantic Colors */
+    --success: #10B981;
+    --warning: #F59E0B;
+    --error: #EF4444;
+    --info: #3B82F6;
+    
+    /* Background */
+    --bg-white: #FFFFFF;
+    --bg-canvas: #FAFAFA;
+    
+    /* Shadows - Minimal */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    
+    /* Transitions */
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ================================
+   Typography Override
+   ================================ */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-weight: 400;
+    color: var(--gray-900) !important;
+    background: var(--bg-white) !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+/* ================================
+   Top Toolbar - Minimalist
+   ================================ */
+.toolbar {
+    background: var(--bg-white) !important;
+    border-bottom: 1px solid var(--gray-200) !important;
+    box-shadow: var(--shadow-sm) !important;
+    backdrop-filter: none !important;
+    height: 56px !important;
+}
+
+.toolbar .logo {
+    font-weight: 600 !important;
+    color: var(--gray-900) !important;
+    font-size: 1.125rem !important;
+}
+
+.toolbar .logo-text {
+    color: var(--gray-900) !important;
+}
+
+.toolbar .tool-btn {
+    background: var(--bg-white) !important;
+    border: 1px solid var(--gray-200) !important;
+    color: var(--gray-700) !important;
+    border-radius: 8px !important;
+    width: 36px !important;
+    height: 36px !important;
+    transition: var(--transition) !important;
+    box-shadow: none !important;
+}
+
+.toolbar .tool-btn:hover {
+    background: var(--gray-50) !important;
+    border-color: var(--gray-300) !important;
+    transform: none !important;
+}
+
+.toolbar .tool-btn.active {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: white !important;
+}
+
+.toolbar .ai-btn {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: white !important;
+}
+
+.toolbar .ai-btn:hover {
+    background: var(--primary-dark) !important;
+}
+
+.save-status {
+    font-size: 0.875rem !important;
+    color: var(--gray-500) !important;
+}
+
+.save-status.saved {
+    color: var(--success) !important;
+}
+
+.save-status.saving {
+    color: var(--warning) !important;
+}
+
+/* ================================
+   Left Panel - Node Library
+   ================================ */
+.left-panel {
+    background: var(--bg-white) !important;
+    border-right: 1px solid var(--gray-200) !important;
+    box-shadow: none !important;
+}
+
+.panel-header {
+    background: var(--bg-white) !important;
+    border-bottom: 1px solid var(--gray-200) !important;
+    padding: 1rem !important;
+}
+
+.panel-title {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: var(--gray-900) !important;
+}
+
+.search-box {
+    background: var(--gray-50) !important;
+    border: 1px solid var(--gray-200) !important;
+    border-radius: 8px !important;
+    padding: 0.625rem 1rem !important;
+    font-size: 0.875rem !important;
+    color: var(--gray-900) !important;
+    transition: var(--transition) !important;
+}
+
+.search-box:focus {
+    outline: none !important;
+    border-color: var(--primary) !important;
+    background: var(--bg-white) !important;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1) !important;
+}
+
+.search-box::placeholder {
+    color: var(--gray-400) !important;
+}
+
+/* ================================
+   Node Categories
+   ================================ */
+.category-header {
+    background: var(--gray-50) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 0.75rem 1rem !important;
+    margin-bottom: 0.5rem !important;
+    transition: var(--transition) !important;
+}
+
+.category-header:hover {
+    background: var(--gray-100) !important;
+}
+
+.category-title {
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    color: var(--gray-700) !important;
+}
+
+.category-icon {
+    color: var(--gray-500) !important;
+}
+
+/* ================================
+   Node Items - Clean Cards
+   ================================ */
+.node-item {
+    background: var(--bg-white) !important;
+    border: 1px solid var(--gray-200) !important;
+    border-radius: 8px !important;
+    padding: 0.75rem !important;
+    margin-bottom: 0.5rem !important;
+    transition: var(--transition) !important;
+    box-shadow: none !important;
+}
+
+.node-item:hover {
+    border-color: var(--primary) !important;
+    background: var(--gray-50) !important;
+    box-shadow: var(--shadow-sm) !important;
+    transform: translateX(2px) !important;
+}
+
+.node-item .node-icon {
+    color: var(--primary) !important;
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.node-name {
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    color: var(--gray-900) !important;
+}
+
+.node-description {
+    font-size: 0.75rem !important;
+    color: var(--gray-500) !important;
+}
+
+/* ================================
+   Right Panel - Properties
+   ================================ */
+.right-panel {
+    background: var(--bg-white) !important;
+    border-left: 1px solid var(--gray-200) !important;
+    box-shadow: none !important;
+}
+
+.properties-panel {
+    padding: 1rem !important;
+}
+
+.property-section {
+    margin-bottom: 1.5rem !important;
+}
+
+.property-label {
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    color: var(--gray-700) !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.property-input {
+    background: var(--gray-50) !important;
+    border: 1px solid var(--gray-200) !important;
+    border-radius: 8px !important;
+    padding: 0.625rem !important;
+    font-size: 0.875rem !important;
+    color: var(--gray-900) !important;
+    transition: var(--transition) !important;
+    width: 100% !important;
+}
+
+.property-input:focus {
+    outline: none !important;
+    border-color: var(--primary) !important;
+    background: var(--bg-white) !important;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1) !important;
+}
+
+/* ================================
+   Canvas - Already Optimized Grid
+   ================================ */
+#canvas {
+    background: var(--bg-white) !important;
+}
+
+/* Grid colors already optimized to #f3f4f6 (minor) and #e5e7eb (major) */
+
+/* ================================
+   Nodes on Canvas - Minimal Cards
+   ================================ */
+.canvas-node {
+    background: var(--bg-white) !important;
+    border: 2px solid var(--gray-200) !important;
+    border-radius: 12px !important;
+    box-shadow: var(--shadow-md) !important;
+    transition: var(--transition) !important;
+}
+
+.canvas-node:hover {
+    border-color: var(--primary) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.canvas-node.selected {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15) !important;
+}
+
+.node-header {
+    background: var(--gray-50) !important;
+    border-bottom: 1px solid var(--gray-200) !important;
+    padding: 0.75rem 1rem !important;
+    border-radius: 12px 12px 0 0 !important;
+}
+
+.node-title {
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    color: var(--gray-900) !important;
+}
+
+.node-body {
+    padding: 1rem !important;
+}
+
+/* ================================
+   AI Assistant Panel
+   ================================ */
+.ai-sidebar {
+    background: var(--bg-white) !important;
+    border-left: 1px solid var(--gray-200) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.ai-sidebar-header {
+    background: var(--bg-white) !important;
+    border-bottom: 1px solid var(--gray-200) !important;
+    padding: 1rem !important;
+}
+
+.ai-sidebar-title {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: var(--gray-900) !important;
+}
+
+.ai-chat-messages {
+    background: var(--gray-50) !important;
+}
+
+.ai-message {
+    background: var(--bg-white) !important;
+    border: 1px solid var(--gray-200) !important;
+    border-radius: 12px !important;
+    padding: 1rem !important;
+    margin-bottom: 1rem !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.ai-message.user {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: white !important;
+}
+
+.ai-input-area {
+    background: var(--bg-white) !important;
+    border-top: 1px solid var(--gray-200) !important;
+    padding: 1rem !important;
+}
+
+.ai-input {
+    background: var(--gray-50) !important;
+    border: 1px solid var(--gray-200) !important;
+    border-radius: 8px !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.875rem !important;
+    color: var(--gray-900) !important;
+    transition: var(--transition) !important;
+}
+
+.ai-input:focus {
+    outline: none !important;
+    border-color: var(--primary) !important;
+    background: var(--bg-white) !important;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1) !important;
+}
+
+.ai-send-btn {
+    background: var(--primary) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 500 !important;
+    color: white !important;
+    transition: var(--transition) !important;
+}
+
+.ai-send-btn:hover {
+    background: var(--primary-dark) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+/* ================================
+   AI Quick Panel (Bottom Right)
+   ================================ */
+.ai-quick-panel {
+    /* Keep existing position */
+}
+
+.ai-quick-toggle {
+    background: var(--primary) !important;
+    box-shadow: var(--shadow-lg) !important;
+    border: 3px solid var(--bg-white) !important;
+    transition: var(--transition) !important;
+}
+
+.ai-quick-toggle:hover {
+    background: var(--primary-dark) !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 12px 28px rgba(139, 92, 246, 0.4) !important;
+}
+
+/* ================================
+   Connection Lines - Minimal
+   ================================ */
+/* Connection lines already optimized in canvas-v3-complete.js */
+/* AI connections: gradient purple, 3px */
+/* Normal connections: #9CA3AF, 2px */
+
+/* ================================
+   Context Menu
+   ================================ */
+.context-menu {
+    background: var(--bg-white) !important;
+    border: 1px solid var(--gray-200) !important;
+    border-radius: 8px !important;
+    box-shadow: var(--shadow-lg) !important;
+    padding: 0.5rem !important;
+}
+
+.context-menu-item {
+    padding: 0.625rem 1rem !important;
+    border-radius: 6px !important;
+    font-size: 0.875rem !important;
+    color: var(--gray-700) !important;
+    transition: var(--transition) !important;
+}
+
+.context-menu-item:hover {
+    background: var(--gray-50) !important;
+    color: var(--gray-900) !important;
+}
+
+.context-menu-item.danger:hover {
+    background: var(--error) !important;
+    color: white !important;
+}
+
+/* ================================
+   Toast Notifications
+   ================================ */
+.toast {
+    background: var(--bg-white) !important;
+    border: 1px solid var(--gray-200) !important;
+    border-radius: 8px !important;
+    box-shadow: var(--shadow-lg) !important;
+    padding: 1rem !important;
+}
+
+.toast.success {
+    border-left: 4px solid var(--success) !important;
+}
+
+.toast.error {
+    border-left: 4px solid var(--error) !important;
+}
+
+.toast.info {
+    border-left: 4px solid var(--info) !important;
+}
+
+/* ================================
+   Responsive Design
+   ================================ */
+@media (max-width: 768px) {
+    .toolbar {
+        padding: 0 1rem !important;
+        height: 52px !important;
+    }
+    
+    .toolbar .tool-btn {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    
+    .left-panel,
+    .right-panel {
+        width: 100% !important;
+        max-width: 320px !important;
+    }
+    
+    .panel-header {
+        padding: 0.75rem !important;
+    }
+    
+    .node-item {
+        padding: 0.625rem !important;
+    }
+    
+    .ai-quick-toggle {
+        width: 56px !important;
+        height: 56px !important;
+    }
+}
+
+/* ================================
+   Animations - Subtle
+   ================================ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Remove aggressive animations */
+@keyframes ai-button-glow {
+    0%, 100% {
+        box-shadow: var(--shadow-lg);
+    }
+    50% {
+        box-shadow: 0 12px 28px rgba(139, 92, 246, 0.3);
+    }
+}
+
+/* ================================
+   Performance Optimizations
+   ================================ */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+    -webkit-tap-highlight-color: transparent;
+}
