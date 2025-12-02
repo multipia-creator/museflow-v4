@@ -598,10 +598,14 @@
                 } else {
                     document.getElementById('emptyState').style.display = 'block';
                 }
+                
+                // Initialize all charts after widgets are loaded
+                initializeCharts();
             } catch (error) {
                 console.error('Failed to load widgets:', error);
                 // Show default widgets
                 showDefaultWidgets();
+                initializeCharts();
             }
         }
         
@@ -618,6 +622,9 @@
             defaultWidgets.forEach(widget => {
                 addWidgetToGrid(widget);
             });
+            
+            // Initialize charts after adding default widgets
+            initializeCharts();
         }
         
         function addWidgetToGrid(widget) {
@@ -661,12 +668,31 @@
             `;
         }
         
+        // Global chart initialization queue
+        const chartQueue = [];
+        
+        function initializeCharts() {
+            setTimeout(() => {
+                chartQueue.forEach(config => {
+                    const ctx = document.getElementById(config.chartId);
+                    if (ctx && typeof Chart !== 'undefined') {
+                        const existingChart = Chart.getChart(ctx);
+                        if (existingChart) {
+                            existingChart.destroy();
+                        }
+                        new Chart(ctx, config.options);
+                    }
+                });
+                chartQueue.length = 0; // Clear queue
+            }, 1200);
+        }
+        
         function generateWidgetContent(widget) {
             const type = widget.type || '';
             
             // AI 검색 위젯
             if (type === 'ai-search') {
-                const searchId = `search-${widget.user_widget_id || Date.now()}-${Math.floor(Math.random() * 1000)}`;
+                const searchId = 'search-' + (widget.user_widget_id || widget.id || Date.now()) + '-' + Math.floor(Math.random() * 10000);
                 return `
                     <div style="display: flex; align-items: center; gap: 0.75rem;">
                         <input id="${searchId}" 
@@ -714,120 +740,98 @@
             
             // 라인 차트
             if (type === 'line-chart' || type === 'visitor-chart') {
-                const chartId = `chart-${widget.user_widget_id || widget.id || Date.now()}-${Math.floor(Math.random() * 10000)}`;
-                // Store chart config for later initialization
-                setTimeout(() => {
-                    const ctx = document.getElementById(chartId);
-                    if (ctx && typeof Chart !== 'undefined') {
-                        // Check if chart already exists
-                        const existingChart = Chart.getChart(ctx);
-                        if (existingChart) {
-                            existingChart.destroy();
-                        }
-                        
-                        new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
-                                datasets: [{
-                                    label: '방문자',
-                                    data: [3200, 3800, 4100, 4500, 5200, 5800],
-                                    borderColor: '#8B5CF6',
-                                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                                    tension: 0.4,
-                                    fill: true
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: { legend: { display: false } },
-                                scales: {
-                                    y: { beginAtZero: true, grid: { color: '#E5E7EB' } },
-                                    x: { grid: { display: false } }
-                                }
-                            }
-                        });
-                    }
-                }, 1000);
+                const chartId = 'chart-' + (widget.user_widget_id || widget.id || Date.now()) + '-' + Math.floor(Math.random() * 10000);
                 
-                return `<canvas id="${chartId}" style="max-height: 200px;"></canvas>`;
+                chartQueue.push({
+                    chartId: chartId,
+                    options: {
+                        type: 'line',
+                        data: {
+                            labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
+                            datasets: [{
+                                label: '방문자',
+                                data: [3200, 3800, 4100, 4500, 5200, 5800],
+                                borderColor: '#8B5CF6',
+                                backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                y: { beginAtZero: true, grid: { color: '#E5E7EB' } },
+                                x: { grid: { display: false } }
+                            }
+                        }
+                    }
+                });
+                
+                return '<canvas id="' + chartId + '" style="max-height: 200px;"></canvas>';
             }
             
             // 도넛 차트
             if (type === 'donut-chart' || type === 'budget-chart') {
-                const chartId = `donut-${widget.user_widget_id || widget.id || Date.now()}-${Math.floor(Math.random() * 10000)}`;
+                const chartId = 'donut-' + (widget.user_widget_id || widget.id || Date.now()) + '-' + Math.floor(Math.random() * 10000);
                 
-                setTimeout(() => {
-                    const ctx = document.getElementById(chartId);
-                    if (ctx && typeof Chart !== 'undefined') {
-                        const existingChart = Chart.getChart(ctx);
-                        if (existingChart) {
-                            existingChart.destroy();
-                        }
-                        
-                        new Chart(ctx, {
-                            type: 'doughnut',
-                            data: {
-                                labels: ['전시', '교육', '보존', '연구'],
-                                datasets: [{
-                                    data: [35, 25, 25, 15],
-                                    backgroundColor: ['#8B5CF6', '#10B981', '#F59E0B', '#3B82F6']
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: {
-                                        position: 'bottom',
-                                        labels: { color: '#6B7280' }
-                                    }
+                chartQueue.push({
+                    chartId: chartId,
+                    options: {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['전시', '교육', '보존', '연구'],
+                            datasets: [{
+                                data: [35, 25, 25, 15],
+                                backgroundColor: ['#8B5CF6', '#10B981', '#F59E0B', '#3B82F6']
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: { color: '#6B7280' }
                                 }
                             }
-                        });
+                        }
                     }
-                }, 1000);
+                });
                 
-                return `<canvas id="${chartId}" style="max-height: 250px;"></canvas>`;
+                return '<canvas id="' + chartId + '" style="max-height: 250px;"></canvas>';
             }
             
             // 막대 차트
             if (type === 'bar-chart') {
-                const chartId = `bar-${widget.user_widget_id || widget.id || Date.now()}-${Math.floor(Math.random() * 10000)}`;
+                const chartId = 'bar-' + (widget.user_widget_id || widget.id || Date.now()) + '-' + Math.floor(Math.random() * 10000);
                 
-                setTimeout(() => {
-                    const ctx = document.getElementById(chartId);
-                    if (ctx && typeof Chart !== 'undefined') {
-                        const existingChart = Chart.getChart(ctx);
-                        if (existingChart) {
-                            existingChart.destroy();
-                        }
-                        
-                        new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: ['전시', '교육', '수집', '보존', '출판', '연구'],
-                                datasets: [{
-                                    label: '활동 수',
-                                    data: [12, 24, 1247, 892, 45, 18],
-                                    backgroundColor: '#8B5CF6'
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: { legend: { display: false } },
-                                scales: {
-                                    y: { beginAtZero: true, grid: { color: '#E5E7EB' } },
-                                    x: { grid: { display: false } }
-                                }
+                chartQueue.push({
+                    chartId: chartId,
+                    options: {
+                        type: 'bar',
+                        data: {
+                            labels: ['전시', '교육', '수집', '보존', '출판', '연구'],
+                            datasets: [{
+                                label: '활동 수',
+                                data: [12, 24, 1247, 892, 45, 18],
+                                backgroundColor: '#8B5CF6'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                y: { beginAtZero: true, grid: { color: '#E5E7EB' } },
+                                x: { grid: { display: false } }
                             }
-                        });
+                        }
                     }
-                }, 1000);
+                });
                 
-                return `<canvas id="${chartId}" style="max-height: 200px;"></canvas>`;
+                return '<canvas id="' + chartId + '" style="max-height: 200px;"></canvas>';
             }
             
             // 타임라인
