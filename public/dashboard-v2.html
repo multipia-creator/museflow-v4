@@ -16,6 +16,9 @@
     <!-- GridStack -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridstack@10.0.0/dist/gridstack.min.css">
     
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
     <!-- Design System -->
     <link href="/static/css/design-system.css" rel="stylesheet">
     <link href="/static/css/unified-navbar.css" rel="stylesheet">
@@ -659,22 +662,268 @@
         }
         
         function generateWidgetContent(widget) {
-            // Stat card template
-            if (widget.type && widget.type.startsWith('stat-card')) {
+            const type = widget.type || '';
+            
+            // AI 검색 위젯
+            if (type === 'ai-search') {
+                const searchId = `search-${widget.user_widget_id || Date.now()}-${Math.floor(Math.random() * 1000)}`;
                 return `
-                    <div class="stat-value">12</div>
-                    <div class="stat-label">활성 항목</div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <input id="${searchId}" 
+                               type="text" 
+                               placeholder="AI에게 무엇이든 물어보세요..." 
+                               style="flex: 1; padding: 0.75rem 1rem; border: 2px solid var(--border-primary); border-radius: var(--radius-lg); background: var(--surface); color: var(--text-primary); font-size: var(--font-size-sm); transition: border-color 0.2s;"
+                               onfocus="this.style.borderColor='#8B5CF6'; this.style.outline='none';"
+                               onblur="this.style.borderColor='var(--border-primary)';"
+                               onkeypress="if(event.key==='Enter') { alert('검색 기능이 곧 제공됩니다: ' + this.value); this.value=''; }">
+                        <button onclick="alert('음성 입력 기능이 곧 제공됩니다');" 
+                                style="width: 40px; height: 40px; border-radius: var(--radius-full); background: linear-gradient(135deg, #8B5CF6, #7C3AED); border: none; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s;"
+                                onmouseover="this.style.transform='scale(1.05)'"
+                                onmouseout="this.style.transform='scale(1)'">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                    </div>
+                `;
+            }
+            
+            // Stat card 위젯들
+            if (type.startsWith('stat-card')) {
+                const statData = {
+                    'stat-card-exhibition': { value: 12, total: 16, label: '활성 전시', progress: 75 },
+                    'stat-card-education': { value: 24, total: 30, label: '교육 프로그램', progress: 80 },
+                    'stat-card-collection': { value: 1247, total: 1500, label: '등록 소장품', progress: 83 },
+                    'stat-card-conservation': { value: 892, total: 1000, label: '보존 처리', progress: 89 },
+                    'stat-card-publication': { value: 45, total: 50, label: '출판물', progress: 90 },
+                    'stat-card-research': { value: 18, total: 20, label: '연구 프로젝트', progress: 90 }
+                };
+                
+                const data = statData[type] || { value: 12, total: 16, label: '활성 항목', progress: 75 };
+                
+                return `
+                    <div class="stat-value">${data.value}</div>
+                    <div class="stat-label">${data.label}</div>
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 75%"></div>
+                        <div class="progress-fill" style="width: ${data.progress}%"></div>
                     </div>
                     <div class="stat-footer">
-                        <span>16개 중 12개</span>
+                        <span>${data.total}개 중 ${data.value}개</span>
                         <span style="color: var(--color-success)">+3 신규</span>
                     </div>
                 `;
             }
             
-            return `<p>위젯 콘텐츠</p>`;
+            // 라인 차트
+            if (type === 'line-chart' || type === 'visitor-chart') {
+                const chartId = `chart-${widget.user_widget_id || Date.now()}-${Math.floor(Math.random() * 1000)}`;
+                return `
+                    <canvas id="${chartId}" style="max-height: 200px;"></canvas>
+                    <script>
+                        (function() {
+                            setTimeout(() => {
+                                const ctx = document.getElementById('${chartId}');
+                                if (ctx && typeof Chart !== 'undefined') {
+                                    new Chart(ctx, {
+                                        type: 'line',
+                                        data: {
+                                            labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
+                                            datasets: [{
+                                                label: '방문자',
+                                                data: [3200, 3800, 4100, 4500, 5200, 5800],
+                                                borderColor: '#8B5CF6',
+                                                backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                                                tension: 0.4,
+                                                fill: true
+                                            }]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            plugins: { legend: { display: false } },
+                                            scales: {
+                                                y: { beginAtZero: true, grid: { color: '#E5E7EB' } },
+                                                x: { grid: { display: false } }
+                                            }
+                                        }
+                                    });
+                                }
+                            }, 500);
+                        })();
+                    </script>
+                `;
+            }
+            
+            // 도넛 차트
+            if (type === 'donut-chart' || type === 'budget-chart') {
+                const chartId = `donut-${widget.user_widget_id || Date.now()}-${Math.floor(Math.random() * 1000)}`;
+                return `
+                    <canvas id="${chartId}" style="max-height: 250px;"></canvas>
+                    <script>
+                        (function() {
+                            setTimeout(() => {
+                                const ctx = document.getElementById('${chartId}');
+                                if (ctx && typeof Chart !== 'undefined') {
+                                    new Chart(ctx, {
+                                        type: 'doughnut',
+                                        data: {
+                                            labels: ['전시', '교육', '보존', '연구'],
+                                            datasets: [{
+                                                data: [35, 25, 25, 15],
+                                                backgroundColor: ['#8B5CF6', '#10B981', '#F59E0B', '#3B82F6']
+                                            }]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            plugins: {
+                                                legend: {
+                                                    position: 'bottom',
+                                                    labels: { color: '#6B7280' }
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            }, 500);
+                        })();
+                    </script>
+                `;
+            }
+            
+            // 막대 차트
+            if (type === 'bar-chart') {
+                const chartId = `bar-${widget.user_widget_id || Date.now()}-${Math.floor(Math.random() * 1000)}`;
+                return `
+                    <canvas id="${chartId}" style="max-height: 200px;"></canvas>
+                    <script>
+                        (function() {
+                            setTimeout(() => {
+                                const ctx = document.getElementById('${chartId}');
+                                if (ctx && typeof Chart !== 'undefined') {
+                                    new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: ['전시', '교육', '수집', '보존', '출판', '연구'],
+                                            datasets: [{
+                                                label: '활동 수',
+                                                data: [12, 24, 1247, 892, 45, 18],
+                                                backgroundColor: '#8B5CF6'
+                                            }]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            plugins: { legend: { display: false } },
+                                            scales: {
+                                                y: { beginAtZero: true, grid: { color: '#E5E7EB' } },
+                                                x: { grid: { display: false } }
+                                        }
+                                    }
+                                });
+                            }
+                        }, 500);
+                    })();
+                    </script>
+                `;
+            }
+            
+            // 타임라인
+            if (type === 'timeline') {
+                return `
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <div style="display: flex; gap: 0.75rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                            <div style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%; margin-top: 6px;"></div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">전시 라벨 작성</div>
+                                <div style="font-size: var(--font-size-xs); color: var(--text-secondary);">고려청자 특별전 • 진행 중</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.75rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                            <div style="width: 8px; height: 8px; background: var(--color-success); border-radius: 50%; margin-top: 6px;"></div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">예산 승인 완료</div>
+                                <div style="font-size: var(--font-size-xs); color: var(--text-secondary);">현대미술 전시 • 완료</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 할 일 목록
+            if (type === 'todo-list') {
+                return `
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                            <input type="checkbox" style="width: 18px; height: 18px;">
+                            <span style="flex: 1; color: var(--text-primary);">전시 라벨 초안 작성</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                            <input type="checkbox" checked style="width: 18px; height: 18px;">
+                            <span style="flex: 1; color: var(--text-secondary); text-decoration: line-through;">소장품 대여 계약 검토</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                            <input type="checkbox" style="width: 18px; height: 18px;">
+                            <span style="flex: 1; color: var(--text-primary);">홍보물 디자인 승인</span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 중요 알림
+            if (type === 'alert-list') {
+                return `
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <div style="padding: 0.75rem; background: rgba(239, 68, 68, 0.1); border-left: 3px solid #EF4444; border-radius: var(--radius-md);">
+                            <div style="font-weight: 600; color: #EF4444; margin-bottom: 0.25rem;">예산 초과 경고</div>
+                            <div style="font-size: var(--font-size-xs); color: var(--text-secondary);">세계 문화유산전 ₩5M</div>
+                        </div>
+                        <div style="padding: 0.75rem; background: rgba(245, 158, 11, 0.1); border-left: 3px solid #F59E0B; border-radius: var(--radius-md);">
+                            <div style="font-weight: 600; color: #F59E0B; margin-bottom: 0.25rem;">마감일 임박</div>
+                            <div style="font-size: var(--font-size-xs); color: var(--text-secondary);">2일 남음</div>
+                        </div>
+                        <div style="padding: 0.75rem; background: rgba(59, 130, 246, 0.1); border-left: 3px solid #3B82F6; border-radius: var(--radius-md);">
+                            <div style="font-weight: 600; color: #3B82F6; margin-bottom: 0.25rem;">승인 대기</div>
+                            <div style="font-size: var(--font-size-xs); color: var(--text-secondary);">예산 검토 필요</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Google Workspace
+            if (type === 'workspace-google') {
+                return `
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+                        <div style="padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md); text-align: center;">
+                            <i class="fab fa-google" style="font-size: 1.5rem; color: #EA4335; margin-bottom: 0.5rem;"></i>
+                            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">Gmail</div>
+                            <div style="font-size: var(--font-size-xs); color: var(--text-secondary);">12 읽지 않음</div>
+                        </div>
+                        <div style="padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md); text-align: center;">
+                            <i class="fas fa-calendar" style="font-size: 1.5rem; color: #4285F4; margin-bottom: 0.5rem;"></i>
+                            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">Calendar</div>
+                            <div style="font-size: var(--font-size-xs); color: var(--text-secondary);">5 이벤트</div>
+                        </div>
+                        <div style="padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md); text-align: center;">
+                            <i class="fab fa-google-drive" style="font-size: 1.5rem; color: #FBBC04; margin-bottom: 0.5rem;"></i>
+                            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">Drive</div>
+                            <div style="font-size: var(--font-size-xs); color: var(--text-secondary);">2.4 GB 사용</div>
+                        </div>
+                        <div style="padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md); text-align: center;">
+                            <i class="fas fa-file-alt" style="font-size: 1.5rem; color: #34A853; margin-bottom: 0.5rem;"></i>
+                            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem;">Docs</div>
+                            <div style="font-size: var(--font-size-xs); color: var(--text-secondary);">8 문서</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 기본 템플릿
+            return `
+                <div style="text-align: center; padding: 2rem; color: var(--text-tertiary);">
+                    <i class="fas fa-cube" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5;"></i>
+                    <p>위젯 콘텐츠</p>
+                    <p style="font-size: var(--font-size-xs); margin-top: 0.5rem;">곧 제공됩니다</p>
+                </div>
+            `;
         }
         
         function removeWidget(btn) {
