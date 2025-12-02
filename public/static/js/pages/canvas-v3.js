@@ -1257,20 +1257,49 @@ const CanvasV3 = {
   },
   
   /**
-   * Draw connection points
+   * Draw connection points (Enhanced: 4px → 12px Desktop, 20px Mobile)
    */
   drawConnectionPoints(ctx, node) {
+    // Determine radius based on device
+    const isMobile = window.innerWidth <= 768;
+    const baseRadius = isMobile ? 10 : 6;
+    const hoverRadius = isMobile ? 12 : 8;
+    
+    // Check if node is hovered
+    const isHovered = this.hoveredNode === node;
+    const radius = isHovered ? hoverRadius : baseRadius;
+    
     // Left point (input)
     ctx.fillStyle = '#9ca3af';
     ctx.beginPath();
-    ctx.arc(node.x, node.y + node.height / 2, 4, 0, Math.PI * 2);
+    ctx.arc(node.x, node.y + node.height / 2, radius, 0, Math.PI * 2);
     ctx.fill();
+    
+    // Add white border for better visibility
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
     
     // Right point (output)
     ctx.fillStyle = node.color;
     ctx.beginPath();
-    ctx.arc(node.x + node.width, node.y + node.height / 2, 4, 0, Math.PI * 2);
+    ctx.arc(node.x + node.width, node.y + node.height / 2, radius, 0, Math.PI * 2);
     ctx.fill();
+    
+    // Add white border
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    
+    // Add glow effect on hover
+    if (isHovered) {
+      ctx.shadowColor = node.color;
+      ctx.shadowBlur = 12;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 0;
+      ctx.fill();
+      ctx.shadowBlur = 0; // Reset shadow
+    }
   },
   
   /**
@@ -2102,6 +2131,39 @@ const CanvasV3 = {
         return node;
       }
     }
+    return null;
+  },
+  
+  /**
+   * Get connection point at position (Enhanced with larger hit area)
+   * Returns: { node, side: 'left'|'right' } or null
+   */
+  getConnectionPointAtPosition(x, y) {
+    const isMobile = window.innerWidth <= 768;
+    const hitRadius = isMobile ? 15 : 10; // Larger hit area than visual radius
+    
+    for (let i = this.nodes.length - 1; i >= 0; i--) {
+      const node = this.nodes[i];
+      
+      // Check left point (input)
+      const leftX = node.x;
+      const leftY = node.y + node.height / 2;
+      const distLeft = Math.sqrt((x - leftX) ** 2 + (y - leftY) ** 2);
+      
+      if (distLeft <= hitRadius) {
+        return { node, side: 'left' };
+      }
+      
+      // Check right point (output)
+      const rightX = node.x + node.width;
+      const rightY = node.y + node.height / 2;
+      const distRight = Math.sqrt((x - rightX) ** 2 + (y - rightY) ** 2);
+      
+      if (distRight <= hitRadius) {
+        return { node, side: 'right' };
+      }
+    }
+    
     return null;
   },
   

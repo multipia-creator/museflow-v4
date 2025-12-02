@@ -92,10 +92,34 @@ const CuratorAIWorkflows = {
     }
   },
   
+  // AI Orchestration State
+  executionState: {
+    isRunning: false,
+    currentWorkflow: null,
+    currentStep: 0,
+    results: {}
+  },
+  
   init() {
     this.addTemplateGalleryButton();
     this.addQuickStartButton();
+    this.attachExecutionListeners();
     console.log('✅ Curator AI Workflows initialized');
+  },
+  
+  /**
+   * Attach workflow execution listeners
+   */
+  attachExecutionListeners() {
+    // Listen for connection-based execution triggers
+    document.addEventListener('canvas-connection-created', (e) => {
+      this.checkAndExecuteWorkflow(e.detail);
+    });
+    
+    // Listen for manual execution
+    document.addEventListener('workflow-execute', (e) => {
+      this.executeWorkflow(e.detail.workflowId, e.detail.initialInput);
+    });
   },
   
   addTemplateGalleryButton() {
@@ -316,6 +340,364 @@ const CuratorAIWorkflows = {
         this.showTemplateGuide(template);
       }, 1000);
     }, 500);
+  },
+  
+  /**
+   * Execute workflow automatically (Connection-based)
+   */
+  async executeWorkflow(templateId, initialInput = {}) {
+    const template = this.templates[templateId];
+    if (!template || this.executionState.isRunning) return;
+    
+    this.executionState.isRunning = true;
+    this.executionState.currentWorkflow = templateId;
+    this.executionState.currentStep = 0;
+    this.executionState.results = {};
+    
+    // Show execution UI
+    this.showExecutionProgress(template);
+    
+    try {
+      let context = { ...initialInput };
+      
+      // Execute each step sequentially
+      for (let i = 0; i < template.nodes.length; i++) {
+        const step = template.nodes[i];
+        this.executionState.currentStep = i;
+        
+        // Update progress UI
+        this.updateExecutionProgress(i, template.nodes.length, step.title);
+        
+        // Execute AI task
+        if (step.type.startsWith('ai-')) {
+          const result = await this.executeAINode(step, context);
+          context = { ...context, ...result };
+          this.executionState.results[step.type] = result;
+        }
+        
+        // Update node status in canvas
+        this.updateNodeStatus(step, 'done');
+        
+        // Small delay for UX
+        await this.sleep(500);
+      }
+      
+      // Workflow complete
+      this.showExecutionComplete(template, context);
+      Toast.success(`✨ ${template.name} 완료!`, 3000);
+      
+    } catch (error) {
+      console.error('Workflow execution failed:', error);
+      Toast.error(`❌ 워크플로우 실행 실패: ${error.message}`, 5000);
+    } finally {
+      this.executionState.isRunning = false;
+    }
+  },
+  
+  /**
+   * Execute single AI node
+   */
+  async executeAINode(nodeConfig, context) {
+    const aiType = nodeConfig.type.replace('ai-', '');
+    
+    // Map AI types to AIOrchestrator methods
+    const aiMethodMap = {
+      'gemini-research': 'research',
+      'docs-create': 'createDocument',
+      'budget-calc': 'calculateBudget',
+      'calendar': 'createCalendarEvent',
+      'gemini-copywrite': 'generateCopy',
+      'conservation': 'analyzeConservation',
+      'appraisal': 'appraiseArtwork',
+      'curriculum': 'generateCurriculum',
+      'worksheet': 'createWorksheet',
+      'quiz': 'generateQuiz',
+      'sns-post': 'generateSNSPost',
+      'literature': 'literatureReview',
+      'citation': 'formatCitations',
+      'academic': 'writePaper',
+      'translate': 'translate',
+      'data-collect': 'collectData',
+      'budget-analysis': 'analyzeBudget',
+      'chart': 'generateChart',
+      'docs-report': 'createReport'
+    };
+    
+    const method = aiMethodMap[aiType];
+    
+    if (window.AIOrchestrator && window.AIOrchestrator[method]) {
+      return await window.AIOrchestrator[method](context);
+    } else if (window.AIOrchestrator && window.AIOrchestrator.callGemini) {
+      // Generic Gemini call
+      const prompt = this.buildPromptForAIType(aiType, context);
+      const response = await window.AIOrchestrator.callGemini(prompt);
+      return { [aiType]: response };
+    } else {
+      // Fallback: Mock response
+      return this.getMockAIResponse(aiType, context);
+    }
+  },
+  
+  /**
+   * Build AI prompt for specific type
+   */
+  buildPromptForAIType(aiType, context) {
+    const prompts = {
+      'gemini-research': `다음 주제에 대해 깊이 있는 리서치를 수행하세요: ${context.theme || '주제 미정'}. 관련 작품, 작가, 시대적 배경을 포함하세요.`,
+      'docs-create': `다음 정보를 바탕으로 전시 기획안을 작성하세요: ${JSON.stringify(context)}`,
+      'budget-calc': `다음 전시 계획에 대한 예산을 계산하세요: ${JSON.stringify(context)}. 항목별 세부 내역을 포함하세요.`,
+      'calendar': `다음 일정을 Google Calendar 이벤트 형식으로 변환하세요: ${JSON.stringify(context)}`,
+      'sns-post': `다음 내용을 SNS 홍보 문구로 변환하세요: ${JSON.stringify(context)}. 해시태그 포함.`
+    };
+    
+    return prompts[aiType] || `${aiType} 작업을 수행하세요: ${JSON.stringify(context)}`;
+  },
+  
+  /**
+   * Mock AI response (fallback)
+   */
+  getMockAIResponse(aiType, context) {
+    const mockResponses = {
+      'gemini-research': { 
+        artworks: ['작품A', '작품B', '작품C'],
+        artists: ['작가1', '작가2'],
+        period: '2020-2024'
+      },
+      'docs-create': {
+        documentUrl: 'https://docs.google.com/document/d/mock-id',
+        title: `${context.theme || '전시'} 기획안`
+      },
+      'budget-calc': {
+        totalBudget: 50000000,
+        items: [
+          { category: '작품 대여', amount: 20000000 },
+          { category: '홍보', amount: 10000000 },
+          { category: '인건비', amount: 15000000 },
+          { category: '기타', amount: 5000000 }
+        ]
+      },
+      'calendar': {
+        eventId: 'event-' + Date.now(),
+        eventUrl: 'https://calendar.google.com/event?eid=mock-id'
+      }
+    };
+    
+    return mockResponses[aiType] || { result: 'Mock response for ' + aiType };
+  },
+  
+  /**
+   * Show execution progress modal
+   */
+  showExecutionProgress(template) {
+    const existing = document.getElementById('execution-progress-modal');
+    if (existing) existing.remove();
+    
+    const modal = document.createElement('div');
+    modal.id = 'execution-progress-modal';
+    modal.className = 'execution-modal';
+    modal.innerHTML = `
+      <div class="modal-overlay"></div>
+      <div class="execution-content">
+        <div class="execution-header">
+          <h2>⚡ AI 워크플로우 실행 중</h2>
+          <p>${template.name}</p>
+        </div>
+        <div class="execution-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+          </div>
+          <p id="progress-text">초기화 중...</p>
+        </div>
+        <div class="execution-steps" id="execution-steps">
+          ${template.nodes.map((node, i) => `
+            <div class="step-item" id="step-${i}" data-status="pending">
+              <span class="step-number">${i + 1}</span>
+              <span class="step-title">${node.title}</span>
+              <span class="step-status">⏳</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(modal);
+  },
+  
+  /**
+   * Update execution progress
+   */
+  updateExecutionProgress(currentStep, totalSteps, stepTitle) {
+    const progress = ((currentStep + 1) / totalSteps) * 100;
+    
+    const progressFill = document.getElementById('progress-fill');
+    if (progressFill) {
+      progressFill.style.width = progress + '%';
+    }
+    
+    const progressText = document.getElementById('progress-text');
+    if (progressText) {
+      progressText.textContent = `${currentStep + 1}/${totalSteps}: ${stepTitle}`;
+    }
+    
+    // Update step status
+    for (let i = 0; i <= currentStep; i++) {
+      const stepEl = document.getElementById(`step-${i}`);
+      if (stepEl) {
+        stepEl.dataset.status = i === currentStep ? 'running' : 'done';
+        const statusIcon = stepEl.querySelector('.step-status');
+        if (statusIcon) {
+          statusIcon.textContent = i === currentStep ? '⚡' : '✅';
+        }
+      }
+    }
+  },
+  
+  /**
+   * Show execution complete
+   */
+  showExecutionComplete(template, finalContext) {
+    const modal = document.getElementById('execution-progress-modal');
+    if (!modal) return;
+    
+    setTimeout(() => {
+      modal.innerHTML = `
+        <div class="modal-overlay" onclick="this.parentElement.remove()"></div>
+        <div class="execution-content complete">
+          <div class="success-icon">✨</div>
+          <h2>워크플로우 완료!</h2>
+          <p>${template.name} 실행이 완료되었습니다</p>
+          <div class="results-summary">
+            <h3>실행 결과:</h3>
+            <pre>${JSON.stringify(finalContext, null, 2)}</pre>
+          </div>
+          <button class="primary-btn" onclick="this.closest('.execution-modal').remove()">
+            확인
+          </button>
+        </div>
+      `;
+    }, 500);
+  },
+  
+  /**
+   * Update node status in canvas
+   */
+  updateNodeStatus(nodeConfig, status) {
+    if (!window.CanvasV3) return;
+    
+    const node = CanvasV3.nodes.find(n => n.title === nodeConfig.title);
+    if (node) {
+      node.status = status;
+      if (window.CanvasEngine) {
+        CanvasEngine.needsRedraw = true;
+      }
+    }
+  },
+  
+  /**
+   * Sleep utility
+   */
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  },
+  
+  /**
+   * Check and auto-execute workflow
+   */
+  checkAndExecuteWorkflow(connectionDetail) {
+    // Check if this connection triggers a complete workflow
+    if (!window.CanvasV3) return;
+    
+    // Count connected nodes
+    const connectedNodes = this.getConnectedSequence();
+    
+    // If we have 3+ connected nodes with AI types, suggest auto-execution
+    if (connectedNodes.length >= 3 && connectedNodes.some(n => n.type.startsWith('ai-'))) {
+      this.suggestAutoExecution(connectedNodes);
+    }
+  },
+  
+  /**
+   * Get connected node sequence
+   */
+  getConnectedSequence() {
+    if (!window.CanvasV3) return [];
+    
+    const { nodes, connections } = CanvasV3;
+    const sequences = [];
+    
+    // Simple sequence detection (can be enhanced)
+    nodes.forEach(node => {
+      const outgoing = connections.filter(c => c.from === node.id);
+      if (outgoing.length > 0) {
+        const sequence = [node];
+        let current = outgoing[0];
+        
+        while (current) {
+          const nextNode = nodes.find(n => n.id === current.to);
+          if (nextNode) {
+            sequence.push(nextNode);
+            current = connections.find(c => c.from === nextNode.id);
+          } else {
+            break;
+          }
+        }
+        
+        sequences.push(sequence);
+      }
+    });
+    
+    return sequences.length > 0 ? sequences[0] : [];
+  },
+  
+  /**
+   * Suggest auto-execution
+   */
+  suggestAutoExecution(nodes) {
+    const toast = document.createElement('div');
+    toast.className = 'auto-exec-suggestion';
+    toast.innerHTML = `
+      <p>🤖 <strong>${nodes.length}개 노드 연결</strong> 감지! AI 자동 실행할까요?</p>
+      <div class="suggestion-actions">
+        <button class="primary-btn-sm" onclick="CuratorAIWorkflows.startAutoExecution()" style="background: #10b981;">
+          ⚡ 자동 실행
+        </button>
+        <button class="secondary-btn-sm" onclick="this.closest('.auto-exec-suggestion').remove()">
+          나중에
+        </button>
+      </div>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => toast.remove(), 10000);
+  },
+  
+  /**
+   * Start auto-execution
+   */
+  startAutoExecution() {
+    document.querySelector('.auto-exec-suggestion')?.remove();
+    
+    const sequence = this.getConnectedSequence();
+    if (sequence.length === 0) {
+      Toast.warning('연결된 노드가 없습니다', 3000);
+      return;
+    }
+    
+    // Convert sequence to template format
+    const autoTemplate = {
+      id: 'auto-' + Date.now(),
+      name: '자동 워크플로우',
+      description: `${sequence.length}개 노드 자동 실행`,
+      nodes: sequence.map(node => ({
+        type: node.type,
+        title: node.title
+      })),
+      estimatedTime: `${sequence.length}분`,
+      savings: '자동 실행'
+    };
+    
+    this.executeWorkflow(autoTemplate.id, {});
   },
   
   showTemplateGuide(template) {

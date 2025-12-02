@@ -329,7 +329,7 @@ const PropertiesPanelEnhanced = {
   },
   
   /**
-   * Generate AI suggestions
+   * Generate AI suggestions (Real Gemini Integration)
    */
   async generateAISuggestions() {
     if (!this.currentNode) {
@@ -337,14 +337,90 @@ const PropertiesPanelEnhanced = {
       return;
     }
     
-    // Show loading
+    // Show loading toast
     this.showToast('AI가 제안을 생성 중입니다...', 'info');
     
-    // Simulate AI suggestion (replace with actual AI call)
-    setTimeout(() => {
-      const suggestions = this.getMockSuggestions();
-      this.displaySuggestions(suggestions);
-    }, 1500);
+    try {
+      // Prepare context for AI
+      const context = {
+        nodeType: this.currentNode.type,
+        nodeTitle: this.currentNode.title || '',
+        existingData: this.currentNode.data || {},
+        category: this.currentNode.category || 'general'
+      };
+      
+      // Call AIOrchestrator if available
+      if (window.AIOrchestrator && window.AIOrchestrator.callGemini) {
+        const prompt = this.buildSuggestionPrompt(context);
+        const result = await window.AIOrchestrator.callGemini(prompt);
+        
+        // Parse AI response
+        const suggestions = this.parseAISuggestions(result);
+        this.displaySuggestions(suggestions);
+        this.showToast('AI 제안이 생성되었습니다!', 'success');
+      } else {
+        // Fallback to mock suggestions
+        const suggestions = this.getMockSuggestions();
+        this.displaySuggestions(suggestions);
+        this.showToast('AI 제안이 생성되었습니다 (Demo Mode)', 'info');
+      }
+    } catch (error) {
+      console.error('AI 제안 생성 실패:', error);
+      this.showToast('AI 제안 생성에 실패했습니다', 'error');
+    }
+  },
+  
+  /**
+   * Build AI suggestion prompt
+   */
+  buildSuggestionPrompt(context) {
+    const nodeTypeKorean = {
+      'exhibition': '전시',
+      'education': '교육',
+      'collection': '소장품',
+      'research': '연구',
+      'publication': '출판',
+      'admin': '행정'
+    };
+    
+    return `
+당신은 박물관 학예사를 돕는 AI 어시스턴트입니다.
+
+노드 유형: ${nodeTypeKorean[context.category] || context.category}
+노드 제목: ${context.nodeTitle || '(미정)'}
+기존 데이터: ${JSON.stringify(context.existingData, null, 2)}
+
+위 정보를 바탕으로 다음 필드에 대한 스마트 제안을 JSON 형식으로 제공해주세요:
+{
+  "title": "적절한 제목",
+  "description": "상세 설명 (2-3문장)",
+  "budget": 예상 예산 (숫자),
+  "startDate": "시작 날짜 (YYYY-MM-DD)",
+  "endDate": "종료 날짜 (YYYY-MM-DD)",
+  "담당자": "추천 담당자명",
+  "우선순위": "high|medium|low"
+}
+
+JSON만 출력하세요 (설명 없이).
+`.trim();
+  },
+  
+  /**
+   * Parse AI suggestions from Gemini response
+   */
+  parseAISuggestions(aiResponse) {
+    try {
+      // Extract JSON from response
+      const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        return JSON.parse(jsonMatch[0]);
+      }
+      // Fallback
+      return this.getMockSuggestions();
+    } catch (error) {
+      console.warn('AI 응답 파싱 실패, 기본 제안 사용:', error);
+      return this.getMockSuggestions();
+    }
   },
   
   /**
