@@ -2162,11 +2162,13 @@
         }
         
         function openChecklist() {
-            alert('체크리스트 기능은 곧 추가됩니다!');
+            console.log('✅ Checklist feature coming soon');
+            // Removed blocking alert - silent operation
         }
         
         function contactTeam() {
-            alert('팀 채팅 기능은 곧 추가됩니다!');
+            console.log('💬 Team chat feature coming soon');
+            // Removed blocking alert - silent operation
         }
         
         // Chart.js Configuration
@@ -2847,7 +2849,7 @@
             
             if (!projectId) {
                 console.error('❌ No project ID provided');
-                alert('프로젝트를 찾을 수 없습니다.');
+                console.warn('⚠️ 프로젝트를 찾을 수 없습니다.');
                 return;
             }
             
@@ -3301,7 +3303,7 @@
                 }
             } catch (error) {
                 console.error('❌ Error creating module project:', error);
-                alert(`모듈 프로젝트 생성 실패: ${error.message}`);
+                console.error(`모듈 프로젝트 생성 실패: ${error.message}`);
             }
         }
         
@@ -3310,7 +3312,7 @@
             editingProjectId = null;
             const modal = document.getElementById('project-modal');
             if (!modal) {
-                alert('프로젝트 생성 기능은 개발 중입니다.');
+                console.warn('프로젝트 생성 기능은 개발 중입니다.');
                 return;
             }
             document.getElementById('modal-title').textContent = '새 전시 만들기';
@@ -3746,7 +3748,7 @@
             
             const validPhases = ['planning', 'preparation', 'execution', 'marketing', 'completed'];
             if (!validPhases.includes(phase)) {
-                alert('유효하지 않은 단계입니다.');
+                console.warn('유효하지 않은 단계입니다.');
                 return;
             }
 
@@ -3784,7 +3786,7 @@
             
             const validTypes = ['exhibition', 'education', 'archive', 'publication', 'research', 'admin'];
             if (!validTypes.includes(type)) {
-                alert('유효하지 않은 유형입니다.');
+                console.warn('유효하지 않은 유형입니다.');
                 return;
             }
 
@@ -4011,7 +4013,7 @@
             const color = document.getElementById('template-color').value;
 
             if (!name || !description) {
-                alert('템플릿 이름과 설명을 입력해주세요.');
+                console.warn('템플릿 이름과 설명을 입력해주세요.');
                 return;
             }
 
@@ -5650,7 +5652,7 @@
             const query = searchInput ? searchInput.value.trim() : '';
             
             if (!query) {
-                alert('검색어를 입력해주세요.');
+                console.warn('검색어를 입력해주세요.');
                 return;
             }
             
