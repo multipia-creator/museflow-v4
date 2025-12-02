@@ -245,4 +245,253 @@ app.post('/api/widgets/preset/:presetId', async (c) => {
   }
 });
 
+// ==========================================
+// WIDGET DATA APIs - Real-time data for widgets
+// ==========================================
+
+/**
+ * GET /api/widgets/data/weather
+ * Get current weather data for museum location
+ */
+app.get('/api/widgets/data/weather', async (c) => {
+  try {
+    // Default: Seoul, South Korea
+    const lat = c.req.query('lat') || '37.5665';
+    const lon = c.req.query('lon') || '126.9780';
+
+    // Mock weather data (실제로는 OpenWeatherMap API 사용)
+    const weatherData = {
+      temperature: Math.round(15 + Math.random() * 10), // 15-25°C
+      condition: ['Sunny', 'Cloudy', 'Rainy', 'Clear'][Math.floor(Math.random() * 4)],
+      humidity: Math.round(40 + Math.random() * 40), // 40-80%
+      wind_speed: Math.round(5 + Math.random() * 10), // 5-15 km/h
+      feels_like: Math.round(14 + Math.random() * 10),
+      location: 'Seoul, KR',
+      icon: 'sun', // sun, cloud, rain, etc.
+      updated_at: new Date().toISOString()
+    };
+
+    return c.json({ success: true, data: weatherData });
+
+  } catch (error) {
+    console.error('Error fetching weather:', error);
+    return c.json({ error: 'Failed to fetch weather data' }, 500);
+  }
+});
+
+/**
+ * GET /api/widgets/data/visitor-stats
+ * Get visitor statistics for dashboard
+ */
+app.get('/api/widgets/data/visitor-stats', async (c) => {
+  try {
+    const period = c.req.query('period') || 'today'; // today, week, month
+
+    // Mock visitor statistics
+    const stats = {
+      total_visitors: Math.round(1500 + Math.random() * 500),
+      current_visitors: Math.round(50 + Math.random() * 100),
+      peak_hour: '14:00',
+      average_duration: '45 min',
+      popular_exhibits: [
+        { name: '특별전: 조선시대 도자기', visitors: 340 },
+        { name: '상설전: 한국 미술', visitors: 280 },
+        { name: '체험관', visitors: 210 }
+      ],
+      hourly_data: Array.from({ length: 12 }, (_, i) => ({
+        hour: `${9 + i}:00`,
+        visitors: Math.round(50 + Math.random() * 150)
+      })),
+      period: period,
+      updated_at: new Date().toISOString()
+    };
+
+    return c.json({ success: true, data: stats });
+
+  } catch (error) {
+    console.error('Error fetching visitor stats:', error);
+    return c.json({ error: 'Failed to fetch visitor statistics' }, 500);
+  }
+});
+
+/**
+ * GET /api/widgets/data/collection-stats
+ * Get collection statistics
+ */
+app.get('/api/widgets/data/collection-stats', async (c) => {
+  try {
+    const stats = {
+      total_items: 12450,
+      digitized: 8920,
+      on_display: 1230,
+      in_storage: 11220,
+      categories: [
+        { name: '도자기', count: 3450, percentage: 27.7 },
+        { name: '회화', count: 2890, percentage: 23.2 },
+        { name: '조각', count: 2120, percentage: 17.0 },
+        { name: '공예', count: 1780, percentage: 14.3 },
+        { name: '기타', count: 2210, percentage: 17.8 }
+      ],
+      recent_acquisitions: [
+        { title: '백자 달항아리', date: '2024-11-15', category: '도자기' },
+        { title: '조선시대 민화', date: '2024-11-08', category: '회화' },
+        { title: '청동 불상', date: '2024-10-22', category: '조각' }
+      ],
+      updated_at: new Date().toISOString()
+    };
+
+    return c.json({ success: true, data: stats });
+
+  } catch (error) {
+    console.error('Error fetching collection stats:', error);
+    return c.json({ error: 'Failed to fetch collection statistics' }, 500);
+  }
+});
+
+/**
+ * GET /api/widgets/data/event-calendar
+ * Get upcoming events
+ */
+app.get('/api/widgets/data/event-calendar', async (c) => {
+  try {
+    const limit = parseInt(c.req.query('limit') || '5');
+
+    const events = [
+      {
+        id: 1,
+        title: '큐레이터 도슨트',
+        type: 'tour',
+        start_time: new Date(Date.now() + 3600000).toISOString(), // +1 hour
+        duration: 60,
+        location: '1층 특별전시실',
+        capacity: 20,
+        registered: 15
+      },
+      {
+        id: 2,
+        title: '어린이 도자기 체험',
+        type: 'workshop',
+        start_time: new Date(Date.now() + 7200000).toISOString(), // +2 hours
+        duration: 90,
+        location: '체험관',
+        capacity: 15,
+        registered: 12
+      },
+      {
+        id: 3,
+        title: '한국 미술사 강연',
+        type: 'lecture',
+        start_time: new Date(Date.now() + 86400000).toISOString(), // +1 day
+        duration: 120,
+        location: '강당',
+        capacity: 100,
+        registered: 67
+      }
+    ].slice(0, limit);
+
+    return c.json({ success: true, data: events });
+
+  } catch (error) {
+    console.error('Error fetching events:', error);
+    return c.json({ error: 'Failed to fetch events' }, 500);
+  }
+});
+
+/**
+ * GET /api/widgets/data/notifications
+ * Get recent notifications/alerts
+ */
+app.get('/api/widgets/data/notifications', async (c) => {
+  try {
+    const userId = 1; // TODO: JWT에서 추출
+
+    const notifications = [
+      {
+        id: 1,
+        type: 'success',
+        title: '프로젝트 저장 완료',
+        message: '2024 봄 특별전 워크플로우가 저장되었습니다.',
+        timestamp: new Date(Date.now() - 300000).toISOString(), // 5 min ago
+        read: false
+      },
+      {
+        id: 2,
+        type: 'info',
+        title: '새로운 댓글',
+        message: '김미래 님이 "전시 기획안"에 댓글을 남겼습니다.',
+        timestamp: new Date(Date.now() - 1800000).toISOString(), // 30 min ago
+        read: false
+      },
+      {
+        id: 3,
+        type: 'warning',
+        title: '마감일 임박',
+        message: '전시 오프닝 준비가 3일 남았습니다.',
+        timestamp: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
+        read: true
+      }
+    ];
+
+    return c.json({ success: true, data: notifications });
+
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+    return c.json({ error: 'Failed to fetch notifications' }, 500);
+  }
+});
+
+/**
+ * GET /api/widgets/data/task-summary
+ * Get task summary for dashboard
+ */
+app.get('/api/widgets/data/task-summary', async (c) => {
+  try {
+    const userId = 1; // TODO: JWT에서 추출
+
+    const summary = {
+      total_tasks: 28,
+      completed: 15,
+      in_progress: 8,
+      pending: 5,
+      overdue: 2,
+      due_today: [
+        { id: 1, title: '도록 최종 검수', project: '2024 봄 특별전', priority: 'high' },
+        { id: 2, title: '교육 프로그램 자료 준비', project: '상설전', priority: 'medium' }
+      ],
+      completion_rate: 54, // percentage
+      updated_at: new Date().toISOString()
+    };
+
+    return c.json({ success: true, data: summary });
+
+  } catch (error) {
+    console.error('Error fetching task summary:', error);
+    return c.json({ error: 'Failed to fetch task summary' }, 500);
+  }
+});
+
+/**
+ * GET /api/widgets/data/quick-stats
+ * Get quick statistics for dashboard overview
+ */
+app.get('/api/widgets/data/quick-stats', async (c) => {
+  try {
+    const stats = {
+      active_projects: 5,
+      pending_tasks: 13,
+      team_members: 8,
+      upcoming_events: 4,
+      total_visitors_today: Math.round(1200 + Math.random() * 300),
+      revenue_today: Math.round(2500000 + Math.random() * 500000), // KRW
+      updated_at: new Date().toISOString()
+    };
+
+    return c.json({ success: true, data: stats });
+
+  } catch (error) {
+    console.error('Error fetching quick stats:', error);
+    return c.json({ error: 'Failed to fetch quick statistics' }, 500);
+  }
+});
+
 export default app;

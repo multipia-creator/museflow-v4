@@ -338,6 +338,98 @@ const AIOrchestrator = {
   },
   
   /**
+   * Execute entire workflow using Backend API
+   * This is the main entry point for running Canvas workflows
+   */
+  async executeEntireWorkflow(projectId, nodes, connections) {
+    console.log('🚀 Starting workflow execution for project:', projectId);
+    console.log('📊 Nodes:', nodes.length, 'Connections:', connections?.length || 0);
+
+    // Update UI to show execution state
+    if (window.WorkflowExecutionPanel) {
+      window.WorkflowExecutionPanel.show();
+      window.WorkflowExecutionPanel.setStatus('running', `Executing ${nodes.length} nodes...`);
+    }
+
+    try {
+      // Call Backend Workflow Execution API
+      const response = await fetch('/api/workflow/execute', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          project_id: projectId,
+          nodes: nodes,
+          connections: connections
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `API Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (!data.success) {
+        throw new Error(data.error || 'Workflow execution failed');
+      }
+
+      const execution = data.execution;
+      console.log('✅ Workflow execution completed:', execution.execution_id);
+      console.log(`📊 Status: ${execution.status}, Completed: ${execution.completed_nodes}/${execution.total_nodes}`);
+
+      // Update UI with results
+      if (window.WorkflowExecutionPanel) {
+        window.WorkflowExecutionPanel.setStatus(execution.status, 
+          `Completed: ${execution.completed_nodes}/${execution.total_nodes} nodes`);
+        window.WorkflowExecutionPanel.showResults(execution);
+      }
+
+      // Update nodes with execution results
+      if (window.CanvasV3) {
+        this.updateNodesWithResults(execution.nodes);
+      }
+
+      return execution;
+
+    } catch (error) {
+      console.error('❌ Workflow execution failed:', error);
+      
+      // Update UI with error
+      if (window.WorkflowExecutionPanel) {
+        window.WorkflowExecutionPanel.setStatus('failed', error.message);
+      }
+
+      throw error;
+    }
+  },
+
+  /**
+   * Update Canvas nodes with execution results
+   */
+  updateNodesWithResults(nodeResults) {
+    if (!window.CanvasV3 || !window.CanvasV3.nodes) return;
+
+    nodeResults.forEach(result => {
+      const canvasNode = window.CanvasV3.nodes.find(n => n.id === result.node_id);
+      if (canvasNode) {
+        canvasNode.executionStatus = result.status;
+        canvasNode.executionOutput = result.output;
+        canvasNode.executionError = result.error;
+        canvasNode.executionTime = result.execution_time_ms;
+      }
+    });
+
+    // Trigger UI update
+    if (window.CanvasV3.updateNodeInspector) {
+      window.CanvasV3.updateNodeInspector();
+    }
+    if (window.CanvasEngine) {
+      window.CanvasEngine.needsRedraw = true;
+    }
+  },
+  
+  /**
    * Setup event listeners
    */
   setupEventListeners() {
