@@ -43,15 +43,15 @@
             margin-bottom: 2rem;
         }
         
-        .dashboard-title {
-            font-size: 2rem;
-            font-weight: 800;
+        .dashboard-greeting {
+            font-size: 1.125rem;
+            font-weight: 600;
             color: #111827;
             margin-bottom: 0.5rem;
         }
         
-        .dashboard-subtitle {
-            font-size: 1rem;
+        .dashboard-date {
+            font-size: 0.875rem;
             color: #6B7280;
         }
         
@@ -104,27 +104,17 @@
         /* Hero Card - This Week Card with Alerts */
         .hero-card {
             grid-column: span 12;
-            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
-            color: white;
+            background: white;
+            color: #111827;
             padding: 2.5rem;
-            border: none;
+            border: 1px solid #E5E7EB;
             position: relative;
             overflow: hidden;
         }
         
-        .hero-card::before {
-            content: '';
-            position: absolute;
-            top: -100px;
-            right: -100px;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
-            border-radius: 50%;
-        }
-        
         .hero-card:hover {
-            transform: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
         }
         
         .hero-content {
@@ -134,7 +124,8 @@
         
         .hero-badge {
             display: inline-block;
-            background: rgba(255,255,255,0.2);
+            background: #F3F4F6;
+            color: #8B5CF6;
             padding: 0.5rem 1rem;
             border-radius: 20px;
             font-size: 0.875rem;
@@ -145,6 +136,7 @@
         .hero-title {
             font-size: 1.5rem;
             font-weight: 700;
+            color: #111827;
             margin-bottom: 1.5rem;
         }
         
@@ -158,16 +150,16 @@
         
         .alert-section,
         .task-section {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
+            background: #F9FAFB;
             padding: 1.5rem;
             border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid #E5E7EB;
         }
         
         .section-title {
             font-size: 0.875rem;
             font-weight: 700;
+            color: #111827;
             margin-bottom: 1rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -176,11 +168,17 @@
             gap: 0.5rem;
         }
         
+        .section-title i {
+            color: #8B5CF6;
+        }
+        
         .alert-item,
         .task-item {
             padding: 0.75rem;
             border-radius: 8px;
             margin-bottom: 0.75rem;
+            background: white;
+            border: 1px solid #E5E7EB;
             background: rgba(255,255,255,0.15);
             font-size: 0.875rem;
             display: flex;
@@ -189,9 +187,21 @@
             transition: all 0.2s;
         }
         
+        .alert-item strong,
+        .task-item strong {
+            color: #111827;
+            font-weight: 600;
+        }
+        
+        .alert-item,
+        .task-item {
+            color: #6B7280;
+        }
+        
         .alert-item:hover,
         .task-item:hover {
-            background: rgba(255,255,255,0.25);
+            background: #F9FAFB;
+            border-color: #8B5CF6;
         }
         
         .alert-item:last-child,
@@ -207,15 +217,15 @@
         .task-checkbox {
             width: 20px;
             height: 20px;
-            border: 2px solid rgba(255,255,255,0.5);
+            border: 2px solid #D1D5DB;
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s;
         }
         
         .task-checkbox:hover {
-            border-color: white;
-            background: rgba(255,255,255,0.2);
+            border-color: #8B5CF6;
+            background: #F3F4F6;
         }
         
         /* Stat Cards - 주요 지표 */
@@ -557,8 +567,8 @@
     <div class="dashboard-container">
         <!-- Header -->
         <div class="dashboard-header">
-            <h1 class="dashboard-title">Curator Dashboard</h1>
-            <p class="dashboard-subtitle">Today, December 2, 2025</p>
+            <p class="dashboard-greeting">반갑습니다, 학예사님. 오늘의 날씨와 기분은 어떠신가요?</p>
+            <p class="dashboard-date">2025년 12월 2일</p>
         </div>
         
         <!-- Grid Layout -->
