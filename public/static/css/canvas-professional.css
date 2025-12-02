@@ -1,0 +1,820 @@
+/**
+ * MuseFlow Canvas V3 - Professional UI/UX Enhancement
+ * Inspired by Figma, Linear, and modern design tools
+ * Version: 5.0.0
+ * Date: 2025-12-02
+ */
+
+/* ============================================
+   1. ROOT VARIABLES - Professional Design System
+   ============================================ */
+:root {
+    /* Primary Colors */
+    --museum-purple: #8b5cf6;
+    --museum-pink: #ec4899;
+    --museum-gold: #f59e0b;
+    
+    /* Background Colors */
+    --bg-canvas: #f8f9fa;
+    --bg-white: #ffffff;
+    --bg-panel: #fafbfc;
+    --bg-hover: #f3f4f6;
+    --bg-active: #e5e7eb;
+    
+    /* Text Colors */
+    --text-primary: #1a1a1f;
+    --text-secondary: #4b5563;
+    --text-tertiary: #9ca3af;
+    --text-white: #ffffff;
+    
+    /* Border Colors */
+    --border-light: #e5e7eb;
+    --border-medium: #d1d5db;
+    --border-dark: #9ca3af;
+    
+    /* Shadow Levels */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.10);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+    
+    /* Spacing System (8px grid) */
+    --space-1: 0.5rem;   /* 8px */
+    --space-2: 1rem;     /* 16px */
+    --space-3: 1.5rem;   /* 24px */
+    --space-4: 2rem;     /* 32px */
+    --space-5: 2.5rem;   /* 40px */
+    
+    /* Border Radius */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 9999px;
+    
+    /* Transitions */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   2. TOP TOOLBAR - Enhanced Professional Design
+   ============================================ */
+.toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px; /* Increased from 50px for better touch targets */
+    background: var(--bg-white);
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--space-3);
+    z-index: 1000;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition-normal);
+}
+
+.toolbar:hover {
+    box-shadow: var(--shadow-md);
+}
+
+/* Toolbar Sections */
+.toolbar-left,
+.toolbar-center,
+.toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.toolbar-center {
+    flex: 1;
+    justify-content: center;
+}
+
+/* Toolbar Logo */
+.toolbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+}
+
+.toolbar-logo:hover {
+    opacity: 0.7;
+}
+
+.toolbar-logo img {
+    width: 28px;
+    height: 28px;
+}
+
+/* Toolbar Buttons - Professional Style */
+.toolbar-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 36px; /* Consistent height */
+    min-width: 36px;
+    padding: 0 var(--space-2);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+}
+
+.toolbar-btn:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.toolbar-btn:active {
+    background: var(--bg-active);
+    transform: scale(0.98);
+}
+
+.toolbar-btn.primary {
+    background: var(--museum-purple);
+    color: var(--text-white);
+    border-color: var(--museum-purple);
+    font-weight: 600;
+}
+
+.toolbar-btn.primary:hover {
+    background: #7c3aed;
+    border-color: #7c3aed;
+}
+
+.toolbar-btn i {
+    font-size: 1rem;
+}
+
+/* Toolbar Divider */
+.toolbar-divider {
+    width: 1px;
+    height: 24px;
+    background: var(--border-light);
+    margin: 0 var(--space-1);
+}
+
+/* ============================================
+   3. LEFT PANEL - Node Library Enhancement
+   ============================================ */
+.left-panel {
+    position: fixed;
+    left: 0;
+    top: 56px; /* Match toolbar height */
+    width: 280px; /* Increased from 260px */
+    height: calc(100vh - 56px);
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    z-index: 900;
+    transition: transform var(--transition-normal);
+    overflow: hidden;
+}
+
+.left-panel.collapsed {
+    transform: translateX(-280px);
+}
+
+/* Panel Header */
+.panel-header {
+    padding: var(--space-3);
+    border-bottom: 1px solid var(--border-light);
+    background: var(--bg-white);
+}
+
+.panel-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: var(--space-2);
+}
+
+/* Search Box - Professional Enhancement */
+.search-box {
+    position: relative;
+    width: 100%;
+}
+
+.search-box input {
+    width: 100%;
+    height: 40px; /* Increased from 36px */
+    padding: 0 var(--space-2) 0 2.75rem;
+    background: var(--bg-white);
+    border: 1.5px solid var(--border-light);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--museum-purple);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.search-box input::placeholder {
+    color: var(--text-tertiary);
+}
+
+.search-box i {
+    position: absolute;
+    left: var(--space-2);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    font-size: 1rem;
+    pointer-events: none;
+}
+
+/* Node Categories - Enhanced Hierarchy */
+.node-categories {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-2);
+}
+
+.node-categories::-webkit-scrollbar {
+    width: 8px;
+}
+
+.node-categories::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.node-categories::-webkit-scrollbar-thumb {
+    background: var(--border-medium);
+    border-radius: var(--radius-full);
+}
+
+.node-categories::-webkit-scrollbar-thumb:hover {
+    background: var(--border-dark);
+}
+
+/* Category Header - Professional Style */
+.category-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-1) var(--space-2);
+    margin-bottom: 0.25rem;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    width: 100%;
+}
+
+.category-header:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.category-header.active {
+    background: var(--bg-active);
+    color: var(--museum-purple);
+}
+
+.category-header i {
+    transition: transform var(--transition-fast);
+    font-size: 0.75rem;
+}
+
+.category-header.collapsed i {
+    transform: rotate(-90deg);
+}
+
+/* Node Items - Card Style */
+.node-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2);
+    margin: 0.25rem 0;
+    background: var(--bg-white);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    cursor: grab;
+    transition: all var(--transition-fast);
+    user-select: none;
+}
+
+.node-item:hover {
+    border-color: var(--museum-purple);
+    box-shadow: var(--shadow-sm);
+    transform: translateX(4px);
+}
+
+.node-item:active {
+    cursor: grabbing;
+    transform: scale(0.98);
+}
+
+/* Node Icon - Enhanced */
+.node-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-hover);
+    border-radius: var(--radius-md);
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    transition: all var(--transition-fast);
+}
+
+.node-item:hover .node-icon {
+    background: var(--museum-purple);
+    color: var(--text-white);
+    transform: scale(1.1);
+}
+
+/* Node Info */
+.node-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.node-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.125rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.node-description {
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ============================================
+   4. RIGHT PANEL - Properties Enhancement
+   ============================================ */
+.right-panel {
+    position: fixed;
+    right: 0;
+    top: 56px;
+    width: 320px; /* Increased from 280px */
+    height: calc(100vh - 56px);
+    background: var(--bg-panel);
+    border-left: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    z-index: 900;
+    transition: transform var(--transition-normal);
+    overflow: hidden;
+}
+
+.right-panel.collapsed {
+    transform: translateX(320px);
+}
+
+/* Panel Tabs - Professional Design */
+.panel-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-light);
+    background: var(--bg-white);
+    padding: 0 var(--space-2);
+}
+
+.panel-tab {
+    flex: 1;
+    padding: var(--space-2);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-tertiary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.panel-tab:hover {
+    color: var(--text-secondary);
+}
+
+.panel-tab.active {
+    color: var(--museum-purple);
+    border-bottom-color: var(--museum-purple);
+}
+
+/* Properties Content */
+.properties-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-3);
+}
+
+.property-group {
+    margin-bottom: var(--space-4);
+}
+
+.property-group-title {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: var(--space-2);
+}
+
+/* Form Elements - Professional Enhancement */
+.form-group {
+    margin-bottom: var(--space-3);
+}
+
+.form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+    width: 100%;
+    padding: 0.625rem var(--space-2);
+    background: var(--bg-white);
+    border: 1.5px solid var(--border-light);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--museum-purple);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.form-textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* Color Picker */
+.color-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.5rem;
+}
+
+.color-option {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: var(--radius-md);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+    border-color: var(--text-primary);
+}
+
+.color-option.active {
+    border-color: var(--museum-purple);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+}
+
+/* ============================================
+   5. CANVAS CONTAINER - Grid Enhancement
+   ============================================ */
+.canvas-container {
+    position: fixed;
+    left: 280px;
+    right: 320px;
+    top: 56px;
+    bottom: 0;
+    background: var(--bg-canvas);
+    overflow: hidden;
+    transition: left var(--transition-normal), right var(--transition-normal);
+}
+
+.canvas-container.left-collapsed {
+    left: 0;
+}
+
+.canvas-container.right-collapsed {
+    right: 0;
+}
+
+/* Canvas Grid - Subtle Professional Design */
+.canvas-grid {
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(var(--border-light) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-light) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: -1px -1px;
+}
+
+/* Canvas Nodes - Professional Card Style */
+.canvas-node {
+    position: absolute;
+    min-width: 200px;
+    max-width: 320px;
+    padding: var(--space-3);
+    background: var(--bg-white);
+    border: 1.5px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    cursor: move;
+    transition: all var(--transition-fast);
+    user-select: none;
+}
+
+.canvas-node:hover {
+    box-shadow: var(--shadow-lg);
+    border-color: var(--museum-purple);
+    transform: translateY(-2px);
+}
+
+.canvas-node.selected {
+    border-color: var(--museum-purple);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2), var(--shadow-lg);
+}
+
+.node-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.node-title {
+    flex: 1;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.node-body {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* ============================================
+   6. MODAL DIALOGS - Professional Enhancement
+   ============================================ */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn var(--transition-normal);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: var(--bg-white);
+    border-radius: var(--radius-xl);
+    padding: var(--space-4);
+    max-width: 480px;
+    width: 90%;
+    box-shadow: var(--shadow-xl);
+    animation: slideUp var(--transition-normal);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    margin-bottom: var(--space-3);
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.modal-description {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.modal-footer {
+    display: flex;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border-light);
+}
+
+.modal-btn {
+    flex: 1;
+    height: 44px;
+    padding: 0 var(--space-3);
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.modal-btn.secondary {
+    background: var(--bg-hover);
+    color: var(--text-secondary);
+}
+
+.modal-btn.secondary:hover {
+    background: var(--bg-active);
+    color: var(--text-primary);
+}
+
+.modal-btn.primary {
+    background: var(--museum-purple);
+    color: var(--text-white);
+}
+
+.modal-btn.primary:hover {
+    background: #7c3aed;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ============================================
+   7. RESPONSIVE DESIGN - Mobile/Tablet
+   ============================================ */
+@media (max-width: 1024px) {
+    .left-panel {
+        width: 260px;
+    }
+    
+    .right-panel {
+        width: 280px;
+    }
+    
+    .canvas-container {
+        left: 260px;
+        right: 280px;
+    }
+}
+
+@media (max-width: 768px) {
+    .toolbar {
+        height: 52px;
+        padding: 0 var(--space-2);
+    }
+    
+    .toolbar-btn {
+        height: 32px;
+        min-width: 32px;
+        padding: 0 var(--space-1);
+        font-size: 0.8125rem;
+    }
+    
+    .toolbar-btn span {
+        display: none; /* Hide text labels on mobile */
+    }
+    
+    .left-panel,
+    .right-panel {
+        width: 100%;
+        max-width: 320px;
+        box-shadow: var(--shadow-xl);
+    }
+    
+    .canvas-container {
+        left: 0;
+        right: 0;
+    }
+    
+    .canvas-container.left-collapsed,
+    .canvas-container.right-collapsed {
+        left: 0;
+        right: 0;
+    }
+}
+
+/* ============================================
+   8. UTILITY CLASSES
+   ============================================ */
+.hidden {
+    display: none !important;
+}
+
+.fade-in {
+    animation: fadeIn var(--transition-normal);
+}
+
+.slide-up {
+    animation: slideUp var(--transition-normal);
+}
+
+/* Loading Spinner */
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid var(--border-light);
+    border-top-color: var(--museum-purple);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Badge */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.625rem;
+    background: var(--museum-purple);
+    color: var(--text-white);
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: var(--radius-full);
+}
+
+.badge.success {
+    background: #10b981;
+}
+
+.badge.warning {
+    background: #f59e0b;
+}
+
+.badge.error {
+    background: #ef4444;
+}
+
+/* Tooltip */
+.tooltip {
+    position: absolute;
+    padding: 0.5rem 0.75rem;
+    background: var(--text-primary);
+    color: var(--text-white);
+    font-size: 0.8125rem;
+    border-radius: var(--radius-md);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 9999;
+    animation: fadeIn var(--transition-fast);
+}
