@@ -57,6 +57,52 @@ const CanvasV3 = {
   // Node ID counter
   nodeIdCounter: 1,
   
+  // History for Undo/Redo
+  history: {
+    stack: [],
+    pointer: -1,
+    maxSize: 50,
+    
+    push(state) {
+      // Remove future states if we're in the middle
+      this.stack = this.stack.slice(0, this.pointer + 1);
+      
+      // Add new state
+      this.stack.push(JSON.parse(JSON.stringify(state)));
+      
+      // Limit stack size
+      if (this.stack.length > this.maxSize) {
+        this.stack.shift();
+      } else {
+        this.pointer++;
+      }
+    },
+    
+    undo() {
+      if (this.pointer > 0) {
+        this.pointer--;
+        return JSON.parse(JSON.stringify(this.stack[this.pointer]));
+      }
+      return null;
+    },
+    
+    redo() {
+      if (this.pointer < this.stack.length - 1) {
+        this.pointer++;
+        return JSON.parse(JSON.stringify(this.stack[this.pointer]));
+      }
+      return null;
+    },
+    
+    canUndo() {
+      return this.pointer > 0;
+    },
+    
+    canRedo() {
+      return this.pointer < this.stack.length - 1;
+    }
+  },
+  
   /**
    * Initialize Canvas V3
    */
@@ -2103,6 +2149,18 @@ const CanvasV3 = {
     this.rightPanelOpen = true;
     
     console.log('✨ Node created:', newNode.type, 'at', { x: newNode.x, y: newNode.y });
+    
+    // Save to history
+    if (window.UndoRedo) {
+      UndoRedo.saveState();
+    }
+    
+    // Show toast
+    if (window.Toast) {
+      const nodeName = nodeDef.name || nodeDef.id;
+      Toast.success(`노드 생성: ${nodeName}`, 2000);
+    }
+    
     CanvasEngine.needsRedraw = true;
     
     // Re-render to show properties panel
@@ -2121,6 +2179,8 @@ const CanvasV3 = {
   deleteSelectedNodes() {
     if (this.selectedNodes.length === 0) return;
     
+    const count = this.selectedNodes.length;
+    
     // Remove nodes
     this.nodes = this.nodes.filter(n => !this.selectedNodes.includes(n.id));
     
@@ -2129,8 +2189,17 @@ const CanvasV3 = {
       !this.selectedNodes.includes(c.from) && !this.selectedNodes.includes(c.to)
     );
     
-    console.log('🗑️ Deleted nodes:', this.selectedNodes.length);
-    console.log(`✅ ${this.selectedNodes.length} node(s) deleted`);
+    console.log('🗑️ Deleted nodes:', count);
+    
+    // Save to history
+    if (window.UndoRedo) {
+      UndoRedo.saveState();
+    }
+    
+    // Show toast
+    if (window.Toast) {
+      Toast.success(`${count}개 노드 삭제`, 2000);
+    }
     
     this.selectedNodes = [];
     this.rightPanelOpen = false;
@@ -2299,6 +2368,14 @@ const CanvasV3 = {
   async saveProjectData() {
     console.log('💾 Saving project data...');
     
+    // Update save status indicator
+    const saveStatus = document.getElementById('save-status');
+    if (saveStatus) {
+      saveStatus.classList.add('saving');
+      saveStatus.innerHTML = '<i data-lucide="loader" class="lucide-spin" style="width: 16px; height: 16px;"></i><span>저장 중...</span>';
+      if (window.lucide) lucide.createIcons();
+    }
+    
     const data = {
       nodes: this.nodes,
       connections: this.connections
@@ -2314,7 +2391,7 @@ const CanvasV3 = {
       
       if (response.ok) {
         console.log('✅ Data saved to D1');
-        console.log('✅ Canvas saved');
+        this.updateSaveStatus(true);
         return;
       }
     } catch (error) {
@@ -2330,10 +2407,251 @@ const CanvasV3 = {
         console.log('✅ Data saved to localStorage');
       }
     }
-    console.log('✅ Canvas saved');
+    
+    this.updateSaveStatus(true);
+  },
+  
+  updateSaveStatus(success) {
+    const saveStatus = document.getElementById('save-status');
+    if (!saveStatus) return;
+    
+    if (success) {
+      saveStatus.classList.remove('saving', 'error');
+      saveStatus.innerHTML = '<i data-lucide="check-circle" style="width: 16px; height: 16px;"></i><span>저장됨</span>';
+    } else {
+      saveStatus.classList.remove('saving');
+      saveStatus.classList.add('error');
+      saveStatus.innerHTML = '<i data-lucide="x-circle" style="width: 16px; height: 16px;"></i><span>저장 실패</span>';
+    }
+    
+    if (window.lucide) lucide.createIcons();
   }
 };
 
 // Expose globally
 window.CanvasV3 = CanvasV3;
+
+/**
+ * Toast Notification System
+ */
+const Toast = {
+  container: null,
+  
+  init() {
+    this.container = document.getElementById('toast-container');
+    if (!this.container) {
+      this.container = document.createElement('div');
+      this.container.id = 'toast-container';
+      this.container.className = 'toast-container';
+      document.body.appendChild(this.container);
+    }
+  },
+  
+  show(message, type = 'info', duration = 3000) {
+    if (!this.container) this.init();
+    
+    const icons = {
+      success: 'check-circle',
+      error: 'x-circle',
+      warning: 'alert-triangle',
+      info: 'info'
+    };
+    
+    const titles = {
+      success: '성공',
+      error: '오류',
+      warning: '경고',
+      info: '알림'
+    };
+    
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `
+      <i data-lucide="${icons[type]}" class="toast-icon"></i>
+      <div class="toast-content">
+        <div class="toast-title">${titles[type]}</div>
+        <div class="toast-message">${message}</div>
+      </div>
+      <button class="toast-close" onclick="this.parentElement.remove()">
+        <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+      </button>
+    `;
+    
+    this.container.appendChild(toast);
+    
+    // Initialize Lucide icons for toast
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+    
+    // Auto remove
+    if (duration > 0) {
+      setTimeout(() => {
+        toast.classList.add('removing');
+        setTimeout(() => toast.remove(), 300);
+      }, duration);
+    }
+    
+    return toast;
+  },
+  
+  success(message, duration) {
+    return this.show(message, 'success', duration);
+  },
+  
+  error(message, duration) {
+    return this.show(message, 'error', duration);
+  },
+  
+  warning(message, duration) {
+    return this.show(message, 'warning', duration);
+  },
+  
+  info(message, duration) {
+    return this.show(message, 'info', duration);
+  }
+};
+
+// Initialize Toast
+Toast.init();
+window.Toast = Toast;
+
+/**
+ * Node Search Functionality
+ */
+const NodeSearch = {
+  init() {
+    const searchInput = document.getElementById('node-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        this.filter(e.target.value);
+      });
+    }
+  },
+  
+  filter(query) {
+    const lowerQuery = query.toLowerCase();
+    const categories = document.querySelectorAll('.category');
+    let visibleCount = 0;
+    
+    categories.forEach(category => {
+      const nodes = category.querySelectorAll('.node-item');
+      let categoryHasVisible = false;
+      
+      nodes.forEach(node => {
+        const text = node.textContent.toLowerCase();
+        const matches = text.includes(lowerQuery);
+        
+        node.style.display = matches ? 'flex' : 'none';
+        
+        if (matches) {
+          categoryHasVisible = true;
+          visibleCount++;
+        }
+      });
+      
+      // Show/hide category
+      category.style.display = categoryHasVisible || query === '' ? 'block' : 'none';
+      
+      // Auto-expand if has matches
+      if (categoryHasVisible && query !== '') {
+        category.classList.add('expanded');
+      }
+    });
+    
+    // Show "No results" message
+    this.showNoResults(visibleCount === 0 && query !== '');
+  },
+  
+  showNoResults(show) {
+    let noResults = document.getElementById('no-search-results');
+    
+    if (show) {
+      if (!noResults) {
+        noResults = document.createElement('div');
+        noResults.id = 'no-search-results';
+        noResults.style.cssText = `
+          padding: 2rem;
+          text-align: center;
+          color: #9ca3af;
+        `;
+        noResults.innerHTML = `
+          <i data-lucide="search-x" style="width: 48px; height: 48px; margin: 0 auto 1rem; display: block; opacity: 0.5;"></i>
+          <p>검색 결과가 없습니다</p>
+        `;
+        document.getElementById('node-categories').appendChild(noResults);
+        if (window.lucide) lucide.createIcons();
+      }
+      noResults.style.display = 'block';
+    } else if (noResults) {
+      noResults.style.display = 'none';
+    }
+  }
+};
+
+// Initialize search
+NodeSearch.init();
+
+/**
+ * Undo/Redo Functionality
+ */
+const UndoRedo = {
+  init() {
+    // Save initial state
+    this.saveState();
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      // Undo: Ctrl+Z / Cmd+Z
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+        e.preventDefault();
+        this.undo();
+      }
+      
+      // Redo: Ctrl+Shift+Z / Cmd+Shift+Z or Ctrl+Y
+      if (((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'z') || 
+          (e.ctrlKey && e.key === 'y')) {
+        e.preventDefault();
+        this.redo();
+      }
+    });
+  },
+  
+  saveState() {
+    const state = {
+      nodes: CanvasV3.nodes,
+      connections: CanvasV3.connections
+    };
+    CanvasV3.history.push(state);
+  },
+  
+  undo() {
+    const state = CanvasV3.history.undo();
+    if (state) {
+      CanvasV3.nodes = state.nodes;
+      CanvasV3.connections = state.connections;
+      CanvasEngine.needsRedraw = true;
+      Toast.info('실행 취소', 2000);
+    } else {
+      Toast.warning('더 이상 실행 취소할 수 없습니다', 2000);
+    }
+  },
+  
+  redo() {
+    const state = CanvasV3.history.redo();
+    if (state) {
+      CanvasV3.nodes = state.nodes;
+      CanvasV3.connections = state.connections;
+      CanvasEngine.needsRedraw = true;
+      Toast.info('다시 실행', 2000);
+    } else {
+      Toast.warning('더 이상 다시 실행할 수 없습니다', 2000);
+    }
+  }
+};
+
+// Initialize Undo/Redo
+UndoRedo.init();
+
 console.log('✅ Canvas V3 loaded');
+console.log('✅ Toast, Search, Undo/Redo initialized');
