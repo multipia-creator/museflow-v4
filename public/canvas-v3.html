@@ -31,22 +31,13 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --museum-purple: #8b5cf6;
-            --museum-pink: #ec4899;
-            --museum-gold: #f59e0b;
-            --bg-white: #ffffff;
-            --bg-light: #f8f9fa;
-            --bg-lighter: #f1f3f5;
-            --border-light: rgba(0, 0, 0, 0.08);
-            --border-medium: rgba(0, 0, 0, 0.12);
-            --text-primary: #1a1a1a;
-            --text-secondary: #6b7280;
-            --text-tertiary: #9ca3af;
+            /* These are now defined in canvas-professional.css */
+            /* Keeping for backward compatibility */
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-white);
+            font-family: var(--font-sans);
+            background: var(--bg-secondary);
             color: var(--text-primary);
             overflow: hidden;
             height: 100vh;
