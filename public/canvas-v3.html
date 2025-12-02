@@ -2736,13 +2736,7 @@
     <div class="canvas-container" id="canvas-container">
         <canvas id="canvas" role="img" aria-label="Workflow canvas - Interactive node editor"></canvas>
         
-        <!-- Empty State -->
-        <div class="empty-state" id="empty-state">
-            <div class="empty-icon">🎨</div>
-            <div class="empty-text" style="font-weight: 700; letter-spacing: -0.02em;">Visual Workflow Canvas</div>
-            <div class="empty-hint" style="font-weight: 500; color: rgba(255, 255, 255, 0.6); margin-top: 0.75rem;">
-                <i data-lucide="arrow-left" style="width: 20px; height: 20px; margin-right: 0.5rem; animation: bounce-left 2s ease-in-out infinite; display: inline-block; vertical-align: middle;"></i>
-        </div>
+        <!-- Empty State - Removed per user request (교수님 요청으로 제거) -->
     </div>
     
     <!-- Right Panel - Properties -->
@@ -3102,20 +3096,32 @@
             // Create a default project for standalone mode
             const defaultProject = {
                 id: Date.now(),
-                name: '샘플 워크플로우',
-                description: '전시 기획 프로세스 예시',
+                name: 'New Workflow',
+                description: 'Clean empty canvas',
                 created_at: new Date().toISOString()
             };
             
             // Store in session
             sessionStorage.setItem('museflow_current_project', JSON.stringify(defaultProject));
             
-            // Initialize canvas with sample workflow
+            // Initialize empty canvas (교수님 요청: 샘플 워크플로우 제거)
             const urlParams = new URLSearchParams(window.location.search);
             urlParams.set('project', defaultProject.id);
             window.history.replaceState({}, '', `${window.location.pathname}?${urlParams}`);
             
-            loadProjectAndInit(defaultProject.id);
+            // Start with empty canvas - no sample nodes
+            initializeEmptyCanvas(defaultProject.id);
+        }
+        
+        function initializeEmptyCanvas(projectId) {
+            console.log('✅ Initializing empty canvas for project:', projectId);
+            
+            // Initialize CanvasV3 with empty nodes
+            if (window.CanvasV3) {
+                CanvasV3.nodes = [];
+                CanvasV3.connections = [];
+                CanvasV3.init();
+            }
         }
         
         function showEmptyState() {
