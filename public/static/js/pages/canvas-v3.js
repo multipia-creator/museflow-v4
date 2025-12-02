@@ -1341,8 +1341,9 @@ const CanvasV3 = {
     this.attachNodePaletteEvents();
     this.attachInspectorEvents();
     this.attachKeyboardEvents();
+    this.attachTouchEvents();
     
-    console.log('✅ All events attached');
+    console.log('✅ All events attached (including touch)');
   },
   
   /**
@@ -1928,6 +1929,120 @@ const CanvasV3 = {
         CanvasEngine.needsRedraw = true;
       }
     });
+  },
+  
+  /**
+   * Attach touch events for mobile support
+   */
+  attachTouchEvents() {
+    const canvas = this.canvasElement;
+    if (!canvas) return;
+    
+    // Touch state
+    let touchStartTime = 0;
+    let touchStartPos = { x: 0, y: 0 };
+    let initialPinchDistance = 0;
+    let initialZoom = 1;
+    
+    // Touch start
+    canvas.addEventListener('touchstart', (e) => {
+      touchStartTime = Date.now();
+      
+      if (e.touches.length === 1) {
+        // Single touch - same as mouse down
+        const touch = e.touches[0];
+        touchStartPos = { x: touch.clientX, y: touch.clientY };
+        
+        const mouseEvent = new MouseEvent('mousedown', {
+          clientX: touch.clientX,
+          clientY: touch.clientY,
+          bubbles: true
+        });
+        canvas.dispatchEvent(mouseEvent);
+      } else if (e.touches.length === 2) {
+        // Pinch zoom
+        e.preventDefault();
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        initialPinchDistance = Math.sqrt(dx * dx + dy * dy);
+        initialZoom = CanvasEngine.viewport.zoom;
+      }
+    }, { passive: false });
+    
+    // Touch move
+    canvas.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 1) {
+        // Single touch - same as mouse move
+        const touch = e.touches[0];
+        const mouseEvent = new MouseEvent('mousemove', {
+          clientX: touch.clientX,
+          clientY: touch.clientY,
+          bubbles: true
+        });
+        canvas.dispatchEvent(mouseEvent);
+      } else if (e.touches.length === 2) {
+        // Pinch zoom
+        e.preventDefault();
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        const scale = distance / initialPinchDistance;
+        const newZoom = initialZoom * scale;
+        
+        // Center point between two touches
+        const centerX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+        const centerY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+        
+        const rect = canvas.getBoundingClientRect();
+        const x = centerX - rect.left;
+        const y = centerY - rect.top;
+        
+        CanvasEngine.zoomAt(x, y, newZoom);
+        this.updateZoomDisplay();
+      }
+    }, { passive: false });
+    
+    // Touch end
+    canvas.addEventListener('touchend', (e) => {
+      const touchDuration = Date.now() - touchStartTime;
+      
+      if (e.changedTouches.length === 1) {
+        const touch = e.changedTouches[0];
+        
+        // Detect tap (< 200ms, < 10px movement)
+        const dx = touch.clientX - touchStartPos.x;
+        const dy = touch.clientY - touchStartPos.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (touchDuration < 200 && distance < 10) {
+          // Tap - same as click
+          const clickEvent = new MouseEvent('click', {
+            clientX: touch.clientX,
+            clientY: touch.clientY,
+            bubbles: true
+          });
+          canvas.dispatchEvent(clickEvent);
+        }
+        
+        // Same as mouse up
+        const mouseEvent = new MouseEvent('mouseup', {
+          clientX: touch.clientX,
+          clientY: touch.clientY,
+          bubbles: true
+        });
+        canvas.dispatchEvent(mouseEvent);
+      }
+    });
+    
+    // Prevent default touch behaviors
+    canvas.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+    
+    console.log('✅ Touch events attached');
   },
   
   /**

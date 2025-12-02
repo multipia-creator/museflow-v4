@@ -1898,7 +1898,7 @@
     
     <!-- Canvas Area -->
     <div class="canvas-container" id="canvas-container">
-        <canvas id="canvas"></canvas>
+        <canvas id="canvas" role="img" aria-label="Workflow canvas - Interactive node editor"></canvas>
         
         <!-- Empty State -->
         <div class="empty-state" id="empty-state">
@@ -2093,32 +2093,32 @@
     </div>
     
     <!-- Floating Center Toolbar (Figma Style) -->
-    <div class="floating-toolbar">
-        <button class="tool-btn active" id="tool-select" title="Select (V)" style="margin: 0;">
-            <i data-lucide="pointer" style="width: 18px; height: 18px;"></i>
+    <div class="floating-toolbar" role="toolbar" aria-label="Canvas tools">
+        <button class="tool-btn active" id="tool-select" title="Select (V)" aria-label="Select tool (V)" aria-pressed="true" style="margin: 0;">
+            <i data-lucide="pointer" style="width: 18px; height: 18px;" aria-hidden="true"></i>
         </button>
-        <button class="tool-btn" id="tool-hand" title="Hand (H)" style="margin: 0;">
-            <i data-lucide="hand" style="width: 18px; height: 18px;"></i>
+        <button class="tool-btn" id="tool-hand" title="Hand (H)" aria-label="Hand tool (H)" aria-pressed="false" style="margin: 0;">
+            <i data-lucide="hand" style="width: 18px; height: 18px;" aria-hidden="true"></i>
         </button>
-        <button class="tool-btn" id="tool-connection" title="Connection (C)" style="margin: 0;">
-            <i data-lucide="git-branch" style="width: 18px; height: 18px;"></i>
+        <button class="tool-btn" id="tool-connection" title="Connection (C)" aria-label="Connection tool (C)" aria-pressed="false" style="margin: 0;">
+            <i data-lucide="git-branch" style="width: 18px; height: 18px;" aria-hidden="true"></i>
         </button>
-        <div style="width: 1px; height: 32px; background: rgba(255, 255, 255, 0.1); margin: 0 0.25rem;"></div>
-        <button class="tool-btn" id="tool-zoom-in" title="Zoom In (+)" style="margin: 0;">
-            <i data-lucide="zoom-in" style="width: 18px; height: 18px;"></i>
+        <div style="width: 1px; height: 32px; background: rgba(255, 255, 255, 0.1); margin: 0 0.25rem;" role="separator" aria-hidden="true"></div>
+        <button class="tool-btn" id="tool-zoom-in" title="Zoom In (+)" aria-label="Zoom in (+)" style="margin: 0;">
+            <i data-lucide="zoom-in" style="width: 18px; height: 18px;" aria-hidden="true"></i>
         </button>
-        <button class="tool-btn" id="tool-zoom-out" title="Zoom Out (-)" style="margin: 0;">
-            <i data-lucide="zoom-out" style="width: 18px; height: 18px;"></i>
+        <button class="tool-btn" id="tool-zoom-out" title="Zoom Out (-)" aria-label="Zoom out (-)" style="margin: 0;">
+            <i data-lucide="zoom-out" style="width: 18px; height: 18px;" aria-hidden="true"></i>
         </button>
-        <button class="tool-btn" id="tool-zoom-reset" title="Zoom Reset (0)" style="margin: 0;">
-            <i data-lucide="maximize-2" style="width: 18px; height: 18px;"></i>
+        <button class="tool-btn" id="tool-zoom-reset" title="Zoom Reset (0)" aria-label="Reset zoom (0)" style="margin: 0;">
+            <i data-lucide="maximize-2" style="width: 18px; height: 18px;" aria-hidden="true"></i>
         </button>
     </div>
     
     <!-- AI Quick Action Panel (NEW) -->
-    <div class="ai-quick-panel" id="ai-quick-panel">
-        <button class="ai-quick-toggle" id="ai-quick-toggle" title="AI Quick Actions">
-            <i data-lucide="sparkles" style="width: 24px; height: 24px; color: white;"></i>
+    <div class="ai-quick-panel" id="ai-quick-panel" role="complementary" aria-label="AI Assistant">
+        <button class="ai-quick-toggle" id="ai-quick-toggle" title="AI Quick Actions" aria-label="Open AI Quick Actions" aria-expanded="false">
+            <i data-lucide="sparkles" style="width: 24px; height: 24px; color: white;" aria-hidden="true"></i>
         </button>
         
         <div class="ai-quick-actions" id="ai-quick-actions">
