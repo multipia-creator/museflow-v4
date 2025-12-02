@@ -20,16 +20,16 @@
 ## 🚀 Quick Start
 
 ### Production URLs
-- 🌍 **Latest (V12.0)**: https://e6e85fcc.museflow.pages.dev
-- 🎨 **Canvas V3 Enhanced**: https://e6e85fcc.museflow.pages.dev/canvas-v3
-- 🤖 **AI Orchestrator**: https://e6e85fcc.museflow.pages.dev/static/js/core/ai-orchestrator.js
-- 📊 **Dashboard**: https://e6e85fcc.museflow.pages.dev/dashboard
-- 💰 **Budget**: https://e6e85fcc.museflow.pages.dev/budget
+- 🌍 **Latest (V12.0)**: https://4eb43cf3.museflow.pages.dev
+- 🎨 **Canvas V3 Ultimate**: https://4eb43cf3.museflow.pages.dev/canvas-v3
+- 🤖 **AI Orchestrator**: https://4eb43cf3.museflow.pages.dev/static/js/core/ai-orchestrator.js
+- 📊 **Dashboard**: https://4eb43cf3.museflow.pages.dev/dashboard
+- 💰 **Budget**: https://4eb43cf3.museflow.pages.dev/budget
 
 ### GitHub
 - 📦 **Repo**: https://github.com/multipia-creator/museflow-v4
-- 🔖 **Version**: V12.0
-- 📝 **Latest Commit**: b0710ab (Phase 4-8 Complete)
+- 🔖 **Version**: V12.0 Ultimate
+- 📝 **Latest Commit**: Phase 1-8 All Complete (Onboarding + Curator AI)
 
 ---
 
