@@ -954,28 +954,41 @@
                         label: '인건비',
                         data: budgetData.personnel,
                         backgroundColor: budgetData.colors.personnel,
-                        borderRadius: 6,
-                        borderSkipped: false
+                        borderRadius: {
+                            topLeft: 6,
+                            topRight: 6,
+                            bottomLeft: 0,
+                            bottomRight: 0
+                        },
+                        borderSkipped: false,
+                        barThickness: 60,  // 고정 너비
+                        maxBarThickness: 80
                     },
                     {
                         label: '직접비',
                         data: budgetData.direct,
                         backgroundColor: budgetData.colors.direct,
-                        borderRadius: 6,
-                        borderSkipped: false
+                        borderRadius: 0,
+                        borderSkipped: false,
+                        barThickness: 60,
+                        maxBarThickness: 80
                     },
                     {
                         label: '간접비',
                         data: budgetData.indirect,
                         backgroundColor: budgetData.colors.indirect,
-                        borderRadius: 6,
-                        borderSkipped: false
+                        borderRadius: 0,
+                        borderSkipped: false,
+                        barThickness: 60,
+                        maxBarThickness: 80
                     }
                 ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                barPercentage: 0.7,  // 막대 간격 조정
+                categoryPercentage: 0.8,
                 plugins: {
                     legend: {
                         display: false  // Custom legend below
@@ -1013,7 +1026,7 @@
                         ticks: {
                             color: '#6B7280',
                             font: {
-                                size: 12,
+                                size: 13,
                                 weight: 600
                             }
                         }
@@ -1021,6 +1034,7 @@
                     y: {
                         stacked: true,
                         beginAtZero: true,
+                        max: 1200,  // 최대값 명시 (전시 1000K + 여유 200K)
                         grid: {
                             color: '#E5E7EB',
                             drawBorder: false
@@ -1030,8 +1044,10 @@
                             font: {
                                 size: 12
                             },
+                            stepSize: 200,  // 200K 단위로 표시
                             callback: function(value) {
-                                return '₩' + (value / 1000).toFixed(0) + 'K';
+                                if (value === 0) return '₩0';
+                                return '₩' + (value / 1000).toFixed(1) + 'K';
                             }
                         }
                     }
