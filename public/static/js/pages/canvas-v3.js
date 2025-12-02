@@ -39,6 +39,7 @@ const CanvasV3 = {
   isDragging: false,
   dragStart: { x: 0, y: 0 },
   draggedNodes: [],
+  mousePos: { x: 0, y: 0 },
   
   // Connection state
   isConnecting: false,
@@ -920,6 +921,24 @@ const CanvasV3 = {
    * Render canvas content
    */
   renderCanvas() {
+    // Use CanvasV3Complete rendering engine
+    if (window.CanvasV3Complete && window.CanvasV3Complete.renderCanvas) {
+      // Sync state
+      window.CanvasV3Complete.nodes = this.nodes;
+      window.CanvasV3Complete.connections = this.connections;
+      window.CanvasV3Complete.selectedNodes = this.selectedNodes;
+      window.CanvasV3Complete.hoveredNode = this.hoveredNode;
+      window.CanvasV3Complete.isConnecting = this.isConnecting;
+      window.CanvasV3Complete.connectionStart = this.connectionStart;
+      window.CanvasV3Complete.mousePos = this.mousePos;
+      window.CanvasV3Complete.canvasElement = this.canvasElement;
+      
+      // Render
+      window.CanvasV3Complete.renderCanvas();
+      return;
+    }
+    
+    // Fallback rendering (original)
     if (!this.canvasElement || !CanvasEngine.ctx) return;
     
     const ctx = CanvasEngine.ctx;
@@ -1840,7 +1859,10 @@ const CanvasV3 = {
     
     // Get node definition
     const nodeDef = this.getAllNodeTypes().find(n => n.id === nodeType);
-    if (!nodeDef) return;
+    if (!nodeDef) {
+      console.error('❌ Node type not found:', nodeType);
+      return;
+    }
     
     // Create new node
     const newNode = {
@@ -1863,7 +1885,7 @@ const CanvasV3 = {
     this.selectedNodes = [newNode.id];
     this.rightPanelOpen = true;
     
-    console.log('✨ Node created:', newNode.type);
+    console.log('✨ Node created:', newNode.type, 'at', { x: newNode.x, y: newNode.y });
     CanvasEngine.needsRedraw = true;
     
     // Re-render to show properties panel

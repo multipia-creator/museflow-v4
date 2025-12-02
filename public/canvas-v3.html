@@ -40,6 +40,16 @@
             height: 100vh;
         }
         
+        /* Lucide Icon Spin Animation */
+        .lucide-spin {
+            animation: lucide-spin 1s linear infinite;
+        }
+        
+        @keyframes lucide-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
         /* Top Toolbar - Minimal */
         .toolbar {
             position: fixed;
@@ -1154,32 +1164,32 @@
                 <span class="logo-text">MuseFlow</span>
             </a>
             <div class="project-info">
-                <i class="fas fa-palette"></i>
+                <i data-lucide="folder" style="width: 18px; height: 18px;"></i>
                 <span id="project-title">Loading...</span>
                 <button class="project-switch-btn" id="project-switch-btn" title="Switch Project">
-                    <i class="fas fa-chevron-down"></i>
+                    <i data-lucide="chevron-down" style="width: 14px; height: 14px;"></i>
                 </button>
             </div>
             <!-- Auto-save Status Indicator -->
             <div class="save-status" id="save-status">
-                <i class="fas fa-check-circle"></i>
+                <i data-lucide="check-circle" style="width: 16px; height: 16px;"></i>
                 <span>Saved</span>
             </div>
         </div>
         
         <div class="toolbar-right">
             <button class="tool-btn ai-btn" id="toggle-ai-panel" title="AI Assistant (A)">
-                <i class="fas fa-robot"></i>
+                <i data-lucide="bot" style="width: 20px; height: 20px;"></i>
             </button>
             <div style="width: 1px; height: 24px; background: var(--border-light); margin: 0 0.5rem;"></div>
             <button class="tool-btn" id="toggle-left-panel">
-                <i class="fas fa-bars"></i>
+                <i data-lucide="panel-left" style="width: 20px; height: 20px;"></i>
             </button>
             <button class="tool-btn" id="toggle-right-panel">
-                <i class="fas fa-sliders-h"></i>
+                <i data-lucide="panel-right" style="width: 20px; height: 20px;"></i>
             </button>
             <button class="tool-btn" id="save-workflow" title="Save (Ctrl+S)">
-                <i class="fas fa-save"></i>
+                <i data-lucide="save" style="width: 20px; height: 20px;"></i>
             </button>
         </div>
     </div>
@@ -1199,7 +1209,7 @@
                         <span>🎨</span>
                         <span>전시 Exhibition</span>
                     </div>
-                    <i class="fas fa-chevron-down"></i>
+                    <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
                 </div>
                 <div class="subcategory-list">
                     <div class="node-item" draggable="true" data-node-id="ex-01">
@@ -1256,7 +1266,7 @@
                         <span>📚</span>
                         <span>교육 Education</span>
                     </div>
-                    <i class="fas fa-chevron-down"></i>
+                    <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
                 </div>
                 <div class="subcategory-list">
                     <div class="node-item" draggable="true" data-node-id="ed-01">
@@ -1313,7 +1323,7 @@
                         <span>📦</span>
                         <span>아카이브 Archive</span>
                     </div>
-                    <i class="fas fa-chevron-down"></i>
+                    <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
                 </div>
                 <div class="subcategory-list">
                     <div class="node-item" draggable="true" data-node-id="ar-01">
@@ -1370,7 +1380,7 @@
                         <span>📖</span>
                         <span>출판 Publication</span>
                     </div>
-                    <i class="fas fa-chevron-down"></i>
+                    <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
                 </div>
                 <div class="subcategory-list">
                     <div class="node-item" draggable="true" data-node-id="pb-01">
@@ -1427,7 +1437,7 @@
                         <span>🔬</span>
                         <span>연구 Research</span>
                     </div>
-                    <i class="fas fa-chevron-down"></i>
+                    <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
                 </div>
                 <div class="subcategory-list">
                     <div class="node-item" draggable="true" data-node-id="rs-01">
@@ -1484,7 +1494,7 @@
                         <span>⚙️</span>
                         <span>관리 Admin</span>
                     </div>
-                    <i class="fas fa-chevron-down"></i>
+                    <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
                 </div>
                 <div class="subcategory-list">
                     <div class="node-item" draggable="true" data-node-id="ad-01">
@@ -1541,7 +1551,7 @@
                         <span>👥</span>
                         <span>참여 Engagement</span>
                     </div>
-                    <i class="fas fa-chevron-down"></i>
+                    <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
                 </div>
                 <div class="subcategory-list">
                     <div class="node-item" draggable="true" data-node-id="eg-01">
@@ -1598,7 +1608,7 @@
                         <span>💻</span>
                         <span>기술 Technology</span>
                     </div>
-                    <i class="fas fa-chevron-down"></i>
+                    <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
                 </div>
                 <div class="subcategory-list">
                     <div class="node-item" draggable="true" data-node-id="tc-01">
@@ -1659,7 +1669,7 @@
             <div class="empty-icon">🎨</div>
             <div class="empty-text" style="font-weight: 700; letter-spacing: -0.02em;">Visual Workflow Canvas</div>
             <div class="empty-hint" style="font-weight: 500; color: rgba(255, 255, 255, 0.6); margin-top: 0.75rem;">
-                <i class="fas fa-arrow-left" style="margin-right: 0.5rem; animation: bounce-left 2s ease-in-out infinite;"></i>
+                <i data-lucide="arrow-left" style="width: 20px; height: 20px; margin-right: 0.5rem; animation: bounce-left 2s ease-in-out infinite; display: inline-block; vertical-align: middle;"></i>
                 왼쪽 패널에서 노드를 드래그하여 시작하세요
             </div>
             <style>
@@ -1697,19 +1707,19 @@
                 </div>
             </div>
             <button class="ai-close-btn" id="ai-close-btn">
-                <i class="fas fa-times"></i>
+                <i data-lucide="x" style="width: 20px; height: 20px;"></i>
             </button>
         </div>
         
         <div class="ai-tabs" id="ai-tabs">
             <button class="ai-tab active" data-tab="quick">
-                <i class="fas fa-bolt"></i> Quick Actions
+                <i data-lucide="zap" style="width: 16px; height: 16px;"></i> Quick Actions
             </button>
             <button class="ai-tab" data-tab="gemini">
-                <i class="fas fa-brain"></i> Gemini
+                <i data-lucide="sparkles" style="width: 16px; height: 16px;"></i> Gemini
             </button>
             <button class="ai-tab" data-tab="workspace">
-                <i class="fas fa-briefcase"></i> Workspace
+                <i data-lucide="briefcase" style="width: 16px; height: 16px;"></i> Workspace
             </button>
         </div>
         
@@ -1721,19 +1731,19 @@
                     <h4 class="ai-section-title">🚀 빠른 실행</h4>
                     <div class="ai-action-grid">
                         <button class="ai-action-card" onclick="window.location.href='/dashboard.html'">
-                            <i class="fas fa-chart-line" style="color: #8b5cf6;"></i>
+                            <i data-lucide="layout-dashboard" style="width: 24px; height: 24px; color: #8b5cf6;"></i>
                             <span>대시보드</span>
                         </button>
                         <button class="ai-action-card" onclick="window.location.href='/budget.html'">
-                            <i class="fas fa-dollar-sign" style="color: #a855f7;"></i>
+                            <i data-lucide="dollar-sign" style="width: 24px; height: 24px; color: #a855f7;"></i>
                             <span>예산 관리</span>
                         </button>
                         <button class="ai-action-card" onclick="window.location.href='/analytics-dashboard.html'">
-                            <i class="fas fa-chart-bar" style="color: #eab308;"></i>
+                            <i data-lucide="bar-chart-2" style="width: 24px; height: 24px; color: #eab308;"></i>
                             <span>분석</span>
                         </button>
                         <button class="ai-action-card" onclick="window.location.href='/workflow-tools.html'">
-                            <i class="fas fa-tools" style="color: #6366f1;"></i>
+                            <i data-lucide="wrench" style="width: 24px; height: 24px; color: #6366f1;"></i>
                             <span>도구</span>
                         </button>
                     </div>
@@ -1743,19 +1753,19 @@
                     <h4 class="ai-section-title">🏷️ Content Generation</h4>
                     <div class="ai-action-grid">
                         <button class="ai-action-card" onclick="aiGenerateLabel()">
-                            <i class="fas fa-tag" style="color: #f59e0b;"></i>
+                            <i data-lucide="tag" style="width: 24px; height: 24px; color: #f59e0b;"></i>
                             <span>라벨 생성</span>
                         </button>
                         <button class="ai-action-card" onclick="aiGenerateSNS()">
-                            <i class="fas fa-share-alt" style="color: #3b82f6;"></i>
+                            <i data-lucide="share-2" style="width: 24px; height: 24px; color: #3b82f6;"></i>
                             <span>SNS 콘텐츠</span>
                         </button>
                         <button class="ai-action-card" onclick="aiGenerateEmail()">
-                            <i class="fas fa-envelope" style="color: #10b981;"></i>
+                            <i data-lucide="mail" style="width: 24px; height: 24px; color: #10b981;"></i>
                             <span>이메일 초안</span>
                         </button>
                         <button class="ai-action-card" onclick="aiGenerateReport()">
-                            <i class="fas fa-file-alt" style="color: #ec4899;"></i>
+                            <i data-lucide="file-text" style="width: 24px; height: 24px; color: #ec4899;"></i>
                             <span>일일 리포트</span>
                         </button>
                     </div>
@@ -1765,19 +1775,19 @@
                     <h4 class="ai-section-title">✨ Smart Features</h4>
                     <div class="ai-action-grid">
                         <button class="ai-action-card" onclick="aiAnalyzeNode()">
-                            <i class="fas fa-search"></i>
+                            <i data-lucide="search" style="width: 24px; height: 24px;"></i>
                             <span>노드 분석</span>
                         </button>
                         <button class="ai-action-card" onclick="aiImproveText()">
-                            <i class="fas fa-magic"></i>
+                            <i data-lucide="wand-2" style="width: 24px; height: 24px;"></i>
                             <span>텍스트 개선</span>
                         </button>
                         <button class="ai-action-card" onclick="aiTranslate()">
-                            <i class="fas fa-language"></i>
+                            <i data-lucide="languages" style="width: 24px; height: 24px;"></i>
                             <span>번역</span>
                         </button>
                         <button class="ai-action-card" onclick="aiSummarize()">
-                            <i class="fas fa-compress-alt"></i>
+                            <i data-lucide="minimize-2" style="width: 24px; height: 24px;"></i>
                             <span>요약</span>
                         </button>
                     </div>
@@ -1785,7 +1795,7 @@
                 
                 <div class="ai-section">
                     <div class="ai-selected-node" id="ai-selected-node">
-                        <i class="fas fa-info-circle"></i>
+                        <i data-lucide="info" style="width: 16px; height: 16px;"></i>
                         <span>노드를 선택하여 AI 기능 사용</span>
                     </div>
                 </div>
@@ -1797,7 +1807,7 @@
                     <h4 class="ai-section-title">💬 Chat with Gemini 2.0</h4>
                     <textarea class="ai-textarea" id="gemini-input" placeholder="Ask Gemini anything..." rows="4"></textarea>
                     <button class="ai-generate-btn" onclick="aiGeminiGenerate()">
-                        <i class="fas fa-paper-plane"></i> Generate
+                        <i data-lucide="send" style="width: 16px; height: 16px;"></i> Generate
                     </button>
                 </div>
                 
@@ -1807,7 +1817,7 @@
                         Results will appear here...
                     </div>
                     <button class="ai-insert-btn" onclick="aiInsertToNode()" style="display: none;" id="gemini-insert-btn">
-                        <i class="fas fa-arrow-down"></i> Insert to Selected Node
+                        <i data-lucide="arrow-down" style="width: 16px; height: 16px;"></i> Insert to Selected Node
                     </button>
                 </div>
             </div>
@@ -1817,7 +1827,7 @@
                 <div class="ai-section">
                     <h4 class="ai-section-title">📝 Google Docs</h4>
                     <button class="ai-action-card-large" onclick="aiCreateDoc()">
-                        <i class="fas fa-file-word"></i>
+                        <i data-lucide="file-text" style="width: 24px; height: 24px;"></i>
                         <span>Create Document</span>
                     </button>
                 </div>
@@ -1825,7 +1835,7 @@
                 <div class="ai-section">
                     <h4 class="ai-section-title">📧 Gmail</h4>
                     <button class="ai-action-card-large" onclick="aiDraftEmail()">
-                        <i class="fas fa-envelope-open-text"></i>
+                        <i data-lucide="mail-open" style="width: 24px; height: 24px;"></i>
                         <span>Draft Email</span>
                     </button>
                 </div>
@@ -1833,7 +1843,7 @@
                 <div class="ai-section">
                     <h4 class="ai-section-title">📅 Calendar</h4>
                     <button class="ai-action-card-large" onclick="aiCreateEvent()">
-                        <i class="fas fa-calendar-plus"></i>
+                        <i data-lucide="calendar-plus" style="width: 24px; height: 24px;"></i>
                         <span>Create Event</span>
                     </button>
                 </div>
@@ -1849,72 +1859,72 @@
     <!-- Floating Center Toolbar (Figma Style) -->
     <div class="floating-toolbar">
         <button class="tool-btn active" id="tool-select" title="Select (V)" style="margin: 0;">
-            <i class="fas fa-mouse-pointer"></i>
+            <i data-lucide="pointer" style="width: 18px; height: 18px;"></i>
         </button>
         <button class="tool-btn" id="tool-hand" title="Hand (H)" style="margin: 0;">
-            <i class="fas fa-hand-paper"></i>
+            <i data-lucide="hand" style="width: 18px; height: 18px;"></i>
         </button>
         <button class="tool-btn" id="tool-connection" title="Connection (C)" style="margin: 0;">
-            <i class="fas fa-project-diagram"></i>
+            <i data-lucide="git-branch" style="width: 18px; height: 18px;"></i>
         </button>
         <div style="width: 1px; height: 32px; background: rgba(255, 255, 255, 0.1); margin: 0 0.25rem;"></div>
         <button class="tool-btn" id="tool-zoom-in" title="Zoom In (+)" style="margin: 0;">
-            <i class="fas fa-search-plus"></i>
+            <i data-lucide="zoom-in" style="width: 18px; height: 18px;"></i>
         </button>
         <button class="tool-btn" id="tool-zoom-out" title="Zoom Out (-)" style="margin: 0;">
-            <i class="fas fa-search-minus"></i>
+            <i data-lucide="zoom-out" style="width: 18px; height: 18px;"></i>
         </button>
         <button class="tool-btn" id="tool-zoom-reset" title="Zoom Reset (0)" style="margin: 0;">
-            <i class="fas fa-compress"></i>
+            <i data-lucide="maximize-2" style="width: 18px; height: 18px;"></i>
         </button>
     </div>
     
     <!-- Context Menu -->
     <div class="context-menu" id="context-menu">
         <div class="context-menu-header">
-            <i class="fas fa-cube"></i>
+            <i data-lucide="box" style="width: 16px; height: 16px;"></i>
             <span id="context-menu-title">Node Actions</span>
         </div>
         <div class="context-menu-divider"></div>
         <button class="context-menu-item" onclick="contextMenuEdit()">
-            <i class="fas fa-edit"></i>
+            <i data-lucide="pencil" style="width: 16px; height: 16px;"></i>
             <span>Edit</span>
         </button>
         <button class="context-menu-item" onclick="contextMenuDuplicate()">
-            <i class="fas fa-copy"></i>
+            <i data-lucide="copy" style="width: 16px; height: 16px;"></i>
             <span>Duplicate</span>
         </button>
         <div class="context-menu-divider"></div>
         <button class="context-menu-item ai-item" onclick="contextMenuAIGenerate()">
-            <i class="fas fa-robot"></i>
+            <i data-lucide="bot" style="width: 16px; height: 16px;"></i>
             <span>AI Generate...</span>
-            <i class="fas fa-chevron-right" style="margin-left: auto; font-size: 0.75rem;"></i>
+            <i data-lucide="chevron-right" style="margin-left: auto; width: 12px; height: 12px;"></i>
         </button>
         <div class="context-submenu" id="ai-submenu">
             <button class="context-menu-item" onclick="contextMenuAILabel()">
-                <i class="fas fa-tag"></i>
+                <i data-lucide="tag" style="width: 16px; height: 16px;"></i>
                 <span>Exhibition Label</span>
             </button>
             <button class="context-menu-item" onclick="contextMenuAISNS()">
-                <i class="fas fa-share-alt"></i>
+                <i data-lucide="share-2" style="width: 16px; height: 16px;"></i>
                 <span>SNS Post</span>
             </button>
             <button class="context-menu-item" onclick="contextMenuAIEmail()">
-                <i class="fas fa-envelope"></i>
+                <i data-lucide="mail" style="width: 16px; height: 16px;"></i>
                 <span>Email Draft</span>
             </button>
             <button class="context-menu-item" onclick="contextMenuAIImprove()">
-                <i class="fas fa-magic"></i>
+                <i data-lucide="wand-2" style="width: 16px; height: 16px;"></i>
                 <span>Improve Text</span>
             </button>
             <button class="context-menu-item" onclick="contextMenuAITranslate()">
-                <i class="fas fa-language"></i>
+                <i data-lucide="languages" style="width: 16px; height: 16px;"></i>
                 <span>Translate</span>
             </button>
         </div>
         <div class="context-menu-divider"></div>
         <button class="context-menu-item danger" onclick="contextMenuDelete()">
-            <i class="fas fa-trash"></i>
+            <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
             <span>Delete</span>
         </button>
     </div>
@@ -1924,6 +1934,8 @@
     <script src="/static/js/core/i18n.js"></script>
     <script src="/static/js/core/canvas-engine.js"></script>
     <script src="/static/js/node-library-88.js"></script>
+    <script src="/static/js/google-mcp-client.js"></script>
+    <script src="/static/js/pages/canvas-v3-complete.js"></script>
     <script src="/static/js/pages/canvas-v3.js"></script>
     <script>
         // Initialize Canvas V3
@@ -2025,7 +2037,7 @@
                 max-width: 500px;
             `;
             message.innerHTML = `
-                <i class="fas fa-project-diagram" style="font-size: 4rem; margin-bottom: 1.5rem; display: block; opacity: 0.6;"></i>
+                <i data-lucide="workflow" style="width: 64px; height: 64px; margin-bottom: 1.5rem; display: block; opacity: 0.6;"></i>
                 <div style="font-weight: 600; font-size: 1.5rem; margin-bottom: 1rem;">프로젝트가 없습니다</div>
                 <div style="font-size: 1rem; opacity: 0.8; margin-bottom: 2rem; line-height: 1.6;">
                     먼저 대시보드에서 프로젝트를 생성해주세요.<br>
@@ -2042,10 +2054,14 @@
                     transition: all 0.3s;
                 " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 30px rgba(139, 92, 246, 0.4)'"
                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                    <i class="fas fa-arrow-left" style="margin-right: 0.5rem;"></i>
+                    <i data-lucide="arrow-left" style="width: 16px; height: 16px; margin-right: 0.5rem; display: inline-block; vertical-align: middle;"></i>
                     대시보드로 이동
                 </a>
             `;
+            // Re-initialize Lucide icons for dynamically added content
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
             document.body.appendChild(message);
         }
         
@@ -2288,7 +2304,7 @@
                         `;
                         
                         item.innerHTML = `
-                            <i class="fas fa-palette" style="color: var(--museum-purple);"></i>
+                            <i data-lucide="folder" style="width: 18px; height: 18px; color: var(--museum-purple);"></i>
                             <div>
                                 <div style="font-weight: 500;">${project.title || project.name}</div>
                                 <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5);">
@@ -2296,6 +2312,10 @@
                                 </div>
                             </div>
                         `;
+                        // Re-initialize Lucide icons
+                        if (typeof lucide !== 'undefined') {
+                            lucide.createIcons();
+                        }
                         
                         item.addEventListener('mouseenter', () => {
                             item.style.background = 'rgba(139, 92, 246, 0.2)';
@@ -2361,13 +2381,17 @@
                 
                 dropdown.innerHTML = `
                     <div style="padding: 1rem; text-align: center; color: rgba(255, 255, 255, 0.7);">
-                        <i class="fas fa-info-circle" style="color: var(--museum-purple); margin-bottom: 0.5rem;"></i>
+                        <i data-lucide="info" style="width: 20px; height: 20px; color: var(--museum-purple); margin-bottom: 0.5rem; display: inline-block;"></i>
                         <div style="font-size: 0.9rem;">Using default project</div>
                         <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.25rem;">
                             Connect to dashboard to see all projects
                         </div>
                     </div>
                 `;
+                // Re-initialize Lucide icons
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
                 
                 document.getElementById('project-dropdown')?.remove();
                 document.querySelector('.project-info').appendChild(dropdown);
@@ -2393,16 +2417,24 @@
             
             saveStatus.className = 'save-status ' + status;
             
-            const icons = {
-                saved: 'fa-check-circle',
-                saving: 'fa-spinner',
-                error: 'fa-exclamation-circle'
+            const iconMap = {
+                saved: 'check-circle',
+                saving: 'loader',
+                error: 'alert-circle'
             };
             
+            const icon = iconMap[status] || iconMap.saved;
+            const spinClass = status === 'saving' ? ' lucide-spin' : '';
+            
             saveStatus.innerHTML = `
-                <i class="fas ${icons[status] || icons.saved}"></i>
+                <i data-lucide="${icon}" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle;" class="${spinClass}"></i>
                 <span>${message}</span>
             `;
+            
+            // Re-initialize Lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
         };
         
         const autoSave = async () => {
@@ -2629,14 +2661,22 @@
             if (window.CanvasV3 && window.CanvasV3.selectedNode) {
                 const node = window.CanvasV3.selectedNode;
                 selectedNodeDiv.innerHTML = `
-                    <i class="fas fa-check-circle" style="color: #10b981;"></i>
+                    <i data-lucide="check-circle" style="width: 16px; height: 16px; color: #10b981; display: inline-block; vertical-align: middle;"></i>
                     <span><strong>${node.label || 'Node'}</strong> selected</span>
                 `;
+                // Re-initialize Lucide icons
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
             } else {
                 selectedNodeDiv.innerHTML = `
-                    <i class="fas fa-info-circle"></i>
+                    <i data-lucide="info" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle;"></i>
                     <span>Select a node to use AI features</span>
                 `;
+                // Re-initialize Lucide icons
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
             }
         }
         
@@ -2764,7 +2804,7 @@
             document.getElementById('gemini-insert-btn').style.display = 'flex';
         }
         
-        function aiGeminiGenerate() {
+        async function aiGeminiGenerate() {
             const input = document.getElementById('gemini-input').value;
             if (!input.trim()) {
                 showToast('Please enter a prompt!', 'warning');
@@ -2776,17 +2816,40 @@
             
             // Show loading state
             generateBtn.disabled = true;
-            generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
-            result.textContent = '🤖 Processing your request...\n\nPlease wait while Gemini 2.0 generates your content...';
+            generateBtn.innerHTML = '<i data-lucide="loader" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle;" class="lucide-spin"></i> Generating...';
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            result.textContent = '🤖 Processing your request with Gemini 2.0...\n\nPlease wait...';
             
-            // Simulate API call
-            setTimeout(() => {
-                result.textContent = '🤖 Generated with Gemini 2.0\n\nPrompt: ' + input + '\n\n[AI Response]\nThis is a high-quality AI-generated response. The content is contextually relevant and professionally crafted.\n\n[Note] Connect your Google API key to enable real-time Gemini 2.0 generation with live data.';
-                document.getElementById('gemini-insert-btn').style.display = 'flex';
+            // Call Google MCP API
+            try {
+                const response = await GoogleMCP.ai.generate(input);
                 
+                if (response.success) {
+                    result.innerHTML = `<div class="whitespace-pre-wrap">${response.data.content}</div>`;
+                    if (response.data.usage) {
+                        result.innerHTML += `<div class="mt-4 text-xs text-gray-400">Tokens: ${response.data.usage.totalTokens || 'N/A'}</div>`;
+                    }
+                    if (response.note) {
+                        result.innerHTML += `<div class="mt-2 text-xs text-yellow-400">${response.note}</div>`;
+                    }
+                    document.getElementById('gemini-insert-btn').style.display = 'flex';
+                    showToast('✨ Content generated successfully!', 'success');
+                } else {
+                    result.textContent = '❌ Error: ' + (response.error || 'Failed to generate content');
+                    showToast('Failed to generate content', 'error');
+                }
+            } catch (error) {
+                result.textContent = '❌ Error: ' + error.message;
+                showToast('Generation error', 'error');
+            } finally {
                 // Reset button
                 generateBtn.disabled = false;
-                generateBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Generate';
+                generateBtn.innerHTML = '<i data-lucide="send" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle;"></i> Generate';
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
                 
                 showToast('✨ Content generated successfully!', 'success');
             }, 1500);
@@ -2844,7 +2907,10 @@
             
             // Show loading
             insertBtn.disabled = true;
-            insertBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Inserting...';
+            insertBtn.innerHTML = '<i data-lucide="loader" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle;" class="lucide-spin"></i> Inserting...';
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
             
             setTimeout(() => {
                 // Insert text to node
@@ -2859,7 +2925,10 @@
                 
                 // Reset button
                 insertBtn.disabled = false;
-                insertBtn.innerHTML = '<i class="fas fa-arrow-down"></i> Insert to Selected Node';
+                insertBtn.innerHTML = '<i data-lucide="arrow-down" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle;"></i> Insert to Selected Node';
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
                 
                 // Show success with node name
                 showToast(`✅ Content inserted to "${node.label || 'Node'}"`, 'success');
@@ -2871,17 +2940,123 @@
             }, 500);
         }
         
-        // Google Workspace functions (stubs)
-        function aiCreateDoc() {
-            alert('📝 Google Docs integration coming soon!\n\nThis will create a new document with AI-generated content.');
+        // Google Workspace functions
+        async function aiCreateDoc() {
+            const node = window.CanvasV3?.selectedNode;
+            if (!node) {
+                showToast('⚠️ Please select a node first', 'warning');
+                return;
+            }
+            
+            const title = node.label || 'Untitled Document';
+            const content = node.data?.content || node.data?.description || 'No content available';
+            
+            showToast('📝 Creating Google Doc...', 'info');
+            
+            try {
+                const result = await GoogleMCP.workspace.createDoc(title, content);
+                
+                if (result.success) {
+                    const message = `✅ Document created: ${result.data.title}`;
+                    showToast(message, 'success');
+                    
+                    if (result.data.url) {
+                        const openDoc = confirm(`${message}\n\nWould you like to open it?`);
+                        if (openDoc) {
+                            window.open(result.data.url, '_blank');
+                        }
+                    }
+                    
+                    if (result.note) {
+                        console.log('📝 Note:', result.note);
+                    }
+                } else {
+                    showToast('❌ Failed to create document', 'error');
+                }
+            } catch (error) {
+                showToast('❌ Error: ' + error.message, 'error');
+            }
         }
         
-        function aiDraftEmail() {
-            alert('📧 Gmail integration coming soon!\n\nThis will draft an email in your Gmail account.');
+        async function aiDraftEmail() {
+            const node = window.CanvasV3?.selectedNode;
+            if (!node) {
+                showToast('⚠️ Please select a node first', 'warning');
+                return;
+            }
+            
+            const subject = node.label || 'Email from MuseFlow Canvas';
+            const body = node.data?.content || node.data?.description || 'No content available';
+            
+            const to = prompt('📧 Enter recipient email address:');
+            if (!to) return;
+            
+            showToast('📧 Drafting email...', 'info');
+            
+            try {
+                const result = await GoogleMCP.workspace.sendEmail(to, subject, body);
+                
+                if (result.success) {
+                    showToast(`✅ Email sent to ${to}`, 'success');
+                    
+                    if (result.note) {
+                        console.log('📧 Note:', result.note);
+                    }
+                } else {
+                    showToast('❌ Failed to send email', 'error');
+                }
+            } catch (error) {
+                showToast('❌ Error: ' + error.message, 'error');
+            }
         }
         
-        function aiCreateEvent() {
-            alert('📅 Calendar integration coming soon!\n\nThis will create an event in your Google Calendar.');
+        async function aiCreateEvent() {
+            const node = window.CanvasV3?.selectedNode;
+            if (!node) {
+                showToast('⚠️ Please select a node first', 'warning');
+                return;
+            }
+            
+            const title = node.label || 'Event from MuseFlow Canvas';
+            const description = node.data?.content || node.data?.description || '';
+            
+            // Prompt for event details
+            const startDatetime = prompt('📅 Enter start date/time (YYYY-MM-DD HH:MM):');
+            if (!startDatetime) return;
+            
+            const endDatetime = prompt('📅 Enter end date/time (YYYY-MM-DD HH:MM):');
+            if (!endDatetime) return;
+            
+            showToast('📅 Creating calendar event...', 'info');
+            
+            try {
+                const result = await GoogleMCP.workspace.scheduleEvent(
+                    title,
+                    startDatetime,
+                    endDatetime,
+                    description
+                );
+                
+                if (result.success) {
+                    const message = `✅ Event scheduled: ${result.data.title}`;
+                    showToast(message, 'success');
+                    
+                    if (result.data.url) {
+                        const openEvent = confirm(`${message}\n\nWould you like to view it?`);
+                        if (openEvent) {
+                            window.open(result.data.url, '_blank');
+                        }
+                    }
+                    
+                    if (result.note) {
+                        console.log('📅 Note:', result.note);
+                    }
+                } else {
+                    showToast('❌ Failed to create event', 'error');
+                }
+            } catch (error) {
+                showToast('❌ Error: ' + error.message, 'error');
+            }
         }
         
         // Initialize Lucide Icons

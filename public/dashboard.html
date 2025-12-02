@@ -37,12 +37,25 @@
             --warning: #f59e0b;
             --success: #10b981;
             --info: #3b82f6;
+            
+            /* White Theme Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b7280;
+            --text-tertiary: #9ca3af;
+            --border-light: rgba(0, 0, 0, 0.08);
+            --border-medium: rgba(0, 0, 0, 0.12);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
         }
         
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #000000 0%, #0a0a0f 50%, #000000 100%);
-            color: #f5f5f7;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
@@ -160,15 +173,14 @@
             transform: translateY(-2px);
         }
         
-        /* Glass Card */
+        /* White Theme Card */
         .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: saturate(180%) blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
             padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
@@ -180,9 +192,9 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.15), transparent 70%);
+            background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.03), transparent 70%);
             opacity: 0;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.3s ease;
             pointer-events: none;
         }
         
@@ -191,16 +203,16 @@
         }
         
         .glass-card:hover {
-            transform: translateY(-8px) scale(1.01);
-            box-shadow: 0 24px 70px rgba(139, 92, 246, 0.5);
-            border-color: rgba(139, 92, 246, 0.4);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(139, 92, 246, 0.2);
         }
         
         /* Hero Section - Today's Mission */
         .hero-mission {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
-            border: 2px solid rgba(139, 92, 246, 0.5);
-            border-radius: 32px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(236, 72, 153, 0.05));
+            border: 2px solid rgba(139, 92, 246, 0.15);
+            border-radius: 24px;
             padding: 3rem;
             margin-bottom: 3rem;
             position: relative;
@@ -214,7 +226,7 @@
             right: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
             animation: pulse 3s ease-in-out infinite;
         }
         
@@ -243,26 +255,27 @@
             display: inline-flex;
             align-items: center;
             gap: 0.75rem;
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(220, 38, 38, 0.2));
-            border: 2px solid rgba(239, 68, 68, 0.5);
-            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.08));
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
             padding: 1rem 1.5rem;
             font-size: 1.1rem;
             font-weight: 700;
-            color: #fca5a5;
+            color: #dc2626;
             animation: pulse-dday 2s ease-in-out infinite;
         }
         
         @keyframes pulse-dday {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
-            50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(239, 68, 68, 0.6); }
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(239, 68, 68, 0.2); }
+            50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
         }
         
         /* Urgent Alerts */
         .alert-card {
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1));
-            border: 2px solid rgba(239, 68, 68, 0.3);
-            border-radius: 20px;
+            background: #ffffff;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-left: 4px solid #ef4444;
+            border-radius: 12px;
             padding: 1.5rem;
             display: flex;
             align-items: center;
@@ -270,24 +283,25 @@
             margin-bottom: 0.75rem;
             transition: all 0.3s ease;
             cursor: pointer;
+            box-shadow: var(--shadow-sm);
         }
         
         .alert-card:hover {
-            transform: translateX(8px);
-            border-color: rgba(239, 68, 68, 0.6);
-            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
+            transform: translateX(4px);
+            border-color: rgba(239, 68, 68, 0.4);
+            box-shadow: var(--shadow-md);
         }
         
         .alert-icon {
             width: 48px;
             height: 48px;
-            background: rgba(239, 68, 68, 0.2);
+            background: rgba(239, 68, 68, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.1rem;
-            color: #fca5a5;
+            color: #ef4444;
         }
         
         /* Timeline */
@@ -297,7 +311,7 @@
             overflow-x: auto;
             padding: 1rem 0;
             scrollbar-width: thin;
-            scrollbar-color: rgba(139, 92, 246, 0.5) rgba(255, 255, 255, 0.1);
+            scrollbar-color: rgba(139, 92, 246, 0.3) var(--bg-tertiary);
         }
         
         .timeline-container::-webkit-scrollbar {
@@ -305,20 +319,24 @@
         }
         
         .timeline-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--bg-tertiary);
             border-radius: 4px;
         }
         
         .timeline-container::-webkit-scrollbar-thumb {
-            background: rgba(139, 92, 246, 0.5);
+            background: rgba(139, 92, 246, 0.3);
             border-radius: 4px;
+        }
+        
+        .timeline-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.5);
         }
         
         .timeline-day {
             flex: 0 0 auto;
             width: 200px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
             border-radius: 16px;
             padding: 1.5rem;
             transition: all 0.3s ease;
@@ -448,8 +466,8 @@
         
         /* Quick Actions */
         .quick-action {
-            background: rgba(139, 92, 246, 0.2);
-            border: 1px solid rgba(139, 92, 246, 0.4);
+            background: linear-gradient(135deg, var(--museum-purple), var(--museum-pink));
+            border: 1px solid rgba(139, 92, 246, 0.2);
             border-radius: 12px;
             padding: 1rem 1.5rem;
             color: white;
@@ -459,12 +477,12 @@
             display: inline-flex;
             align-items: center;
             gap: 0.75rem;
+            box-shadow: var(--shadow-sm);
         }
         
         .quick-action:hover {
-            background: rgba(139, 92, 246, 0.3);
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 8px 16px rgba(139, 92, 246, 0.3);
         }
         
         /* Team Activity */
@@ -473,14 +491,16 @@
             align-items: center;
             gap: 1rem;
             padding: 1rem;
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
             border-radius: 12px;
             margin-bottom: 0.75rem;
             transition: all 0.3s ease;
         }
         
         .activity-item:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--bg-tertiary);
+            border-color: var(--border-medium);
         }
         
         .avatar {
@@ -828,6 +848,267 @@
                 padding: 0.4rem 0.8rem;
             }
         }
+        
+        /* ========================================
+           WHITE THEME TEXT OVERRIDES
+           ======================================== */
+        
+        /* General text colors */
+        h1, h2, h3, h4, h5, h6, p, span, div {
+            color: inherit;
+        }
+        
+        .main-container h2,
+        .main-container h3 {
+            color: var(--text-primary);
+        }
+        
+        .day-header {
+            color: var(--text-secondary) !important;
+        }
+        
+        .day-date {
+            color: var(--text-primary);
+        }
+        
+        .day-event {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .exhibition-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            color: var(--text-primary);
+        }
+        
+        .exhibition-card:hover {
+            background: var(--bg-secondary);
+            border-color: var(--border-medium);
+        }
+        
+        .timeline-day.today {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(236, 72, 153, 0.08));
+            border: 2px solid rgba(139, 92, 246, 0.2);
+        }
+        
+        .genspark-suggestion-btn {
+            background: rgba(139, 92, 246, 0.08);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            color: var(--text-primary);
+        }
+        
+        .genspark-suggestion-btn:hover {
+            background: rgba(139, 92, 246, 0.12);
+            border-color: rgba(139, 92, 246, 0.3);
+            color: var(--museum-purple);
+        }
+        
+        .genspark-icon-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            color: var(--text-primary);
+        }
+        
+        .genspark-icon-card:hover {
+            background: var(--bg-secondary);
+            border-color: rgba(139, 92, 246, 0.2);
+        }
+        
+        /* Section backgrounds - subtle colored accents */
+        .section-overview {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.03), transparent);
+            border: 1px solid var(--border-light);
+        }
+        
+        .section-urgent {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.03), transparent);
+            border: 1px solid rgba(239, 68, 68, 0.1);
+        }
+        
+        .section-timeline {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+        }
+        
+        .section-exhibitions {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.03), transparent);
+            border: 1px solid var(--border-light);
+        }
+        
+        .section-projects {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.03), transparent);
+            border: 1px solid var(--border-light);
+        }
+        
+        .section-team {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.03), transparent);
+            border: 1px solid var(--border-light);
+        }
+        
+        .section-analytics {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.03), transparent);
+            border: 1px solid var(--border-light);
+        }
+        
+        /* Avatar and user elements */
+        .avatar {
+            border: 2px solid var(--border-light);
+        }
+        
+        /* Keep button text white */
+        .quick-action,
+        button {
+            /* Button text stays white on colored backgrounds */
+        }
+        
+        /* ========================================
+           STRONG TEXT COLOR OVERRIDES FOR WHITE THEME
+           ======================================== */
+        
+        /* Main container - all text should be dark */
+        .main-container,
+        .main-container * {
+            color: var(--text-primary);
+        }
+        
+        /* Secondary text */
+        .main-container .text-secondary,
+        .main-container small,
+        .main-container .subtitle {
+            color: var(--text-secondary) !important;
+        }
+        
+        /* Stats and numbers - should be very visible */
+        .stats-number,
+        .big-number,
+        h1, h2, h3, h4 {
+            color: var(--text-primary) !important;
+        }
+        
+        /* Card labels and descriptions */
+        .glass-card small,
+        .glass-card .label,
+        .glass-card .description {
+            color: var(--text-secondary) !important;
+        }
+        
+        /* Override any white text in main content */
+        .main-container [style*="color: rgba(255"] {
+            color: var(--text-primary) !important;
+        }
+        
+        /* Icon colors stay as-is (they have specific brand colors) */
+        .main-container i[style*="color:"] {
+            /* Keep icon colors */
+        }
+        
+        /* Timeline and calendar specific */
+        .timeline-day *,
+        .day-header,
+        .day-date,
+        .day-event * {
+            color: var(--text-primary) !important;
+        }
+        
+        /* Activity items */
+        .activity-item *,
+        .activity-name,
+        .activity-time {
+            color: var(--text-primary) !important;
+        }
+        
+        /* Exhibition cards */
+        .exhibition-card *,
+        .exhibition-title,
+        .exhibition-date {
+            color: var(--text-primary) !important;
+        }
+        
+        /* Alert cards */
+        .alert-card *,
+        .alert-title,
+        .alert-description {
+            color: var(--text-primary) !important;
+        }
+        
+        /* Empty states */
+        .empty-state,
+        .no-data {
+            color: var(--text-secondary) !important;
+        }
+        
+        /* Navbar stays white (dark background) */
+        .navbar,
+        .navbar *,
+        .nav-links a,
+        .nav-icon-btn {
+            /* Navbar colors preserved */
+        }
+        
+        /* ========================================
+           ENHANCED READABILITY
+           ======================================== */
+        
+        /* Section headers - more prominent */
+        .main-container h2 {
+            font-size: 1.5rem !important;
+            font-weight: 700 !important;
+            color: var(--text-primary) !important;
+            margin-bottom: 1.5rem !important;
+        }
+        
+        .main-container h3 {
+            font-size: 1.25rem !important;
+            font-weight: 600 !important;
+            color: var(--text-primary) !important;
+        }
+        
+        /* Stats numbers - very prominent */
+        .glass-card .big-number,
+        .stats-number {
+            font-size: 2.5rem !important;
+            font-weight: 700 !important;
+            color: var(--text-primary) !important;
+            line-height: 1.2 !important;
+        }
+        
+        /* Labels under stats - clear secondary */
+        .glass-card small,
+        .glass-card [style*="font-size: 0.8rem"],
+        .glass-card [style*="font-size: 0.875rem"] {
+            font-weight: 500 !important;
+        }
+        
+        /* Improve card contrast */
+        .glass-card {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 
+                        0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+        }
+        
+        .glass-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12), 
+                        0 0 0 1px rgba(139, 92, 246, 0.2) !important;
+        }
+        
+        /* Timeline improvements */
+        .timeline-day {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+        }
+        
+        .timeline-day:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12) !important;
+        }
+        
+        /* Activity items more readable */
+        .activity-item {
+            border: 1px solid var(--border-light) !important;
+        }
+        
+        .activity-item:hover {
+            background: var(--bg-secondary) !important;
+            border-color: var(--border-medium) !important;
+        }
     </style>
     
     <!-- PWA Configuration -->
@@ -1088,8 +1369,8 @@
                         <div style="font-size: 1.4rem; margin-bottom: 0.5rem;">
                             <i class="fas fa-project-diagram" style="color: var(--museum-purple);"></i>
                         </div>
-                        <div style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.25rem;" id="stat-total">0</div>
-                        <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.8rem;">전체 프로젝트</div>
+                        <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;" id="stat-total">0</div>
+                        <div style="color: var(--text-secondary); font-size: 0.8rem;">전체 프로젝트</div>
                     </div>
                 </div>
                 
@@ -1102,7 +1383,7 @@
                             <i class="fas fa-spinner fa-pulse" style="color: var(--museum-purple);"></i>
                         </div>
                         <div style="font-size: 2rem; font-weight: 800; margin-bottom: 0.25rem; color: var(--museum-purple);" id="stat-inprogress">0</div>
-                        <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.875rem; font-weight: 600;">진행중 🔥</div>
+                        <div style="color: var(--text-primary); font-size: 0.875rem; font-weight: 600;">진행중 🔥</div>
                     </div>
                 </div>
                 
@@ -1113,8 +1394,8 @@
                         <div style="font-size: 1.4rem; margin-bottom: 0.5rem;">
                             <i class="fas fa-check-circle" style="color: var(--green);"></i>
                         </div>
-                        <div style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.25rem;" id="stat-completed">0</div>
-                        <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.8rem;">완료</div>
+                        <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;" id="stat-completed">0</div>
+                        <div style="color: var(--text-secondary); font-size: 0.8rem;">완료</div>
                     </div>
                 </div>
                 
@@ -1125,8 +1406,8 @@
                         <div style="font-size: 1.4rem; margin-bottom: 0.5rem;">
                             <i class="fas fa-calendar-day" style="color: var(--museum-gold);"></i>
                         </div>
-                        <div style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.25rem;" id="stat-duethismonth">0</div>
-                        <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.8rem;">이번 달 마감</div>
+                        <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;" id="stat-duethismonth">0</div>
+                        <div style="color: var(--text-secondary); font-size: 0.8rem;">이번 달 마감</div>
                     </div>
                 </div>
             </div>
@@ -1162,8 +1443,8 @@
                         <i class="fas fa-check-circle" style="font-size: 1.4rem; color: rgba(255, 255, 255, 0.9);"></i>
                         <span id="completion-rate" style="font-size: 1.4rem; font-weight: 700; color: white;">0%</span>
                     </div>
-                    <div style="color: rgba(255, 255, 255, 0.9); font-weight: 600;">완료율</div>
-                    <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem; margin-top: 0.25rem;">전체 프로젝트 대비</div>
+                    <div style="color: var(--text-primary); font-weight: 600;">완료율</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.25rem;">전체 프로젝트 대비</div>
                 </div>
                 
                 <div style="background: linear-gradient(135deg, #10b981, #059669); border-radius: 16px; padding: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.1);">
@@ -1171,8 +1452,8 @@
                         <i class="fas fa-hourglass-half" style="font-size: 1.4rem; color: rgba(255, 255, 255, 0.9);"></i>
                         <span id="avg-duration" style="font-size: 1.4rem; font-weight: 700; color: white;">0일</span>
                     </div>
-                    <div style="color: rgba(255, 255, 255, 0.9); font-weight: 600;">평균 기간</div>
-                    <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem; margin-top: 0.25rem;">프로젝트당</div>
+                    <div style="color: var(--text-primary); font-weight: 600;">평균 기간</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.25rem;">프로젝트당</div>
                 </div>
                 
                 <div style="background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 16px; padding: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.1);">
@@ -1180,8 +1461,8 @@
                         <i class="fas fa-fire" style="font-size: 1.4rem; color: rgba(255, 255, 255, 0.9);"></i>
                         <span id="active-projects" style="font-size: 1.4rem; font-weight: 700; color: white;">0</span>
                     </div>
-                    <div style="color: rgba(255, 255, 255, 0.9); font-weight: 600;">진행 중</div>
-                    <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem; margin-top: 0.25rem;">현재 활성 프로젝트</div>
+                    <div style="color: var(--text-primary); font-weight: 600;">진행 중</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.25rem;">현재 활성 프로젝트</div>
                 </div>
                 
                 <div style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 16px; padding: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.1);">
@@ -1189,8 +1470,8 @@
                         <i class="fas fa-calendar-check" style="font-size: 1.4rem; color: rgba(255, 255, 255, 0.9);"></i>
                         <span id="this-month-count" style="font-size: 1.4rem; font-weight: 700; color: white;">0</span>
                     </div>
-                    <div style="color: rgba(255, 255, 255, 0.9); font-weight: 600;">이번 달</div>
-                    <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem; margin-top: 0.25rem;">신규 프로젝트</div>
+                    <div style="color: var(--text-primary); font-weight: 600;">이번 달</div>
+                    <div style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.25rem;">신규 프로젝트</div>
                 </div>
             </div>
 
@@ -1330,7 +1611,7 @@
                         프로젝트 타임라인
                     </h3>
                     <div style="display: flex; gap: 0.75rem; align-items: center;">
-                        <span style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem;">총 <span id="timeline-project-count">0</span>개 프로젝트</span>
+                        <span style="color: var(--text-secondary); font-size: 0.875rem;">총 <span id="timeline-project-count">0</span>개 프로젝트</span>
                         <button onclick="toggleTimelineGroups()" style="background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.5rem 1rem; border-radius: 8px; color: #a78bfa; cursor: pointer; font-size: 0.875rem; font-weight: 600;">
                             <i class="fas fa-layer-group"></i> 그룹화
                         </button>
@@ -1619,7 +1900,7 @@
             
             const container = document.getElementById('urgent-alerts');
             if (alerts.length === 0) {
-                container.innerHTML = '<div style="color: rgba(255, 255, 255, 0.6); padding: 2rem; text-align: center;">✅ 긴급 알림이 없습니다</div>';
+                container.innerHTML = '<div style="color: var(--text-secondary); padding: 2rem; text-align: center;">✅ 긴급 알림이 없습니다</div>';
                 return;
             }
             
@@ -1630,7 +1911,7 @@
                         <div style="font-weight: 600; margin-bottom: 0.25rem;">${alert.message}</div>
                         <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">클릭하여 자세히 보기</div>
                     </div>
-                    <i class="fas fa-chevron-right" style="color: rgba(255, 255, 255, 0.5);"></i>
+                    <i class="fas fa-chevron-right" style="color: var(--text-tertiary);"></i>
                 </div>
             `).join('');
         }
@@ -1661,7 +1942,7 @@
                         <div class="day-date">${date.getMonth() + 1}/${date.getDate()}</div>
                         ${events.length > 0 
                             ? events.map(e => `<div class="day-event">📌 ${e.title}</div>`).join('') 
-                            : '<div style="color: rgba(255, 255, 255, 0.5); font-size: 0.875rem;">일정 없음</div>'
+                            : '<div style="color: var(--text-tertiary); font-size: 0.875rem;">일정 없음</div>'
                         }
                     </div>
                 `);
@@ -1705,7 +1986,7 @@
                         <div class="card-content">
                             <span class="card-type ${type.class}">${type.icon} ${type.label}</span>
                             <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem;">${p.title}</h3>
-                            <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 0.75rem; line-height: 1.6;">
+                            <p style="color: var(--text-secondary); margin-bottom: 0.75rem; line-height: 1.6;">
                                 ${p.description || '설명 없음'}
                             </p>
                             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; font-size: 0.875rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 0.75rem;">
@@ -2417,7 +2698,7 @@
                     <div style="text-align: center; padding: 4rem 2rem; grid-column: 1 / -1;">
                         <div style="font-size: 4rem; margin-bottom: 0.75rem; opacity: 0.5;">🎨</div>
                         <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: rgba(255, 255, 255, 0.8);">전시가 없습니다</h3>
-                        <p style="color: rgba(255, 255, 255, 0.6);">새 전시를 만들어보세요!</p>
+                        <p style="color: var(--text-secondary);">새 전시를 만들어보세요!</p>
                     </div>
                 `;
                 return;
@@ -2863,7 +3144,7 @@
                         <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: rgba(255, 255, 255, 0.6); font-size: 1.1rem; cursor: pointer; padding: 0.5rem;">&times;</button>
                     </div>
                     
-                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem;">
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
                         총 <strong style="color: white;">${recommendations.length}개</strong> 프로젝트에 대한 추천사항이 있습니다.
                     </p>
                     
@@ -3196,7 +3477,7 @@
                     </div>
                     <div id="budget-usage-indicator" style="margin-top: 1rem; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border-radius: 8px; display: none;">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                            <span style="color: rgba(255, 255, 255, 0.7);">예산 사용률</span>
+                            <span style="color: var(--text-secondary);">예산 사용률</span>
                             <span id="budget-usage-percent" style="font-weight: 700;"></span>
                         </div>
                         <div style="width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 100px; overflow: hidden;">
@@ -3295,7 +3576,7 @@
                         <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer;">✕</button>
                     </div>
                     
-                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem;">
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
                         현재 ${customTemplatesList.length}개의 커스텀 템플릿이 있습니다.
                     </p>
 
@@ -3307,7 +3588,7 @@
                                         <div style="font-size: 1.4rem;">${template.icon}</div>
                                         <div>
                                             <div style="color: white; font-weight: 600; font-size: 1.1rem;">${template.name}</div>
-                                            <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem;">${template.description}</div>
+                                            <div style="color: var(--text-secondary); font-size: 0.875rem;">${template.description}</div>
                                         </div>
                                     </div>
                                     <div style="display: flex; gap: 0.5rem;">
@@ -3331,7 +3612,7 @@
 
                     <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
                         <h3 style="color: white; font-size: 0.95rem; font-weight: 600; margin-bottom: 0.75rem;">💡 템플릿 저장 방법</h3>
-                        <ol style="color: rgba(255, 255, 255, 0.7); line-height: 1.8; padding-left: 1.5rem;">
+                        <ol style="color: var(--text-secondary); line-height: 1.8; padding-left: 1.5rem;">
                             <li>프로젝트 카드에서 <strong style="color: white;">"템플릿으로 저장"</strong> 버튼 클릭</li>
                             <li>템플릿 이름과 설명 입력</li>
                             <li>저장 후 이 페이지에서 확인 가능</li>
@@ -3367,7 +3648,7 @@
                         <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer;">✕</button>
                     </div>
                     
-                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem;">
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
                         현재 ${allProjects.length}개 프로젝트를 대상으로 일괄 작업을 수행할 수 있습니다.
                     </p>
 
@@ -3594,7 +3875,7 @@
                         <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer;">✕</button>
                     </div>
                     
-                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem;">
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
                         <strong style="color: white;">${project.title}</strong> 프로젝트를 템플릿으로 저장합니다.
                     </p>
 
@@ -4171,7 +4452,7 @@
                 if (timelineGrouped) {
                     html += `
                         <div style="margin-top: 1.5rem; margin-bottom: 0.75rem;">
-                            <h4 style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">
+                            <h4 style="color: var(--text-primary); font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">
                                 ${getTypeLabel(group)} (${projects.length})
                             </h4>
                         </div>
@@ -4324,7 +4605,7 @@
                             <input type="checkbox" id="toggle-stats" ${dashboardSettings.showStats ? 'checked' : ''} onchange="toggleWidget('showStats', this.checked)" style="width: 20px; height: 20px; cursor: pointer;">
                             <div style="flex: 1;">
                                 <div style="color: white; font-weight: 600; margin-bottom: 0.25rem;">프로젝트 현황</div>
-                                <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem;">통계 카드 표시</div>
+                                <div style="color: var(--text-secondary); font-size: 0.875rem;">통계 카드 표시</div>
                             </div>
                         </label>
 
@@ -4332,7 +4613,7 @@
                             <input type="checkbox" id="toggle-analytics" ${dashboardSettings.showAnalytics ? 'checked' : ''} onchange="toggleWidget('showAnalytics', this.checked)" style="width: 20px; height: 20px; cursor: pointer;">
                             <div style="flex: 1;">
                                 <div style="color: white; font-weight: 600; margin-bottom: 0.25rem;">프로젝트 분석</div>
-                                <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem;">차트 및 분석 표시</div>
+                                <div style="color: var(--text-secondary); font-size: 0.875rem;">차트 및 분석 표시</div>
                             </div>
                         </label>
 
@@ -4340,7 +4621,7 @@
                             <input type="checkbox" id="toggle-projects" ${dashboardSettings.showProjects ? 'checked' : ''} onchange="toggleWidget('showProjects', this.checked)" style="width: 20px; height: 20px; cursor: pointer;">
                             <div style="flex: 1;">
                                 <div style="color: white; font-weight: 600; margin-bottom: 0.25rem;">프로젝트 관리</div>
-                                <div style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem;">프로젝트 목록 표시</div>
+                                <div style="color: var(--text-secondary); font-size: 0.875rem;">프로젝트 목록 표시</div>
                             </div>
                         </label>
                     </div>
@@ -4492,9 +4773,9 @@
                                 <div style="flex: 1;">
                                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
                                         <h4 style="color: white; font-weight: 600; font-size: 1rem;">${notif.title}</h4>
-                                        <span style="color: rgba(255, 255, 255, 0.5); font-size: 0.75rem; white-space: nowrap; margin-left: 1rem;">${date}</span>
+                                        <span style="color: var(--text-tertiary); font-size: 0.75rem; white-space: nowrap; margin-left: 1rem;">${date}</span>
                                     </div>
-                                    <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.875rem; line-height: 1.5;">${notif.message}</p>
+                                    <p style="color: var(--text-primary); font-size: 0.875rem; line-height: 1.5;">${notif.message}</p>
                                     ${!notif.read ? '<span style="display: inline-block; margin-top: 0.5rem; padding: 0.25rem 0.75rem; background: rgba(139, 92, 246, 0.2); color: #a78bfa; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">새 알림</span>' : ''}
                                 </div>
                             </div>
@@ -5086,7 +5367,7 @@
                     </button>
                 </div>
                 <div style="margin-bottom: 0.75rem;">
-                    <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.6;">
+                    <p style="color: var(--text-primary); line-height: 1.6;">
                         AI 기능을 사용하여 워크플로우를 최적화하고 작업을 자동화하세요.
                     </p>
                 </div>
@@ -5128,7 +5409,7 @@
                         <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer;">✕</button>
                     </div>
                     
-                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem;">
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
                         현재 ${allProjects.length}개의 프로젝트를 내보낼 수 있습니다.
                     </p>
 
@@ -5177,7 +5458,7 @@
                         <button onclick="this.closest('div').parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.1rem; cursor: pointer;">✕</button>
                     </div>
                     
-                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem;">
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
                         JSON 백업 파일을 선택하여 프로젝트를 가져올 수 있습니다.
                     </p>
 
