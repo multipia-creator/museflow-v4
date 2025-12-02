@@ -213,8 +213,8 @@ const CanvasV3Complete = {
     const endX = startX + (width / zoom) + gridSize;
     const endY = startY + (height / zoom) + gridSize;
     
-    // Draw minor grid
-    ctx.strokeStyle = '#e5e7eb';
+    // Draw minor grid (very light gray - 교수님 요청: 그리드 너무 진함 → 초연하게 수정)
+    ctx.strokeStyle = '#f3f4f6';
     ctx.lineWidth = 1 / zoom;
     ctx.beginPath();
     
@@ -229,9 +229,9 @@ const CanvasV3Complete = {
     
     ctx.stroke();
     
-    // Draw major grid
-    ctx.strokeStyle = '#d1d5db';
-    ctx.lineWidth = 2 / zoom;
+    // Draw major grid (lighter gray - 교수님 요청: 그리드 너무 진함 → 연하게 수정)
+    ctx.strokeStyle = '#e5e7eb';
+    ctx.lineWidth = 1.5 / zoom;
     ctx.beginPath();
     
     for (let x = startX; x < endX; x += majorGridSize) {

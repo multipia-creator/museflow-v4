@@ -68,27 +68,9 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
         
-        /* Floating Center Toolbar (Figma Style) */
+        /* Floating Center Toolbar REMOVED - 교수님 요청: 화면 정중앙 팔렛트 표시 삭제 */
         .floating-toolbar {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(26, 26, 31, 0.98);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 0.75rem;
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(139, 92, 246, 0.2);
-            z-index: 999;
-            transition: all 0.3s ease;
-        }
-        
-        .floating-toolbar:hover {
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(139, 92, 246, 0.4);
+            display: none !important; /* HIDDEN */
         }
         
         /* AI Quick Action Panel (NEW) */
@@ -309,20 +291,24 @@
             box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
         }
         
-        /* Left Panel - Node Library */
+        /* Left Panel - Node Library (ENHANCED: High Contrast) */
         .left-panel {
             position: fixed;
             top: 50px;
             left: 0;
             width: 300px;
             height: calc(100vh - 50px);
-            background: rgba(18, 18, 23, 0.98);
+            background: linear-gradient(180deg, 
+                rgba(26, 26, 31, 0.98) 0%, 
+                rgba(18, 18, 23, 0.98) 100%);
             backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            border-right: 2px solid rgba(139, 92, 246, 0.3);
             overflow-y: auto;
             z-index: 100;
             transition: transform 0.3s ease;
-            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 
+                2px 0 8px rgba(0, 0, 0, 0.3),
+                inset -1px 0 0 rgba(139, 92, 246, 0.1);
         }
         
         .left-panel.collapsed {
@@ -1131,17 +1117,9 @@
                 right: 0;
             }
             
-            /* 플로팅 툴바: 하단 고정 + 축소 */
+            /* 플로팅 툴바 REMOVED - 교수님 요청 */
             .floating-toolbar {
-                bottom: 0.5rem;
-                padding: 0.5rem;
-                gap: 0.375rem;
-                border-radius: 12px;
-            }
-            
-            .floating-toolbar .tool-btn {
-                width: 36px;
-                height: 36px;
+                display: none !important; /* HIDDEN */
             }
             
             /* AI Sidebar: 전체화면 */
@@ -1238,13 +1216,7 @@
             }
             
             .floating-toolbar {
-                padding: 0.375rem;
-                gap: 0.25rem;
-            }
-            
-            .floating-toolbar .tool-btn {
-                width: 32px;
-                height: 32px;
+                display: none !important; /* HIDDEN */
             }
             
             .node-item {
@@ -1626,12 +1598,17 @@
             align-items: center;
             gap: 10px;
             padding: 14px 16px;
-            color: rgba(255, 255, 255, 0.8);
+            padding-left: 13px;
+            color: rgba(255, 255, 255, 0.9);
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             user-select: none;
+            background: linear-gradient(90deg,
+                rgba(139, 92, 246, 0.15) 0%,
+                transparent 100%);
+            border-left: 3px solid rgba(139, 92, 246, 0.6);
         }
         
         .section-header:hover {
@@ -1728,12 +1705,13 @@
         
         .node-title {
             font-size: 13px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.95);
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.98);
             margin-bottom: 4px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
         
         .node-meta {
@@ -3430,28 +3408,7 @@
         <canvas id="minimap-canvas" width="200" height="150"></canvas>
     </div>
     
-    <!-- Floating Center Toolbar (Figma Style) -->
-    <div class="floating-toolbar" role="toolbar" aria-label="Canvas tools">
-        <button class="tool-btn active" id="tool-select" title="Select (V)" aria-label="Select tool (V)" aria-pressed="true" style="margin: 0;">
-            <i data-lucide="pointer" style="width: 18px; height: 18px;" aria-hidden="true"></i>
-        </button>
-        <button class="tool-btn" id="tool-hand" title="Hand (H)" aria-label="Hand tool (H)" aria-pressed="false" style="margin: 0;">
-            <i data-lucide="hand" style="width: 18px; height: 18px;" aria-hidden="true"></i>
-        </button>
-        <button class="tool-btn" id="tool-connection" title="Connection (C)" aria-label="Connection tool (C)" aria-pressed="false" style="margin: 0;">
-            <i data-lucide="git-branch" style="width: 18px; height: 18px;" aria-hidden="true"></i>
-        </button>
-        <div style="width: 1px; height: 32px; background: rgba(255, 255, 255, 0.1); margin: 0 0.25rem;" role="separator" aria-hidden="true"></div>
-        <button class="tool-btn" id="tool-zoom-in" title="Zoom In (+)" aria-label="Zoom in (+)" style="margin: 0;">
-            <i data-lucide="zoom-in" style="width: 18px; height: 18px;" aria-hidden="true"></i>
-        </button>
-        <button class="tool-btn" id="tool-zoom-out" title="Zoom Out (-)" aria-label="Zoom out (-)" style="margin: 0;">
-            <i data-lucide="zoom-out" style="width: 18px; height: 18px;" aria-hidden="true"></i>
-        </button>
-        <button class="tool-btn" id="tool-zoom-reset" title="Zoom Reset (0)" aria-label="Reset zoom (0)" style="margin: 0;">
-            <i data-lucide="maximize-2" style="width: 18px; height: 18px;" aria-hidden="true"></i>
-        </button>
-    </div>
+    <!-- Floating Center Toolbar REMOVED - 교수님 요청: 화면 정중앙 팔렛트 표시 삭제 -->
     
     <!-- AI Quick Action Panel (NEW) -->
     <div class="ai-quick-panel" id="ai-quick-panel" role="complementary" aria-label="AI Assistant">

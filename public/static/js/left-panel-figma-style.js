@@ -120,11 +120,17 @@ const LeftPanelFigma = {
   },
   
   /**
-   * Render enhanced left panel
+   * Render enhanced left panel (CRITICAL FIX: Force render)
    */
   renderEnhancedPanel() {
     const leftPanel = document.getElementById('left-panel');
-    if (!leftPanel) return;
+    if (!leftPanel) {
+      console.error('[LeftPanelFigma] ❌ left-panel element not found!');
+      return;
+    }
+    
+    // CRITICAL: Clear existing content first
+    leftPanel.innerHTML = '';
     
     leftPanel.innerHTML = `
       <!-- Search Section (Always visible) -->
@@ -175,10 +181,16 @@ const LeftPanelFigma = {
       </div>
     `;
     
-    // Re-initialize Lucide icons
-    if (window.lucide) {
-      window.lucide.createIcons();
-    }
+    // Re-initialize Lucide icons (use LucideManager)
+    setTimeout(() => {
+      if (window.LucideManager) {
+        window.LucideManager.refresh();
+      } else if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    }, 100);
+    
+    console.log('[LeftPanelFigma] ✅ Panel rendered successfully');
   },
   
   /**
