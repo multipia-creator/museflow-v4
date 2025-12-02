@@ -2212,6 +2212,24 @@
                 .then(res => res.text())
                 .then(html => {
                     document.getElementById('navbar-placeholder').innerHTML = html;
+                    
+                    // Show dashboard controls after navbar loads
+                    setTimeout(() => {
+                        const dashboardControls = document.getElementById('dashboard-controls');
+                        if (dashboardControls) {
+                            dashboardControls.style.display = 'flex';
+                        }
+                        
+                        // Update theme icon based on current theme
+                        const navThemeToggle = document.getElementById('navThemeToggle');
+                        if (navThemeToggle) {
+                            const isDark = document.body.classList.contains('dark');
+                            const icon = navThemeToggle.querySelector('i');
+                            if (icon) {
+                                icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+                            }
+                        }
+                    }, 100);
                 })
                 .catch(err => {
                     console.error('Failed to load navbar:', err);
