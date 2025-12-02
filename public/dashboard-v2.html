@@ -2211,13 +2211,30 @@
             fetch('/static/components/unified-navbar')
                 .then(res => res.text())
                 .then(html => {
-                    document.getElementById('navbar-placeholder').innerHTML = html;
+                    // Insert navbar HTML
+                    const navbarPlaceholder = document.getElementById('navbar-placeholder');
+                    navbarPlaceholder.innerHTML = html;
+                    
+                    // Re-execute scripts from navbar
+                    const scripts = navbarPlaceholder.querySelectorAll('script');
+                    scripts.forEach(script => {
+                        const newScript = document.createElement('script');
+                        if (script.src) {
+                            newScript.src = script.src;
+                        } else {
+                            newScript.textContent = script.textContent;
+                        }
+                        document.body.appendChild(newScript);
+                    });
                     
                     // Show dashboard controls after navbar loads
                     setTimeout(() => {
                         const dashboardControls = document.getElementById('dashboard-controls');
                         if (dashboardControls) {
                             dashboardControls.style.display = 'flex';
+                            console.log('Dashboard controls shown');
+                        } else {
+                            console.error('Dashboard controls not found');
                         }
                         
                         // Update theme icon based on current theme
@@ -2228,8 +2245,11 @@
                             if (icon) {
                                 icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
                             }
+                            console.log('Theme toggle icon updated');
+                        } else {
+                            console.error('Theme toggle button not found');
                         }
-                    }, 100);
+                    }, 200);
                 })
                 .catch(err => {
                     console.error('Failed to load navbar:', err);
