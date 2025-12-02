@@ -501,6 +501,41 @@
         </div>
     </div>
     
+    <!-- Color Picker Modal -->
+    <div class="widget-library-modal" id="colorPickerModal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2 class="modal-title"><i class="fas fa-palette"></i> 위젯 색상 변경</h2>
+                <button class="modal-close" onclick="closeColorPicker()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div style="padding: 1rem;">
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-primary);">프리셋 컬러</label>
+                        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem;" id="colorPresets">
+                            <!-- Color presets will be loaded here -->
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-primary);">그라디언트</label>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;" id="gradientPresets">
+                            <!-- Gradient presets will be loaded here -->
+                        </div>
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-primary);">커스텀 색상</label>
+                        <input type="color" id="customColorPicker" style="width: 100%; height: 50px; border: 2px solid var(--border-primary); border-radius: var(--radius-md); cursor: pointer;">
+                    </div>
+                    <button onclick="applyCustomColor()" style="width: 100%; margin-top: 1rem; padding: 0.75rem; background: var(--primary); color: white; border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600;">
+                        <i class="fas fa-check"></i> 적용
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- GridStack JS -->
     <script src="https://cdn.jsdelivr.net/npm/gridstack@10.0.0/dist/gridstack-all.js"></script>
     
@@ -510,6 +545,7 @@
         // ==========================================
         let grid;
         let isEditMode = false;
+        let currentWidgetForColor = null;
         
         // ==========================================
         // THEME MANAGEMENT
@@ -601,11 +637,17 @@
                 
                 // Initialize all charts after widgets are loaded
                 initializeCharts();
+                
+                // Load saved widget colors
+                setTimeout(() => loadSavedColors(), 500);
             } catch (error) {
                 console.error('Failed to load widgets:', error);
                 // Show default widgets
                 showDefaultWidgets();
                 initializeCharts();
+                
+                // Load saved widget colors
+                setTimeout(() => loadSavedColors(), 500);
             }
         }
         
@@ -651,6 +693,9 @@
                         <span>${widgetName}</span>
                     </div>
                     <div class="widget-controls">
+                        <button onclick="openColorPicker(this)" title="색상 변경">
+                            <i class="fas fa-palette"></i>
+                        </button>
                         <button onclick="refreshWidget('${widget.type}')" title="새로고침">
                             <i class="fas fa-sync-alt"></i>
                         </button>
@@ -2054,6 +2099,138 @@
             } catch (error) {
                 console.error('Failed to add widget:', error);
             }
+        }
+        
+        // ==========================================
+        // COLOR PICKER
+        // ==========================================
+        const colorPresets = [
+            { name: 'Purple', value: '#8B5CF6' },
+            { name: 'Blue', value: '#3B82F6' },
+            { name: 'Green', value: '#10B981' },
+            { name: 'Yellow', value: '#F59E0B' },
+            { name: 'Red', value: '#EF4444' },
+            { name: 'Pink', value: '#EC4899' },
+            { name: 'Indigo', value: '#6366F1' },
+            { name: 'Teal', value: '#14B8A6' },
+            { name: 'Orange', value: '#F97316' },
+            { name: 'Gray', value: '#6B7280' }
+        ];
+        
+        const gradientPresets = [
+            { name: 'Purple Dream', value: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+            { name: 'Sunny Morning', value: 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)' },
+            { name: 'Ocean Blue', value: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
+            { name: 'Green Beach', value: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
+            { name: 'Pink Sunset', value: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
+            { name: 'Night Sky', value: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)' }
+        ];
+        
+        function openColorPicker(btn) {
+            currentWidgetForColor = btn.closest('.grid-stack-item');
+            const modal = document.getElementById('colorPickerModal');
+            modal.classList.add('active');
+            
+            // Load color presets
+            const presetsContainer = document.getElementById('colorPresets');
+            presetsContainer.innerHTML = colorPresets.map(color => `
+                <div onclick="applyWidgetColor('${color.value}')" 
+                     style="aspect-ratio: 1; background: ${color.value}; border-radius: var(--radius-md); cursor: pointer; border: 3px solid transparent; transition: all 0.2s;"
+                     onmouseover="this.style.borderColor='var(--primary)'; this.style.transform='scale(1.1)'"
+                     onmouseout="this.style.borderColor='transparent'; this.style.transform='scale(1)'"
+                     title="${color.name}">
+                </div>
+            `).join('');
+            
+            // Load gradient presets
+            const gradientsContainer = document.getElementById('gradientPresets');
+            gradientsContainer.innerHTML = gradientPresets.map(gradient => `
+                <div onclick="applyWidgetColor('${gradient.value}')" 
+                     style="aspect-ratio: 1; background: ${gradient.value}; border-radius: var(--radius-md); cursor: pointer; border: 3px solid transparent; transition: all 0.2s;"
+                     onmouseover="this.style.borderColor='var(--primary)'; this.style.transform='scale(1.05)'"
+                     onmouseout="this.style.borderColor='transparent'; this.style.transform='scale(1)'"
+                     title="${gradient.name}">
+                </div>
+            `).join('');
+        }
+        
+        function closeColorPicker() {
+            const modal = document.getElementById('colorPickerModal');
+            modal.classList.remove('active');
+            currentWidgetForColor = null;
+        }
+        
+        function applyWidgetColor(color) {
+            if (currentWidgetForColor) {
+                // Apply color to widget header
+                const header = currentWidgetForColor.querySelector('.widget-header');
+                if (header) {
+                    header.style.background = color;
+                    
+                    // Adjust text color based on background
+                    const isGradient = color.includes('gradient');
+                    if (isGradient || isDarkColor(color)) {
+                        header.style.color = 'white';
+                        header.querySelectorAll('button').forEach(btn => {
+                            btn.style.color = 'white';
+                        });
+                    } else {
+                        header.style.color = 'var(--text-primary)';
+                        header.querySelectorAll('button').forEach(btn => {
+                            btn.style.color = 'var(--text-secondary)';
+                        });
+                    }
+                }
+                
+                // Save color preference to localStorage
+                const widgetId = currentWidgetForColor.getAttribute('gs-id');
+                if (widgetId) {
+                    const savedColors = JSON.parse(localStorage.getItem('widgetColors') || '{}');
+                    savedColors[widgetId] = color;
+                    localStorage.setItem('widgetColors', JSON.stringify(savedColors));
+                }
+                
+                closeColorPicker();
+            }
+        }
+        
+        function applyCustomColor() {
+            const colorInput = document.getElementById('customColorPicker');
+            const color = colorInput.value;
+            applyWidgetColor(color);
+        }
+        
+        function isDarkColor(color) {
+            // Simple dark color detection
+            const hex = color.replace('#', '');
+            const r = parseInt(hex.substr(0, 2), 16);
+            const g = parseInt(hex.substr(2, 2), 16);
+            const b = parseInt(hex.substr(4, 2), 16);
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+            return brightness < 128;
+        }
+        
+        // Load saved widget colors on page load
+        function loadSavedColors() {
+            const savedColors = JSON.parse(localStorage.getItem('widgetColors') || '{}');
+            Object.keys(savedColors).forEach(widgetId => {
+                const widget = document.querySelector(`[gs-id="${widgetId}"]`);
+                if (widget) {
+                    const header = widget.querySelector('.widget-header');
+                    if (header) {
+                        const color = savedColors[widgetId];
+                        header.style.background = color;
+                        
+                        const isGradient = color.includes('gradient');
+                        if (isGradient || isDarkColor(color)) {
+                            header.style.color = 'white';
+                            header.querySelectorAll('button').forEach(btn => {
+                                btn.style.color = 'white';
+                            });
+                        }
+                    }
+                }
+            });
         }
         
         // ==========================================
