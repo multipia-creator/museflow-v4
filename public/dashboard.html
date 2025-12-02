@@ -133,18 +133,27 @@
             margin-bottom: 1rem;
         }
         
+        /* Hero Header - Title + Search */
+        .hero-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
         .hero-title {
             font-size: 1.5rem;
             font-weight: 700;
             color: #111827;
-            margin-bottom: 1rem;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         
         /* AI Search Box */
         .ai-search-container {
             position: relative;
-            margin-bottom: 1.5rem;
-            max-width: 800px;
+            flex: 1;
+            min-width: 0;
         }
         
         .ai-search-box {
@@ -560,6 +569,14 @@
                 grid-column: span 6;
             }
             
+            .hero-header {
+                gap: 1.5rem;
+            }
+            
+            .hero-title {
+                font-size: 1.375rem;
+            }
+            
             .hero-grid {
                 grid-template-columns: 1fr;
             }
@@ -585,6 +602,17 @@
             
             .dashboard-grid {
                 gap: 1rem;
+            }
+            
+            .hero-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+            
+            .hero-title {
+                white-space: normal;
+                font-size: 1.25rem;
             }
             
             .hero-grid {
@@ -678,21 +706,25 @@
             <div class="card hero-card">
                 <div class="hero-content">
                     <span class="hero-badge">📊 This Week</span>
-                    <h2 class="hero-title">전시 프로젝트 진행률이 15% 증가했습니다</h2>
                     
-                    <!-- AI Search Box -->
-                    <div class="ai-search-container">
-                        <div class="ai-search-box">
-                            <i class="fas fa-sparkles ai-search-icon"></i>
-                            <input 
-                                type="text" 
-                                class="ai-search-input" 
-                                placeholder="AI에게 무엇이든 물어보세요... (예: 이번 달 전시 현황, 예산 분석, 소장품 검색)"
-                                id="aiSearchInput"
-                            />
-                            <button class="ai-voice-btn" id="aiVoiceBtn" title="음성 입력">
-                                <i class="fas fa-microphone"></i>
-                            </button>
+                    <!-- Hero Header: Title + AI Search -->
+                    <div class="hero-header">
+                        <h2 class="hero-title">전시 프로젝트 진행률이 15% 증가했습니다</h2>
+                        
+                        <!-- AI Search Box -->
+                        <div class="ai-search-container">
+                            <div class="ai-search-box">
+                                <i class="fas fa-sparkles ai-search-icon"></i>
+                                <input 
+                                    type="text" 
+                                    class="ai-search-input" 
+                                    placeholder="AI에게 무엇이든 물어보세요... (예: 이번 달 전시 현황, 예산 분석, 소장품 검색)"
+                                    id="aiSearchInput"
+                                />
+                                <button class="ai-voice-btn" id="aiVoiceBtn" title="음성 입력">
+                                    <i class="fas fa-microphone"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
