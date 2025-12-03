@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuseFlow - 3D Digital Twin Viewer</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Design System -->
+    <link rel="stylesheet" href="/static/css/museflow-design-system.css">
+    <link rel="stylesheet" href="/static/css/unified-navbar.css">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow: hidden;
+            padding-top: 64px;
+        }
+        
+        .viewer-container {
+            display: flex;
+            height: calc(100vh - 64px);
+            position: relative;
+        }
+        
+        /* 3D Canvas */
+        #three-canvas {
+            flex: 1;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+        }
+        
+        /* Control Panel */
+        .control-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 8px 32px rgba(138, 43, 226, 0.2);
+            z-index: 100;
+        }
+        
+        .control-panel h3 {
+            margin: 0 0 16px 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #8a2be2;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .control-group {
+            margin-bottom: 16px;
+        }
+        
+        .control-group label {
+            display: block;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .control-group select,
+        .control-group input[type="range"] {
+            width: 100%;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 14px;
+        }
+        
+        .control-group input[type="range"] {
+            padding: 0;
+            height: 6px;
+            cursor: pointer;
+        }
+        
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #8a2be2;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .stats-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            width: 250px;
+            z-index: 100;
+        }
+        
+        .stats-panel h3 {
+            margin: 0 0 16px 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #8a2be2;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .stat-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #8a2be2;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            background: linear-gradient(135deg, #8a2be2 0%, #9b4dca 100%);
+            border: none;
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(138, 43, 226, 0.4);
+        }
+        
+        .action-btn.secondary {
+            background: rgba(138, 43, 226, 0.2);
+        }
+        
+        /* Loading Screen */
+        .loading-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            gap: 20px;
+        }
+        
+        .loading-screen.hidden {
+            display: none;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(138, 43, 226, 0.2);
+            border-top-color: #8a2be2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* Artwork Labels */
+        .artwork-label {
+            position: absolute;
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.5);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: #ffffff;
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 50;
+            transform: translate(-50%, -100%);
+            margin-top: -10px;
+        }
+        
+        /* Legend */
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            z-index: 100;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+        
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Unified Navbar -->
+    <div id="unified-navbar-placeholder"></div>
+
+    <!-- Viewer Container -->
+    <div class="viewer-container">
+        <!-- 3D Canvas -->
+        <canvas id="three-canvas"></canvas>
+        
+        <!-- Loading Screen -->
+        <div class="loading-screen" id="loadingScreen">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Loading 3D Museum Space...</div>
+        </div>
+        
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <h3>
+                <i class="fas fa-sliders-h"></i>
+                3D Controls
+            </h3>
+            
+            <div class="control-group">
+                <label>Exhibition Space</label>
+                <select id="spaceSelector">
+                    <option value="main">Main Gallery (100㎡)</option>
+                    <option value="special">Special Exhibition (150㎡)</option>
+                    <option value="modern">Modern Art Wing (120㎡)</option>
+                    <option value="sculpture">Sculpture Garden (200㎡)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>View Mode</label>
+                <select id="viewMode">
+                    <option value="overview">Overview (Bird's Eye)</option>
+                    <option value="visitor">Visitor Perspective</option>
+                    <option value="curator">Curator View</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Lighting Intensity</label>
+                <input type="range" id="lightingIntensity" min="0" max="2" step="0.1" value="1.0">
+            </div>
+            
+            <div class="control-group">
+                <label>Visitor Flow Simulation</label>
+                <input type="range" id="visitorDensity" min="0" max="100" step="10" value="50">
+            </div>
+            
+            <div class="action-buttons">
+                <button class="action-btn" onclick="resetCamera()">
+                    <i class="fas fa-undo"></i> Reset
+                </button>
+                <button class="action-btn secondary" onclick="exportScene()">
+                    <i class="fas fa-download"></i> Export
+                </button>
+            </div>
+        </div>
+        
+        <!-- Stats Panel -->
+        <div class="stats-panel">
+            <h3>Space Analytics</h3>
+            
+            <div class="stat-item">
+                <span class="stat-label">Total Artworks</span>
+                <span class="stat-value" id="statArtworks">12</span>
+            </div>
+            
+            <div class="stat-item">
+                <span class="stat-label">Floor Area</span>
+                <span class="stat-value" id="statArea">100㎡</span>
+            </div>
+            
+            <div class="stat-item">
+                <span class="stat-label">Avg Viewing Time</span>
+                <span class="stat-value" id="statViewTime">45s</span>
+            </div>
+            
+            <div class="stat-item">
+                <span class="stat-label">Capacity</span>
+                <span class="stat-value" id="statCapacity">30 명</span>
+            </div>
+            
+            <div class="stat-item">
+                <span class="stat-label">Optimization</span>
+                <span class="stat-value" id="statOptimization">87%</span>
+            </div>
+        </div>
+        
+        <!-- Legend -->
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #8a2be2;"></div>
+                <span>Artwork Position</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #4CAF50;"></div>
+                <span>High Traffic Zone</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FFC107;"></div>
+                <span>Medium Traffic</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #666;"></div>
+                <span>Low Traffic</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== Three.js Scene Setup =====
+        let scene, camera, renderer, controls;
+        let artworks = [];
+        let visitorPaths = [];
+        let heatmapMesh;
+        
+        function initThreeJS() {
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0a0a0a);
+            scene.fog = new THREE.Fog(0x0a0a0a, 10, 50);
+            
+            // Camera
+            const canvas = document.getElementById('three-canvas');
+            const aspect = canvas.clientWidth / canvas.clientHeight;
+            camera = new THREE.PerspectiveCamera(60, aspect, 0.1, 1000);
+            camera.position.set(0, 15, 20);
+            camera.lookAt(0, 0, 0);
+            
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ 
+                canvas: canvas,
+                antialias: true,
+                alpha: true 
+            });
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(10, 20, 10);
+            directionalLight.castShadow = true;
+            directionalLight.shadow.mapSize.width = 2048;
+            directionalLight.shadow.mapSize.height = 2048;
+            scene.add(directionalLight);
+            
+            // Spotlights for artworks
+            const spotlight1 = new THREE.SpotLight(0x8a2be2, 1.5);
+            spotlight1.position.set(-10, 10, 0);
+            spotlight1.angle = Math.PI / 6;
+            spotlight1.penumbra = 0.3;
+            spotlight1.castShadow = true;
+            scene.add(spotlight1);
+            
+            const spotlight2 = new THREE.SpotLight(0x8a2be2, 1.5);
+            spotlight2.position.set(10, 10, 0);
+            spotlight2.angle = Math.PI / 6;
+            spotlight2.penumbra = 0.3;
+            scene.add(spotlight2);
+            
+            // Grid
+            const gridHelper = new THREE.GridHelper(50, 50, 0x8a2be2, 0x333333);
+            gridHelper.material.opacity = 0.3;
+            gridHelper.material.transparent = true;
+            scene.add(gridHelper);
+            
+            // Build Museum Space
+            createMuseumSpace();
+            
+            // Create Sample Artworks
+            createSampleArtworks();
+            
+            // Create Visitor Paths
+            createVisitorPaths();
+            
+            // Create Heatmap
+            createHeatmap();
+            
+            // Handle Window Resize
+            window.addEventListener('resize', onWindowResize);
+            
+            // Controls Event Listeners
+            document.getElementById('spaceSelector').addEventListener('change', changeSpace);
+            document.getElementById('viewMode').addEventListener('change', changeViewMode);
+            document.getElementById('lightingIntensity').addEventListener('input', changeLighting);
+            document.getElementById('visitorDensity').addEventListener('input', updateVisitorFlow);
+            
+            // Hide Loading Screen
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+            }, 1500);
+            
+            // Animation Loop
+            animate();
+        }
+        
+        function createMuseumSpace() {
+            // Floor
+            const floorGeometry = new THREE.PlaneGeometry(40, 30);
+            const floorMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x1a1a2e,
+                roughness: 0.8,
+                metalness: 0.2
+            });
+            const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+            floor.rotation.x = -Math.PI / 2;
+            floor.receiveShadow = true;
+            scene.add(floor);
+            
+            // Walls
+            const wallMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x2a2a3e,
+                roughness: 0.9,
+                side: THREE.DoubleSide
+            });
+            
+            // Back Wall
+            const backWall = new THREE.Mesh(
+                new THREE.PlaneGeometry(40, 8),
+                wallMaterial
+            );
+            backWall.position.set(0, 4, -15);
+            scene.add(backWall);
+            
+            // Left Wall
+            const leftWall = new THREE.Mesh(
+                new THREE.PlaneGeometry(30, 8),
+                wallMaterial
+            );
+            leftWall.position.set(-20, 4, 0);
+            leftWall.rotation.y = Math.PI / 2;
+            scene.add(leftWall);
+            
+            // Right Wall
+            const rightWall = new THREE.Mesh(
+                new THREE.PlaneGeometry(30, 8),
+                wallMaterial
+            );
+            rightWall.position.set(20, 4, 0);
+            rightWall.rotation.y = -Math.PI / 2;
+            scene.add(rightWall);
+        }
+        
+        function createSampleArtworks() {
+            const artworkPositions = [
+                { x: -15, z: -12, name: '모나리자' },
+                { x: -5, z: -12, name: '별이 빛나는 밤' },
+                { x: 5, z: -12, name: '진주 귀걸이 소녀' },
+                { x: 15, z: -12, name: '절규' },
+                { x: -18, z: -5, name: '생각하는 사람' },
+                { x: -18, z: 5, name: '키스' },
+                { x: 18, z: -5, name: '비너스의 탄생' },
+                { x: 18, z: 5, name: '게르니카' },
+            ];
+            
+            artworkPositions.forEach(pos => {
+                // Artwork Frame
+                const frameGeometry = new THREE.BoxGeometry(2, 3, 0.2);
+                const frameMaterial = new THREE.MeshStandardMaterial({ 
+                    color: 0x8a2be2,
+                    metalness: 0.5,
+                    roughness: 0.3,
+                    emissive: 0x8a2be2,
+                    emissiveIntensity: 0.2
+                });
+                const frame = new THREE.Mesh(frameGeometry, frameMaterial);
+                frame.position.set(pos.x, 3, pos.z);
+                frame.castShadow = true;
+                frame.userData.name = pos.name;
+                scene.add(frame);
+                
+                artworks.push(frame);
+                
+                // Viewing Zone (invisible)
+                const zoneGeometry = new THREE.CircleGeometry(1.5, 32);
+                const zoneMaterial = new THREE.MeshBasicMaterial({ 
+                    color: 0x8a2be2,
+                    transparent: true,
+                    opacity: 0.1
+                });
+                const zone = new THREE.Mesh(zoneGeometry, zoneMaterial);
+                zone.rotation.x = -Math.PI / 2;
+                zone.position.set(pos.x, 0.01, pos.z + 2);
+                scene.add(zone);
+            });
+        }
+        
+        function createVisitorPaths() {
+            // Visitor path visualization (curves)
+            const pathMaterial = new THREE.LineBasicMaterial({ 
+                color: 0x4CAF50,
+                transparent: true,
+                opacity: 0.5,
+                linewidth: 2
+            });
+            
+            const points = [];
+            points.push(new THREE.Vector3(-15, 0.1, 10));
+            points.push(new THREE.Vector3(-10, 0.1, 5));
+            points.push(new THREE.Vector3(-5, 0.1, 0));
+            points.push(new THREE.Vector3(0, 0.1, -5));
+            points.push(new THREE.Vector3(5, 0.1, 0));
+            points.push(new THREE.Vector3(10, 0.1, 5));
+            points.push(new THREE.Vector3(15, 0.1, 10));
+            
+            const curve = new THREE.CatmullRomCurve3(points);
+            const pathGeometry = new THREE.BufferGeometry().setFromPoints(curve.getPoints(50));
+            const pathLine = new THREE.Line(pathGeometry, pathMaterial);
+            scene.add(pathLine);
+        }
+        
+        function createHeatmap() {
+            // Heatmap overlay (simple gradient plane)
+            const heatmapGeometry = new THREE.PlaneGeometry(40, 30, 20, 15);
+            const heatmapMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x4CAF50,
+                transparent: true,
+                opacity: 0.2,
+                side: THREE.DoubleSide
+            });
+            heatmapMesh = new THREE.Mesh(heatmapGeometry, heatmapMaterial);
+            heatmapMesh.rotation.x = -Math.PI / 2;
+            heatmapMesh.position.y = 0.05;
+            scene.add(heatmapMesh);
+        }
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Rotate artworks slightly for effect
+            artworks.forEach((artwork, index) => {
+                artwork.rotation.y = Math.sin(Date.now() * 0.001 + index) * 0.05;
+            });
+            
+            renderer.render(scene, camera);
+        }
+        
+        function onWindowResize() {
+            const canvas = document.getElementById('three-canvas');
+            camera.aspect = canvas.clientWidth / canvas.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+        }
+        
+        function changeSpace(e) {
+            const space = e.target.value;
+            const stats = {
+                main: { artworks: 8, area: '100㎡', capacity: '30 명' },
+                special: { artworks: 15, area: '150㎡', capacity: '45 명' },
+                modern: { artworks: 12, area: '120㎡', capacity: '35 명' },
+                sculpture: { artworks: 20, area: '200㎡', capacity: '60 명' }
+            };
+            
+            document.getElementById('statArtworks').textContent = stats[space].artworks;
+            document.getElementById('statArea').textContent = stats[space].area;
+            document.getElementById('statCapacity').textContent = stats[space].capacity;
+        }
+        
+        function changeViewMode(e) {
+            const mode = e.target.value;
+            
+            if (mode === 'overview') {
+                camera.position.set(0, 25, 30);
+                camera.lookAt(0, 0, 0);
+            } else if (mode === 'visitor') {
+                camera.position.set(0, 1.6, 10);
+                camera.lookAt(0, 1.6, 0);
+            } else if (mode === 'curator') {
+                camera.position.set(15, 10, 15);
+                camera.lookAt(0, 2, 0);
+            }
+        }
+        
+        function changeLighting(e) {
+            const intensity = parseFloat(e.target.value);
+            scene.children.forEach(child => {
+                if (child instanceof THREE.DirectionalLight || child instanceof THREE.SpotLight) {
+                    child.intensity = intensity;
+                }
+            });
+        }
+        
+        function updateVisitorFlow(e) {
+            const density = parseInt(e.target.value);
+            // Update heatmap opacity based on density
+            if (heatmapMesh) {
+                heatmapMesh.material.opacity = 0.1 + (density / 100) * 0.3;
+            }
+        }
+        
+        function resetCamera() {
+            camera.position.set(0, 15, 20);
+            camera.lookAt(0, 0, 0);
+        }
+        
+        function exportScene() {
+            alert('Export functionality: Scene data can be exported to JSON format for further analysis');
+        }
+        
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initThreeJS);
+        } else {
+            initThreeJS();
+        }
+        
+        // Load Unified Navbar
+        fetch('/unified-navbar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('unified-navbar-placeholder').innerHTML = html;
+                if (window.lucide) {
+                    lucide.createIcons();
+                }
+            });
+    </script>
+</body>
+</html>

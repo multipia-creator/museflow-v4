@@ -2498,7 +2498,10 @@
             'space-optimization': {
                 title: '공간 최적화',
                 prompt: '전시 공간의 작품 배치를 3D 시뮬레이션으로 최적화해주세요. 방문객 동선과 혼잡도를 분석해주세요.',
-                icon: '🏛️'
+                icon: '🏛️',
+                action: () => {
+                    window.open('/3d-viewer.html', '_blank');
+                }
             }
         };
         
@@ -2511,6 +2514,12 @@
                 const command = quickActionCommands[action];
                 
                 if (!command) return;
+                
+                // Special action handler (e.g., 3D Viewer)
+                if (command.action) {
+                    command.action();
+                    return;
+                }
                 
                 // AI 입력창에 프롬프트 자동 입력
                 const messageInput = document.getElementById('messageInput');

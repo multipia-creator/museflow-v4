@@ -53,6 +53,7 @@ const exclude = [
   '/e2e-testing.html',
   '/icon-samples.html',
   '/icon-samples-lucide.html',
+  '/3d-viewer.html',
   
   // Pretty URL paths (all)
   '/account',
@@ -77,7 +78,8 @@ const exclude = [
   '/canvas-v4-hybrid',
   '/e2e-testing',
   '/icon-samples',
-  '/icon-samples-lucide'
+  '/icon-samples-lucide',
+  '/3d-viewer'
 ];
 
 const routes = {
