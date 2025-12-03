@@ -63,6 +63,71 @@
             gap: 0.5rem;
         }
         
+        /* Quick Actions Panel */
+        .quick-actions-panel {
+            padding: 1rem;
+            border-bottom: 1px solid var(--museflow-border-light);
+            background: var(--museflow-bg-secondary);
+        }
+        
+        .quick-actions-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--museflow-text-secondary);
+            margin-bottom: 0.75rem;
+        }
+        
+        .quick-actions-header i {
+            color: var(--museflow-primary);
+        }
+        
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+        
+        .quick-action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.75rem 0.5rem;
+            background: white;
+            border: 1px solid var(--museflow-border-light);
+            border-radius: var(--radius-md);
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--museflow-text-secondary);
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+        
+        .quick-action-btn i {
+            font-size: 1.25rem;
+            color: var(--museflow-primary);
+            transition: var(--transition-base);
+        }
+        
+        .quick-action-btn:hover {
+            background: var(--museflow-primary-light);
+            border-color: var(--museflow-primary);
+            color: var(--museflow-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(139, 92, 246, 0.15);
+        }
+        
+        .quick-action-btn:hover i {
+            transform: scale(1.1);
+        }
+        
+        .quick-action-btn:active {
+            transform: translateY(0);
+        }
+        
         .history-list {
             flex: 1;
             overflow-y: auto;
@@ -643,6 +708,31 @@
                 padding: 1rem;
                 margin-bottom: 0.625rem;
             }
+            
+            /* Quick Actions Mobile */
+            .quick-actions-panel {
+                padding: 0.75rem;
+            }
+            
+            .quick-actions-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+            }
+            
+            .quick-action-btn {
+                padding: 0.625rem 0.375rem;
+                font-size: 0.625rem;
+                min-height: 64px;
+            }
+            
+            .quick-action-btn i {
+                font-size: 1.125rem;
+            }
+            
+            .quick-action-btn span {
+                font-size: 0.625rem;
+                line-height: 1.2;
+            }
         }
         
         /* Tablet Landscape */
@@ -728,6 +818,48 @@
                     <i class="fas fa-history"></i>
                     History & Projects
                 </h2>
+            </div>
+            
+            <!-- Quick Actions Panel -->
+            <div class="quick-actions-panel">
+                <div class="quick-actions-header">
+                    <i class="fas fa-bolt"></i>
+                    <span>빠른 작업</span>
+                </div>
+                <div class="quick-actions-grid">
+                    <button class="quick-action-btn" data-action="exhibition-label">
+                        <i class="fas fa-tag"></i>
+                        <span>전시 라벨</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="budget-approval">
+                        <i class="fas fa-coins"></i>
+                        <span>예산 승인</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="artwork-selection">
+                        <i class="fas fa-palette"></i>
+                        <span>소장품 선정</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="promotion-plan">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>홍보 계획</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="report-writing">
+                        <i class="fas fa-file-alt"></i>
+                        <span>보고서</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="schedule-management">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>일정 관리</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="education-program">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>교육 프로그램</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="research">
+                        <i class="fas fa-search"></i>
+                        <span>자료 조사</span>
+                    </button>
+                </div>
             </div>
             
             <div class="history-list" id="historyList">
@@ -1276,6 +1408,97 @@
         if (window.innerWidth <= 768) {
             initializeMobileTabs();
         }
+        
+        // ==========================================
+        // Quick Actions - Dashboard 메뉴 통합
+        // ==========================================
+        
+        /**
+         * Quick Action 명령어 매핑
+         */
+        const quickActionCommands = {
+            'exhibition-label': {
+                title: '전시 라벨 작성',
+                prompt: '전시 라벨을 작성해주세요. 작품명, 작가, 연도, 재료, 크기, 소장 정보를 포함한 전문적인 라벨을 만들어주세요.',
+                icon: '📝'
+            },
+            'budget-approval': {
+                title: '예산 승인 요청',
+                prompt: '예산 승인 요청 문서를 작성해주세요. 항목별 예산, 사용 목적, 기대 효과를 포함해주세요.',
+                icon: '💰'
+            },
+            'artwork-selection': {
+                title: '소장품 선정',
+                prompt: '전시 소장품 선정 기획안을 작성해주세요. 작품 목록, 선정 기준, 배치 계획을 포함해주세요.',
+                icon: '🎨'
+            },
+            'promotion-plan': {
+                title: '홍보 계획 수립',
+                prompt: '홍보 계획을 수립해주세요. SNS 콘텐츠, 보도자료, 이메일 캠페인, 일정을 포함해주세요.',
+                icon: '📢'
+            },
+            'report-writing': {
+                title: '보고서 작성',
+                prompt: '업무 보고서를 작성해주세요. 현황, 성과, 과제, 향후 계획을 포함해주세요.',
+                icon: '📄'
+            },
+            'schedule-management': {
+                title: '전시 일정 관리',
+                prompt: '전시 일정 관리 계획을 작성해주세요. 준비 단계별 체크리스트와 마일스톤을 포함해주세요.',
+                icon: '🗓️'
+            },
+            'education-program': {
+                title: '교육 프로그램 기획',
+                prompt: '교육 프로그램을 기획해주세요. 대상, 커리큘럼, 활동 내용, 평가 방법을 포함해주세요.',
+                icon: '👥'
+            },
+            'research': {
+                title: '학술 자료 조사',
+                prompt: '학술 자료를 조사해주세요. Wikipedia, MET Museum, Google Scholar에서 관련 정보를 수집해주세요.',
+                icon: '🔍'
+            }
+        };
+        
+        /**
+         * Quick Action 버튼 클릭 핸들러
+         */
+        document.querySelectorAll('.quick-action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const action = this.getAttribute('data-action');
+                const command = quickActionCommands[action];
+                
+                if (!command) return;
+                
+                // AI 입력창에 프롬프트 자동 입력
+                const messageInput = document.getElementById('messageInput');
+                messageInput.value = command.prompt;
+                
+                // 환영 메시지
+                addMessage('ai', `${command.icon} "${command.title}" 작업을 시작합니다. 자동으로 실행하시겠습니까?`);
+                
+                // 모바일: Conversation 탭으로 자동 전환
+                if (window.innerWidth <= 768) {
+                    document.querySelectorAll('.mobile-tab').forEach(tab => {
+                        tab.classList.remove('active');
+                        if (tab.getAttribute('data-mobile-tab') === 'conversation') {
+                            tab.classList.add('active');
+                        }
+                    });
+                    
+                    document.querySelector('.left-column').classList.remove('mobile-active');
+                    document.querySelector('.center-column').classList.add('mobile-active');
+                    document.querySelector('.right-column').classList.remove('mobile-active');
+                }
+                
+                // 입력창 포커스
+                messageInput.focus();
+                
+                // 2초 후 자동 전송
+                setTimeout(() => {
+                    sendMessage();
+                }, 2000);
+            });
+        });
     </script>
 </body>
 </html>
