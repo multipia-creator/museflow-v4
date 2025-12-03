@@ -153,7 +153,10 @@ export class AIOrchestrator {
           execution.completedPhases.push(phase.id);
           execution.totalProgress = Math.round(((i + 1) / workflow.phases.length) * 100);
 
-          // Phase 완료 이벤트
+          // Canvas Agent 실행 (각 Phase 완료 시 Canvas 노드 자동 생성)
+          const canvasNodes = await this.generateCanvasNodesForPhase(phase, result, context);
+
+          // Phase 완료 이벤트 (Canvas 노드 포함)
           await this.emitEvent({
             type: 'phase-completed',
             sessionId,
@@ -162,7 +165,11 @@ export class AIOrchestrator {
             agent: phase.agent,
             progress: execution.totalProgress,
             message: `${phase.name} 완료`,
-            data: { output: result.output, durationMs: phase.actualDurationMs }
+            data: { 
+              output: result.output, 
+              durationMs: phase.actualDurationMs,
+              canvasNodes: canvasNodes // 🎨 Canvas 노드 추가
+            }
           });
 
           // 승인 필요한 경우 대기
@@ -246,6 +253,60 @@ export class AIOrchestrator {
         durationMs: Date.now() - startTime,
         error: error instanceof Error ? error.message : String(error)
       };
+    }
+  }
+
+  /**
+   * Phase 완료 시 Canvas 노드 자동 생성
+   */
+  private async generateCanvasNodesForPhase(
+    phase: WorkflowPhase, 
+    result: AgentExecutionResult, 
+    context: ExecutionContext
+  ): Promise<any[]> {
+    try {
+      const { CanvasAgent } = await import('../agents/canvas.agent');
+      const canvasAgent = new CanvasAgent(this.db, this.geminiApiKey);
+
+      // Phase 타입에 따라 Canvas 노드 타입 결정
+      let canvasType = 'workflow_completion';
+      let canvasData: any = { phaseResult: result.output };
+
+      switch (phase.agent) {
+        case 'concept':
+          canvasType = 'concept_generation';
+          break;
+        case 'budget':
+          canvasType = 'budget_chart';
+          canvasData = { budget: result.output?.totalBudget || 30000000 };
+          break;
+        case 'education':
+          canvasType = 'education_nodes';
+          break;
+        case 'research':
+          canvasType = 'artwork_nodes';
+          break;
+        default:
+          canvasType = 'workflow_completion';
+          canvasData = { completedPhases: [phase.id] };
+      }
+
+      // Canvas Agent 실행
+      const canvasResult = await canvasAgent.execute(
+        { type: canvasType, data: canvasData },
+        context
+      );
+
+      if (canvasResult.success && canvasResult.data?.nodes) {
+        console.log(`✅ Canvas 노드 ${canvasResult.data.nodes.length}개 생성 완료`);
+        return canvasResult.data.nodes;
+      }
+
+      return [];
+
+    } catch (error) {
+      console.error('❌ Canvas 노드 생성 실패:', error);
+      return [];
     }
   }
 
@@ -443,19 +504,24 @@ export class AIOrchestrator {
     // EventEmitter로 전송 (SSE 스트림)
     this.eventEmitter.emit(event);
 
-    // DB에 저장
-    await this.db.prepare(`
-      INSERT INTO ai_execution_events (session_id, event_type, phase_name, agent_type, event_data, timestamp, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `).bind(
-      event.sessionId,
-      event.type,
-      event.phase || null,
-      event.agent || null,
-      JSON.stringify(event.data || {}),
-      event.timestamp,
-      new Date().toISOString()
-    ).run();
+    // DB에 저장 (session_id를 INTEGER로 변환)
+    try {
+      await this.db.prepare(`
+        INSERT INTO ai_execution_events (session_id, event_type, phase_name, agent_type, event_data, timestamp, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        parseInt(event.sessionId, 10), // 🔧 STRING → INTEGER 변환
+        event.type,
+        event.phase || null,
+        event.agent || null,
+        JSON.stringify(event.data || {}),
+        event.timestamp,
+        new Date().toISOString()
+      ).run();
+    } catch (error) {
+      console.error('❌ Failed to save event to DB:', error);
+      // DB 저장 실패해도 SSE는 계속 진행
+    }
   }
 
   /**

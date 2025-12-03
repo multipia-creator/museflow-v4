@@ -1492,29 +1492,42 @@
                 // Add to active tasks in overview panel
                 addActiveTask(command.substring(0, 30) + '...');
                 
-                // Call API
+                // Call API (백엔드 스키마에 맞춤)
                 const response = await fetch('/api/orchestrator/execute', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        workflow_type: 'exhibition_planning',
-                        user_input: command,
-                        user_id: 'curator-demo',
-                        autonomy_preference: 'balanced'
+                        command: command,
+                        mode: 'conversational',
+                        projectContext: {
+                            projectId: 'canvas-demo',
+                            projectName: 'Canvas V4 작업',
+                            source: 'canvas-v4-hybrid'
+                        },
+                        options: {
+                            autoApprove: false
+                        }
                     })
                 });
                 
                 const data = await response.json();
-                sessionId = data.session_id;
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'API 호출 실패');
+                }
+                
+                sessionId = data.sessionId;
+                
+                addMessage('ai', `✅ AI 세션이 시작되었습니다. (Session ID: ${sessionId.substring(0, 8)}...)`);
                 
                 // Connect to SSE
                 connectToEventStream(sessionId);
                 
             } catch (error) {
                 console.error('AI 실행 오류:', error);
-                addMessage('ai', '❌ 오류가 발생했습니다. 다시 시도해주세요.');
+                addMessage('ai', `❌ 오류가 발생했습니다: ${error.message}`);
                 document.getElementById('sendButton').disabled = false;
                 removeActiveTask();
             }
@@ -1540,45 +1553,71 @@
         }
         
         function handleStreamEvent(data) {
-            const { type, payload } = data;
+            const { type, message, data: payload } = data;
+            
+            console.log('[SSE Event]', type, message);
             
             switch (type) {
-                case 'start':
-                    addMessage('ai', `🚀 ${payload.workflow_type} 워크플로우를 시작합니다...`);
+                case 'connection-established':
+                    console.log('[SSE] 연결 성공:', message);
                     break;
                 
-                case 'phase-start':
-                    addPhaseProgress(payload.phase_name, 0);
+                case 'session-started':
+                    addMessage('ai', `🚀 ${message}`);
+                    if (payload?.workflow) {
+                        addMessage('ai', `📋 워크플로우: ${payload.workflow.phases?.length || 0}개 단계`);
+                    }
+                    break;
+                
+                case 'phase-started':
+                    const phaseName = payload?.phaseName || message;
+                    addPhaseProgress(phaseName, 0);
                     break;
                 
                 case 'agent-action':
-                    updatePhaseProgress(payload.action);
+                    updatePhaseProgress(message || payload?.action || '작업 중...');
                     break;
                 
-                case 'phase-complete':
+                case 'phase-completed':
                     updatePhaseProgress('완료', 100);
                     
                     // Add results to preview
-                    if (payload.result?.canvas_nodes) {
-                        addCanvasNodes(payload.result.canvas_nodes);
+                    if (payload?.result?.canvasNodes) {
+                        addCanvasNodes(payload.result.canvasNodes);
                     }
-                    if (payload.result?.widgets) {
+                    if (payload?.result?.widgets) {
                         addDashboardWidgets(payload.result.widgets);
+                    }
+                    
+                    // 생성 결과 탭으로 자동 전환
+                    if (payload?.result?.canvasNodes || payload?.result?.widgets) {
+                        switchToResultsTab();
                     }
                     break;
                 
-                case 'complete':
+                case 'phase-failed':
+                    addMessage('ai', `⚠️ 단계 실패: ${message}`);
+                    break;
+                
+                case 'session-completed':
                     addMessage('ai', '✅ 모든 작업이 완료되었습니다! 우측 "생성 결과" 탭에서 확인하세요.');
+                    document.getElementById('sendButton').disabled = false;
+                    removeActiveTask();
+                    eventSource.close();
+                    
+                    // 완료된 작업 수 업데이트
+                    updateCompletedTasksCount();
+                    break;
+                
+                case 'session-failed':
+                    addMessage('ai', `❌ 실행 실패: ${message || '알 수 없는 오류'}`);
                     document.getElementById('sendButton').disabled = false;
                     removeActiveTask();
                     eventSource.close();
                     break;
                 
-                case 'error':
-                    addMessage('ai', `❌ 오류: ${payload.message}`);
-                    document.getElementById('sendButton').disabled = false;
-                    eventSource.close();
-                    break;
+                default:
+                    console.log('[SSE] Unknown event type:', type);
             }
         }
         
@@ -1608,6 +1647,49 @@
             
             conversationArea.insertAdjacentHTML('beforeend', progressHtml);
             conversationArea.scrollTop = conversationArea.scrollHeight;
+        }
+        
+        function switchToResultsTab() {
+            // 우측 패널의 "생성 결과" 탭으로 자동 전환
+            const previewTabs = document.querySelectorAll('.preview-tab');
+            const previewPanels = document.querySelectorAll('.preview-panel');
+            
+            previewTabs.forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.getAttribute('data-tab') === 'results') {
+                    tab.classList.add('active');
+                }
+            });
+            
+            previewPanels.forEach(panel => {
+                panel.classList.remove('active');
+                if (panel.id === 'resultsPanel') {
+                    panel.classList.add('active');
+                }
+            });
+            
+            // 모바일: Preview 탭으로 자동 전환
+            if (window.innerWidth <= 768) {
+                const mobileTabs = document.querySelectorAll('.mobile-tab');
+                mobileTabs.forEach(tab => {
+                    tab.classList.remove('active');
+                    if (tab.getAttribute('data-mobile-tab') === 'preview') {
+                        tab.classList.add('active');
+                    }
+                });
+                
+                document.querySelector('.left-column').classList.remove('mobile-active');
+                document.querySelector('.center-column').classList.remove('mobile-active');
+                document.querySelector('.right-column').classList.add('mobile-active');
+            }
+        }
+        
+        function updateCompletedTasksCount() {
+            const completedCount = document.getElementById('completedTasksCount');
+            if (completedCount) {
+                const currentValue = parseInt(completedCount.textContent) || 0;
+                completedCount.textContent = `${currentValue + 1}개`;
+            }
         }
         
         function updatePhaseProgress(status, progress = null) {
