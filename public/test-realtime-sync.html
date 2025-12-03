@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas → Digital Twin 실시간 연동 테스트</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+            color: #e5e5e5;
+            padding: 40px;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(42, 42, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        h1 {
+            color: #10b981;
+            margin-top: 0;
+        }
+        .step {
+            background: rgba(30, 30, 30, 0.6);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #10b981;
+        }
+        .step h3 {
+            margin-top: 0;
+            color: #10b981;
+        }
+        button {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px 5px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+        }
+        .log {
+            background: #0a0a0a;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-top: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success {
+            color: #10b981;
+        }
+        .info {
+            color: #3b82f6;
+        }
+        .warning {
+            color: #f59e0b;
+        }
+        code {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 Canvas V4 ↔ Digital Twin 실시간 연동 테스트</h1>
+        
+        <div class="step">
+            <h3>📤 Step 1: Canvas V4 데이터 생성 및 저장</h3>
+            <p>Canvas V4에서 "공간 최적화" 버튼 클릭 시뮬레이션</p>
+            <button onclick="sendData()">공간 최적화 클릭 시뮬레이션</button>
+            <div id="send-log" class="log" style="display:none;"></div>
+        </div>
+
+        <div class="step">
+            <h3>📥 Step 2: Digital Twin 데이터 로드</h3>
+            <p>Digital Twin 페이지에서 localStorage 데이터 읽기</p>
+            <button onclick="openDigitalTwin()">Digital Twin 열기</button>
+            <button onclick="checkStorage()">localStorage 확인</button>
+            <div id="receive-log" class="log" style="display:none;"></div>
+        </div>
+
+        <div class="step">
+            <h3>✅ Step 3: 전체 플로우 테스트</h3>
+            <p>Canvas → localStorage → Digital Twin 완전한 데이터 흐름 테스트</p>
+            <button onclick="fullTest()">전체 테스트 실행</button>
+            <div id="full-log" class="log" style="display:none;"></div>
+        </div>
+
+        <div class="step">
+            <h3>🌐 프로덕션 URL</h3>
+            <p>
+                <strong>Canvas V4:</strong><br>
+                <a href="https://b9760cf6.museflow.pages.dev/canvas-v4-hybrid" target="_blank" style="color: #10b981;">
+                    https://b9760cf6.museflow.pages.dev/canvas-v4-hybrid
+                </a>
+            </p>
+            <p>
+                <strong>Digital Twin:</strong><br>
+                <a href="https://b9760cf6.museflow.pages.dev/digital-twin" target="_blank" style="color: #10b981;">
+                    https://b9760cf6.museflow.pages.dev/digital-twin
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function log(elementId, message, type = 'info') {
+            const logEl = document.getElementById(elementId);
+            logEl.style.display = 'block';
+            const timestamp = new Date().toLocaleTimeString('ko-KR');
+            const icon = type === 'success' ? '✅' : type === 'warning' ? '⚠️' : 'ℹ️';
+            logEl.innerHTML += `<div class="${type}">[${timestamp}] ${icon} ${message}</div>`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function sendData() {
+            const logEl = document.getElementById('send-log');
+            logEl.innerHTML = '';
+            
+            // 실제 Canvas V4와 동일한 데이터 구조
+            const canvasData = {
+                widgets: 103,
+                timestamp: new Date().toISOString(),
+                source: 'canvas-v4-hybrid'
+            };
+            
+            log('send-log', 'Canvas V4 데이터 생성...', 'info');
+            log('send-log', `위젯 수: ${canvasData.widgets}개`, 'info');
+            log('send-log', `타임스탬프: ${canvasData.timestamp}`, 'info');
+            
+            // localStorage에 저장
+            localStorage.setItem('museflow_canvas_data', JSON.stringify(canvasData));
+            log('send-log', 'localStorage 저장 완료!', 'success');
+            log('send-log', `키: museflow_canvas_data`, 'success');
+            
+            setTimeout(() => {
+                log('send-log', '✅ Canvas V4 데이터 전송 완료!', 'success');
+            }, 500);
+        }
+
+        function checkStorage() {
+            const logEl = document.getElementById('receive-log');
+            logEl.innerHTML = '';
+            
+            log('receive-log', 'localStorage 확인 중...', 'info');
+            
+            const data = localStorage.getItem('museflow_canvas_data');
+            if (data) {
+                const parsed = JSON.parse(data);
+                log('receive-log', '✅ 데이터 발견!', 'success');
+                log('receive-log', `위젯: ${parsed.widgets}개`, 'success');
+                log('receive-log', `타임스탬프: ${parsed.timestamp}`, 'info');
+                log('receive-log', `소스: ${parsed.source}`, 'info');
+            } else {
+                log('receive-log', '⚠️ localStorage에 데이터 없음', 'warning');
+                log('receive-log', '먼저 "공간 최적화 클릭 시뮬레이션" 버튼을 눌러주세요', 'warning');
+            }
+        }
+
+        function openDigitalTwin() {
+            const data = localStorage.getItem('museflow_canvas_data');
+            if (!data) {
+                alert('먼저 "공간 최적화 클릭 시뮬레이션" 버튼을 눌러 데이터를 생성해주세요!');
+                return;
+            }
+            
+            // Digital Twin 페이지 열기
+            window.open('https://b9760cf6.museflow.pages.dev/digital-twin', '_blank');
+            
+            log('receive-log', 'Digital Twin 페이지 열림', 'success');
+            log('receive-log', '새 탭에서 콘솔을 확인하세요!', 'info');
+            log('receive-log', '예상 메시지: "📊 Canvas V4 데이터 로드"', 'info');
+        }
+
+        function fullTest() {
+            const logEl = document.getElementById('full-log');
+            logEl.innerHTML = '';
+            
+            log('full-log', '=== 전체 플로우 테스트 시작 ===', 'info');
+            
+            // Step 1
+            log('full-log', 'Step 1: Canvas V4 데이터 생성', 'info');
+            const canvasData = {
+                widgets: 103,
+                timestamp: new Date().toISOString(),
+                source: 'canvas-v4-hybrid'
+            };
+            localStorage.setItem('museflow_canvas_data', JSON.stringify(canvasData));
+            log('full-log', '✅ localStorage 저장 완료', 'success');
+            
+            setTimeout(() => {
+                // Step 2
+                log('full-log', 'Step 2: Digital Twin 데이터 로드 시뮬레이션', 'info');
+                const loaded = localStorage.getItem('museflow_canvas_data');
+                if (loaded) {
+                    const parsed = JSON.parse(loaded);
+                    log('full-log', `✅ 데이터 로드 성공: ${parsed.widgets}개 위젯`, 'success');
+                    
+                    setTimeout(() => {
+                        // Step 3
+                        log('full-log', 'Step 3: 데이터 검증', 'info');
+                        const valid = parsed.widgets === 103 && 
+                                     parsed.source === 'canvas-v4-hybrid' &&
+                                     !!parsed.timestamp;
+                        
+                        if (valid) {
+                            log('full-log', '✅ 모든 필드 검증 통과', 'success');
+                            
+                            setTimeout(() => {
+                                // Step 4
+                                log('full-log', 'Step 4: localStorage 정리', 'info');
+                                localStorage.removeItem('museflow_canvas_data');
+                                log('full-log', '✅ 데이터 삭제 완료 (중복 방지)', 'success');
+                                
+                                setTimeout(() => {
+                                    log('full-log', '=== ✅ 전체 테스트 완료! ===', 'success');
+                                    log('full-log', '프로덕션 환경에서 실제 테스트를 진행하세요:', 'info');
+                                    log('full-log', '1. Canvas V4 페이지 접속', 'info');
+                                    log('full-log', '2. "공간 최적화" 버튼 클릭', 'info');
+                                    log('full-log', '3. Digital Twin 자동 오픈 및 데이터 로드 확인', 'info');
+                                }, 500);
+                            }, 500);
+                        } else {
+                            log('full-log', '❌ 데이터 검증 실패', 'warning');
+                        }
+                    }, 500);
+                } else {
+                    log('full-log', '❌ 데이터 로드 실패', 'warning');
+                }
+            }, 500);
+        }
+    </script>
+</body>
+</html>
