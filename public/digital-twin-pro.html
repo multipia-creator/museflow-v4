@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuseFlow - 디지털 트윈 프로 (고품질 렌더링)</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Three.js Latest (r160+) -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    
+    <!-- Design System -->
+    <link rel="stylesheet" href="/static/css/museflow-design-system.css">
+    <link rel="stylesheet" href="/static/css/unified-navbar.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+            overflow: hidden;
+            padding-top: 64px;
+        }
+        
+        .viewer-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            grid-template-rows: 50px 1fr 40px;
+            height: calc(100vh - 64px);
+            gap: 0;
+        }
+        
+        /* Top Toolbar */
+        .top-toolbar {
+            grid-column: 1 / -1;
+            background: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+            z-index: 200;
+        }
+        
+        .toolbar-section {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0 12px;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .toolbar-section:last-child {
+            border-right: none;
+        }
+        
+        .toolbar-btn {
+            width: 36px;
+            height: 36px;
+            background: rgba(138, 43, 226, 0.1);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 6px;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+        
+        .toolbar-btn:hover {
+            background: rgba(138, 43, 226, 0.3);
+            border-color: #8a2be2;
+        }
+        
+        .toolbar-btn.active {
+            background: #8a2be2;
+            border-color: #8a2be2;
+        }
+        
+        .toolbar-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-left: 4px;
+        }
+        
+        /* Left Asset Library */
+        .asset-library {
+            background: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(138, 43, 226, 0.3);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .asset-library::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .asset-library::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .asset-library::-webkit-scrollbar-thumb {
+            background: #8a2be2;
+            border-radius: 3px;
+        }
+        
+        .asset-section {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .asset-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #8a2be2;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .asset-item {
+            padding: 10px;
+            background: rgba(138, 43, 226, 0.1);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            cursor: grab;
+            transition: all 0.2s;
+        }
+        
+        .asset-item:hover {
+            background: rgba(138, 43, 226, 0.2);
+            border-color: #8a2be2;
+        }
+        
+        .asset-item:active {
+            cursor: grabbing;
+        }
+        
+        .asset-item-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+        
+        .asset-item-info {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Center 3D Viewport */
+        #three-canvas {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            cursor: default;
+            position: relative;
+        }
+        
+        .viewport-overlay {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(20, 20, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.7);
+            pointer-events: none;
+        }
+        
+        .quality-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(138, 43, 226, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.5);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffffff;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        /* Right Properties Panel */
+        .properties-panel {
+            background: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-left: 1px solid rgba(138, 43, 226, 0.3);
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .properties-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .properties-panel::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .properties-panel::-webkit-scrollbar-thumb {
+            background: #8a2be2;
+            border-radius: 3px;
+        }
+        
+        .prop-section {
+            margin-bottom: 24px;
+        }
+        
+        .prop-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #8a2be2;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .prop-group {
+            margin-bottom: 12px;
+        }
+        
+        .prop-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 6px;
+            display: block;
+        }
+        
+        .prop-input {
+            width: 100%;
+            padding: 8px 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .prop-input:focus {
+            outline: none;
+            border-color: #8a2be2;
+        }
+        
+        .prop-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+        
+        .prop-slider {
+            width: 100%;
+            height: 6px;
+            background: rgba(138, 43, 226, 0.2);
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+        }
+        
+        .prop-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #8a2be2;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(138, 43, 226, 0.5);
+        }
+        
+        .prop-value {
+            display: inline-block;
+            float: right;
+            color: #8a2be2;
+            font-weight: 600;
+        }
+        
+        .prop-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #8a2be2 0%, #9b4dca 100%);
+            border: none;
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+        
+        .prop-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(138, 43, 226, 0.4);
+        }
+        
+        .prop-btn.secondary {
+            background: rgba(138, 43, 226, 0.2);
+        }
+        
+        /* Bottom Status Bar */
+        .status-bar {
+            grid-column: 1 / -1;
+            background: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(138, 43, 226, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .status-value {
+            color: #8a2be2;
+            font-weight: 600;
+        }
+        
+        /* Loading */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            gap: 20px;
+        }
+        
+        .loading-screen.hidden {
+            display: none;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(138, 43, 226, 0.2);
+            border-top-color: #8a2be2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .loading-progress {
+            width: 300px;
+            height: 4px;
+            background: rgba(138, 43, 226, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .loading-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #8a2be2, #9b4dca);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: rgba(138, 43, 226, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.5);
+            border-radius: 8px;
+            padding: 12px 20px;
+            color: #ffffff;
+            font-size: 13px;
+            z-index: 2000;
+            animation: slideIn 0.3s ease;
+            display: none;
+        }
+        
+        .toast.show {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Rendering Quality Indicator */
+        .quality-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .quality-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4CAF50;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Unified Navbar -->
+    <div id="unified-navbar-placeholder"></div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingText">고품질 렌더링 엔진 초기화 중...</div>
+        <div class="loading-progress">
+            <div class="loading-progress-bar" id="loadingProgress"></div>
+        </div>
+    </div>
+    
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <div class="viewer-container">
+        <!-- Top Toolbar -->
+        <div class="top-toolbar">
+            <div class="toolbar-section">
+                <button class="toolbar-btn active" onclick="setTool('select')" title="선택">
+                    <i class="fas fa-mouse-pointer"></i>
+                </button>
+                <button class="toolbar-btn" onclick="setTool('move')" title="이동">
+                    <i class="fas fa-arrows-alt"></i>
+                </button>
+                <button class="toolbar-btn" onclick="setTool('rotate')" title="회전">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="toolbar-btn" onclick="setTool('scale')" title="크기">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </button>
+            </div>
+            
+            <div class="toolbar-section">
+                <button class="toolbar-btn" onclick="setCameraPreset('overview')" title="전체 조감">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="toolbar-btn" onclick="setCameraPreset('visitor')" title="관람객 시점">
+                    <i class="fas fa-walking"></i>
+                </button>
+                <button class="toolbar-btn" onclick="setCameraPreset('bird')" title="조감도">
+                    <i class="fas fa-dove"></i>
+                </button>
+            </div>
+            
+            <div class="toolbar-section">
+                <button class="toolbar-btn" onclick="toggleRendering()" title="렌더링 품질">
+                    <i class="fas fa-magic"></i>
+                </button>
+                <button class="toolbar-btn" onclick="toggleLighting()" title="조명">
+                    <i class="fas fa-lightbulb"></i>
+                </button>
+            </div>
+            
+            <div class="toolbar-section" style="margin-left: auto;">
+                <button class="toolbar-btn" onclick="exportScene()" title="내보내기">
+                    <i class="fas fa-download"></i>
+                </button>
+                <button class="toolbar-btn" onclick="resetScene()" title="초기화">
+                    <i class="fas fa-undo"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Left Asset Library -->
+        <div class="asset-library">
+            <div class="asset-section">
+                <div class="asset-section-title">
+                    <i class="fas fa-image"></i>
+                    작품 라이브러리
+                </div>
+                <div id="artworkAssets">
+                    <!-- Assets will be added dynamically -->
+                </div>
+            </div>
+            
+            <div class="asset-section">
+                <div class="asset-section-title">
+                    <i class="fas fa-lightbulb"></i>
+                    조명
+                </div>
+                <div class="asset-item" draggable="true" data-type="spotlight">
+                    <div class="asset-item-name">스포트라이트</div>
+                    <div class="asset-item-info">집중 조명</div>
+                </div>
+                <div class="asset-item" draggable="true" data-type="pointlight">
+                    <div class="asset-item-name">포인트 라이트</div>
+                    <div class="asset-item-info">전방향 조명</div>
+                </div>
+            </div>
+            
+            <div class="asset-section">
+                <div class="asset-section-title">
+                    <i class="fas fa-users"></i>
+                    관람객
+                </div>
+                <div class="asset-item" draggable="true" data-type="visitor">
+                    <div class="asset-item-name">관람객 모델</div>
+                    <div class="asset-item-info">1.7m 높이</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Center 3D Viewport -->
+        <canvas id="three-canvas"></canvas>
+        
+        <div class="viewport-overlay">
+            <div class="quality-indicator">
+                <div class="quality-dot"></div>
+                <span>고품질 렌더링 활성</span>
+            </div>
+            <div style="margin-top: 8px;">
+                SSAO • Bloom • FXAA • HDR
+            </div>
+        </div>
+        
+        <div class="quality-badge">
+            <i class="fas fa-star"></i>
+            <span>프로 모드</span>
+        </div>
+        
+        <!-- Right Properties Panel -->
+        <div class="properties-panel">
+            <div class="prop-section">
+                <div class="prop-title">선택된 객체</div>
+                <div id="selectedObjectInfo">
+                    <div style="text-align: center; padding: 40px 0; color: rgba(255,255,255,0.4); font-size: 12px;">
+                        객체를 선택하세요
+                    </div>
+                </div>
+            </div>
+            
+            <div class="prop-section">
+                <div class="prop-title">전시실</div>
+                <div class="prop-group">
+                    <label class="prop-label">가로 (m)</label>
+                    <input type="number" class="prop-input" id="roomWidth" value="20" min="5" max="100">
+                </div>
+                <div class="prop-group">
+                    <label class="prop-label">세로 (m)</label>
+                    <input type="number" class="prop-input" id="roomDepth" value="15" min="5" max="100">
+                </div>
+                <div class="prop-group">
+                    <label class="prop-label">높이 (m)</label>
+                    <input type="number" class="prop-input" id="roomHeight" value="4" min="2" max="10">
+                </div>
+                <button class="prop-btn" onclick="updateRoom()">공간 적용</button>
+            </div>
+            
+            <div class="prop-section">
+                <div class="prop-title">렌더링 품질</div>
+                <div class="prop-group">
+                    <label class="prop-label">
+                        SSAO 강도
+                        <span class="prop-value" id="ssaoValue">0.5</span>
+                    </label>
+                    <input type="range" class="prop-slider" id="ssaoIntensity" min="0" max="1" step="0.1" value="0.5" oninput="updateSSAO(this.value)">
+                </div>
+                <div class="prop-group">
+                    <label class="prop-label">
+                        Bloom 강도
+                        <span class="prop-value" id="bloomValue">0.5</span>
+                    </label>
+                    <input type="range" class="prop-slider" id="bloomIntensity" min="0" max="2" step="0.1" value="0.5" oninput="updateBloom(this.value)">
+                </div>
+                <div class="prop-group">
+                    <label class="prop-label">
+                        노출 (Exposure)
+                        <span class="prop-value" id="exposureValue">1.0</span>
+                    </label>
+                    <input type="range" class="prop-slider" id="exposure" min="0.5" max="2" step="0.1" value="1.0" oninput="updateExposure(this.value)">
+                </div>
+            </div>
+            
+            <div class="prop-section">
+                <div class="prop-title">조명</div>
+                <div class="prop-group">
+                    <label class="prop-label">
+                        환경광
+                        <span class="prop-value" id="ambientValue">0.4</span>
+                    </label>
+                    <input type="range" class="prop-slider" id="ambientLight" min="0" max="1" step="0.1" value="0.4" oninput="updateAmbient(this.value)">
+                </div>
+                <div class="prop-group">
+                    <label class="prop-label">
+                        스포트라이트
+                        <span class="prop-value" id="spotValue">1.5</span>
+                    </label>
+                    <input type="range" class="prop-slider" id="spotLight" min="0" max="3" step="0.1" value="1.5" oninput="updateSpot(this.value)">
+                </div>
+            </div>
+            
+            <div class="prop-section">
+                <div class="prop-title">빠른 작업</div>
+                <button class="prop-btn" onclick="autoArrange()">
+                    <i class="fas fa-magic"></i> 작품 자동 배치
+                </button>
+                <button class="prop-btn secondary" onclick="placeVisitors()">
+                    <i class="fas fa-users"></i> 관람객 배치
+                </button>
+                <button class="prop-btn secondary" onclick="optimizeFlow()">
+                    <i class="fas fa-route"></i> 동선 최적화
+                </button>
+            </div>
+        </div>
+        
+        <!-- Bottom Status Bar -->
+        <div class="status-bar">
+            <div class="status-item">
+                <i class="fas fa-cube"></i>
+                <span>객체: <span class="status-value" id="statObjects">0</span></span>
+            </div>
+            <div class="status-item">
+                <i class="fas fa-image"></i>
+                <span>작품: <span class="status-value" id="statArtworks">0</span></span>
+            </div>
+            <div class="status-item">
+                <i class="fas fa-users"></i>
+                <span>관람객: <span class="status-value" id="statVisitors">0</span></span>
+            </div>
+            <div class="status-item">
+                <i class="fas fa-chart-area"></i>
+                <span>면적: <span class="status-value" id="statArea">300㎡</span></span>
+            </div>
+            <div class="status-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>FPS: <span class="status-value" id="statFPS">60</span></span>
+            </div>
+            <div class="status-item">
+                <span class="status-value">고품질 렌더링 활성화</span>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { TransformControls } from 'three/addons/controls/TransformControls.js';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { SSAOPass } from 'three/addons/postprocessing/SSAOPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+        import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+        import { FXAAShader } from 'three/addons/shaders/FXAAShader.js';
+        
+        // Global State
+        let scene, camera, renderer, controls, transformControl;
+        let composer, ssaoPass, bloomPass, fxaaPass;
+        let roomGroup, artworkGroup, visitorGroup, pathGroup, lightGroup;
+        let artworks = [], visitors = [], spotlights = [];
+        let selectedObject = null;
+        let currentTool = 'select';
+        
+        let roomWidth = 20, roomDepth = 15, roomHeight = 4;
+        let ambientLight;
+        
+        // Loading Progress
+        let loadingProgress = 0;
+        function updateLoadingProgress(progress, text) {
+            loadingProgress = progress;
+            document.getElementById('loadingProgress').style.width = progress + '%';
+            document.getElementById('loadingText').textContent = text;
+        }
+        
+        // Initialize
+        async function init() {
+            updateLoadingProgress(10, '3D 엔진 초기화 중...');
+            
+            const canvas = document.getElementById('three-canvas');
+            
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0a0a0a);
+            scene.fog = new THREE.Fog(0x0a0a0a, 30, 100);
+            
+            updateLoadingProgress(20, '카메라 설정 중...');
+            
+            // Camera
+            const aspect = canvas.clientWidth / canvas.clientHeight;
+            camera = new THREE.PerspectiveCamera(60, aspect, 0.1, 1000);
+            camera.position.set(0, roomHeight * 2.5, roomDepth * 1.8);
+            camera.lookAt(0, roomHeight / 2, 0);
+            
+            updateLoadingProgress(30, '고품질 렌더러 초기화 중...');
+            
+            // Renderer with High Quality Settings
+            renderer = new THREE.WebGLRenderer({ 
+                canvas, 
+                antialias: true,
+                powerPreference: 'high-performance'
+            });
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            
+            // High Quality Shadow
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.VSMShadowMap; // Better than PCF
+            
+            // Tone Mapping for Realistic Look
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.0;
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+            
+            updateLoadingProgress(40, 'OrbitControls 설정 중...');
+            
+            // OrbitControls
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.minDistance = 5;
+            controls.maxDistance = 100;
+            controls.maxPolarAngle = Math.PI / 2 - 0.1;
+            
+            updateLoadingProgress(50, 'Transform Gizmo 설정 중...');
+            
+            // TransformControls (Gizmo)
+            transformControl = new TransformControls(camera, renderer.domElement);
+            transformControl.addEventListener('dragging-changed', (event) => {
+                controls.enabled = !event.value;
+            });
+            scene.add(transformControl);
+            
+            updateLoadingProgress(60, 'Post-Processing 효과 초기화 중...');
+            
+            // Post-Processing
+            composer = new EffectComposer(renderer);
+            
+            const renderPass = new RenderPass(scene, camera);
+            composer.addPass(renderPass);
+            
+            // SSAO (Ambient Occlusion)
+            ssaoPass = new SSAOPass(scene, camera, canvas.clientWidth, canvas.clientHeight);
+            ssaoPass.kernelRadius = 16;
+            ssaoPass.minDistance = 0.005;
+            ssaoPass.maxDistance = 0.1;
+            ssaoPass.output = SSAOPass.OUTPUT.Default;
+            composer.addPass(ssaoPass);
+            
+            // Bloom
+            bloomPass = new UnrealBloomPass(
+                new THREE.Vector2(canvas.clientWidth, canvas.clientHeight),
+                0.5,  // strength
+                0.4,  // radius
+                0.85  // threshold
+            );
+            composer.addPass(bloomPass);
+            
+            // FXAA (Anti-Aliasing)
+            fxaaPass = new ShaderPass(FXAAShader);
+            const pixelRatio = renderer.getPixelRatio();
+            fxaaPass.material.uniforms['resolution'].value.x = 1 / (canvas.clientWidth * pixelRatio);
+            fxaaPass.material.uniforms['resolution'].value.y = 1 / (canvas.clientHeight * pixelRatio);
+            composer.addPass(fxaaPass);
+            
+            // Output Pass
+            const outputPass = new OutputPass();
+            composer.addPass(outputPass);
+            
+            updateLoadingProgress(70, '조명 시스템 구성 중...');
+            
+            // Groups
+            roomGroup = new THREE.Group();
+            artworkGroup = new THREE.Group();
+            visitorGroup = new THREE.Group();
+            pathGroup = new THREE.Group();
+            lightGroup = new THREE.Group();
+            scene.add(roomGroup, artworkGroup, visitorGroup, pathGroup, lightGroup);
+            
+            setupLighting();
+            
+            updateLoadingProgress(80, '전시실 구축 중...');
+            
+            buildRoom();
+            
+            updateLoadingProgress(90, '기본 작품 로딩 중...');
+            
+            addDefaultArtworks();
+            loadArtworkAssets();
+            
+            // Events
+            window.addEventListener('resize', onResize);
+            canvas.addEventListener('click', onCanvasClick);
+            
+            updateLoadingProgress(100, '완료!');
+            
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+                showToast('고품질 렌더링 모드가 활성화되었습니다');
+            }, 500);
+            
+            animate();
+        }
+        
+        function setupLighting() {
+            // Ambient Light
+            ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+            scene.add(ambientLight);
+            
+            // Hemisphere Light for Natural Indoor Look
+            const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
+            scene.add(hemiLight);
+            
+            // Main Directional Light with High-Quality Shadow
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            dirLight.position.set(10, 20, 10);
+            dirLight.castShadow = true;
+            
+            // 4K Shadow Map for High Quality
+            dirLight.shadow.mapSize.width = 4096;
+            dirLight.shadow.mapSize.height = 4096;
+            dirLight.shadow.camera.near = 0.5;
+            dirLight.shadow.camera.far = 500;
+            dirLight.shadow.camera.left = -30;
+            dirLight.shadow.camera.right = 30;
+            dirLight.shadow.camera.top = 30;
+            dirLight.shadow.camera.bottom = -30;
+            dirLight.shadow.bias = -0.0001;
+            dirLight.shadow.radius = 4; // Softer shadow edges (VSMShadowMap)
+            
+            scene.add(dirLight);
+            
+            // Spotlights with Purple Tone
+            for (let i = 0; i < 3; i++) {
+                const spot = new THREE.SpotLight(0x8a2be2, 1.5);
+                spot.angle = Math.PI / 6;
+                spot.penumbra = 0.3;
+                spot.distance = 30;
+                spot.castShadow = true;
+                spot.shadow.mapSize.width = 4096; // 4K shadow map
+                spot.shadow.mapSize.height = 4096;
+                spot.shadow.bias = -0.0001;
+                spot.shadow.radius = 3; // Softer shadow edges
+                spotlights.push(spot);
+                lightGroup.add(spot);
+            }
+            
+            updateSpotlightPositions();
+        }
+        
+        function updateSpotlightPositions() {
+            if (spotlights.length >= 3) {
+                spotlights[0].position.set(0, roomHeight - 0.5, -roomDepth / 2 + 2);
+                spotlights[1].position.set(-roomWidth / 4, roomHeight - 0.5, 0);
+                spotlights[2].position.set(roomWidth / 4, roomHeight - 0.5, 0);
+            }
+        }
+        
+        function buildRoom() {
+            while(roomGroup.children.length > 0) {
+                roomGroup.remove(roomGroup.children[0]);
+            }
+            
+            const hw = roomWidth / 2, hd = roomDepth / 2;
+            
+            // Floor with PBR Material
+            const floor = new THREE.Mesh(
+                new THREE.PlaneGeometry(roomWidth, roomDepth),
+                new THREE.MeshStandardMaterial({ 
+                    color: 0x2a2a3e,
+                    roughness: 0.8,
+                    metalness: 0.1
+                })
+            );
+            floor.rotation.x = -Math.PI / 2;
+            floor.receiveShadow = true;
+            roomGroup.add(floor);
+            
+            // Walls with Gallery White
+            const wallMat = new THREE.MeshStandardMaterial({ 
+                color: 0xf5f5f5,
+                roughness: 0.9,
+                metalness: 0.0
+            });
+            
+            const walls = [
+                { pos: [0, roomHeight / 2, -hd], rot: [0, 0, 0] }, // Back
+                { pos: [-hw, roomHeight / 2, 0], rot: [0, Math.PI / 2, 0] }, // Left
+                { pos: [hw, roomHeight / 2, 0], rot: [0, -Math.PI / 2, 0] }, // Right
+                { pos: [0, roomHeight / 2, hd], rot: [0, Math.PI, 0] } // Front
+            ];
+            
+            walls.forEach((w, i) => {
+                const size = i % 2 === 0 ? roomWidth : roomDepth;
+                const wall = new THREE.Mesh(
+                    new THREE.PlaneGeometry(size, roomHeight),
+                    wallMat
+                );
+                wall.position.set(...w.pos);
+                wall.rotation.set(...w.rot);
+                wall.receiveShadow = true;
+                roomGroup.add(wall);
+            });
+            
+            const grid = new THREE.GridHelper(Math.max(roomWidth, roomDepth) * 1.2, 50, 0x8a2be2, 0x333333);
+            grid.material.opacity = 0.15;
+            grid.material.transparent = true;
+            roomGroup.add(grid);
+            
+            updateSpotlightPositions();
+            updateStats();
+        }
+        
+        function addDefaultArtworks() {
+            const defaults = [
+                '모나리자', '별이 빛나는 밤', '진주 귀걸이 소녀',
+                '절규', '키스', '게르니카'
+            ];
+            
+            defaults.forEach(name => {
+                artworks.push({ name, width: 2, height: 3, mesh: null });
+            });
+            
+            autoArrange();
+        }
+        
+        function loadArtworkAssets() {
+            const container = document.getElementById('artworkAssets');
+            artworks.forEach((art, i) => {
+                const item = document.createElement('div');
+                item.className = 'asset-item';
+                item.draggable = true;
+                item.dataset.index = i;
+                item.innerHTML = `
+                    <div class="asset-item-name">${art.name}</div>
+                    <div class="asset-item-info">${art.width}m × ${art.height}m</div>
+                `;
+                container.appendChild(item);
+            });
+        }
+        
+        window.autoArrange = function() {
+            artworks.forEach(art => {
+                if (art.mesh) artworkGroup.remove(art.mesh);
+            });
+            
+            const hw = roomWidth / 2, hd = roomDepth / 2;
+            const walls = ['back', 'left', 'right'];
+            const spacing = 1.5;
+            
+            let wallIndex = 0, xOffset = -8;
+            
+            artworks.forEach((art, i) => {
+                const wall = walls[wallIndex];
+                let pos, rot;
+                
+                if (wall === 'back') {
+                    pos = new THREE.Vector3(xOffset, art.height / 2 + 1, -hd + 0.05);
+                    rot = new THREE.Euler(0, 0, 0);
+                    xOffset += art.width + spacing;
+                    if (xOffset > 8) { wallIndex = 1; xOffset = -5; }
+                } else if (wall === 'left') {
+                    pos = new THREE.Vector3(-hw + 0.05, art.height / 2 + 1, xOffset);
+                    rot = new THREE.Euler(0, Math.PI / 2, 0);
+                    xOffset += art.width + spacing;
+                    if (xOffset > 5) { wallIndex = 2; xOffset = -5; }
+                } else {
+                    pos = new THREE.Vector3(hw - 0.05, art.height / 2 + 1, xOffset);
+                    rot = new THREE.Euler(0, -Math.PI / 2, 0);
+                    xOffset += art.width + spacing;
+                }
+                
+                art.position = pos;
+                art.wall = wall;
+                
+                // High-Quality PBR Material for Artworks
+                const mesh = new THREE.Mesh(
+                    new THREE.BoxGeometry(art.width, art.height, 0.1),
+                    new THREE.MeshStandardMaterial({
+                        color: 0x8a2be2,
+                        metalness: 0.5,
+                        roughness: 0.3,
+                        emissive: 0x8a2be2,
+                        emissiveIntensity: 0.3
+                    })
+                );
+                mesh.position.copy(pos);
+                mesh.rotation.copy(rot);
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
+                mesh.userData.type = 'artwork';
+                mesh.userData.index = i;
+                
+                art.mesh = mesh;
+                artworkGroup.add(mesh);
+            });
+            
+            updateStats();
+            showToast('작품이 자동 배치되었습니다');
+        };
+        
+        window.placeVisitors = function() {
+            const count = 15;
+            
+            while(visitorGroup.children.length > 0) {
+                visitorGroup.remove(visitorGroup.children[0]);
+            }
+            visitors = [];
+            
+            for (let i = 0; i < count; i++) {
+                const x = (Math.random() - 0.5) * (roomWidth - 4);
+                const z = (Math.random() - 0.5) * (roomDepth - 4);
+                
+                const visitor = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.3, 0.3, 1.7, 16),
+                    new THREE.MeshStandardMaterial({ 
+                        color: 0x4CAF50,
+                        roughness: 0.7,
+                        metalness: 0.1,
+                        emissive: 0x4CAF50,
+                        emissiveIntensity: 0.2
+                    })
+                );
+                visitor.position.set(x, 0.85, z);
+                visitor.castShadow = true;
+                visitor.receiveShadow = true;
+                
+                visitorGroup.add(visitor);
+                visitors.push(visitor);
+            }
+            
+            updateStats();
+            showToast(`${count}명의 관람객이 배치되었습니다`);
+        };
+        
+        window.optimizeFlow = function() {
+            while(pathGroup.children.length > 0) {
+                pathGroup.remove(pathGroup.children[0]);
+            }
+            
+            if (artworks.length < 2) {
+                showToast('작품이 2개 이상 필요합니다');
+                return;
+            }
+            
+            const points = artworks.map(art => {
+                const pos = art.position.clone();
+                pos.y = 0.1;
+                if (art.wall === 'back') pos.z += 2;
+                else if (art.wall === 'left') pos.x += 2;
+                else if (art.wall === 'right') pos.x -= 2;
+                return pos;
+            });
+            
+            const curve = new THREE.CatmullRomCurve3(points);
+            const pathGeom = new THREE.BufferGeometry().setFromPoints(curve.getPoints(100));
+            const pathMat = new THREE.LineBasicMaterial({ color: 0x4CAF50, linewidth: 2 });
+            const path = new THREE.Line(pathGeom, pathMat);
+            pathGroup.add(path);
+            
+            showToast('관람 동선이 최적화되었습니다');
+        };
+        
+        window.updateRoom = function() {
+            roomWidth = parseFloat(document.getElementById('roomWidth').value);
+            roomDepth = parseFloat(document.getElementById('roomDepth').value);
+            roomHeight = parseFloat(document.getElementById('roomHeight').value);
+            
+            buildRoom();
+            autoArrange();
+            
+            camera.position.set(0, roomHeight * 2.5, roomDepth * 1.8);
+            controls.target.set(0, roomHeight / 2, 0);
+            controls.update();
+            
+            showToast('전시실 크기가 적용되었습니다');
+        };
+        
+        window.setCameraPreset = function(preset) {
+            switch(preset) {
+                case 'overview':
+                    camera.position.set(0, roomHeight * 2.5, roomDepth * 1.8);
+                    controls.target.set(0, roomHeight / 2, 0);
+                    break;
+                case 'visitor':
+                    camera.position.set(0, 1.6, roomDepth / 2 - 2);
+                    controls.target.set(0, 1.6, 0);
+                    break;
+                case 'bird':
+                    camera.position.set(0, roomHeight * 4, 0);
+                    controls.target.set(0, 0, 0);
+                    break;
+            }
+            controls.update();
+        };
+        
+        window.setTool = function(tool) {
+            currentTool = tool;
+            
+            document.querySelectorAll('.toolbar-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.closest('.toolbar-btn').classList.add('active');
+            
+            if (selectedObject && tool !== 'select') {
+                transformControl.setMode(tool === 'move' ? 'translate' : tool === 'rotate' ? 'rotate' : 'scale');
+                transformControl.attach(selectedObject);
+            } else {
+                transformControl.detach();
+            }
+        };
+        
+        window.updateSSAO = function(val) {
+            if (ssaoPass) {
+                ssaoPass.kernelRadius = parseFloat(val) * 32;
+            }
+            document.getElementById('ssaoValue').textContent = val;
+        };
+        
+        window.updateBloom = function(val) {
+            if (bloomPass) {
+                bloomPass.strength = parseFloat(val);
+            }
+            document.getElementById('bloomValue').textContent = val;
+        };
+        
+        window.updateExposure = function(val) {
+            renderer.toneMappingExposure = parseFloat(val);
+            document.getElementById('exposureValue').textContent = val;
+        };
+        
+        window.updateAmbient = function(val) {
+            ambientLight.intensity = parseFloat(val);
+            document.getElementById('ambientValue').textContent = val;
+        };
+        
+        window.updateSpot = function(val) {
+            const intensity = parseFloat(val);
+            spotlights.forEach(spot => spot.intensity = intensity);
+            document.getElementById('spotValue').textContent = val;
+        };
+        
+        window.toggleRendering = function() {
+            composer.enabled = !composer.enabled;
+            showToast(composer.enabled ? '고품질 렌더링 활성화' : '기본 렌더링');
+        };
+        
+        window.toggleLighting = function() {
+            lightGroup.visible = !lightGroup.visible;
+            showToast(lightGroup.visible ? '조명 표시' : '조명 숨김');
+        };
+        
+        window.exportScene = function() {
+            const data = {
+                room: { width: roomWidth, depth: roomDepth, height: roomHeight },
+                artworks: artworks.map(art => ({
+                    name: art.name,
+                    width: art.width,
+                    height: art.height,
+                    wall: art.wall
+                })),
+                visitors: visitors.length
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'museflow-pro-' + Date.now() + '.json';
+            a.click();
+            
+            showToast('설정이 내보내기되었습니다');
+        };
+        
+        window.resetScene = function() {
+            if (!confirm('모든 설정을 초기화하시겠습니까?')) return;
+            location.reload();
+        };
+        
+        function onCanvasClick(e) {
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+            const canvas = document.getElementById('three-canvas');
+            const rect = canvas.getBoundingClientRect();
+            
+            mouse.x = ((e.clientX - rect.left) / canvas.clientWidth) * 2 - 1;
+            mouse.y = -((e.clientY - rect.top) / canvas.clientHeight) * 2 + 1;
+            
+            raycaster.setFromCamera(mouse, camera);
+            
+            const meshes = artworks.map(art => art.mesh).filter(m => m);
+            const intersects = raycaster.intersectObjects(meshes);
+            
+            if (intersects.length > 0) {
+                selectedObject = intersects[0].object;
+                if (currentTool !== 'select') {
+                    transformControl.attach(selectedObject);
+                }
+                updatePropertiesPanel(selectedObject);
+            } else {
+                selectedObject = null;
+                transformControl.detach();
+                clearPropertiesPanel();
+            }
+        }
+        
+        function updatePropertiesPanel(obj) {
+            const info = document.getElementById('selectedObjectInfo');
+            const index = obj.userData.index;
+            const art = artworks[index];
+            
+            info.innerHTML = `
+                <div class="prop-group">
+                    <label class="prop-label">객체 유형</label>
+                    <div style="color: #8a2be2; font-weight: 600;">작품</div>
+                </div>
+                <div class="prop-group">
+                    <label class="prop-label">이름</label>
+                    <div style="color: #ffffff;">${art.name}</div>
+                </div>
+                <div class="prop-group">
+                    <label class="prop-label">크기</label>
+                    <div style="color: #ffffff;">${art.width}m × ${art.height}m</div>
+                </div>
+                <div class="prop-group">
+                    <label class="prop-label">벽면</label>
+                    <div style="color: #ffffff;">${art.wall}</div>
+                </div>
+            `;
+        }
+        
+        function clearPropertiesPanel() {
+            document.getElementById('selectedObjectInfo').innerHTML = `
+                <div style="text-align: center; padding: 40px 0; color: rgba(255,255,255,0.4); font-size: 12px;">
+                    객체를 선택하세요
+                </div>
+            `;
+        }
+        
+        function updateStats() {
+            document.getElementById('statObjects').textContent = 
+                artworkGroup.children.length + visitorGroup.children.length;
+            document.getElementById('statArtworks').textContent = artworks.length;
+            document.getElementById('statVisitors').textContent = visitors.length;
+            document.getElementById('statArea').textContent = (roomWidth * roomDepth).toFixed(0) + '㎡';
+        }
+        
+        function onResize() {
+            const canvas = document.getElementById('three-canvas');
+            camera.aspect = canvas.clientWidth / canvas.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+            composer.setSize(canvas.clientWidth, canvas.clientHeight);
+            
+            // Update FXAA resolution
+            if (fxaaPass) {
+                const pixelRatio = renderer.getPixelRatio();
+                fxaaPass.material.uniforms['resolution'].value.x = 1 / (canvas.clientWidth * pixelRatio);
+                fxaaPass.material.uniforms['resolution'].value.y = 1 / (canvas.clientHeight * pixelRatio);
+            }
+        }
+        
+        let lastTime = performance.now();
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            controls.update();
+            
+            // Subtle animation
+            artworks.forEach((art, i) => {
+                if (art.mesh) {
+                    const time = Date.now() * 0.0001;
+                    art.mesh.rotation.z = Math.sin(time + i) * 0.015;
+                }
+            });
+            
+            // Render with Post-Processing
+            composer.render();
+            
+            // FPS Counter
+            const now = performance.now();
+            const fps = Math.round(1000 / (now - lastTime));
+            document.getElementById('statFPS').textContent = fps;
+            lastTime = now;
+        }
+        
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.className = 'toast show';
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+        
+        // Initialize
+        init();
+        
+        // Load navbar
+        fetch('/unified-navbar.html')
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById('unified-navbar-placeholder').innerHTML = html;
+            });
+    </script>
+</body>
+</html>

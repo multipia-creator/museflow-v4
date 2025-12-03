@@ -55,6 +55,7 @@ const exclude = [
   '/icon-samples-lucide.html',
   '/3d-viewer.html',
   '/digital-twin.html',
+  '/digital-twin-pro.html',
   
   // Pretty URL paths (all)
   '/account',
@@ -81,7 +82,8 @@ const exclude = [
   '/icon-samples',
   '/icon-samples-lucide',
   '/3d-viewer',
-  '/digital-twin'
+  '/digital-twin',
+  '/digital-twin-pro'
 ];
 
 const routes = {

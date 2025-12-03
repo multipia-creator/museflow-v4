@@ -51,6 +51,7 @@ export default defineConfig({
         '/icon-samples-lucide.html',
         '/3d-viewer.html',
         '/digital-twin.html',
+        '/digital-twin-pro.html',
         
         // Pretty URL paths (Cloudflare Pages auto-redirects /page.html → /page)
         // CRITICAL: Must exclude ALL to prevent Worker 404 errors
@@ -87,7 +88,8 @@ export default defineConfig({
         '/icon-samples',
         '/icon-samples-lucide',
         '/3d-viewer',
-        '/digital-twin'
+        '/digital-twin',
+        '/digital-twin-pro'
       ]
     }),
     devServer({
