@@ -16,6 +16,9 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
+    <!-- Chart.js for Chart Nodes -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
     <!-- Dashboard Design System -->
     <link href="/static/css/design-system.css" rel="stylesheet">
     <link href="/static/css/unified-navbar.css" rel="stylesheet">
@@ -1160,6 +1163,322 @@
             letter-spacing: 0.5px;
         }
         
+        /* ===============================================
+           AI Chat Panel - All-in-One Canvas AI Orchestration
+           =============================================== */
+        .ai-chat-panel {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 480px;
+            max-height: 600px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-primary);
+            border-radius: 16px 16px 0 0;
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            transition: all var(--transition-base);
+        }
+        
+        .ai-chat-panel.minimized {
+            max-height: 48px;
+        }
+        
+        .ai-chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-primary);
+            background: linear-gradient(135deg, var(--accent-light) 0%, var(--bg-primary) 100%);
+            border-radius: 16px 16px 0 0;
+        }
+        
+        .ai-chat-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .ai-chat-actions {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .ai-action-btn {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            color: var(--text-secondary);
+        }
+        
+        .ai-action-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--text-primary);
+        }
+        
+        .ai-chat-body {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .ai-chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 300px;
+        }
+        
+        .ai-message {
+            display: flex;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .ai-message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--accent-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--accent-primary);
+        }
+        
+        .ai-message-content {
+            flex: 1;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+        
+        .ai-message-content p {
+            margin: 0 0 8px 0;
+        }
+        
+        .ai-message-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .ai-welcome {
+            background: var(--accent-light);
+            padding: 12px;
+            border-radius: 8px;
+        }
+        
+        .user-message .ai-message-avatar {
+            background: var(--text-primary);
+            color: white;
+        }
+        
+        .quick-commands {
+            display: flex;
+            gap: 8px;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border-primary);
+            border-bottom: 1px solid var(--border-primary);
+            background: var(--bg-tertiary);
+            overflow-x: auto;
+        }
+        
+        .quick-cmd-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border: 1px solid var(--border-primary);
+            background: white;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all var(--transition-fast);
+        }
+        
+        .quick-cmd-btn:hover {
+            border-color: var(--accent-primary);
+            background: var(--accent-light);
+            color: var(--accent-primary);
+        }
+        
+        .ai-chat-input-wrapper {
+            padding: 16px;
+        }
+        
+        .ai-chat-input-container {
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+        }
+        
+        .ai-chat-input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+            resize: none;
+            transition: all var(--transition-fast);
+        }
+        
+        .ai-chat-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+        
+        .ai-send-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: var(--accent-primary);
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            flex-shrink: 0;
+        }
+        
+        .ai-send-btn:hover:not(:disabled) {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .ai-send-btn:disabled {
+            background: var(--border-secondary);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .ai-input-hint {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+        
+        /* ===============================================
+           Specialized Node Types - Chart, Image, Document
+           =============================================== */
+        .node-chart-container {
+            width: 100%;
+            height: 200px;
+            padding: 8px;
+            background: white;
+            border-radius: 6px;
+        }
+        
+        .node-image-container {
+            width: 100%;
+            height: 180px;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .node-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .node-image-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-tertiary);
+            font-size: 12px;
+        }
+        
+        .node-generate-btn {
+            padding: 6px 12px;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .node-generate-btn:hover {
+            background: var(--accent-hover);
+        }
+        
+        .node-document-container {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+        
+        .node-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .node-loading i {
+            animation: spin 1s linear infinite;
+        }
+        
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .left-panel,
@@ -1369,6 +1688,75 @@
                             </select>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- AI Chat Panel - All-in-One Canvas AI Orchestration -->
+    <div class="ai-chat-panel" id="ai-chat-panel">
+        <div class="ai-chat-header">
+            <div class="ai-chat-title">
+                <i data-lucide="sparkles" style="width: 18px; height: 18px; color: var(--accent-primary);"></i>
+                <span>AI Assistant</span>
+            </div>
+            <div class="ai-chat-actions">
+                <button class="ai-action-btn" id="minimize-chat" title="최소화">
+                    <i data-lucide="minus" style="width: 16px; height: 16px;"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="ai-chat-body">
+            <!-- Chat Messages -->
+            <div class="ai-chat-messages" id="ai-chat-messages">
+                <div class="ai-message ai-welcome">
+                    <div class="ai-message-avatar">
+                        <i data-lucide="bot" style="width: 16px; height: 16px;"></i>
+                    </div>
+                    <div class="ai-message-content">
+                        <p>안녕하세요! 👋 AI 어시스턴트입니다.</p>
+                        <p>자연어로 명령하시면 자동으로 워크플로우를 생성해드립니다.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Commands -->
+            <div class="quick-commands">
+                <button class="quick-cmd-btn" data-command="workflow" title="워크플로우 생성">
+                    <i data-lucide="workflow" style="width: 16px; height: 16px;"></i>
+                    <span>워크플로우</span>
+                </button>
+                <button class="quick-cmd-btn" data-command="image" title="이미지 생성">
+                    <i data-lucide="image" style="width: 16px; height: 16px;"></i>
+                    <span>이미지</span>
+                </button>
+                <button class="quick-cmd-btn" data-command="chart" title="차트 생성">
+                    <i data-lucide="bar-chart-3" style="width: 16px; height: 16px;"></i>
+                    <span>차트</span>
+                </button>
+                <button class="quick-cmd-btn" data-command="report" title="보고서 작성">
+                    <i data-lucide="file-text" style="width: 16px; height: 16px;"></i>
+                    <span>보고서</span>
+                </button>
+            </div>
+            
+            <!-- Input Area -->
+            <div class="ai-chat-input-wrapper">
+                <div class="ai-chat-input-container">
+                    <textarea 
+                        id="ai-chat-input" 
+                        class="ai-chat-input" 
+                        placeholder="AI에게 명령하세요... (예: 현대미술 전시 기획 워크플로우 만들어줘)"
+                        rows="2"
+                    ></textarea>
+                    <button class="ai-send-btn" id="ai-send-btn" disabled>
+                        <i data-lucide="send" style="width: 18px; height: 18px;"></i>
+                    </button>
+                </div>
+                <div class="ai-input-hint">
+                    <i data-lucide="lightbulb" style="width: 12px; height: 12px;"></i>
+                    <span>예시: "예산 차트와 포스터 이미지가 포함된 전시 기획 워크플로우 생성해줘"</span>
                 </div>
             </div>
         </div>
@@ -1976,8 +2364,602 @@
             
             // Welcome message
             setTimeout(() => {
-                showToast('✨ Compact Header 적용! 68px 공간 절약 (61% 감소)', 'success');
+                showToast('✨ AI Canvas 준비 완료! AI 어시스턴트가 활성화되었습니다.', 'success');
             }, 500);
+            
+            // ================================================
+            // AI Chat Panel Functions
+            // ================================================
+            
+            // AI Chat Panel State
+            const aiChatState = {
+                isMinimized: false,
+                messages: []
+            };
+            
+            // DOM Elements
+            const aiChatPanel = document.getElementById('ai-chat-panel');
+            const aiChatInput = document.getElementById('ai-chat-input');
+            const aiSendBtn = document.getElementById('ai-send-btn');
+            const aiChatMessages = document.getElementById('ai-chat-messages');
+            const minimizeBtn = document.getElementById('minimize-chat');
+            
+            // Enable/disable send button based on input
+            aiChatInput.addEventListener('input', () => {
+                const hasText = aiChatInput.value.trim().length > 0;
+                aiSendBtn.disabled = !hasText;
+            });
+            
+            // Handle Enter key (Shift+Enter for new line)
+            aiChatInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    if (!aiSendBtn.disabled) {
+                        sendAICommand();
+                    }
+                }
+            });
+            
+            // Send button click
+            aiSendBtn.addEventListener('click', sendAICommand);
+            
+            // Minimize/Maximize chat
+            minimizeBtn.addEventListener('click', () => {
+                aiChatState.isMinimized = !aiChatState.isMinimized;
+                aiChatPanel.classList.toggle('minimized', aiChatState.isMinimized);
+                
+                const icon = minimizeBtn.querySelector('i');
+                if (aiChatState.isMinimized) {
+                    icon.setAttribute('data-lucide', 'maximize-2');
+                } else {
+                    icon.setAttribute('data-lucide', 'minus');
+                }
+                lucide.createIcons();
+            });
+            
+            // Quick Command buttons
+            document.querySelectorAll('.quick-cmd-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const command = btn.dataset.command;
+                    handleQuickCommand(command);
+                });
+            });
+            
+            // Handle Quick Commands
+            function handleQuickCommand(type) {
+                const prompts = {
+                    workflow: '전시 기획 워크플로우를 생성해주세요.',
+                    image: '전시 포스터 이미지를 생성해주세요.',
+                    chart: '예산 계획 차트를 생성해주세요.',
+                    report: '전시 기획안 보고서를 작성해주세요.'
+                };
+                
+                aiChatInput.value = prompts[type] || '';
+                aiChatInput.focus();
+                aiSendBtn.disabled = false;
+            }
+            
+            // Send AI Command
+            async function sendAICommand() {
+                const userInput = aiChatInput.value.trim();
+                if (!userInput) return;
+                
+                // Add user message to chat
+                addMessageToChat('user', userInput);
+                
+                // Clear input
+                aiChatInput.value = '';
+                aiSendBtn.disabled = true;
+                
+                // Show loading
+                const loadingId = addMessageToChat('ai', '분석 중...');
+                
+                try {
+                    // Call AI API
+                    const response = await fetch('/api/ai/command', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            command: userInput,
+                            role: state.currentRole,
+                            currentNodes: state.nodes
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('AI 응답 실패');
+                    }
+                    
+                    const result = await response.json();
+                    
+                    // Remove loading message
+                    removeMessage(loadingId);
+                    
+                    // Process AI response
+                    processAIResponse(result);
+                    
+                } catch (error) {
+                    console.error('AI Command Error:', error);
+                    removeMessage(loadingId);
+                    addMessageToChat('ai', '죄송합니다. 오류가 발생했습니다. 다시 시도해주세요.');
+                    showToast('AI 처리 중 오류가 발생했습니다.', 'error');
+                }
+            }
+            
+            // Add message to chat
+            function addMessageToChat(type, content) {
+                const messageId = `msg-${Date.now()}`;
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `ai-message ${type === 'user' ? 'user-message' : ''}`;
+                messageDiv.id = messageId;
+                
+                const avatarIcon = type === 'user' ? 'user' : 'bot';
+                
+                messageDiv.innerHTML = `
+                    <div class="ai-message-avatar">
+                        <i data-lucide="${avatarIcon}" style="width: 16px; height: 16px;"></i>
+                    </div>
+                    <div class="ai-message-content">
+                        <p>${content}</p>
+                    </div>
+                `;
+                
+                aiChatMessages.appendChild(messageDiv);
+                lucide.createIcons();
+                
+                // Scroll to bottom
+                aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+                
+                return messageId;
+            }
+            
+            // Remove message
+            function removeMessage(messageId) {
+                const message = document.getElementById(messageId);
+                if (message) {
+                    message.remove();
+                }
+            }
+            
+            // Process AI Response
+            function processAIResponse(result) {
+                const { type, message, nodes, connections } = result;
+                
+                // Add AI response message
+                addMessageToChat('ai', message);
+                
+                // Execute based on type
+                switch(type) {
+                    case 'workflow':
+                        generateWorkflowNodes(nodes, connections);
+                        break;
+                    case 'image':
+                        generateImageNode(nodes[0]);
+                        break;
+                    case 'chart':
+                        generateChartNode(nodes[0]);
+                        break;
+                    case 'report':
+                        generateDocumentNode(nodes[0]);
+                        break;
+                    default:
+                        console.warn('Unknown AI response type:', type);
+                }
+                
+                showToast(`✨ ${message}`, 'success');
+            }
+            
+            // Generate Workflow Nodes
+            function generateWorkflowNodes(nodes, connections) {
+                if (!nodes || nodes.length === 0) return;
+                
+                // Clear existing nodes (optional)
+                const shouldClear = confirm('기존 노드를 삭제하고 새로운 워크플로우를 생성할까요?');
+                if (shouldClear) {
+                    document.getElementById('nodes-container').innerHTML = '';
+                    state.nodes = [];
+                }
+                
+                // Create nodes and store references
+                const createdNodes = [];
+                nodes.forEach(nodeData => {
+                    const nodeElement = createNodeFromAI(nodeData);
+                    createdNodes.push(nodeElement);
+                });
+                
+                // Create connections (IMPLEMENTED - Phase C-4)
+                if (connections && connections.length > 0) {
+                    setTimeout(() => {
+                        connections.forEach(conn => {
+                            const fromNode = createdNodes[conn.from];
+                            const toNode = createdNodes[conn.to];
+                            
+                            if (fromNode && toNode) {
+                                drawConnection(fromNode, toNode);
+                            }
+                        });
+                        
+                        addMessageToChat('ai', `✅ ${nodes.length}개 노드와 ${connections.length}개 연결선이 생성되었습니다!`);
+                    }, 200);
+                } else {
+                    addMessageToChat('ai', `✅ ${nodes.length}개의 노드가 생성되었습니다!`);
+                }
+            }
+            
+            // Create Node from AI data (returns node element)
+            function createNodeFromAI(nodeData) {
+                const node = document.createElement('div');
+                node.className = 'node';
+                node.style.left = `${nodeData.x || Math.random() * 500 + 100}px`;
+                node.style.top = `${nodeData.y || Math.random() * 300 + 100}px`;
+                node.dataset.nodeId = `node-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                
+                const iconMap = {
+                    idea: 'lightbulb',
+                    image: 'image',
+                    chart: 'bar-chart-3',
+                    document: 'file-text',
+                    task: 'check-square'
+                };
+                
+                const icon = iconMap[nodeData.type] || 'circle';
+                
+                node.innerHTML = `
+                    <div class="node-header">
+                        <i data-lucide="${icon}" style="width: 14px; height: 14px;"></i>
+                        <span class="node-title">${nodeData.title}</span>
+                        <button class="node-delete">
+                            <i data-lucide="x" style="width: 12px; height: 12px;"></i>
+                        </button>
+                    </div>
+                    <div class="node-body">
+                        <p>${nodeData.description || ''}</p>
+                    </div>
+                    <div class="node-handle node-handle-top"></div>
+                    <div class="node-handle node-handle-right"></div>
+                    <div class="node-handle node-handle-bottom"></div>
+                    <div class="node-handle node-handle-left"></div>
+                `;
+                
+                document.getElementById('nodes-container').appendChild(node);
+                lucide.createIcons();
+                makeDraggable(node);
+                
+                state.nodes.push({
+                    id: node.dataset.nodeId,
+                    title: nodeData.title,
+                    type: nodeData.type,
+                    description: nodeData.description
+                });
+                
+                return node; // Return node element for connection logic
+            }
+            
+            // Draw connection between two nodes (Phase C-4)
+            function drawConnection(fromNode, toNode) {
+                const canvas = document.getElementById('canvas');
+                const ctx = canvas.getContext('2d');
+                if (!ctx) return;
+                
+                // Get node positions
+                const fromRect = fromNode.getBoundingClientRect();
+                const toRect = toNode.getBoundingClientRect();
+                const containerRect = document.getElementById('canvas-container').getBoundingClientRect();
+                
+                // Calculate connection points (center of nodes)
+                const fromX = fromRect.left - containerRect.left + fromRect.width / 2;
+                const fromY = fromRect.top - containerRect.top + fromRect.height / 2;
+                const toX = toRect.left - containerRect.left + toRect.width / 2;
+                const toY = toRect.top - containerRect.top + toRect.height / 2;
+                
+                // Draw line
+                ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent-primary').trim() || '#8B5CF6';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(fromX, fromY);
+                
+                // Draw bezier curve for smooth connection
+                const midX = (fromX + toX) / 2;
+                ctx.bezierCurveTo(
+                    midX, fromY,
+                    midX, toY,
+                    toX, toY
+                );
+                
+                ctx.stroke();
+                
+                // Draw arrow at end
+                const angle = Math.atan2(toY - fromY, toX - fromX);
+                const arrowSize = 8;
+                ctx.beginPath();
+                ctx.moveTo(toX, toY);
+                ctx.lineTo(
+                    toX - arrowSize * Math.cos(angle - Math.PI / 6),
+                    toY - arrowSize * Math.sin(angle - Math.PI / 6)
+                );
+                ctx.lineTo(
+                    toX - arrowSize * Math.cos(angle + Math.PI / 6),
+                    toY - arrowSize * Math.sin(angle + Math.PI / 6)
+                );
+                ctx.closePath();
+                ctx.fillStyle = ctx.strokeStyle;
+                ctx.fill();
+            }
+            
+            // Generate Image Node (Placeholder for Phase C-1)
+            function generateImageNode(nodeData) {
+                createNodeFromAI({
+                    ...nodeData,
+                    type: 'image',
+                    description: '이미지 생성 준비 중...'
+                });
+                addMessageToChat('ai', '🎨 이미지 노드가 생성되었습니다. (Phase C-1에서 실제 이미지 생성 구현 예정)');
+            }
+            
+            // Generate Chart Node (IMPLEMENTED - Phase C-2)
+            function generateChartNode(nodeData) {
+                const chartId = `chart-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                
+                const node = document.createElement('div');
+                node.className = 'node';
+                node.style.left = `${nodeData.x || Math.random() * 500 + 100}px`;
+                node.style.top = `${nodeData.y || Math.random() * 300 + 100}px`;
+                node.style.width = '320px';
+                
+                node.innerHTML = `
+                    <div class="node-header">
+                        <i data-lucide="bar-chart-3" style="width: 14px; height: 14px;"></i>
+                        <span class="node-title">${nodeData.title || '차트'}</span>
+                        <button class="node-delete">
+                            <i data-lucide="x" style="width: 12px; height: 12px;"></i>
+                        </button>
+                    </div>
+                    <div class="node-body">
+                        <div class="node-chart-container">
+                            <canvas id="${chartId}"></canvas>
+                        </div>
+                    </div>
+                    <div class="node-handle node-handle-top"></div>
+                    <div class="node-handle node-handle-right"></div>
+                    <div class="node-handle node-handle-bottom"></div>
+                    <div class="node-handle node-handle-left"></div>
+                `;
+                
+                document.getElementById('nodes-container').appendChild(node);
+                lucide.createIcons();
+                makeDraggable(node);
+                
+                // Generate sample chart data based on role and title
+                const chartData = generateSampleChartData(nodeData.title, state.currentRole);
+                
+                // Render chart using Chart.js
+                setTimeout(() => {
+                    const ctx = document.getElementById(chartId);
+                    if (ctx) {
+                        new Chart(ctx, {
+                            type: chartData.type,
+                            data: chartData.data,
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        display: true,
+                                        position: 'bottom',
+                                        labels: {
+                                            font: { size: 10 },
+                                            boxWidth: 12
+                                        }
+                                    },
+                                    title: {
+                                        display: false
+                                    }
+                                },
+                                scales: chartData.type !== 'pie' && chartData.type !== 'doughnut' ? {
+                                    y: {
+                                        beginAtZero: true,
+                                        ticks: { font: { size: 10 } }
+                                    },
+                                    x: {
+                                        ticks: { font: { size: 10 } }
+                                    }
+                                } : {}
+                            }
+                        });
+                    }
+                }, 100);
+                
+                state.nodes.push({
+                    id: chartId,
+                    title: nodeData.title,
+                    type: 'chart'
+                });
+                
+                addMessageToChat('ai', `📊 ${nodeData.title} 차트가 생성되었습니다!`);
+            }
+            
+            // Generate sample chart data
+            function generateSampleChartData(title, role) {
+                const lowerTitle = (title || '').toLowerCase();
+                
+                // Budget/Finance chart
+                if (lowerTitle.includes('예산') || lowerTitle.includes('재정') || lowerTitle.includes('budget')) {
+                    return {
+                        type: 'bar',
+                        data: {
+                            labels: ['전시', '교육', '마케팅', '운영', '기타'],
+                            datasets: [{
+                                label: '예산 (만원)',
+                                data: [5000, 3000, 2000, 2500, 1500],
+                                backgroundColor: 'rgba(139, 92, 246, 0.6)',
+                                borderColor: 'rgba(139, 92, 246, 1)',
+                                borderWidth: 1
+                            }]
+                        }
+                    };
+                }
+                
+                // Visitor/Audience chart
+                if (lowerTitle.includes('관람객') || lowerTitle.includes('방문객') || lowerTitle.includes('visitor')) {
+                    return {
+                        type: 'line',
+                        data: {
+                            labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
+                            datasets: [{
+                                label: '관람객 수',
+                                data: [1200, 1900, 3000, 2500, 2800, 3500],
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }]
+                        }
+                    };
+                }
+                
+                // Distribution/Category chart
+                if (lowerTitle.includes('분포') || lowerTitle.includes('비율') || lowerTitle.includes('distribution')) {
+                    return {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['청소년', '청년', '중년', '노년'],
+                            datasets: [{
+                                data: [25, 35, 30, 10],
+                                backgroundColor: [
+                                    'rgba(139, 92, 246, 0.8)',
+                                    'rgba(59, 130, 246, 0.8)',
+                                    'rgba(16, 185, 129, 0.8)',
+                                    'rgba(245, 158, 11, 0.8)'
+                                ]
+                            }]
+                        }
+                    };
+                }
+                
+                // Default bar chart
+                return {
+                    type: 'bar',
+                    data: {
+                        labels: ['항목1', '항목2', '항목3', '항목4', '항목5'],
+                        datasets: [{
+                            label: title || '데이터',
+                            data: [65, 59, 80, 81, 56],
+                            backgroundColor: 'rgba(139, 92, 246, 0.6)',
+                            borderColor: 'rgba(139, 92, 246, 1)',
+                            borderWidth: 1
+                        }]
+                    }
+                };
+            }
+            
+            // Generate Document Node (IMPLEMENTED - Phase C-3)
+            async function generateDocumentNode(nodeData) {
+                const docId = `doc-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                
+                const node = document.createElement('div');
+                node.className = 'node';
+                node.style.left = `${nodeData.x || Math.random() * 500 + 100}px`;
+                node.style.top = `${nodeData.y || Math.random() * 300 + 100}px`;
+                node.style.width = '360px';
+                
+                node.innerHTML = `
+                    <div class="node-header">
+                        <i data-lucide="file-text" style="width: 14px; height: 14px;"></i>
+                        <span class="node-title">${nodeData.title || '문서'}</span>
+                        <button class="node-delete">
+                            <i data-lucide="x" style="width: 12px; height: 12px;"></i>
+                        </button>
+                    </div>
+                    <div class="node-body">
+                        <div class="node-document-container" id="${docId}">
+                            <div class="node-loading">
+                                <i data-lucide="loader" style="width: 16px; height: 16px;"></i>
+                                <span>AI가 문서를 작성 중입니다...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="node-handle node-handle-top"></div>
+                    <div class="node-handle node-handle-right"></div>
+                    <div class="node-handle node-handle-bottom"></div>
+                    <div class="node-handle node-handle-left"></div>
+                `;
+                
+                document.getElementById('nodes-container').appendChild(node);
+                lucide.createIcons();
+                makeDraggable(node);
+                
+                // Generate document content with AI
+                try {
+                    const content = await generateDocumentContent(nodeData.title, state.currentRole);
+                    
+                    const docContainer = document.getElementById(docId);
+                    if (docContainer) {
+                        docContainer.innerHTML = content;
+                    }
+                    
+                    addMessageToChat('ai', `📄 ${nodeData.title} 문서가 생성되었습니다!`);
+                    
+                } catch (error) {
+                    console.error('Document generation error:', error);
+                    const docContainer = document.getElementById(docId);
+                    if (docContainer) {
+                        docContainer.innerHTML = `
+                            <p style="color: var(--error);">❌ 문서 생성 중 오류가 발생했습니다.</p>
+                            <p style="font-size: 11px; color: var(--text-tertiary); margin-top: 8px;">
+                                ${error.message || '알 수 없는 오류'}
+                            </p>
+                        `;
+                    }
+                    addMessageToChat('ai', '문서 생성 중 오류가 발생했습니다.');
+                }
+                
+                state.nodes.push({
+                    id: docId,
+                    title: nodeData.title,
+                    type: 'document'
+                });
+            }
+            
+            // Generate document content using AI
+            async function generateDocumentContent(title, role) {
+                const response = await fetch('/api/ai/document', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: title,
+                        role: role
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('문서 생성 API 오류');
+                }
+                
+                const result = await response.json();
+                
+                if (!result.success) {
+                    throw new Error(result.error || '문서 생성 실패');
+                }
+                
+                return formatDocumentContent(result.content);
+            }
+            
+            // Format document content as HTML
+            function formatDocumentContent(content) {
+                if (!content) return '<p>내용 없음</p>';
+                
+                // Convert Markdown-style formatting to HTML
+                let html = content
+                    .replace(/### (.*)/g, '<h4 style="font-size: 13px; font-weight: 600; margin: 12px 0 6px 0;">$1</h4>')
+                    .replace(/## (.*)/g, '<h3 style="font-size: 14px; font-weight: 600; margin: 14px 0 8px 0;">$1</h3>')
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                    .replace(/- (.*)/g, '<li style="margin-left: 16px;">$1</li>')
+                    .replace(/\n\n/g, '</p><p style="margin: 8px 0;">')
+                    .replace(/\n/g, '<br>');
+                
+                return `<p style="margin: 8px 0;">${html}</p>`;
+            }
         });
     </script>
 </body>
