@@ -1627,7 +1627,7 @@
             localStorage.setItem('pending_canvas_task', JSON.stringify(taskData));
             
             // 2. Canvas 페이지로 이동
-            window.location.href = '/canvas-v3.html';
+            window.location.href = '/canvas-v4-hybrid.html';
         }
         
         /**
@@ -1718,10 +1718,85 @@
             }, 3000);
         }
         
+        // ==========================================
+        // Canvas → Dashboard 실시간 동기화 (LocalStorage + Polling)
+        // ==========================================
+        
+        /**
+         * LocalStorage 변경 감지 (다른 탭/창에서 Canvas 업데이트 시)
+         */
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'dashboard_updates') {
+                console.log('[Dashboard] Canvas update detected from another tab');
+                checkCanvasUpdates();
+            }
+        });
+        
+        /**
+         * Canvas 업데이트 확인 및 반영
+         */
+        function checkCanvasUpdates() {
+            const updates = JSON.parse(localStorage.getItem('dashboard_updates') || '[]');
+            
+            if (updates.length > 0) {
+                console.log(`[Dashboard ← Canvas] Received ${updates.length} updates`);
+                
+                updates.forEach(update => {
+                    const { type, title, data } = update;
+                    
+                    // 업데이트 타입별 처리
+                    if (type === 'canvas_nodes') {
+                        console.log(`[Dashboard] Canvas Nodes created: ${data.length}`);
+                        showDashboardNotification(`✅ Canvas에 노드 ${data.length}개가 생성되었습니다.`);
+                    } else if (type === 'dashboard_widgets') {
+                        console.log(`[Dashboard] Dashboard Widgets created: ${data.length}`);
+                        showDashboardNotification(`📊 Dashboard에 위젯 ${data.length}개가 생성되었습니다.`);
+                        
+                        // 실제 위젯 추가 (예: Timeline에 추가)
+                        data.forEach(widget => {
+                            addWidgetToTimeline(widget);
+                        });
+                    }
+                });
+                
+                // 업데이트 처리 완료 후 삭제
+                localStorage.removeItem('dashboard_updates');
+            }
+        }
+        
+        /**
+         * Widget을 Timeline에 동적으로 추가
+         */
+        function addWidgetToTimeline(widget) {
+            const timelineCard = document.querySelector('.timeline-card');
+            if (!timelineCard) return;
+            
+            const timelineHtml = `
+                <div class="timeline-item">
+                    <div class="timeline-icon" style="background: #E0E7FF;">
+                        <span>🎯</span>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">${widget.title}</div>
+                        <div class="timeline-meta">AI 자동 생성 · 방금 전</div>
+                    </div>
+                    <div class="timeline-status completed">완료</div>
+                </div>
+            `;
+            
+            timelineCard.insertAdjacentHTML('beforeend', timelineHtml);
+        }
+        
         // Dashboard 로드 시 Polling 시작
         window.addEventListener('DOMContentLoaded', () => {
             console.log('[Dashboard] Starting real-time polling for Canvas updates');
             startDashboardPolling();
+            
+            // LocalStorage 업데이트 확인 (5초마다)
+            setInterval(checkCanvasUpdates, 5000);
+            
+            // 즉시 한 번 확인
+            checkCanvasUpdates();
         });
     </script>
 </body>

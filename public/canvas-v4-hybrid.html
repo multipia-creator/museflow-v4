@@ -886,6 +886,13 @@
                 `;
                 canvasPreview.insertAdjacentHTML('beforeend', nodeHtml);
             });
+            
+            // Dashboard에 노드 생성 알림
+            notifyDashboardUpdate({
+                type: 'canvas_nodes',
+                title: `Canvas 노드 ${nodes.length}개 생성`,
+                data: nodes
+            });
         }
         
         function addDashboardWidgets(widgets) {
@@ -908,7 +915,101 @@
                 `;
                 dashboardPreview.insertAdjacentHTML('beforeend', widgetHtml);
             });
+            
+            // Dashboard에 위젯 생성 알림
+            notifyDashboardUpdate({
+                type: 'dashboard_widgets',
+                title: `Dashboard 위젯 ${widgets.length}개 생성`,
+                data: widgets
+            });
         }
+        
+        // ==========================================
+        // Dashboard → Canvas 연동: Task 자동 실행
+        // ==========================================
+        
+        /**
+         * 페이지 로드 시 Dashboard에서 전달된 Task가 있는지 확인
+         */
+        function checkPendingDashboardTask() {
+            const pendingTask = localStorage.getItem('pending_canvas_task');
+            
+            if (pendingTask) {
+                try {
+                    const taskData = JSON.parse(pendingTask);
+                    console.log('[Canvas ← Dashboard] Received task:', taskData);
+                    
+                    // Task 데이터 삭제 (한 번만 실행)
+                    localStorage.removeItem('pending_canvas_task');
+                    
+                    // Task에 맞는 AI 명령 자동 실행
+                    executeTaskFromDashboard(taskData);
+                    
+                } catch (error) {
+                    console.error('[Canvas] Task parsing error:', error);
+                }
+            }
+        }
+        
+        /**
+         * Dashboard Task를 Canvas AI 명령으로 변환 및 실행
+         */
+        function executeTaskFromDashboard(taskData) {
+            const { title, type, project } = taskData;
+            
+            // Task 유형별 AI 명령 생성
+            let aiCommand = '';
+            
+            switch (type) {
+                case 'document':
+                    aiCommand = `${project || '프로젝트'}의 "${title}" 문서를 작성해주세요. 전시 라벨, 보도자료, 기획안 등을 포함해주세요.`;
+                    break;
+                case 'budget':
+                    aiCommand = `${project || '프로젝트'}의 예산안을 작성해주세요. 항목별 예산 분석과 차트를 포함해주세요.`;
+                    break;
+                case 'promotion':
+                    aiCommand = `${project || '프로젝트'}의 홍보 계획을 수립해주세요. SNS 콘텐츠, 이메일 캠페인, 보도자료를 포함해주세요.`;
+                    break;
+                case 'research':
+                    aiCommand = `"${title}"에 대한 학술 자료를 조사해주세요. 위키피디아, MET Museum, Google Scholar에서 검색해주세요.`;
+                    break;
+                default:
+                    aiCommand = `${project || '프로젝트'}의 "${title}" 작업을 도와주세요.`;
+            }
+            
+            // AI 명령 자동 입력
+            const messageInput = document.getElementById('messageInput');
+            messageInput.value = aiCommand;
+            
+            // 환영 메시지 표시
+            addMessage('ai', `👋 안녕하세요! Dashboard에서 "${title}" 작업을 전달받았습니다. 자동으로 실행하시겠습니까?`);
+            
+            // 2초 후 자동 실행 (사용자가 확인할 시간 제공)
+            setTimeout(() => {
+                sendMessage();
+            }, 2000);
+        }
+        
+        /**
+         * Canvas → Dashboard 위젯 업데이트 알림
+         */
+        function notifyDashboardUpdate(updateData) {
+            // LocalStorage를 통한 Dashboard 업데이트 알림
+            const dashboardUpdates = JSON.parse(localStorage.getItem('dashboard_updates') || '[]');
+            dashboardUpdates.push({
+                timestamp: Date.now(),
+                type: updateData.type,
+                title: updateData.title,
+                data: updateData.data
+            });
+            
+            localStorage.setItem('dashboard_updates', JSON.stringify(dashboardUpdates));
+            
+            console.log('[Canvas → Dashboard] Update sent:', updateData);
+        }
+        
+        // 페이지 로드 시 Dashboard Task 확인
+        checkPendingDashboardTask();
     </script>
 </body>
 </html>
