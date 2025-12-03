@@ -143,18 +143,32 @@ class SampleWorkflowGenerator {
         // Mark as created
         localStorage.setItem(this.storageKey, 'true');
 
-        // Trigger canvas redraw
-        if (typeof window.CanvasV3.render === 'function') {
-            window.CanvasV3.render();
-        }
-
-        // Save to session storage
+        // Save to session storage first
         this.saveSampleToSession();
 
         console.log('✅ Sample workflow created:', {
             nodes: window.CanvasV3.nodes.length,
             connections: window.CanvasV3.connections.length
         });
+
+        // Force canvas redraw - trigger multiple render methods
+        setTimeout(() => {
+            // Try all possible render methods
+            if (window.CanvasV3) {
+                if (typeof window.CanvasV3.render === 'function') {
+                    window.CanvasV3.render();
+                }
+                if (typeof window.CanvasV3.renderNodes === 'function') {
+                    window.CanvasV3.renderNodes();
+                }
+                if (window.CanvasEngine && typeof window.CanvasEngine.render === 'function') {
+                    window.CanvasEngine.needsRedraw = true;
+                }
+            }
+            
+            // Force page refresh to ensure nodes appear
+            console.log('🔄 Forcing canvas refresh...');
+        }, 100);
 
         // Show toast
         if (typeof showToast === 'function') {
@@ -267,14 +281,72 @@ class SampleWorkflowGenerator {
      * Initialize and auto-create sample if needed
      */
     init() {
-        // Wait for CanvasV3 to be ready
+        // Check if we need to create sample
+        const hasSample = localStorage.getItem(this.storageKey);
+        
+        // If no sample flag, create immediately and reload
+        if (!hasSample || hasSample !== 'true') {
+            console.log('🎨 First visit detected - creating sample workflow...');
+            
+            // Create sample data structure
+            const sampleData = this.generateSampleData();
+            
+            // Store in sessionStorage
+            const defaultProject = sessionStorage.getItem('museflow_current_project');
+            if (defaultProject) {
+                const project = JSON.parse(defaultProject);
+                const projectData = {
+                    ...project,
+                    nodes: sampleData.nodes,
+                    connections: sampleData.connections,
+                    updated_at: new Date().toISOString()
+                };
+                
+                sessionStorage.setItem(
+                    `museflow_project_${project.id}`,
+                    JSON.stringify(projectData)
+                );
+            }
+            
+            // Mark as created
+            localStorage.setItem(this.storageKey, 'true');
+            
+            // Reload page to load sample
+            console.log('🔄 Reloading page to display sample workflow...');
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
+            
+            return;
+        }
+        
+        // Sample already created, check if canvas needs it
         const checkCanvasReady = () => {
             if (window.CanvasV3 && window.CanvasV3.nodes !== undefined) {
-                if (this.shouldCreateSample()) {
-                    // Wait a bit more for canvas to fully initialize
-                    setTimeout(() => {
-                        this.createSampleWorkflow();
-                    }, 500);
+                // If canvas is empty but we have sample in session, load it
+                if (window.CanvasV3.nodes.length === 0) {
+                    const defaultProject = sessionStorage.getItem('museflow_current_project');
+                    if (defaultProject) {
+                        const project = JSON.parse(defaultProject);
+                        const projectData = sessionStorage.getItem(`museflow_project_${project.id}`);
+                        
+                        if (projectData) {
+                            const data = JSON.parse(projectData);
+                            if (data.nodes && data.nodes.length > 0) {
+                                window.CanvasV3.nodes = data.nodes;
+                                window.CanvasV3.connections = data.connections || [];
+                                
+                                if (typeof window.CanvasV3.render === 'function') {
+                                    window.CanvasV3.render();
+                                }
+                                
+                                console.log('✅ Sample workflow loaded from session:', {
+                                    nodes: window.CanvasV3.nodes.length,
+                                    connections: window.CanvasV3.connections.length
+                                });
+                            }
+                        }
+                    }
                 }
             } else {
                 setTimeout(checkCanvasReady, 100);
@@ -282,6 +354,120 @@ class SampleWorkflowGenerator {
         };
 
         checkCanvasReady();
+    }
+    
+    /**
+     * Generate sample data structure (without adding to canvas)
+     */
+    generateSampleData() {
+        const sampleNodes = [
+            {
+                id: 'sample-1',
+                type: 'ex-01',
+                title: '전시 주제 선정',
+                description: '전시의 핵심 주제를 정의합니다',
+                category: 'exhibition',
+                x: 100,
+                y: 150,
+                width: 200,
+                height: 120,
+                selected: false,
+                aiStatus: null,
+                aiOutput: null
+            },
+            {
+                id: 'sample-2',
+                type: 'ex-02',
+                title: '작품 선정',
+                description: '전시 주제에 맞는 작품을 선별합니다',
+                category: 'exhibition',
+                x: 350,
+                y: 150,
+                width: 200,
+                height: 120,
+                selected: false,
+                aiStatus: null,
+                aiOutput: null
+            },
+            {
+                id: 'sample-3',
+                type: 'ex-03',
+                title: '공간 배치 계획',
+                description: '전시 공간의 동선과 배치를 설계합니다',
+                category: 'exhibition',
+                x: 600,
+                y: 150,
+                width: 200,
+                height: 120,
+                selected: false,
+                aiStatus: null,
+                aiOutput: null
+            },
+            {
+                id: 'sample-4',
+                type: 'pr-01',
+                title: '마케팅 계획',
+                description: '전시 홍보를 위한 마케팅 전략을 수립합니다',
+                category: 'program',
+                x: 225,
+                y: 330,
+                width: 200,
+                height: 120,
+                selected: false,
+                aiStatus: null,
+                aiOutput: null
+            },
+            {
+                id: 'sample-5',
+                type: 'pr-02',
+                title: '전시 오픈',
+                description: '전시를 정식으로 오픈합니다',
+                category: 'program',
+                x: 475,
+                y: 330,
+                width: 200,
+                height: 120,
+                selected: false,
+                aiStatus: null,
+                aiOutput: null
+            }
+        ];
+
+        const sampleConnections = [
+            {
+                id: 'sample-conn-1',
+                from: 'sample-1',
+                to: 'sample-2',
+                fromHandle: 'right',
+                toHandle: 'left'
+            },
+            {
+                id: 'sample-conn-2',
+                from: 'sample-2',
+                to: 'sample-3',
+                fromHandle: 'right',
+                toHandle: 'left'
+            },
+            {
+                id: 'sample-conn-3',
+                from: 'sample-2',
+                to: 'sample-4',
+                fromHandle: 'bottom',
+                toHandle: 'top'
+            },
+            {
+                id: 'sample-conn-4',
+                from: 'sample-3',
+                to: 'sample-5',
+                fromHandle: 'bottom',
+                toHandle: 'top'
+            }
+        ];
+        
+        return {
+            nodes: sampleNodes,
+            connections: sampleConnections
+        };
     }
 }
 
