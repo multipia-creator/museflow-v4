@@ -51,6 +51,7 @@
             --text-secondary: #666666;
             --text-tertiary: #999999;
             
+            /* Default Theme: Curator (Purple) */
             --accent-primary: #8B5CF6;
             --accent-hover: #7C3AED;
             --accent-light: #EDE9FE;
@@ -58,6 +59,25 @@
             --success: #10B981;
             --warning: #F59E0B;
             --error: #EF4444;
+        }
+        
+        /* Role-based Color Themes */
+        body[data-role="curator"] {
+            --accent-primary: #8B5CF6;
+            --accent-hover: #7C3AED;
+            --accent-light: #EDE9FE;
+        }
+        
+        body[data-role="educator"] {
+            --accent-primary: #3B82F6;
+            --accent-hover: #2563EB;
+            --accent-light: #DBEAFE;
+        }
+        
+        body[data-role="admin"] {
+            --accent-primary: #10B981;
+            --accent-hover: #059669;
+            --accent-light: #D1FAE5;
             
             /* Shadows */
             --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -98,35 +118,161 @@
             margin-top: 0;
         }
         
-        /* Canvas-specific Toolbar - Secondary Toolbar */
-        .top-toolbar {
-            height: 44px;
-            background: var(--bg-primary);
-            border-bottom: 1px solid var(--border-primary);
+        /* Breadcrumb Navigation */
+        .breadcrumb {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 0 var(--space-lg);
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .breadcrumb-separator {
+            color: var(--text-tertiary);
+        }
+        
+        .breadcrumb-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color var(--transition-base);
+        }
+        
+        .breadcrumb-link:hover {
+            color: var(--accent-primary);
+        }
+        
+        .breadcrumb-current {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        /* ===============================================
+           Split Context Bar - Professional UX
+           3-Level Context: Role > Project > Actions
+           =============================================== */
+        
+        .context-bar-container {
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-primary);
             box-shadow: var(--shadow-sm);
             z-index: 90;
         }
         
-        /* Project Selector Dropdown */
-        .project-selector {
+        /* Context Row - Shared Styles */
+        .context-row {
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: space-between;
+            padding: 0 var(--space-lg);
+            min-height: 36px;
+            transition: background var(--transition-base);
+        }
+        
+        .context-row:hover {
+            background: var(--bg-tertiary);
+        }
+        
+        /* Role Context Row */
+        .role-context {
+            border-bottom: 1px solid var(--border-secondary);
+            background: linear-gradient(to right, var(--accent-light), transparent);
+        }
+        
+        .role-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .role-icon {
+            width: 20px;
+            height: 20px;
+            padding: 4px;
+            background: var(--accent-primary);
+            color: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        .role-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            letter-spacing: 0.5px;
+        }
+        
+        .role-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .role-switch-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: white;
+            border: 1px solid var(--border-primary);
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+        
+        .role-switch-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* Project Context Row */
+        .project-context {
+            border-bottom: 1px solid var(--border-secondary);
+        }
+        
+        .project-info-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .project-icon {
+            width: 18px;
+            height: 18px;
+            color: var(--accent-primary);
+        }
+        
+        .project-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            letter-spacing: 0.5px;
         }
         
         .project-dropdown {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--text-primary);
             background: transparent;
             border: none;
             cursor: pointer;
-            padding: 6px 12px;
-            border-radius: 8px;
+            padding: 4px 8px;
+            border-radius: 6px;
             transition: background var(--transition-base);
             max-width: 300px;
         }
@@ -138,6 +284,175 @@
         .project-dropdown:focus {
             outline: 2px solid var(--accent-light);
             outline-offset: 2px;
+        }
+        
+        .project-switch-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: white;
+            border: 1px solid var(--border-primary);
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+        
+        .project-switch-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* Action Context Row */
+        .action-context {
+            min-height: 40px;
+        }
+        
+        /* Role Switcher Modal */
+        .role-switcher-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeIn 0.2s ease;
+        }
+        
+        .role-switcher-modal.active {
+            display: flex;
+        }
+        
+        .role-switcher-content {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: var(--shadow-xl);
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background var(--transition-base);
+        }
+        
+        .modal-close:hover {
+            background: var(--bg-secondary);
+        }
+        
+        .role-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .role-option {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--bg-tertiary);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+        
+        .role-option:hover {
+            background: var(--accent-light);
+            border-color: var(--accent-primary);
+            transform: translateX(4px);
+        }
+        
+        .role-option.active {
+            background: var(--accent-light);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+        }
+        
+        .role-option-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent-primary);
+            color: white;
+            border-radius: 8px;
+            font-size: 20px;
+        }
+        
+        .role-option-info {
+            flex: 1;
+        }
+        
+        .role-option-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .role-option-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .role-option-check {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-base);
+        }
+        
+        .role-option.active .role-option-check {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
         }
         
         .project-info {
@@ -704,36 +1019,77 @@
     </nav>
     
     <div class="app-container">
-        <!-- Canvas Secondary Toolbar -->
-        <div class="top-toolbar">
-            <!-- Project Selector -->
-            <div class="project-selector">
-                <i data-lucide="folder" style="width: 16px; height: 16px; color: var(--accent-primary);"></i>
-                <select class="project-dropdown" id="project-selector">
-                    <option value="1">전시 기획 워크플로우</option>
-                    <option value="2">교육 프로그램 설계</option>
-                    <option value="3">관람객 분석 파이프라인</option>
-                    <option value="4">+ 새 프로젝트 만들기</option>
-                </select>
-            </div>
-            
-            <!-- Quick Actions -->
-            <div class="quick-actions" style="display: flex; gap: 8px; align-items: center;">
-                <button class="quick-action-btn" title="버전 관리" style="background: transparent; border: none; cursor: pointer; padding: 6px; border-radius: 6px; transition: background 0.2s;">
-                    <i data-lucide="git-branch" style="width: 16px; height: 16px; color: var(--text-secondary);"></i>
-                </button>
-                <button class="quick-action-btn" title="공유하기" style="background: transparent; border: none; cursor: pointer; padding: 6px; border-radius: 6px; transition: background 0.2s;">
-                    <i data-lucide="share-2" style="width: 16px; height: 16px; color: var(--text-secondary);"></i>
-                </button>
-                <button class="quick-action-btn" title="내보내기" style="background: transparent; border: none; cursor: pointer; padding: 6px; border-radius: 6px; transition: background 0.2s;">
-                    <i data-lucide="download" style="width: 16px; height: 16px; color: var(--text-secondary);"></i>
+        <!-- Split Context Bar - 3-Level Professional UX -->
+        <div class="context-bar-container">
+            <!-- Level 1: Role Context -->
+            <div class="context-row role-context">
+                <div class="role-info">
+                    <div class="role-icon">
+                        <i data-lucide="user" style="width: 12px; height: 12px;"></i>
+                    </div>
+                    <div>
+                        <span class="role-label">역할</span>
+                        <span class="role-name" id="current-role-display">학예사 (Curator)</span>
+                    </div>
+                </div>
+                
+                <button class="role-switch-btn" id="role-switch-btn">
+                    <i data-lucide="repeat" style="width: 14px; height: 14px;"></i>
+                    <span>역할 전환</span>
                 </button>
             </div>
             
-            <!-- Save Status -->
-            <div class="save-status">
-                <i data-lucide="check-circle" style="width: 14px; height: 14px; color: var(--success);"></i>
-                자동 저장됨
+            <!-- Level 2: Project Context -->
+            <div class="context-row project-context">
+                <div class="project-info-wrapper">
+                    <i data-lucide="folder" class="project-icon"></i>
+                    <div>
+                        <span class="project-label">프로젝트</span>
+                        <select class="project-dropdown" id="project-selector">
+                            <option value="1">전시 기획 워크플로우</option>
+                            <option value="2">교육 프로그램 설계</option>
+                            <option value="3">관람객 분석 파이프라인</option>
+                            <option value="4">+ 새 프로젝트 만들기</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Breadcrumb -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">
+                        <a href="/dashboard-v2.html" class="breadcrumb-link">Dashboard</a>
+                    </span>
+                    <span class="breadcrumb-separator">›</span>
+                    <span class="breadcrumb-item">
+                        <span class="breadcrumb-link" id="breadcrumb-role">학예사</span>
+                    </span>
+                    <span class="breadcrumb-separator">›</span>
+                    <span class="breadcrumb-item">
+                        <span class="breadcrumb-current" id="breadcrumb-project">전시 기획 워크플로우</span>
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Level 3: Action Context -->
+            <div class="context-row action-context">
+                <!-- Quick Actions -->
+                <div class="quick-actions" style="display: flex; gap: 8px; align-items: center;">
+                    <button class="quick-action-btn" title="버전 관리" style="background: transparent; border: none; cursor: pointer; padding: 6px; border-radius: 6px; transition: background 0.2s;">
+                        <i data-lucide="git-branch" style="width: 16px; height: 16px; color: var(--text-secondary);"></i>
+                    </button>
+                    <button class="quick-action-btn" title="공유하기" style="background: transparent; border: none; cursor: pointer; padding: 6px; border-radius: 6px; transition: background 0.2s;">
+                        <i data-lucide="share-2" style="width: 16px; height: 16px; color: var(--text-secondary);"></i>
+                    </button>
+                    <button class="quick-action-btn" title="내보내기" style="background: transparent; border: none; cursor: pointer; padding: 6px; border-radius: 6px; transition: background 0.2s;">
+                        <i data-lucide="download" style="width: 16px; height: 16px; color: var(--text-secondary);"></i>
+                    </button>
+                </div>
+                
+                <!-- Save Status -->
+                <div class="save-status">
+                    <i data-lucide="check-circle" style="width: 14px; height: 14px; color: var(--success);"></i>
+                    자동 저장됨
+                </div>
             </div>
         </div>
         
@@ -837,6 +1193,53 @@
                                 <option value="low">낮음</option>
                             </select>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Role Switcher Modal -->
+    <div class="role-switcher-modal" id="role-switcher-modal">
+        <div class="role-switcher-content">
+            <div class="modal-header">
+                <h3 class="modal-title">역할 선택</h3>
+                <button class="modal-close" onclick="closeRoleSwitcher()">
+                    <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+                </button>
+            </div>
+            
+            <div class="role-options">
+                <div class="role-option" data-role="curator" onclick="switchRole('curator')">
+                    <div class="role-option-icon">🎨</div>
+                    <div class="role-option-info">
+                        <div class="role-option-title">학예사 (Curator)</div>
+                        <div class="role-option-desc">전시 기획, 작품 큐레이션, 관람객 경험 디자인</div>
+                    </div>
+                    <div class="role-option-check">
+                        <i data-lucide="check" style="width: 12px; height: 12px; color: white;"></i>
+                    </div>
+                </div>
+                
+                <div class="role-option" data-role="educator" onclick="switchRole('educator')">
+                    <div class="role-option-icon">📚</div>
+                    <div class="role-option-info">
+                        <div class="role-option-title">에듀케이터 (Educator)</div>
+                        <div class="role-option-desc">교육 프로그램 설계, 학습 콘텐츠 개발, 학습 효과 측정</div>
+                    </div>
+                    <div class="role-option-check">
+                        <i data-lucide="check" style="width: 12px; height: 12px; color: white;"></i>
+                    </div>
+                </div>
+                
+                <div class="role-option" data-role="admin" onclick="switchRole('admin')">
+                    <div class="role-option-icon">⚙️</div>
+                    <div class="role-option-info">
+                        <div class="role-option-title">행정관리자 (Admin)</div>
+                        <div class="role-option-desc">운영 관리, 재무 관리, 보안 및 법무 관리</div>
+                    </div>
+                    <div class="role-option-check">
+                        <i data-lucide="check" style="width: 12px; height: 12px; color: white;"></i>
                     </div>
                 </div>
             </div>
@@ -1166,12 +1569,95 @@
         }
         
         // =============================================
+        // Split Context Bar Functions
+        // =============================================
+        
+        // Role Display Names
+        const roleNames = {
+            curator: '학예사 (Curator)',
+            educator: '에듀케이터 (Educator)',
+            admin: '행정관리자 (Admin)'
+        };
+        
+        const roleNamesKorean = {
+            curator: '학예사',
+            educator: '에듀케이터',
+            admin: '행정관리자'
+        };
+        
+        // Open Role Switcher Modal
+        document.getElementById('role-switch-btn')?.addEventListener('click', () => {
+            const modal = document.getElementById('role-switcher-modal');
+            modal.classList.add('active');
+            
+            // Highlight current role
+            document.querySelectorAll('.role-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.dataset.role === state.currentRole) {
+                    option.classList.add('active');
+                }
+            });
+            
+            lucide.createIcons();
+        });
+        
+        // Close Role Switcher Modal
+        function closeRoleSwitcher() {
+            const modal = document.getElementById('role-switcher-modal');
+            modal.classList.remove('active');
+        }
+        
+        // Switch Role Function
+        function switchRole(newRole) {
+            if (newRole === state.currentRole) {
+                closeRoleSwitcher();
+                return;
+            }
+            
+            state.currentRole = newRole;
+            localStorage.setItem('museflow_user_role', newRole);
+            
+            // Update theme color
+            document.body.setAttribute('data-role', newRole);
+            
+            // Update UI
+            document.getElementById('current-role-display').textContent = roleNames[newRole];
+            document.getElementById('breadcrumb-role').textContent = roleNamesKorean[newRole];
+            
+            // Update left panel widget palette
+            renderWidgetPalette();
+            renderRecommendations();
+            
+            // Close modal
+            closeRoleSwitcher();
+            
+            // Show toast with role-specific color
+            const themeColors = {
+                curator: '보라색 (큐레이션)',
+                educator: '파란색 (교육)',
+                admin: '녹색 (관리)'
+            };
+            showToast(`🎭 역할이 "${roleNames[newRole]}"(으)로 변경되었습니다 · ${themeColors[newRole]} 테마 적용`, 'success');
+        }
+        
+        // Close modal on outside click
+        document.getElementById('role-switcher-modal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'role-switcher-modal') {
+                closeRoleSwitcher();
+            }
+        });
+        
+        // =============================================
         // Dashboard Integration Functions
         // =============================================
         
         // Project Selector Change Handler
         document.getElementById('project-selector')?.addEventListener('change', (e) => {
             const projectId = e.target.value;
+            
+            // Update breadcrumb
+            const projectName = e.target.options[e.target.selectedIndex].text;
+            document.getElementById('breadcrumb-project').textContent = projectName;
             
             if (projectId === '4') {
                 // Create new project
@@ -1277,10 +1763,24 @@
         
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 Initializing Hybrid Canvas with Dashboard Integration...');
+            console.log('🚀 Initializing Split Context Bar Canvas...');
+            
+            // Set initial theme based on saved role
+            const savedRole = localStorage.getItem('museflow_user_role') || 'curator';
+            state.currentRole = savedRole;
+            document.body.setAttribute('data-role', savedRole);
+            
+            // Update initial UI
+            document.getElementById('current-role-display').textContent = roleNames[savedRole];
+            document.getElementById('breadcrumb-role').textContent = roleNamesKorean[savedRole];
+            
+            // Render components
             renderWidgetPalette();
-            renderRecommendations(); // Render AI recommendations
+            renderRecommendations();
             createSampleWorkflow();
+            
+            // Initialize Lucide icons
+            lucide.createIcons();
             
             // Welcome message
             setTimeout(() => {
