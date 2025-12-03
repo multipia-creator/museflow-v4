@@ -2500,7 +2500,21 @@
                 prompt: '전시 공간의 작품 배치를 3D 시뮬레이션으로 최적화해주세요. 방문객 동선과 혼잡도를 분석해주세요.',
                 icon: '🏛️',
                 action: () => {
-                    window.open('/digital-twin-pro.html', '_blank');
+                    // 현재 Canvas 데이터를 Digital Twin으로 전달
+                    const canvasData = {
+                        widgets: Array.from(document.querySelectorAll('.widget')).length,
+                        timestamp: new Date().toISOString(),
+                        source: 'canvas-v4'
+                    };
+                    
+                    // LocalStorage에 데이터 저장
+                    localStorage.setItem('museflow_canvas_data', JSON.stringify(canvasData));
+                    
+                    // Digital Twin 페이지 열기
+                    window.open('/digital-twin', '_blank');
+                    
+                    // Console log
+                    console.log('🏛️ 디지털 트윈 미술관 Pro 열기 - 데이터 전달 완료');
                 }
             }
         };

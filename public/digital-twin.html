@@ -1174,10 +1174,25 @@
         function init() {
             const canvas = document.getElementById('three-canvas');
             
+            // Check for Canvas V4 data integration
+            try {
+                const canvasData = localStorage.getItem('museflow_canvas_data');
+                if (canvasData) {
+                    const data = JSON.parse(canvasData);
+                    console.log('📊 Canvas V4 데이터 로드:', data);
+                    showToast(`✅ Canvas V4 연동: ${data.widgets}개 위젯 데이터 로드됨`);
+                    
+                    // Clear after reading
+                    localStorage.removeItem('museflow_canvas_data');
+                }
+            } catch (e) {
+                console.warn('Canvas 데이터 로드 실패:', e);
+            }
+            
             // Scene
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x0a0a0a);
-            scene.fog = new THREE.Fog(0x0a0a0a, 30, 100);
+            scene.background = new THREE.Color(0x1a1a1a);
+            scene.fog = new THREE.Fog(0x1a1a1a, 30, 100);
             
             // Camera
             const aspect = canvas.clientWidth / canvas.clientHeight;
