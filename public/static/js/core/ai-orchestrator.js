@@ -418,6 +418,19 @@ const AIOrchestrator = {
         canvasNode.executionError = result.error;
         canvasNode.executionTime = result.execution_time_ms;
       }
+
+      // Update visual status
+      if (window.NodeExecutionVisualizer) {
+        window.NodeExecutionVisualizer.updateNodeStatus(
+          result.node_id,
+          result.status,
+          {
+            output: result.output,
+            error: result.error,
+            execution_time_ms: result.execution_time_ms
+          }
+        );
+      }
     });
 
     // Trigger UI update
