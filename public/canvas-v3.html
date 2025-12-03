@@ -3020,6 +3020,7 @@
     <script src="/static/js/core/ai-orchestrator.js"></script>
     <script src="/static/js/core/workflow-execution-panel.js"></script>
     <script src="/static/js/core/canvas-onboarding-minimal.js"></script>
+    <script src="/static/js/core/sample-workflow-generator.js"></script>
     <script src="/static/js/mobile/canvas-mobile.js"></script>
     <script src="/static/js/node-library-88.js"></script>
     <script src="/static/js/google-mcp-client.js"></script>
@@ -3107,23 +3108,27 @@
             // Store in session
             sessionStorage.setItem('museflow_current_project', JSON.stringify(defaultProject));
             
-            // Initialize empty canvas (교수님 요청: 샘플 워크플로우 제거)
+            // Initialize canvas (샘플 워크플로우는 SampleWorkflowGenerator가 자동 생성)
             const urlParams = new URLSearchParams(window.location.search);
             urlParams.set('project', defaultProject.id);
             window.history.replaceState({}, '', `${window.location.pathname}?${urlParams}`);
             
-            // Start with empty canvas - no sample nodes
+            // Start with empty canvas - sample will be auto-created if needed
             initializeEmptyCanvas(defaultProject.id);
         }
         
         function initializeEmptyCanvas(projectId) {
-            console.log('✅ Initializing empty canvas for project:', projectId);
+            console.log('✅ Initializing canvas for project:', projectId);
             
-            // Initialize CanvasV3 with empty nodes
+            // Initialize CanvasV3 with empty nodes first
+            // SampleWorkflowGenerator will auto-create sample if this is first visit
             if (window.CanvasV3) {
                 CanvasV3.nodes = [];
                 CanvasV3.connections = [];
                 CanvasV3.init();
+                
+                // Note: Sample workflow will be auto-created by SampleWorkflowGenerator
+                // after CanvasV3 is fully initialized
             }
         }
         
