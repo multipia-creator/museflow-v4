@@ -10,9 +10,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     
-    <!-- Three.js r128 + Post-Processing -->
+    <!-- Three.js r128 + Post-Processing + Transform Controls -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/TransformControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
@@ -56,40 +57,206 @@
             cursor: grabbing;
         }
         
-        /* Left Panel */
-        .config-panel {
+        /* ===== Twin Motion Style UI ===== */
+        
+        /* Quick Toolbar (Top) */
+        .quick-toolbar {
             position: absolute;
             top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            gap: 8px;
+            z-index: 150;
+            box-shadow: 0 8px 32px rgba(138, 43, 226, 0.2);
+        }
+        
+        .tool-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(138, 43, 226, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 8px;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-size: 16px;
+        }
+        
+        .tool-btn:hover {
+            background: rgba(138, 43, 226, 0.4);
+            border-color: #8a2be2;
+            transform: translateY(-2px);
+        }
+        
+        .tool-btn.active {
+            background: linear-gradient(135deg, #8a2be2 0%, #9b4dca 100%);
+            border-color: #8a2be2;
+        }
+        
+        .tool-separator {
+            width: 1px;
+            height: 40px;
+            background: rgba(138, 43, 226, 0.3);
+        }
+        
+        /* Asset Library Panel (Left Bottom) */
+        .asset-library {
+            position: absolute;
+            bottom: 20px;
             left: 20px;
             background: rgba(26, 26, 46, 0.95);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(138, 43, 226, 0.3);
             border-radius: 12px;
-            padding: 20px;
-            width: 340px;
-            max-height: calc(100vh - 120px);
-            overflow-y: auto;
-            box-shadow: 0 8px 32px rgba(138, 43, 226, 0.2);
+            padding: 16px;
+            width: 320px;
+            max-height: 400px;
             z-index: 100;
+            box-shadow: 0 8px 32px rgba(138, 43, 226, 0.2);
         }
         
-        .config-panel::-webkit-scrollbar {
+        .asset-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+        }
+        
+        .asset-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #8a2be2;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .asset-search {
+            width: 100%;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .asset-search:focus {
+            outline: none;
+            border-color: #8a2be2;
+        }
+        
+        .asset-categories {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 12px;
+            overflow-x: auto;
+        }
+        
+        .asset-category {
+            padding: 6px 12px;
+            background: rgba(138, 43, 226, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 6px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 11px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        
+        .asset-category:hover,
+        .asset-category.active {
+            background: rgba(138, 43, 226, 0.4);
+            border-color: #8a2be2;
+            color: #ffffff;
+        }
+        
+        .asset-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            max-height: 240px;
+            overflow-y: auto;
+        }
+        
+        .asset-item {
+            aspect-ratio: 1;
+            background: rgba(138, 43, 226, 0.1);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
+        
+        .asset-item:hover {
+            background: rgba(138, 43, 226, 0.3);
+            border-color: #8a2be2;
+            transform: translateY(-2px);
+        }
+        
+        .asset-icon {
+            font-size: 24px;
+            color: #8a2be2;
+        }
+        
+        .asset-name {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+        }
+        
+        /* Properties Panel (Right) */
+        .properties-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            width: 300px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 0 8px 32px rgba(138, 43, 226, 0.2);
+        }
+        
+        .properties-panel::-webkit-scrollbar {
             width: 6px;
         }
         
-        .config-panel::-webkit-scrollbar-track {
+        .properties-panel::-webkit-scrollbar-track {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 3px;
         }
         
-        .config-panel::-webkit-scrollbar-thumb {
+        .properties-panel::-webkit-scrollbar-thumb {
             background: #8a2be2;
             border-radius: 3px;
         }
         
-        .panel-header {
-            margin: 0 0 20px 0;
-            font-size: 18px;
+        .prop-header {
+            margin: 0 0 16px 0;
+            font-size: 14px;
             font-weight: 600;
             color: #8a2be2;
             display: flex;
@@ -99,291 +266,233 @@
             border-bottom: 1px solid rgba(138, 43, 226, 0.3);
         }
         
-        .section {
-            margin-bottom: 24px;
+        .prop-section {
+            margin-bottom: 20px;
         }
         
-        .section-title {
-            font-size: 14px;
+        .prop-section-title {
+            font-size: 12px;
             font-weight: 600;
             color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
         
-        .input-group {
+        .prop-group {
             margin-bottom: 12px;
         }
         
-        .input-group label {
+        .prop-label {
             display: block;
-            font-size: 12px;
+            font-size: 11px;
             color: rgba(255, 255, 255, 0.7);
             margin-bottom: 6px;
         }
         
-        .input-group input,
-        .input-group select {
+        .prop-input {
             width: 100%;
-            padding: 10px 12px;
+            padding: 8px 10px;
             background: rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(138, 43, 226, 0.3);
             border-radius: 6px;
             color: #ffffff;
-            font-size: 14px;
-            font-family: 'Inter', sans-serif;
+            font-size: 13px;
         }
         
-        .input-group input:focus,
-        .input-group select:focus {
+        .prop-input:focus {
             outline: none;
             border-color: #8a2be2;
         }
         
-        .input-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
-        }
-        
-        .btn {
-            width: 100%;
-            padding: 12px 16px;
-            background: linear-gradient(135deg, #8a2be2 0%, #9b4dca 100%);
-            border: none;
-            border-radius: 8px;
-            color: #ffffff;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(138, 43, 226, 0.4);
-        }
-        
-        .btn.secondary {
-            background: rgba(138, 43, 226, 0.2);
-        }
-        
-        .btn-group {
+        .prop-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
         }
         
-        /* Artwork List */
-        .artwork-list {
-            max-height: 300px;
-            overflow-y: auto;
+        .prop-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
         }
         
-        .artwork-item {
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(138, 43, 226, 0.2);
-            border-radius: 6px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .artwork-item:hover {
-            background: rgba(138, 43, 226, 0.2);
-            border-color: #8a2be2;
-        }
-        
-        .artwork-item.selected {
-            background: rgba(138, 43, 226, 0.3);
-            border-color: #8a2be2;
-        }
-        
-        .artwork-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 4px;
-        }
-        
-        .artwork-info {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.6);
-        }
-        
-        /* Right Panel */
-        .control-panel {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 12px;
-            padding: 20px;
-            width: 300px;
-            max-height: calc(100vh - 120px);
-            overflow-y: auto;
-            z-index: 100;
-        }
-        
-        .slider-group {
-            margin-bottom: 16px;
-        }
-        
-        .slider-group label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 8px;
-        }
-        
-        .slider-value {
-            color: #8a2be2;
-            font-weight: 600;
-        }
-        
-        .slider-group input[type="range"] {
+        .prop-slider {
             width: 100%;
-            height: 6px;
+            height: 4px;
             background: rgba(138, 43, 226, 0.2);
-            border-radius: 3px;
+            border-radius: 2px;
             outline: none;
             cursor: pointer;
         }
         
-        .slider-group input[type="range"]::-webkit-slider-thumb {
+        .prop-slider::-webkit-slider-thumb {
             appearance: none;
-            width: 18px;
-            height: 18px;
+            width: 14px;
+            height: 14px;
             background: #8a2be2;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(138, 43, 226, 0.4);
         }
         
-        /* Camera Presets */
-        .camera-presets {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 12px;
-        }
-        
-        .preset-btn {
-            padding: 8px;
-            background: rgba(138, 43, 226, 0.2);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 6px;
-            color: #ffffff;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .preset-btn:hover {
-            background: rgba(138, 43, 226, 0.4);
-            border-color: #8a2be2;
-        }
-        
-        /* Stats Panel */
-        .stats-panel {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 12px;
-            padding: 16px;
-            width: 260px;
-            z-index: 100;
-        }
-        
-        .stat-item {
+        .prop-value {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .stat-item:last-child {
-            border-bottom: none;
-        }
-        
-        .stat-label {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .stat-value {
-            font-size: 14px;
-            font-weight: 600;
-            color: #8a2be2;
-        }
-        
-        /* Instructions */
-        .instructions {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 12px;
-            padding: 16px;
-            max-width: 320px;
-            z-index: 100;
-        }
-        
-        .instructions-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: #8a2be2;
-            margin-bottom: 10px;
-        }
-        
-        .instruction-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
             font-size: 11px;
             color: rgba(255, 255, 255, 0.7);
             margin-bottom: 6px;
         }
         
-        .instruction-item i {
+        .prop-value-num {
             color: #8a2be2;
-            width: 16px;
+            font-weight: 600;
         }
         
-        /* Visitor Visualization */
-        .visitor-dot {
+        .prop-btn {
+            width: 100%;
+            padding: 10px 12px;
+            background: linear-gradient(135deg, #8a2be2 0%, #9b4dca 100%);
+            border: none;
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .prop-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(138, 43, 226, 0.4);
+        }
+        
+        .prop-btn.secondary {
+            background: rgba(138, 43, 226, 0.2);
+        }
+        
+        .prop-toggle {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .toggle-btn {
+            flex: 1;
+            padding: 8px;
+            background: rgba(138, 43, 226, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 6px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        
+        .toggle-btn:hover,
+        .toggle-btn.active {
+            background: rgba(138, 43, 226, 0.4);
+            border-color: #8a2be2;
+            color: #ffffff;
+        }
+        
+        /* Viewport Controls (Right Bottom) */
+        .viewport-controls {
             position: absolute;
-            width: 8px;
-            height: 8px;
-            background: #4CAF50;
-            border-radius: 50%;
-            pointer-events: none;
-            box-shadow: 0 0 10px rgba(76, 175, 80, 0.8);
-            animation: pulse 2s infinite;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 100;
         }
         
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 0.8;
+        .viewport-btn {
+            width: 48px;
+            height: 48px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 10px;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 16px rgba(138, 43, 226, 0.2);
+        }
+        
+        .viewport-btn:hover {
+            background: rgba(138, 43, 226, 0.3);
+            border-color: #8a2be2;
+            transform: translateX(-4px);
+        }
+        
+        /* Stats HUD (Top Right) */
+        .stats-hud {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 10px;
+            padding: 12px 16px;
+            z-index: 90;
+            box-shadow: 0 4px 16px rgba(138, 43, 226, 0.2);
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 4px 0;
+            font-size: 11px;
+        }
+        
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .stat-value {
+            color: #8a2be2;
+            font-weight: 600;
+        }
+        
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(138, 43, 226, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.5);
+            border-radius: 8px;
+            padding: 12px 20px;
+            color: #ffffff;
+            font-size: 13px;
+            z-index: 2000;
+            animation: slideDown 0.3s ease;
+            display: none;
+        }
+        
+        .toast.show {
+            display: block;
+        }
+        
+        @keyframes slideDown {
+            from {
+                transform: translateX(-50%) translateY(-100px);
+                opacity: 0;
             }
-            50% {
-                transform: scale(1.5);
+            to {
+                transform: translateX(-50%) translateY(0);
                 opacity: 1;
             }
         }
@@ -426,57 +535,18 @@
             color: rgba(255, 255, 255, 0.7);
         }
         
-        /* Toast */
-        .toast {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            background: rgba(138, 43, 226, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(138, 43, 226, 0.5);
-            border-radius: 8px;
-            padding: 12px 20px;
-            color: #ffffff;
-            font-size: 14px;
-            z-index: 2000;
-            animation: slideIn 0.3s ease;
-            display: none;
+        /* No Selection State */
+        .no-selection {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
         }
         
-        .toast.show {
-            display: block;
-        }
-        
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        /* Quality Badge */
-        .quality-badge {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.95), rgba(255, 165, 0, 0.95));
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 215, 0, 0.5);
-            border-radius: 8px;
-            padding: 8px 16px;
-            color: #0a0a0a;
-            font-size: 13px;
-            font-weight: 700;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 16px rgba(255, 215, 0, 0.4);
+        .no-selection i {
+            font-size: 32px;
+            margin-bottom: 12px;
+            opacity: 0.5;
         }
     </style>
 </head>
@@ -487,280 +557,137 @@
     <div class="viewer-container">
         <canvas id="three-canvas"></canvas>
         
-        <!-- Quality Badge -->
-        <div class="quality-badge">
-            <i class="fas fa-crown"></i>
-            <span>PRO 렌더링: SSAO + Bloom + HDR + 4K Shadow</span>
-        </div>
-        
         <!-- Loading -->
         <div class="loading-screen" id="loadingScreen">
             <div class="loading-spinner"></div>
-            <div class="loading-text">고품질 박물관 공간 초기화 중...</div>
+            <div class="loading-text">박물관 공간 초기화 중...</div>
         </div>
         
         <!-- Toast -->
         <div class="toast" id="toast"></div>
         
-        <!-- Left Panel -->
-        <div class="config-panel">
-            <h3 class="panel-header">
-                <i class="fas fa-cog"></i>
-                공간 설정
-            </h3>
+        <!-- Quick Toolbar -->
+        <div class="quick-toolbar">
+            <button class="tool-btn active" onclick="setTool('select')" title="선택 도구" id="tool-select">
+                <i class="fas fa-mouse-pointer"></i>
+            </button>
+            <button class="tool-btn" onclick="setTool('move')" title="이동 도구" id="tool-move">
+                <i class="fas fa-arrows-alt"></i>
+            </button>
+            <button class="tool-btn" onclick="setTool('rotate')" title="회전 도구" id="tool-rotate">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+            <button class="tool-btn" onclick="setTool('scale')" title="크기 조절" id="tool-scale">
+                <i class="fas fa-expand-arrows-alt"></i>
+            </button>
             
-            <div class="section">
-                <div class="section-title">
-                    <i class="fas fa-ruler-combined"></i>
-                    전시실 크기
-                </div>
-                <div class="input-row">
-                    <div class="input-group">
-                        <label>가로 (m)</label>
-                        <input type="number" id="roomWidth" value="20" min="5" max="100">
-                    </div>
-                    <div class="input-group">
-                        <label>세로 (m)</label>
-                        <input type="number" id="roomDepth" value="15" min="5" max="100">
-                    </div>
-                    <div class="input-group">
-                        <label>높이 (m)</label>
-                        <input type="number" id="roomHeight" value="4" min="2" max="10">
-                    </div>
-                </div>
-                <button class="btn" onclick="updateRoom()">
-                    <i class="fas fa-sync"></i>
-                    공간 적용
-                </button>
-            </div>
+            <div class="tool-separator"></div>
             
-            <div class="section">
-                <div class="section-title">
-                    <i class="fas fa-image"></i>
-                    작품 추가
-                </div>
-                <div class="input-group">
-                    <label>작품명</label>
-                    <input type="text" id="artworkName" placeholder="예: 모나리자">
-                </div>
-                <div class="input-row">
-                    <div class="input-group">
-                        <label>가로 (m)</label>
-                        <input type="number" id="artworkWidth" value="2" min="0.5" max="10" step="0.1">
-                    </div>
-                    <div class="input-group">
-                        <label>세로 (m)</label>
-                        <input type="number" id="artworkHeight" value="3" min="0.5" max="10" step="0.1">
-                    </div>
-                </div>
-                <button class="btn" onclick="addArtwork()">
-                    <i class="fas fa-plus"></i>
-                    작품 추가
-                </button>
-            </div>
+            <button class="tool-btn" onclick="addArtworkQuick()" title="작품 추가">
+                <i class="fas fa-plus"></i>
+            </button>
+            <button class="tool-btn" onclick="autoArrange()" title="자동 배치">
+                <i class="fas fa-magic"></i>
+            </button>
+            <button class="tool-btn" onclick="optimizeFlow()" title="동선 최적화">
+                <i class="fas fa-route"></i>
+            </button>
             
-            <div class="section">
-                <div class="section-title">
-                    <i class="fas fa-magic"></i>
-                    자동 배치
-                </div>
-                <button class="btn" onclick="autoArrange()">
-                    <i class="fas fa-wand-magic-sparkles"></i>
-                    작품 자동 배치
-                </button>
-                <button class="btn secondary" style="margin-top: 8px;" onclick="optimizeFlow()">
-                    <i class="fas fa-route"></i>
-                    동선 최적화
-                </button>
-            </div>
+            <div class="tool-separator"></div>
             
-            <div class="section">
-                <div class="section-title">
-                    <i class="fas fa-list"></i>
-                    작품 목록 (<span id="artworkCount">0</span>개)
-                </div>
-                <div class="artwork-list" id="artworkList"></div>
-            </div>
-            
-            <div class="btn-group">
-                <button class="btn secondary" onclick="clearAll()">
-                    <i class="fas fa-trash"></i>
-                    전체 삭제
-                </button>
-                <button class="btn secondary" onclick="exportScene()">
-                    <i class="fas fa-download"></i>
-                    내보내기
-                </button>
-            </div>
+            <button class="tool-btn" onclick="toggleGrid()" title="그리드 토글" id="tool-grid">
+                <i class="fas fa-border-all"></i>
+            </button>
+            <button class="tool-btn" onclick="togglePath()" title="동선 표시" id="tool-path">
+                <i class="fas fa-project-diagram"></i>
+            </button>
         </div>
         
-        <!-- Right Panel -->
-        <div class="control-panel">
-            <h3 class="panel-header">
-                <i class="fas fa-sliders-h"></i>
-                제어 패널
-            </h3>
-            
-            <div class="section">
-                <div class="section-title">
-                    <i class="fas fa-video"></i>
-                    카메라 프리셋
-                </div>
-                <div class="camera-presets">
-                    <button class="preset-btn" onclick="setCameraView('overview')">
-                        <i class="fas fa-eye"></i> 전체 조감
-                    </button>
-                    <button class="preset-btn" onclick="setCameraView('visitor')">
-                        <i class="fas fa-walking"></i> 관람객 시점
-                    </button>
-                    <button class="preset-btn" onclick="setCameraView('curator')">
-                        <i class="fas fa-user-tie"></i> 큐레이터 시점
-                    </button>
-                    <button class="preset-btn" onclick="setCameraView('bird')">
-                        <i class="fas fa-dove"></i> 조감도
-                    </button>
-                </div>
-            </div>
-            
-            <div class="section">
-                <div class="section-title">
-                    <i class="fas fa-lightbulb"></i>
-                    조명 제어
-                </div>
-                <div class="slider-group">
-                    <label>
-                        <span>환경광 밝기</span>
-                        <span class="slider-value" id="ambientValue">0.5</span>
-                    </label>
-                    <input type="range" id="ambientLight" min="0" max="1" step="0.1" value="0.5" 
-                           oninput="updateAmbient(this.value)">
-                </div>
-                <div class="slider-group">
-                    <label>
-                        <span>스포트라이트 밝기</span>
-                        <span class="slider-value" id="spotValue">2.0</span>
-                    </label>
-                    <input type="range" id="spotLight" min="0" max="3" step="0.1" value="2.0"
-                           oninput="updateSpot(this.value)">
-                </div>
-            </div>
-            
-            <div class="section">
-                <div class="section-title">
-                    <i class="fas fa-magic"></i>
-                    렌더링 품질
-                </div>
-                <div class="slider-group">
-                    <label>
-                        <span>Bloom 강도</span>
-                        <span class="slider-value" id="bloomValue">0.8</span>
-                    </label>
-                    <input type="range" id="bloomStrength" min="0" max="2" step="0.1" value="0.8"
-                           oninput="updateBloom(this.value)">
-                </div>
-                <div class="slider-group">
-                    <label>
-                        <span>SSAO 강도</span>
-                        <span class="slider-value" id="ssaoValue">0.5</span>
-                    </label>
-                    <input type="range" id="ssaoStrength" min="0" max="1" step="0.1" value="0.5"
-                           oninput="updateSSAO(this.value)">
-                </div>
-            </div>
-            
-            <div class="section">
-                <div class="section-title">
-                    <i class="fas fa-users"></i>
-                    관람객 시뮬레이션
-                </div>
-                <div class="slider-group">
-                    <label>
-                        <span>관람객 수</span>
-                        <span class="slider-value" id="visitorValue">10</span>
-                    </label>
-                    <input type="range" id="visitorCount" min="0" max="50" step="5" value="10"
-                           oninput="updateVisitorCount(this.value)">
-                </div>
-                <button class="btn" onclick="placeVisitors()">
-                    <i class="fas fa-user-plus"></i>
-                    관람객 배치
-                </button>
-            </div>
-            
-            <div class="section">
-                <div class="section-title">
-                    <i class="fas fa-route"></i>
-                    동선 표시
-                </div>
-                <button class="btn secondary" onclick="showFlowPath()">
-                    <i class="fas fa-project-diagram"></i>
-                    관람 동선 보기
-                </button>
-            </div>
-        </div>
-        
-        <!-- Stats Panel -->
-        <div class="stats-panel">
-            <h3 class="panel-header" style="margin: 0 0 12px 0; font-size: 14px;">
-                <i class="fas fa-chart-bar"></i>
-                통계
-            </h3>
-            <div class="stat-item">
-                <span class="stat-label">설치 작품</span>
+        <!-- Stats HUD -->
+        <div class="stats-hud">
+            <div class="stat-row">
+                <span class="stat-label">작품</span>
                 <span class="stat-value" id="statArtworks">0</span>
             </div>
-            <div class="stat-item">
-                <span class="stat-label">전시 면적</span>
+            <div class="stat-row">
+                <span class="stat-label">면적</span>
                 <span class="stat-value" id="statArea">300㎡</span>
             </div>
-            <div class="stat-item">
-                <span class="stat-label">벽면 활용률</span>
-                <span class="stat-value" id="statCoverage">0%</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">관람객 수</span>
-                <span class="stat-value" id="statVisitors">0</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">렌더링 FPS</span>
+            <div class="stat-row">
+                <span class="stat-label">FPS</span>
                 <span class="stat-value" id="statFPS">60</span>
             </div>
         </div>
         
-        <!-- Instructions -->
-        <div class="instructions">
-            <div class="instructions-title">
-                <i class="fas fa-keyboard"></i>
-                조작 방법
+        <!-- Asset Library Panel -->
+        <div class="asset-library">
+            <div class="asset-header">
+                <div class="asset-title">
+                    <i class="fas fa-layer-group"></i>
+                    작품 라이브러리
+                </div>
+                <button class="tool-btn" style="width: 28px; height: 28px; font-size: 12px;" onclick="refreshAssets()">
+                    <i class="fas fa-sync"></i>
+                </button>
             </div>
-            <div class="instruction-item">
-                <i class="fas fa-mouse"></i>
-                <span>좌클릭 + 드래그: 시점 회전</span>
+            
+            <input type="text" class="asset-search" placeholder="작품 검색..." id="assetSearch" oninput="filterAssets()">
+            
+            <div class="asset-categories">
+                <button class="asset-category active" onclick="filterCategory('all')">전체</button>
+                <button class="asset-category" onclick="filterCategory('painting')">회화</button>
+                <button class="asset-category" onclick="filterCategory('sculpture')">조각</button>
+                <button class="asset-category" onclick="filterCategory('photo')">사진</button>
             </div>
-            <div class="instruction-item">
-                <i class="fas fa-mouse"></i>
-                <span>우클릭 + 드래그: 시점 이동</span>
+            
+            <div class="asset-grid" id="assetGrid">
+                <!-- Assets will be dynamically populated -->
             </div>
-            <div class="instruction-item">
-                <i class="fas fa-mouse"></i>
-                <span>마우스 휠: 확대/축소</span>
+        </div>
+        
+        <!-- Properties Panel -->
+        <div class="properties-panel">
+            <div class="prop-header">
+                <i class="fas fa-sliders-h"></i>
+                속성
             </div>
-            <div class="instruction-item">
-                <i class="fas fa-hand-pointer"></i>
-                <span>작품 클릭: 선택 & 포커스</span>
+            
+            <div id="propertiesContent">
+                <div class="no-selection">
+                    <i class="fas fa-hand-pointer"></i>
+                    <div>오브젝트를 선택하세요</div>
+                </div>
             </div>
+        </div>
+        
+        <!-- Viewport Controls -->
+        <div class="viewport-controls">
+            <button class="viewport-btn" onclick="setCameraView('overview')" title="전체 보기">
+                <i class="fas fa-eye"></i>
+            </button>
+            <button class="viewport-btn" onclick="setCameraView('visitor')" title="관람객 시점">
+                <i class="fas fa-walking"></i>
+            </button>
+            <button class="viewport-btn" onclick="setCameraView('bird')" title="조감도">
+                <i class="fas fa-dove"></i>
+            </button>
+            <button class="viewport-btn" onclick="resetCamera()" title="카메라 리셋">
+                <i class="fas fa-undo"></i>
+            </button>
         </div>
     </div>
 
     <script>
         // Global State
-        let scene, camera, renderer, controls, composer;
+        let scene, camera, renderer, controls, transformControl, composer;
         let bloomPass, ssaoPass, fxaaPass;
-        let roomGroup, artworkGroup, visitorGroup, pathGroup;
+        let roomGroup, artworkGroup, visitorGroup, pathGroup, gridHelper;
         let artworks = [];
         let visitors = [];
         let flowPath = null;
         let raycaster, mouse;
+        let selectedObject = null;
+        let currentTool = 'select';
         
         let roomWidth = 20, roomDepth = 15, roomHeight = 4;
         let ambientLight, hemisphereLight, spotlights = [];
@@ -768,6 +695,20 @@
         // Performance tracking
         let lastTime = Date.now();
         let frames = 0;
+        
+        // Asset library data
+        const assetTemplates = [
+            { name: '모나리자', type: 'painting', width: 2, height: 3 },
+            { name: '별이 빛나는 밤', type: 'painting', width: 2.5, height: 2 },
+            { name: '진주 귀걸이 소녀', type: 'painting', width: 1.8, height: 2.4 },
+            { name: '절규', type: 'painting', width: 2, height: 2.8 },
+            { name: '키스', type: 'painting', width: 2.2, height: 2.2 },
+            { name: '게르니카', type: 'painting', width: 3.5, height: 2 },
+            { name: '미켈란젤로 다비드', type: 'sculpture', width: 1.5, height: 4 },
+            { name: '비너스상', type: 'sculpture', width: 1.2, height: 3.5 },
+            { name: '풍경 사진 A', type: 'photo', width: 2, height: 1.5 },
+            { name: '인물 사진 B', type: 'photo', width: 1.5, height: 2 },
+        ];
         
         // Initialize
         function init() {
@@ -793,8 +734,8 @@
             renderer.setSize(canvas.clientWidth, canvas.clientHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             renderer.shadowMap.enabled = true;
-            renderer.shadowMap.type = THREE.VSMShadowMap; // High-quality shadows
-            renderer.toneMapping = THREE.ACESFilmicToneMapping; // Cinematic tone mapping
+            renderer.shadowMap.type = THREE.VSMShadowMap;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
             renderer.toneMappingExposure = 1.2;
             renderer.outputEncoding = THREE.sRGBEncoding;
             
@@ -805,6 +746,18 @@
             controls.minDistance = 5;
             controls.maxDistance = 100;
             controls.maxPolarAngle = Math.PI / 2 - 0.1;
+            
+            // TransformControls
+            transformControl = new THREE.TransformControls(camera, renderer.domElement);
+            transformControl.addEventListener('change', () => {
+                if (selectedObject) {
+                    updatePropertiesPanel();
+                }
+            });
+            transformControl.addEventListener('dragging-changed', (event) => {
+                controls.enabled = !event.value;
+            });
+            scene.add(transformControl);
             
             // Post-Processing Setup
             setupPostProcessing();
@@ -824,11 +777,13 @@
             setupLighting();
             loadHDREnvironment();
             buildRoom();
+            populateAssetLibrary();
             addDefaultArtworks();
             
             // Events
             window.addEventListener('resize', onResize);
             canvas.addEventListener('click', onCanvasClick);
+            canvas.addEventListener('dblclick', onCanvasDoubleClick);
             
             // Start
             setTimeout(() => {
@@ -841,32 +796,24 @@
         function setupPostProcessing() {
             const canvas = document.getElementById('three-canvas');
             
-            // EffectComposer
             composer = new THREE.EffectComposer(renderer);
             composer.setSize(canvas.clientWidth, canvas.clientHeight);
             
-            // RenderPass (base scene render)
             const renderPass = new THREE.RenderPass(scene, camera);
             composer.addPass(renderPass);
             
-            // SSAO Pass (Screen Space Ambient Occlusion)
             ssaoPass = new THREE.SSAOPass(scene, camera, canvas.clientWidth, canvas.clientHeight);
             ssaoPass.kernelRadius = 16;
             ssaoPass.minDistance = 0.005;
             ssaoPass.maxDistance = 0.1;
-            ssaoPass.output = THREE.SSAOPass.OUTPUT.Default;
             composer.addPass(ssaoPass);
             
-            // Bloom Pass
             bloomPass = new THREE.UnrealBloomPass(
                 new THREE.Vector2(canvas.clientWidth, canvas.clientHeight),
-                0.8,  // strength
-                0.4,  // radius
-                0.85  // threshold
+                0.8, 0.4, 0.85
             );
             composer.addPass(bloomPass);
             
-            // FXAA Pass (Anti-aliasing)
             fxaaPass = new THREE.ShaderPass(THREE.FXAAShader);
             const pixelRatio = renderer.getPixelRatio();
             fxaaPass.material.uniforms['resolution'].value.x = 1 / (canvas.clientWidth * pixelRatio);
@@ -875,27 +822,19 @@
         }
         
         function loadHDREnvironment() {
-            // Simulate HDR environment with Hemisphere Light
             hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
             hemisphereLight.position.set(0, roomHeight * 2, 0);
             scene.add(hemisphereLight);
-            
-            // Add cube texture for reflections (simple reflection map)
-            const cubeTextureLoader = new THREE.CubeTextureLoader();
-            // Using solid color as fallback for environment
-            scene.environment = null; // Could load actual HDR here
         }
         
         function setupLighting() {
-            // Ambient Light
             ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(ambientLight);
             
-            // Directional Light with high-quality shadow
             const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
             dirLight.position.set(10, 15, 10);
             dirLight.castShadow = true;
-            dirLight.shadow.mapSize.width = 4096;  // 4K shadow
+            dirLight.shadow.mapSize.width = 4096;
             dirLight.shadow.mapSize.height = 4096;
             dirLight.shadow.camera.near = 0.5;
             dirLight.shadow.camera.far = 500;
@@ -906,7 +845,6 @@
             dirLight.shadow.bias = -0.0001;
             scene.add(dirLight);
             
-            // Add 3 spotlights with enhanced settings
             for (let i = 0; i < 3; i++) {
                 const spot = new THREE.SpotLight(0x8a2be2, 2.0);
                 spot.angle = Math.PI / 6;
@@ -938,7 +876,6 @@
             
             const hw = roomWidth / 2, hd = roomDepth / 2;
             
-            // Floor with PBR material
             const floorMaterial = new THREE.MeshStandardMaterial({ 
                 color: 0x1a1a2e, 
                 roughness: 0.7,
@@ -953,7 +890,6 @@
             floor.receiveShadow = true;
             roomGroup.add(floor);
             
-            // Walls with improved PBR material
             const wallMat = new THREE.MeshStandardMaterial({ 
                 color: 0xf5f5f5, 
                 roughness: 0.9,
@@ -988,47 +924,81 @@
             frontWall.userData.wall = 'front';
             roomGroup.add(frontWall);
             
-            const grid = new THREE.GridHelper(Math.max(roomWidth, roomDepth) * 1.2, 50, 0x8a2be2, 0x333333);
-            grid.material.opacity = 0.2;
-            grid.material.transparent = true;
-            roomGroup.add(grid);
+            gridHelper = new THREE.GridHelper(Math.max(roomWidth, roomDepth) * 1.2, 50, 0x8a2be2, 0x333333);
+            gridHelper.material.opacity = 0.2;
+            gridHelper.material.transparent = true;
+            roomGroup.add(gridHelper);
             
             updateSpotlightPositions();
             updateStats();
         }
         
+        function populateAssetLibrary() {
+            const grid = document.getElementById('assetGrid');
+            grid.innerHTML = '';
+            
+            assetTemplates.forEach((asset, i) => {
+                const item = document.createElement('div');
+                item.className = 'asset-item';
+                item.dataset.type = asset.type;
+                item.dataset.index = i;
+                
+                const icon = asset.type === 'painting' ? 'fa-image' : 
+                            asset.type === 'sculpture' ? 'fa-cube' : 'fa-camera';
+                
+                item.innerHTML = `
+                    <i class="fas ${icon} asset-icon"></i>
+                    <div class="asset-name">${asset.name}</div>
+                `;
+                
+                item.onclick = () => addArtworkFromLibrary(i);
+                grid.appendChild(item);
+            });
+        }
+        
+        function addArtworkFromLibrary(index) {
+            const template = assetTemplates[index];
+            artworks.push({ 
+                name: template.name, 
+                width: template.width, 
+                height: template.height, 
+                position: null, 
+                mesh: null 
+            });
+            
+            autoArrange();
+            showToast(`"${template.name}" 추가됨`);
+        }
+        
         function addDefaultArtworks() {
-            const defaults = [
-                '모나리자', '별이 빛나는 밤', '진주 귀걸이 소녀', 
-                '절규', '키스', '게르니카'
-            ];
+            const defaults = ['모나리자', '별이 빛나는 밤', '진주 귀걸이 소녀'];
             
             defaults.forEach(name => {
-                artworks.push({ name, width: 2, height: 3, position: null, mesh: null });
+                const template = assetTemplates.find(a => a.name === name);
+                if (template) {
+                    artworks.push({ 
+                        name: template.name, 
+                        width: template.width, 
+                        height: template.height, 
+                        position: null, 
+                        mesh: null 
+                    });
+                }
             });
             
             autoArrange();
         }
         
-        function addArtwork() {
-            const name = document.getElementById('artworkName').value.trim();
-            const width = parseFloat(document.getElementById('artworkWidth').value);
-            const height = parseFloat(document.getElementById('artworkHeight').value);
+        function addArtworkQuick() {
+            const name = prompt('작품명을 입력하세요:', '새 작품');
+            if (!name) return;
             
-            if (!name) {
-                showToast('작품명을 입력하세요');
-                return;
-            }
-            
-            artworks.push({ name, width, height, position: null, mesh: null });
-            document.getElementById('artworkName').value = '';
-            
+            artworks.push({ name, width: 2, height: 3, position: null, mesh: null });
             autoArrange();
             showToast(`"${name}" 추가됨`);
         }
         
         function autoArrange() {
-            // Clear existing meshes
             artworks.forEach(art => {
                 if (art.mesh) artworkGroup.remove(art.mesh);
             });
@@ -1069,7 +1039,6 @@
                 art.position = pos;
                 art.wall = wall;
                 
-                // Enhanced PBR material for artworks
                 const mesh = new THREE.Mesh(
                     new THREE.BoxGeometry(art.width, art.height, 0.1),
                     new THREE.MeshStandardMaterial({
@@ -1086,17 +1055,16 @@
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
                 mesh.userData.artworkIndex = i;
+                mesh.userData.type = 'artwork';
                 
                 art.mesh = mesh;
                 artworkGroup.add(mesh);
             });
             
-            updateArtworkList();
             updateStats();
         }
         
         function optimizeFlow() {
-            // Clear existing path
             while(pathGroup.children.length > 0) {
                 pathGroup.remove(pathGroup.children[0]);
             }
@@ -1109,7 +1077,6 @@
             const points = artworks.map(art => {
                 const pos = art.position.clone();
                 pos.y = 0.1;
-                // Move away from wall
                 if (art.wall === 'back') pos.z += 2;
                 else if (art.wall === 'left') pos.x += 2;
                 else if (art.wall === 'right') pos.x -= 2;
@@ -1125,50 +1092,6 @@
             showToast('동선이 최적화되었습니다');
         }
         
-        function placeVisitors() {
-            // Clear existing visitors
-            while(visitorGroup.children.length > 0) {
-                visitorGroup.remove(visitorGroup.children[0]);
-            }
-            visitors = [];
-            
-            const count = parseInt(document.getElementById('visitorCount').value);
-            
-            for (let i = 0; i < count; i++) {
-                const x = (Math.random() - 0.5) * (roomWidth - 4);
-                const z = (Math.random() - 0.5) * (roomDepth - 4);
-                
-                const visitor = new THREE.Mesh(
-                    new THREE.CylinderGeometry(0.3, 0.3, 1.7, 8),
-                    new THREE.MeshStandardMaterial({ 
-                        color: 0x4CAF50, 
-                        emissive: 0x4CAF50, 
-                        emissiveIntensity: 0.3,
-                        metalness: 0.2,
-                        roughness: 0.8
-                    })
-                );
-                visitor.position.set(x, 0.85, z);
-                visitor.castShadow = true;
-                visitor.receiveShadow = true;
-                
-                visitorGroup.add(visitor);
-                visitors.push(visitor);
-            }
-            
-            updateStats();
-            showToast(`${count}명의 관람객 배치됨`);
-        }
-        
-        function showFlowPath() {
-            if (flowPath) {
-                flowPath.visible = !flowPath.visible;
-                showToast(flowPath.visible ? '동선 표시' : '동선 숨김');
-            } else {
-                optimizeFlow();
-            }
-        }
-        
         function setCameraView(view) {
             switch(view) {
                 case 'overview':
@@ -1179,10 +1102,6 @@
                     camera.position.set(0, 1.6, roomDepth / 2 - 2);
                     controls.target.set(0, 1.6, 0);
                     break;
-                case 'curator':
-                    camera.position.set(roomWidth / 3, roomHeight * 1.5, roomDepth / 3);
-                    controls.target.set(0, roomHeight / 2, 0);
-                    break;
                 case 'bird':
                     camera.position.set(0, roomHeight * 4, 0);
                     controls.target.set(0, 0, 0);
@@ -1191,130 +1110,89 @@
             controls.update();
         }
         
-        function updateRoom() {
-            roomWidth = parseFloat(document.getElementById('roomWidth').value);
-            roomDepth = parseFloat(document.getElementById('roomDepth').value);
-            roomHeight = parseFloat(document.getElementById('roomHeight').value);
-            
-            buildRoom();
-            autoArrange();
-            
+        function resetCamera() {
             camera.position.set(0, roomHeight * 2.5, roomDepth * 1.8);
             controls.target.set(0, roomHeight / 2, 0);
             controls.update();
+            showToast('카메라 리셋됨');
+        }
+        
+        function setTool(tool) {
+            currentTool = tool;
             
-            showToast('전시실 크기 적용됨');
-        }
-        
-        function updateAmbient(val) {
-            ambientLight.intensity = parseFloat(val);
-            document.getElementById('ambientValue').textContent = val;
-        }
-        
-        function updateSpot(val) {
-            const intensity = parseFloat(val);
-            spotlights.forEach(spot => spot.intensity = intensity);
-            document.getElementById('spotValue').textContent = val;
-        }
-        
-        function updateBloom(val) {
-            const strength = parseFloat(val);
-            bloomPass.strength = strength;
-            document.getElementById('bloomValue').textContent = val;
-        }
-        
-        function updateSSAO(val) {
-            const strength = parseFloat(val);
-            // SSAO intensity adjustment
-            ssaoPass.kernelRadius = 16 * strength;
-            document.getElementById('ssaoValue').textContent = val;
-        }
-        
-        function updateVisitorCount(val) {
-            document.getElementById('visitorValue').textContent = val;
-        }
-        
-        function updateArtworkList() {
-            const list = document.getElementById('artworkList');
-            list.innerHTML = '';
+            // Update toolbar buttons
+            document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('tool-' + tool).classList.add('active');
             
-            document.getElementById('artworkCount').textContent = artworks.length;
-            
-            if (artworks.length === 0) {
-                list.innerHTML = '<div style="text-align:center;padding:20px;color:rgba(255,255,255,0.5);font-size:12px;">작품 없음</div>';
-                return;
-            }
-            
-            artworks.forEach((art, i) => {
-                const item = document.createElement('div');
-                item.className = 'artwork-item';
-                item.innerHTML = `
-                    <div class="artwork-name">${art.name}</div>
-                    <div class="artwork-info">${art.wall || '미배치'} • ${art.width}m × ${art.height}m</div>
-                `;
-                item.onclick = () => selectArtwork(i);
-                list.appendChild(item);
-            });
-        }
-        
-        function selectArtwork(i) {
-            const art = artworks[i];
-            if (art.mesh) {
-                controls.target.copy(art.position);
-                controls.update();
-                showToast(`"${art.name}" 선택됨`);
+            // Update transform control mode
+            if (selectedObject && transformControl.object) {
+                switch(tool) {
+                    case 'move':
+                        transformControl.setMode('translate');
+                        transformControl.visible = true;
+                        break;
+                    case 'rotate':
+                        transformControl.setMode('rotate');
+                        transformControl.visible = true;
+                        break;
+                    case 'scale':
+                        transformControl.setMode('scale');
+                        transformControl.visible = true;
+                        break;
+                    default:
+                        transformControl.visible = false;
+                }
             }
         }
         
-        function updateStats() {
-            document.getElementById('statArtworks').textContent = artworks.length;
-            document.getElementById('statArea').textContent = (roomWidth * roomDepth).toFixed(0) + '㎡';
-            
-            const totalWallArea = (roomWidth * roomHeight * 2) + (roomDepth * roomHeight * 2);
-            const artworkArea = artworks.reduce((sum, art) => sum + (art.width * art.height), 0);
-            const coverage = totalWallArea > 0 ? ((artworkArea / totalWallArea) * 100).toFixed(0) : 0;
-            document.getElementById('statCoverage').textContent = coverage + '%';
-            
-            document.getElementById('statVisitors').textContent = visitors.length;
+        function toggleGrid() {
+            if (gridHelper) {
+                gridHelper.visible = !gridHelper.visible;
+                showToast(gridHelper.visible ? '그리드 표시' : '그리드 숨김');
+            }
         }
         
-        function clearAll() {
-            if (!confirm('모든 작품을 삭제하시겠습니까?')) return;
+        function togglePath() {
+            if (flowPath) {
+                flowPath.visible = !flowPath.visible;
+                showToast(flowPath.visible ? '동선 표시' : '동선 숨김');
+            } else {
+                optimizeFlow();
+            }
+        }
+        
+        function filterAssets() {
+            const search = document.getElementById('assetSearch').value.toLowerCase();
+            const items = document.querySelectorAll('.asset-item');
             
-            artworks.forEach(art => {
-                if (art.mesh) artworkGroup.remove(art.mesh);
+            items.forEach(item => {
+                const name = item.querySelector('.asset-name').textContent.toLowerCase();
+                item.style.display = name.includes(search) ? 'flex' : 'none';
             });
-            artworks = [];
-            
-            updateArtworkList();
-            updateStats();
-            showToast('모든 작품 삭제됨');
         }
         
-        function exportScene() {
-            const data = {
-                room: { width: roomWidth, depth: roomDepth, height: roomHeight },
-                artworks: artworks.map(art => ({
-                    name: art.name,
-                    width: art.width,
-                    height: art.height,
-                    wall: art.wall,
-                    position: art.position ? art.position.toArray() : null
-                })),
-                visitors: visitors.length
-            };
+        function filterCategory(category) {
+            document.querySelectorAll('.asset-category').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
             
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'museflow-scene-' + Date.now() + '.json';
-            a.click();
-            
-            showToast('설정 내보내기 완료');
+            const items = document.querySelectorAll('.asset-item');
+            items.forEach(item => {
+                if (category === 'all' || item.dataset.type === category) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+        
+        function refreshAssets() {
+            populateAssetLibrary();
+            showToast('라이브러리 새로고침됨');
         }
         
         function onCanvasClick(e) {
+            if (currentTool !== 'select') return;
+            
             const canvas = document.getElementById('three-canvas');
             const rect = canvas.getBoundingClientRect();
             
@@ -1327,9 +1205,227 @@
             const intersects = raycaster.intersectObjects(meshes);
             
             if (intersects.length > 0) {
-                const index = intersects[0].object.userData.artworkIndex;
-                selectArtwork(index);
+                selectObject(intersects[0].object);
+            } else {
+                deselectObject();
             }
+        }
+        
+        function onCanvasDoubleClick(e) {
+            const canvas = document.getElementById('three-canvas');
+            const rect = canvas.getBoundingClientRect();
+            
+            mouse.x = ((e.clientX - rect.left) / canvas.clientWidth) * 2 - 1;
+            mouse.y = -((e.clientY - rect.top) / canvas.clientHeight) * 2 + 1;
+            
+            raycaster.setFromCamera(mouse, camera);
+            
+            const meshes = artworks.map(art => art.mesh).filter(m => m);
+            const intersects = raycaster.intersectObjects(meshes);
+            
+            if (intersects.length > 0) {
+                const obj = intersects[0].object;
+                controls.target.copy(obj.position);
+                controls.update();
+            }
+        }
+        
+        function selectObject(obj) {
+            if (selectedObject) {
+                selectedObject.material.emissiveIntensity = 0.3;
+            }
+            
+            selectedObject = obj;
+            selectedObject.material.emissiveIntensity = 0.6;
+            
+            transformControl.attach(obj);
+            setTool(currentTool);
+            
+            updatePropertiesPanel();
+            showToast('오브젝트 선택됨');
+        }
+        
+        function deselectObject() {
+            if (selectedObject) {
+                selectedObject.material.emissiveIntensity = 0.3;
+            }
+            
+            selectedObject = null;
+            transformControl.detach();
+            
+            document.getElementById('propertiesContent').innerHTML = `
+                <div class="no-selection">
+                    <i class="fas fa-hand-pointer"></i>
+                    <div>오브젝트를 선택하세요</div>
+                </div>
+            `;
+        }
+        
+        function updatePropertiesPanel() {
+            if (!selectedObject) return;
+            
+            const index = selectedObject.userData.artworkIndex;
+            const art = artworks[index];
+            
+            const content = document.getElementById('propertiesContent');
+            content.innerHTML = `
+                <div class="prop-section">
+                    <div class="prop-section-title">
+                        <i class="fas fa-info-circle"></i>
+                        기본 정보
+                    </div>
+                    <div class="prop-group">
+                        <label class="prop-label">이름</label>
+                        <input type="text" class="prop-input" value="${art.name}" 
+                               onchange="updateArtworkName(${index}, this.value)">
+                    </div>
+                </div>
+                
+                <div class="prop-section">
+                    <div class="prop-section-title">
+                        <i class="fas fa-arrows-alt"></i>
+                        변형
+                    </div>
+                    <div class="prop-group">
+                        <label class="prop-label">위치 (X, Y, Z)</label>
+                        <div class="prop-row-3">
+                            <input type="number" class="prop-input" value="${selectedObject.position.x.toFixed(2)}" 
+                                   onchange="updatePosition(${index}, 'x', this.value)" step="0.1">
+                            <input type="number" class="prop-input" value="${selectedObject.position.y.toFixed(2)}" 
+                                   onchange="updatePosition(${index}, 'y', this.value)" step="0.1">
+                            <input type="number" class="prop-input" value="${selectedObject.position.z.toFixed(2)}" 
+                                   onchange="updatePosition(${index}, 'z', this.value)" step="0.1">
+                        </div>
+                    </div>
+                    <div class="prop-group">
+                        <label class="prop-label">크기 (가로 × 세로)</label>
+                        <div class="prop-row">
+                            <input type="number" class="prop-input" value="${art.width}" 
+                                   onchange="updateArtworkSize(${index}, this.value, null)" step="0.1">
+                            <input type="number" class="prop-input" value="${art.height}" 
+                                   onchange="updateArtworkSize(${index}, null, this.value)" step="0.1">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="prop-section">
+                    <div class="prop-section-title">
+                        <i class="fas fa-palette"></i>
+                        재질
+                    </div>
+                    <div class="prop-group">
+                        <div class="prop-value">
+                            <span>금속성</span>
+                            <span class="prop-value-num" id="metalness-val">0.6</span>
+                        </div>
+                        <input type="range" class="prop-slider" min="0" max="1" step="0.1" value="0.6"
+                               oninput="updateMaterial(${index}, 'metalness', this.value)">
+                    </div>
+                    <div class="prop-group">
+                        <div class="prop-value">
+                            <span>거칠기</span>
+                            <span class="prop-value-num" id="roughness-val">0.2</span>
+                        </div>
+                        <input type="range" class="prop-slider" min="0" max="1" step="0.1" value="0.2"
+                               oninput="updateMaterial(${index}, 'roughness', this.value)">
+                    </div>
+                    <div class="prop-group">
+                        <div class="prop-value">
+                            <span>발광 강도</span>
+                            <span class="prop-value-num" id="emissive-val">0.3</span>
+                        </div>
+                        <input type="range" class="prop-slider" min="0" max="1" step="0.1" value="0.3"
+                               oninput="updateMaterial(${index}, 'emissive', this.value)">
+                    </div>
+                </div>
+                
+                <div class="prop-section">
+                    <button class="prop-btn" onclick="deleteArtwork(${index})">
+                        <i class="fas fa-trash"></i>
+                        작품 삭제
+                    </button>
+                </div>
+            `;
+        }
+        
+        function updateArtworkName(index, name) {
+            artworks[index].name = name;
+            showToast('이름 변경됨');
+        }
+        
+        function updatePosition(index, axis, value) {
+            const art = artworks[index];
+            if (art.mesh) {
+                art.mesh.position[axis] = parseFloat(value);
+                art.position[axis] = parseFloat(value);
+            }
+        }
+        
+        function updateArtworkSize(index, width, height) {
+            const art = artworks[index];
+            if (width !== null) art.width = parseFloat(width);
+            if (height !== null) art.height = parseFloat(height);
+            
+            if (art.mesh) {
+                artworkGroup.remove(art.mesh);
+                const newMesh = new THREE.Mesh(
+                    new THREE.BoxGeometry(art.width, art.height, 0.1),
+                    art.mesh.material
+                );
+                newMesh.position.copy(art.mesh.position);
+                newMesh.rotation.copy(art.mesh.rotation);
+                newMesh.castShadow = true;
+                newMesh.receiveShadow = true;
+                newMesh.userData = art.mesh.userData;
+                
+                art.mesh = newMesh;
+                artworkGroup.add(newMesh);
+                
+                if (selectedObject) {
+                    selectObject(newMesh);
+                }
+            }
+            
+            showToast('크기 변경됨');
+        }
+        
+        function updateMaterial(index, prop, value) {
+            const art = artworks[index];
+            const val = parseFloat(value);
+            
+            if (art.mesh) {
+                if (prop === 'metalness') {
+                    art.mesh.material.metalness = val;
+                    document.getElementById('metalness-val').textContent = val.toFixed(1);
+                } else if (prop === 'roughness') {
+                    art.mesh.material.roughness = val;
+                    document.getElementById('roughness-val').textContent = val.toFixed(1);
+                } else if (prop === 'emissive') {
+                    art.mesh.material.emissiveIntensity = val;
+                    document.getElementById('emissive-val').textContent = val.toFixed(1);
+                }
+            }
+        }
+        
+        function deleteArtwork(index) {
+            if (!confirm('이 작품을 삭제하시겠습니까?')) return;
+            
+            const art = artworks[index];
+            if (art.mesh) {
+                artworkGroup.remove(art.mesh);
+                if (selectedObject === art.mesh) {
+                    deselectObject();
+                }
+            }
+            
+            artworks.splice(index, 1);
+            autoArrange();
+            showToast('작품 삭제됨');
+        }
+        
+        function updateStats() {
+            document.getElementById('statArtworks').textContent = artworks.length;
+            document.getElementById('statArea').textContent = (roomWidth * roomDepth).toFixed(0) + '㎡';
         }
         
         function onResize() {
@@ -1343,7 +1439,6 @@
             renderer.setSize(width, height);
             composer.setSize(width, height);
             
-            // Update FXAA resolution
             const pixelRatio = renderer.getPixelRatio();
             fxaaPass.material.uniforms['resolution'].value.x = 1 / (width * pixelRatio);
             fxaaPass.material.uniforms['resolution'].value.y = 1 / (height * pixelRatio);
@@ -1355,13 +1450,12 @@
             
             // Subtle animation
             artworks.forEach((art, i) => {
-                if (art.mesh) {
+                if (art.mesh && art.mesh !== selectedObject) {
                     const time = Date.now() * 0.0001;
                     art.mesh.rotation.z = Math.sin(time + i) * 0.02;
                 }
             });
             
-            // Render with post-processing
             composer.render();
             
             // FPS tracking
