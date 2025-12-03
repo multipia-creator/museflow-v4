@@ -15,8 +15,8 @@
     
     <style>
         /* ===============================================
-           Figma-inspired Professional Canvas
-           White Theme + Clean Design System
+           MuseFlow Canvas V3 - Hybrid UX
+           Floating Toolbar + Role-based Widget System
            =============================================== */
         
         * {
@@ -26,7 +26,7 @@
         }
         
         :root {
-            /* Colors - Figma White Theme */
+            /* Colors */
             --bg-primary: #FFFFFF;
             --bg-secondary: #F5F5F5;
             --bg-tertiary: #FAFAFA;
@@ -47,7 +47,7 @@
             --warning: #F59E0B;
             --error: #EF4444;
             
-            /* Shadows - Figma-style */
+            /* Shadows */
             --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
             --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
             --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
@@ -59,28 +59,23 @@
             --space-md: 12px;
             --space-lg: 16px;
             --space-xl: 24px;
-            --space-2xl: 32px;
             
-            /* Border Radius */
-            --radius-sm: 4px;
-            --radius-md: 8px;
-            --radius-lg: 12px;
-            
-            /* Typography */
-            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            /* Animation */
+            --transition-fast: 0.15s ease;
+            --transition-base: 0.2s ease;
+            --transition-slow: 0.3s ease;
         }
         
         body {
-            font-family: var(--font-sans);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-secondary);
             color: var(--text-primary);
             overflow: hidden;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
         
         /* ===============================================
-           Layout Structure
+           Layout
            =============================================== */
         
         .app-container {
@@ -90,9 +85,9 @@
             width: 100vw;
         }
         
-        /* Top Toolbar */
-        .toolbar {
-            height: 60px;
+        /* Top Toolbar - Minimalist */
+        .top-toolbar {
+            height: 48px;
             background: var(--bg-primary);
             border-bottom: 1px solid var(--border-primary);
             display: flex;
@@ -103,16 +98,8 @@
             z-index: 100;
         }
         
-        .toolbar-left,
-        .toolbar-center,
-        .toolbar-right {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-        }
-        
         .logo {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--accent-primary);
             display: flex;
@@ -120,57 +107,18 @@
             gap: var(--space-sm);
         }
         
-        .project-name {
-            font-size: 14px;
+        .project-info {
+            font-size: 13px;
             font-weight: 600;
             color: var(--text-primary);
         }
         
-        .project-meta {
+        .save-status {
             font-size: 12px;
             color: var(--text-tertiary);
-        }
-        
-        /* Tool Buttons */
-        .tool-btn {
-            width: 36px;
-            height: 36px;
-            border: none;
-            background: transparent;
-            border-radius: var(--radius-md);
-            cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            color: var(--text-secondary);
-        }
-        
-        .tool-btn:hover {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-        }
-        
-        .tool-btn.active {
-            background: var(--accent-light);
-            color: var(--accent-primary);
-        }
-        
-        .btn-primary {
-            height: 36px;
-            padding: 0 var(--space-lg);
-            background: var(--accent-primary);
-            color: white;
-            border: none;
-            border-radius: var(--radius-md);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .btn-primary:hover {
-            background: var(--accent-hover);
+            gap: var(--space-xs);
         }
         
         /* Main Content */
@@ -178,99 +126,141 @@
             flex: 1;
             display: flex;
             overflow: hidden;
+            position: relative;
         }
         
-        /* Left Panel - Node Library */
+        /* Left Panel - Role-based Widget Palette */
         .left-panel {
             width: 280px;
             background: var(--bg-primary);
             border-right: 1px solid var(--border-primary);
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            transition: transform var(--transition-slow);
+            z-index: 50;
         }
         
-        .panel-header {
-            height: 48px;
-            padding: 0 var(--space-lg);
+        .left-panel.collapsed {
+            transform: translateX(-100%);
+        }
+        
+        .panel-toggle {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 80px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-primary);
+            border-left: none;
+            border-radius: 0 8px 8px 0;
             display: flex;
             align-items: center;
-            border-bottom: 1px solid var(--border-primary);
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-primary);
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            z-index: 60;
         }
         
-        .search-box {
-            padding: var(--space-md);
+        .panel-toggle:hover {
+            background: var(--bg-secondary);
+            width: 28px;
+        }
+        
+        .left-panel.collapsed + .panel-toggle {
+            left: 0;
+        }
+        
+        /* Role Selector */
+        .role-selector {
+            padding: var(--space-lg);
             border-bottom: 1px solid var(--border-primary);
         }
         
-        .search-input {
+        .role-dropdown {
             width: 100%;
-            height: 36px;
+            height: 40px;
             padding: 0 var(--space-md);
             background: var(--bg-secondary);
             border: 1px solid var(--border-primary);
-            border-radius: var(--radius-md);
-            font-size: 13px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
             outline: none;
-            transition: all 0.2s;
+            transition: all var(--transition-base);
         }
         
-        .search-input:focus {
+        .role-dropdown:hover {
             border-color: var(--accent-primary);
-            background: var(--bg-primary);
         }
         
-        .nodes-list {
+        /* Widget Palette */
+        .widget-palette {
             flex: 1;
             overflow-y: auto;
-            padding: var(--space-md);
+            padding: var(--space-lg);
         }
         
-        .node-category {
-            margin-bottom: var(--space-lg);
+        .widget-group {
+            margin-bottom: var(--space-xl);
         }
         
-        .category-header {
+        .group-header {
             font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: var(--text-tertiary);
-            margin-bottom: var(--space-sm);
+            margin-bottom: var(--space-md);
         }
         
-        .node-item {
-            height: 36px;
+        .widget-item {
+            height: 48px;
             padding: 0 var(--space-md);
             background: var(--bg-secondary);
             border: 1px solid var(--border-primary);
-            border-radius: var(--radius-md);
+            border-radius: 8px;
             display: flex;
             align-items: center;
-            gap: var(--space-sm);
+            gap: var(--space-md);
             cursor: grab;
-            margin-bottom: var(--space-xs);
-            transition: all 0.2s;
-            font-size: 13px;
+            margin-bottom: var(--space-sm);
+            transition: all var(--transition-base);
         }
         
-        .node-item:hover {
+        .widget-item:hover {
             background: var(--bg-primary);
             border-color: var(--accent-primary);
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
+            transform: translateX(4px);
         }
         
-        .node-item:active {
+        .widget-item:active {
             cursor: grabbing;
         }
         
-        .node-icon {
-            width: 16px;
-            height: 16px;
-            color: var(--text-secondary);
+        .widget-icon {
+            width: 20px;
+            height: 20px;
+            color: var(--accent-primary);
+            flex-shrink: 0;
+        }
+        
+        .widget-info {
+            flex: 1;
+        }
+        
+        .widget-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .widget-desc {
+            font-size: 11px;
+            color: var(--text-tertiary);
         }
         
         /* Canvas Container */
@@ -291,6 +281,16 @@
             cursor: grabbing;
         }
         
+        #nodes-container {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+        
+        #nodes-container > * {
+            pointer-events: auto;
+        }
+        
         /* Canvas Node */
         .canvas-node {
             position: absolute;
@@ -298,10 +298,10 @@
             min-height: 100px;
             background: var(--bg-primary);
             border: 2px solid var(--border-primary);
-            border-radius: var(--radius-lg);
+            border-radius: 12px;
             box-shadow: var(--shadow-md);
             cursor: move;
-            transition: all 0.2s;
+            transition: all var(--transition-base);
         }
         
         .canvas-node:hover {
@@ -344,36 +344,101 @@
             border: 2px solid var(--accent-primary);
             border-radius: 50%;
             cursor: crosshair;
-            transition: all 0.2s;
+            transition: all var(--transition-base);
+            opacity: 0;
+        }
+        
+        .canvas-node:hover .node-handle {
+            opacity: 1;
         }
         
         .node-handle:hover {
-            transform: scale(1.3);
+            transform: scale(1.5);
             box-shadow: 0 0 0 3px var(--accent-light);
         }
         
-        .node-handle.top {
-            top: -6px;
+        .node-handle.top { top: -6px; left: 50%; transform: translateX(-50%); }
+        .node-handle.right { right: -6px; top: 50%; transform: translateY(-50%); }
+        .node-handle.bottom { bottom: -6px; left: 50%; transform: translateX(-50%); }
+        .node-handle.left { left: -6px; top: 50%; transform: translateY(-50%); }
+        
+        /* Floating Toolbar - Figma Style */
+        .floating-toolbar {
+            position: absolute;
+            bottom: 32px;
             left: 50%;
             transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            padding: var(--space-sm);
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            z-index: 1000;
         }
         
-        .node-handle.right {
-            right: -6px;
-            top: 50%;
-            transform: translateY(-50%);
+        .toolbar-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--border-primary);
+            margin: 0 var(--space-xs);
         }
         
-        .node-handle.bottom {
-            bottom: -6px;
-            left: 50%;
-            transform: translateX(-50%);
+        .toolbar-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+            color: var(--text-secondary);
         }
         
-        .node-handle.left {
-            left: -6px;
-            top: 50%;
-            transform: translateY(-50%);
+        .toolbar-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .toolbar-btn.active {
+            background: var(--accent-light);
+            color: var(--accent-primary);
+        }
+        
+        .toolbar-btn-primary {
+            height: 36px;
+            padding: 0 var(--space-lg);
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            transition: all var(--transition-base);
+        }
+        
+        .toolbar-btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .zoom-display {
+            min-width: 56px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
         }
         
         /* Right Panel - Properties */
@@ -383,7 +448,22 @@
             border-left: 1px solid var(--border-primary);
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            transition: transform var(--transition-slow);
+            z-index: 50;
+        }
+        
+        .right-panel.collapsed {
+            transform: translateX(100%);
+        }
+        
+        .panel-header {
+            height: 48px;
+            padding: 0 var(--space-lg);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-primary);
+            font-size: 13px;
+            font-weight: 600;
         }
         
         .properties-content {
@@ -394,52 +474,9 @@
         
         .empty-state {
             text-align: center;
-            padding: var(--space-2xl);
+            padding: var(--space-xl) 0;
             color: var(--text-tertiary);
             font-size: 13px;
-        }
-        
-        /* Zoom Controls */
-        .zoom-controls {
-            position: absolute;
-            bottom: 24px;
-            right: 24px;
-            display: flex;
-            gap: var(--space-xs);
-            background: var(--bg-primary);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius-md);
-            padding: var(--space-xs);
-            box-shadow: var(--shadow-md);
-        }
-        
-        .zoom-btn {
-            width: 32px;
-            height: 32px;
-            border: none;
-            background: transparent;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            color: var(--text-secondary);
-        }
-        
-        .zoom-btn:hover {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-        }
-        
-        .zoom-level {
-            width: 48px;
-            text-align: center;
-            font-size: 12px;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         
         /* Mobile Responsive */
@@ -447,27 +484,22 @@
             .left-panel,
             .right-panel {
                 position: absolute;
-                z-index: 50;
-                height: calc(100vh - 60px);
-                transform: translateX(-100%);
-                transition: transform 0.3s;
+                height: calc(100vh - 48px);
+                z-index: 100;
             }
             
-            .left-panel.open {
-                transform: translateX(0);
+            .floating-toolbar {
+                bottom: 16px;
+                padding: var(--space-xs);
             }
             
-            .right-panel {
-                right: 0;
-                transform: translateX(100%);
-            }
-            
-            .right-panel.open {
-                transform: translateX(0);
+            .toolbar-btn {
+                width: 32px;
+                height: 32px;
             }
         }
         
-        /* Scrollbar Styling */
+        /* Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -489,128 +521,92 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- Top Toolbar -->
-        <div class="toolbar">
-            <div class="toolbar-left">
-                <div class="logo">
-                    <i data-lucide="layers" style="width: 20px; height: 20px;"></i>
-                    MuseFlow
-                </div>
-                <div style="width: 1px; height: 24px; background: var(--border-primary);"></div>
-                <div>
-                    <div class="project-name">전시 기획 워크플로우</div>
-                    <div class="project-meta">5개 노드 • 자동 저장됨</div>
-                </div>
+        <!-- Top Toolbar - Minimalist -->
+        <div class="top-toolbar">
+            <div class="logo">
+                <i data-lucide="layers" style="width: 18px; height: 18px;"></i>
+                MuseFlow
             </div>
             
-            <div class="toolbar-center">
-                <div style="display: flex; gap: 4px;">
-                    <button class="tool-btn active" title="선택 도구">
-                        <i data-lucide="mouse-pointer-2" style="width: 18px; height: 18px;"></i>
-                    </button>
-                    <button class="tool-btn" title="손 도구">
-                        <i data-lucide="hand" style="width: 18px; height: 18px;"></i>
-                    </button>
-                    <button class="tool-btn" title="연결 도구">
-                        <i data-lucide="move" style="width: 18px; height: 18px;"></i>
-                    </button>
-                </div>
-            </div>
+            <div class="project-info">전시 기획 워크플로우</div>
             
-            <div class="toolbar-right">
-                <button class="btn-primary">
-                    <i data-lucide="play" style="width: 16px; height: 16px; margin-right: 6px;"></i>
-                    워크플로우 실행
-                </button>
-                <button class="tool-btn" title="설정">
-                    <i data-lucide="settings" style="width: 18px; height: 18px;"></i>
-                </button>
+            <div class="save-status">
+                <i data-lucide="check-circle" style="width: 14px; height: 14px; color: var(--success);"></i>
+                자동 저장됨
             </div>
         </div>
         
         <!-- Main Content -->
         <div class="main-content">
-            <!-- Left Panel - Node Library -->
-            <div class="left-panel">
-                <div class="panel-header">
-                    <i data-lucide="layers" style="width: 16px; height: 16px; margin-right: 8px;"></i>
-                    노드 라이브러리
+            <!-- Left Panel - Widget Palette -->
+            <div class="left-panel" id="left-panel">
+                <!-- Role Selector -->
+                <div class="role-selector">
+                    <select class="role-dropdown" id="role-selector">
+                        <option value="curator">🎨 학예사 (Curator)</option>
+                        <option value="educator">📚 에듀케이터 (Educator)</option>
+                        <option value="admin">⚙️ 행정관리자 (Admin)</option>
+                    </select>
                 </div>
                 
-                <div class="search-box">
-                    <input type="text" class="search-input" placeholder="노드 검색... (Cmd+K)">
-                </div>
-                
-                <div class="nodes-list">
-                    <!-- Exhibition Category -->
-                    <div class="node-category">
-                        <div class="category-header">전시 Exhibition</div>
-                        <div class="node-item" draggable="true" data-type="ex-01">
-                            <i data-lucide="lightbulb" class="node-icon"></i>
-                            <span>전시 주제 선정</span>
-                        </div>
-                        <div class="node-item" draggable="true" data-type="ex-02">
-                            <i data-lucide="image" class="node-icon"></i>
-                            <span>작품 선정</span>
-                        </div>
-                        <div class="node-item" draggable="true" data-type="ex-03">
-                            <i data-lucide="layout" class="node-icon"></i>
-                            <span>공간 배치 계획</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Program Category -->
-                    <div class="node-category">
-                        <div class="category-header">프로그램 Program</div>
-                        <div class="node-item" draggable="true" data-type="pr-01">
-                            <i data-lucide="megaphone" class="node-icon"></i>
-                            <span>마케팅 계획</span>
-                        </div>
-                        <div class="node-item" draggable="true" data-type="pr-02">
-                            <i data-lucide="calendar" class="node-icon"></i>
-                            <span>전시 오픈</span>
-                        </div>
-                    </div>
-                    
-                    <!-- AI Category -->
-                    <div class="node-category">
-                        <div class="category-header">AI 도구</div>
-                        <div class="node-item" draggable="true" data-type="ai-01">
-                            <i data-lucide="sparkles" class="node-icon"></i>
-                            <span>AI 텍스트 생성</span>
-                        </div>
-                        <div class="node-item" draggable="true" data-type="ai-02">
-                            <i data-lucide="file-text" class="node-icon"></i>
-                            <span>Google Docs 저장</span>
-                        </div>
-                    </div>
+                <!-- Widget Palette -->
+                <div class="widget-palette" id="widget-palette">
+                    <!-- Will be populated by JavaScript -->
                 </div>
             </div>
+            
+            <!-- Panel Toggle Button -->
+            <button class="panel-toggle" id="panel-toggle">
+                <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+            </button>
             
             <!-- Canvas Container -->
             <div class="canvas-container" id="canvas-container">
                 <canvas id="canvas"></canvas>
-                
-                <!-- Sample Nodes (will be generated by JS) -->
                 <div id="nodes-container"></div>
                 
-                <!-- Zoom Controls -->
-                <div class="zoom-controls">
-                    <button class="zoom-btn" id="zoom-out">
-                        <i data-lucide="minus" style="width: 16px; height: 16px;"></i>
+                <!-- Floating Toolbar -->
+                <div class="floating-toolbar">
+                    <button class="toolbar-btn active" title="선택 도구 (V)" data-tool="select">
+                        <i data-lucide="mouse-pointer-2" style="width: 18px; height: 18px;"></i>
                     </button>
-                    <div class="zoom-level" id="zoom-level">100%</div>
-                    <button class="zoom-btn" id="zoom-in">
-                        <i data-lucide="plus" style="width: 16px; height: 16px;"></i>
+                    <button class="toolbar-btn" title="손 도구 (H)" data-tool="hand">
+                        <i data-lucide="hand" style="width: 18px; height: 18px;"></i>
                     </button>
-                    <button class="zoom-btn" id="zoom-fit">
-                        <i data-lucide="maximize-2" style="width: 16px; height: 16px;"></i>
+                    <button class="toolbar-btn" title="연결 도구 (C)" data-tool="connect">
+                        <i data-lucide="move" style="width: 18px; height: 18px;"></i>
+                    </button>
+                    
+                    <div class="toolbar-divider"></div>
+                    
+                    <button class="toolbar-btn" title="노드 추가 (A)">
+                        <i data-lucide="plus" style="width: 18px; height: 18px;"></i>
+                    </button>
+                    
+                    <div class="toolbar-divider"></div>
+                    
+                    <button class="toolbar-btn" title="축소 (-)">
+                        <i data-lucide="minus" style="width: 18px; height: 18px;"></i>
+                    </button>
+                    <div class="zoom-display">100%</div>
+                    <button class="toolbar-btn" title="확대 (+)">
+                        <i data-lucide="plus" style="width: 18px; height: 18px;"></i>
+                    </button>
+                    <button class="toolbar-btn" title="맞춤 (0)">
+                        <i data-lucide="maximize-2" style="width: 18px; height: 18px;"></i>
+                    </button>
+                    
+                    <div class="toolbar-divider"></div>
+                    
+                    <button class="toolbar-btn-primary" title="워크플로우 실행 (Cmd+R)">
+                        <i data-lucide="play" style="width: 16px; height: 16px;"></i>
+                        실행
                     </button>
                 </div>
             </div>
             
             <!-- Right Panel - Properties -->
-            <div class="right-panel">
+            <div class="right-panel" id="right-panel">
                 <div class="panel-header">
                     <i data-lucide="sliders" style="width: 16px; height: 16px; margin-right: 8px;"></i>
                     속성
@@ -630,38 +626,147 @@
         // Initialize Lucide icons
         lucide.createIcons();
         
-        // Canvas State
-        const state = {
-            nodes: [],
-            connections: [],
-            selectedNode: null,
-            zoom: 1,
-            pan: { x: 0, y: 0 },
-            isDragging: false,
-            dragStart: null
+        // Role-based Widget Data
+        const widgetData = {
+            curator: [
+                {
+                    group: '전시 기획',
+                    widgets: [
+                        { id: 'ex-01', icon: 'lightbulb', title: '전시 주제 선정', desc: '전시 기획' },
+                        { id: 'ex-02', icon: 'image', title: '작품 선정', desc: '큐레이팅' },
+                        { id: 'ex-03', icon: 'layout', title: '공간 배치 계획', desc: '공간 설계' },
+                        { id: 'ex-04', icon: 'book-open', title: '도록 제작', desc: '출판' }
+                    ]
+                },
+                {
+                    group: '작품 관리',
+                    widgets: [
+                        { id: 'col-01', icon: 'package', title: '작품 등록', desc: '컬렉션' },
+                        { id: 'col-02', icon: 'shield', title: '보존 처리', desc: '보존' },
+                        { id: 'col-03', icon: 'truck', title: '대여 관리', desc: '물류' }
+                    ]
+                }
+            ],
+            educator: [
+                {
+                    group: '교육 프로그램',
+                    widgets: [
+                        { id: 'edu-01', icon: 'graduation-cap', title: '프로그램 기획', desc: '교육' },
+                        { id: 'edu-02', icon: 'users', title: '워크숍 설계', desc: '참여형' },
+                        { id: 'edu-03', icon: 'mic', title: '도슨트 교육', desc: '해설' },
+                        { id: 'edu-04', icon: 'file-text', title: '교육 자료 제작', desc: '콘텐츠' }
+                    ]
+                },
+                {
+                    group: '참여 활동',
+                    widgets: [
+                        { id: 'eng-01', icon: 'heart', title: '멤버십 관리', desc: '회원' },
+                        { id: 'eng-02', icon: 'calendar', title: '이벤트 기획', desc: '행사' },
+                        { id: 'eng-03', icon: 'share-2', title: 'SNS 운영', desc: '소통' }
+                    ]
+                }
+            ],
+            admin: [
+                {
+                    group: '운영 관리',
+                    widgets: [
+                        { id: 'adm-01', icon: 'dollar-sign', title: '예산 수립', desc: '재무' },
+                        { id: 'adm-02', icon: 'users', title: '인사 관리', desc: 'HR' },
+                        { id: 'adm-03', icon: 'building', title: '시설 관리', desc: '운영' },
+                        { id: 'adm-04', icon: 'calendar-clock', title: '일정 관리', desc: '스케줄' }
+                    ]
+                },
+                {
+                    group: '재무',
+                    widgets: [
+                        { id: 'fin-01', icon: 'receipt', title: '회계 처리', desc: '회계' },
+                        { id: 'fin-02', icon: 'file-signature', title: '계약 관리', desc: '법무' },
+                        { id: 'fin-03', icon: 'bar-chart', title: '보고서 작성', desc: '분석' }
+                    ]
+                }
+            ]
         };
         
-        // Create Sample Workflow on First Visit
-        function createSampleWorkflow() {
-            const hasSample = localStorage.getItem('museflow_canvas_sample');
-            if (hasSample) return;
+        // State
+        const state = {
+            currentRole: 'curator',
+            nodes: [],
+            selectedNode: null,
+            zoom: 1,
+            tool: 'select',
+            leftPanelCollapsed: false,
+            rightPanelCollapsed: false
+        };
+        
+        // Load saved role
+        const savedRole = localStorage.getItem('museflow_user_role');
+        if (savedRole) {
+            state.currentRole = savedRole;
+            document.getElementById('role-selector').value = savedRole;
+        }
+        
+        // Render Widget Palette
+        function renderWidgetPalette() {
+            const palette = document.getElementById('widget-palette');
+            const data = widgetData[state.currentRole];
             
-            console.log('🎨 Creating sample workflow...');
+            palette.innerHTML = data.map(group => `
+                <div class="widget-group">
+                    <div class="group-header">${group.group}</div>
+                    ${group.widgets.map(widget => `
+                        <div class="widget-item" draggable="true" data-id="${widget.id}">
+                            <i data-lucide="${widget.icon}" class="widget-icon"></i>
+                            <div class="widget-info">
+                                <div class="widget-title">${widget.title}</div>
+                                <div class="widget-desc">${widget.desc}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+        }
+        
+        // Role Selector Change
+        document.getElementById('role-selector').addEventListener('change', (e) => {
+            state.currentRole = e.target.value;
+            localStorage.setItem('museflow_user_role', e.target.value);
+            renderWidgetPalette();
+        });
+        
+        // Panel Toggle
+        document.getElementById('panel-toggle').addEventListener('click', () => {
+            const panel = document.getElementById('left-panel');
+            const toggle = document.getElementById('panel-toggle');
+            state.leftPanelCollapsed = !state.leftPanelCollapsed;
+            
+            if (state.leftPanelCollapsed) {
+                panel.classList.add('collapsed');
+                toggle.querySelector('i').setAttribute('data-lucide', 'chevron-right');
+            } else {
+                panel.classList.remove('collapsed');
+                toggle.querySelector('i').setAttribute('data-lucide', 'chevron-left');
+            }
+            
+            lucide.createIcons();
+        });
+        
+        // Create Sample Workflow
+        function createSampleWorkflow() {
+            const hasSample = localStorage.getItem('museflow_canvas_sample_v2');
+            if (hasSample) return;
             
             const sampleNodes = [
                 { id: '1', type: 'ex-01', title: '전시 주제 선정', x: 100, y: 100 },
                 { id: '2', type: 'ex-02', title: '작품 선정', x: 350, y: 100 },
                 { id: '3', type: 'ex-03', title: '공간 배치 계획', x: 600, y: 100 },
-                { id: '4', type: 'pr-01', title: '마케팅 계획', x: 225, y: 280 },
-                { id: '5', type: 'pr-02', title: '전시 오픈', x: 475, y: 280 }
+                { id: '4', type: 'ex-04', title: '도록 제작', x: 225, y: 280 },
+                { id: '5', type: 'col-01', title: '작품 등록', x: 475, y: 280 }
             ];
             
-            sampleNodes.forEach(node => {
-                createNode(node);
-            });
-            
-            localStorage.setItem('museflow_canvas_sample', 'true');
-            console.log('✅ Sample workflow created');
+            sampleNodes.forEach(node => createNode(node));
+            localStorage.setItem('museflow_canvas_sample_v2', 'true');
         }
         
         // Create Node
@@ -678,7 +783,9 @@
                     <span class="node-title">${data.title}</span>
                 </div>
                 <div class="node-body">
-                    전시 기획 프로세스의 일부
+                    ${state.currentRole === 'curator' ? '전시 기획 프로세스' : 
+                      state.currentRole === 'educator' ? '교육 프로그램 운영' : 
+                      '행정 관리 업무'}
                 </div>
                 <div class="node-handle top"></div>
                 <div class="node-handle right"></div>
@@ -689,7 +796,14 @@
             document.getElementById('nodes-container').appendChild(node);
             lucide.createIcons();
             
-            // Make node draggable
+            // Make draggable
+            makeDraggable(node);
+            
+            state.nodes.push({ id: data.id, element: node, data });
+        }
+        
+        // Make Node Draggable
+        function makeDraggable(node) {
             let isDragging = false;
             let startX, startY, nodeX, nodeY;
             
@@ -700,7 +814,6 @@
                 startY = e.clientY;
                 nodeX = parseInt(node.style.left);
                 nodeY = parseInt(node.style.top);
-                node.style.zIndex = 1000;
             });
             
             document.addEventListener('mousemove', (e) => {
@@ -712,43 +825,16 @@
             });
             
             document.addEventListener('mouseup', () => {
-                if (isDragging) {
-                    isDragging = false;
-                    node.style.zIndex = '';
-                }
+                isDragging = false;
             });
-            
-            state.nodes.push({ id: data.id, element: node, data });
         }
         
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 Initializing Figma-style Canvas...');
+            console.log('🚀 Initializing Hybrid Canvas...');
+            renderWidgetPalette();
             createSampleWorkflow();
         });
-        
-        // Zoom Controls
-        document.getElementById('zoom-in').addEventListener('click', () => {
-            state.zoom = Math.min(state.zoom + 0.1, 2);
-            updateZoom();
-        });
-        
-        document.getElementById('zoom-out').addEventListener('click', () => {
-            state.zoom = Math.max(state.zoom - 0.1, 0.5);
-            updateZoom();
-        });
-        
-        document.getElementById('zoom-fit').addEventListener('click', () => {
-            state.zoom = 1;
-            state.pan = { x: 0, y: 0 };
-            updateZoom();
-        });
-        
-        function updateZoom() {
-            const container = document.getElementById('nodes-container');
-            container.style.transform = `scale(${state.zoom}) translate(${state.pan.x}px, ${state.pan.y}px)`;
-            document.getElementById('zoom-level').textContent = Math.round(state.zoom * 100) + '%';
-        }
     </script>
 </body>
 </html>
