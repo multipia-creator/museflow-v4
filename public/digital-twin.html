@@ -702,18 +702,28 @@
         let lastTime = Date.now();
         let frames = 0;
         
-        // Asset library data
+        // Asset library data with sample images
         const assetTemplates = [
-            { name: '모나리자', type: 'painting', width: 2, height: 3 },
-            { name: '별이 빛나는 밤', type: 'painting', width: 2.5, height: 2 },
-            { name: '진주 귀걸이 소녀', type: 'painting', width: 1.8, height: 2.4 },
-            { name: '절규', type: 'painting', width: 2, height: 2.8 },
-            { name: '키스', type: 'painting', width: 2.2, height: 2.2 },
-            { name: '게르니카', type: 'painting', width: 3.5, height: 2 },
-            { name: '미켈란젤로 다비드', type: 'sculpture', width: 1.5, height: 4 },
-            { name: '비너스상', type: 'sculpture', width: 1.2, height: 3.5 },
-            { name: '풍경 사진 A', type: 'photo', width: 2, height: 1.5 },
-            { name: '인물 사진 B', type: 'photo', width: 1.5, height: 2 },
+            { name: '모나리자', type: 'painting', width: 2, height: 3, 
+              image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/396px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg' },
+            { name: '별이 빛나는 밤', type: 'painting', width: 2.5, height: 2, 
+              image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/600px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg' },
+            { name: '진주 귀걸이 소녀', type: 'painting', width: 1.8, height: 2.4, 
+              image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/1665_Girl_with_a_Pearl_Earring.jpg/450px-1665_Girl_with_a_Pearl_Earring.jpg' },
+            { name: '절규', type: 'painting', width: 2, height: 2.8, 
+              image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg/440px-Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg' },
+            { name: '키스', type: 'painting', width: 2.2, height: 2.2, 
+              image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Gustav_Klimt_016.jpg/480px-Gustav_Klimt_016.jpg' },
+            { name: '게르니카', type: 'painting', width: 3.5, height: 2, 
+              image: 'https://upload.wikimedia.org/wikipedia/en/thumb/7/74/PicassoGuernica.jpg/600px-PicassoGuernica.jpg' },
+            { name: '미켈란젤로 다비드', type: 'sculpture', width: 1.5, height: 4, 
+              image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/%27David%27_by_Michelangelo_Fir_JBU002.jpg/360px-%27David%27_by_Michelangelo_Fir_JBU002.jpg' },
+            { name: '비너스상', type: 'sculpture', width: 1.2, height: 3.5, 
+              image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Venus_de_Milo_Louvre_Ma399_n4.jpg/360px-Venus_de_Milo_Louvre_Ma399_n4.jpg' },
+            { name: '풍경 사진 A', type: 'photo', width: 2, height: 1.5, 
+              image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600' },
+            { name: '인물 사진 B', type: 'photo', width: 1.5, height: 2, 
+              image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400' },
         ];
         
         // Initialize
@@ -882,12 +892,74 @@
             
             const hw = roomWidth / 2, hd = roomDepth / 2;
             
+            // Marble Floor Material with Procedural Texture
             const floorMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0x1a1a2e, 
-                roughness: 0.7,
-                metalness: 0.1,
-                envMapIntensity: 0.5
+                color: 0xf0f0f0,  // Light gray marble base
+                roughness: 0.2,   // Smooth marble surface
+                metalness: 0.3,   // Slight metallic reflection
+                envMapIntensity: 1.0
             });
+            
+            // Create canvas texture for marble pattern
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+            
+            // Base marble color
+            ctx.fillStyle = '#e8e8e8';
+            ctx.fillRect(0, 0, 512, 512);
+            
+            // Add marble veins
+            ctx.strokeStyle = 'rgba(150, 150, 150, 0.3)';
+            for (let i = 0; i < 20; i++) {
+                ctx.beginPath();
+                ctx.lineWidth = Math.random() * 3 + 1;
+                const startX = Math.random() * 512;
+                const startY = Math.random() * 512;
+                ctx.moveTo(startX, startY);
+                
+                for (let j = 0; j < 5; j++) {
+                    const cpX1 = startX + Math.random() * 200 - 100;
+                    const cpY1 = startY + Math.random() * 200 - 100;
+                    const cpX2 = startX + Math.random() * 200 - 100;
+                    const cpY2 = startY + Math.random() * 200 - 100;
+                    const endX = startX + Math.random() * 300 - 150;
+                    const endY = startY + Math.random() * 300 - 150;
+                    ctx.bezierCurveTo(cpX1, cpY1, cpX2, cpY2, endX, endY);
+                }
+                ctx.stroke();
+            }
+            
+            // Dark veins
+            ctx.strokeStyle = 'rgba(100, 100, 100, 0.2)';
+            for (let i = 0; i < 10; i++) {
+                ctx.beginPath();
+                ctx.lineWidth = Math.random() * 2 + 0.5;
+                const startX = Math.random() * 512;
+                const startY = Math.random() * 512;
+                ctx.moveTo(startX, startY);
+                
+                for (let j = 0; j < 3; j++) {
+                    const cpX1 = startX + Math.random() * 150 - 75;
+                    const cpY1 = startY + Math.random() * 150 - 75;
+                    const cpX2 = startX + Math.random() * 150 - 75;
+                    const cpY2 = startY + Math.random() * 150 - 75;
+                    const endX = startX + Math.random() * 200 - 100;
+                    const endY = startY + Math.random() * 200 - 100;
+                    ctx.bezierCurveTo(cpX1, cpY1, cpX2, cpY2, endX, endY);
+                }
+                ctx.stroke();
+            }
+            
+            const marbleTexture = new THREE.CanvasTexture(canvas);
+            marbleTexture.wrapS = THREE.RepeatWrapping;
+            marbleTexture.wrapT = THREE.RepeatWrapping;
+            marbleTexture.repeat.set(4, 4);
+            
+            floorMaterial.map = marbleTexture;
+            floorMaterial.needsUpdate = true;
+            
             const floor = new THREE.Mesh(
                 new THREE.PlaneGeometry(roomWidth, roomDepth),
                 floorMaterial
@@ -968,6 +1040,7 @@
                 name: template.name, 
                 width: template.width, 
                 height: template.height, 
+                image: template.image,  // Include image URL
                 position: null, 
                 mesh: null 
             });
@@ -986,6 +1059,7 @@
                         name: template.name, 
                         width: template.width, 
                         height: template.height, 
+                        image: template.image,  // Include image URL
                         position: null, 
                         mesh: null 
                     });
@@ -1045,16 +1119,44 @@
                 art.position = pos;
                 art.wall = wall;
                 
+                // Create material with image texture if available
+                const material = new THREE.MeshStandardMaterial({
+                    color: 0xffffff,
+                    metalness: 0.1,
+                    roughness: 0.6,
+                    emissive: 0x000000,
+                    emissiveIntensity: 0,
+                    envMapIntensity: 0.5
+                });
+                
+                // Load image texture if artwork has image URL
+                if (art.image) {
+                    const textureLoader = new THREE.TextureLoader();
+                    textureLoader.load(
+                        art.image,
+                        (texture) => {
+                            material.map = texture;
+                            material.needsUpdate = true;
+                        },
+                        undefined,
+                        (error) => {
+                            console.warn('Failed to load texture:', art.name);
+                            // Fallback to colored material
+                            material.color.setHex(0x8a2be2);
+                            material.emissive.setHex(0x8a2be2);
+                            material.emissiveIntensity = 0.3;
+                        }
+                    );
+                } else {
+                    // Fallback colored material for artworks without images
+                    material.color.setHex(0x8a2be2);
+                    material.emissive.setHex(0x8a2be2);
+                    material.emissiveIntensity = 0.3;
+                }
+                
                 const mesh = new THREE.Mesh(
                     new THREE.BoxGeometry(art.width, art.height, 0.1),
-                    new THREE.MeshStandardMaterial({
-                        color: 0x8a2be2,
-                        metalness: 0.6,
-                        roughness: 0.2,
-                        emissive: 0x8a2be2,
-                        emissiveIntensity: 0.3,
-                        envMapIntensity: 1.0
-                    })
+                    material
                 );
                 mesh.position.copy(pos);
                 mesh.rotation.copy(rot);
