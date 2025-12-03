@@ -1,0 +1,376 @@
+/**
+ * ===================================================================
+ * MuseFlow Canvas - Minimal Onboarding Styles
+ * Unified with Dashboard Design System
+ * ===================================================================
+ */
+
+/* ============================================
+   Compact Tooltip (첫 방문 시 표시)
+   ============================================ */
+
+.canvas-onboarding-tooltip {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 9999;
+    
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.canvas-onboarding-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.onboarding-content {
+    background: rgba(26, 26, 31, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(139, 92, 246, 0.1),
+        0 0 40px rgba(139, 92, 246, 0.15);
+    
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 1rem;
+    align-items: start;
+    
+    max-width: 450px;
+    position: relative;
+}
+
+.onboarding-icon {
+    grid-row: 1 / 3;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8b5cf6;
+}
+
+.onboarding-text {
+    grid-column: 2;
+    grid-row: 1 / 2;
+}
+
+.onboarding-text h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.3;
+}
+
+.onboarding-text p {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.onboarding-actions {
+    grid-column: 2;
+    grid-row: 2 / 3;
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.close-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+/* Button Styles (대시보드 통일) */
+.onboarding-actions .btn-primary,
+.onboarding-actions .btn-secondary {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: none;
+}
+
+.onboarding-actions .btn-primary {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.onboarding-actions .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+.onboarding-actions .btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.onboarding-actions .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+/* ============================================
+   Tutorial Modal (3-Step Guide)
+   ============================================ */
+
+.canvas-tutorial-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.canvas-tutorial-modal.visible {
+    opacity: 1;
+}
+
+.tutorial-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+}
+
+.tutorial-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    background: rgba(26, 26, 31, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 
+        0 30px 80px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(139, 92, 246, 0.1),
+        0 0 60px rgba(139, 92, 246, 0.2);
+    
+    width: 90%;
+    max-width: 500px;
+}
+
+.tutorial-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tutorial-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8b5cf6;
+    flex-shrink: 0;
+}
+
+.tutorial-progress {
+    flex: 1;
+}
+
+.progress-text {
+    display: block;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+}
+
+.progress-bar {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.progress-dot {
+    height: 4px;
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    transition: all 0.3s;
+}
+
+.progress-dot.active {
+    background: linear-gradient(90deg, #8b5cf6, #ec4899);
+}
+
+.tutorial-body {
+    margin-bottom: 2rem;
+}
+
+.tutorial-body h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 1rem 0;
+    line-height: 1.3;
+}
+
+.tutorial-body p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.tutorial-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tutorial-footer .btn-primary,
+.tutorial-footer .btn-secondary {
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: none;
+}
+
+.tutorial-footer .btn-primary {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+}
+
+.tutorial-footer .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(139, 92, 246, 0.4);
+}
+
+.tutorial-footer .btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tutorial-footer .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+/* ============================================
+   Highlighted Element (가이드 중 강조)
+   ============================================ */
+
+.onboarding-highlight {
+    position: relative;
+    z-index: 9998;
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.5), 0 0 40px rgba(139, 92, 246, 0.3) !important;
+    border-radius: 12px !important;
+    animation: pulse-highlight 2s infinite;
+}
+
+@keyframes pulse-highlight {
+    0%, 100% {
+        box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.5), 0 0 40px rgba(139, 92, 246, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.5);
+    }
+}
+
+/* ============================================
+   Mobile Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+    .canvas-onboarding-tooltip {
+        bottom: 1rem;
+        right: 1rem;
+        left: 1rem;
+    }
+    
+    .onboarding-content {
+        max-width: 100%;
+        padding: 1.25rem;
+    }
+    
+    .onboarding-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .onboarding-text h3 {
+        font-size: 0.9375rem;
+    }
+    
+    .onboarding-text p {
+        font-size: 0.8125rem;
+    }
+    
+    .tutorial-card {
+        width: 95%;
+        padding: 1.5rem;
+    }
+    
+    .tutorial-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .tutorial-icon {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .tutorial-body h2 {
+        font-size: 1.25rem;
+    }
+    
+    .tutorial-body p {
+        font-size: 0.9375rem;
+    }
+}
