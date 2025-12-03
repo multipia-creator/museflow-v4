@@ -262,7 +262,7 @@ export class AIOrchestrator {
         return new CanvasAgent(this.db, this.geminiApiKey);
       case 'document':
         const { DocumentAgent } = await import('../agents/document.agent');
-        return new DocumentAgent(this.db);
+        return new DocumentAgent(this.db, this.geminiApiKey);
       case 'widget':
         const { WidgetAgent } = await import('../agents/widget.agent');
         return new WidgetAgent(this.db);
