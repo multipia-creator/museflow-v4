@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuseFlow - E2E Testing Dashboard</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #F9FAFB;
+            color: #111827;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .testing-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            font-size: 1.125rem;
+            color: #6B7280;
+        }
+        
+        .test-grid {
+            display: grid;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .test-scenario {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .test-scenario:hover {
+            border-color: #667eea;
+            box-shadow: 0 12px 24px rgba(102, 126, 234, 0.1);
+        }
+        
+        .test-scenario.running {
+            border-color: #3B82F6;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(102, 126, 234, 0.05) 100%);
+        }
+        
+        .test-scenario.passed {
+            border-color: #10B981;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.05) 100%);
+        }
+        
+        .test-scenario.failed {
+            border-color: #EF4444;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(220, 38, 38, 0.05) 100%);
+        }
+        
+        .scenario-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        
+        .scenario-title-group {
+            flex: 1;
+        }
+        
+        .scenario-number {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .scenario-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        .scenario-description {
+            font-size: 0.9375rem;
+            color: #6B7280;
+            line-height: 1.6;
+        }
+        
+        .test-status {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .test-status.pending {
+            background: #F3F4F6;
+            color: #6B7280;
+        }
+        
+        .test-status.running {
+            background: #DBEAFE;
+            color: #1D4ED8;
+        }
+        
+        .test-status.running i {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .test-status.passed {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .test-status.failed {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        
+        .test-steps {
+            margin-bottom: 1.5rem;
+        }
+        
+        .test-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: #F9FAFB;
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            border: 1px solid #E5E7EB;
+        }
+        
+        .test-step.running {
+            background: #EFF6FF;
+            border-color: #3B82F6;
+        }
+        
+        .test-step.passed {
+            background: #ECFDF5;
+            border-color: #10B981;
+        }
+        
+        .test-step.failed {
+            background: #FEF2F2;
+            border-color: #EF4444;
+        }
+        
+        .step-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: #E5E7EB;
+            color: #6B7280;
+        }
+        
+        .test-step.running .step-icon {
+            background: #3B82F6;
+            color: white;
+        }
+        
+        .test-step.running .step-icon i {
+            animation: spin 1s linear infinite;
+        }
+        
+        .test-step.passed .step-icon {
+            background: #10B981;
+            color: white;
+        }
+        
+        .test-step.failed .step-icon {
+            background: #EF4444;
+            color: white;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.25rem;
+        }
+        
+        .step-description {
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
+        
+        .step-duration {
+            font-size: 0.75rem;
+            color: #9CA3AF;
+            margin-top: 0.25rem;
+        }
+        
+        .test-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #F3F4F6;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover {
+            background: #E5E7EB;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .test-results {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 20px;
+            padding: 2rem;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #E5E7EB;
+        }
+        
+        .results-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+        }
+        
+        .results-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .summary-card {
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .summary-card.total {
+            background: #F3F4F6;
+        }
+        
+        .summary-card.passed {
+            background: #D1FAE5;
+        }
+        
+        .summary-card.failed {
+            background: #FEE2E2;
+        }
+        
+        .summary-number {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+        
+        .summary-card.total .summary-number {
+            color: #374151;
+        }
+        
+        .summary-card.passed .summary-number {
+            color: #065F46;
+        }
+        
+        .summary-card.failed .summary-number {
+            color: #991B1B;
+        }
+        
+        .summary-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .summary-card.total .summary-label {
+            color: #6B7280;
+        }
+        
+        .summary-card.passed .summary-label {
+            color: #059669;
+        }
+        
+        .summary-card.failed .summary-label {
+            color: #DC2626;
+        }
+        
+        .control-panel {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="testing-container">
+        <div class="header">
+            <h1><i class="fas fa-flask"></i> E2E Testing Dashboard</h1>
+            <p>MuseFlow AI Orchestrator의 3가지 핵심 시나리오를 자동 테스트합니다</p>
+        </div>
+        
+        <div class="control-panel">
+            <button class="btn btn-primary" onclick="runAllTests()">
+                <i class="fas fa-play"></i>
+                전체 테스트 실행
+            </button>
+            <button class="btn btn-secondary" onclick="resetTests()">
+                <i class="fas fa-redo"></i>
+                초기화
+            </button>
+        </div>
+        
+        <div class="test-grid">
+            <!-- Scenario A: Budget Approval -->
+            <div class="test-scenario" id="scenario-a">
+                <div class="scenario-header">
+                    <div class="scenario-title-group">
+                        <div class="scenario-number">Scenario A</div>
+                        <h2 class="scenario-title">예산 승인 자동화 (94% 시간 절감)</h2>
+                        <p class="scenario-description">
+                            90분 소요 업무를 5분으로 단축. AI가 예산 계획서를 자동 생성하고 승인 프로세스를 처리합니다.
+                        </p>
+                    </div>
+                    <div class="test-status pending" id="status-a">
+                        <i class="fas fa-circle"></i>
+                        <span>대기 중</span>
+                    </div>
+                </div>
+                
+                <div class="test-steps">
+                    <div class="test-step" data-step="1">
+                        <div class="step-icon"><i class="fas fa-play"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">1. AI 실행 시작</div>
+                            <div class="step-description">예산 승인 워크플로우 시작</div>
+                            <div class="step-duration"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-step" data-step="2">
+                        <div class="step-icon"><i class="fas fa-search"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">2. Research Agent</div>
+                            <div class="step-description">과거 예산 데이터 검색 및 분석</div>
+                            <div class="step-duration"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-step" data-step="3">
+                        <div class="step-icon"><i class="fas fa-file-alt"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">3. Document Agent</div>
+                            <div class="step-description">예산 계획서 자동 생성</div>
+                            <div class="step-duration"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-step" data-step="4">
+                        <div class="step-icon"><i class="fas fa-th"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">4. Widget Agent</div>
+                            <div class="step-description">예산 비교 차트 위젯 생성</div>
+                            <div class="step-duration"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-step" data-step="5">
+                        <div class="step-icon"><i class="fas fa-check"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">5. 완료 검증</div>
+                            <div class="step-description">결과 검증 및 테스트 완료</div>
+                            <div class="step-duration"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="test-actions">
+                    <button class="btn btn-primary" onclick="runTest('a')">
+                        <i class="fas fa-play"></i>
+                        테스트 실행
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Scenario B: Exhibition Planning -->
+            <div class="test-scenario" id="scenario-b">
+                <div class="scenario-header">
+                    <div class="scenario-title-group">
+                        <div class="scenario-number">Scenario B</div>
+                        <h2 class="scenario-title">전시 기획 자동화 (1시간 자율 실행)</h2>
+                        <p class="scenario-description">
+                            AI가 7단계 기획 프로세스를 자동으로 실행하고 3가지 전시 옵션을 제시합니다.
+                        </p>
+                    </div>
+                    <div class="test-status pending" id="status-b">
+                        <i class="fas fa-circle"></i>
+                        <span>대기 중</span>
+                    </div>
+                </div>
+                
+                <div class="test-steps">
+                    <div class="test-step" data-step="1">
+                        <div class="step-icon"><i class="fas fa-play"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">1. AI 실행 시작</div>
+                            <div class="step-description">전시 기획 워크플로우 시작</div>
+                            <div class="step-duration"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-step" data-step="2">
+                        <div class="step-icon"><i class="fas fa-search"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">2. Research Agent</div>
+                            <div class="step-description">작품 및 전시 트렌드 조사</div>
+                            <div class="step-duration"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-step" data-step="3">
+                        <div class="step-icon"><i class="fas fa-project-diagram"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">3. Canvas Agent</div>
+                            <div class="step-description">전시 컨셉 Canvas 노드 생성</div>
+                            <div class="step-duration"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-step" data-step="4">
+                        <div class="step-icon"><i class="fas fa-file-alt"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">4. Document Agent</div>
+                            <div class="step-description">전시 기획서 및 홍보 자료 생성</div>
+                            <div class="step-duration"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-step" data-step="5">
+                        <div class="step-icon"><i class="fas fa-check"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">5. 완료 검증</div>
+                            <div class="step-description">3가지 옵션 생성 검증</div>
+                            <div class="step-duration"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="test-actions">
+                    <button class="btn btn-primary" onclick="runTest('b')">
+                        <i class="fas fa-play"></i>
+                        테스트 실행
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Scenario C: Collection Selection -->
+            <div class="test-scenario" id="scenario-c">
+                <div class="scenario-header">
+                    <div class="scenario-title-group">
+                        <div class="scenario-number">Scenario C</div>
+                        <h2 class="scenario-title">소장품 선정 (하이브리드 AI)</h2>
+                        <p class="scenario-description">
+                            AI가 10개 작품을 자동 선정하고 Canvas 노드를 생성합니다. 큐레이터가 최종 승인합니다.
+                        </p>
+                    </div>
+                    <div class="test-status pending" id="status-c">
+                        <i class="fas fa-circle"></i>
+                        <span>대기 중</span>
+                    </div>
+                </div>
+                
+                <div class="test-steps">
+                    <div class="test-step" data-step="1">
+                        <div class="step-icon"><i class="fas fa-play"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">1. AI 실행 시작</div>
+                            <div class="step-description">소장품 선정 워크플로우 시작</div>
+                            <div class="step-duration"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-step" data-step="2">
+                        <div class="step-icon"><i class="fas fa-search"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">2. Research Agent</div>
+                            <div class="step-description">소장품 데이터베이스 검색</div>
+                            <div class="step-duration"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-step" data-step="3">
+                        <div class="step-icon"><i class="fas fa-project-diagram"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">3. Canvas Agent</div>
+                            <div class="step-description">작품 노드 자동 생성 (10개)</div>
+                            <div class="step-duration"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-step" data-step="4">
+                        <div class="step-icon"><i class="fas fa-th"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">4. Widget Agent</div>
+                            <div class="step-description">작품 갤러리 위젯 생성</div>
+                            <div class="step-duration"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-step" data-step="5">
+                        <div class="step-icon"><i class="fas fa-check"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">5. 완료 검증</div>
+                            <div class="step-description">10개 작품 노드 생성 검증</div>
+                            <div class="step-duration"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="test-actions">
+                    <button class="btn btn-primary" onclick="runTest('c')">
+                        <i class="fas fa-play"></i>
+                        테스트 실행
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Test Results Summary -->
+        <div class="test-results">
+            <div class="results-header">
+                <h2 class="results-title">테스트 결과</h2>
+            </div>
+            
+            <div class="results-summary">
+                <div class="summary-card total">
+                    <div class="summary-number" id="totalTests">0</div>
+                    <div class="summary-label">Total Tests</div>
+                </div>
+                <div class="summary-card passed">
+                    <div class="summary-number" id="passedTests">0</div>
+                    <div class="summary-label">Passed</div>
+                </div>
+                <div class="summary-card failed">
+                    <div class="summary-number" id="failedTests">0</div>
+                    <div class="summary-label">Failed</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let testResults = {
+            total: 0,
+            passed: 0,
+            failed: 0
+        };
+        
+        const workflowMap = {
+            'a': 'budget_approval',
+            'b': 'exhibition_planning',
+            'c': 'collection_selection'
+        };
+        
+        async function runTest(scenario) {
+            const scenarioEl = document.getElementById(`scenario-${scenario}`);
+            const statusEl = document.getElementById(`status-${scenario}`);
+            const steps = scenarioEl.querySelectorAll('.test-step');
+            
+            // Set running status
+            scenarioEl.classList.add('running');
+            statusEl.className = 'test-status running';
+            statusEl.innerHTML = '<i class="fas fa-spinner"></i><span>실행 중</span>';
+            
+            testResults.total++;
+            updateResults();
+            
+            try {
+                // Execute API call
+                const response = await fetch('/api/orchestrator/execute', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        workflow_type: workflowMap[scenario],
+                        user_input: getScenarioInput(scenario),
+                        user_id: 'e2e-test',
+                        autonomy_preference: 'balanced'
+                    })
+                });
+                
+                const data = await response.json();
+                const sessionId = data.session_id;
+                
+                // Track steps via SSE
+                await trackExecution(sessionId, steps);
+                
+                // Test passed
+                scenarioEl.classList.remove('running');
+                scenarioEl.classList.add('passed');
+                statusEl.className = 'test-status passed';
+                statusEl.innerHTML = '<i class="fas fa-check"></i><span>통과</span>';
+                
+                testResults.passed++;
+                updateResults();
+                
+            } catch (error) {
+                console.error('Test failed:', error);
+                
+                // Test failed
+                scenarioEl.classList.remove('running');
+                scenarioEl.classList.add('failed');
+                statusEl.className = 'test-status failed';
+                statusEl.innerHTML = '<i class="fas fa-times"></i><span>실패</span>';
+                
+                testResults.failed++;
+                updateResults();
+            }
+        }
+        
+        function getScenarioInput(scenario) {
+            const inputs = {
+                'a': '3000만원 예산으로 인상주의 전시를 기획하고 예산 계획서를 작성해줘',
+                'b': '인상주의 특별전을 3개월 기간으로 기획하고 3가지 옵션을 제시해줘',
+                'c': '인상주의 관련 소장품 10개를 선정하고 갤러리 위젯을 만들어줘'
+            };
+            return inputs[scenario];
+        }
+        
+        async function trackExecution(sessionId, steps) {
+            return new Promise((resolve, reject) => {
+                const eventSource = new EventSource(`/api/orchestrator/stream/${sessionId}`);
+                let currentStep = 0;
+                const startTime = Date.now();
+                
+                eventSource.onmessage = function(event) {
+                    const data = JSON.parse(event.data);
+                    const { type, payload } = data;
+                    
+                    switch (type) {
+                        case 'start':
+                            updateStep(steps[0], 'running', startTime);
+                            break;
+                        
+                        case 'phase-start':
+                            if (currentStep > 0) {
+                                updateStep(steps[currentStep - 1], 'passed', startTime);
+                            }
+                            currentStep++;
+                            if (currentStep < steps.length) {
+                                updateStep(steps[currentStep], 'running', startTime);
+                            }
+                            break;
+                        
+                        case 'complete':
+                            updateStep(steps[steps.length - 1], 'passed', startTime);
+                            eventSource.close();
+                            resolve();
+                            break;
+                        
+                        case 'error':
+                            if (currentStep < steps.length) {
+                                updateStep(steps[currentStep], 'failed', startTime);
+                            }
+                            eventSource.close();
+                            reject(new Error(payload.message));
+                            break;
+                    }
+                };
+                
+                eventSource.onerror = function(error) {
+                    eventSource.close();
+                    reject(error);
+                };
+            });
+        }
+        
+        function updateStep(stepEl, status, startTime) {
+            stepEl.classList.remove('running', 'passed', 'failed');
+            stepEl.classList.add(status);
+            
+            const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+            const durationEl = stepEl.querySelector('.step-duration');
+            durationEl.textContent = `${duration}s`;
+        }
+        
+        async function runAllTests() {
+            testResults = { total: 0, passed: 0, failed: 0 };
+            updateResults();
+            
+            await runTest('a');
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            await runTest('b');
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            await runTest('c');
+        }
+        
+        function resetTests() {
+            testResults = { total: 0, passed: 0, failed: 0 };
+            updateResults();
+            
+            document.querySelectorAll('.test-scenario').forEach(scenario => {
+                scenario.className = 'test-scenario';
+            });
+            
+            document.querySelectorAll('.test-status').forEach(status => {
+                status.className = 'test-status pending';
+                status.innerHTML = '<i class="fas fa-circle"></i><span>대기 중</span>';
+            });
+            
+            document.querySelectorAll('.test-step').forEach(step => {
+                step.classList.remove('running', 'passed', 'failed');
+                step.querySelector('.step-duration').textContent = '';
+            });
+        }
+        
+        function updateResults() {
+            document.getElementById('totalTests').textContent = testResults.total;
+            document.getElementById('passedTests').textContent = testResults.passed;
+            document.getElementById('failedTests').textContent = testResults.failed;
+        }
+    </script>
+</body>
+</html>

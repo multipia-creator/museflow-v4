@@ -47,6 +47,10 @@ const exclude = [
   '/test-canvas.html',
   '/workflow.html',
   '/workflow-tools.html',
+  '/ai-orchestrator-dashboard.html',
+  '/ai-orchestrator-sync.html',
+  '/canvas-v4-hybrid.html',
+  '/e2e-testing.html',
   
   // Pretty URL paths (all)
   '/account',
@@ -65,7 +69,11 @@ const exclude = [
   '/projects',
   '/signup',
   '/workflow',
-  '/workflow-tools'
+  '/workflow-tools',
+  '/ai-orchestrator-dashboard',
+  '/ai-orchestrator-sync',
+  '/canvas-v4-hybrid',
+  '/e2e-testing'
 ];
 
 const routes = {
