@@ -259,7 +259,7 @@ export class AIOrchestrator {
         return new ResearchAgent(this.db, this.geminiApiKey);
       case 'canvas':
         const { CanvasAgent } = await import('../agents/canvas.agent');
-        return new CanvasAgent(this.db);
+        return new CanvasAgent(this.db, this.geminiApiKey);
       case 'document':
         const { DocumentAgent } = await import('../agents/document.agent');
         return new DocumentAgent(this.db);
