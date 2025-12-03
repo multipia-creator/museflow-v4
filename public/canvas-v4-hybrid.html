@@ -754,8 +754,24 @@
             margin-bottom: 1rem;
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
             animation: nodeAppear 0.5s ease;
-            position: relative;
+            position: absolute; /* Changed from relative to absolute for drag & drop */
             overflow: hidden;
+            cursor: move;
+            user-select: none;
+            min-width: 280px;
+            max-width: 400px;
+            transition: box-shadow 0.2s ease;
+        }
+        
+        .canvas-node:hover {
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
+        }
+        
+        .canvas-node.dragging {
+            opacity: 0.8;
+            cursor: grabbing;
+            z-index: 1000;
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.5);
         }
         
         /* Node type colors */
@@ -1506,6 +1522,39 @@
                 
                 <!-- Results Panel - AI 생성 결과 -->
                 <div class="preview-panel" id="resultsPanel">
+                    <!-- Canvas Controls -->
+                    <div id="canvasControls" style="padding: 1rem; background: white; border-bottom: 1px solid var(--museflow-border-light); display: none;">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <i data-lucide="move" style="width: 18px; height: 18px; color: var(--museflow-primary);"></i>
+                                <span style="font-size: 0.875rem; font-weight: 600; color: var(--museflow-text-primary);">노드를 드래그하여 재배치</span>
+                            </div>
+                            <button 
+                                id="resetLayoutBtn" 
+                                onclick="resetCanvasLayout()"
+                                style="
+                                    padding: 0.5rem 1rem;
+                                    background: white;
+                                    color: var(--museflow-text-secondary);
+                                    border: 1px solid var(--museflow-border-light);
+                                    border-radius: var(--radius-md);
+                                    font-size: 0.875rem;
+                                    font-weight: 500;
+                                    cursor: pointer;
+                                    transition: all 0.2s ease;
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.5rem;
+                                "
+                                onmouseover="this.style.background='var(--museflow-bg-secondary)'; this.style.borderColor='var(--museflow-primary)'; this.style.color='var(--museflow-primary)';"
+                                onmouseout="this.style.background='white'; this.style.borderColor='var(--museflow-border-light)'; this.style.color='var(--museflow-text-secondary)';"
+                            >
+                                <i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i>
+                                레이아웃 초기화
+                            </button>
+                        </div>
+                    </div>
+                    
                     <div id="canvasResults" class="results-section">
                         <div class="empty-state">
                             <i class="fas fa-magic"></i>
@@ -1862,6 +1911,11 @@
             const resultsSection = document.getElementById('canvasResults');
             resultsSection.innerHTML = '';
             
+            // Make canvas container relative for absolute positioning
+            resultsSection.style.position = 'relative';
+            resultsSection.style.minHeight = '600px';
+            resultsSection.style.overflow = 'visible';
+            
             // Node type configuration
             const nodeConfig = {
                 'budget': { icon: 'coins', label: '예산' },
@@ -1882,11 +1936,24 @@
                     <div style="height: 20px; width: 2px; background: linear-gradient(180deg, transparent 0%, #8B5CF6 50%, transparent 100%); margin: 0 auto -10px; opacity: 0.5;"></div>
                 ` : '';
                 
+                // Load saved position or calculate default position
+                const savedLayout = loadCanvasLayout();
+                const savedNode = savedLayout.nodes?.find(n => n.id === node.id || n.index === index);
+                
+                const defaultX = 50;
+                const defaultY = 50 + (index * 180); // Stack vertically with spacing
+                const posX = savedNode?.x ?? defaultX;
+                const posY = savedNode?.y ?? defaultY;
+                
                 const nodeHtml = `
-                    ${connectionLine}
-                    <div class="canvas-node" data-type="${nodeType}">
+                    <div class="canvas-node" 
+                         data-type="${nodeType}" 
+                         data-node-id="${node.id || index}"
+                         data-index="${index}"
+                         style="left: ${posX}px; top: ${posY}px;">
                         <div class="canvas-node-header">
                             <div class="canvas-node-title">
+                                <i data-lucide="grip-vertical" stroke-width="2" style="width: 16px; height: 16px; opacity: 0.5; margin-right: 0.5rem; display: inline-block;"></i>
                                 ${node.title}
                             </div>
                             <div class="canvas-node-icon">
@@ -1909,6 +1976,18 @@
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
             }
+            
+            // Show canvas controls
+            const canvasControls = document.getElementById('canvasControls');
+            if (canvasControls && nodes.length > 0) {
+                canvasControls.style.display = 'block';
+            }
+            
+            // Initialize drag & drop for all nodes
+            initializeCanvasDragDrop();
+            
+            // Draw connection lines between nodes
+            drawConnectionLines();
             
             // Dashboard에 노드 생성 알림
             notifyDashboardUpdate({
@@ -2804,6 +2883,260 @@
                 loadWidgets(),
                 loadCategories()
             ]);
+        }
+        
+        // ==========================================
+        // Canvas Node Drag & Drop System
+        // ==========================================
+        
+        let draggedNode = null;
+        let dragOffset = { x: 0, y: 0 };
+        let canvasLayout = { nodes: [] };
+        
+        /**
+         * Initialize drag & drop for all canvas nodes
+         */
+        function initializeCanvasDragDrop() {
+            const nodes = document.querySelectorAll('.canvas-node');
+            
+            nodes.forEach(node => {
+                // Mouse down - start dragging
+                node.addEventListener('mousedown', (e) => {
+                    // Don't drag if clicking on buttons or interactive elements
+                    if (e.target.closest('button')) return;
+                    
+                    draggedNode = node;
+                    draggedNode.classList.add('dragging');
+                    
+                    const rect = node.getBoundingClientRect();
+                    const parentRect = node.parentElement.getBoundingClientRect();
+                    
+                    dragOffset.x = e.clientX - rect.left;
+                    dragOffset.y = e.clientY - rect.top;
+                    
+                    // Prevent text selection
+                    e.preventDefault();
+                });
+                
+                // Touch support for mobile
+                node.addEventListener('touchstart', (e) => {
+                    if (e.target.closest('button')) return;
+                    
+                    draggedNode = node;
+                    draggedNode.classList.add('dragging');
+                    
+                    const rect = node.getBoundingClientRect();
+                    const touch = e.touches[0];
+                    
+                    dragOffset.x = touch.clientX - rect.left;
+                    dragOffset.y = touch.clientY - rect.top;
+                    
+                    e.preventDefault();
+                });
+            });
+        }
+        
+        /**
+         * Handle mouse/touch move globally
+         */
+        document.addEventListener('mousemove', (e) => {
+            if (!draggedNode) return;
+            
+            const parentRect = draggedNode.parentElement.getBoundingClientRect();
+            
+            let x = e.clientX - parentRect.left - dragOffset.x;
+            let y = e.clientY - parentRect.top - dragOffset.y;
+            
+            // Boundary constraints
+            x = Math.max(0, Math.min(x, parentRect.width - draggedNode.offsetWidth));
+            y = Math.max(0, Math.min(y, parentRect.height - draggedNode.offsetHeight));
+            
+            draggedNode.style.left = x + 'px';
+            draggedNode.style.top = y + 'px';
+            
+            // Redraw connection lines
+            drawConnectionLines();
+        });
+        
+        document.addEventListener('touchmove', (e) => {
+            if (!draggedNode) return;
+            
+            const touch = e.touches[0];
+            const parentRect = draggedNode.parentElement.getBoundingClientRect();
+            
+            let x = touch.clientX - parentRect.left - dragOffset.x;
+            let y = touch.clientY - parentRect.top - dragOffset.y;
+            
+            x = Math.max(0, Math.min(x, parentRect.width - draggedNode.offsetWidth));
+            y = Math.max(0, Math.min(y, parentRect.height - draggedNode.offsetHeight));
+            
+            draggedNode.style.left = x + 'px';
+            draggedNode.style.top = y + 'px';
+            
+            drawConnectionLines();
+            e.preventDefault();
+        });
+        
+        /**
+         * Handle mouse/touch up - end dragging
+         */
+        document.addEventListener('mouseup', () => {
+            if (draggedNode) {
+                draggedNode.classList.remove('dragging');
+                
+                // Save layout to localStorage
+                saveCanvasLayout();
+                
+                draggedNode = null;
+            }
+        });
+        
+        document.addEventListener('touchend', () => {
+            if (draggedNode) {
+                draggedNode.classList.remove('dragging');
+                saveCanvasLayout();
+                draggedNode = null;
+            }
+        });
+        
+        /**
+         * Draw SVG connection lines between nodes
+         */
+        function drawConnectionLines() {
+            // Remove existing SVG
+            const existingSvg = document.getElementById('canvasConnectionsSvg');
+            if (existingSvg) {
+                existingSvg.remove();
+            }
+            
+            const resultsSection = document.getElementById('canvasResults');
+            if (!resultsSection) return;
+            
+            const nodes = Array.from(resultsSection.querySelectorAll('.canvas-node'));
+            if (nodes.length < 2) return;
+            
+            // Create SVG overlay
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.id = 'canvasConnectionsSvg';
+            svg.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 0;
+            `;
+            
+            // Draw lines between sequential nodes
+            for (let i = 0; i < nodes.length - 1; i++) {
+                const node1 = nodes[i];
+                const node2 = nodes[i + 1];
+                
+                const rect1 = node1.getBoundingClientRect();
+                const rect2 = node2.getBoundingClientRect();
+                const parentRect = resultsSection.getBoundingClientRect();
+                
+                // Calculate centers
+                const x1 = rect1.left - parentRect.left + rect1.width / 2;
+                const y1 = rect1.top - parentRect.top + rect1.height;
+                const x2 = rect2.left - parentRect.left + rect2.width / 2;
+                const y2 = rect2.top - parentRect.top;
+                
+                // Create curved path
+                const midY = (y1 + y2) / 2;
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', `M ${x1} ${y1} Q ${x1} ${midY}, ${(x1 + x2) / 2} ${midY} T ${x2} ${y2}`);
+                path.setAttribute('stroke', '#8B5CF6');
+                path.setAttribute('stroke-width', '2');
+                path.setAttribute('fill', 'none');
+                path.setAttribute('opacity', '0.4');
+                path.setAttribute('stroke-dasharray', '5,5');
+                
+                svg.appendChild(path);
+                
+                // Add arrow marker
+                const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+                marker.id = `arrow-${i}`;
+                marker.setAttribute('markerWidth', '10');
+                marker.setAttribute('markerHeight', '10');
+                marker.setAttribute('refX', '5');
+                marker.setAttribute('refY', '3');
+                marker.setAttribute('orient', 'auto');
+                marker.setAttribute('markerUnits', 'strokeWidth');
+                
+                const arrowPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                arrowPath.setAttribute('d', 'M0,0 L0,6 L9,3 z');
+                arrowPath.setAttribute('fill', '#8B5CF6');
+                arrowPath.setAttribute('opacity', '0.4');
+                
+                marker.appendChild(arrowPath);
+                svg.appendChild(marker);
+                path.setAttribute('marker-end', `url(#arrow-${i})`);
+            }
+            
+            resultsSection.insertBefore(svg, resultsSection.firstChild);
+        }
+        
+        /**
+         * Save canvas layout to localStorage
+         */
+        function saveCanvasLayout() {
+            const nodes = document.querySelectorAll('.canvas-node');
+            const layout = {
+                nodes: Array.from(nodes).map(node => ({
+                    id: node.dataset.nodeId,
+                    index: parseInt(node.dataset.index),
+                    x: parseInt(node.style.left) || 0,
+                    y: parseInt(node.style.top) || 0,
+                    type: node.dataset.type
+                })),
+                timestamp: new Date().toISOString()
+            };
+            
+            try {
+                localStorage.setItem('museflow_canvas_layout', JSON.stringify(layout));
+                console.log('✅ Canvas layout saved:', layout);
+            } catch (error) {
+                console.error('❌ Failed to save canvas layout:', error);
+            }
+        }
+        
+        /**
+         * Load canvas layout from localStorage
+         */
+        function loadCanvasLayout() {
+            try {
+                const saved = localStorage.getItem('museflow_canvas_layout');
+                if (saved) {
+                    const layout = JSON.parse(saved);
+                    console.log('✅ Canvas layout loaded:', layout);
+                    return layout;
+                }
+            } catch (error) {
+                console.error('❌ Failed to load canvas layout:', error);
+            }
+            return { nodes: [] };
+        }
+        
+        /**
+         * Reset canvas layout to default positions
+         */
+        function resetCanvasLayout() {
+            localStorage.removeItem('museflow_canvas_layout');
+            
+            const nodes = document.querySelectorAll('.canvas-node');
+            nodes.forEach((node, index) => {
+                const defaultX = 50;
+                const defaultY = 50 + (index * 180);
+                
+                node.style.left = defaultX + 'px';
+                node.style.top = defaultY + 'px';
+            });
+            
+            drawConnectionLines();
+            
+            console.log('✅ Canvas layout reset to default');
         }
         
         // Search input handler
