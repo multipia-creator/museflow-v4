@@ -1226,3 +1226,635 @@
     z-index: 9999;
     animation: fadeIn var(--transition-fast);
 }
+
+/* ============================================
+   MOBILE OPTIMIZATION - Professional Grade
+   ============================================ */
+
+/* Mobile Breakpoints:
+   - xs: < 480px (Small phones)
+   - sm: 480px - 768px (Phones)
+   - md: 768px - 1024px (Tablets)
+   - lg: > 1024px (Desktop)
+*/
+
+/* ==========================================
+   MOBILE FIRST: Touch-Optimized Controls
+   ========================================== */
+
+/* Minimum touch target size: 44x44px (Apple HIG) */
+@media (max-width: 768px) {
+    /* Global Touch Targets */
+    button,
+    .toolbar-btn,
+    .panel-tab,
+    .context-menu-item {
+        min-height: 44px;
+        min-width: 44px;
+        touch-action: manipulation; /* Disable double-tap zoom */
+    }
+
+    /* Enhanced Tap Feedback */
+    button:active,
+    .toolbar-btn:active {
+        transform: scale(0.95);
+        transition: transform 100ms ease-out;
+    }
+
+    /* Top Toolbar - Mobile Optimized */
+    .toolbar {
+        height: 56px; /* Taller for easier touch */
+        padding: 0 12px;
+        gap: 8px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Hide scrollbar */
+    }
+
+    .toolbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .toolbar-group {
+        gap: 6px;
+    }
+
+    .toolbar-btn {
+        height: 40px;
+        padding: 0 12px;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    .toolbar-btn i {
+        font-size: 18px;
+    }
+
+    /* Show only icons on small screens */
+    .toolbar-btn .btn-text {
+        display: none;
+    }
+
+    .toolbar-btn.active::after {
+        bottom: -8px;
+    }
+
+    /* Left Panel - Mobile Drawer */
+    .left-panel {
+        position: fixed;
+        left: -100%;
+        top: 56px;
+        width: 85vw;
+        max-width: 320px;
+        height: calc(100vh - 56px);
+        background: var(--surface);
+        border-right: 1px solid var(--border-primary);
+        box-shadow: 4px 0 12px rgba(0, 0, 0, 0.15);
+        transition: left 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 9000;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .left-panel.visible {
+        left: 0;
+    }
+
+    /* Backdrop for left panel */
+    .left-panel-backdrop {
+        position: fixed;
+        top: 56px;
+        left: 0;
+        width: 100vw;
+        height: calc(100vh - 56px);
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 300ms ease;
+        z-index: 8999;
+    }
+
+    .left-panel-backdrop.visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Right Panel - Mobile Drawer */
+    .right-panel {
+        position: fixed;
+        right: -100%;
+        top: 56px;
+        width: 85vw;
+        max-width: 320px;
+        height: calc(100vh - 56px);
+        background: var(--surface);
+        border-left: 1px solid var(--border-primary);
+        box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+        transition: right 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 9000;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .right-panel.visible {
+        right: 0;
+    }
+
+    /* Backdrop for right panel */
+    .right-panel-backdrop {
+        position: fixed;
+        top: 56px;
+        left: 0;
+        width: 100vw;
+        height: calc(100vh - 56px);
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 300ms ease;
+        z-index: 8999;
+    }
+
+    .right-panel-backdrop.visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Canvas Container - Full Screen */
+    .canvas-container {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 56px;
+        bottom: 0;
+        background: var(--bg-canvas);
+    }
+
+    /* Mobile Floating Action Button (FAB) */
+    .mobile-fab-container {
+        position: fixed;
+        right: 16px;
+        bottom: 80px;
+        z-index: 8998;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .mobile-fab {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        color: white;
+        border: none;
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        cursor: pointer;
+        transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+        touch-action: manipulation;
+    }
+
+    .mobile-fab:active {
+        transform: scale(0.9);
+    }
+
+    .mobile-fab.secondary {
+        width: 48px;
+        height: 48px;
+        background: var(--surface);
+        color: var(--primary);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Workflow Execution Panel - Mobile */
+    .workflow-execution-panel {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: -100%;
+        top: auto;
+        width: 100%;
+        max-width: 100%;
+        max-height: 70vh;
+        border-radius: 16px 16px 0 0;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+        transition: bottom 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 9999;
+    }
+
+    .workflow-execution-panel.visible {
+        bottom: 0;
+    }
+
+    /* Mobile Bottom Sheet Drag Handle */
+    .workflow-execution-panel .panel-header::before {
+        content: '';
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 2px;
+    }
+
+    .workflow-execution-panel .panel-body {
+        max-height: calc(70vh - 120px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Node Cards - Larger touch targets */
+    .node-item {
+        min-height: 60px;
+        padding: 12px 16px;
+        margin-bottom: 8px;
+    }
+
+    .node-item-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .node-item-name {
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .node-item-description {
+        font-size: 13px;
+    }
+
+    /* Panel Tabs - Touch optimized */
+    .panel-tabs {
+        gap: 4px;
+        padding: 8px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .panel-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .panel-tab {
+        min-width: 80px;
+        height: 44px;
+        padding: 0 16px;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    /* Context Menu - Mobile optimized */
+    #context-menu {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: auto;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 16px 16px 0 0;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(100%);
+        transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #context-menu.show {
+        transform: translateY(0);
+    }
+
+    .context-menu-item {
+        height: 56px;
+        padding: 0 20px;
+        font-size: 16px;
+    }
+
+    .context-menu-item i {
+        font-size: 20px;
+        width: 32px;
+    }
+
+    /* Zoom Controls - Mobile position */
+    .zoom-controls {
+        position: fixed;
+        right: 16px;
+        bottom: 160px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        z-index: 8997;
+    }
+
+    .zoom-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--surface);
+        border: 1px solid var(--border-primary);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: var(--text-primary);
+        cursor: pointer;
+        touch-action: manipulation;
+        transition: all 150ms ease;
+    }
+
+    .zoom-btn:active {
+        transform: scale(0.9);
+        background: var(--bg-hover);
+    }
+
+    /* Hide desktop-only elements */
+    .desktop-only {
+        display: none !important;
+    }
+
+    /* Typography adjustments */
+    h1, .text-2xl {
+        font-size: 1.5rem; /* 24px */
+    }
+
+    h2, .text-xl {
+        font-size: 1.25rem; /* 20px */
+    }
+
+    h3, .text-lg {
+        font-size: 1.125rem; /* 18px */
+    }
+
+    /* Spacing adjustments */
+    .p-6 {
+        padding: 1rem; /* 16px instead of 24px */
+    }
+
+    .p-4 {
+        padding: 0.75rem; /* 12px instead of 16px */
+    }
+
+    .gap-6 {
+        gap: 1rem;
+    }
+
+    .gap-4 {
+        gap: 0.75rem;
+    }
+}
+
+/* ==========================================
+   SMALL PHONES (< 480px)
+   ========================================== */
+@media (max-width: 480px) {
+    /* Even more compact toolbar */
+    .toolbar {
+        height: 52px;
+        padding: 0 8px;
+        gap: 4px;
+    }
+
+    .toolbar-btn {
+        height: 36px;
+        padding: 0 8px;
+        font-size: 13px;
+    }
+
+    .toolbar-btn i {
+        font-size: 16px;
+    }
+
+    /* Smaller FAB */
+    .mobile-fab {
+        width: 52px;
+        height: 52px;
+        font-size: 22px;
+    }
+
+    .mobile-fab.secondary {
+        width: 44px;
+        height: 44px;
+    }
+
+    .mobile-fab-container {
+        right: 12px;
+        bottom: 70px;
+    }
+
+    /* Drawers take full width */
+    .left-panel,
+    .right-panel {
+        width: 90vw;
+        max-width: 100%;
+    }
+
+    /* Workflow panel - more height */
+    .workflow-execution-panel {
+        max-height: 80vh;
+    }
+
+    .workflow-execution-panel .panel-body {
+        max-height: calc(80vh - 120px);
+    }
+
+    /* Smaller text */
+    .node-item-name {
+        font-size: 14px;
+    }
+
+    .node-item-description {
+        font-size: 12px;
+    }
+
+    /* Compact stats */
+    .stat-value {
+        font-size: 1.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+    }
+}
+
+/* ==========================================
+   LANDSCAPE MODE (Mobile horizontal)
+   ========================================== */
+@media (max-width: 896px) and (orientation: landscape) {
+    .toolbar {
+        height: 48px;
+    }
+
+    .canvas-container {
+        top: 48px;
+    }
+
+    .left-panel,
+    .right-panel {
+        top: 48px;
+        height: calc(100vh - 48px);
+        width: 50vw;
+        max-width: 400px;
+    }
+
+    .left-panel-backdrop,
+    .right-panel-backdrop {
+        top: 48px;
+        height: calc(100vh - 48px);
+    }
+
+    .workflow-execution-panel {
+        max-height: 85vh;
+    }
+
+    .mobile-fab-container {
+        bottom: 60px;
+    }
+}
+
+/* ==========================================
+   TABLET (768px - 1024px)
+   ========================================== */
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Tablet gets hybrid layout */
+    .left-panel {
+        position: fixed;
+        left: 0;
+        width: 280px;
+        transition: transform 300ms ease;
+    }
+
+    .left-panel.collapsed {
+        transform: translateX(-100%);
+    }
+
+    .right-panel {
+        position: fixed;
+        right: 0;
+        width: 300px;
+        transition: transform 300ms ease;
+    }
+
+    .right-panel.collapsed {
+        transform: translateX(100%);
+    }
+
+    .canvas-container {
+        left: 280px;
+        right: 300px;
+        transition: left 300ms ease, right 300ms ease;
+    }
+
+    .canvas-container.left-collapsed {
+        left: 0;
+    }
+
+    .canvas-container.right-collapsed {
+        right: 0;
+    }
+
+    /* Keep FAB for quick actions */
+    .mobile-fab-container {
+        display: flex;
+    }
+
+    /* Workflow panel - side position */
+    .workflow-execution-panel {
+        right: 20px;
+        bottom: auto;
+        top: 80px;
+        left: auto;
+        width: 400px;
+        max-height: calc(100vh - 100px);
+        border-radius: var(--radius-lg);
+    }
+
+    .workflow-execution-panel .panel-header::before {
+        display: none;
+    }
+}
+
+/* ==========================================
+   DESKTOP (> 1024px)
+   ========================================== */
+@media (min-width: 1025px) {
+    /* Hide mobile-only elements */
+    .mobile-only,
+    .mobile-fab-container,
+    .left-panel-backdrop,
+    .right-panel-backdrop {
+        display: none !important;
+    }
+
+    /* Ensure panels are always visible */
+    .left-panel,
+    .right-panel {
+        position: fixed !important;
+        transition: transform 300ms ease;
+    }
+
+    .left-panel {
+        left: 0 !important;
+    }
+
+    .right-panel {
+        right: 0 !important;
+    }
+}
+
+/* ==========================================
+   TOUCH GESTURE SUPPORT
+   ========================================== */
+
+/* Prevent text selection during gestures */
+.canvas-container,
+.node-item,
+.dragging {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth scrolling for touch */
+.left-panel,
+.right-panel,
+.panel-body,
+.execution-results {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
+
+/* Pull-to-refresh prevention */
+body {
+    overscroll-behavior-y: contain;
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: env(safe-area-inset-top)) {
+    .toolbar {
+        padding-left: max(12px, env(safe-area-inset-left));
+        padding-right: max(12px, env(safe-area-inset-right));
+    }
+
+    .mobile-fab-container {
+        right: max(16px, env(safe-area-inset-right));
+        bottom: max(80px, calc(80px + env(safe-area-inset-bottom)));
+    }
+
+    .left-panel {
+        padding-left: env(safe-area-inset-left);
+    }
+
+    .right-panel {
+        padding-right: env(safe-area-inset-right);
+    }
+}
