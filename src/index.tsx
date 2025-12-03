@@ -11,6 +11,7 @@ import widgets from './routes/widgets'
 import workflow from './routes/workflow'
 import ai from './routes/ai'
 import dashboard from './routes/dashboard'
+import orchestrator from './routes/orchestrator'
 
 // Export Durable Objects
 export { CollaborationRoom } from './durable-objects/collaboration-room'
@@ -73,6 +74,7 @@ app.route('/api/behaviors', behaviors)
 app.route('/api/workflow', workflow)
 app.route('/api/ai', ai)
 app.route('/api/dashboard', dashboard)
+app.route('/api/orchestrator', orchestrator)
 app.route('/', widgets)
 
 export default app
