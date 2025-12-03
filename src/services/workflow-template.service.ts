@@ -281,6 +281,83 @@ export class WorkflowTemplateService {
         }
       ]
     });
+
+    // 6. 방문객 실시간 안내 워크플로우 (Chatbot Agent)
+    this.templates.set('visitor_assistance', {
+      id: 'visitor_assistance',
+      name: '방문객 실시간 안내',
+      description: 'AI 챗봇을 통한 방문객 질의응답 및 안내',
+      estimatedDurationMs: 300000, // 5분
+      requiredAgents: ['chatbot', 'canvas'],
+      phases: [
+        {
+          id: 'phase_1_chat_session',
+          name: 'Phase 1: 대화형 안내',
+          description: '작품 정보, 전시 안내, 동선 추천',
+          order: 1,
+          agent: 'chatbot',
+          status: 'pending',
+          requiresApproval: false,
+          estimatedDurationMs: 240000, // 4분
+          input: { type: 'visitor_chat' }
+        },
+        {
+          id: 'phase_2_route_visualization',
+          name: 'Phase 2: 동선 시각화',
+          description: 'Canvas에 추천 동선 노드 생성',
+          order: 2,
+          agent: 'canvas',
+          status: 'pending',
+          requiresApproval: false,
+          estimatedDurationMs: 60000, // 1분
+          input: { type: 'route_nodes' }
+        }
+      ]
+    });
+
+    // 7. 전시 공간 최적화 워크플로우 (Digital Twin Agent)
+    this.templates.set('space_optimization', {
+      id: 'space_optimization',
+      name: '전시 공간 최적화',
+      description: '3D 시뮬레이션 및 작품 배치 최적화',
+      estimatedDurationMs: 900000, // 15분
+      requiredAgents: ['digital-twin', 'canvas', 'monitor'],
+      phases: [
+        {
+          id: 'phase_1_3d_simulation',
+          name: 'Phase 1: 3D 공간 시뮬레이션',
+          description: '방문객 동선 및 혼잡도 예측',
+          order: 1,
+          agent: 'digital-twin',
+          status: 'pending',
+          requiresApproval: true,
+          estimatedDurationMs: 600000, // 10분
+          input: { type: 'space_simulation' }
+        },
+        {
+          id: 'phase_2_layout_visualization',
+          name: 'Phase 2: 레이아웃 시각화',
+          description: 'Canvas에 최적 배치 노드 생성',
+          order: 2,
+          agent: 'canvas',
+          status: 'pending',
+          requiresApproval: false,
+          estimatedDurationMs: 180000, // 3분
+          input: { type: 'layout_nodes' }
+        },
+        {
+          id: 'phase_3_metrics',
+          name: 'Phase 3: 성과 메트릭 분석',
+          description: '수용 인원, 동선 효율성 분석',
+          order: 3,
+          agent: 'monitor',
+          status: 'pending',
+          requiresApproval: false,
+          estimatedDurationMs: 120000, // 2분
+          input: { type: 'optimization_metrics' }
+        }
+      ]
+    });
   }
 
   /**

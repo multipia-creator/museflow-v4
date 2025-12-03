@@ -352,6 +352,14 @@ export class AIOrchestrator {
         const { MonitorAgent: AnalyticsAgent } = await import('../agents/monitor.agent');
         return new AnalyticsAgent(this.db);
         
+      // Advanced AI Agents
+      case 'chatbot':
+        const { ChatbotAgent } = await import('../agents/chatbot.agent');
+        return new ChatbotAgent();
+      case 'digital-twin':
+        const { DigitalTwinAgent } = await import('../agents/digital-twin.agent');
+        return new DigitalTwinAgent();
+        
       default:
         throw new Error(`Unknown agent type: ${agentType}`);
     }
@@ -375,6 +383,10 @@ export class AIOrchestrator {
       return 'education_program';
     } else if (lowerCommand.includes('홍보') || lowerCommand.includes('promotion')) {
       return 'promotion_planning';
+    } else if (lowerCommand.includes('방문객') || lowerCommand.includes('안내') || lowerCommand.includes('chatbot') || lowerCommand.includes('가이드')) {
+      return 'visitor_assistance';
+    } else if (lowerCommand.includes('공간') || lowerCommand.includes('배치') || lowerCommand.includes('최적화') || lowerCommand.includes('digital twin') || lowerCommand.includes('3d')) {
+      return 'space_optimization';
     } else {
       return 'general_task';
     }
