@@ -754,6 +754,56 @@
             margin-bottom: 1rem;
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
             animation: nodeAppear 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Node type colors */
+        .canvas-node[data-type="budget"] {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        .canvas-node[data-type="chart"] {
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .canvas-node[data-type="concept"] {
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+        
+        .canvas-node[data-type="education"] {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+        
+        .canvas-node[data-type="artwork"] {
+            background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%);
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+        }
+        
+        .canvas-node[data-type="document"] {
+            background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+        
+        /* Node connection indicator */
+        .canvas-node::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.5) 50%, transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
         }
         
         @keyframes nodeAppear {
@@ -1840,22 +1890,53 @@
             const resultsSection = document.getElementById('canvasResults');
             resultsSection.innerHTML = '';
             
-            nodes.forEach(node => {
+            // Node type configuration
+            const nodeConfig = {
+                'budget': { icon: 'coins', label: '예산' },
+                'chart': { icon: 'chart-bar', label: '차트' },
+                'concept': { icon: 'lightbulb', label: '컨셉' },
+                'education': { icon: 'graduation-cap', label: '교육' },
+                'artwork': { icon: 'palette', label: '작품' },
+                'document': { icon: 'file-text', label: '문서' },
+                'default': { icon: 'box', label: '노드' }
+            };
+            
+            nodes.forEach((node, index) => {
+                const nodeType = node.type || 'default';
+                const config = nodeConfig[nodeType] || nodeConfig.default;
+                
+                // Add connection indicator for sequential nodes
+                const connectionLine = index > 0 ? `
+                    <div style="height: 20px; width: 2px; background: linear-gradient(180deg, transparent 0%, #8B5CF6 50%, transparent 100%); margin: 0 auto -10px; opacity: 0.5;"></div>
+                ` : '';
+                
                 const nodeHtml = `
-                    <div class="canvas-node" style="background: white; border: 1px solid var(--museflow-border-light); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 0.75rem;">
-                        <div class="canvas-node-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                            <div class="canvas-node-title" style="font-weight: 700; color: var(--museflow-text-primary);">${node.title}</div>
+                    ${connectionLine}
+                    <div class="canvas-node" data-type="${nodeType}">
+                        <div class="canvas-node-header">
+                            <div class="canvas-node-title">
+                                ${node.title}
+                            </div>
                             <div class="canvas-node-icon">
-                                <i class="fas fa-cube" style="color: var(--museflow-primary);"></i>
+                                <i data-lucide="${config.icon}" stroke-width="2"></i>
                             </div>
                         </div>
-                        <div class="canvas-node-content" style="font-size: 0.875rem; color: var(--museflow-text-secondary);">
-                            ${node.description || 'Canvas 노드가 생성되었습니다.'}
+                        <div class="canvas-node-content">
+                            ${node.description || `${config.label} 노드가 생성되었습니다.`}
+                        </div>
+                        <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.2); font-size: 0.75rem; opacity: 0.8;">
+                            <i data-lucide="clock" stroke-width="2" style="width: 12px; height: 12px; display: inline-block; vertical-align: middle;"></i>
+                            ${new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })}
                         </div>
                     </div>
                 `;
                 resultsSection.insertAdjacentHTML('beforeend', nodeHtml);
             });
+            
+            // Re-initialize Lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
             
             // Dashboard에 노드 생성 알림
             notifyDashboardUpdate({
@@ -2092,21 +2173,49 @@
             showActionSuccess(messageId, 'notion', 'Notion 저장 중...');
             
             try {
-                // TODO: Notion API 연동
-                // 현재는 Mock
-                await new Promise(resolve => setTimeout(resolve, 1500));
+                // Get title from current conversation context
+                const conversationTitle = document.querySelector('.column-title')?.textContent || 'AI 대화 결과';
                 
-                showActionSuccess(messageId, 'notion', 'Notion 저장 완료!');
+                // Call Notion API
+                const response = await fetch('/api/notion/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title: conversationTitle + ' - ' + new Date().toLocaleDateString('ko-KR'),
+                        content: text,
+                        type: 'budget-approval'
+                    })
+                });
                 
-                // 자동으로 다음 단계 진행
-                setTimeout(() => {
-                    console.log('[Auto Next] Notion 저장 완료 → Canvas 노드 생성 시작...');
-                    // TODO: Canvas Agent 트리거
-                }, 2000);
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log('[Notion] Saved successfully:', result);
+                    showActionSuccess(messageId, 'notion', 'Notion 저장 완료! ✓');
+                    
+                    // 자동으로 다음 단계 진행
+                    setTimeout(() => {
+                        console.log('[Auto Next] Notion 저장 완료 → Dashboard 위젯 업데이트...');
+                        notifyDashboardUpdate({
+                            type: 'notion-saved',
+                            data: {
+                                messageId,
+                                notionPageId: result.notionPageId,
+                                url: result.url,
+                                timestamp: result.createdAt
+                            }
+                        });
+                    }, 1000);
+                } else {
+                    throw new Error(result.error || 'Notion 저장 실패');
+                }
                 
             } catch (error) {
                 console.error('Notion 저장 실패:', error);
-                alert('Notion 저장에 실패했습니다.');
+                showActionSuccess(messageId, 'notion', 'Notion 저장 실패 ✗');
+                alert('Notion 저장에 실패했습니다: ' + error.message);
             }
         }
         
