@@ -315,6 +315,7 @@ export class AIOrchestrator {
    */
   private async loadAgent(agentType: string): Promise<any> {
     switch (agentType) {
+      // Core System Agents
       case 'research':
         const { ResearchAgent } = await import('../agents/research.agent');
         return new ResearchAgent(this.db, this.geminiApiKey);
@@ -333,6 +334,24 @@ export class AIOrchestrator {
       case 'monitor':
         const { MonitorAgent } = await import('../agents/monitor.agent');
         return new MonitorAgent(this.db);
+        
+      // 7-Agent System: Museum Domain Specialists
+      case 'exhibition':
+        const { ExhibitionAgent } = await import('../agents/exhibition.agent');
+        return new ExhibitionAgent(this.db, this.geminiApiKey);
+      case 'budget':
+        const { BudgetAgent } = await import('../agents/budget.agent');
+        return new BudgetAgent(this.db, this.geminiApiKey);
+      case 'collection':
+        const { ArchiveAgent } = await import('../agents/archive.agent');
+        return new ArchiveAgent(this.db, this.geminiApiKey);
+      case 'education':
+        const { VisitorAgent } = await import('../agents/visitor.agent');
+        return new VisitorAgent(this.db, this.geminiApiKey);
+      case 'analytics':
+        const { MonitorAgent: AnalyticsAgent } = await import('../agents/monitor.agent');
+        return new AnalyticsAgent(this.db);
+        
       default:
         throw new Error(`Unknown agent type: ${agentType}`);
     }

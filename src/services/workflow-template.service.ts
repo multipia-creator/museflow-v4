@@ -24,7 +24,7 @@ export class WorkflowTemplateService {
       name: '전시 기획',
       description: '인상주의 전시 등 전시 기획 전 과정',
       estimatedDurationMs: 3600000, // 1시간
-      requiredAgents: ['research', 'canvas', 'document', 'widget', 'integration', 'monitor'],
+      requiredAgents: ['exhibition', 'research', 'canvas', 'document', 'widget', 'integration', 'monitor'],
       phases: [
         {
           id: 'phase_1_research',
@@ -42,7 +42,7 @@ export class WorkflowTemplateService {
           name: 'Phase 2: 컨셉 생성',
           description: '3가지 전시 컨셉 제안',
           order: 2,
-          agent: 'canvas',
+          agent: 'exhibition',
           status: 'pending',
           requiresApproval: true,
           estimatedDurationMs: 600000, // 10분
@@ -112,14 +112,14 @@ export class WorkflowTemplateService {
       name: '예산 승인',
       description: '예산 항목 설정 및 승인',
       estimatedDurationMs: 300000, // 5분
-      requiredAgents: ['canvas', 'document', 'widget'],
+      requiredAgents: ['budget', 'canvas', 'document', 'widget'],
       phases: [
         {
           id: 'phase_1_budget_analysis',
           name: 'Phase 1: 예산 분석',
           description: '과거 데이터 기반 예산 분석',
           order: 1,
-          agent: 'canvas',
+          agent: 'budget',
           status: 'pending',
           requiresApproval: false,
           estimatedDurationMs: 120000, // 2분
@@ -156,14 +156,14 @@ export class WorkflowTemplateService {
       name: '소장품 선정',
       description: '전시용 소장품 검색 및 선정',
       estimatedDurationMs: 600000, // 10분
-      requiredAgents: ['research', 'canvas', 'widget'],
+      requiredAgents: ['collection', 'canvas', 'widget'],
       phases: [
         {
           id: 'phase_1_search',
           name: 'Phase 1: 소장품 검색',
           description: 'DB에서 조건에 맞는 소장품 검색',
           order: 1,
-          agent: 'research',
+          agent: 'collection',
           status: 'pending',
           requiresApproval: false,
           estimatedDurationMs: 180000, // 3분
@@ -174,7 +174,7 @@ export class WorkflowTemplateService {
           name: 'Phase 2: 보존 상태 분석',
           description: 'AI 보존 상태 분석',
           order: 2,
-          agent: 'research',
+          agent: 'collection',
           status: 'pending',
           requiresApproval: false,
           estimatedDurationMs: 240000, // 4분
@@ -200,14 +200,14 @@ export class WorkflowTemplateService {
       name: '교육 프로그램 기획',
       description: '어린이/성인 대상 교육 프로그램 생성',
       estimatedDurationMs: 900000, // 15분
-      requiredAgents: ['document', 'canvas', 'widget', 'integration'],
+      requiredAgents: ['education', 'document', 'canvas', 'widget', 'integration'],
       phases: [
         {
           id: 'phase_1_curriculum',
           name: 'Phase 1: 커리큘럼 생성',
           description: '대상/목표/주차별 계획 생성',
           order: 1,
-          agent: 'document',
+          agent: 'education',
           status: 'pending',
           requiresApproval: true,
           estimatedDurationMs: 600000, // 10분
