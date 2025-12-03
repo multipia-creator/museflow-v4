@@ -2,43 +2,72 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta name="version" content="4.6.0">
-    <title>Workflow - MuseFlow.life</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas - MuseFlow</title>
     
-    <!-- Google Fonts: Inter for Minimalism -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Lucide Icons (for nodes) -->
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     
-    <!-- Unified Navbar CSS -->
-    <link href="/static/css/unified-navbar.css" rel="stylesheet">
-    
-    <!-- Canvas Professional CSS - Enhanced UI/UX -->
-    <link href="/static/css/canvas-professional.css" rel="stylesheet">
-    
-    <!-- Canvas Onboarding CSS - Minimal Design -->
-    <link href="/static/css/canvas-onboarding.css" rel="stylesheet">
-    
-    <!-- Canvas V3 Additional Styles -->
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* ===============================================
+           Figma-inspired Professional Canvas
+           White Theme + Clean Design System
+           =============================================== */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
         :root {
-            /* These are now defined in canvas-professional.css */
-            /* Keeping for backward compatibility */
+            /* Colors - Figma White Theme */
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F5F5F5;
+            --bg-tertiary: #FAFAFA;
+            
+            --border-primary: #E5E5E5;
+            --border-secondary: #DADADA;
+            --border-hover: #C4C4C4;
+            
+            --text-primary: #1A1A1A;
+            --text-secondary: #666666;
+            --text-tertiary: #999999;
+            
+            --accent-primary: #8B5CF6;
+            --accent-hover: #7C3AED;
+            --accent-light: #EDE9FE;
+            
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+            
+            /* Shadows - Figma-style */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.16);
+            
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 12px;
+            --space-lg: 16px;
+            --space-xl: 24px;
+            --space-2xl: 32px;
+            
+            /* Border Radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            
+            /* Typography */
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
         
         body {
@@ -46,374 +75,192 @@
             background: var(--bg-secondary);
             color: var(--text-primary);
             overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* ===============================================
+           Layout Structure
+           =============================================== */
+        
+        .app-container {
+            display: flex;
+            flex-direction: column;
             height: 100vh;
+            width: 100vw;
         }
         
-        /* Lucide Icon Spin Animation */
-        .lucide-spin {
-            animation: lucide-spin 1s linear infinite;
-        }
-        
-        @keyframes lucide-spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Top Toolbar - Minimal */
+        /* Top Toolbar */
         .toolbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 50px;
-            background: rgba(26, 26, 31, 0.98);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            height: 60px;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-primary);
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            padding: 0 1.5rem;
-            z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            padding: 0 var(--space-lg);
+            box-shadow: var(--shadow-sm);
+            z-index: 100;
         }
         
-        /* Floating Center Toolbar REMOVED - 교수님 요청: 화면 정중앙 팔렛트 표시 삭제 */
-        .floating-toolbar {
-            display: none !important; /* HIDDEN */
-        }
-        
-        /* AI Quick Action Panel (NEW) */
-        .ai-quick-panel {
-            position: fixed;
-            right: 2rem;
-            bottom: 2rem;
-            z-index: 998;
-        }
-        
-        .ai-quick-toggle {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            border: none;
-            cursor: pointer;
+        .toolbar-left,
+        .toolbar-center,
+        .toolbar-right {
             display: flex;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.5), 0 0 0 4px rgba(139, 92, 246, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: ai-button-glow 2s ease-in-out infinite;
-        }
-        
-        @keyframes ai-button-glow {
-            0%, 100% { box-shadow: 0 8px 24px rgba(139, 92, 246, 0.5), 0 0 0 4px rgba(139, 92, 246, 0.1); }
-            50% { box-shadow: 0 8px 32px rgba(139, 92, 246, 0.7), 0 0 0 6px rgba(139, 92, 246, 0.2); }
-        }
-        
-        .ai-quick-toggle:hover {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 12px 32px rgba(139, 92, 246, 0.7), 0 0 0 6px rgba(139, 92, 246, 0.2);
-        }
-        
-        .ai-quick-toggle:active {
-            transform: scale(0.95);
-        }
-        
-        .ai-quick-actions {
-            position: absolute;
-            bottom: 80px;
-            right: 0;
-            min-width: 220px;
-            background: white;
-            border-radius: 16px;
-            padding: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
-            opacity: 0;
-            transform: translateY(20px) scale(0.95);
-            pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .ai-quick-panel:hover .ai-quick-actions,
-        .ai-quick-actions:hover {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            pointer-events: all;
-        }
-        
-        .ai-quick-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 8px;
-        }
-        
-        .ai-quick-action {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
-            border: none;
-            background: transparent;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            color: #4b5563;
-            transition: all 0.2s;
-            text-align: left;
-        }
-        
-        .ai-quick-action:hover {
-            background: linear-gradient(135deg, #f3e8ff, #fce7f3);
-            color: #8b5cf6;
-            transform: translateX(4px);
-        }
-        
-        .ai-quick-action i {
-            color: #8b5cf6;
-            transition: all 0.2s;
-        }
-        
-        .ai-quick-action:hover i {
-            transform: scale(1.1);
-        }
-        
-        .toolbar-left, .toolbar-center, .toolbar-right {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+            gap: var(--space-md);
         }
         
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            font-size: 1.1rem;
+            font-size: 18px;
             font-weight: 700;
-            color: rgba(255, 255, 255, 0.95);
-        }
-        
-        .logo img {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            box-shadow: 0 0 12px rgba(139, 92, 246, 0.5);
-        }
-        
-        .logo-text {
-            background: linear-gradient(135deg, var(--museum-purple), var(--museum-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .project-info {
+            color: var(--accent-primary);
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem 1rem;
-            background: rgba(139, 92, 246, 0.15);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 8px;
-            position: relative;
-            color: rgba(255, 255, 255, 0.9);
+            gap: var(--space-sm);
         }
         
-        .project-switch-btn {
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.7);
-            cursor: pointer;
-            padding: 0.25rem;
-            transition: all 0.2s;
+        .project-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
         }
         
-        .project-switch-btn:hover {
-            color: white;
-            transform: scale(1.1);
+        .project-meta {
+            font-size: 12px;
+            color: var(--text-tertiary);
         }
         
-        .save-status {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 8px;
-            font-size: 0.875rem;
-            color: rgba(255, 255, 255, 0.9);
-            transition: all 0.3s;
-        }
-        
-        .save-status.saving {
-            background: rgba(245, 158, 11, 0.1);
-            border-color: rgba(245, 158, 11, 0.3);
-        }
-        
-        .save-status.error {
-            background: rgba(239, 68, 68, 0.1);
-            border-color: rgba(239, 68, 68, 0.3);
-        }
-        
-        .save-status i {
-            font-size: 1rem;
-        }
-        
-        .save-status.saving i {
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
+        /* Tool Buttons */
         .tool-btn {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: transparent;
+            border-radius: var(--radius-md);
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 8px;
-            cursor: pointer;
             transition: all 0.2s;
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--text-secondary);
         }
         
         .tool-btn:hover {
-            background: rgba(139, 92, 246, 0.2);
-            border-color: var(--museum-purple);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
         }
         
         .tool-btn.active {
-            background: rgba(139, 92, 246, 0.3);
-            border-color: var(--museum-purple);
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+            background: var(--accent-light);
+            color: var(--accent-primary);
         }
         
-        /* Left Panel - Node Library (ENHANCED: High Contrast) */
+        .btn-primary {
+            height: 36px;
+            padding: 0 var(--space-lg);
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        /* Left Panel - Node Library */
         .left-panel {
-            position: fixed;
-            top: 50px;
-            left: 0;
-            width: 300px;
-            height: calc(100vh - 50px);
-            background: linear-gradient(180deg, 
-                rgba(26, 26, 31, 0.98) 0%, 
-                rgba(18, 18, 23, 0.98) 100%);
-            backdrop-filter: blur(20px);
-            border-right: 2px solid rgba(139, 92, 246, 0.3);
-            overflow-y: auto;
-            z-index: 100;
-            transition: transform 0.3s ease;
-            box-shadow: 
-                2px 0 8px rgba(0, 0, 0, 0.3),
-                inset -1px 0 0 rgba(139, 92, 246, 0.1);
-        }
-        
-        .left-panel.collapsed {
-            transform: translateX(-100%);
+            width: 280px;
+            background: var(--bg-primary);
+            border-right: 1px solid var(--border-primary);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
         
         .panel-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border-light);
-        }
-        
-        .panel-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-            color: rgba(255, 255, 255, 0.95);
+            height: 48px;
+            padding: 0 var(--space-lg);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-primary);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
         }
         
         .search-box {
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--border-primary);
+        }
+        
+        .search-input {
             width: 100%;
-            padding: 0.75rem 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            color: rgba(255, 255, 255, 0.95);
-            font-size: 0.875rem;
-        }
-        
-        .search-box:focus {
+            height: 36px;
+            padding: 0 var(--space-md);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            font-size: 13px;
             outline: none;
-            border-color: var(--museum-purple);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+            transition: all 0.2s;
         }
         
-        .node-categories {
-            padding: 1rem;
+        .search-input:focus {
+            border-color: var(--accent-primary);
+            background: var(--bg-primary);
         }
         
-        .category {
-            margin-bottom: 0.5rem;
+        .nodes-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-md);
+        }
+        
+        .node-category {
+            margin-bottom: var(--space-lg);
         }
         
         .category-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.75rem 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        .category-header:hover {
-            background: rgba(139, 92, 246, 0.1);
-        }
-        
-        .category-title {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 500;
-        }
-        
-        .subcategory-list {
-            padding: 0.5rem 0;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        
-        .category.expanded .subcategory-list {
-            max-height: 500px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-tertiary);
+            margin-bottom: var(--space-sm);
         }
         
         .node-item {
+            height: 36px;
+            padding: 0 var(--space-md);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.625rem 1rem;
-            margin: 0.25rem 0.5rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 6px;
+            gap: var(--space-sm);
             cursor: grab;
+            margin-bottom: var(--space-xs);
             transition: all 0.2s;
-            font-size: 0.875rem;
-            color: rgba(255, 255, 255, 0.9);
+            font-size: 13px;
         }
         
         .node-item:hover {
-            background: rgba(139, 92, 246, 0.15);
-            border-color: var(--museum-purple);
-            transform: translateX(4px);
+            background: var(--bg-primary);
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-sm);
         }
         
         .node-item:active {
@@ -421,52 +268,17 @@
         }
         
         .node-icon {
-            width: 20px;
-            height: 20px;
-            stroke-width: 2;
-            flex-shrink: 0;
-            opacity: 0.85;
-            transition: all 0.2s ease;
+            width: 16px;
+            height: 16px;
+            color: var(--text-secondary);
         }
         
-        .node-item:hover .node-icon {
-            opacity: 1;
-            transform: scale(1.15);
-        }
-        
-        /* 카테고리별 아이콘 색상 */
-        .category:nth-child(1) .node-icon { color: #8b5cf6; } /* 전시 - Purple */
-        .category:nth-child(2) .node-icon { color: #06b6d4; } /* 교육 - Cyan */
-        .category:nth-child(3) .node-icon { color: #10b981; } /* 아카이브 - Green */
-        .category:nth-child(4) .node-icon { color: #f59e0b; } /* 출판 - Amber */
-        .category:nth-child(5) .node-icon { color: #ec4899; } /* 연구 - Pink */
-        .category:nth-child(6) .node-icon { color: #6366f1; } /* 관리 - Indigo */
-        .category:nth-child(7) .node-icon { color: #14b8a6; } /* 참여 - Teal */
-        .category:nth-child(8) .node-icon { color: #a855f7; } /* 기술 - Violet */
-        
-        /* Canvas Area */
+        /* Canvas Container */
         .canvas-container {
-            position: fixed;
-            top: 50px;
-            left: 300px;
-            right: 300px;
-            height: calc(100vh - 50px);
-            background: #ffffff;
-            background-image: 
-                linear-gradient(rgba(139, 92, 246, 0.06) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(139, 92, 246, 0.06) 1px, transparent 1px);
-            background-size: 20px 20px;
-            background-position: 0 0, 0 0;
+            flex: 1;
+            position: relative;
+            background: var(--bg-secondary);
             overflow: hidden;
-            transition: left 0.3s ease, right 0.3s ease;
-        }
-        
-        .canvas-container.left-collapsed {
-            left: 0;
-        }
-        
-        .canvas-container.right-collapsed {
-            right: 0;
         }
         
         #canvas {
@@ -475,3817 +287,468 @@
             cursor: grab;
         }
         
-        #canvas.grabbing {
+        #canvas:active {
             cursor: grabbing;
         }
         
         /* Canvas Node */
         .canvas-node {
             position: absolute;
-            min-width: 200px;
-            background: var(--bg-white);
-            border: 2px solid var(--border-medium);
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            width: 200px;
+            min-height: 100px;
+            background: var(--bg-primary);
+            border: 2px solid var(--border-primary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
             cursor: move;
-            transition: box-shadow 0.2s;
-        }
-        
-        .canvas-node:hover {
-            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.15);
-        }
-        
-        .canvas-node.selected {
-            border-color: var(--museum-purple);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
-        }
-        
-        .node-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1rem;
-            border-bottom: 1px solid var(--border-light);
-        }
-        
-        .node-header-icon {
-            width: 24px;
-            height: 24px;
-            color: var(--museum-purple);
-        }
-        
-        .node-title {
-            flex: 1;
-            font-weight: 600;
-            font-size: 0.875rem;
-        }
-        
-        .node-content {
-            padding: 1rem;
-        }
-        
-        .node-description {
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.6);
-            line-height: 1.5;
-        }
-        
-        .node-ports {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem 1rem;
-        }
-        
-        .node-port {
-            width: 12px;
-            height: 12px;
-            background: var(--museum-purple);
-            border: 2px solid rgba(10, 10, 15, 0.95);
-            border-radius: 50%;
-            cursor: pointer;
             transition: all 0.2s;
         }
         
-        .node-port:hover {
+        .canvas-node:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .canvas-node.selected {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+        
+        .node-header {
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--border-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .node-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .node-body {
+            padding: var(--space-md);
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        /* Connection Handles */
+        .node-handle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--bg-primary);
+            border: 2px solid var(--accent-primary);
+            border-radius: 50%;
+            cursor: crosshair;
+            transition: all 0.2s;
+        }
+        
+        .node-handle:hover {
             transform: scale(1.3);
-            box-shadow: 0 0 12px var(--museum-purple);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+        
+        .node-handle.top {
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .node-handle.right {
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .node-handle.bottom {
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .node-handle.left {
+            left: -6px;
+            top: 50%;
+            transform: translateY(-50%);
         }
         
         /* Right Panel - Properties */
         .right-panel {
-            position: fixed;
-            top: 50px;
-            right: 0;
-            width: 300px;
-            height: calc(100vh - 50px);
-            background: rgba(18, 18, 23, 0.98);
-            backdrop-filter: blur(20px);
-            border-left: 1px solid rgba(255, 255, 255, 0.08);
-            overflow-y: auto;
-            z-index: 100;
-            transition: transform 0.3s ease;
-            box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
-        }
-        
-        .right-panel.collapsed {
-            transform: translateX(100%);
+            width: 280px;
+            background: var(--bg-primary);
+            border-left: 1px solid var(--border-primary);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
         
         .properties-content {
-            padding: 1.5rem;
-        }
-        
-        .property-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .property-label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 0.5rem;
-        }
-        
-        .property-input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            color: rgba(255, 255, 255, 0.95);
-            font-size: 0.875rem;
-        }
-        
-        .property-input:focus {
-            outline: none;
-            border-color: var(--museum-purple);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
-        }
-        
-        /* Minimap */
-        .minimap {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 200px;
-            height: 150px;
-            background: rgba(18, 18, 23, 0.98);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            z-index: 200;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-        }
-        
-        /* Empty State */
-        .empty-state {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: var(--text-tertiary);
-        }
-        
-        .empty-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .empty-text {
-            font-size: 1.125rem;
-            font-weight: 500;
-        }
-        
-        .empty-hint {
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-        }
-        
-        /* AI Assistant Sidebar */
-        .ai-sidebar {
-            position: fixed;
-            top: 50px;
-            right: -420px;
-            width: 420px;
-            height: calc(100vh - 50px);
-            background: var(--bg-white);
-            border-left: 1px solid var(--border-medium);
-            z-index: 1001;
-            display: flex;
-            flex-direction: column;
-            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
-        }
-        
-        .ai-sidebar.open {
-            right: 0;
-        }
-        
-        .ai-sidebar-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border-light);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .ai-close-btn {
-            width: 32px;
-            height: 32px;
-            background: var(--bg-lighter);
-            border: 1px solid var(--border-light);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .ai-close-btn:hover {
-            background: var(--bg-light);
-            color: var(--text-primary);
-        }
-        
-        .ai-tabs {
-            display: flex;
-            padding: 0 1rem;
-            gap: 0.5rem;
-            border-bottom: 1px solid var(--border-light);
-            background: var(--bg-lighter);
-        }
-        
-        .ai-tab {
-            padding: 0.75rem 1rem;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-bottom: 2px solid transparent;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .ai-tab:hover {
-            color: var(--text-primary);
-            background: rgba(139, 92, 246, 0.05);
-        }
-        
-        .ai-tab.active {
-            color: var(--museum-purple);
-            border-bottom-color: var(--museum-purple);
-        }
-        
-        .ai-content {
             flex: 1;
             overflow-y: auto;
-            padding: 1.5rem;
+            padding: var(--space-lg);
         }
         
-        .ai-tab-content {
-            display: none;
-        }
-        
-        .ai-tab-content.active {
-            display: block;
-        }
-        
-        .ai-section {
-            margin-bottom: 2rem;
-        }
-        
-        .ai-section-title {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 1rem;
-        }
-        
-        .ai-action-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
-        }
-        
-        .ai-action-card {
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        .ai-action-card:hover {
-            background: rgba(139, 92, 246, 0.1);
-            border-color: rgba(139, 92, 246, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .ai-action-card i {
-            font-size: 1.5rem;
-            color: var(--museum-purple);
-        }
-        
-        .ai-action-card span {
-            font-size: 0.875rem;
+        .empty-state {
             text-align: center;
+            padding: var(--space-2xl);
+            color: var(--text-tertiary);
+            font-size: 13px;
         }
         
-        .ai-action-card-large {
-            width: 100%;
-            padding: 1.25rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 0.75rem;
-        }
-        
-        .ai-action-card-large:hover {
-            background: rgba(139, 92, 246, 0.1);
-            border-color: rgba(139, 92, 246, 0.3);
-            transform: translateX(-4px);
-        }
-        
-        .ai-action-card-large i {
-            font-size: 1.5rem;
-            color: var(--museum-purple);
-        }
-        
-        .ai-textarea {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            color: white;
-            font-size: 0.875rem;
-            resize: vertical;
-            margin-bottom: 1rem;
-        }
-        
-        .ai-textarea:focus {
-            outline: none;
-            border-color: var(--museum-purple);
-        }
-        
-        .ai-generate-btn {
-            width: 100%;
-            padding: 0.875rem;
-            background: linear-gradient(135deg, var(--museum-purple), var(--museum-pink));
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        
-        .ai-generate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
-        }
-        
-        .ai-result {
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            min-height: 150px;
-            max-height: 400px;
-            overflow-y: auto;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.875rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            margin-bottom: 1rem;
-        }
-        
-        .ai-insert-btn {
-            width: 100%;
-            padding: 0.875rem;
-            background: rgba(16, 185, 129, 0.2);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 12px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-        
-        .ai-insert-btn:hover {
-            background: rgba(16, 185, 129, 0.3);
-            border-color: rgba(16, 185, 129, 0.5);
-        }
-        
-        .ai-selected-node {
-            padding: 1rem;
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 12px;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.875rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        .tool-btn.ai-btn {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
-            border-color: rgba(139, 92, 246, 0.5);
-        }
-        
-        .tool-btn.ai-btn:hover {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3));
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
-        }
-        
-        .tool-btn.ai-btn.active {
-            background: linear-gradient(135deg, var(--museum-purple), var(--museum-pink));
-            color: white;
-        }
-        
-        /* Context Menu */
-        .context-menu {
-            position: fixed;
-            background: var(--bg-white);
-            border: 1px solid var(--border-medium);
-            border-radius: 12px;
-            padding: 0.5rem;
-            min-width: 220px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-            z-index: 10000;
-            display: none;
-        }
-        
-        .context-menu.show {
-            display: block;
-        }
-        
-        .context-menu-header {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem;
-            color: var(--text-primary);
-            font-weight: 600;
-            font-size: 0.875rem;
-        }
-        
-        .context-menu-header i {
-            color: var(--museum-purple);
-        }
-        
-        .context-menu-divider {
-            height: 1px;
-            background: var(--border-light);
-            margin: 0.5rem 0;
-        }
-        
-        .context-menu-item {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            background: transparent;
-            border: none;
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 0.875rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: left;
-        }
-        
-        .context-menu-item:hover {
-            background: rgba(139, 92, 246, 0.1);
-            color: var(--museum-purple);
-        }
-        
-        .context-menu-item i {
-            width: 16px;
-            text-align: center;
-        }
-        
-        .context-menu-item.ai-item {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            position: relative;
-        }
-        
-        .context-menu-item.ai-item:hover {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
-            border-color: rgba(139, 92, 246, 0.5);
-        }
-        
-        .context-menu-item.danger:hover {
-            background: rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
-        }
-        
-        .context-submenu {
+        /* Zoom Controls */
+        .zoom-controls {
             position: absolute;
-            left: 100%;
-            top: 0;
-            margin-left: 0.5rem;
-            background: rgba(10, 10, 15, 0.98);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            padding: 0.5rem;
-            min-width: 200px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            display: none;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            gap: var(--space-xs);
+            background: var(--bg-primary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            padding: var(--space-xs);
+            box-shadow: var(--shadow-md);
         }
         
-        .context-submenu.show {
-            display: block;
+        .zoom-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            color: var(--text-secondary);
         }
         
-        .context-menu-item.ai-item:hover + .context-submenu,
-        .context-submenu:hover {
-            display: block;
+        .zoom-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
         }
         
-        /* ================================
-           모바일 반응형 (Mobile Responsive)
-           ================================ */
-        
-        /* Tablet: 768px ~ 1024px */
-        @media (max-width: 1024px) {
-            .left-panel, .right-panel {
-                width: 250px;
-            }
-            
-            .canvas-container {
-                left: 250px;
-                right: 250px;
-            }
-            
-            .canvas-container.left-collapsed {
-                left: 0;
-            }
-            
-            .canvas-container.right-collapsed {
-                right: 0;
-            }
-            
-            .ai-sidebar {
-                width: 360px;
-                right: -360px;
-            }
-            
-            .minimap {
-                width: 160px;
-                height: 120px;
-                bottom: 6rem;
-                right: 1rem;
-            }
+        .zoom-level {
+            width: 48px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        /* Mobile: < 768px */
+        /* Mobile Responsive */
         @media (max-width: 768px) {
-            /* 상단 툴바 축소 */
-            .toolbar {
-                height: 56px;
-                padding: 0 0.75rem;
-            }
-            
-            .logo {
-                font-size: 1rem;
-            }
-            
-            .logo img {
-                width: 28px;
-                height: 28px;
-            }
-            
-            .project-info {
-                font-size: 0.875rem;
-                padding: 0.375rem 0.75rem;
-            }
-            
-            .save-status {
-                display: none; /* 모바일에서 자동저장 상태 숨김 */
-            }
-            
-            .tool-btn {
-                width: 36px;
-                height: 36px;
-            }
-            
-            /* 좌우 패널: 전체화면 오버레이 */
-            .left-panel, .right-panel {
-                width: 100%;
-                max-width: 320px;
-                top: 56px;
-                height: calc(100vh - 56px);
-                z-index: 1100;
+            .left-panel,
+            .right-panel {
+                position: absolute;
+                z-index: 50;
+                height: calc(100vh - 60px);
                 transform: translateX(-100%);
-                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                box-shadow: 2px 0 16px rgba(0, 0, 0, 0.3);
+                transition: transform 0.3s;
             }
             
-            .left-panel:not(.collapsed) {
+            .left-panel.open {
                 transform: translateX(0);
             }
             
             .right-panel {
                 right: 0;
-                left: auto;
                 transform: translateX(100%);
-                box-shadow: -2px 0 16px rgba(0, 0, 0, 0.3);
             }
             
-            .right-panel:not(.collapsed) {
+            .right-panel.open {
                 transform: translateX(0);
             }
-            
-            /* 캔버스: 전체 화면 */
-            .canvas-container {
-                top: 56px;
-                left: 0;
-                right: 0;
-                height: calc(100vh - 56px - 64px); /* 툴바 + 플로팅 툴바 */
-            }
-            
-            .canvas-container.left-collapsed,
-            .canvas-container.right-collapsed {
-                left: 0;
-                right: 0;
-            }
-            
-            /* 플로팅 툴바 REMOVED - 교수님 요청 */
-            .floating-toolbar {
-                display: none !important; /* HIDDEN */
-            }
-            
-            /* AI Sidebar: 전체화면 */
-            .ai-sidebar {
-                width: 100%;
-                max-width: 100%;
-                right: -100%;
-                top: 56px;
-                height: calc(100vh - 56px);
-            }
-            
-            .ai-sidebar.open {
-                right: 0;
-            }
-            
-            /* 미니맵: 모바일에서 숨김 (선택적) */
-            .minimap {
-                display: none;
-            }
-            
-            /* Node Library */
-            .panel-title {
-                font-size: 1.125rem;
-            }
-            
-            .search-box {
-                font-size: 0.875rem;
-                padding: 0.625rem 0.875rem;
-            }
-            
-            .node-item {
-                padding: 0.75rem 1rem;
-                font-size: 0.875rem;
-            }
-            
-            .node-icon {
-                width: 18px;
-                height: 18px;
-            }
-            
-            /* Context Menu */
-            .context-menu {
-                min-width: 180px;
-                font-size: 0.875rem;
-            }
-            
-            /* Empty State */
-            .empty-icon {
-                font-size: 3rem;
-            }
-            
-            .empty-text {
-                font-size: 1rem;
-            }
-            
-            .empty-hint {
-                font-size: 0.8125rem;
-            }
-            
-            /* 모바일 오버레이 배경 (패널 열릴 때) */
-            body::after {
-                content: '';
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.5);
-                opacity: 0;
-                pointer-events: none;
-                transition: opacity 0.3s;
-                z-index: 1099;
-            }
-            
-            body.panel-open::after {
-                opacity: 1;
-                pointer-events: auto;
-            }
         }
         
-        /* Small Mobile: < 480px */
-        @media (max-width: 480px) {
-            .toolbar {
-                padding: 0 0.5rem;
-            }
-            
-            .toolbar-right {
-                gap: 0.5rem;
-            }
-            
-            .tool-btn {
-                width: 32px;
-                height: 32px;
-            }
-            
-            .floating-toolbar {
-                display: none !important; /* HIDDEN */
-            }
-            
-            .node-item {
-                padding: 0.625rem 0.875rem;
-            }
-            
-            .ai-action-grid {
-                grid-template-columns: 1fr;
-            }
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
         
-        /* ===== AI NODE VISUAL ENHANCEMENT ===== */
-        
-        /* AI Node Base Style */
-        .canvas-node.ai-node {
-            border: 2px solid transparent;
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.15));
-            position: relative;
-            overflow: visible;
-        }
-        
-        .canvas-node.ai-node::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            border-radius: 12px;
-            padding: 2px;
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0.5;
-            transition: opacity 0.3s ease;
-        }
-        
-        .canvas-node.ai-node:hover::before {
-            opacity: 1;
-        }
-        
-        /* AI Node Processing State */
-        .canvas-node.ai-node.processing {
-            animation: ai-node-pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes ai-node-pulse {
-            0%, 100% {
-                box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3), 0 0 0 0 rgba(139, 92, 246, 0);
-            }
-            50% {
-                box-shadow: 0 8px 32px rgba(139, 92, 246, 0.5), 0 0 0 8px rgba(139, 92, 246, 0.2);
-            }
-        }
-        
-        .canvas-node.ai-node.processing::after {
-            content: '⚡';
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            width: 24px;
-            height: 24px;
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            animation: ai-badge-spin 2s linear infinite;
-            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.5);
-        }
-        
-        @keyframes ai-badge-spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        /* AI Node Completed State */
-        .canvas-node.ai-node.completed {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
-        }
-        
-        .canvas-node.ai-node.completed::before {
-            background: linear-gradient(135deg, #10b981, #059669);
-            opacity: 0.7;
-        }
-        
-        .canvas-node.ai-node.completed::after {
-            content: '✓';
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            width: 24px;
-            height: 24px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            color: white;
-            font-weight: bold;
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.5);
-        }
-        
-        /* AI Connection Visual Enhancement */
-        .ai-connection {
-            stroke: url(#ai-gradient);
-            stroke-width: 3;
-            stroke-dasharray: 8, 4;
-            animation: ai-connection-flow 2s linear infinite;
-        }
-        
-        @keyframes ai-connection-flow {
-            to { stroke-dashoffset: -24; }
-        }
-        
-        /* AI Node Hover Effect */
-        .canvas-node.ai-node:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.4);
-        }
-        
-        /* AI Quick Action Button Enhancement */
-        .ai-quick-toggle .ai-glow {
-            position: absolute;
-            inset: -8px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
-            animation: ai-glow-pulse 2s ease-in-out infinite;
-            pointer-events: none;
-        }
-        
-        @keyframes ai-glow-pulse {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-        
-        /* ===== TOAST NOTIFICATION SYSTEM ===== */
-        .toast-container {
-            position: fixed;
-            top: 70px;
-            right: 20px;
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            pointer-events: none;
-        }
-        
-        .toast {
-            background: white;
-            border-radius: 12px;
-            padding: 16px 20px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-width: 300px;
-            max-width: 400px;
-            pointer-events: auto;
-            animation: toast-slide-in 0.3s ease;
-            border-left: 4px solid #8b5cf6;
-        }
-        
-        .toast.success {
-            border-left-color: #10b981;
-        }
-        
-        .toast.error {
-            border-left-color: #ef4444;
-        }
-        
-        .toast.warning {
-            border-left-color: #f59e0b;
-        }
-        
-        .toast.info {
-            border-left-color: #3b82f6;
-        }
-        
-        .toast-icon {
-            width: 24px;
-            height: 24px;
-            flex-shrink: 0;
-        }
-        
-        .toast.success .toast-icon {
-            color: #10b981;
-        }
-        
-        .toast.error .toast-icon {
-            color: #ef4444;
-        }
-        
-        .toast.warning .toast-icon {
-            color: #f59e0b;
-        }
-        
-        .toast.info .toast-icon {
-            color: #3b82f6;
-        }
-        
-        .toast-content {
-            flex: 1;
-        }
-        
-        .toast-title {
-            font-weight: 600;
-            font-size: 14px;
-            color: #1a1a1a;
-            margin-bottom: 2px;
-        }
-        
-        .toast-message {
-            font-size: 13px;
-            color: #6b7280;
-        }
-        
-        .toast-close {
-            background: none;
-            border: none;
-            color: #9ca3af;
-            cursor: pointer;
-            padding: 4px;
-            transition: color 0.2s;
-        }
-        
-        .toast-close:hover {
-            color: #1a1a1a;
-        }
-        
-        @keyframes toast-slide-in {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        .toast.removing {
-            animation: toast-slide-out 0.3s ease forwards;
-        }
-        
-        @keyframes toast-slide-out {
-            to {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-        }
-        
-        /* ===================================================================
-           Figma-Style Left Panel - Enhanced UI
-           =================================================================== */
-        
-        .figma-search-section {
-            padding: 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(18, 18, 23, 0.6);
-            backdrop-filter: blur(10px);
-        }
-        
-        .search-box-advanced {
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .search-box-advanced:focus-within {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(139, 92, 246, 0.5);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
-        }
-        
-        .search-input-advanced {
-            flex: 1;
+        ::-webkit-scrollbar-track {
             background: transparent;
-            border: none;
-            color: rgba(255, 255, 255, 0.95);
-            font-size: 14px;
-            outline: none;
         }
         
-        .search-input-advanced::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
-        
-        .search-clear {
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            padding: 4px;
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-secondary);
             border-radius: 4px;
-            transition: all 0.2s;
         }
         
-        .search-clear:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.9);
-        }
-        
-        /* Filter Pills */
-        .filter-pills {
-            display: flex;
-            gap: 6px;
-            margin-top: 12px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-        }
-        
-        .filter-pills::-webkit-scrollbar {
-            height: 3px;
-        }
-        
-        .filter-pills::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 3px;
-        }
-        
-        .pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid transparent;
-            font-size: 12px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.7);
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            white-space: nowrap;
-        }
-        
-        .pill:hover {
-            background: rgba(255, 255, 255, 0.12);
-            color: rgba(255, 255, 255, 0.95);
-            transform: translateY(-1px);
-        }
-        
-        .pill.active {
-            background: rgba(139, 92, 246, 0.25);
-            color: #a78bfa;
-            border-color: rgba(139, 92, 246, 0.4);
-            box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.2);
-        }
-        
-        .pill .count {
-            display: inline-block;
-            padding: 2px 6px;
-            background: rgba(0, 0, 0, 0.15);
-            border-radius: 10px;
-            font-size: 10px;
-            font-weight: 600;
-            font-variant-numeric: tabular-nums;
-        }
-        
-        .pill.active .count {
-            background: rgba(139, 92, 246, 0.3);
-            color: white;
-        }
-        
-        /* Quick Access Section */
-        .figma-quick-access {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 14px 16px;
-            padding-left: 13px;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            user-select: none;
-            background: linear-gradient(90deg,
-                rgba(139, 92, 246, 0.15) 0%,
-                transparent 100%);
-            border-left: 3px solid rgba(139, 92, 246, 0.6);
-        }
-        
-        .section-header:hover {
-            background: rgba(255, 255, 255, 0.04);
-            color: rgba(255, 255, 255, 0.95);
-        }
-        
-        .section-header .section-chevron {
-            margin-left: auto;
-            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .section-content {
-            padding: 8px 16px 16px;
-        }
-        
-        .node-count {
-            margin-left: auto;
-            padding: 2px 8px;
-            background: rgba(139, 92, 246, 0.2);
-            border-radius: 10px;
-            font-size: 11px;
-            font-weight: 600;
-            color: #a78bfa;
-            font-variant-numeric: tabular-nums;
-        }
-        
-        /* Quick Section Labels */
-        .quick-section {
-            margin-bottom: 16px;
-        }
-        
-        .quick-label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 8px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        /* Enhanced Node Item */
-        .node-item-advanced {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 8px;
-            cursor: grab;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-bottom: 6px;
-        }
-        
-        .node-item-advanced:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(139, 92, 246, 0.3);
-            transform: translateX(4px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        
-        .node-item-advanced:active {
-            cursor: grabbing;
-            transform: scale(0.98);
-        }
-        
-        .node-item-advanced.dragging {
-            opacity: 0.5;
-        }
-        
-        /* Node Thumbnail */
-        .node-thumbnail {
-            width: 52px;
-            height: 32px;
-            border-radius: 6px;
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .node-info {
-            flex: 1;
-            min-width: 0;
-        }
-        
-        .node-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.98);
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-        }
-        
-        .node-meta {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .node-type-badge {
-            display: inline-block;
-            padding: 2px 6px;
-            background: rgba(139, 92, 246, 0.15);
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 600;
-            color: #a78bfa;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-        }
-        
-        .node-tag {
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        /* Node Actions */
-        .node-actions {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-        
-        .node-item-advanced:hover .node-actions {
-            opacity: 1;
-        }
-        
-        .node-action-btn {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-            background: transparent;
-            border: none;
-            color: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-        
-        .node-action-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .node-action-btn.favorite.active {
-            color: #f59e0b;
-        }
-        
-        /* Tree Structure */
-        .nodes-tree {
-            padding: 8px 0;
-        }
-        
-        .tree-category {
-            margin-bottom: 4px;
-        }
-        
-        .tree-category-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 16px;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            user-select: none;
-        }
-        
-        .tree-category-header:hover {
-            background: rgba(255, 255, 255, 0.06);
-            color: rgba(255, 255, 255, 0.95);
-        }
-        
-        .tree-chevron {
-            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .tree-category-title {
-            flex: 1;
-        }
-        
-        .tree-node-count {
-            padding: 2px 7px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            font-size: 10px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.6);
-            font-variant-numeric: tabular-nums;
-        }
-        
-        .tree-subcategories {
-            padding-left: 16px;
-        }
-        
-        .tree-subcategory {
-            margin-bottom: 2px;
-        }
-        
-        .tree-subcategory-header {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .tree-subcategory-header:hover {
-            background: rgba(255, 255, 255, 0.04);
-            color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .tree-chevron-small {
-            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .tree-node-count-small {
-            margin-left: auto;
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.4);
-            font-variant-numeric: tabular-nums;
-        }
-        
-        .tree-nodes {
-            padding: 4px 0 4px 12px;
-        }
-        
-        /* Empty States */
-        .empty-state-small {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-            text-align: center;
-        }
-        
-        .empty-state-small p {
-            margin: 12px 0 4px;
-            font-size: 13px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.6);
-        }
-        
-        .empty-state-small small {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.4);
-        }
-        
-        /* Search Results */
-        .search-results {
-            padding: 8px 16px;
-        }
-        
-        .search-results-header {
-            margin-bottom: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.6);
-        }
-        
-        /* ===================================================================
-           Advanced Floating Toolbar - Figma Style
-           =================================================================== */
-        
-        .floating-toolbar-advanced {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(26, 26, 31, 0.95);
-            backdrop-filter: blur(40px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 12px;
-            padding: 8px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            box-shadow: 
-                0 8px 32px rgba(0, 0, 0, 0.4),
-                0 0 0 1px rgba(139, 92, 246, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            z-index: 999;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .floating-toolbar-advanced:hover {
-            box-shadow: 
-                0 12px 48px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(139, 92, 246, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15);
-        }
-        
-        .tool-group {
-            display: flex;
-            gap: 2px;
-        }
-        
-        .tool-separator {
-            width: 1px;
-            height: 28px;
-            background: rgba(255, 255, 255, 0.1);
-            margin: 0 6px;
-        }
-        
-        .tool-btn-adv {
-            position: relative;
-            width: 38px;
-            height: 38px;
-            border-radius: 8px;
-            background: transparent;
-            border: none;
-            color: rgba(255, 255, 255, 0.7);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .tool-btn-adv:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            transform: scale(1.05);
-        }
-        
-        .tool-btn-adv.active {
-            background: rgba(139, 92, 246, 0.2);
-            color: #a78bfa;
-            box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.3);
-        }
-        
-        .tool-btn-adv.ai-highlight {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.15));
-            animation: ai-pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes ai-pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
-            50% { box-shadow: 0 0 0 4px rgba(139, 92, 246, 0); }
-        }
-        
-        .shortcut-badge {
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            font-size: 9px;
-            background: rgba(139, 92, 246, 0.9);
-            color: white;
-            padding: 2px 4px;
-            border-radius: 4px;
-            font-weight: 600;
-            opacity: 0;
-            transition: opacity 0.2s;
-            pointer-events: none;
-            font-family: 'SF Mono', Monaco, monospace;
-        }
-        
-        .tool-btn-adv:hover .shortcut-badge {
-            opacity: 1;
-        }
-        
-        .tool-btn-sm {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            background: transparent;
-            border: none;
-            color: rgba(255, 255, 255, 0.7);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-        
-        .tool-btn-sm:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-        
-        .zoom-group {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        
-        .zoom-display {
-            font-size: 12px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
-            min-width: 50px;
-            text-align: center;
-            font-variant-numeric: tabular-nums;
-            font-family: 'SF Mono', Monaco, monospace;
-        }
-        
-        /* ===================================================================
-           Context Menu - Figma Style
-           =================================================================== */
-        
-        .context-menu {
-            position: fixed;
-            min-width: 220px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
-            padding: 6px;
-            z-index: 10000;
-            animation: context-menu-appear 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        @keyframes context-menu-appear {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        
-        .context-menu-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 9px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            color: #1f2937;
-            transition: background 0.15s;
-        }
-        
-        .context-menu-item:hover {
-            background: #f3f4f6;
-        }
-        
-        .context-menu-item i {
-            width: 16px;
-            height: 16px;
-            color: #6b7280;
-        }
-        
-        .context-shortcut {
-            margin-left: auto;
-            font-size: 11px;
-            color: #9ca3af;
-            font-family: 'SF Mono', Monaco, monospace;
-        }
-        
-        .context-menu-separator {
-            height: 1px;
-            background: #e5e7eb;
-            margin: 6px 0;
-        }
-        
-        /* ===================================================================
-           Command Palette - Cmd+K
-           =================================================================== */
-        
-        .command-palette-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding-top: 15vh;
-            z-index: 10001;
-            animation: overlay-fade-in 0.2s ease;
-        }
-        
-        @keyframes overlay-fade-in {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .command-palette {
-            width: 90%;
-            max-width: 600px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 16px 64px rgba(0, 0, 0, 0.25);
-            overflow: hidden;
-            animation: palette-slide-in 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        @keyframes palette-slide-in {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .command-search {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px 20px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .command-search input {
-            flex: 1;
-            border: none;
-            outline: none;
-            font-size: 16px;
-            color: #1f2937;
-        }
-        
-        .command-search input::placeholder {
-            color: #9ca3af;
-        }
-        
-        .command-results {
-            max-height: 400px;
-            overflow-y: auto;
-            padding: 8px;
-        }
-        
-        .command-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        
-        .command-item:hover {
-            background: #f3f4f6;
-        }
-        
-        .command-item i {
-            width: 18px;
-            height: 18px;
-            color: #6b7280;
-        }
-        
-        .command-item span {
-            font-size: 14px;
-            color: #1f2937;
-        }
-        
-        .command-footer {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            padding: 12px;
-            border-top: 1px solid #e5e7eb;
-            background: #f9fafb;
-            font-size: 12px;
-            color: #6b7280;
-        }
-        
-        .command-footer span {
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-hover);
         }
     </style>
 </head>
 <body>
-    <!-- Toast Container -->
-    <div class="toast-container" id="toast-container"></div>
-    <!-- AI Status Bar (NEW) -->
-    <div class="ai-status-bar" id="ai-status-bar" style="display: none;">
-        <div class="ai-status-summary">
-            <i data-lucide="zap" style="width: 16px; height: 16px;"></i>
-            <span id="ai-status-text">AI Ready</span>
-        </div>
-        <div class="ai-task-chips" id="ai-task-chips"></div>
-    </div>
-    
-    <!-- Top Toolbar -->
-    <div class="toolbar">
-        <div class="toolbar-left">
-            <a href="/dashboard.html" class="logo">
-                <img src="/static/images/logo-neon-m.png" alt="MuseFlow" />
-                <span class="logo-text">MuseFlow</span>
-            </a>
-            <div class="project-info">
-                <i data-lucide="folder" style="width: 18px; height: 18px;"></i>
-                <span id="project-title">Loading...</span>
-                <button class="project-switch-btn" id="project-switch-btn" title="Switch Project">
-                    <i data-lucide="chevron-down" style="width: 14px; height: 14px;"></i>
+    <div class="app-container">
+        <!-- Top Toolbar -->
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <div class="logo">
+                    <i data-lucide="layers" style="width: 20px; height: 20px;"></i>
+                    MuseFlow
+                </div>
+                <div style="width: 1px; height: 24px; background: var(--border-primary);"></div>
+                <div>
+                    <div class="project-name">전시 기획 워크플로우</div>
+                    <div class="project-meta">5개 노드 • 자동 저장됨</div>
+                </div>
+            </div>
+            
+            <div class="toolbar-center">
+                <div style="display: flex; gap: 4px;">
+                    <button class="tool-btn active" title="선택 도구">
+                        <i data-lucide="mouse-pointer-2" style="width: 18px; height: 18px;"></i>
+                    </button>
+                    <button class="tool-btn" title="손 도구">
+                        <i data-lucide="hand" style="width: 18px; height: 18px;"></i>
+                    </button>
+                    <button class="tool-btn" title="연결 도구">
+                        <i data-lucide="move" style="width: 18px; height: 18px;"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="toolbar-right">
+                <button class="btn-primary">
+                    <i data-lucide="play" style="width: 16px; height: 16px; margin-right: 6px;"></i>
+                    워크플로우 실행
+                </button>
+                <button class="tool-btn" title="설정">
+                    <i data-lucide="settings" style="width: 18px; height: 18px;"></i>
                 </button>
             </div>
-            <!-- Auto-save Status Indicator -->
-            <div class="save-status" id="save-status">
-                <i data-lucide="check-circle" style="width: 16px; height: 16px;"></i>
-                <span>Saved</span>
-            </div>
         </div>
         
-        <div class="toolbar-right">
-            <button class="tool-btn ai-btn" id="toggle-ai-panel" title="AI Assistant (A)">
-                <i data-lucide="bot" style="width: 20px; height: 20px;"></i>
-            </button>
-            <div style="width: 1px; height: 24px; background: var(--border-light); margin: 0 0.5rem;"></div>
-            <button class="tool-btn" id="toggle-left-panel">
-                <i data-lucide="panel-left" style="width: 20px; height: 20px;"></i>
-            </button>
-            <button class="tool-btn" id="toggle-right-panel">
-                <i data-lucide="panel-right" style="width: 20px; height: 20px;"></i>
-            </button>
-            <button class="tool-btn" id="save-workflow" title="Save (Ctrl+S)">
-                <i data-lucide="save" style="width: 20px; height: 20px;"></i>
-            </button>
-        </div>
-    </div>
-    
-    <!-- Left Panel - Node Library -->
-    <div class="left-panel" id="left-panel">
-        <div class="panel-header">
-            <h3 class="panel-title">📦 Node Library</h3>
-            <input type="text" class="search-box" id="node-search" placeholder="Search nodes...">
-        </div>
-        
-        <div class="node-categories" id="node-categories">
-            <!-- 1. 전시 Exhibition (11 nodes) -->
-            <div class="category expanded">
-                <div class="category-header" onclick="this.parentElement.classList.toggle('expanded')">
-                    <div class="category-title">
-                        <span>🎨</span>
-                        <span>전시 Exhibition</span>
-                    </div>
-                    <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
-                </div>
-                <div class="subcategory-list">
-                    <div class="node-item" draggable="true" data-node-id="ex-01">
-                        <i data-lucide="file-text" class="node-icon"></i>
-                        <span>기획안 작성</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ex-02">
-                        <i data-lucide="dollar-sign" class="node-icon"></i>
-                        <span>예산 편성</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ex-03">
-                        <i data-lucide="calendar" class="node-icon"></i>
-                        <span>일정 관리</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ex-04">
-                        <i data-lucide="image" class="node-icon"></i>
-                        <span>작품 선정</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ex-05">
-                        <i data-lucide="layout" class="node-icon"></i>
-                        <span>공간 배치</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ex-06">
-                        <i data-lucide="lightbulb" class="node-icon"></i>
-                        <span>조명 설계</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ex-07">
-                        <i data-lucide="shield" class="node-icon"></i>
-                        <span>안전 점검</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ex-08">
-                        <i data-lucide="megaphone" class="node-icon"></i>
-                        <span>홍보 계획</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ex-09">
-                        <i data-lucide="book-open" class="node-icon"></i>
-                        <span>도록 제작</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ex-10">
-                        <i data-lucide="glass-water" class="node-icon"></i>
-                        <span>오프닝 준비</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ex-11">
-                        <i data-lucide="bar-chart-2" class="node-icon"></i>
-                        <span>평가 보고서</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 2. 교육 Education (11 nodes) -->
-            <div class="category">
-                <div class="category-header" onclick="this.parentElement.classList.toggle('expanded')">
-                    <div class="category-title">
-                        <span>📚</span>
-                        <span>교육 Education</span>
-                    </div>
-                    <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
-                </div>
-                <div class="subcategory-list">
-                    <div class="node-item" draggable="true" data-node-id="ed-01">
-                        <i data-lucide="target" class="node-icon"></i>
-                        <span>프로그램 기획</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ed-02">
-                        <i data-lucide="clipboard-list" class="node-icon"></i>
-                        <span>커리큘럼 개발</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ed-03">
-                        <i data-lucide="book" class="node-icon"></i>
-                        <span>교재 제작</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ed-04">
-                        <i data-lucide="presentation" class="node-icon"></i>
-                        <span>강사 섭외</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ed-05">
-                        <i data-lucide="user-plus" class="node-icon"></i>
-                        <span>참가자 모집</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ed-06">
-                        <i data-lucide="calendar-check" class="node-icon"></i>
-                        <span>일정 조정</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ed-07">
-                        <i data-lucide="map-pin" class="node-icon"></i>
-                        <span>공간 예약</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ed-08">
-                        <i data-lucide="video" class="node-icon"></i>
-                        <span>장비 준비</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ed-09">
-                        <i data-lucide="clipboard-check" class="node-icon"></i>
-                        <span>만족도 조사</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ed-10">
-                        <i data-lucide="award" class="node-icon"></i>
-                        <span>수료증 발급</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ed-11">
-                        <i data-lucide="trending-up" class="node-icon"></i>
-                        <span>성과 분석</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3. 아카이브 Archive (11 nodes) -->
-            <div class="category">
-                <div class="category-header" onclick="this.parentElement.classList.toggle('expanded')">
-                    <div class="category-title">
-                        <span>📦</span>
-                        <span>아카이브 Archive</span>
-                    </div>
-                    <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
-                </div>
-                <div class="subcategory-list">
-                    <div class="node-item" draggable="true" data-node-id="ar-01">
-                        <i data-lucide="inbox" class="node-icon"></i>
-                        <span>자료 수집</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ar-02">
-                        <i data-lucide="file-edit" class="node-icon"></i>
-                        <span>등록 처리</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ar-03">
-                        <i data-lucide="folder-tree" class="node-icon"></i>
-                        <span>분류 체계</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ar-04">
-                        <i data-lucide="hard-drive" class="node-icon"></i>
-                        <span>디지털화</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ar-05">
-                        <i data-lucide="tags" class="node-icon"></i>
-                        <span>메타데이터</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ar-06">
-                        <i data-lucide="lock" class="node-icon"></i>
-                        <span>보존 처리</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ar-07">
-                        <i data-lucide="thermometer" class="node-icon"></i>
-                        <span>환경 모니터링</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ar-08">
-                        <i data-lucide="search" class="node-icon"></i>
-                        <span>검색 시스템</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ar-09">
-                        <i data-lucide="book-open" class="node-icon"></i>
-                        <span>열람 서비스</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ar-10">
-                        <i data-lucide="repeat" class="node-icon"></i>
-                        <span>대여 관리</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ar-11">
-                        <i data-lucide="pie-chart" class="node-icon"></i>
-                        <span>통계 보고</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. 출판 Publication (11 nodes) -->
-            <div class="category">
-                <div class="category-header" onclick="this.parentElement.classList.toggle('expanded')">
-                    <div class="category-title">
-                        <span>📖</span>
-                        <span>출판 Publication</span>
-                    </div>
-                    <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
-                </div>
-                <div class="subcategory-list">
-                    <div class="node-item" draggable="true" data-node-id="pb-01">
-                        <i data-lucide="lightbulb" class="node-icon"></i>
-                        <span>출판 기획</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="pb-02">
-                        <i data-lucide="file-text" class="node-icon"></i>
-                        <span>원고 수집</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="pb-03">
-                        <i data-lucide="edit" class="node-icon"></i>
-                        <span>편집 작업</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="pb-04">
-                        <i data-lucide="palette" class="node-icon"></i>
-                        <span>디자인</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="pb-05">
-                        <i data-lucide="image" class="node-icon"></i>
-                        <span>이미지 편집</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="pb-06">
-                        <i data-lucide="check-circle" class="node-icon"></i>
-                        <span>교정 교열</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="pb-07">
-                        <i data-lucide="printer" class="node-icon"></i>
-                        <span>인쇄 발주</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="pb-08">
-                        <i data-lucide="hash" class="node-icon"></i>
-                        <span>ISBN 등록</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="pb-09">
-                        <i data-lucide="package" class="node-icon"></i>
-                        <span>배포 계획</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="pb-10">
-                        <i data-lucide="megaphone" class="node-icon"></i>
-                        <span>홍보 활동</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="pb-11">
-                        <i data-lucide="shopping-cart" class="node-icon"></i>
-                        <span>판매 관리</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 5. 연구 Research (11 nodes) -->
-            <div class="category">
-                <div class="category-header" onclick="this.parentElement.classList.toggle('expanded')">
-                    <div class="category-title">
-                        <span>🔬</span>
-                        <span>연구 Research</span>
-                    </div>
-                    <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
-                </div>
-                <div class="subcategory-list">
-                    <div class="node-item" draggable="true" data-node-id="rs-01">
-                        <i data-lucide="target" class="node-icon"></i>
-                        <span>연구 주제</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="rs-02">
-                        <i data-lucide="book-open" class="node-icon"></i>
-                        <span>문헌 조사</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="rs-03">
-                        <i data-lucide="clipboard" class="node-icon"></i>
-                        <span>연구 계획</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="rs-04">
-                        <i data-lucide="database" class="node-icon"></i>
-                        <span>데이터 수집</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="rs-05">
-                        <i data-lucide="compass" class="node-icon"></i>
-                        <span>현장 조사</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="rs-06">
-                        <i data-lucide="trending-up" class="node-icon"></i>
-                        <span>분석 작업</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="rs-07">
-                        <i data-lucide="flask-conical" class="node-icon"></i>
-                        <span>실험 설계</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="rs-08">
-                        <i data-lucide="pen-tool" class="node-icon"></i>
-                        <span>논문 작성</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="rs-09">
-                        <i data-lucide="users" class="node-icon"></i>
-                        <span>동료 검토</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="rs-10">
-                        <i data-lucide="mic" class="node-icon"></i>
-                        <span>학회 발표</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="rs-11">
-                        <i data-lucide="send" class="node-icon"></i>
-                        <span>출판 신청</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 6. 관리 Admin (11 nodes) -->
-            <div class="category">
-                <div class="category-header" onclick="this.parentElement.classList.toggle('expanded')">
-                    <div class="category-title">
-                        <span>⚙️</span>
-                        <span>관리 Admin</span>
-                    </div>
-                    <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
-                </div>
-                <div class="subcategory-list">
-                    <div class="node-item" draggable="true" data-node-id="ad-01">
-                        <i data-lucide="dollar-sign" class="node-icon"></i>
-                        <span>예산 수립</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ad-02">
-                        <i data-lucide="users" class="node-icon"></i>
-                        <span>인사 관리</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ad-03">
-                        <i data-lucide="building" class="node-icon"></i>
-                        <span>시설 관리</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ad-04">
-                        <i data-lucide="monitor" class="node-icon"></i>
-                        <span>장비 관리</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ad-05">
-                        <i data-lucide="shopping-bag" class="node-icon"></i>
-                        <span>구매 발주</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ad-06">
-                        <i data-lucide="file-signature" class="node-icon"></i>
-                        <span>계약 관리</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ad-07">
-                        <i data-lucide="scale" class="node-icon"></i>
-                        <span>법무 검토</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ad-08">
-                        <i data-lucide="shield-check" class="node-icon"></i>
-                        <span>보험 관리</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ad-09">
-                        <i data-lucide="lock" class="node-icon"></i>
-                        <span>보안 관리</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ad-10">
-                        <i data-lucide="file-bar-chart" class="node-icon"></i>
-                        <span>재무 보고</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="ad-11">
-                        <i data-lucide="clipboard-list" class="node-icon"></i>
-                        <span>감사 대응</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 7. 참여 Engagement (11 nodes) -->
-            <div class="category">
-                <div class="category-header" onclick="this.parentElement.classList.toggle('expanded')">
-                    <div class="category-title">
-                        <span>👥</span>
-                        <span>참여 Engagement</span>
-                    </div>
-                    <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
-                </div>
-                <div class="subcategory-list">
-                    <div class="node-item" draggable="true" data-node-id="eg-01">
-                        <i data-lucide="bar-chart" class="node-icon"></i>
-                        <span>관람객 조사</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="eg-02">
-                        <i data-lucide="credit-card" class="node-icon"></i>
-                        <span>멤버십</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="eg-03">
-                        <i data-lucide="calendar-days" class="node-icon"></i>
-                        <span>이벤트 기획</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="eg-04">
-                        <i data-lucide="share-2" class="node-icon"></i>
-                        <span>SNS 운영</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="eg-05">
-                        <i data-lucide="mail" class="node-icon"></i>
-                        <span>뉴스레터</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="eg-06">
-                        <i data-lucide="handshake" class="node-icon"></i>
-                        <span>자원봉사</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="eg-07">
-                        <i data-lucide="heart" class="node-icon"></i>
-                        <span>후원 유치</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="eg-08">
-                        <i data-lucide="users-round" class="node-icon"></i>
-                        <span>커뮤니티</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="eg-09">
-                        <i data-lucide="message-circle" class="node-icon"></i>
-                        <span>피드백</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="eg-10">
-                        <i data-lucide="star" class="node-icon"></i>
-                        <span>만족도 조사</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="eg-11">
-                        <i data-lucide="gift" class="node-icon"></i>
-                        <span>리워드</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 8. 기술 Technology (11 nodes) -->
-            <div class="category">
-                <div class="category-header" onclick="this.parentElement.classList.toggle('expanded')">
-                    <div class="category-title">
-                        <span>💻</span>
-                        <span>기술 Technology</span>
-                    </div>
-                    <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
-                </div>
-                <div class="subcategory-list">
-                    <div class="node-item" draggable="true" data-node-id="tc-01">
-                        <i data-lucide="globe" class="node-icon"></i>
-                        <span>웹사이트</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="tc-02">
-                        <i data-lucide="smartphone" class="node-icon"></i>
-                        <span>모바일 앱</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="tc-03">
-                        <i data-lucide="glasses" class="node-icon"></i>
-                        <span>AR/VR</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="tc-04">
-                        <i data-lucide="database" class="node-icon"></i>
-                        <span>데이터베이스</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="tc-05">
-                        <i data-lucide="plug" class="node-icon"></i>
-                        <span>API 연동</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="tc-06">
-                        <i data-lucide="cpu" class="node-icon"></i>
-                        <span>AI 분석</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="tc-07">
-                        <i data-lucide="shield" class="node-icon"></i>
-                        <span>보안 시스템</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="tc-08">
-                        <i data-lucide="hard-drive" class="node-icon"></i>
-                        <span>백업 복구</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="tc-09">
-                        <i data-lucide="cloud" class="node-icon"></i>
-                        <span>클라우드</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="tc-10">
-                        <i data-lucide="radio" class="node-icon"></i>
-                        <span>IoT 센서</span>
-                    </div>
-                    <div class="node-item" draggable="true" data-node-id="tc-11">
-                        <i data-lucide="activity" class="node-icon"></i>
-                        <span>분석 대시보드</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Canvas Area -->
-    <div class="canvas-container" id="canvas-container">
-        <canvas id="canvas" role="img" aria-label="Workflow canvas - Interactive node editor"></canvas>
-        
-        <!-- Empty State - Removed per user request (교수님 요청으로 제거) -->
-    </div>
-    
-    <!-- Right Panel - Properties -->
-    <div class="right-panel" id="right-panel">
-        <div class="panel-header">
-            <h3 class="panel-title">⚙️ Properties</h3>
-        </div>
-        
-        <div class="properties-content" id="properties-content">
-            <p style="text-align: center; color: rgba(255, 255, 255, 0.4); padding: 2rem 0;">
-                Select a node to edit properties
-            </p>
-        </div>
-    </div>
-    
-    <!-- AI Assistant Sidebar -->
-    <div class="ai-sidebar" id="ai-sidebar">
-        <div class="ai-sidebar-header">
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #8b5cf6, #ec4899); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
-                    🤖
-                </div>
-                <div>
-                    <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0;">AI Assistant</h3>
-                    <p style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); margin: 0;">Powered by Google Gemini</p>
-                </div>
-            </div>
-            <button class="ai-close-btn" id="ai-close-btn">
-                <i data-lucide="x" style="width: 20px; height: 20px;"></i>
-            </button>
-        </div>
-        
-        <div class="ai-tabs" id="ai-tabs">
-            <button class="ai-tab active" data-tab="quick">
-                <i data-lucide="zap" style="width: 16px; height: 16px;"></i> Quick Actions
-            </button>
-            <button class="ai-tab" data-tab="gemini">
-                <i data-lucide="sparkles" style="width: 16px; height: 16px;"></i> Gemini
-            </button>
-            <button class="ai-tab" data-tab="workspace">
-                <i data-lucide="briefcase" style="width: 16px; height: 16px;"></i> Workspace
-            </button>
-        </div>
-        
-        <div class="ai-content" id="ai-content">
-            <!-- Quick Actions Tab -->
-            <div class="ai-tab-content active" id="tab-quick">
-                <!-- Dashboard Quick Links Section (NEW) -->
-                <div class="ai-section">
-                    <h4 class="ai-section-title">🚀 빠른 실행</h4>
-                    <div class="ai-action-grid">
-                        <button class="ai-action-card" onclick="window.location.href='/dashboard.html'">
-                            <i data-lucide="layout-dashboard" style="width: 24px; height: 24px; color: #8b5cf6;"></i>
-                            <span>대시보드</span>
-                        </button>
-                        <button class="ai-action-card" onclick="window.location.href='/budget.html'">
-                            <i data-lucide="dollar-sign" style="width: 24px; height: 24px; color: #a855f7;"></i>
-                            <span>예산 관리</span>
-                        </button>
-                        <button class="ai-action-card" onclick="window.location.href='/analytics-dashboard.html'">
-                            <i data-lucide="bar-chart-2" style="width: 24px; height: 24px; color: #eab308;"></i>
-                            <span>분석</span>
-                        </button>
-                        <button class="ai-action-card" onclick="window.location.href='/workflow-tools.html'">
-                            <i data-lucide="wrench" style="width: 24px; height: 24px; color: #6366f1;"></i>
-                            <span>도구</span>
-                        </button>
-                    </div>
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Panel - Node Library -->
+            <div class="left-panel">
+                <div class="panel-header">
+                    <i data-lucide="layers" style="width: 16px; height: 16px; margin-right: 8px;"></i>
+                    노드 라이브러리
                 </div>
                 
-                <div class="ai-section">
-                    <h4 class="ai-section-title">🏷️ Content Generation</h4>
-                    <div class="ai-action-grid">
-                        <button class="ai-action-card" onclick="aiGenerateLabel()">
-                            <i data-lucide="tag" style="width: 24px; height: 24px; color: #f59e0b;"></i>
-                            <span>라벨 생성</span>
-                        </button>
-                        <button class="ai-action-card" onclick="aiGenerateSNS()">
-                            <i data-lucide="share-2" style="width: 24px; height: 24px; color: #3b82f6;"></i>
-                            <span>SNS 콘텐츠</span>
-                        </button>
-                        <button class="ai-action-card" onclick="aiGenerateEmail()">
-                            <i data-lucide="mail" style="width: 24px; height: 24px; color: #10b981;"></i>
-                            <span>이메일 초안</span>
-                        </button>
-                        <button class="ai-action-card" onclick="aiGenerateReport()">
-                            <i data-lucide="file-text" style="width: 24px; height: 24px; color: #ec4899;"></i>
-                            <span>일일 리포트</span>
-                        </button>
-                    </div>
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="노드 검색... (Cmd+K)">
                 </div>
                 
-                <div class="ai-section">
-                    <h4 class="ai-section-title">✨ Smart Features</h4>
-                    <div class="ai-action-grid">
-                        <button class="ai-action-card" onclick="aiAnalyzeNode()">
-                            <i data-lucide="search" style="width: 24px; height: 24px;"></i>
-                            <span>노드 분석</span>
-                        </button>
-                        <button class="ai-action-card" onclick="aiImproveText()">
-                            <i data-lucide="wand-2" style="width: 24px; height: 24px;"></i>
-                            <span>텍스트 개선</span>
-                        </button>
-                        <button class="ai-action-card" onclick="aiTranslate()">
-                            <i data-lucide="languages" style="width: 24px; height: 24px;"></i>
-                            <span>번역</span>
-                        </button>
-                        <button class="ai-action-card" onclick="aiSummarize()">
-                            <i data-lucide="minimize-2" style="width: 24px; height: 24px;"></i>
-                            <span>요약</span>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="ai-section">
-                    <div class="ai-selected-node" id="ai-selected-node">
-                        <i data-lucide="info" style="width: 16px; height: 16px;"></i>
-                        <span>노드를 선택하여 AI 기능 사용</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Gemini Tab -->
-            <div class="ai-tab-content" id="tab-gemini">
-                <div class="ai-section">
-                    <h4 class="ai-section-title">💬 Chat with Gemini 2.0</h4>
-                    <textarea class="ai-textarea" id="gemini-input" placeholder="Ask Gemini anything..." rows="4"></textarea>
-                    <button class="ai-generate-btn" onclick="aiGeminiGenerate()">
-                        <i data-lucide="send" style="width: 16px; height: 16px;"></i> Generate
-                    </button>
-                </div>
-                
-                <div class="ai-section">
-                    <h4 class="ai-section-title">📄 Result</h4>
-                    <div class="ai-result" id="gemini-result">
-                        Results will appear here...
-                    </div>
-                    <button class="ai-insert-btn" onclick="aiInsertToNode()" style="display: none;" id="gemini-insert-btn">
-                        <i data-lucide="arrow-down" style="width: 16px; height: 16px;"></i> Insert to Selected Node
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Workspace Tab -->
-            <div class="ai-tab-content" id="tab-workspace">
-                <div class="ai-section">
-                    <h4 class="ai-section-title">📝 Google Docs</h4>
-                    <button class="ai-action-card-large" onclick="aiCreateDoc()">
-                        <i data-lucide="file-text" style="width: 24px; height: 24px;"></i>
-                        <span>Create Document</span>
-                    </button>
-                </div>
-                
-                <div class="ai-section">
-                    <h4 class="ai-section-title">📧 Gmail</h4>
-                    <button class="ai-action-card-large" onclick="aiDraftEmail()">
-                        <i data-lucide="mail-open" style="width: 24px; height: 24px;"></i>
-                        <span>Draft Email</span>
-                    </button>
-                </div>
-                
-                <div class="ai-section">
-                    <h4 class="ai-section-title">📅 Calendar</h4>
-                    <button class="ai-action-card-large" onclick="aiCreateEvent()">
-                        <i data-lucide="calendar-plus" style="width: 24px; height: 24px;"></i>
-                        <span>Create Event</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Minimap -->
-    <div class="minimap" id="minimap">
-        <canvas id="minimap-canvas" width="200" height="150"></canvas>
-    </div>
-    
-    <!-- Floating Center Toolbar REMOVED - 교수님 요청: 화면 정중앙 팔렛트 표시 삭제 -->
-    
-    <!-- AI Quick Action Panel (NEW) -->
-    <div class="ai-quick-panel" id="ai-quick-panel" role="complementary" aria-label="AI Assistant">
-        <button class="ai-quick-toggle" id="ai-quick-toggle" title="AI Quick Actions" aria-label="Open AI Quick Actions" aria-expanded="false">
-            <i data-lucide="sparkles" style="width: 24px; height: 24px; color: white;" aria-hidden="true"></i>
-        </button>
-        
-        <div class="ai-quick-actions" id="ai-quick-actions">
-            <div class="ai-quick-header">
-                <i data-lucide="sparkles" style="width: 16px; height: 16px;"></i>
-                <span>AI Quick Actions</span>
-            </div>
-            
-            <button class="ai-quick-action" data-action="gemini-generate" title="Generate with Gemini">
-                <i data-lucide="sparkles" style="width: 20px; height: 20px;"></i>
-                <span>Generate</span>
-            </button>
-            
-            <button class="ai-quick-action" data-action="gemini-improve" title="Improve Text">
-                <i data-lucide="wand-2" style="width: 20px; height: 20px;"></i>
-                <span>Improve</span>
-            </button>
-            
-            <button class="ai-quick-action" data-action="gemini-translate" title="Translate">
-                <i data-lucide="languages" style="width: 20px; height: 20px;"></i>
-                <span>Translate</span>
-            </button>
-            
-            <div style="height: 1px; background: #e5e7eb; margin: 8px 0;"></div>
-            
-            <button class="ai-quick-action" data-action="google-docs" title="Create Google Doc">
-                <i data-lucide="file-text" style="width: 20px; height: 20px;"></i>
-                <span>Google Doc</span>
-            </button>
-            
-            <button class="ai-quick-action" data-action="gmail-draft" title="Draft Email">
-                <i data-lucide="mail" style="width: 20px; height: 20px;"></i>
-                <span>Gmail</span>
-            </button>
-            
-            <button class="ai-quick-action" data-action="calendar-event" title="Create Event">
-                <i data-lucide="calendar-plus" style="width: 20px; height: 20px;"></i>
-                <span>Calendar</span>
-            </button>
-        </div>
-    </div>
-    
-    <!-- Context Menu -->
-    <div class="context-menu" id="context-menu">
-        <div class="context-menu-header">
-            <i data-lucide="box" style="width: 16px; height: 16px;"></i>
-            <span id="context-menu-title">Node Actions</span>
-        </div>
-        <div class="context-menu-divider"></div>
-        <button class="context-menu-item" onclick="contextMenuEdit()">
-            <i data-lucide="pencil" style="width: 16px; height: 16px;"></i>
-            <span>Edit</span>
-        </button>
-        <button class="context-menu-item" onclick="contextMenuDuplicate()">
-            <i data-lucide="copy" style="width: 16px; height: 16px;"></i>
-            <span>Duplicate</span>
-        </button>
-        <div class="context-menu-divider"></div>
-        <button class="context-menu-item ai-item" onclick="contextMenuAIGenerate()">
-            <i data-lucide="bot" style="width: 16px; height: 16px;"></i>
-            <span>AI Generate...</span>
-            <i data-lucide="chevron-right" style="margin-left: auto; width: 12px; height: 12px;"></i>
-        </button>
-        <div class="context-submenu" id="ai-submenu">
-            <button class="context-menu-item" onclick="contextMenuAILabel()">
-                <i data-lucide="tag" style="width: 16px; height: 16px;"></i>
-                <span>Exhibition Label</span>
-            </button>
-            <button class="context-menu-item" onclick="contextMenuAISNS()">
-                <i data-lucide="share-2" style="width: 16px; height: 16px;"></i>
-                <span>SNS Post</span>
-            </button>
-            <button class="context-menu-item" onclick="contextMenuAIEmail()">
-                <i data-lucide="mail" style="width: 16px; height: 16px;"></i>
-                <span>Email Draft</span>
-            </button>
-            <button class="context-menu-item" onclick="contextMenuAIImprove()">
-                <i data-lucide="wand-2" style="width: 16px; height: 16px;"></i>
-                <span>Improve Text</span>
-            </button>
-            <button class="context-menu-item" onclick="contextMenuAITranslate()">
-                <i data-lucide="languages" style="width: 16px; height: 16px;"></i>
-                <span>Translate</span>
-            </button>
-        </div>
-        <div class="context-menu-divider"></div>
-        <button class="context-menu-item danger" onclick="contextMenuDelete()">
-            <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
-            <span>Delete</span>
-        </button>
-    </div>
-    
-    <!-- Scripts -->
-    <script src="/static/js/api-client-d1.js"></script>
-    <script src="/static/js/core/i18n.js"></script>
-    <script src="/static/js/core/canvas-engine.js"></script>
-    <script src="/static/js/core/node-execution-visualizer.js"></script>
-    <script src="/static/js/core/workflow-templates.js"></script>
-    <script src="/static/js/core/node-library-search.js"></script>
-    <script src="/static/js/core/ai-orchestrator.js"></script>
-    <script src="/static/js/core/workflow-execution-panel.js"></script>
-    <script src="/static/js/core/canvas-onboarding-minimal.js"></script>
-    <script src="/static/js/mobile/canvas-mobile.js"></script>
-    <script src="/static/js/node-library-88.js"></script>
-    <script src="/static/js/google-mcp-client.js"></script>
-    <script src="/static/js/node-panel-enhanced.js"></script>
-    <script src="/static/js/export-import.js"></script>
-    <script src="/static/js/curator-ai-workflows.js"></script>
-    <script src="/static/js/node-connection-enhanced.js"></script>
-    <script src="/static/js/properties-panel-enhanced.js"></script>
-    <script src="/static/js/collaboration.js"></script>
-    <script src="/static/js/left-panel-figma-style.js"></script>
-    <script src="/static/js/floating-toolbar-advanced.js"></script>
-    <script src="/static/js/figma-complete-features.js"></script>
-    <script src="/static/js/pages/canvas-v3-complete.js"></script>
-    <script src="/static/js/pages/canvas-v3.js"></script>
-    <script>
-        // Initialize Canvas V3
-        document.addEventListener('DOMContentLoaded', () => {
-            // Get project ID and module from URL
-            const params = new URLSearchParams(window.location.search);
-            const projectId = params.get('project');
-            const module = params.get('module');
-            
-            // Store module filter in CanvasV3 before initialization
-            if (module) {
-                console.log('🎯 Module filter detected:', module);
-                CanvasV3.moduleFilter = module;
-                CanvasV3.selectedCategory = module;
-            }
-            
-            if (!projectId) {
-                console.log('⚠️ No project ID in URL, loading first available project...');
-                // Try to load the first project from the list
-                loadFirstProject();
-                return;
-            }
-            
-            // Load project and initialize
-            loadProjectAndInit(projectId);
-        });
-        
-        async function loadFirstProject() {
-            try {
-                console.log('🔍 Loading first available project...');
-                
-                // Wait for apiClient to be ready
-                if (!window.apiClient) {
-                    console.log('⏳ Waiting for API Client...');
-                    await new Promise(resolve => setTimeout(resolve, 100));
-                }
-                
-                if (!window.apiClient || !window.apiClient.projects) {
-                    console.log('⚠️ API Client not available, creating default project');
-                    createDefaultProjectAndInit();
-                    return;
-                }
-                
-                const result = await window.apiClient.projects.list();
-                
-                if (result.success && result.data && result.data.length > 0) {
-                    const firstProject = result.data[0];
-                    console.log('✅ Found first project:', firstProject);
-                    
-                    // Redirect to canvas-v3 with first project ID
-                    window.location.href = `/canvas-v3.html?project=${firstProject.id}`;
-                } else {
-                    // No projects found, create default project
-                    console.log('⚠️ No projects found, creating default project');
-                    createDefaultProjectAndInit();
-                }
-            } catch (error) {
-                console.error('Error loading projects:', error);
-                createDefaultProjectAndInit();
-            }
-        }
-        
-        function createDefaultProjectAndInit() {
-            // Create a default project for standalone mode
-            const defaultProject = {
-                id: Date.now(),
-                name: 'New Workflow',
-                description: 'Clean empty canvas',
-                created_at: new Date().toISOString()
-            };
-            
-            // Store in session
-            sessionStorage.setItem('museflow_current_project', JSON.stringify(defaultProject));
-            
-            // Initialize canvas (샘플 워크플로우는 SampleWorkflowGenerator가 자동 생성)
-            const urlParams = new URLSearchParams(window.location.search);
-            urlParams.set('project', defaultProject.id);
-            window.history.replaceState({}, '', `${window.location.pathname}?${urlParams}`);
-            
-            // Start with empty canvas - sample will be auto-created if needed
-            initializeEmptyCanvas(defaultProject.id);
-        }
-        
-        function initializeEmptyCanvas(projectId) {
-            console.log('✅ Initializing canvas for project:', projectId);
-            
-            // Check if we need to create sample workflow
-            const hasSample = localStorage.getItem('museflow_canvas_has_sample');
-            
-            // Initialize CanvasV3
-            if (window.CanvasV3) {
-                // If no sample exists, create it now
-                if (!hasSample || hasSample !== 'true') {
-                    console.log('🎨 Creating sample workflow for first-time user...');
-                    
-                    // Create sample nodes directly
-                    CanvasV3.nodes = [
-                        {
-                            id: 'sample-1',
-                            type: 'ex-01',
-                            title: '전시 주제 선정',
-                            description: '전시의 핵심 주제를 정의합니다',
-                            category: 'exhibition',
-                            x: 100,
-                            y: 150,
-                            width: 200,
-                            height: 120,
-                            selected: false
-                        },
-                        {
-                            id: 'sample-2',
-                            type: 'ex-02',
-                            title: '작품 선정',
-                            description: '전시 주제에 맞는 작품을 선별합니다',
-                            category: 'exhibition',
-                            x: 350,
-                            y: 150,
-                            width: 200,
-                            height: 120,
-                            selected: false
-                        },
-                        {
-                            id: 'sample-3',
-                            type: 'ex-03',
-                            title: '공간 배치 계획',
-                            description: '전시 공간의 동선과 배치를 설계합니다',
-                            category: 'exhibition',
-                            x: 600,
-                            y: 150,
-                            width: 200,
-                            height: 120,
-                            selected: false
-                        },
-                        {
-                            id: 'sample-4',
-                            type: 'pr-01',
-                            title: '마케팅 계획',
-                            description: '전시 홍보를 위한 마케팅 전략을 수립합니다',
-                            category: 'program',
-                            x: 225,
-                            y: 330,
-                            width: 200,
-                            height: 120,
-                            selected: false
-                        },
-                        {
-                            id: 'sample-5',
-                            type: 'pr-02',
-                            title: '전시 오픈',
-                            description: '전시를 정식으로 오픈합니다',
-                            category: 'program',
-                            x: 475,
-                            y: 330,
-                            width: 200,
-                            height: 120,
-                            selected: false
-                        }
-                    ];
-                    
-                    CanvasV3.connections = [
-                        {
-                            id: 'sample-conn-1',
-                            from: 'sample-1',
-                            to: 'sample-2',
-                            fromHandle: 'right',
-                            toHandle: 'left'
-                        },
-                        {
-                            id: 'sample-conn-2',
-                            from: 'sample-2',
-                            to: 'sample-3',
-                            fromHandle: 'right',
-                            toHandle: 'left'
-                        },
-                        {
-                            id: 'sample-conn-3',
-                            from: 'sample-2',
-                            to: 'sample-4',
-                            fromHandle: 'bottom',
-                            toHandle: 'top'
-                        },
-                        {
-                            id: 'sample-conn-4',
-                            from: 'sample-3',
-                            to: 'sample-5',
-                            fromHandle: 'bottom',
-                            toHandle: 'top'
-                        }
-                    ];
-                    
-                    // Mark as created
-                    localStorage.setItem('museflow_canvas_has_sample', 'true');
-                    
-                    console.log('✅ Sample workflow created:', CanvasV3.nodes.length, 'nodes');
-                } else {
-                    // No sample needed, start empty
-                    CanvasV3.nodes = [];
-                    CanvasV3.connections = [];
-                }
-                
-                // Initialize canvas
-                CanvasV3.init();
-            }
-        }
-        
-        function showEmptyState() {
-            const message = document.createElement('div');
-            message.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: rgba(139, 92, 246, 0.1);
-                backdrop-filter: blur(20px);
-                padding: 3rem;
-                border-radius: 20px;
-                border: 1px solid rgba(139, 92, 246, 0.3);
-                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-                text-align: center;
-                z-index: 10000;
-                color: white;
-                max-width: 500px;
-            `;
-            message.innerHTML = `
-                <i data-lucide="workflow" style="width: 64px; height: 64px; margin-bottom: 1.5rem; display: block; opacity: 0.6;"></i>
-                <div style="font-weight: 600; font-size: 1.5rem; margin-bottom: 1rem;">프로젝트가 없습니다</div>
-                <div style="font-size: 1rem; opacity: 0.8; margin-bottom: 2rem; line-height: 1.6;">
-                    먼저 대시보드에서 프로젝트를 생성해주세요.<br>
-                    프로젝트를 생성한 후 다시 Canvas를 열어주세요.
-                </div>
-                <a href="/dashboard.html" style="
-                    display: inline-block;
-                    padding: 0.75rem 2rem;
-                    background: linear-gradient(135deg, var(--museum-purple), var(--museum-pink));
-                    border-radius: 12px;
-                    text-decoration: none;
-                    color: white;
-                    font-weight: 600;
-                    transition: all 0.3s;
-                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 30px rgba(139, 92, 246, 0.4)'"
-                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                    <i data-lucide="arrow-left" style="width: 16px; height: 16px; margin-right: 0.5rem; display: inline-block; vertical-align: middle;"></i>
-                    대시보드로 이동
-                </a>
-            `;
-            // Re-initialize Lucide icons for dynamically added content
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-            document.body.appendChild(message);
-        }
-        
-        async function loadProjectAndInit(projectId) {
-            try {
-                // Try to fetch project details from API if available
-                if (window.apiClient && window.apiClient.projects) {
-                    const result = await window.apiClient.projects.get(projectId);
-                    
-                    if (result.success && result.data) {
-                        // Store project in Canvas V3
-                        CanvasV3.currentProject = result.data;
-                        
-                        // Update toolbar
-                        document.getElementById('project-title').textContent = result.data.title;
-                        
-                        // Initialize Canvas V3
-                        await CanvasV3.init();
-                        
-                        console.log('✅ Canvas V3 initialized with project:', result.data);
-                        return;
-                    }
-                }
-                
-                // Fallback: Use default project from sessionStorage
-                const storedProject = sessionStorage.getItem('museflow_current_project');
-                if (storedProject) {
-                    CanvasV3.currentProject = JSON.parse(storedProject);
-                    
-                    // Update toolbar
-                    document.getElementById('project-title').textContent = CanvasV3.currentProject.name;
-                    
-                    // Initialize Canvas V3
-                    await CanvasV3.init();
-                    
-                    console.log('✅ Canvas V3 initialized with default project:', CanvasV3.currentProject.name);
-                } else {
-                    throw new Error('No project data available');
-                }
-            } catch (error) {
-                console.error('Error loading project:', error);
-                // Don't show alert, just initialize with default
-                console.log('⚠️ Initializing with empty canvas...');
-                await CanvasV3.init();
-            }
-        }
-        
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            // Tool shortcuts
-            if (e.key === 'v' || e.key === 'V') {
-                CanvasV3.setTool('select');
-            } else if (e.key === 'h' || e.key === 'H') {
-                CanvasV3.setTool('hand');
-            } else if (e.key === 'c' || e.key === 'C') {
-                CanvasV3.setTool('connection');
-            }
-            
-            // Zoom shortcuts
-            if (e.key === '+' || e.key === '=') {
-                CanvasV3.zoomIn();
-            } else if (e.key === '-' || e.key === '_') {
-                CanvasV3.zoomOut();
-            } else if (e.key === '0') {
-                CanvasV3.zoomReset();
-            }
-            
-            // Save shortcut
-            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-                e.preventDefault();
-                CanvasV3.saveProjectData();
-            }
-            
-            // Delete shortcut
-            if (e.key === 'Delete' || e.key === 'Backspace') {
-                CanvasV3.deleteSelectedNodes();
-            }
-        });
-        
-        // Toolbar buttons
-        document.getElementById('tool-select').addEventListener('click', () => CanvasV3.setTool('select'));
-        document.getElementById('tool-hand').addEventListener('click', () => CanvasV3.setTool('hand'));
-        document.getElementById('tool-connection').addEventListener('click', () => CanvasV3.setTool('connection'));
-        
-        document.getElementById('tool-zoom-in').addEventListener('click', () => CanvasV3.zoomIn());
-        document.getElementById('tool-zoom-out').addEventListener('click', () => CanvasV3.zoomOut());
-        document.getElementById('tool-zoom-reset').addEventListener('click', () => CanvasV3.zoomReset());
-        
-        document.getElementById('toggle-left-panel').addEventListener('click', () => {
-            const leftPanel = document.getElementById('left-panel');
-            const canvasContainer = document.getElementById('canvas-container');
-            
-            leftPanel.classList.toggle('collapsed');
-            canvasContainer.classList.toggle('left-collapsed');
-            
-            // 모바일: 패널 열릴 때 body에 클래스 추가 (배경 어두워짐)
-            if (window.innerWidth <= 768) {
-                if (!leftPanel.classList.contains('collapsed')) {
-                    document.body.classList.add('panel-open');
-                    // 배경 클릭 시 패널 닫기
-                    setTimeout(() => {
-                        document.addEventListener('click', closePanelOnBackdrop);
-                    }, 100);
-                } else {
-                    document.body.classList.remove('panel-open');
-                    document.removeEventListener('click', closePanelOnBackdrop);
-                }
-            }
-        });
-        
-        document.getElementById('toggle-right-panel').addEventListener('click', () => {
-            const rightPanel = document.getElementById('right-panel');
-            const canvasContainer = document.getElementById('canvas-container');
-            
-            rightPanel.classList.toggle('collapsed');
-            canvasContainer.classList.toggle('right-collapsed');
-            
-            // 모바일: 패널 열릴 때 body에 클래스 추가
-            if (window.innerWidth <= 768) {
-                if (!rightPanel.classList.contains('collapsed')) {
-                    document.body.classList.add('panel-open');
-                    setTimeout(() => {
-                        document.addEventListener('click', closePanelOnBackdrop);
-                    }, 100);
-                } else {
-                    document.body.classList.remove('panel-open');
-                    document.removeEventListener('click', closePanelOnBackdrop);
-                }
-            }
-        });
-        
-        // 모바일: 배경 클릭 시 패널 닫기
-        function closePanelOnBackdrop(e) {
-            const leftPanel = document.getElementById('left-panel');
-            const rightPanel = document.getElementById('right-panel');
-            
-            if (!leftPanel.contains(e.target) && 
-                !rightPanel.contains(e.target) && 
-                !e.target.closest('#toggle-left-panel') && 
-                !e.target.closest('#toggle-right-panel')) {
-                
-                leftPanel.classList.add('collapsed');
-                rightPanel.classList.add('collapsed');
-                document.body.classList.remove('panel-open');
-                document.removeEventListener('click', closePanelOnBackdrop);
-            }
-        }
-        
-        // 모바일: 터치 제스처 지원 (스와이프로 패널 열기/닫기)
-        if (window.innerWidth <= 768) {
-            let touchStartX = 0;
-            let touchStartY = 0;
-            const swipeThreshold = 50; // 최소 스와이프 거리 (px)
-            
-            document.addEventListener('touchstart', (e) => {
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-            }, { passive: true });
-            
-            document.addEventListener('touchend', (e) => {
-                if (!e.changedTouches || e.changedTouches.length === 0) return;
-                
-                const touchEndX = e.changedTouches[0].clientX;
-                const touchEndY = e.changedTouches[0].clientY;
-                const deltaX = touchEndX - touchStartX;
-                const deltaY = touchEndY - touchStartY;
-                
-                // 수평 스와이프가 수직보다 클 때만
-                if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > swipeThreshold) {
-                    const leftPanel = document.getElementById('left-panel');
-                    const rightPanel = document.getElementById('right-panel');
-                    
-                    // 왼쪽에서 오른쪽 스와이프: Left Panel 열기
-                    if (deltaX > 0 && touchStartX < 50) {
-                        leftPanel.classList.remove('collapsed');
-                        document.body.classList.add('panel-open');
-                    }
-                    // 오른쪽에서 왼쪽 스와이프: Right Panel 열기
-                    else if (deltaX < 0 && touchStartX > window.innerWidth - 50) {
-                        rightPanel.classList.remove('collapsed');
-                        document.body.classList.add('panel-open');
-                    }
-                    // 패널 위에서 반대 방향 스와이프: 패널 닫기
-                    else if (deltaX < 0 && !leftPanel.classList.contains('collapsed')) {
-                        leftPanel.classList.add('collapsed');
-                        document.body.classList.remove('panel-open');
-                    }
-                    else if (deltaX > 0 && !rightPanel.classList.contains('collapsed')) {
-                        rightPanel.classList.add('collapsed');
-                        document.body.classList.remove('panel-open');
-                    }
-                }
-            }, { passive: true });
-        }
-        
-        document.getElementById('save-workflow').addEventListener('click', () => CanvasV3.saveProjectData());
-        
-        // Project Switch Dropdown
-        document.getElementById('project-switch-btn')?.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            
-            // Fetch user projects
-            const userId = localStorage.getItem('userId') || '2';
-            try {
-                const response = await fetch(`/api/projects?userId=${userId}`);
-                const projects = await response.json();
-                
-                // Create dropdown menu
-                const dropdown = document.createElement('div');
-                dropdown.id = 'project-dropdown';
-                dropdown.style.cssText = `
-                    position: absolute;
-                    top: 100%;
-                    left: 0;
-                    margin-top: 0.5rem;
-                    background: rgba(10, 10, 15, 0.95);
-                    backdrop-filter: blur(20px);
-                    border: 1px solid rgba(139, 92, 246, 0.3);
-                    border-radius: 12px;
-                    padding: 0.5rem;
-                    min-width: 250px;
-                    max-height: 400px;
-                    overflow-y: auto;
-                    z-index: 1001;
-                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-                `;
-                
-                // Add projects to dropdown
-                if (projects && projects.length > 0) {
-                    projects.forEach(project => {
-                        const item = document.createElement('div');
-                        item.style.cssText = `
-                            padding: 0.75rem;
-                            cursor: pointer;
-                            border-radius: 8px;
-                            transition: all 0.2s;
-                            display: flex;
-                            align-items: center;
-                            gap: 0.5rem;
-                        `;
-                        
-                        item.innerHTML = `
-                            <i data-lucide="folder" style="width: 18px; height: 18px; color: var(--museum-purple);"></i>
-                            <div>
-                                <div style="font-weight: 500;">${project.title || project.name}</div>
-                                <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5);">
-                                    ${project.type || 'Project'}
-                                </div>
-                            </div>
-                        `;
-                        // Re-initialize Lucide icons
-                        if (typeof lucide !== 'undefined') {
-                            lucide.createIcons();
-                        }
-                        
-                        item.addEventListener('mouseenter', () => {
-                            item.style.background = 'rgba(139, 92, 246, 0.2)';
-                        });
-                        
-                        item.addEventListener('mouseleave', () => {
-                            item.style.background = 'transparent';
-                        });
-                        
-                        item.addEventListener('click', () => {
-                            // Switch to selected project
-                            const urlParams = new URLSearchParams(window.location.search);
-                            urlParams.set('projectId', project.id);
-                            window.location.search = urlParams.toString();
-                        });
-                        
-                        dropdown.appendChild(item);
-                    });
-                } else {
-                    dropdown.innerHTML = `
-                        <div style="padding: 1rem; text-align: center; color: rgba(255, 255, 255, 0.5);">
-                            No projects found
+                <div class="nodes-list">
+                    <!-- Exhibition Category -->
+                    <div class="node-category">
+                        <div class="category-header">전시 Exhibition</div>
+                        <div class="node-item" draggable="true" data-type="ex-01">
+                            <i data-lucide="lightbulb" class="node-icon"></i>
+                            <span>전시 주제 선정</span>
                         </div>
-                    `;
-                }
-                
-                // Remove existing dropdown
-                document.getElementById('project-dropdown')?.remove();
-                
-                // Add new dropdown
-                document.querySelector('.project-info').appendChild(dropdown);
-                
-                // Close dropdown on click outside
-                const closeDropdown = (event) => {
-                    if (!dropdown.contains(event.target) && event.target !== e.target) {
-                        dropdown.remove();
-                        document.removeEventListener('click', closeDropdown);
-                    }
-                };
-                
-                setTimeout(() => document.addEventListener('click', closeDropdown), 100);
-                
-            } catch (error) {
-                console.error('Failed to fetch projects:', error);
-                
-                // Show default project option
-                const dropdown = document.createElement('div');
-                dropdown.id = 'project-dropdown';
-                dropdown.style.cssText = `
-                    position: absolute;
-                    top: 100%;
-                    left: 0;
-                    margin-top: 0.5rem;
-                    background: rgba(10, 10, 15, 0.95);
-                    backdrop-filter: blur(20px);
-                    border: 1px solid rgba(139, 92, 246, 0.3);
-                    border-radius: 12px;
-                    padding: 0.5rem;
-                    min-width: 250px;
-                    z-index: 1001;
-                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-                `;
-                
-                dropdown.innerHTML = `
-                    <div style="padding: 1rem; text-align: center; color: rgba(255, 255, 255, 0.7);">
-                        <i data-lucide="info" style="width: 20px; height: 20px; color: var(--museum-purple); margin-bottom: 0.5rem; display: inline-block;"></i>
-                        <div style="font-size: 0.9rem;">Using default project</div>
-                        <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-top: 0.25rem;">
-                            Connect to dashboard to see all projects
+                        <div class="node-item" draggable="true" data-type="ex-02">
+                            <i data-lucide="image" class="node-icon"></i>
+                            <span>작품 선정</span>
+                        </div>
+                        <div class="node-item" draggable="true" data-type="ex-03">
+                            <i data-lucide="layout" class="node-icon"></i>
+                            <span>공간 배치 계획</span>
                         </div>
                     </div>
-                `;
-                // Re-initialize Lucide icons
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                }
-                
-                document.getElementById('project-dropdown')?.remove();
-                document.querySelector('.project-info').appendChild(dropdown);
-                
-                const closeDropdown = (event) => {
-                    if (!dropdown.contains(event.target) && event.target !== e.target) {
-                        dropdown.remove();
-                        document.removeEventListener('click', closeDropdown);
-                    }
-                };
-                
-                setTimeout(() => document.addEventListener('click', closeDropdown), 100);
-            }
-        });
-        
-        // Auto-save System
-        let saveTimeout;
-        let lastSavedData = null;
-        
-        const updateSaveStatus = (status, message) => {
-            const saveStatus = document.getElementById('save-status');
-            if (!saveStatus) return;
+                    
+                    <!-- Program Category -->
+                    <div class="node-category">
+                        <div class="category-header">프로그램 Program</div>
+                        <div class="node-item" draggable="true" data-type="pr-01">
+                            <i data-lucide="megaphone" class="node-icon"></i>
+                            <span>마케팅 계획</span>
+                        </div>
+                        <div class="node-item" draggable="true" data-type="pr-02">
+                            <i data-lucide="calendar" class="node-icon"></i>
+                            <span>전시 오픈</span>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Category -->
+                    <div class="node-category">
+                        <div class="category-header">AI 도구</div>
+                        <div class="node-item" draggable="true" data-type="ai-01">
+                            <i data-lucide="sparkles" class="node-icon"></i>
+                            <span>AI 텍스트 생성</span>
+                        </div>
+                        <div class="node-item" draggable="true" data-type="ai-02">
+                            <i data-lucide="file-text" class="node-icon"></i>
+                            <span>Google Docs 저장</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            saveStatus.className = 'save-status ' + status;
-            
-            const iconMap = {
-                saved: 'check-circle',
-                saving: 'loader',
-                error: 'alert-circle'
-            };
-            
-            const icon = iconMap[status] || iconMap.saved;
-            const spinClass = status === 'saving' ? ' lucide-spin' : '';
-            
-            saveStatus.innerHTML = `
-                <i data-lucide="${icon}" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle;" class="${spinClass}"></i>
-                <span>${message}</span>
-            `;
-            
-            // Re-initialize Lucide icons
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-        };
-        
-        const autoSave = async () => {
-            try {
-                updateSaveStatus('saving', 'Saving...');
+            <!-- Canvas Container -->
+            <div class="canvas-container" id="canvas-container">
+                <canvas id="canvas"></canvas>
                 
-                // Get current canvas data
-                const currentData = JSON.stringify({
-                    nodes: CanvasV3.nodes || [],
-                    connections: CanvasV3.connections || []
-                });
+                <!-- Sample Nodes (will be generated by JS) -->
+                <div id="nodes-container"></div>
                 
-                // Check if data changed
-                if (currentData === lastSavedData) {
-                    updateSaveStatus('saved', 'Saved');
-                    return;
-                }
-                
-                // Save data
-                await CanvasV3.saveProjectData();
-                lastSavedData = currentData;
-                
-                updateSaveStatus('saved', 'Saved');
-                
-            } catch (error) {
-                console.error('Auto-save failed:', error);
-                updateSaveStatus('error', 'Save failed');
-            }
-        };
-        
-        // Trigger auto-save on changes (debounced)
-        const triggerAutoSave = () => {
-            clearTimeout(saveTimeout);
-            saveTimeout = setTimeout(autoSave, 2000); // 2 seconds debounce
-        };
-        
-        // Monitor canvas changes
-        if (window.CanvasV3) {
-            const originalAddNode = CanvasV3.addNode;
-            const originalDeleteNode = CanvasV3.deleteNode;
-            const originalAddConnection = CanvasV3.addConnection;
+                <!-- Zoom Controls -->
+                <div class="zoom-controls">
+                    <button class="zoom-btn" id="zoom-out">
+                        <i data-lucide="minus" style="width: 16px; height: 16px;"></i>
+                    </button>
+                    <div class="zoom-level" id="zoom-level">100%</div>
+                    <button class="zoom-btn" id="zoom-in">
+                        <i data-lucide="plus" style="width: 16px; height: 16px;"></i>
+                    </button>
+                    <button class="zoom-btn" id="zoom-fit">
+                        <i data-lucide="maximize-2" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </div>
+            </div>
             
-            CanvasV3.addNode = function(...args) {
-                const result = originalAddNode.apply(this, args);
-                triggerAutoSave();
-                return result;
-            };
-            
-            CanvasV3.deleteNode = function(...args) {
-                const result = originalDeleteNode.apply(this, args);
-                triggerAutoSave();
-                return result;
-            };
-            
-            CanvasV3.addConnection = function(...args) {
-                const result = originalAddConnection.apply(this, args);
-                triggerAutoSave();
-                return result;
-            };
-        }
-        
-        // Initial save status
-        updateSaveStatus('saved', 'Saved');
-    </script>
+            <!-- Right Panel - Properties -->
+            <div class="right-panel">
+                <div class="panel-header">
+                    <i data-lucide="sliders" style="width: 16px; height: 16px; margin-right: 8px;"></i>
+                    속성
+                </div>
+                
+                <div class="properties-content">
+                    <div class="empty-state">
+                        <i data-lucide="mouse-pointer-click" style="width: 48px; height: 48px; margin: 0 auto 16px; opacity: 0.3;"></i>
+                        <p>노드를 선택하면<br>속성을 편집할 수 있습니다</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
-    <!-- AI Assistant Script -->
     <script>
-        // Context Menu System
-        let contextMenuNode = null;
-        const contextMenu = document.getElementById('context-menu');
-        const aiSubmenu = document.getElementById('ai-submenu');
+        // Initialize Lucide icons
+        lucide.createIcons();
         
-        // Show context menu on canvas right-click
-        document.addEventListener('contextmenu', (e) => {
-            const canvasContainer = document.getElementById('canvas-container');
-            if (canvasContainer && canvasContainer.contains(e.target)) {
-                e.preventDefault();
-                
-                // Check if a node is selected
-                if (window.CanvasV3 && window.CanvasV3.selectedNode) {
-                    contextMenuNode = window.CanvasV3.selectedNode;
-                    
-                    // Update context menu title
-                    document.getElementById('context-menu-title').textContent = 
-                        contextMenuNode.label || 'Node Actions';
-                    
-                    // Position context menu
-                    contextMenu.style.left = e.clientX + 'px';
-                    contextMenu.style.top = e.clientY + 'px';
-                    contextMenu.classList.add('show');
-                }
-            }
-        });
+        // Canvas State
+        const state = {
+            nodes: [],
+            connections: [],
+            selectedNode: null,
+            zoom: 1,
+            pan: { x: 0, y: 0 },
+            isDragging: false,
+            dragStart: null
+        };
         
-        // Hide context menu on click outside
-        document.addEventListener('click', (e) => {
-            if (!contextMenu.contains(e.target)) {
-                contextMenu.classList.remove('show');
-                aiSubmenu.classList.remove('show');
-            }
-        });
-        
-        // Context Menu Actions
-        function contextMenuEdit() {
-            if (contextMenuNode) {
-                console.log('[Context Menu] Edit node:', contextMenuNode.id);
-                // Trigger edit mode (implementation depends on your canvas system)
-            }
-            contextMenu.classList.remove('show');
-        }
-        
-        function contextMenuDuplicate() {
-            if (contextMenuNode && window.CanvasV3) {
-                console.log('[Context Menu] Duplicate node:', contextMenuNode.id);
-                // Create duplicate (implementation depends on your canvas system)
-            }
-            contextMenu.classList.remove('show');
-        }
-        
-        function contextMenuDelete() {
-            if (contextMenuNode && window.CanvasV3 && window.CanvasV3.deleteNode) {
-                if (confirm('Delete this node?')) {
-                    window.CanvasV3.deleteNode(contextMenuNode.id);
-                }
-            }
-            contextMenu.classList.remove('show');
-        }
-        
-        function contextMenuAIGenerate() {
-            // Show submenu
-            aiSubmenu.classList.toggle('show');
-        }
-        
-        // Context Menu AI Actions
-        function contextMenuAILabel() {
-            if (contextMenuNode) {
-                window.CanvasV3.selectedNode = contextMenuNode;
-                aiGenerateLabel();
-                // Open AI sidebar
-                document.getElementById('toggle-ai-panel').click();
-            }
-            contextMenu.classList.remove('show');
-        }
-        
-        function contextMenuAISNS() {
-            if (contextMenuNode) {
-                window.CanvasV3.selectedNode = contextMenuNode;
-                aiGenerateSNS();
-                document.getElementById('toggle-ai-panel').click();
-            }
-            contextMenu.classList.remove('show');
-        }
-        
-        function contextMenuAIEmail() {
-            if (contextMenuNode) {
-                window.CanvasV3.selectedNode = contextMenuNode;
-                aiGenerateEmail();
-                document.getElementById('toggle-ai-panel').click();
-            }
-            contextMenu.classList.remove('show');
-        }
-        
-        function contextMenuAIImprove() {
-            if (contextMenuNode) {
-                window.CanvasV3.selectedNode = contextMenuNode;
-                aiImproveText();
-                document.getElementById('toggle-ai-panel').click();
-            }
-            contextMenu.classList.remove('show');
-        }
-        
-        function contextMenuAITranslate() {
-            if (contextMenuNode) {
-                window.CanvasV3.selectedNode = contextMenuNode;
-                aiTranslate();
-                document.getElementById('toggle-ai-panel').click();
-            }
-            contextMenu.classList.remove('show');
-        }
-        
-        // AI Sidebar Toggle
-        document.getElementById('toggle-ai-panel').addEventListener('click', () => {
-            const aiSidebar = document.getElementById('ai-sidebar');
-            const aiBtn = document.getElementById('toggle-ai-panel');
-            aiSidebar.classList.toggle('open');
-            aiBtn.classList.toggle('active');
-        });
-        
-        document.getElementById('ai-close-btn').addEventListener('click', () => {
-            const aiSidebar = document.getElementById('ai-sidebar');
-            const aiBtn = document.getElementById('toggle-ai-panel');
-            aiSidebar.classList.remove('open');
-            aiBtn.classList.remove('active');
-        });
-        
-        // AI Tabs
-        document.querySelectorAll('.ai-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const tabName = tab.getAttribute('data-tab');
-                
-                // Update active tab
-                document.querySelectorAll('.ai-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                
-                // Update active content
-                document.querySelectorAll('.ai-tab-content').forEach(c => c.classList.remove('active'));
-                document.getElementById(`tab-${tabName}`).classList.add('active');
+        // Create Sample Workflow on First Visit
+        function createSampleWorkflow() {
+            const hasSample = localStorage.getItem('museflow_canvas_sample');
+            if (hasSample) return;
+            
+            console.log('🎨 Creating sample workflow...');
+            
+            const sampleNodes = [
+                { id: '1', type: 'ex-01', title: '전시 주제 선정', x: 100, y: 100 },
+                { id: '2', type: 'ex-02', title: '작품 선정', x: 350, y: 100 },
+                { id: '3', type: 'ex-03', title: '공간 배치 계획', x: 600, y: 100 },
+                { id: '4', type: 'pr-01', title: '마케팅 계획', x: 225, y: 280 },
+                { id: '5', type: 'pr-02', title: '전시 오픈', x: 475, y: 280 }
+            ];
+            
+            sampleNodes.forEach(node => {
+                createNode(node);
             });
-        });
-        
-        // Keyboard shortcut (A key)
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'a' && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
-                const activeElement = document.activeElement;
-                if (activeElement.tagName !== 'INPUT' && activeElement.tagName !== 'TEXTAREA') {
-                    document.getElementById('toggle-ai-panel').click();
-                }
-            }
-        });
-        
-        // Update selected node display
-        function updateSelectedNodeDisplay() {
-            const selectedNodeDiv = document.getElementById('ai-selected-node');
-            if (window.CanvasV3 && window.CanvasV3.selectedNode) {
-                const node = window.CanvasV3.selectedNode;
-                selectedNodeDiv.innerHTML = `
-                    <i data-lucide="check-circle" style="width: 16px; height: 16px; color: #10b981; display: inline-block; vertical-align: middle;"></i>
-                    <span><strong>${node.label || 'Node'}</strong> selected</span>
-                `;
-                // Re-initialize Lucide icons
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                }
-            } else {
-                selectedNodeDiv.innerHTML = `
-                    <i data-lucide="info" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle;"></i>
-                    <span>Select a node to use AI features</span>
-                `;
-                // Re-initialize Lucide icons
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                }
-            }
+            
+            localStorage.setItem('museflow_canvas_sample', 'true');
+            console.log('✅ Sample workflow created');
         }
         
-        // Monitor node selection changes
-        setInterval(updateSelectedNodeDisplay, 500);
-        
-        // AI Functions (Stub implementations - ready for real API integration)
-        
-        function aiGenerateLabel() {
-            console.log('[AI] Generate Exhibition Label');
-            const result = document.getElementById('gemini-result');
+        // Create Node
+        function createNode(data) {
+            const node = document.createElement('div');
+            node.className = 'canvas-node';
+            node.id = `node-${data.id}`;
+            node.style.left = data.x + 'px';
+            node.style.top = data.y + 'px';
             
-            // Context-aware: Check node type and existing content
-            let context = '';
-            if (window.CanvasV3 && window.CanvasV3.selectedNode) {
-                const node = window.CanvasV3.selectedNode;
-                context = `\n\n[Context-Aware]\nNode: ${node.label || 'Untitled'}\nType: ${node.type || 'Unknown'}`;
-                if (node.data && node.data.content) {
-                    context += `\nExisting Content: ${node.data.content.substring(0, 100)}...`;
-                }
-            }
-            
-            result.textContent = '🏷️ Exhibition Label Generated!' + context + '\n\n[Title]\nModern Art Exhibition\n\n[Description - English]\nExperience the cutting-edge of contemporary art with works from emerging artists around the world. This exhibition showcases bold expressions of modern culture and challenges traditional perspectives.\n\n[Description - Korean]\n세계 각국의 신진 작가들의 작품과 함께 현대 미술의 최전선을 경험하세요. 이 전시는 현대 문화의 대담한 표현과 전통적 관점에 대한 도전을 선보입니다.\n\n[Description - Japanese]\n世界中の新進アーティストの作品とともに、現代アートの最前線を体験してください。この展覧会は、現代文化の大胆な表現と伝統的な視点への挑戦を紹介します。';
-            
-            // Switch to Gemini tab
-            document.querySelector('.ai-tab[data-tab="gemini"]').click();
-            document.getElementById('gemini-insert-btn').style.display = 'flex';
-        }
-        
-        function aiGenerateSNS() {
-            console.log('[AI] Generate SNS Post');
-            showToast('📱 Generating SNS content...', 'info');
-            
-            const result = document.getElementById('gemini-result');
-            
-            // Show loading temporarily
-            result.textContent = '⏳ Crafting the perfect social media post...\n\nAnalyzing trends and engagement patterns...';
-            
-            setTimeout(() => {
-                result.textContent = '📱 SNS Post Generated!\n\n✨ New Exhibition Alert! ✨\n\nExplore the world of modern art at our latest exhibition! 🎨\n\nFeaturing groundbreaking works from emerging artists.\n📍 Museum Gallery, 2F\n📅 Jan 15 - Mar 31\n\n#ModernArt #Exhibition #MuseumLife #ArtLovers\n\n[Engagement Tips]\n- Post at 6 PM for maximum reach\n- Include high-quality exhibition photos\n- Tag relevant art communities';
-                
-                document.querySelector('.ai-tab[data-tab="gemini"]').click();
-                document.getElementById('gemini-insert-btn').style.display = 'flex';
-                showToast('✨ SNS post ready!', 'success');
-            }, 1000);
-        }
-        
-        function aiGenerateEmail() {
-            console.log('[AI] Generate Email Draft');
-            const result = document.getElementById('gemini-result');
-            result.textContent = '📧 Email Draft Generated!\n\nSubject: Invitation to Modern Art Exhibition Opening\n\nDear [Name],\n\nWe are delighted to invite you to the opening of our Modern Art Exhibition on January 15th at 6 PM.\n\nJoin us for an evening of art, culture, and networking with fellow art enthusiasts.\n\nBest regards,\n[Your Name]\nCurator';
-            
-            document.querySelector('.ai-tab[data-tab="gemini"]').click();
-            document.getElementById('gemini-insert-btn').style.display = 'flex';
-        }
-        
-        function aiGenerateReport() {
-            console.log('[AI] Generate Daily Report');
-            const result = document.getElementById('gemini-result');
-            result.textContent = '📄 Daily Report Generated!\n\nDate: ' + new Date().toLocaleDateString() + '\n\nCompleted Tasks:\n- Finalized exhibition layout\n- Reviewed marketing materials\n- Met with artists\n\nPending Tasks:\n- Confirm opening ceremony details\n- Order promotional materials\n\nNotes: Exhibition preparation is on track.';
-            
-            document.querySelector('.ai-tab[data-tab="gemini"]').click();
-            document.getElementById('gemini-insert-btn').style.display = 'flex';
-        }
-        
-        function aiAnalyzeNode() {
-            if (!window.CanvasV3 || !window.CanvasV3.selectedNode) {
-                console.log('Please select a node first!');
-                return;
-            }
-            const node = window.CanvasV3.selectedNode;
-            const result = document.getElementById('gemini-result');
-            result.textContent = `🔍 Node Analysis\n\nNode Type: ${node.type || 'Unknown'}\nLabel: ${node.label || 'Untitled'}\n\nSuggestions:\n- Consider adding more details\n- Connect to related nodes\n- Review content for clarity`;
-            
-            document.querySelector('.ai-tab[data-tab="gemini"]').click();
-            document.getElementById('gemini-insert-btn').style.display = 'none';
-        }
-        
-        function aiImproveText() {
-            if (!window.CanvasV3 || !window.CanvasV3.selectedNode) {
-                console.log('Please select a node first!');
-                return;
-            }
-            const node = window.CanvasV3.selectedNode;
-            const result = document.getElementById('gemini-result');
-            
-            // Context-aware improvement based on node type
-            let originalText = (node.data && node.data.content) || node.label || 'No text to improve';
-            let improvedText = '';
-            
-            if (node.type === 'label' || node.label?.toLowerCase().includes('label')) {
-                improvedText = `✨ Exhibition Label - Improved Version\n\n[Professional Tone]\n${originalText}\n\n[Enhanced]\nThis carefully curated exhibition presents ${originalText.toLowerCase()}, offering visitors a unique opportunity to engage with exceptional works that demonstrate the intersection of creativity and cultural significance.`;
-            } else if (node.type === 'email' || node.label?.toLowerCase().includes('email')) {
-                improvedText = `✨ Email - Professional Enhancement\n\n[Original]\n${originalText}\n\n[Improved]\nDear Valued Partner,\n\nI hope this message finds you well. I am writing to inform you about ${originalText}.\n\nWe believe this presents a valuable opportunity for collaboration and would appreciate your thoughtful consideration.\n\nBest regards`;
-            } else {
-                improvedText = `✨ Text Improved!\n\n[Original]\n${originalText}\n\n[Enhanced - Clear & Professional]\n${originalText.charAt(0).toUpperCase() + originalText.slice(1)}. This content has been refined for improved clarity and professional presentation.`;
-            }
-            
-            result.textContent = improvedText;
-            document.querySelector('.ai-tab[data-tab="gemini"]').click();
-            document.getElementById('gemini-insert-btn').style.display = 'flex';
-        }
-        
-        function aiTranslate() {
-            if (!window.CanvasV3 || !window.CanvasV3.selectedNode) {
-                console.log('Please select a node first!');
-                return;
-            }
-            const result = document.getElementById('gemini-result');
-            result.textContent = '🌐 Translation Complete!\n\nEnglish: Modern Art Exhibition\nKorean: 현대 미술 전시\nJapanese: 現代美術展\nChinese: 现代艺术展';
-            
-            document.querySelector('.ai-tab[data-tab="gemini"]').click();
-            document.getElementById('gemini-insert-btn').style.display = 'flex';
-        }
-        
-        function aiSummarize() {
-            if (!window.CanvasV3 || !window.CanvasV3.selectedNode) {
-                console.log('Please select a node first!');
-                return;
-            }
-            const result = document.getElementById('gemini-result');
-            result.textContent = '📝 Summary Generated!\n\nKey Points:\n- Modern art exhibition\n- Jan 15 - Mar 31\n- Featuring emerging artists\n- Gallery 2F';
-            
-            document.querySelector('.ai-tab[data-tab="gemini"]').click();
-            document.getElementById('gemini-insert-btn').style.display = 'flex';
-        }
-        
-        async function aiGeminiGenerate() {
-            const input = document.getElementById('gemini-input').value;
-            if (!input.trim()) {
-                showToast('Please enter a prompt!', 'warning');
-                return;
-            }
-            
-            const result = document.getElementById('gemini-result');
-            const generateBtn = document.querySelector('.ai-generate-btn');
-            
-            // Show loading state
-            generateBtn.disabled = true;
-            generateBtn.innerHTML = '<i data-lucide="loader" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle;" class="lucide-spin"></i> Generating...';
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-            result.textContent = '🤖 Processing your request with Gemini 2.0...\n\nPlease wait...';
-            
-            // Call Google MCP API
-            try {
-                const response = await GoogleMCP.ai.generate(input);
-                
-                if (response.success) {
-                    result.innerHTML = `<div class="whitespace-pre-wrap">${response.data.content}</div>`;
-                    if (response.data.usage) {
-                        result.innerHTML += `<div class="mt-4 text-xs text-gray-400">Tokens: ${response.data.usage.totalTokens || 'N/A'}</div>`;
-                    }
-                    if (response.note) {
-                        result.innerHTML += `<div class="mt-2 text-xs text-yellow-400">${response.note}</div>`;
-                    }
-                    document.getElementById('gemini-insert-btn').style.display = 'flex';
-                    showToast('✨ Content generated successfully!', 'success');
-                } else {
-                    result.textContent = '❌ Error: ' + (response.error || 'Failed to generate content');
-                    showToast('Failed to generate content', 'error');
-                }
-            } catch (error) {
-                result.textContent = '❌ Error: ' + error.message;
-                showToast('Generation error', 'error');
-            } finally {
-                // Reset button
-                generateBtn.disabled = false;
-                generateBtn.innerHTML = '<i data-lucide="send" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle;"></i> Generate';
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                }
-                
-                showToast('✨ Content generated successfully!', 'success');
-            }, 1500);
-        }
-        
-        // Toast notification system
-        function showToast(message, type = 'info') {
-            const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
-            toast.textContent = message;
-            toast.style.cssText = `
-                position: fixed;
-                bottom: 2rem;
-                right: 2rem;
-                padding: 1rem 1.5rem;
-                background: ${type === 'success' ? 'rgba(16, 185, 129, 0.95)' : type === 'warning' ? 'rgba(245, 158, 11, 0.95)' : 'rgba(59, 130, 246, 0.95)'};
-                color: white;
-                border-radius: 12px;
-                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-                z-index: 10001;
-                backdrop-filter: blur(10px);
-                animation: slideIn 0.3s ease;
+            node.innerHTML = `
+                <div class="node-header">
+                    <i data-lucide="circle" style="width: 16px; height: 16px; color: var(--accent-primary);"></i>
+                    <span class="node-title">${data.title}</span>
+                </div>
+                <div class="node-body">
+                    전시 기획 프로세스의 일부
+                </div>
+                <div class="node-handle top"></div>
+                <div class="node-handle right"></div>
+                <div class="node-handle bottom"></div>
+                <div class="node-handle left"></div>
             `;
-            document.body.appendChild(toast);
             
-            setTimeout(() => {
-                toast.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
+            document.getElementById('nodes-container').appendChild(node);
+            lucide.createIcons();
+            
+            // Make node draggable
+            let isDragging = false;
+            let startX, startY, nodeX, nodeY;
+            
+            node.addEventListener('mousedown', (e) => {
+                if (e.target.classList.contains('node-handle')) return;
+                isDragging = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                nodeX = parseInt(node.style.left);
+                nodeY = parseInt(node.style.top);
+                node.style.zIndex = 1000;
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                node.style.left = (nodeX + dx) + 'px';
+                node.style.top = (nodeY + dy) + 'px';
+            });
+            
+            document.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    node.style.zIndex = '';
+                }
+            });
+            
+            state.nodes.push({ id: data.id, element: node, data });
         }
         
-        // Add animation keyframes
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(400px); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes slideOut {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(400px); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
-        
-        function aiInsertToNode() {
-            if (!window.CanvasV3 || !window.CanvasV3.selectedNode) {
-                showToast('⚠️ Please select a node first!', 'warning');
-                return;
-            }
-            
-            const result = document.getElementById('gemini-result').textContent;
-            const node = window.CanvasV3.selectedNode;
-            const insertBtn = document.getElementById('gemini-insert-btn');
-            
-            // Show loading
-            insertBtn.disabled = true;
-            insertBtn.innerHTML = '<i data-lucide="loader" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle;" class="lucide-spin"></i> Inserting...';
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-            
-            setTimeout(() => {
-                // Insert text to node
-                if (!node.data) node.data = {};
-                node.data.content = result;
-                node.label = result.split('\n')[0].substring(0, 30) + '...';
-                
-                // Update canvas
-                if (window.CanvasV3.render) {
-                    window.CanvasV3.render();
-                }
-                
-                // Reset button
-                insertBtn.disabled = false;
-                insertBtn.innerHTML = '<i data-lucide="arrow-down" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle;"></i> Insert to Selected Node';
-                if (typeof lucide !== 'undefined') {
-                    lucide.createIcons();
-                }
-                
-                // Show success with node name
-                showToast(`✅ Content inserted to "${node.label || 'Node'}"`, 'success');
-                
-                // Highlight node briefly
-                if (node.element) {
-                    node.element.style.animation = 'pulse 0.5s ease';
-                }
-            }, 500);
-        }
-        
-        // Google Workspace functions
-        async function aiCreateDoc() {
-            const node = window.CanvasV3?.selectedNode;
-            if (!node) {
-                showToast('⚠️ Please select a node first', 'warning');
-                return;
-            }
-            
-            const title = node.label || 'Untitled Document';
-            const content = node.data?.content || node.data?.description || 'No content available';
-            
-            showToast('📝 Creating Google Doc...', 'info');
-            
-            try {
-                const result = await GoogleMCP.workspace.createDoc(title, content);
-                
-                if (result.success) {
-                    const message = `✅ Document created: ${result.data.title}`;
-                    showToast(message, 'success');
-                    
-                    if (result.data.url) {
-                        const openDoc = confirm(`${message}\n\nWould you like to open it?`);
-                        if (openDoc) {
-                            window.open(result.data.url, '_blank');
-                        }
-                    }
-                    
-                    if (result.note) {
-                        console.log('📝 Note:', result.note);
-                    }
-                } else {
-                    showToast('❌ Failed to create document', 'error');
-                }
-            } catch (error) {
-                showToast('❌ Error: ' + error.message, 'error');
-            }
-        }
-        
-        async function aiDraftEmail() {
-            const node = window.CanvasV3?.selectedNode;
-            if (!node) {
-                showToast('⚠️ Please select a node first', 'warning');
-                return;
-            }
-            
-            const subject = node.label || 'Email from MuseFlow Canvas';
-            const body = node.data?.content || node.data?.description || 'No content available';
-            
-            const to = prompt('📧 Enter recipient email address:');
-            if (!to) return;
-            
-            showToast('📧 Drafting email...', 'info');
-            
-            try {
-                const result = await GoogleMCP.workspace.sendEmail(to, subject, body);
-                
-                if (result.success) {
-                    showToast(`✅ Email sent to ${to}`, 'success');
-                    
-                    if (result.note) {
-                        console.log('📧 Note:', result.note);
-                    }
-                } else {
-                    showToast('❌ Failed to send email', 'error');
-                }
-            } catch (error) {
-                showToast('❌ Error: ' + error.message, 'error');
-            }
-        }
-        
-        async function aiCreateEvent() {
-            const node = window.CanvasV3?.selectedNode;
-            if (!node) {
-                showToast('⚠️ Please select a node first', 'warning');
-                return;
-            }
-            
-            const title = node.label || 'Event from MuseFlow Canvas';
-            const description = node.data?.content || node.data?.description || '';
-            
-            // Prompt for event details
-            const startDatetime = prompt('📅 Enter start date/time (YYYY-MM-DD HH:MM):');
-            if (!startDatetime) return;
-            
-            const endDatetime = prompt('📅 Enter end date/time (YYYY-MM-DD HH:MM):');
-            if (!endDatetime) return;
-            
-            showToast('📅 Creating calendar event...', 'info');
-            
-            try {
-                const result = await GoogleMCP.workspace.scheduleEvent(
-                    title,
-                    startDatetime,
-                    endDatetime,
-                    description
-                );
-                
-                if (result.success) {
-                    const message = `✅ Event scheduled: ${result.data.title}`;
-                    showToast(message, 'success');
-                    
-                    if (result.data.url) {
-                        const openEvent = confirm(`${message}\n\nWould you like to view it?`);
-                        if (openEvent) {
-                            window.open(result.data.url, '_blank');
-                        }
-                    }
-                    
-                    if (result.note) {
-                        console.log('📅 Note:', result.note);
-                    }
-                } else {
-                    showToast('❌ Failed to create event', 'error');
-                }
-            } catch (error) {
-                showToast('❌ Error: ' + error.message, 'error');
-            }
-        }
-        
-        // Initialize Lucide Icons
+        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-                console.log('✅ Lucide icons initialized');
-            }
+            console.log('🚀 Initializing Figma-style Canvas...');
+            createSampleWorkflow();
         });
+        
+        // Zoom Controls
+        document.getElementById('zoom-in').addEventListener('click', () => {
+            state.zoom = Math.min(state.zoom + 0.1, 2);
+            updateZoom();
+        });
+        
+        document.getElementById('zoom-out').addEventListener('click', () => {
+            state.zoom = Math.max(state.zoom - 0.1, 0.5);
+            updateZoom();
+        });
+        
+        document.getElementById('zoom-fit').addEventListener('click', () => {
+            state.zoom = 1;
+            state.pan = { x: 0, y: 0 };
+            updateZoom();
+        });
+        
+        function updateZoom() {
+            const container = document.getElementById('nodes-container');
+            container.style.transform = `scale(${state.zoom}) translate(${state.pan.x}px, ${state.pan.y}px)`;
+            document.getElementById('zoom-level').textContent = Math.round(state.zoom * 100) + '%';
+        }
     </script>
 </body>
 </html>
