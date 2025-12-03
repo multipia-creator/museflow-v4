@@ -554,6 +554,202 @@
             margin-bottom: 12px;
             opacity: 0.5;
         }
+        
+        /* Space Configuration Panel (Left Top) */
+        .space-config-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            width: 320px;
+            max-height: calc(100vh - 460px);
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 0 8px 32px rgba(138, 43, 226, 0.2);
+        }
+        
+        .space-config-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .space-config-panel::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 3px;
+        }
+        
+        .space-config-panel::-webkit-scrollbar-thumb {
+            background: #8a2be2;
+            border-radius: 3px;
+        }
+        
+        .config-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+        }
+        
+        .config-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #8a2be2;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .config-section {
+            margin-bottom: 16px;
+        }
+        
+        .config-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .floor-material-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        
+        .floor-material-btn {
+            padding: 10px 8px;
+            background: rgba(138, 43, 226, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .floor-material-btn:hover {
+            background: rgba(138, 43, 226, 0.3);
+            border-color: #8a2be2;
+        }
+        
+        .floor-material-btn.active {
+            background: linear-gradient(135deg, #8a2be2 0%, #9b4dca 100%);
+            border-color: #8a2be2;
+            color: #ffffff;
+        }
+        
+        .floor-material-icon {
+            font-size: 20px;
+        }
+        
+        .lighting-info {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        .lighting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            font-size: 11px;
+        }
+        
+        .lighting-type {
+            color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .lighting-count {
+            color: #8a2be2;
+            font-weight: 600;
+        }
+        
+        .entrance-exit-controls {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .entrance-exit-btn {
+            flex: 1;
+            padding: 10px 12px;
+            background: rgba(138, 43, 226, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .entrance-exit-btn:hover {
+            background: rgba(138, 43, 226, 0.3);
+            border-color: #8a2be2;
+        }
+        
+        .entrance-exit-btn.active {
+            background: linear-gradient(135deg, #8a2be2 0%, #9b4dca 100%);
+            border-color: #8a2be2;
+            color: #ffffff;
+        }
+        
+        .entrance-exit-icon {
+            font-size: 18px;
+        }
+        
+        .save-export-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .save-export-btn {
+            flex: 1;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .save-export-btn.save {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .save-export-btn.export {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+        
+        .save-export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -571,6 +767,147 @@
         
         <!-- Toast -->
         <div class="toast" id="toast"></div>
+        
+        <!-- Space Configuration Panel -->
+        <div class="space-config-panel">
+            <div class="config-header">
+                <div class="config-title">
+                    <i class="fas fa-cube"></i>
+                    전시장 구성
+                </div>
+            </div>
+            
+            <!-- Room Size Configuration -->
+            <div class="config-section">
+                <div class="config-section-title">
+                    <i class="fas fa-ruler-combined"></i>
+                    전시장 크기 (m)
+                </div>
+                <div class="prop-group">
+                    <label class="prop-label">너비 (Width)</label>
+                    <div class="prop-row">
+                        <input type="number" class="prop-input" id="roomWidth" value="20" min="5" max="100" step="1" onchange="updateRoomSize()">
+                        <div class="prop-input" style="background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; cursor: default;">
+                            <span id="roomWidthDisplay">20m</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="prop-group">
+                    <label class="prop-label">깊이 (Depth)</label>
+                    <div class="prop-row">
+                        <input type="number" class="prop-input" id="roomDepth" value="15" min="5" max="100" step="1" onchange="updateRoomSize()">
+                        <div class="prop-input" style="background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; cursor: default;">
+                            <span id="roomDepthDisplay">15m</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="prop-group">
+                    <label class="prop-label">높이 (Height)</label>
+                    <div class="prop-row">
+                        <input type="number" class="prop-input" id="roomHeight" value="4" min="2.5" max="15" step="0.5" onchange="updateRoomSize()">
+                        <div class="prop-input" style="background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; cursor: default;">
+                            <span id="roomHeightDisplay">4m</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Floor Material Selector -->
+            <div class="config-section">
+                <div class="config-section-title">
+                    <i class="fas fa-layer-group"></i>
+                    바닥 재질
+                </div>
+                <div class="floor-material-selector">
+                    <button class="floor-material-btn" onclick="setFloorMaterial('wood')" id="floorWood">
+                        <div class="floor-material-icon">🪵</div>
+                        <div>마루</div>
+                    </button>
+                    <button class="floor-material-btn active" onclick="setFloorMaterial('marble')" id="floorMarble">
+                        <div class="floor-material-icon">💎</div>
+                        <div>대리석</div>
+                    </button>
+                    <button class="floor-material-btn" onclick="setFloorMaterial('concrete')" id="floorConcrete">
+                        <div class="floor-material-icon">🧱</div>
+                        <div>콘크리트</div>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Lighting Info -->
+            <div class="config-section">
+                <div class="config-section-title">
+                    <i class="fas fa-lightbulb"></i>
+                    자동 조명 시스템
+                </div>
+                <div class="lighting-info">
+                    <div class="lighting-row">
+                        <div class="lighting-type">
+                            <i class="fas fa-sun"></i>
+                            반구 조명
+                        </div>
+                        <div class="lighting-count" id="lightHemisphere">1개</div>
+                    </div>
+                    <div class="lighting-row">
+                        <div class="lighting-type">
+                            <i class="fas fa-arrow-down"></i>
+                            방향 조명
+                        </div>
+                        <div class="lighting-count" id="lightDirectional">1개</div>
+                    </div>
+                    <div class="lighting-row">
+                        <div class="lighting-type">
+                            <i class="fas fa-lightbulb"></i>
+                            스포트라이트
+                        </div>
+                        <div class="lighting-count" id="lightSpotlights">3개</div>
+                    </div>
+                    <div class="lighting-row" style="border-top: 1px solid rgba(138,43,226,0.2); margin-top: 6px; padding-top: 6px;">
+                        <div class="lighting-type" style="color: #8a2be2; font-weight: 600;">
+                            <i class="fas fa-check-circle"></i>
+                            총 조명
+                        </div>
+                        <div class="lighting-count" id="lightTotal">5개</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Entrance/Exit Placement -->
+            <div class="config-section">
+                <div class="config-section-title">
+                    <i class="fas fa-door-open"></i>
+                    출입구 설정
+                </div>
+                <div class="entrance-exit-controls">
+                    <button class="entrance-exit-btn active" onclick="setEntrancePosition('front')" id="entranceFront">
+                        <div class="entrance-exit-icon">🚪</div>
+                        <div>정면</div>
+                    </button>
+                    <button class="entrance-exit-btn" onclick="setEntrancePosition('back')" id="entranceBack">
+                        <div class="entrance-exit-icon">🚪</div>
+                        <div>후면</div>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Save & Export -->
+            <div class="config-section">
+                <div class="config-section-title">
+                    <i class="fas fa-save"></i>
+                    저장 및 내보내기
+                </div>
+                <div class="save-export-buttons">
+                    <button class="save-export-btn save" onclick="saveConfiguration()">
+                        <i class="fas fa-save"></i>
+                        저장
+                    </button>
+                    <button class="save-export-btn export" onclick="exportConfiguration()">
+                        <i class="fas fa-download"></i>
+                        Export
+                    </button>
+                </div>
+            </div>
+        </div>
         
         <!-- Quick Toolbar -->
         <div class="quick-toolbar">
@@ -697,6 +1034,9 @@
         
         let roomWidth = 20, roomDepth = 15, roomHeight = 4;
         let ambientLight, hemisphereLight, spotlights = [];
+        let currentFloorMaterial = 'marble';
+        let currentEntrancePosition = 'front';
+        let floorMesh = null;
         
         // Performance tracking
         let lastTime = Date.now();
@@ -793,6 +1133,7 @@
             setupLighting();
             loadHDREnvironment();
             buildRoom();
+            buildEntranceMarker();
             populateAssetLibrary();
             addDefaultArtworks();
             
@@ -892,81 +1233,16 @@
             
             const hw = roomWidth / 2, hd = roomDepth / 2;
             
-            // Marble Floor Material with Procedural Texture
-            const floorMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0xf0f0f0,  // Light gray marble base
-                roughness: 0.2,   // Smooth marble surface
-                metalness: 0.3,   // Slight metallic reflection
-                envMapIntensity: 1.0
-            });
+            // Create floor with current material
+            const floorMaterial = createFloorMaterial(currentFloorMaterial);
             
-            // Create canvas texture for marble pattern
-            const canvas = document.createElement('canvas');
-            canvas.width = 512;
-            canvas.height = 512;
-            const ctx = canvas.getContext('2d');
-            
-            // Base marble color
-            ctx.fillStyle = '#e8e8e8';
-            ctx.fillRect(0, 0, 512, 512);
-            
-            // Add marble veins
-            ctx.strokeStyle = 'rgba(150, 150, 150, 0.3)';
-            for (let i = 0; i < 20; i++) {
-                ctx.beginPath();
-                ctx.lineWidth = Math.random() * 3 + 1;
-                const startX = Math.random() * 512;
-                const startY = Math.random() * 512;
-                ctx.moveTo(startX, startY);
-                
-                for (let j = 0; j < 5; j++) {
-                    const cpX1 = startX + Math.random() * 200 - 100;
-                    const cpY1 = startY + Math.random() * 200 - 100;
-                    const cpX2 = startX + Math.random() * 200 - 100;
-                    const cpY2 = startY + Math.random() * 200 - 100;
-                    const endX = startX + Math.random() * 300 - 150;
-                    const endY = startY + Math.random() * 300 - 150;
-                    ctx.bezierCurveTo(cpX1, cpY1, cpX2, cpY2, endX, endY);
-                }
-                ctx.stroke();
-            }
-            
-            // Dark veins
-            ctx.strokeStyle = 'rgba(100, 100, 100, 0.2)';
-            for (let i = 0; i < 10; i++) {
-                ctx.beginPath();
-                ctx.lineWidth = Math.random() * 2 + 0.5;
-                const startX = Math.random() * 512;
-                const startY = Math.random() * 512;
-                ctx.moveTo(startX, startY);
-                
-                for (let j = 0; j < 3; j++) {
-                    const cpX1 = startX + Math.random() * 150 - 75;
-                    const cpY1 = startY + Math.random() * 150 - 75;
-                    const cpX2 = startX + Math.random() * 150 - 75;
-                    const cpY2 = startY + Math.random() * 150 - 75;
-                    const endX = startX + Math.random() * 200 - 100;
-                    const endY = startY + Math.random() * 200 - 100;
-                    ctx.bezierCurveTo(cpX1, cpY1, cpX2, cpY2, endX, endY);
-                }
-                ctx.stroke();
-            }
-            
-            const marbleTexture = new THREE.CanvasTexture(canvas);
-            marbleTexture.wrapS = THREE.RepeatWrapping;
-            marbleTexture.wrapT = THREE.RepeatWrapping;
-            marbleTexture.repeat.set(4, 4);
-            
-            floorMaterial.map = marbleTexture;
-            floorMaterial.needsUpdate = true;
-            
-            const floor = new THREE.Mesh(
+            floorMesh = new THREE.Mesh(
                 new THREE.PlaneGeometry(roomWidth, roomDepth),
                 floorMaterial
             );
-            floor.rotation.x = -Math.PI / 2;
-            floor.receiveShadow = true;
-            roomGroup.add(floor);
+            floorMesh.rotation.x = -Math.PI / 2;
+            floorMesh.receiveShadow = true;
+            roomGroup.add(floorMesh);
             
             const wallMat = new THREE.MeshStandardMaterial({ 
                 color: 0xf5f5f5, 
@@ -1049,6 +1325,314 @@
             showToast(`"${template.name}" 추가됨`);
         }
         
+        // ===== Space Configuration Functions =====
+        
+        function updateRoomSize() {
+            const widthInput = document.getElementById('roomWidth');
+            const depthInput = document.getElementById('roomDepth');
+            const heightInput = document.getElementById('roomHeight');
+            
+            roomWidth = parseFloat(widthInput.value);
+            roomDepth = parseFloat(depthInput.value);
+            roomHeight = parseFloat(heightInput.value);
+            
+            document.getElementById('roomWidthDisplay').textContent = roomWidth + 'm';
+            document.getElementById('roomDepthDisplay').textContent = roomDepth + 'm';
+            document.getElementById('roomHeightDisplay').textContent = roomHeight + 'm';
+            
+            buildRoom();
+            autoArrange(); // Re-arrange artworks for new room size
+            updateStats();
+            
+            showToast(`전시장 크기 변경: ${roomWidth}m × ${roomDepth}m × ${roomHeight}m`);
+        }
+        
+        function createFloorMaterial(type) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+            
+            if (type === 'marble') {
+                // Marble texture (existing code)
+                ctx.fillStyle = '#e8e8e8';
+                ctx.fillRect(0, 0, 512, 512);
+                
+                ctx.strokeStyle = 'rgba(150, 150, 150, 0.3)';
+                for (let i = 0; i < 20; i++) {
+                    ctx.beginPath();
+                    ctx.lineWidth = Math.random() * 3 + 1;
+                    const startX = Math.random() * 512;
+                    const startY = Math.random() * 512;
+                    ctx.moveTo(startX, startY);
+                    
+                    for (let j = 0; j < 5; j++) {
+                        const cpX1 = startX + Math.random() * 200 - 100;
+                        const cpY1 = startY + Math.random() * 200 - 100;
+                        const cpX2 = startX + Math.random() * 200 - 100;
+                        const cpY2 = startY + Math.random() * 200 - 100;
+                        const endX = startX + Math.random() * 300 - 150;
+                        const endY = startY + Math.random() * 300 - 150;
+                        ctx.bezierCurveTo(cpX1, cpY1, cpX2, cpY2, endX, endY);
+                    }
+                    ctx.stroke();
+                }
+                
+                ctx.strokeStyle = 'rgba(100, 100, 100, 0.2)';
+                for (let i = 0; i < 10; i++) {
+                    ctx.beginPath();
+                    ctx.lineWidth = Math.random() * 2 + 0.5;
+                    const startX = Math.random() * 512;
+                    const startY = Math.random() * 512;
+                    ctx.moveTo(startX, startY);
+                    
+                    for (let j = 0; j < 3; j++) {
+                        const cpX1 = startX + Math.random() * 150 - 75;
+                        const cpY1 = startY + Math.random() * 150 - 75;
+                        const cpX2 = startX + Math.random() * 150 - 75;
+                        const cpY2 = startY + Math.random() * 150 - 75;
+                        const endX = startX + Math.random() * 200 - 100;
+                        const endY = startY + Math.random() * 200 - 100;
+                        ctx.bezierCurveTo(cpX1, cpY1, cpX2, cpY2, endX, endY);
+                    }
+                    ctx.stroke();
+                }
+            } else if (type === 'wood') {
+                // Wood texture (parquet)
+                ctx.fillStyle = '#a67c52';
+                ctx.fillRect(0, 0, 512, 512);
+                
+                // Wood grain
+                for (let i = 0; i < 60; i++) {
+                    ctx.strokeStyle = `rgba(${90 + Math.random() * 40}, ${60 + Math.random() * 30}, ${35 + Math.random() * 20}, ${0.3 + Math.random() * 0.4})`;
+                    ctx.lineWidth = Math.random() * 2 + 0.5;
+                    ctx.beginPath();
+                    const y = Math.random() * 512;
+                    ctx.moveTo(0, y);
+                    ctx.bezierCurveTo(128, y + Math.random() * 10 - 5, 384, y + Math.random() * 10 - 5, 512, y);
+                    ctx.stroke();
+                }
+                
+                // Parquet lines
+                ctx.strokeStyle = 'rgba(70, 50, 30, 0.3)';
+                ctx.lineWidth = 2;
+                for (let i = 0; i < 512; i += 64) {
+                    ctx.beginPath();
+                    ctx.moveTo(i, 0);
+                    ctx.lineTo(i, 512);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(0, i);
+                    ctx.lineTo(512, i);
+                    ctx.stroke();
+                }
+            } else if (type === 'concrete') {
+                // Concrete texture
+                ctx.fillStyle = '#b0b0b0';
+                ctx.fillRect(0, 0, 512, 512);
+                
+                // Concrete noise and texture
+                for (let i = 0; i < 2000; i++) {
+                    const x = Math.random() * 512;
+                    const y = Math.random() * 512;
+                    const size = Math.random() * 3 + 1;
+                    const opacity = Math.random() * 0.3;
+                    ctx.fillStyle = `rgba(${80 + Math.random() * 60}, ${80 + Math.random() * 60}, ${80 + Math.random() * 60}, ${opacity})`;
+                    ctx.fillRect(x, y, size, size);
+                }
+                
+                // Concrete cracks
+                ctx.strokeStyle = 'rgba(60, 60, 60, 0.4)';
+                for (let i = 0; i < 8; i++) {
+                    ctx.beginPath();
+                    ctx.lineWidth = Math.random() * 1.5 + 0.5;
+                    const startX = Math.random() * 512;
+                    const startY = Math.random() * 512;
+                    ctx.moveTo(startX, startY);
+                    for (let j = 0; j < 4; j++) {
+                        const endX = startX + (Math.random() * 200 - 100);
+                        const endY = startY + (Math.random() * 200 - 100);
+                        ctx.lineTo(endX, endY);
+                    }
+                    ctx.stroke();
+                }
+            }
+            
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            texture.repeat.set(4, 4);
+            
+            const material = new THREE.MeshStandardMaterial({ 
+                map: texture,
+                color: type === 'marble' ? 0xf0f0f0 : type === 'wood' ? 0xa67c52 : 0xb0b0b0,
+                roughness: type === 'marble' ? 0.2 : type === 'wood' ? 0.6 : 0.8,
+                metalness: type === 'marble' ? 0.3 : type === 'wood' ? 0.1 : 0.2,
+                envMapIntensity: 1.0
+            });
+            
+            return material;
+        }
+        
+        function setFloorMaterial(type) {
+            currentFloorMaterial = type;
+            
+            // Update button states
+            ['wood', 'marble', 'concrete'].forEach(mat => {
+                document.getElementById(`floor${mat.charAt(0).toUpperCase() + mat.slice(1)}`).classList.remove('active');
+            });
+            document.getElementById(`floor${type.charAt(0).toUpperCase() + type.slice(1)}`).classList.add('active');
+            
+            // Update floor material
+            if (floorMesh) {
+                const newMaterial = createFloorMaterial(type);
+                floorMesh.material.dispose();
+                floorMesh.material = newMaterial;
+            }
+            
+            const materialNames = { wood: '마루', marble: '대리석', concrete: '콘크리트' };
+            showToast(`바닥 재질 변경: ${materialNames[type]}`);
+        }
+        
+        function setEntrancePosition(position) {
+            currentEntrancePosition = position;
+            
+            // Update button states
+            ['front', 'back'].forEach(pos => {
+                const btn = document.getElementById(`entrance${pos.charAt(0).toUpperCase() + pos.slice(1)}`);
+                if (btn) btn.classList.remove('active');
+            });
+            const activeBtn = document.getElementById(`entrance${position.charAt(0).toUpperCase() + position.slice(1)}`);
+            if (activeBtn) activeBtn.classList.add('active');
+            
+            const positionNames = { front: '정면', back: '후면' };
+            showToast(`출입구 위치: ${positionNames[position]}`);
+            
+            // Optionally rebuild entrance visual
+            buildEntranceMarker();
+        }
+        
+        function buildEntranceMarker() {
+            // Remove old entrance marker if exists
+            const oldMarker = scene.getObjectByName('entranceMarker');
+            if (oldMarker) {
+                scene.remove(oldMarker);
+            }
+            
+            // Create entrance marker (e.g., a door or arrow)
+            const markerGeometry = new THREE.BoxGeometry(3, 2.5, 0.1);
+            const markerMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x10b981, 
+                emissive: 0x10b981,
+                emissiveIntensity: 0.3 
+            });
+            const marker = new THREE.Mesh(markerGeometry, markerMaterial);
+            marker.name = 'entranceMarker';
+            
+            const hd = roomDepth / 2;
+            if (currentEntrancePosition === 'front') {
+                marker.position.set(0, 1.25, hd - 0.1);
+                marker.rotation.y = Math.PI;
+            } else { // back
+                marker.position.set(0, 1.25, -hd + 0.1);
+            }
+            
+            scene.add(marker);
+        }
+        
+        function saveConfiguration() {
+            const config = {
+                version: '1.0',
+                timestamp: new Date().toISOString(),
+                room: {
+                    width: roomWidth,
+                    depth: roomDepth,
+                    height: roomHeight,
+                    floorMaterial: currentFloorMaterial,
+                    entrance: currentEntrancePosition
+                },
+                artworks: artworks.map(art => ({
+                    name: art.name,
+                    type: art.type,
+                    width: art.width,
+                    height: art.height,
+                    position: art.mesh ? {
+                        x: art.mesh.position.x,
+                        y: art.mesh.position.y,
+                        z: art.mesh.position.z
+                    } : null,
+                    rotation: art.mesh ? {
+                        x: art.mesh.rotation.x,
+                        y: art.mesh.rotation.y,
+                        z: art.mesh.rotation.z
+                    } : null
+                })),
+                lighting: {
+                    hemisphere: 1,
+                    directional: 1,
+                    spotlights: spotlights.length
+                }
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('museflow_digital_twin_config', JSON.stringify(config));
+            showToast('구성 저장 완료!');
+            console.log('Saved Configuration:', config);
+        }
+        
+        function exportConfiguration() {
+            const config = {
+                version: '1.0',
+                timestamp: new Date().toISOString(),
+                room: {
+                    width: roomWidth,
+                    depth: roomDepth,
+                    height: roomHeight,
+                    floorMaterial: currentFloorMaterial,
+                    entrance: currentEntrancePosition
+                },
+                artworks: artworks.map(art => ({
+                    name: art.name,
+                    type: art.type,
+                    width: art.width,
+                    height: art.height,
+                    position: art.mesh ? {
+                        x: art.mesh.position.x,
+                        y: art.mesh.position.y,
+                        z: art.mesh.position.z
+                    } : null,
+                    rotation: art.mesh ? {
+                        x: art.mesh.rotation.x,
+                        y: art.mesh.rotation.y,
+                        z: art.mesh.rotation.z
+                    } : null
+                })),
+                lighting: {
+                    hemisphere: 1,
+                    directional: 1,
+                    spotlights: spotlights.length
+                },
+                stats: {
+                    artworkCount: artworks.length,
+                    floorArea: roomWidth * roomDepth
+                }
+            };
+            
+            // Create and download JSON file
+            const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `museflow_exhibition_${new Date().getTime()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast('구성 파일 내보내기 완료!');
+            console.log('Exported Configuration:', config);
+        }
+        
         function addDefaultArtworks() {
             const defaults = ['모나리자', '별이 빛나는 밤', '진주 귀걸이 소녀'];
             
@@ -1095,22 +1679,34 @@
                 let pos, rot;
                 
                 if (wall === 'back') {
+                    // Check if artwork fits on current wall
+                    if (xOffset + art.width / 2 > hw - 1) {
+                        // Move to next wall
+                        wallIndex = 1;
+                        xOffset = -(roomDepth / 2) + 1;
+                    }
                     pos = new THREE.Vector3(xOffset, art.height / 2 + 1, -hd + 0.05);
                     rot = new THREE.Euler(0, 0, 0);
                     xOffset += art.width + spacing;
-                    if (xOffset > 8) {
-                        wallIndex = 1;
-                        xOffset = -5;
-                    }
                 } else if (wall === 'left') {
+                    // Check if artwork fits on current wall
+                    if (xOffset + art.width / 2 > hd - 1) {
+                        // Move to next wall
+                        wallIndex = 2;
+                        xOffset = -(roomDepth / 2) + 1;
+                    }
                     pos = new THREE.Vector3(-hw + 0.05, art.height / 2 + 1, xOffset);
                     rot = new THREE.Euler(0, Math.PI / 2, 0);
                     xOffset += art.width + spacing;
-                    if (xOffset > 5) {
-                        wallIndex = 2;
-                        xOffset = -5;
-                    }
                 } else {
+                    // Right wall
+                    // Check if artwork fits on current wall
+                    if (xOffset + art.width / 2 > hd - 1) {
+                        // Wrap to back wall (overflow protection)
+                        wallIndex = 0;
+                        xOffset = -hw + 1;
+                        console.warn('Too many artworks for current room size');
+                    }
                     pos = new THREE.Vector3(hw - 0.05, art.height / 2 + 1, xOffset);
                     rot = new THREE.Euler(0, -Math.PI / 2, 0);
                     xOffset += art.width + spacing;
