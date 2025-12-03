@@ -3020,7 +3020,6 @@
     <script src="/static/js/core/ai-orchestrator.js"></script>
     <script src="/static/js/core/workflow-execution-panel.js"></script>
     <script src="/static/js/core/canvas-onboarding-minimal.js"></script>
-    <script src="/static/js/core/sample-workflow-generator.js"></script>
     <script src="/static/js/mobile/canvas-mobile.js"></script>
     <script src="/static/js/node-library-88.js"></script>
     <script src="/static/js/google-mcp-client.js"></script>
@@ -3120,15 +3119,122 @@
         function initializeEmptyCanvas(projectId) {
             console.log('✅ Initializing canvas for project:', projectId);
             
-            // Initialize CanvasV3 with empty nodes first
-            // SampleWorkflowGenerator will auto-create sample if this is first visit
+            // Check if we need to create sample workflow
+            const hasSample = localStorage.getItem('museflow_canvas_has_sample');
+            
+            // Initialize CanvasV3
             if (window.CanvasV3) {
-                CanvasV3.nodes = [];
-                CanvasV3.connections = [];
-                CanvasV3.init();
+                // If no sample exists, create it now
+                if (!hasSample || hasSample !== 'true') {
+                    console.log('🎨 Creating sample workflow for first-time user...');
+                    
+                    // Create sample nodes directly
+                    CanvasV3.nodes = [
+                        {
+                            id: 'sample-1',
+                            type: 'ex-01',
+                            title: '전시 주제 선정',
+                            description: '전시의 핵심 주제를 정의합니다',
+                            category: 'exhibition',
+                            x: 100,
+                            y: 150,
+                            width: 200,
+                            height: 120,
+                            selected: false
+                        },
+                        {
+                            id: 'sample-2',
+                            type: 'ex-02',
+                            title: '작품 선정',
+                            description: '전시 주제에 맞는 작품을 선별합니다',
+                            category: 'exhibition',
+                            x: 350,
+                            y: 150,
+                            width: 200,
+                            height: 120,
+                            selected: false
+                        },
+                        {
+                            id: 'sample-3',
+                            type: 'ex-03',
+                            title: '공간 배치 계획',
+                            description: '전시 공간의 동선과 배치를 설계합니다',
+                            category: 'exhibition',
+                            x: 600,
+                            y: 150,
+                            width: 200,
+                            height: 120,
+                            selected: false
+                        },
+                        {
+                            id: 'sample-4',
+                            type: 'pr-01',
+                            title: '마케팅 계획',
+                            description: '전시 홍보를 위한 마케팅 전략을 수립합니다',
+                            category: 'program',
+                            x: 225,
+                            y: 330,
+                            width: 200,
+                            height: 120,
+                            selected: false
+                        },
+                        {
+                            id: 'sample-5',
+                            type: 'pr-02',
+                            title: '전시 오픈',
+                            description: '전시를 정식으로 오픈합니다',
+                            category: 'program',
+                            x: 475,
+                            y: 330,
+                            width: 200,
+                            height: 120,
+                            selected: false
+                        }
+                    ];
+                    
+                    CanvasV3.connections = [
+                        {
+                            id: 'sample-conn-1',
+                            from: 'sample-1',
+                            to: 'sample-2',
+                            fromHandle: 'right',
+                            toHandle: 'left'
+                        },
+                        {
+                            id: 'sample-conn-2',
+                            from: 'sample-2',
+                            to: 'sample-3',
+                            fromHandle: 'right',
+                            toHandle: 'left'
+                        },
+                        {
+                            id: 'sample-conn-3',
+                            from: 'sample-2',
+                            to: 'sample-4',
+                            fromHandle: 'bottom',
+                            toHandle: 'top'
+                        },
+                        {
+                            id: 'sample-conn-4',
+                            from: 'sample-3',
+                            to: 'sample-5',
+                            fromHandle: 'bottom',
+                            toHandle: 'top'
+                        }
+                    ];
+                    
+                    // Mark as created
+                    localStorage.setItem('museflow_canvas_has_sample', 'true');
+                    
+                    console.log('✅ Sample workflow created:', CanvasV3.nodes.length, 'nodes');
+                } else {
+                    // No sample needed, start empty
+                    CanvasV3.nodes = [];
+                    CanvasV3.connections = [];
+                }
                 
-                // Note: Sample workflow will be auto-created by SampleWorkflowGenerator
-                // after CanvasV3 is fully initialized
+                // Initialize canvas
+                CanvasV3.init();
             }
         }
         
