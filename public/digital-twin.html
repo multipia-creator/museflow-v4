@@ -1772,28 +1772,130 @@
             while(pathGroup.children.length > 0) {
                 pathGroup.remove(pathGroup.children[0]);
             }
+            while(visitorGroup.children.length > 0) {
+                visitorGroup.remove(visitorGroup.children[0]);
+            }
             
             if (artworks.length < 2) {
                 showToast('작품이 2개 이상 필요합니다');
                 return;
             }
             
-            const points = artworks.map(art => {
+            // Create visitor path with entrance as starting point
+            const entrancePoint = new THREE.Vector3(
+                0, 
+                0.1, 
+                currentEntrancePosition === 'front' ? roomDepth / 2 - 1 : -roomDepth / 2 + 1
+            );
+            
+            const points = [entrancePoint];
+            
+            artworks.forEach(art => {
                 const pos = art.position.clone();
                 pos.y = 0.1;
                 if (art.wall === 'back') pos.z += 2;
                 else if (art.wall === 'left') pos.x += 2;
                 else if (art.wall === 'right') pos.x -= 2;
-                return pos;
+                points.push(pos);
             });
             
+            // Return to entrance
+            points.push(entrancePoint);
+            
             const curve = new THREE.CatmullRomCurve3(points);
-            const pathGeom = new THREE.BufferGeometry().setFromPoints(curve.getPoints(100));
+            const pathPoints = curve.getPoints(200);
+            const pathGeom = new THREE.BufferGeometry().setFromPoints(pathPoints);
             const pathMat = new THREE.LineBasicMaterial({ color: 0x4CAF50, linewidth: 3 });
             flowPath = new THREE.Line(pathGeom, pathMat);
             pathGroup.add(flowPath);
             
-            showToast('동선이 최적화되었습니다');
+            // Create animated visitors along the path
+            createAnimatedVisitors(pathPoints);
+            
+            showToast('동선 시뮬레이션 시작 (관람객 5명)');
+        }
+        
+        function createAnimatedVisitors(pathPoints) {
+            const visitorCount = 5;
+            visitors = [];
+            
+            for (let i = 0; i < visitorCount; i++) {
+                // Simple visitor representation (cylinder for body + sphere for head)
+                const visitorMesh = new THREE.Group();
+                
+                // Body
+                const bodyGeom = new THREE.CylinderGeometry(0.2, 0.2, 1.5, 8);
+                const bodyMat = new THREE.MeshStandardMaterial({ 
+                    color: 0x3b82f6,
+                    roughness: 0.8,
+                    metalness: 0.1
+                });
+                const body = new THREE.Mesh(bodyGeom, bodyMat);
+                body.position.y = 0.75;
+                body.castShadow = true;
+                visitorMesh.add(body);
+                
+                // Head
+                const headGeom = new THREE.SphereGeometry(0.25, 8, 8);
+                const headMat = new THREE.MeshStandardMaterial({ 
+                    color: 0xffd700,
+                    roughness: 0.9,
+                    metalness: 0.0
+                });
+                const head = new THREE.Mesh(headGeom, headMat);
+                head.position.y = 1.75;
+                head.castShadow = true;
+                visitorMesh.add(head);
+                
+                // Initial position along path
+                const startIndex = Math.floor((i / visitorCount) * pathPoints.length);
+                const startPos = pathPoints[startIndex];
+                visitorMesh.position.copy(startPos);
+                visitorMesh.position.y = 0;
+                
+                // Store visitor data
+                visitors.push({
+                    group: visitorMesh,
+                    pathIndex: startIndex,
+                    speed: 0.3 + Math.random() * 0.2 // Varied speeds
+                });
+                
+                // Add to global visitor group
+                visitorGroup.add(visitorMesh);
+            }
+        }
+        
+        function updateVisitors() {
+            if (!flowPath || visitors.length === 0) return;
+            
+            const pathPoints = flowPath.geometry.attributes.position.array;
+            const pointCount = pathPoints.length / 3;
+            
+            visitors.forEach(visitor => {
+                // Move along path
+                visitor.pathIndex += visitor.speed;
+                
+                // Loop back to start
+                if (visitor.pathIndex >= pointCount) {
+                    visitor.pathIndex = 0;
+                }
+                
+                // Update position
+                const idx = Math.floor(visitor.pathIndex) * 3;
+                if (idx + 2 < pathPoints.length) {
+                    visitor.group.position.set(
+                        pathPoints[idx],
+                        0,
+                        pathPoints[idx + 2]
+                    );
+                    
+                    // Look ahead for rotation
+                    const nextIdx = Math.min(Math.floor(visitor.pathIndex + 5) * 3, pathPoints.length - 3);
+                    const lookX = pathPoints[nextIdx];
+                    const lookZ = pathPoints[nextIdx + 2];
+                    visitor.group.lookAt(lookX, 0, lookZ);
+                }
+            });
         }
         
         function setCameraView(view) {
@@ -2151,6 +2253,9 @@
         function animate() {
             requestAnimationFrame(animate);
             controls.update();
+            
+            // Update animated visitors
+            updateVisitors();
             
             // Subtle animation
             artworks.forEach((art, i) => {
