@@ -511,15 +511,150 @@
             }
         }
         
+        /* Mobile Optimizations */
         @media (max-width: 768px) {
-            .canvas-container {
-                grid-template-columns: 1fr;
+            body {
+                padding-top: 120px; /* Navbar + Mobile Tabs */
             }
             
+            .canvas-container {
+                grid-template-columns: 1fr;
+                height: calc(100vh - 120px);
+                position: relative;
+            }
+            
+            /* Mobile Tab Navigation */
+            .mobile-tabs {
+                display: flex;
+                position: fixed;
+                top: 64px;
+                left: 0;
+                right: 0;
+                background: white;
+                border-bottom: 2px solid var(--museflow-border-light);
+                z-index: 100;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .mobile-tab {
+                flex: 1;
+                min-width: 80px;
+                padding: 1rem 0.5rem;
+                text-align: center;
+                font-size: 0.75rem;
+                font-weight: 600;
+                color: var(--museflow-text-secondary);
+                border-bottom: 3px solid transparent;
+                transition: var(--transition-base);
+                cursor: pointer;
+                white-space: nowrap;
+            }
+            
+            .mobile-tab i {
+                display: block;
+                font-size: 1.25rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .mobile-tab.active {
+                color: var(--museflow-primary);
+                border-bottom-color: var(--museflow-primary);
+                background: var(--museflow-primary-light);
+            }
+            
+            /* Mobile Columns */
             .left-column,
+            .center-column,
             .right-column {
                 display: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: var(--museflow-bg-secondary);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
             }
+            
+            .left-column.mobile-active,
+            .center-column.mobile-active,
+            .right-column.mobile-active {
+                display: flex;
+                animation: slideIn 0.3s ease;
+            }
+            
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateX(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            
+            /* Mobile Input Area */
+            .input-area {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: white;
+                border-top: 1px solid var(--museflow-border-light);
+                padding: 0.75rem;
+                z-index: 99;
+            }
+            
+            .message-input-container {
+                gap: 0.5rem;
+            }
+            
+            .message-input {
+                font-size: 16px !important; /* Prevent iOS zoom */
+                padding: 0.75rem !important;
+            }
+            
+            .send-button {
+                width: 44px;
+                height: 44px;
+            }
+            
+            /* Conversation Area Mobile */
+            .conversation-area {
+                padding-bottom: 80px; /* Space for fixed input */
+            }
+            
+            /* Preview Tabs Mobile */
+            .preview-tabs {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .preview-tab {
+                font-size: 0.75rem;
+                padding: 0.625rem 1rem;
+            }
+            
+            /* History Items Touch-friendly */
+            .history-item {
+                padding: 1rem;
+                margin-bottom: 0.625rem;
+            }
+        }
+        
+        /* Tablet Landscape */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .canvas-container {
+                grid-template-columns: 250px 1fr 350px;
+            }
+        }
+        
+        /* Hide mobile tabs on desktop */
+        .mobile-tabs {
+            display: none;
         }
     </style>
 </head>
@@ -568,6 +703,22 @@
             </div>
         </div>
     </nav>
+    
+    <!-- Mobile Tab Navigation (visible only on mobile) -->
+    <div class="mobile-tabs">
+        <div class="mobile-tab active" data-mobile-tab="history">
+            <i class="fas fa-history"></i>
+            <span>History</span>
+        </div>
+        <div class="mobile-tab" data-mobile-tab="conversation">
+            <i class="fas fa-comments"></i>
+            <span>AI Chat</span>
+        </div>
+        <div class="mobile-tab" data-mobile-tab="preview">
+            <i class="fas fa-eye"></i>
+            <span>Preview</span>
+        </div>
+    </div>
     
     <div class="canvas-container">
         <!-- Left Column: History & Projects -->
@@ -1060,6 +1211,71 @@
         
         // 페이지 로드 시 Dashboard Task 확인
         checkPendingDashboardTask();
+        
+        // ==========================================
+        // Mobile Tab Navigation
+        // ==========================================
+        
+        /**
+         * 모바일 탭 전환 핸들러
+         */
+        function initializeMobileTabs() {
+            const mobileTabs = document.querySelectorAll('.mobile-tab');
+            const leftColumn = document.querySelector('.left-column');
+            const centerColumn = document.querySelector('.center-column');
+            const rightColumn = document.querySelector('.right-column');
+            
+            // 기본값: conversation (AI Chat) 탭 활성화
+            if (window.innerWidth <= 768) {
+                centerColumn.classList.add('mobile-active');
+            }
+            
+            mobileTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-mobile-tab');
+                    
+                    // Remove active class from all tabs
+                    mobileTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Hide all columns
+                    leftColumn.classList.remove('mobile-active');
+                    centerColumn.classList.remove('mobile-active');
+                    rightColumn.classList.remove('mobile-active');
+                    
+                    // Show selected column
+                    switch(tabName) {
+                        case 'history':
+                            leftColumn.classList.add('mobile-active');
+                            break;
+                        case 'conversation':
+                            centerColumn.classList.add('mobile-active');
+                            break;
+                        case 'preview':
+                            rightColumn.classList.add('mobile-active');
+                            break;
+                    }
+                });
+            });
+        }
+        
+        // 화면 크기 변경 감지
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                // Desktop: 모든 컬럼 표시
+                document.querySelectorAll('.left-column, .center-column, .right-column').forEach(col => {
+                    col.classList.remove('mobile-active');
+                });
+            } else {
+                // Mobile: 활성 탭에 따라 컬럼 표시
+                initializeMobileTabs();
+            }
+        });
+        
+        // 페이지 로드 시 모바일 탭 초기화
+        if (window.innerWidth <= 768) {
+            initializeMobileTabs();
+        }
     </script>
 </body>
 </html>
