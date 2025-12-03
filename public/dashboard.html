@@ -454,6 +454,33 @@
             color: #3730A3;
         }
         
+        /* Canvas Action Button */
+        .canvas-action-btn {
+            margin-left: 1rem;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+        
+        .canvas-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .canvas-action-btn i {
+            font-size: 0.875rem;
+        }
+        
         /* Google Workspace Integration Card */
         .workspace-card {
             grid-column: span 6;
@@ -888,6 +915,9 @@
                         <div class="timeline-meta">고려청자 특별전 · 오늘 3:20 PM</div>
                     </div>
                     <div class="timeline-status in-progress">진행 중</div>
+                    <button class="canvas-action-btn" onclick="openCanvasForTask('전시 라벨 작성', 'document')">
+                        <i class="fas fa-pencil-alt"></i> Canvas에서 작업
+                    </button>
                 </div>
                 
                 <div class="timeline-item">
@@ -921,6 +951,9 @@
                         <div class="timeline-meta">세계 문화유산전 · 2일 전</div>
                     </div>
                     <div class="timeline-status pending">대기</div>
+                    <button class="canvas-action-btn" onclick="openCanvasForTask('홍보 계획 수립', 'promotion')">
+                        <i class="fas fa-pencil-alt"></i> Canvas에서 작업
+                    </button>
                 </div>
             </div>
             
@@ -1569,6 +1602,127 @@
                 alert(`🤖 AI 검색 결과\n\n질문: "${query}"\n\n답변:\n• 검색 중입니다...\n• 실제 환경에서는 AI API와 연동하여 실시간 답변을 제공합니다.\n• Google Gemini, OpenAI GPT 등과 연동 가능합니다.`);
             }, 500);
         }
+        
+        // ==========================================
+        // Dashboard → Canvas 연동 함수
+        // ==========================================
+        
+        /**
+         * Dashboard Task → Canvas 워크플로우 자동 생성
+         * @param {string} taskTitle - Task 제목 (예: "전시 라벨 작성")
+         * @param {string} taskType - Task 유형 (예: "document", "budget", "promotion")
+         */
+        function openCanvasForTask(taskTitle, taskType) {
+            console.log(`[Dashboard → Canvas] Opening Canvas for task: ${taskTitle} (${taskType})`);
+            
+            // 1. Task 정보를 LocalStorage에 저장
+            const taskData = {
+                title: taskTitle,
+                type: taskType,
+                timestamp: Date.now(),
+                source: 'dashboard',
+                project: '고려청자 특별전' // 실제 환경에서는 프로젝트 정보도 전달
+            };
+            
+            localStorage.setItem('pending_canvas_task', JSON.stringify(taskData));
+            
+            // 2. Canvas 페이지로 이동
+            window.location.href = '/canvas-v3.html';
+        }
+        
+        /**
+         * Canvas 결과물 실시간 Polling (5초마다)
+         */
+        let lastUpdateTimestamp = 0;
+        
+        function startDashboardPolling() {
+            setInterval(async () => {
+                try {
+                    const response = await fetch(`/api/dashboard/updates?since=${lastUpdateTimestamp}`);
+                    const data = await response.json();
+                    
+                    if (data.success && data.updates.length > 0) {
+                        console.log(`[Dashboard Polling] Received ${data.updates.length} updates`);
+                        
+                        data.updates.forEach(update => {
+                            updateDashboardFromCanvas(update);
+                        });
+                        
+                        lastUpdateTimestamp = data.timestamp;
+                    }
+                } catch (error) {
+                    console.error('[Dashboard Polling] Error:', error);
+                }
+            }, 5000); // 5초마다 확인
+        }
+        
+        /**
+         * Canvas 결과물로 Dashboard 위젯 업데이트
+         */
+        function updateDashboardFromCanvas(update) {
+            const { node_title, node_type, status } = update;
+            
+            // Timeline Item 상태 업데이트
+            const timelineItems = document.querySelectorAll('.timeline-title');
+            timelineItems.forEach(item => {
+                if (item.textContent.trim() === node_title) {
+                    const statusBadge = item.closest('.timeline-item').querySelector('.timeline-status');
+                    
+                    if (status === 'completed') {
+                        statusBadge.textContent = '완료';
+                        statusBadge.className = 'timeline-status completed';
+                        
+                        // 버튼 숨기기
+                        const canvasBtn = item.closest('.timeline-item').querySelector('.canvas-action-btn');
+                        if (canvasBtn) {
+                            canvasBtn.style.display = 'none';
+                        }
+                        
+                        console.log(`[Dashboard Update] Task "${node_title}" marked as completed`);
+                    }
+                }
+            });
+            
+            // 알림 표시
+            showDashboardNotification(`✅ "${node_title}" 작업이 완료되었습니다.`);
+        }
+        
+        /**
+         * Dashboard 알림 표시
+         */
+        function showDashboardNotification(message) {
+            // 간단한 Toast 알림 (실제 환경에서는 Toast 라이브러리 사용 권장)
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                font-weight: 600;
+                z-index: 10000;
+                animation: slideInRight 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Dashboard 로드 시 Polling 시작
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('[Dashboard] Starting real-time polling for Canvas updates');
+            startDashboardPolling();
+        });
     </script>
 </body>
 </html>

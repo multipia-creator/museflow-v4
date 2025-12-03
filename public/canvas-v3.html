@@ -2118,6 +2118,13 @@
                 nodeY = parseInt(node.style.top);
             });
             
+            // Double-click to mark as completed
+            node.addEventListener('dblclick', (e) => {
+                if (e.target.classList.contains('node-handle')) return;
+                const nodeId = node.id;
+                markNodeAsCompleted(nodeId);
+            });
+            
             document.addEventListener('mousemove', (e) => {
                 if (!isDragging) return;
                 const dx = e.clientX - startX;
@@ -2361,6 +2368,9 @@
                 
                 lastScroll = currentScroll;
             });
+            
+            // Check for Dashboard Task (Dashboard → Canvas 연동)
+            checkPendingDashboardTask();
             
             // Welcome message
             setTimeout(() => {
@@ -3141,6 +3151,204 @@
                     .replace(/\n/g, '<br>');
                 
                 return `<p style="margin: 8px 0;">${html}</p>`;
+            }
+            
+            // ==========================================
+            // Dashboard → Canvas 자동 워크플로우 생성
+            // ==========================================
+            
+            /**
+             * Dashboard에서 전달된 Task 확인 및 자동 워크플로우 생성
+             */
+            async function checkPendingDashboardTask() {
+                const pendingTask = localStorage.getItem('pending_canvas_task');
+                
+                if (pendingTask) {
+                    try {
+                        const taskData = JSON.parse(pendingTask);
+                        console.log('[Canvas] Received Dashboard task:', taskData);
+                        
+                        // Task 정보 표시
+                        addMessageToChat('system', `📋 Dashboard에서 "${taskData.title}" 작업을 시작합니다.`);
+                        addMessageToChat('system', '🤖 AI가 자동으로 워크플로우를 생성합니다...');
+                        
+                        // 자동 워크플로우 생성
+                        await generateTaskWorkflow(taskData);
+                        
+                        // 사용 후 삭제
+                        localStorage.removeItem('pending_canvas_task');
+                    } catch (error) {
+                        console.error('[Canvas] Error processing dashboard task:', error);
+                    }
+                }
+            }
+            
+            /**
+             * Task 기반 자동 워크플로우 생성
+             */
+            async function generateTaskWorkflow(taskData) {
+                // Task → Workflow 매핑 테이블
+                const TASK_TO_WORKFLOW_MAPPING = {
+                    "전시 라벨 작성": {
+                        workflow_type: "document",
+                        auto_nodes: [
+                            { type: "document", title: "전시 라벨", icon: "📝", description: "전시 라벨 내용 작성" },
+                            { type: "idea", title: "라벨 구성안", icon: "💡", description: "라벨 구성 아이디어" }
+                        ]
+                    },
+                    "예산 승인": {
+                        workflow_type: "budget",
+                        auto_nodes: [
+                            { type: "chart", title: "예산 계획", icon: "💰", chartType: "bar", description: "예산 항목별 분석" },
+                            { type: "document", title: "예산 산출 근거", icon: "📊", description: "예산 계산 근거 문서" },
+                            { type: "task", title: "예산 검토", icon: "✅", description: "최종 예산 검토 단계" }
+                        ]
+                    },
+                    "소장품 선정": {
+                        workflow_type: "collection",
+                        auto_nodes: [
+                            { type: "image", title: "소장품 이미지", icon: "🖼️", description: "소장품 이미지 업로드" },
+                            { type: "document", title: "작품 설명", icon: "📄", description: "작품 설명 문서 작성" },
+                            { type: "chart", title: "선정 기준 분석", icon: "📊", chartType: "radar", description: "작품 선정 기준 분석" }
+                        ]
+                    },
+                    "홍보 계획 수립": {
+                        workflow_type: "promotion",
+                        auto_nodes: [
+                            { type: "idea", title: "홍보 전략", icon: "💡", description: "홍보 전략 아이디어" },
+                            { type: "image", title: "홍보 포스터", icon: "🎨", description: "홍보 포스터 디자인" },
+                            { type: "document", title: "SNS 콘텐츠", icon: "📱", description: "SNS 게시물 작성" },
+                            { type: "chart", title: "홍보 예산", icon: "💰", chartType: "pie", description: "홍보 예산 분배" }
+                        ]
+                    }
+                };
+                
+                const workflow = TASK_TO_WORKFLOW_MAPPING[taskData.title];
+                
+                if (workflow) {
+                    // 자동으로 Node 생성
+                    for (let i = 0; i < workflow.auto_nodes.length; i++) {
+                        const nodeData = workflow.auto_nodes[i];
+                        
+                        await new Promise(resolve => setTimeout(resolve, i * 400)); // 0.4초 간격
+                        
+                        if (nodeData.type === 'chart') {
+                            addMessageToChat('assistant', `📊 ${nodeData.title} 차트를 생성합니다.`);
+                            generateChartNode({
+                                title: nodeData.title,
+                                chartType: nodeData.chartType || 'bar'
+                            });
+                        } else if (nodeData.type === 'document') {
+                            addMessageToChat('assistant', `📄 ${nodeData.title} 문서를 생성합니다.`);
+                            generateDocumentNode({
+                                title: nodeData.title
+                            });
+                        } else if (nodeData.type === 'image') {
+                            addMessageToChat('assistant', `🖼️ ${nodeData.title} 노드를 생성합니다.`);
+                            generateImageNode({
+                                title: nodeData.title
+                            });
+                        } else {
+                            createNodeFromAI({
+                                type: nodeData.type,
+                                title: nodeData.title,
+                                description: nodeData.description,
+                                icon: nodeData.icon
+                            });
+                        }
+                    }
+                    
+                    addMessageToChat('assistant', `✅ ${workflow.auto_nodes.length}개의 작업 노드를 생성했습니다. 이제 각 노드에 내용을 입력하세요.`);
+                    
+                    // Dashboard에 진행 상태 전송
+                    await syncTaskToDashboard({
+                        task_title: taskData.title,
+                        status: 'in-progress',
+                        nodes_created: workflow.auto_nodes.length
+                    });
+                } else {
+                    // Fallback: AI에게 자연어로 요청
+                    addMessageToChat('assistant', '🤖 AI가 맞춤형 워크플로우를 생성합니다...');
+                    await sendAICommand(`"${taskData.title}" 업무를 위한 워크플로우를 만들어줘`);
+                }
+            }
+            
+            /**
+             * Canvas → Dashboard 실시간 동기화
+             */
+            async function syncTaskToDashboard(data) {
+                try {
+                    const response = await fetch('/api/dashboard/sync', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            node_id: `task_${Date.now()}`,
+                            node_type: 'workflow',
+                            node_title: data.task_title,
+                            status: data.status,
+                            data: data
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        console.log('[Canvas → Dashboard] Sync successful');
+                    }
+                } catch (error) {
+                    console.error('[Canvas → Dashboard] Sync failed:', error);
+                }
+            }
+            
+            /**
+             * Node 완료 표시 (우클릭 메뉴에서 호출)
+             */
+            async function markNodeAsCompleted(nodeId) {
+                const node = state.nodes.find(n => n.id === nodeId);
+                if (!node) return;
+                
+                // 1. Node 상태 업데이트
+                node.status = 'completed';
+                node.completedAt = Date.now();
+                
+                // 2. Node UI 업데이트 (초록색 체크 표시)
+                const nodeElement = document.getElementById(nodeId);
+                if (nodeElement) {
+                    nodeElement.style.border = '2px solid #10B981';
+                    const header = nodeElement.querySelector('.node-header');
+                    if (header && !header.querySelector('.fa-check-circle')) {
+                        header.innerHTML += ' <i class="fas fa-check-circle" style="color: #10B981;"></i>';
+                    }
+                }
+                
+                // 3. Dashboard에 실시간 전송
+                await syncNodeToDashboard(node);
+                
+                addMessageToChat('system', `✅ "${node.title}" 노드가 완료되었습니다. Dashboard에 반영되었습니다.`);
+            }
+            
+            /**
+             * Node → Dashboard 동기화
+             */
+            async function syncNodeToDashboard(nodeData) {
+                try {
+                    const response = await fetch('/api/dashboard/sync', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            node_id: nodeData.id,
+                            node_type: nodeData.type,
+                            node_title: nodeData.title,
+                            status: nodeData.status || 'in-progress',
+                            completed_at: nodeData.completedAt || null,
+                            data: nodeData
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        console.log('[Canvas → Dashboard] Node synced:', nodeData.title);
+                    }
+                } catch (error) {
+                    console.error('[Canvas → Dashboard] Sync failed:', error);
+                }
             }
         });
     </script>
