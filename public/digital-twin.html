@@ -1489,7 +1489,7 @@
         }
         
         // Load navbar
-        fetch('/unified-navbar.html')
+        fetch('/static/components/unified-navbar.html')
             .then(r => r.text())
             .then(html => {
                 document.getElementById('unified-navbar-placeholder').innerHTML = html;
