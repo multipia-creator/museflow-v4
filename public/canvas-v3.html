@@ -26,9 +26,9 @@
            Floating Toolbar + Role-based Widget System + Unified Navbar
            =============================================== */
         
-        /* Override for Canvas-specific layout with Navbar */
+        /* Override for Canvas-specific layout with Compact Header */
         body {
-            padding-top: 64px; /* Space for unified navbar */
+            padding-top: 44px; /* Space for compact header (64px reduced to 44px) */
         }
         
         * {
@@ -113,57 +113,273 @@
         .app-container {
             display: flex;
             flex-direction: column;
-            height: calc(100vh - 64px);
+            height: calc(100vh - 44px);
             width: 100vw;
             margin-top: 0;
         }
         
-        /* Breadcrumb Navigation */
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-        
-        .breadcrumb-item {
+        /* Compact Breadcrumb */
+        .breadcrumb-compact {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 500px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
         
-        .breadcrumb-separator {
+        .breadcrumb-compact a {
             color: var(--text-tertiary);
-        }
-        
-        .breadcrumb-link {
-            color: var(--text-secondary);
             text-decoration: none;
-            transition: color var(--transition-base);
+            transition: color 0.2s;
         }
         
-        .breadcrumb-link:hover {
+        .breadcrumb-compact a:hover {
             color: var(--accent-primary);
         }
         
-        .breadcrumb-current {
-            color: var(--text-primary);
+        .breadcrumb-compact .current {
+            color: var(--text-secondary);
             font-weight: 600;
         }
         
+        /* Quick Actions (Iconified) */
+        .quick-actions-compact {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .action-icon-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .action-icon-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--accent-primary);
+        }
+        
+        .action-icon-btn i {
+            font-size: 16px;
+        }
+        
+        /* Tooltip for Icons */
+        .action-icon-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: -32px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.8);
+            background: var(--text-primary);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s;
+            z-index: 10000;
+        }
+        
+        .action-icon-btn:hover::after {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+        
+        /* Save Status Compact */
+        .save-status-compact {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--success);
+            padding: 4px 10px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 6px;
+        }
+        
+        .save-status-compact i {
+            width: 14px;
+            height: 14px;
+        }
+        
+        /* Nav Buttons Compact */
+        .nav-btn-compact {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .nav-btn-compact:hover {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--accent-primary);
+        }
+        
+        .nav-btn-compact.primary {
+            background: var(--accent-primary);
+            color: white;
+        }
+        
+        .nav-btn-compact.primary:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+        }
+        
         /* ===============================================
-           Split Context Bar - Professional UX
-           3-Level Context: Role > Project > Actions
+           Compact Header - Figma/Linear Professional UX
+           Single-Row Context Bar (44px height)
            =============================================== */
         
-        .context-bar-container {
-            display: flex;
-            flex-direction: column;
-            background: var(--bg-primary);
+        .compact-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-primary);
-            box-shadow: var(--shadow-sm);
-            z-index: 90;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .compact-header.scrolled {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+            background: rgba(255, 255, 255, 0.96);
+        }
+        
+        /* Header Sections */
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .header-center {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Logo */
+        .compact-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        
+        .compact-logo img {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+        }
+        
+        .compact-logo:hover {
+            color: var(--accent-primary);
+        }
+        
+        /* Context Selector (Unified Role + Project) */
+        .context-selector {
+            display: flex;
+            align-items: center;
+        }
+        
+        .context-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            max-width: 400px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .context-btn:hover {
+            background: var(--accent-light);
+            border-color: var(--accent-primary);
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.15);
+        }
+        
+        .role-emoji {
+            font-size: 16px;
+            line-height: 1;
+        }
+        
+        .context-separator {
+            color: var(--text-tertiary);
+            margin: 0 4px;
+            font-weight: 400;
+        }
+        
+        .role-name-compact {
+            font-weight: 600;
+        }
+        
+        .project-name-compact {
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        
+        .chevron-icon {
+            width: 14px;
+            height: 14px;
+            color: var(--text-tertiary);
+            transition: transform 0.2s;
+        }
+        
+        .context-btn.active .chevron-icon {
+            transform: rotate(180deg);
         }
         
         /* Context Row - Shared Styles */
@@ -985,114 +1201,73 @@
     </style>
 </head>
 <body>
-    <!-- Unified Navigation Bar (Dashboard Integration) -->
-    <nav class="unified-navbar" id="navbar">
-        <div class="unified-nav-container">
-            <!-- Logo -->
-            <a href="/dashboard-v2.html" class="unified-nav-logo">
-                <img src="/static/images/logo-square.png" alt="MuseFlow" onerror="this.src='/logo-icon.png'">
+    <!-- Compact Header - Figma/Linear Professional UX (44px) -->
+    <header class="compact-header" id="compact-header">
+        <!-- Left: Logo + Context Selector -->
+        <div class="header-left">
+            <a href="/dashboard-v2.html" class="compact-logo">
+                <img src="/static/images/logo-square.png" alt="M" onerror="this.src='/logo-icon.png'">
                 MuseFlow
             </a>
             
-            <!-- Navigation Links -->
-            <ul class="unified-nav-links">
-                <li><a href="/dashboard-v2.html" data-tooltip="Dashboard"><i class="fa fa-home"></i></a></li>
-                <li><a href="/canvas-v3.html" class="active" data-tooltip="Canvas"><i class="fa fa-project-diagram"></i></a></li>
-                <li><a href="#projects" data-tooltip="Projects"><i class="fa fa-folder"></i></a></li>
-                <li><a href="#analytics" data-tooltip="Analytics"><i class="fa fa-chart-line"></i></a></li>
-                <li><a href="#team" data-tooltip="Team"><i class="fa fa-users"></i></a></li>
-            </ul>
-            
-            <!-- Action Buttons -->
-            <div class="unified-nav-actions">
-                <button class="unified-nav-btn" data-tooltip="Notifications">
-                    <i class="fa fa-bell"></i>
+            <!-- Unified Context Selector (Role + Project) -->
+            <div class="context-selector">
+                <button class="context-btn" id="context-btn">
+                    <span class="role-emoji" id="role-emoji">🎨</span>
+                    <span class="role-name-compact" id="role-name-compact">학예사</span>
+                    <span class="context-separator">·</span>
+                    <span class="project-name-compact" id="project-name-compact">전시 기획 워크플로우</span>
+                    <i data-lucide="chevron-down" class="chevron-icon"></i>
                 </button>
-                <button class="unified-nav-btn" data-tooltip="Settings">
-                    <i class="fa fa-cog"></i>
-                </button>
-                <button class="unified-nav-btn primary" data-tooltip="Profile">
-                    <i class="fa fa-user"></i>
-                </button>
-            </div>
-        </div>
-    </nav>
-    
-    <div class="app-container">
-        <!-- Split Context Bar - 3-Level Professional UX -->
-        <div class="context-bar-container">
-            <!-- Level 1: Role Context -->
-            <div class="context-row role-context">
-                <div class="role-info">
-                    <div class="role-icon">
-                        <i data-lucide="user" style="width: 12px; height: 12px;"></i>
-                    </div>
-                    <div>
-                        <span class="role-label">역할</span>
-                        <span class="role-name" id="current-role-display">학예사 (Curator)</span>
-                    </div>
-                </div>
-                
-                <button class="role-switch-btn" id="role-switch-btn">
-                    <i data-lucide="repeat" style="width: 14px; height: 14px;"></i>
-                    <span>역할 전환</span>
-                </button>
-            </div>
-            
-            <!-- Level 2: Project Context -->
-            <div class="context-row project-context">
-                <div class="project-info-wrapper">
-                    <i data-lucide="folder" class="project-icon"></i>
-                    <div>
-                        <span class="project-label">프로젝트</span>
-                        <select class="project-dropdown" id="project-selector">
-                            <option value="1">전시 기획 워크플로우</option>
-                            <option value="2">교육 프로그램 설계</option>
-                            <option value="3">관람객 분석 파이프라인</option>
-                            <option value="4">+ 새 프로젝트 만들기</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <!-- Breadcrumb -->
-                <div class="breadcrumb">
-                    <span class="breadcrumb-item">
-                        <a href="/dashboard-v2.html" class="breadcrumb-link">Dashboard</a>
-                    </span>
-                    <span class="breadcrumb-separator">›</span>
-                    <span class="breadcrumb-item">
-                        <span class="breadcrumb-link" id="breadcrumb-role">학예사</span>
-                    </span>
-                    <span class="breadcrumb-separator">›</span>
-                    <span class="breadcrumb-item">
-                        <span class="breadcrumb-current" id="breadcrumb-project">전시 기획 워크플로우</span>
-                    </span>
-                </div>
-            </div>
-            
-            <!-- Level 3: Action Context -->
-            <div class="context-row action-context">
-                <!-- Quick Actions -->
-                <div class="quick-actions" style="display: flex; gap: 8px; align-items: center;">
-                    <button class="quick-action-btn" title="버전 관리" style="background: transparent; border: none; cursor: pointer; padding: 6px; border-radius: 6px; transition: background 0.2s;">
-                        <i data-lucide="git-branch" style="width: 16px; height: 16px; color: var(--text-secondary);"></i>
-                    </button>
-                    <button class="quick-action-btn" title="공유하기" style="background: transparent; border: none; cursor: pointer; padding: 6px; border-radius: 6px; transition: background 0.2s;">
-                        <i data-lucide="share-2" style="width: 16px; height: 16px; color: var(--text-secondary);"></i>
-                    </button>
-                    <button class="quick-action-btn" title="내보내기" style="background: transparent; border: none; cursor: pointer; padding: 6px; border-radius: 6px; transition: background 0.2s;">
-                        <i data-lucide="download" style="width: 16px; height: 16px; color: var(--text-secondary);"></i>
-                    </button>
-                </div>
-                
-                <!-- Save Status -->
-                <div class="save-status">
-                    <i data-lucide="check-circle" style="width: 14px; height: 14px; color: var(--success);"></i>
-                    자동 저장됨
-                </div>
             </div>
         </div>
         
+        <!-- Center: Compact Breadcrumb -->
+        <div class="header-center">
+            <div class="breadcrumb-compact">
+                <a href="/dashboard-v2.html">Dashboard</a>
+                <span>›</span>
+                <span id="breadcrumb-role-compact">학예사</span>
+                <span>›</span>
+                <span class="current" id="breadcrumb-project-compact">전시 기획 워크플로우</span>
+            </div>
+        </div>
+        
+        <!-- Right: Quick Actions + Nav Buttons -->
+        <div class="header-right">
+            <!-- Quick Actions (Iconified) -->
+            <div class="quick-actions-compact">
+                <button class="action-icon-btn" data-tooltip="버전 관리">
+                    <i data-lucide="git-branch"></i>
+                </button>
+                <button class="action-icon-btn" data-tooltip="공유하기">
+                    <i data-lucide="share-2"></i>
+                </button>
+                <button class="action-icon-btn" data-tooltip="내보내기">
+                    <i data-lucide="download"></i>
+                </button>
+            </div>
+            
+            <!-- Save Status -->
+            <div class="save-status-compact">
+                <i data-lucide="check-circle"></i>
+                <span>저장됨</span>
+            </div>
+            
+            <!-- Nav Buttons -->
+            <button class="nav-btn-compact" data-tooltip="알림">
+                <i class="fa fa-bell"></i>
+            </button>
+            <button class="nav-btn-compact" data-tooltip="설정">
+                <i class="fa fa-cog"></i>
+            </button>
+            <button class="nav-btn-compact primary" data-tooltip="프로필">
+                <i class="fa fa-user"></i>
+            </button>
+        </div>
+    </header>
+    
+    <div class="app-container">
         <!-- Main Content -->
         <div class="main-content">
             <!-- Left Panel - Widget Palette -->
@@ -1569,24 +1744,24 @@
         }
         
         // =============================================
-        // Split Context Bar Functions
+        // Compact Header Functions
         // =============================================
         
         // Role Display Names
         const roleNames = {
-            curator: '학예사 (Curator)',
-            educator: '에듀케이터 (Educator)',
-            admin: '행정관리자 (Admin)'
-        };
-        
-        const roleNamesKorean = {
             curator: '학예사',
             educator: '에듀케이터',
             admin: '행정관리자'
         };
         
-        // Open Role Switcher Modal
-        document.getElementById('role-switch-btn')?.addEventListener('click', () => {
+        const roleEmojis = {
+            curator: '🎨',
+            educator: '📚',
+            admin: '⚙️'
+        };
+        
+        // Context Button Click - Open Modal
+        document.getElementById('context-btn')?.addEventListener('click', () => {
             const modal = document.getElementById('role-switcher-modal');
             modal.classList.add('active');
             
@@ -1620,9 +1795,10 @@
             // Update theme color
             document.body.setAttribute('data-role', newRole);
             
-            // Update UI
-            document.getElementById('current-role-display').textContent = roleNames[newRole];
-            document.getElementById('breadcrumb-role').textContent = roleNamesKorean[newRole];
+            // Update Compact Header UI
+            document.getElementById('role-emoji').textContent = roleEmojis[newRole];
+            document.getElementById('role-name-compact').textContent = roleNames[newRole];
+            document.getElementById('breadcrumb-role-compact').textContent = roleNames[newRole];
             
             // Update left panel widget palette
             renderWidgetPalette();
@@ -1633,11 +1809,11 @@
             
             // Show toast with role-specific color
             const themeColors = {
-                curator: '보라색 (큐레이션)',
-                educator: '파란색 (교육)',
-                admin: '녹색 (관리)'
+                curator: '보라색',
+                educator: '파란색',
+                admin: '녹색'
             };
-            showToast(`🎭 역할이 "${roleNames[newRole]}"(으)로 변경되었습니다 · ${themeColors[newRole]} 테마 적용`, 'success');
+            showToast(`${roleEmojis[newRole]} 역할이 "${roleNames[newRole]}"(으)로 변경되었습니다 · ${themeColors[newRole]} 테마 적용`, 'success');
         }
         
         // Close modal on outside click
@@ -1763,16 +1939,17 @@
         
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 Initializing Split Context Bar Canvas...');
+            console.log('🚀 Initializing Compact Header Canvas (Figma/Linear Style)...');
             
             // Set initial theme based on saved role
             const savedRole = localStorage.getItem('museflow_user_role') || 'curator';
             state.currentRole = savedRole;
             document.body.setAttribute('data-role', savedRole);
             
-            // Update initial UI
-            document.getElementById('current-role-display').textContent = roleNames[savedRole];
-            document.getElementById('breadcrumb-role').textContent = roleNamesKorean[savedRole];
+            // Update Compact Header UI
+            document.getElementById('role-emoji').textContent = roleEmojis[savedRole];
+            document.getElementById('role-name-compact').textContent = roleNames[savedRole];
+            document.getElementById('breadcrumb-role-compact').textContent = roleNames[savedRole];
             
             // Render components
             renderWidgetPalette();
@@ -1782,9 +1959,24 @@
             // Initialize Lucide icons
             lucide.createIcons();
             
+            // Scroll effect for header
+            let lastScroll = 0;
+            window.addEventListener('scroll', () => {
+                const header = document.getElementById('compact-header');
+                const currentScroll = window.scrollY;
+                
+                if (currentScroll > 50) {
+                    header?.classList.add('scrolled');
+                } else {
+                    header?.classList.remove('scrolled');
+                }
+                
+                lastScroll = currentScroll;
+            });
+            
             // Welcome message
             setTimeout(() => {
-                showToast('✨ Canvas 페이지에 오신 것을 환영합니다!', 'success');
+                showToast('✨ Compact Header 적용! 68px 공간 절약 (61% 감소)', 'success');
             }, 500);
         });
     </script>
