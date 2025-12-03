@@ -412,6 +412,253 @@
             display: block;
         }
         
+        /* Live Stats Cards */
+        .live-stats {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            padding: 1rem;
+        }
+        
+        .stat-card-mini {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem;
+            background: white;
+            border: 1px solid var(--museflow-border-light);
+            border-radius: var(--radius-md);
+            transition: var(--transition-base);
+        }
+        
+        .stat-card-mini:hover {
+            border-color: var(--museflow-primary);
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.1);
+        }
+        
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.125rem;
+            flex-shrink: 0;
+        }
+        
+        .stat-info {
+            flex: 1;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--museflow-text-secondary);
+            margin-bottom: 0.125rem;
+        }
+        
+        .stat-value {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--museflow-text-primary);
+        }
+        
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: var(--museflow-bg-tertiary);
+            border-bottom: 1px solid var(--museflow-border-light);
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--museflow-text-secondary);
+        }
+        
+        .section-header i {
+            color: var(--museflow-primary);
+        }
+        
+        /* Active Tasks */
+        .active-tasks-section {
+            margin-top: 1rem;
+            background: white;
+            border: 1px solid var(--museflow-border-light);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        
+        .active-tasks-list {
+            padding: 1rem;
+        }
+        
+        .no-tasks {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--museflow-text-tertiary);
+        }
+        
+        .no-tasks i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.3;
+        }
+        
+        .no-tasks p {
+            font-size: 0.875rem;
+        }
+        
+        /* Recent Items */
+        .recent-items-section {
+            margin-top: 1rem;
+            background: white;
+            border: 1px solid var(--museflow-border-light);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        
+        .recent-items-list {
+            padding: 0.5rem;
+        }
+        
+        .recent-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            transition: var(--transition-base);
+            cursor: pointer;
+        }
+        
+        .recent-item:hover {
+            background: var(--museflow-bg-tertiary);
+        }
+        
+        .recent-icon {
+            font-size: 1.5rem;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--museflow-bg-secondary);
+            border-radius: var(--radius-sm);
+            flex-shrink: 0;
+        }
+        
+        .recent-info {
+            flex: 1;
+        }
+        
+        .recent-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--museflow-text-primary);
+            margin-bottom: 0.125rem;
+        }
+        
+        .recent-time {
+            font-size: 0.75rem;
+            color: var(--museflow-text-tertiary);
+        }
+        
+        /* Widgets Grid */
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            padding: 1rem;
+        }
+        
+        .widget-card {
+            background: white;
+            border: 1px solid var(--museflow-border-light);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            transition: var(--transition-base);
+        }
+        
+        .widget-card:hover {
+            border-color: var(--museflow-primary);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+        }
+        
+        .widget-header-small {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 700;
+            color: var(--museflow-text-secondary);
+            margin-bottom: 0.75rem;
+        }
+        
+        .widget-header-small i {
+            color: var(--museflow-primary);
+        }
+        
+        .widget-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--museflow-text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .widget-progress {
+            height: 6px;
+            background: var(--museflow-bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .widget-progress-bar {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+        
+        .widget-footer {
+            font-size: 0.75rem;
+            color: var(--museflow-text-tertiary);
+        }
+        
+        .widget-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .widget-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: var(--museflow-bg-secondary);
+            border-radius: var(--radius-sm);
+            font-size: 0.8125rem;
+        }
+        
+        .widget-chart-mini {
+            display: flex;
+            align-items: flex-end;
+            gap: 0.5rem;
+            height: 80px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .chart-bar {
+            flex: 1;
+            border-radius: 4px 4px 0 0;
+            transition: height 0.3s ease;
+        }
+        
+        /* Results Section */
+        .results-section {
+            padding: 1rem;
+        }
+        
         /* Canvas Preview */
         .canvas-preview {
             background: #FFFFFF;
@@ -733,6 +980,30 @@
                 font-size: 0.625rem;
                 line-height: 1.2;
             }
+            
+            /* Live Stats Mobile */
+            .stat-card-mini {
+                padding: 0.75rem;
+            }
+            
+            .stat-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+            
+            .stat-value {
+                font-size: 1rem;
+            }
+            
+            /* Widgets Mobile */
+            .widget-card {
+                padding: 0.875rem;
+            }
+            
+            .widget-value {
+                font-size: 1.125rem;
+            }
         }
         
         /* Tablet Landscape */
@@ -949,33 +1220,170 @@
             </div>
         </div>
         
-        <!-- Right Column: Live Canvas/Dashboard Preview -->
+        <!-- Right Column: Live Dashboard -->
         <div class="right-column">
             <div class="preview-tabs">
-                <div class="preview-tab active" data-tab="canvas">
-                    <i class="fas fa-project-diagram"></i> Canvas
+                <div class="preview-tab active" data-tab="overview">
+                    <i class="fas fa-chart-line"></i> 실시간 현황
                 </div>
-                <div class="preview-tab" data-tab="dashboard">
-                    <i class="fas fa-th"></i> Dashboard
+                <div class="preview-tab" data-tab="widgets">
+                    <i class="fas fa-th"></i> 위젯
+                </div>
+                <div class="preview-tab" data-tab="results">
+                    <i class="fas fa-file-alt"></i> 생성 결과
                 </div>
             </div>
             
             <div class="preview-content">
-                <!-- Canvas Preview -->
-                <div class="preview-panel active" id="canvasPreview">
-                    <div class="empty-state">
-                        <i class="fas fa-project-diagram"></i>
-                        <div class="empty-state-title">Canvas가 비어있습니다</div>
-                        <div class="empty-state-text">AI가 작업을 시작하면 여기에 노드가 표시됩니다</div>
+                <!-- Overview Panel - 실시간 현황 -->
+                <div class="preview-panel active" id="overviewPanel">
+                    <div class="live-stats">
+                        <div class="stat-card-mini">
+                            <div class="stat-icon" style="background: var(--museflow-primary-light); color: var(--museflow-primary);">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-label">오늘의 작업</div>
+                                <div class="stat-value">5개</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card-mini">
+                            <div class="stat-icon" style="background: var(--status-success-bg); color: var(--status-success);">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-label">완료</div>
+                                <div class="stat-value">3개</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card-mini">
+                            <div class="stat-icon" style="background: var(--status-warning-bg); color: var(--status-warning);">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-label">진행 중</div>
+                                <div class="stat-value" id="activeTasksCount">0개</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI 작업 진행 상황 -->
+                    <div class="active-tasks-section">
+                        <div class="section-header">
+                            <i class="fas fa-robot"></i>
+                            <span>AI 작업 진행 중</span>
+                        </div>
+                        <div id="activeTasksList" class="active-tasks-list">
+                            <div class="no-tasks">
+                                <i class="fas fa-coffee"></i>
+                                <p>현재 진행 중인 작업이 없습니다</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 최근 생성 항목 -->
+                    <div class="recent-items-section">
+                        <div class="section-header">
+                            <i class="fas fa-history"></i>
+                            <span>최근 생성 항목</span>
+                        </div>
+                        <div id="recentItemsList" class="recent-items-list">
+                            <div class="recent-item">
+                                <div class="recent-icon">📝</div>
+                                <div class="recent-info">
+                                    <div class="recent-title">전시 라벨 문서</div>
+                                    <div class="recent-time">5분 전</div>
+                                </div>
+                            </div>
+                            <div class="recent-item">
+                                <div class="recent-icon">💰</div>
+                                <div class="recent-info">
+                                    <div class="recent-title">예산 승인 요청서</div>
+                                    <div class="recent-time">1시간 전</div>
+                                </div>
+                            </div>
+                            <div class="recent-item">
+                                <div class="recent-icon">🎨</div>
+                                <div class="recent-info">
+                                    <div class="recent-title">소장품 선정 보고서</div>
+                                    <div class="recent-time">어제</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- Dashboard Preview -->
-                <div class="preview-panel" id="dashboardPreview">
-                    <div class="empty-state">
-                        <i class="fas fa-th"></i>
-                        <div class="empty-state-title">위젯이 없습니다</div>
-                        <div class="empty-state-text">AI가 생성한 위젯이 여기에 표시됩니다</div>
+                <!-- Widgets Panel - 대시보드 위젯 -->
+                <div class="preview-panel" id="widgetsPanel">
+                    <div class="widgets-grid" id="liveWidgets">
+                        <!-- 위젯 1: 이번 달 예산 현황 -->
+                        <div class="widget-card">
+                            <div class="widget-header-small">
+                                <i class="fas fa-coins"></i>
+                                <span>이번 달 예산 현황</span>
+                            </div>
+                            <div class="widget-value">₩85M / ₩100M</div>
+                            <div class="widget-progress">
+                                <div class="widget-progress-bar" style="width: 85%; background: var(--museflow-primary);"></div>
+                            </div>
+                            <div class="widget-footer">85% 사용 중</div>
+                        </div>
+                        
+                        <!-- 위젯 2: 전시 일정 -->
+                        <div class="widget-card">
+                            <div class="widget-header-small">
+                                <i class="fas fa-calendar"></i>
+                                <span>다가오는 전시</span>
+                            </div>
+                            <div class="widget-list">
+                                <div class="widget-list-item">
+                                    <span>🎨 인상주의 특별전</span>
+                                    <span>D-7</span>
+                                </div>
+                                <div class="widget-list-item">
+                                    <span>🏛️ 고려청자전</span>
+                                    <span>D-14</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 위젯 3: 작업 진행률 -->
+                        <div class="widget-card">
+                            <div class="widget-header-small">
+                                <i class="fas fa-tasks"></i>
+                                <span>작업 진행률</span>
+                            </div>
+                            <div class="widget-chart-mini">
+                                <div class="chart-bar" style="height: 60%; background: var(--status-success);"></div>
+                                <div class="chart-bar" style="height: 80%; background: var(--museflow-primary);"></div>
+                                <div class="chart-bar" style="height: 45%; background: var(--status-warning);"></div>
+                                <div class="chart-bar" style="height: 90%; background: var(--status-success);"></div>
+                            </div>
+                            <div class="widget-footer">평균 75% 완료</div>
+                        </div>
+                        
+                        <!-- 위젯 4: 팀 활동 -->
+                        <div class="widget-card">
+                            <div class="widget-header-small">
+                                <i class="fas fa-users"></i>
+                                <span>팀 활동</span>
+                            </div>
+                            <div class="widget-value">12명 활동 중</div>
+                            <div class="widget-footer">지난주보다 +15%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Results Panel - AI 생성 결과 -->
+                <div class="preview-panel" id="resultsPanel">
+                    <div id="canvasResults" class="results-section">
+                        <div class="empty-state">
+                            <i class="fas fa-magic"></i>
+                            <div class="empty-state-title">AI 생성 결과</div>
+                            <div class="empty-state-text">AI가 작업을 완료하면 여기에 결과가 표시됩니다</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -987,7 +1395,7 @@
         let eventSource = null;
         let sessionId = null;
         
-        // Tab Switching
+        // Tab Switching - Updated for new panels
         document.querySelectorAll('.preview-tab').forEach(tab => {
             tab.addEventListener('click', function() {
                 const tabName = this.dataset.tab;
@@ -998,7 +1406,18 @@
                 
                 // Update active panel
                 document.querySelectorAll('.preview-panel').forEach(p => p.classList.remove('active'));
-                document.getElementById(tabName + 'Preview').classList.add('active');
+                
+                // Show corresponding panel
+                const panelMap = {
+                    'overview': 'overviewPanel',
+                    'widgets': 'widgetsPanel',
+                    'results': 'resultsPanel'
+                };
+                
+                const panelId = panelMap[tabName];
+                if (panelId) {
+                    document.getElementById(panelId).classList.add('active');
+                }
             });
         });
         
@@ -1070,6 +1489,9 @@
                 // Add AI thinking message
                 addMessage('ai', '🤔 명령을 분석하고 있습니다...');
                 
+                // Add to active tasks in overview panel
+                addActiveTask(command.substring(0, 30) + '...');
+                
                 // Call API
                 const response = await fetch('/api/orchestrator/execute', {
                     method: 'POST',
@@ -1094,6 +1516,7 @@
                 console.error('AI 실행 오류:', error);
                 addMessage('ai', '❌ 오류가 발생했습니다. 다시 시도해주세요.');
                 document.getElementById('sendButton').disabled = false;
+                removeActiveTask();
             }
         }
         
@@ -1145,8 +1568,9 @@
                     break;
                 
                 case 'complete':
-                    addMessage('ai', '✅ 모든 작업이 완료되었습니다! 오른쪽 패널에서 결과를 확인하세요.');
+                    addMessage('ai', '✅ 모든 작업이 완료되었습니다! 우측 "생성 결과" 탭에서 확인하세요.');
                     document.getElementById('sendButton').disabled = false;
+                    removeActiveTask();
                     eventSource.close();
                     break;
                 
@@ -1200,24 +1624,24 @@
         }
         
         function addCanvasNodes(nodes) {
-            const canvasPreview = document.getElementById('canvasPreview');
-            canvasPreview.innerHTML = '';
+            const resultsSection = document.getElementById('canvasResults');
+            resultsSection.innerHTML = '';
             
             nodes.forEach(node => {
                 const nodeHtml = `
-                    <div class="canvas-node">
-                        <div class="canvas-node-header">
-                            <div class="canvas-node-title">${node.title}</div>
+                    <div class="canvas-node" style="background: white; border: 1px solid var(--museflow-border-light); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 0.75rem;">
+                        <div class="canvas-node-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <div class="canvas-node-title" style="font-weight: 700; color: var(--museflow-text-primary);">${node.title}</div>
                             <div class="canvas-node-icon">
-                                <i class="fas fa-cube"></i>
+                                <i class="fas fa-cube" style="color: var(--museflow-primary);"></i>
                             </div>
                         </div>
-                        <div class="canvas-node-content">
+                        <div class="canvas-node-content" style="font-size: 0.875rem; color: var(--museflow-text-secondary);">
                             ${node.description || 'Canvas 노드가 생성되었습니다.'}
                         </div>
                     </div>
                 `;
-                canvasPreview.insertAdjacentHTML('beforeend', nodeHtml);
+                resultsSection.insertAdjacentHTML('beforeend', nodeHtml);
             });
             
             // Dashboard에 노드 생성 알림
@@ -1226,27 +1650,29 @@
                 title: `Canvas 노드 ${nodes.length}개 생성`,
                 data: nodes
             });
+            
+            // 실시간 현황 업데이트
+            updateOverviewStats();
         }
         
         function addDashboardWidgets(widgets) {
-            const dashboardPreview = document.getElementById('dashboardPreview');
-            dashboardPreview.innerHTML = '';
+            const resultsSection = document.getElementById('canvasResults');
             
             widgets.forEach(widget => {
                 const widgetHtml = `
-                    <div class="widget-preview">
-                        <div class="widget-header">
-                            <div class="widget-icon">
+                    <div class="widget-preview" style="background: white; border: 1px solid var(--museflow-border-light); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 0.75rem;">
+                        <div class="widget-header" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <div class="widget-icon" style="color: var(--museflow-primary);">
                                 <i class="fas fa-chart-bar"></i>
                             </div>
-                            <div class="widget-title">${widget.title}</div>
+                            <div class="widget-title" style="font-weight: 700; color: var(--museflow-text-primary);">${widget.title}</div>
                         </div>
-                        <div class="widget-content">
+                        <div class="widget-content" style="font-size: 0.875rem; color: var(--museflow-text-secondary);">
                             ${widget.description || 'Dashboard 위젯이 생성되었습니다.'}
                         </div>
                     </div>
                 `;
-                dashboardPreview.insertAdjacentHTML('beforeend', widgetHtml);
+                resultsSection.insertAdjacentHTML('beforeend', widgetHtml);
             });
             
             // Dashboard에 위젯 생성 알림
@@ -1255,6 +1681,82 @@
                 title: `Dashboard 위젯 ${widgets.length}개 생성`,
                 data: widgets
             });
+            
+            // 실시간 현황 업데이트
+            updateOverviewStats();
+            
+            // Results 탭으로 자동 전환
+            document.querySelectorAll('.preview-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector('[data-tab="results"]').classList.add('active');
+            document.querySelectorAll('.preview-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById('resultsPanel').classList.add('active');
+        }
+        
+        /**
+         * 실시간 현황 업데이트
+         */
+        function updateOverviewStats() {
+            // 진행 중인 작업 카운트 업데이트
+            const activeCount = document.getElementById('activeTasksCount');
+            if (activeCount) {
+                const currentValue = parseInt(activeCount.textContent) || 0;
+                activeCount.textContent = `${currentValue + 1}개`;
+            }
+        }
+        
+        /**
+         * AI 작업 시작 시 실시간 현황 표시
+         */
+        function addActiveTask(taskName) {
+            const activeTasksList = document.getElementById('activeTasksList');
+            const noTasks = activeTasksList.querySelector('.no-tasks');
+            
+            if (noTasks) {
+                noTasks.remove();
+            }
+            
+            const taskHtml = `
+                <div class="active-task-item" id="task-${Date.now()}" style="padding: 0.75rem; background: var(--museflow-primary-light); border-radius: var(--radius-md); margin-bottom: 0.5rem; animation: slideIn 0.3s ease;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <i class="fas fa-spinner fa-spin" style="color: var(--museflow-primary);"></i>
+                        <span style="font-size: 0.875rem; font-weight: 600; color: var(--museflow-text-primary);">${taskName}</span>
+                    </div>
+                    <div class="task-progress" style="height: 4px; background: rgba(139, 92, 246, 0.2); border-radius: 2px; overflow: hidden;">
+                        <div class="task-progress-bar" style="height: 100%; background: var(--museflow-primary); width: 0%; transition: width 1s ease;"></div>
+                    </div>
+                </div>
+            `;
+            
+            activeTasksList.insertAdjacentHTML('beforeend', taskHtml);
+            
+            // Progress bar 애니메이션
+            setTimeout(() => {
+                const progressBar = activeTasksList.querySelector('.task-progress-bar:last-of-type');
+                if (progressBar) {
+                    progressBar.style.width = '60%';
+                }
+            }, 100);
+        }
+        
+        /**
+         * AI 작업 완료 시 실시간 현황에서 제거
+         */
+        function removeActiveTask() {
+            const activeTasksList = document.getElementById('activeTasksList');
+            const tasks = activeTasksList.querySelectorAll('.active-task-item');
+            
+            if (tasks.length > 0) {
+                tasks[tasks.length - 1].remove();
+            }
+            
+            if (activeTasksList.children.length === 0) {
+                activeTasksList.innerHTML = `
+                    <div class="no-tasks">
+                        <i class="fas fa-coffee"></i>
+                        <p>현재 진행 중인 작업이 없습니다</p>
+                    </div>
+                `;
+            }
         }
         
         // ==========================================
