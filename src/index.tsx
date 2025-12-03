@@ -77,6 +77,6 @@ app.route('/api/ai', ai)
 app.route('/api/dashboard', dashboard)
 app.route('/api/orchestrator', orchestrator)
 app.route('/api/notion', notion)
-app.route('/', widgets)
+app.route('/api/widgets', widgets)
 
 export default app

@@ -1471,63 +1471,35 @@
                     </div>
                 </div>
                 
-                <!-- Widgets Panel - 대시보드 위젯 -->
+                <!-- Widgets Panel - 대시보드 위젯 (103개 동적 로딩) -->
                 <div class="preview-panel" id="widgetsPanel">
-                    <div class="widgets-grid" id="liveWidgets">
-                        <!-- 위젯 1: 이번 달 예산 현황 -->
-                        <div class="widget-card">
-                            <div class="widget-header-small">
-                                <i class="fas fa-coins"></i>
-                                <span>이번 달 예산 현황</span>
-                            </div>
-                            <div class="widget-value">₩85M / ₩100M</div>
-                            <div class="widget-progress">
-                                <div class="widget-progress-bar" style="width: 85%; background: var(--museflow-primary);"></div>
-                            </div>
-                            <div class="widget-footer">85% 사용 중</div>
+                    <!-- Widget Controls -->
+                    <div class="widget-controls" style="padding: 1rem; background: white; border-bottom: 1px solid var(--museflow-border-light); position: sticky; top: 0; z-index: 10;">
+                        <div style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;">
+                            <input 
+                                type="text" 
+                                id="widgetSearch" 
+                                placeholder="위젯 검색... (이름, 설명)" 
+                                style="flex: 1; padding: 0.625rem 1rem; border: 1px solid var(--museflow-border-light); border-radius: var(--radius-md); font-size: 0.875rem;"
+                            />
+                            <button id="refreshWidgets" style="padding: 0.625rem 1rem; background: var(--museflow-primary); color: white; border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600; white-space: nowrap;">
+                                <i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i>
+                            </button>
                         </div>
-                        
-                        <!-- 위젯 2: 전시 일정 -->
-                        <div class="widget-card">
-                            <div class="widget-header-small">
-                                <i class="fas fa-calendar"></i>
-                                <span>다가오는 전시</span>
-                            </div>
-                            <div class="widget-list">
-                                <div class="widget-list-item">
-                                    <span>🎨 인상주의 특별전</span>
-                                    <span>D-7</span>
-                                </div>
-                                <div class="widget-list-item">
-                                    <span>🏛️ 고려청자전</span>
-                                    <span>D-14</span>
-                                </div>
-                            </div>
+                        <div id="widgetCategories" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            <!-- Categories will be loaded dynamically -->
                         </div>
-                        
-                        <!-- 위젯 3: 작업 진행률 -->
-                        <div class="widget-card">
-                            <div class="widget-header-small">
-                                <i class="fas fa-tasks"></i>
-                                <span>작업 진행률</span>
-                            </div>
-                            <div class="widget-chart-mini">
-                                <div class="chart-bar" style="height: 60%; background: var(--status-success);"></div>
-                                <div class="chart-bar" style="height: 80%; background: var(--museflow-primary);"></div>
-                                <div class="chart-bar" style="height: 45%; background: var(--status-warning);"></div>
-                                <div class="chart-bar" style="height: 90%; background: var(--status-success);"></div>
-                            </div>
-                            <div class="widget-footer">평균 75% 완료</div>
+                        <div id="widgetCount" style="margin-top: 0.75rem; font-size: 0.875rem; color: var(--museflow-text-secondary);">
+                            로딩 중...
                         </div>
-                        
-                        <!-- 위젯 4: 팀 활동 -->
-                        <div class="widget-card">
-                            <div class="widget-header-small">
-                                <i class="fas fa-users"></i>
-                                <span>팀 활동</span>
-                            </div>
-                            <div class="widget-value">12명 활동 중</div>
-                            <div class="widget-footer">지난주보다 +15%</div>
+                    </div>
+                    
+                    <!-- Widgets Grid - Dynamic Loading -->
+                    <div class="widgets-grid" id="liveWidgets" style="padding: 1rem; max-height: calc(100vh - 300px); overflow-y: auto;">
+                        <div class="loading-state" style="text-align: center; padding: 3rem 1rem; color: var(--museflow-text-secondary);">
+                            <i data-lucide="loader" class="spin" style="width: 48px; height: 48px; margin: 0 auto 1rem;"></i>
+                            <div style="font-size: 1rem; font-weight: 600;">위젯 로딩 중...</div>
+                            <div style="font-size: 0.875rem; margin-top: 0.5rem;">103개 위젯을 불러오고 있습니다</div>
                         </div>
                     </div>
                 </div>
@@ -2523,6 +2495,335 @@
                 navbar.classList.remove('navbar-hidden');
             }, 1500);
         });
+        
+        // ==========================================
+        // Widget System - Dynamic Loading (103 Widgets)
+        // ==========================================
+        
+        let allWidgets = [];
+        let allCategories = [];
+        let selectedCategory = null;
+        
+        /**
+         * Load all widgets from API
+         */
+        async function loadWidgets() {
+            try {
+                const response = await fetch('/api/widgets');
+                const result = await response.json();
+                
+                if (result.success) {
+                    allWidgets = result.data;
+                    renderWidgets(allWidgets);
+                    updateWidgetCount(allWidgets.length, allWidgets.length);
+                    console.log(`✅ Loaded ${allWidgets.length} widgets`);
+                } else {
+                    throw new Error(result.error || 'Failed to load widgets');
+                }
+            } catch (error) {
+                console.error('❌ Widget loading error:', error);
+                document.getElementById('liveWidgets').innerHTML = `
+                    <div class="error-state" style="text-align: center; padding: 3rem 1rem; color: var(--status-error);">
+                        <i data-lucide="alert-circle" style="width: 48px; height: 48px; margin: 0 auto 1rem;"></i>
+                        <div style="font-size: 1rem; font-weight: 600;">위젯 로딩 실패</div>
+                        <div style="font-size: 0.875rem; margin-top: 0.5rem;">${error.message}</div>
+                    </div>
+                `;
+                lucide.createIcons();
+            }
+        }
+        
+        /**
+         * Load widget categories from API
+         */
+        async function loadCategories() {
+            try {
+                const response = await fetch('/api/widgets/categories');
+                const result = await response.json();
+                
+                if (result.success) {
+                    allCategories = result.data;
+                    renderCategories(allCategories);
+                    console.log(`✅ Loaded ${allCategories.length} categories`);
+                }
+            } catch (error) {
+                console.error('❌ Category loading error:', error);
+            }
+        }
+        
+        /**
+         * Render category filter buttons
+         */
+        function renderCategories(categories) {
+            const container = document.getElementById('widgetCategories');
+            
+            const categoryButtons = categories.map(cat => `
+                <button 
+                    class="category-btn ${selectedCategory === cat.category ? 'active' : ''}" 
+                    data-category="${cat.category}"
+                    style="
+                        padding: 0.5rem 0.875rem;
+                        background: ${selectedCategory === cat.category ? 'var(--museflow-primary)' : 'white'};
+                        color: ${selectedCategory === cat.category ? 'white' : 'var(--museflow-text-primary)'};
+                        border: 1px solid ${selectedCategory === cat.category ? 'var(--museflow-primary)' : 'var(--museflow-border-light)'};
+                        border-radius: var(--radius-full);
+                        font-size: 0.8125rem;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                    "
+                    onmouseover="if(!this.classList.contains('active')) this.style.background='var(--museflow-primary-light)'"
+                    onmouseout="if(!this.classList.contains('active')) this.style.background='white'"
+                >
+                    ${cat.category} <span style="opacity: 0.75;">(${cat.count})</span>
+                </button>
+            `).join('');
+            
+            container.innerHTML = `
+                <button 
+                    class="category-btn ${selectedCategory === null ? 'active' : ''}" 
+                    data-category="all"
+                    style="
+                        padding: 0.5rem 0.875rem;
+                        background: ${selectedCategory === null ? 'var(--museflow-primary)' : 'white'};
+                        color: ${selectedCategory === null ? 'white' : 'var(--museflow-text-primary)'};
+                        border: 1px solid ${selectedCategory === null ? 'var(--museflow-primary)' : 'var(--museflow-border-light)'};
+                        border-radius: var(--radius-full);
+                        font-size: 0.8125rem;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                    "
+                    onmouseover="if(!this.classList.contains('active')) this.style.background='var(--museflow-primary-light)'"
+                    onmouseout="if(!this.classList.contains('active')) this.style.background='white'"
+                >
+                    전체 <span style="opacity: 0.75;">(${allWidgets.length})</span>
+                </button>
+                ${categoryButtons}
+            `;
+            
+            // Add click handlers
+            container.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const category = this.dataset.category;
+                    selectedCategory = category === 'all' ? null : category;
+                    
+                    // Update active state
+                    container.querySelectorAll('.category-btn').forEach(b => {
+                        b.classList.remove('active');
+                        b.style.background = 'white';
+                        b.style.color = 'var(--museflow-text-primary)';
+                        b.style.borderColor = 'var(--museflow-border-light)';
+                    });
+                    this.classList.add('active');
+                    this.style.background = 'var(--museflow-primary)';
+                    this.style.color = 'white';
+                    this.style.borderColor = 'var(--museflow-primary)';
+                    
+                    // Filter widgets
+                    filterWidgets();
+                });
+            });
+        }
+        
+        /**
+         * Filter widgets by category and search
+         */
+        function filterWidgets() {
+            const searchTerm = document.getElementById('widgetSearch').value.toLowerCase();
+            
+            let filtered = allWidgets;
+            
+            // Filter by category
+            if (selectedCategory) {
+                filtered = filtered.filter(w => w.category === selectedCategory);
+            }
+            
+            // Filter by search
+            if (searchTerm) {
+                filtered = filtered.filter(w => 
+                    w.name.toLowerCase().includes(searchTerm) || 
+                    (w.description && w.description.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            renderWidgets(filtered);
+            updateWidgetCount(filtered.length, allWidgets.length);
+        }
+        
+        /**
+         * Render widgets grid
+         */
+        function renderWidgets(widgets) {
+            const container = document.getElementById('liveWidgets');
+            
+            if (widgets.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="text-align: center; padding: 3rem 1rem; color: var(--museflow-text-secondary);">
+                        <i data-lucide="search-x" style="width: 48px; height: 48px; margin: 0 auto 1rem;"></i>
+                        <div style="font-size: 1rem; font-weight: 600;">위젯을 찾을 수 없습니다</div>
+                        <div style="font-size: 0.875rem; margin-top: 0.5rem;">검색어 또는 필터를 변경해보세요</div>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+            
+            const widgetCards = widgets.map(widget => {
+                const iconMap = {
+                    'fa-sparkles': 'sparkles',
+                    'fa-magic': 'wand-2',
+                    'fa-smile': 'smile',
+                    'fa-lightbulb': 'lightbulb',
+                    'fa-camera': 'camera',
+                    'fa-graduation-cap': 'graduation-cap',
+                    'fa-language': 'languages',
+                    'fa-user-tie': 'user-check',
+                    'fa-headphones': 'headphones',
+                    'fa-universal-access': 'accessibility',
+                    'fa-child': 'baby',
+                    'fa-chart-line': 'line-chart',
+                    'fa-chart-pie': 'pie-chart',
+                    'fa-chart-bar': 'bar-chart',
+                    'fa-chart-area': 'radar',
+                    'fa-circle': 'circle',
+                    'fa-calendar-check': 'calendar-check',
+                    'fa-comment-dots': 'message-circle',
+                    'fa-globe': 'globe',
+                    'fa-coins': 'coins',
+                    'fa-calendar': 'calendar',
+                    'fa-tasks': 'list-checks',
+                    'fa-users': 'users'
+                };
+                
+                const lucideIcon = iconMap[widget.icon] || 'box';
+                
+                return `
+                    <div class="widget-card" data-widget-id="${widget.id}" style="cursor: pointer; transition: all 0.2s ease;" 
+                         onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(139, 92, 246, 0.15)';"
+                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                        <div class="widget-header-small">
+                            <i data-lucide="${lucideIcon}" style="width: 18px; height: 18px;"></i>
+                            <span>${widget.name}</span>
+                        </div>
+                        <div class="widget-content" style="font-size: 0.8125rem; color: var(--museflow-text-secondary); margin-top: 0.5rem; line-height: 1.4;">
+                            ${widget.description || '위젯 설명 없음'}
+                        </div>
+                        <div class="widget-footer" style="display: flex; align-items: center; justify-content: space-between; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--museflow-border-light);">
+                            <span style="font-size: 0.75rem; color: var(--museflow-text-tertiary);">${widget.category}</span>
+                            <button class="add-widget-btn" style="padding: 0.375rem 0.75rem; background: var(--museflow-primary); color: white; border: none; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600; cursor: pointer;">
+                                추가
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+                    ${widgetCards}
+                </div>
+            `;
+            
+            // Re-initialize Lucide icons
+            lucide.createIcons();
+            
+            // Add click handlers for "추가" buttons
+            container.querySelectorAll('.add-widget-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const widgetCard = this.closest('.widget-card');
+                    const widgetId = widgetCard.dataset.widgetId;
+                    const widget = allWidgets.find(w => w.id == widgetId);
+                    
+                    if (widget) {
+                        addWidgetToDashboard(widget);
+                    }
+                });
+            });
+        }
+        
+        /**
+         * Update widget count display
+         */
+        function updateWidgetCount(showing, total) {
+            const countEl = document.getElementById('widgetCount');
+            countEl.innerHTML = `
+                <i data-lucide="box" style="width: 14px; height: 14px;"></i>
+                <span>${showing}개 위젯 표시 중</span>
+                ${showing !== total ? `<span style="opacity: 0.75;"> / 전체 ${total}개</span>` : ''}
+            `;
+            lucide.createIcons();
+        }
+        
+        /**
+         * Add widget to dashboard
+         */
+        function addWidgetToDashboard(widget) {
+            console.log('✨ Adding widget to dashboard:', widget.name);
+            
+            // Show success notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background: var(--status-success);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: var(--radius-md);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <i data-lucide="check-circle" style="width: 20px; height: 20px;"></i>
+                    <div>
+                        <div style="font-weight: 600;">${widget.name}</div>
+                        <div style="font-size: 0.875rem; opacity: 0.9;">Dashboard에 추가되었습니다</div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+            
+            // TODO: Actually add to dashboard via API
+            // This would call the dashboard API to persist the widget
+        }
+        
+        /**
+         * Initialize widget system
+         */
+        async function initializeWidgetSystem() {
+            await Promise.all([
+                loadWidgets(),
+                loadCategories()
+            ]);
+        }
+        
+        // Search input handler
+        document.getElementById('widgetSearch')?.addEventListener('input', function() {
+            filterWidgets();
+        });
+        
+        // Refresh button handler
+        document.getElementById('refreshWidgets')?.addEventListener('click', async function() {
+            this.innerHTML = '<i data-lucide="loader" class="spin" style="width: 16px; height: 16px;"></i>';
+            lucide.createIcons();
+            
+            await initializeWidgetSystem();
+            
+            this.innerHTML = '<i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i>';
+            lucide.createIcons();
+        });
+        
+        // Initialize on page load
+        initializeWidgetSystem();
         
         // ====================================
         // Initialize Lucide Icons
