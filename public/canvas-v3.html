@@ -2481,8 +2481,24 @@
                 } catch (error) {
                     console.error('AI Command Error:', error);
                     removeMessage(loadingId);
-                    addMessageToChat('ai', '죄송합니다. 오류가 발생했습니다. 다시 시도해주세요.');
-                    showToast('AI 처리 중 오류가 발생했습니다.', 'error');
+                    
+                    // Check if it's an API key error
+                    const errorText = error instanceof Error ? error.message : '';
+                    
+                    if (errorText.includes('API key') || errorText.includes('403') || errorText.includes('401')) {
+                        addMessageToChat('ai', '⚠️ Gemini API 키가 설정되지 않았습니다. 기본 워크플로우를 생성합니다.');
+                        
+                        // Generate fallback workflow
+                        generateFallbackWorkflow(userInput);
+                    } else {
+                        let errorMessage = '죄송합니다. 오류가 발생했습니다.';
+                        if (error instanceof Error) {
+                            errorMessage += ` (${error.message})`;
+                        }
+                        
+                        addMessageToChat('ai', errorMessage);
+                        showToast('AI 처리 중 오류가 발생했습니다. 브라우저 콘솔을 확인해주세요.', 'error');
+                    }
                 }
             }
             
@@ -2547,6 +2563,64 @@
                 }
                 
                 showToast(`✨ ${message}`, 'success');
+            }
+            
+            // Generate Fallback Workflow (when API fails)
+            function generateFallbackWorkflow(userInput) {
+                const command = userInput.toLowerCase();
+                
+                let nodes = [];
+                let connections = [];
+                
+                // Detect keywords and generate appropriate workflow
+                if (command.includes('전시') || command.includes('exhibition')) {
+                    nodes = [
+                        { title: '전시 주제 선정', type: 'idea', description: '전시 컨셉 브레인스토밍', x: 150, y: 150 },
+                        { title: '작품 선정', type: 'task', description: '큐레이션 및 작가 선정', x: 350, y: 150 },
+                        { title: '전시 공간 설계', type: 'task', description: '공간 레이아웃 기획', x: 550, y: 150 },
+                        { title: '예산 계획', type: 'chart', description: '전시 예산 수립', x: 350, y: 300 }
+                    ];
+                    connections = [
+                        { from: 0, to: 1 },
+                        { from: 1, to: 2 },
+                        { from: 1, to: 3 }
+                    ];
+                } else if (command.includes('교육') || command.includes('education')) {
+                    nodes = [
+                        { title: '프로그램 기획', type: 'idea', description: '교육 프로그램 아이디어', x: 150, y: 150 },
+                        { title: '콘텐츠 개발', type: 'task', description: '학습 자료 제작', x: 350, y: 150 },
+                        { title: '워크숍 진행', type: 'task', description: '실습 프로그램 운영', x: 550, y: 150 }
+                    ];
+                    connections = [
+                        { from: 0, to: 1 },
+                        { from: 1, to: 2 }
+                    ];
+                } else if (command.includes('차트') || command.includes('chart')) {
+                    nodes = [
+                        { title: userInput.slice(0, 30) || '데이터 차트', type: 'chart', description: '자동 생성된 차트', x: 200, y: 200 }
+                    ];
+                } else if (command.includes('보고서') || command.includes('report') || command.includes('문서')) {
+                    nodes = [
+                        { title: userInput.slice(0, 30) || '보고서', type: 'document', description: '자동 생성된 문서', x: 200, y: 200 }
+                    ];
+                } else {
+                    // Default workflow
+                    nodes = [
+                        { title: '1. 아이디어 수집', type: 'idea', description: '브레인스토밍', x: 150, y: 150 },
+                        { title: '2. 계획 수립', type: 'task', description: '실행 계획', x: 350, y: 150 },
+                        { title: '3. 실행', type: 'task', description: '작업 진행', x: 550, y: 150 },
+                        { title: '4. 평가', type: 'task', description: '결과 분석', x: 350, y: 300 }
+                    ];
+                    connections = [
+                        { from: 0, to: 1 },
+                        { from: 1, to: 2 },
+                        { from: 2, to: 3 }
+                    ];
+                }
+                
+                // Generate nodes
+                generateWorkflowNodes(nodes, connections);
+                showToast('✨ 기본 워크플로우가 생성되었습니다.', 'success');
             }
             
             // Generate Workflow Nodes

@@ -23,9 +23,11 @@ ai.post('/command', async (c) => {
     
     const geminiApiKey = c.env.GEMINI_API_KEY
     if (!geminiApiKey) {
+      console.error('❌ GEMINI_API_KEY not configured in environment')
       return c.json({ 
         success: false, 
-        error: 'Gemini API key not configured' 
+        error: 'Gemini API key not configured',
+        message: 'GEMINI_API_KEY 환경 변수가 설정되지 않았습니다. Cloudflare Pages Secret에 API 키를 추가해주세요.'
       }, 500)
     }
     
@@ -221,9 +223,11 @@ ai.post('/document', async (c) => {
     
     const geminiApiKey = c.env.GEMINI_API_KEY
     if (!geminiApiKey) {
+      console.error('❌ GEMINI_API_KEY not configured for document generation')
       return c.json({ 
         success: false, 
-        error: 'Gemini API key not configured' 
+        error: 'Gemini API key not configured',
+        message: 'GEMINI_API_KEY 환경 변수가 설정되지 않았습니다.'
       }, 500)
     }
     
