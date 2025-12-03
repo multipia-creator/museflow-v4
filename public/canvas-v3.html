@@ -2434,9 +2434,42 @@
                     report: '전시 기획안 보고서를 작성해주세요.'
                 };
                 
-                aiChatInput.value = prompts[type] || '';
-                aiChatInput.focus();
-                aiSendBtn.disabled = false;
+                const command = prompts[type];
+                if (!command) return;
+                
+                // Add user message to chat
+                addMessageToChat('user', command);
+                
+                // Directly generate fallback based on type
+                switch(type) {
+                    case 'workflow':
+                        generateFallbackWorkflow(command);
+                        break;
+                    case 'chart':
+                        addMessageToChat('ai', '✅ 차트 노드를 생성합니다.');
+                        generateChartNode({ 
+                            title: '예산 계획', 
+                            x: 200, 
+                            y: 200 
+                        });
+                        break;
+                    case 'report':
+                        addMessageToChat('ai', '✅ 보고서 노드를 생성합니다.');
+                        generateDocumentNode({ 
+                            title: '전시 기획안', 
+                            x: 200, 
+                            y: 200 
+                        });
+                        break;
+                    case 'image':
+                        addMessageToChat('ai', '✅ 이미지 노드를 생성합니다.');
+                        generateImageNode({ 
+                            title: '전시 포스터', 
+                            x: 200, 
+                            y: 200 
+                        });
+                        break;
+                }
             }
             
             // Send AI Command
@@ -2466,11 +2499,28 @@
                         })
                     });
                     
+                    // Check response status
                     if (!response.ok) {
-                        throw new Error('AI 응답 실패');
+                        const errorData = await response.json().catch(() => ({}));
+                        console.error('❌ API Error:', response.status, errorData);
+                        
+                        // Always use fallback on API error
+                        removeMessage(loadingId);
+                        addMessageToChat('ai', '⚠️ AI API 오류가 발생했습니다. 기본 워크플로우를 생성합니다.');
+                        generateFallbackWorkflow(userInput);
+                        return;
                     }
                     
                     const result = await response.json();
+                    
+                    // Check if result has required fields
+                    if (!result.type || !result.nodes) {
+                        console.error('❌ Invalid API response:', result);
+                        removeMessage(loadingId);
+                        addMessageToChat('ai', '⚠️ AI 응답 형식이 올바르지 않습니다. 기본 워크플로우를 생성합니다.');
+                        generateFallbackWorkflow(userInput);
+                        return;
+                    }
                     
                     // Remove loading message
                     removeMessage(loadingId);
@@ -2479,26 +2529,12 @@
                     processAIResponse(result);
                     
                 } catch (error) {
-                    console.error('AI Command Error:', error);
+                    console.error('❌ AI Command Error:', error);
                     removeMessage(loadingId);
                     
-                    // Check if it's an API key error
-                    const errorText = error instanceof Error ? error.message : '';
-                    
-                    if (errorText.includes('API key') || errorText.includes('403') || errorText.includes('401')) {
-                        addMessageToChat('ai', '⚠️ Gemini API 키가 설정되지 않았습니다. 기본 워크플로우를 생성합니다.');
-                        
-                        // Generate fallback workflow
-                        generateFallbackWorkflow(userInput);
-                    } else {
-                        let errorMessage = '죄송합니다. 오류가 발생했습니다.';
-                        if (error instanceof Error) {
-                            errorMessage += ` (${error.message})`;
-                        }
-                        
-                        addMessageToChat('ai', errorMessage);
-                        showToast('AI 처리 중 오류가 발생했습니다. 브라우저 콘솔을 확인해주세요.', 'error');
-                    }
+                    // Always use fallback on any error
+                    addMessageToChat('ai', '⚠️ AI 처리 중 오류가 발생했습니다. 기본 워크플로우를 생성합니다.');
+                    generateFallbackWorkflow(userInput);
                 }
             }
             
