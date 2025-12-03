@@ -1401,10 +1401,10 @@
            =============================================== */
         .node-chart-container {
             width: 100%;
-            height: 200px;
-            padding: 8px;
+            height: 280px; /* Increased from 200px */
+            padding: 12px; /* Increased padding */
             background: white;
-            border-radius: 6px;
+            border-radius: 8px;
         }
         
         .node-image-container {
@@ -2634,9 +2634,9 @@
                 if (command.includes('전시') || command.includes('exhibition')) {
                     nodes = [
                         { title: '전시 주제 선정', type: 'idea', description: '전시 컨셉 브레인스토밍', x: 150, y: 150 },
-                        { title: '작품 선정', type: 'task', description: '큐레이션 및 작가 선정', x: 350, y: 150 },
-                        { title: '전시 공간 설계', type: 'task', description: '공간 레이아웃 기획', x: 550, y: 150 },
-                        { title: '예산 계획', type: 'task', description: '전시 예산 수립', x: 350, y: 300 }
+                        { title: '작품 선정', type: 'task', description: '큐레이션 및 작가 선정', x: 450, y: 150 }, /* x: 350 → 450 */
+                        { title: '전시 공간 설계', type: 'task', description: '공간 레이아웃 기획', x: 750, y: 150 }, /* x: 550 → 750 */
+                        { title: '예산 계획', type: 'task', description: '전시 예산 수립', x: 450, y: 350 } /* x: 350 → 450, y: 300 → 350 */
                     ];
                     connections = [
                         { from: 0, to: 1 },
@@ -2646,8 +2646,8 @@
                 } else if (command.includes('교육') || command.includes('education')) {
                     nodes = [
                         { title: '프로그램 기획', type: 'idea', description: '교육 프로그램 아이디어', x: 150, y: 150 },
-                        { title: '콘텐츠 개발', type: 'task', description: '학습 자료 제작', x: 350, y: 150 },
-                        { title: '워크숍 진행', type: 'task', description: '실습 프로그램 운영', x: 550, y: 150 }
+                        { title: '콘텐츠 개발', type: 'task', description: '학습 자료 제작', x: 450, y: 150 }, /* x: 350 → 450 */
+                        { title: '워크숍 진행', type: 'task', description: '실습 프로그램 운영', x: 750, y: 150 } /* x: 550 → 750 */
                     ];
                     connections = [
                         { from: 0, to: 1 },
@@ -2657,9 +2657,9 @@
                     // Default workflow
                     nodes = [
                         { title: '1. 아이디어 수집', type: 'idea', description: '브레인스토밍', x: 150, y: 150 },
-                        { title: '2. 계획 수립', type: 'task', description: '실행 계획', x: 350, y: 150 },
-                        { title: '3. 실행', type: 'task', description: '작업 진행', x: 550, y: 150 },
-                        { title: '4. 평가', type: 'task', description: '결과 분석', x: 350, y: 300 }
+                        { title: '2. 계획 수립', type: 'task', description: '실행 계획', x: 450, y: 150 }, /* x: 350 → 450 */
+                        { title: '3. 실행', type: 'task', description: '작업 진행', x: 750, y: 150 }, /* x: 550 → 750 */
+                        { title: '4. 평가', type: 'task', description: '결과 분석', x: 450, y: 350 } /* x: 350 → 450, y: 300 → 350 */
                     ];
                     connections = [
                         { from: 0, to: 1 },
@@ -2713,6 +2713,7 @@
                 node.className = 'node';
                 node.style.left = `${nodeData.x || Math.random() * 500 + 100}px`;
                 node.style.top = `${nodeData.y || Math.random() * 300 + 100}px`;
+                node.style.width = '280px'; // Increased from 250px
                 node.dataset.nodeId = `node-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
                 
                 const iconMap = {
@@ -2725,16 +2726,19 @@
                 
                 const icon = iconMap[nodeData.type] || 'circle';
                 
+                // Enhanced node body with better visibility
+                const description = nodeData.description || '설명 없음';
+                
                 node.innerHTML = `
                     <div class="node-header">
-                        <i data-lucide="${icon}" style="width: 14px; height: 14px;"></i>
+                        <i data-lucide="${icon}" style="width: 16px; height: 16px;"></i>
                         <span class="node-title">${nodeData.title}</span>
                         <button class="node-delete">
                             <i data-lucide="x" style="width: 12px; height: 12px;"></i>
                         </button>
                     </div>
                     <div class="node-body">
-                        <p>${nodeData.description || ''}</p>
+                        <p style="margin: 0; font-size: 13px; color: var(--text-secondary);">${description}</p>
                     </div>
                     <div class="node-handle node-handle-top"></div>
                     <div class="node-handle node-handle-right"></div>
@@ -2825,7 +2829,7 @@
                 node.className = 'node';
                 node.style.left = `${nodeData.x || Math.random() * 500 + 100}px`;
                 node.style.top = `${nodeData.y || Math.random() * 300 + 100}px`;
-                node.style.width = '320px';
+                node.style.width = '420px'; // Increased from 320px
                 
                 node.innerHTML = `
                     <div class="node-header">
@@ -2868,8 +2872,9 @@
                                         display: true,
                                         position: 'bottom',
                                         labels: {
-                                            font: { size: 10 },
-                                            boxWidth: 12
+                                            font: { size: 12 }, /* Increased from 10 */
+                                            boxWidth: 14, /* Increased from 12 */
+                                            padding: 10
                                         }
                                     },
                                     title: {
@@ -2879,10 +2884,10 @@
                                 scales: chartData.type !== 'pie' && chartData.type !== 'doughnut' ? {
                                     y: {
                                         beginAtZero: true,
-                                        ticks: { font: { size: 10 } }
+                                        ticks: { font: { size: 11 } } /* Increased from 10 */
                                     },
                                     x: {
-                                        ticks: { font: { size: 10 } }
+                                        ticks: { font: { size: 11 } } /* Increased from 10 */
                                     }
                                 } : {}
                             }
@@ -3024,14 +3029,11 @@
                     console.error('Document generation error:', error);
                     const docContainer = document.getElementById(docId);
                     if (docContainer) {
-                        docContainer.innerHTML = `
-                            <p style="color: var(--error);">❌ 문서 생성 중 오류가 발생했습니다.</p>
-                            <p style="font-size: 11px; color: var(--text-tertiary); margin-top: 8px;">
-                                ${error.message || '알 수 없는 오류'}
-                            </p>
-                        `;
+                        // Generate fallback document content
+                        const fallbackContent = generateFallbackDocument(nodeData.title, state.currentRole);
+                        docContainer.innerHTML = fallbackContent;
                     }
-                    addMessageToChat('ai', '문서 생성 중 오류가 발생했습니다.');
+                    addMessageToChat('ai', '⚠️ AI API 오류. 기본 문서 템플릿을 생성했습니다.');
                 }
                 
                 state.nodes.push({
@@ -3063,6 +3065,65 @@
                 }
                 
                 return formatDocumentContent(result.content);
+            }
+            
+            // Generate fallback document (when API fails)
+            function generateFallbackDocument(title, role) {
+                const templates = {
+                    curator: `
+                        <h3 style="font-size: 14px; font-weight: 600; margin: 0 0 12px 0;">${title}</h3>
+                        <p style="margin: 8px 0; font-size: 12px; line-height: 1.6;">
+                            <strong>개요</strong><br>
+                            전시 기획의 핵심 목표와 방향성을 설정합니다.
+                        </p>
+                        <p style="margin: 8px 0; font-size: 12px; line-height: 1.6;">
+                            <strong>주요 내용</strong><br>
+                            • 전시 주제 및 컨셉<br>
+                            • 작품 선정 기준<br>
+                            • 전시 공간 구성
+                        </p>
+                        <p style="margin: 8px 0; font-size: 12px; line-height: 1.6;">
+                            <strong>기대 효과</strong><br>
+                            관람객에게 의미 있는 예술 경험을 제공합니다.
+                        </p>
+                    `,
+                    educator: `
+                        <h3 style="font-size: 14px; font-weight: 600; margin: 0 0 12px 0;">${title}</h3>
+                        <p style="margin: 8px 0; font-size: 12px; line-height: 1.6;">
+                            <strong>프로그램 목표</strong><br>
+                            참여자의 학습 경험을 극대화합니다.
+                        </p>
+                        <p style="margin: 8px 0; font-size: 12px; line-height: 1.6;">
+                            <strong>주요 활동</strong><br>
+                            • 체험형 워크숍<br>
+                            • 전문가 강연<br>
+                            • 그룹 활동
+                        </p>
+                        <p style="margin: 8px 0; font-size: 12px; line-height: 1.6;">
+                            <strong>평가 방법</strong><br>
+                            참여도와 만족도를 기준으로 평가합니다.
+                        </p>
+                    `,
+                    admin: `
+                        <h3 style="font-size: 14px; font-weight: 600; margin: 0 0 12px 0;">${title}</h3>
+                        <p style="margin: 8px 0; font-size: 12px; line-height: 1.6;">
+                            <strong>관리 목표</strong><br>
+                            효율적인 운영 및 자원 관리를 수행합니다.
+                        </p>
+                        <p style="margin: 8px 0; font-size: 12px; line-height: 1.6;">
+                            <strong>주요 업무</strong><br>
+                            • 예산 관리<br>
+                            • 인력 배치<br>
+                            • 일정 조율
+                        </p>
+                        <p style="margin: 8px 0; font-size: 12px; line-height: 1.6;">
+                            <strong>성과 지표</strong><br>
+                            목표 대비 실적을 정기적으로 모니터링합니다.
+                        </p>
+                    `
+                };
+                
+                return templates[role] || templates.curator;
             }
             
             // Format document content as HTML
