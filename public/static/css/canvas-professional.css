@@ -1263,13 +1263,18 @@
 
     /* Top Toolbar - Mobile Optimized */
     .toolbar {
-        height: 56px; /* Taller for easier touch */
-        padding: 0 12px;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        height: 56px !important;
+        padding: 0 12px !important;
         gap: 8px;
         overflow-x: auto;
         overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
-        scrollbar-width: none; /* Hide scrollbar */
+        scrollbar-width: none;
+        z-index: 9999 !important;
     }
 
     .toolbar::-webkit-scrollbar {
@@ -1278,6 +1283,12 @@
 
     .toolbar-group {
         gap: 6px;
+    }
+
+    .toolbar-left,
+    .toolbar-center,
+    .toolbar-right {
+        flex-shrink: 0;
     }
 
     .toolbar-btn {
@@ -1292,8 +1303,9 @@
     }
 
     /* Show only icons on small screens */
-    .toolbar-btn .btn-text {
-        display: none;
+    .toolbar-btn .btn-text,
+    .toolbar-btn span:not(.badge) {
+        display: none !important;
     }
 
     .toolbar-btn.active::after {
@@ -1302,23 +1314,23 @@
 
     /* Left Panel - Mobile Drawer */
     .left-panel {
-        position: fixed;
-        left: -100%;
-        top: 56px;
-        width: 85vw;
-        max-width: 320px;
-        height: calc(100vh - 56px);
+        position: fixed !important;
+        left: -100% !important;
+        top: 56px !important;
+        width: 85vw !important;
+        max-width: 320px !important;
+        height: calc(100vh - 56px) !important;
         background: var(--surface);
         border-right: 1px solid var(--border-primary);
         box-shadow: 4px 0 12px rgba(0, 0, 0, 0.15);
-        transition: left 300ms cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 9000;
+        transition: left 300ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+        z-index: 9000 !important;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
     }
 
     .left-panel.visible {
-        left: 0;
+        left: 0 !important;
     }
 
     /* Backdrop for left panel */
@@ -1342,23 +1354,23 @@
 
     /* Right Panel - Mobile Drawer */
     .right-panel {
-        position: fixed;
-        right: -100%;
-        top: 56px;
-        width: 85vw;
-        max-width: 320px;
-        height: calc(100vh - 56px);
+        position: fixed !important;
+        right: -100% !important;
+        top: 56px !important;
+        width: 85vw !important;
+        max-width: 320px !important;
+        height: calc(100vh - 56px) !important;
         background: var(--surface);
         border-left: 1px solid var(--border-primary);
         box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
-        transition: right 300ms cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 9000;
+        transition: right 300ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+        z-index: 9000 !important;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
     }
 
     .right-panel.visible {
-        right: 0;
+        right: 0 !important;
     }
 
     /* Backdrop for right panel */
@@ -1382,21 +1394,21 @@
 
     /* Canvas Container - Full Screen */
     .canvas-container {
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 56px;
-        bottom: 0;
+        position: fixed !important;
+        left: 0 !important;
+        right: 0 !important;
+        top: 56px !important;
+        bottom: 0 !important;
         background: var(--bg-canvas);
     }
 
     /* Mobile Floating Action Button (FAB) */
     .mobile-fab-container {
-        position: fixed;
-        right: 16px;
-        bottom: 80px;
-        z-index: 8998;
-        display: flex;
+        position: fixed !important;
+        right: 16px !important;
+        bottom: 80px !important;
+        z-index: 8998 !important;
+        display: flex !important;
         flex-direction: column;
         gap: 12px;
     }
@@ -1432,22 +1444,23 @@
 
     /* Workflow Execution Panel - Mobile */
     .workflow-execution-panel {
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: -100%;
-        top: auto;
-        width: 100%;
-        max-width: 100%;
-        max-height: 70vh;
-        border-radius: 16px 16px 0 0;
+        position: fixed !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: -100% !important;
+        top: auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: 70vh !important;
+        border-radius: 16px 16px 0 0 !important;
         box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
-        transition: bottom 300ms cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 9999;
+        transition: bottom 300ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+        z-index: 9999 !important;
+        display: flex !important;
     }
 
     .workflow-execution-panel.visible {
-        bottom: 0;
+        bottom: 0 !important;
     }
 
     /* Mobile Bottom Sheet Drag Handle */
@@ -1544,13 +1557,13 @@
 
     /* Zoom Controls - Mobile position */
     .zoom-controls {
-        position: fixed;
-        right: 16px;
-        bottom: 160px;
-        display: flex;
+        position: fixed !important;
+        right: 16px !important;
+        bottom: 160px !important;
+        display: flex !important;
         flex-direction: column;
         gap: 8px;
-        z-index: 8997;
+        z-index: 8997 !important;
     }
 
     .zoom-btn {
@@ -1578,6 +1591,19 @@
     /* Hide desktop-only elements */
     .desktop-only {
         display: none !important;
+    }
+
+    /* Show mobile-only elements */
+    .mobile-only {
+        display: flex !important;
+    }
+
+    /* Mobile toggle buttons in toolbar */
+    #mobile-toggle-left,
+    #mobile-toggle-right {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
     }
 
     /* Typography adjustments */
@@ -1789,7 +1815,8 @@
     .mobile-only,
     .mobile-fab-container,
     .left-panel-backdrop,
-    .right-panel-backdrop {
+    .right-panel-backdrop,
+    .zoom-controls {
         display: none !important;
     }
 
@@ -1802,10 +1829,31 @@
 
     .left-panel {
         left: 0 !important;
+        width: 320px !important;
+        top: 64px !important;
     }
 
     .right-panel {
         right: 0 !important;
+        width: 320px !important;
+        top: 64px !important;
+    }
+
+    /* Desktop workflow panel */
+    .workflow-execution-panel {
+        position: fixed !important;
+        right: 24px !important;
+        top: 80px !important;
+        left: auto !important;
+        bottom: auto !important;
+        width: 420px !important;
+        max-width: 420px !important;
+        max-height: calc(100vh - 100px) !important;
+        border-radius: var(--radius-lg) !important;
+    }
+
+    .workflow-execution-panel .panel-header::before {
+        display: none !important;
     }
 }
 

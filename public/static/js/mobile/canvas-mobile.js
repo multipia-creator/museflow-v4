@@ -117,7 +117,22 @@ const CanvasMobile = {
 
     document.getElementById('fab-run-workflow')?.addEventListener('click', () => {
       if (window.WorkflowExecutionPanel) {
-        window.WorkflowExecutionPanel.toggle();
+        const panel = document.getElementById('workflow-execution-panel');
+        if (panel) {
+          panel.classList.toggle('visible');
+        } else {
+          window.WorkflowExecutionPanel.toggle();
+        }
+      } else {
+        // Fallback: try to run workflow directly
+        if (window.AIOrchestrator && window.CanvasV3) {
+          const projectId = window.CanvasV3.currentProject?.id;
+          const nodes = window.CanvasV3.nodes || [];
+          const connections = window.CanvasV3.connections || [];
+          if (projectId && nodes.length > 0) {
+            window.AIOrchestrator.executeEntireWorkflow(projectId, nodes, connections);
+          }
+        }
       }
     });
   },

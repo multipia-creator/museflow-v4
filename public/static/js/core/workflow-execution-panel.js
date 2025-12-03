@@ -134,6 +134,10 @@ const WorkflowExecutionPanel = {
     const panel = document.getElementById('workflow-execution-panel');
     if (panel) {
       panel.style.display = 'flex';
+      // For mobile, add visible class
+      if (window.innerWidth <= 768) {
+        setTimeout(() => panel.classList.add('visible'), 10);
+      }
       this.isVisible = true;
     }
   },
@@ -144,7 +148,13 @@ const WorkflowExecutionPanel = {
   hide() {
     const panel = document.getElementById('workflow-execution-panel');
     if (panel) {
-      panel.style.display = 'none';
+      // For mobile, remove visible class first
+      if (window.innerWidth <= 768) {
+        panel.classList.remove('visible');
+        setTimeout(() => panel.style.display = 'none', 300);
+      } else {
+        panel.style.display = 'none';
+      }
       this.isVisible = false;
     }
   },
