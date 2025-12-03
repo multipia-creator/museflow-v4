@@ -41,8 +41,8 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0a0a;
-            color: #ffffff;
+            background: #1e1e1e;
+            color: #e5e5e5;
             overflow: hidden;
             padding-top: 64px;
         }
@@ -55,7 +55,7 @@
         
         #three-canvas {
             flex: 1;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
             cursor: grab;
         }
         
@@ -71,47 +71,49 @@
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 12px;
+            background: rgba(42, 42, 42, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(229, 229, 229, 0.12);
+            border-radius: 14px;
             padding: 12px 16px;
             display: flex;
             gap: 8px;
             z-index: 150;
-            box-shadow: 0 8px 32px rgba(138, 43, 226, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(229, 229, 229, 0.05);
         }
         
         .tool-btn {
             width: 40px;
             height: 40px;
-            background: rgba(138, 43, 226, 0.2);
-            border: 1px solid rgba(138, 43, 226, 0.3);
+            background: rgba(80, 80, 80, 0.4);
+            border: 1px solid rgba(229, 229, 229, 0.15);
             border-radius: 8px;
-            color: #ffffff;
+            color: #e5e5e5;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 16px;
         }
         
         .tool-btn:hover {
-            background: rgba(138, 43, 226, 0.4);
-            border-color: #8a2be2;
+            background: rgba(120, 120, 120, 0.5);
+            border-color: rgba(229, 229, 229, 0.3);
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
         
         .tool-btn.active {
-            background: linear-gradient(135deg, #8a2be2 0%, #9b4dca 100%);
-            border-color: #8a2be2;
+            background: linear-gradient(135deg, #6b6b6b 0%, #8a8a8a 100%);
+            border-color: rgba(229, 229, 229, 0.4);
+            color: #ffffff;
         }
         
         .tool-separator {
             width: 1px;
             height: 40px;
-            background: rgba(138, 43, 226, 0.3);
+            background: rgba(229, 229, 229, 0.15);
         }
         
         /* Asset Library Panel (Left Bottom) */
@@ -119,114 +121,144 @@
             position: absolute;
             bottom: 20px;
             left: 20px;
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 12px;
-            padding: 16px;
-            width: 320px;
-            max-height: 400px;
+            background: rgba(42, 42, 42, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(229, 229, 229, 0.12);
+            border-radius: 14px;
+            padding: 18px;
+            width: 340px;
+            max-height: 420px;
             z-index: 100;
-            box-shadow: 0 8px 32px rgba(138, 43, 226, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(229, 229, 229, 0.05);
         }
         
         .asset-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+            margin-bottom: 14px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(229, 229, 229, 0.1);
         }
         
         .asset-title {
             font-size: 14px;
             font-weight: 600;
-            color: #8a2be2;
+            color: #d0d0d0;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            letter-spacing: 0.3px;
         }
         
         .asset-search {
             width: 100%;
-            padding: 8px 12px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 6px;
-            color: #ffffff;
-            font-size: 12px;
-            margin-bottom: 12px;
+            padding: 10px 14px;
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(229, 229, 229, 0.12);
+            border-radius: 8px;
+            color: #e5e5e5;
+            font-size: 13px;
+            margin-bottom: 14px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .asset-search:focus {
             outline: none;
-            border-color: #8a2be2;
+            border-color: rgba(229, 229, 229, 0.3);
+            background: rgba(30, 30, 30, 1);
+        }
+        
+        .asset-search::placeholder {
+            color: rgba(229, 229, 229, 0.4);
         }
         
         .asset-categories {
             display: flex;
-            gap: 4px;
-            margin-bottom: 12px;
+            gap: 6px;
+            margin-bottom: 14px;
             overflow-x: auto;
         }
         
         .asset-category {
-            padding: 6px 12px;
-            background: rgba(138, 43, 226, 0.2);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 6px;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 11px;
+            padding: 8px 14px;
+            background: rgba(80, 80, 80, 0.3);
+            border: 1px solid rgba(229, 229, 229, 0.12);
+            border-radius: 8px;
+            color: rgba(229, 229, 229, 0.7);
+            font-size: 12px;
+            font-weight: 500;
             cursor: pointer;
             white-space: nowrap;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        .asset-category:hover,
+        .asset-category:hover {
+            background: rgba(100, 100, 100, 0.4);
+            border-color: rgba(229, 229, 229, 0.2);
+            color: rgba(229, 229, 229, 0.9);
+        }
+        
         .asset-category.active {
-            background: rgba(138, 43, 226, 0.4);
-            border-color: #8a2be2;
+            background: linear-gradient(135deg, #6b6b6b 0%, #8a8a8a 100%);
+            border-color: rgba(229, 229, 229, 0.3);
             color: #ffffff;
         }
         
         .asset-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            max-height: 240px;
+            gap: 10px;
+            max-height: 260px;
             overflow-y: auto;
+        }
+        
+        .asset-grid::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .asset-grid::-webkit-scrollbar-track {
+            background: rgba(30, 30, 30, 0.3);
+            border-radius: 3px;
+        }
+        
+        .asset-grid::-webkit-scrollbar-thumb {
+            background: rgba(120, 120, 120, 0.5);
+            border-radius: 3px;
         }
         
         .asset-item {
             aspect-ratio: 1;
-            background: rgba(138, 43, 226, 0.1);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 8px;
+            background: rgba(60, 60, 60, 0.3);
+            border: 1px solid rgba(229, 229, 229, 0.12);
+            border-radius: 10px;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 4px;
-            transition: all 0.2s ease;
+            gap: 6px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .asset-item:hover {
-            background: rgba(138, 43, 226, 0.3);
-            border-color: #8a2be2;
-            transform: translateY(-2px);
+            background: rgba(100, 100, 100, 0.4);
+            border-color: rgba(229, 229, 229, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
         }
         
         .asset-icon {
-            font-size: 24px;
-            color: #8a2be2;
+            font-size: 26px;
+            color: #b0b0b0;
         }
         
         .asset-name {
             font-size: 10px;
-            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+            color: rgba(229, 229, 229, 0.7);
             text-align: center;
+            line-height: 1.3;
         }
         
         /* Properties Panel (Right) */
@@ -234,16 +266,16 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 12px;
-            padding: 16px;
-            width: 300px;
+            background: rgba(42, 42, 42, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(229, 229, 229, 0.12);
+            border-radius: 14px;
+            padding: 18px;
+            width: 320px;
             max-height: calc(100vh - 120px);
             overflow-y: auto;
             z-index: 100;
-            box-shadow: 0 8px 32px rgba(138, 43, 226, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(229, 229, 229, 0.05);
         }
         
         .properties-panel::-webkit-scrollbar {
@@ -251,65 +283,79 @@
         }
         
         .properties-panel::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(30, 30, 30, 0.3);
             border-radius: 3px;
         }
         
         .properties-panel::-webkit-scrollbar-thumb {
-            background: #8a2be2;
+            background: rgba(120, 120, 120, 0.5);
             border-radius: 3px;
         }
         
+        .properties-panel::-webkit-scrollbar-thumb:hover {
+            background: rgba(140, 140, 140, 0.7);
+        }
+        
         .prop-header {
-            margin: 0 0 16px 0;
+            margin: 0 0 18px 0;
             font-size: 14px;
             font-weight: 600;
-            color: #8a2be2;
+            color: #d0d0d0;
             display: flex;
             align-items: center;
             gap: 8px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(229, 229, 229, 0.1);
+            letter-spacing: 0.3px;
         }
         
         .prop-section {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
         
         .prop-section-title {
             font-size: 12px;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 10px;
+            color: rgba(229, 229, 229, 0.9);
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            letter-spacing: 0.2px;
         }
         
         .prop-group {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
         
         .prop-label {
             display: block;
             font-size: 11px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 6px;
+            font-weight: 500;
+            color: rgba(229, 229, 229, 0.7);
+            margin-bottom: 8px;
+            letter-spacing: 0.2px;
         }
         
         .prop-input {
             width: 100%;
-            padding: 8px 10px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 6px;
-            color: #ffffff;
+            padding: 10px 12px;
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(229, 229, 229, 0.12);
+            border-radius: 8px;
+            color: #e5e5e5;
             font-size: 13px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .prop-input:focus {
             outline: none;
-            border-color: #8a2be2;
+            border-color: rgba(229, 229, 229, 0.3);
+            background: rgba(30, 30, 30, 1);
+        }
+        
+        .prop-input::placeholder {
+            color: rgba(229, 229, 229, 0.4);
         }
         
         .prop-row {
@@ -326,83 +372,106 @@
         
         .prop-slider {
             width: 100%;
-            height: 4px;
-            background: rgba(138, 43, 226, 0.2);
-            border-radius: 2px;
+            height: 5px;
+            background: rgba(80, 80, 80, 0.4);
+            border-radius: 3px;
             outline: none;
             cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .prop-slider:hover {
+            background: rgba(100, 100, 100, 0.5);
         }
         
         .prop-slider::-webkit-slider-thumb {
             appearance: none;
-            width: 14px;
-            height: 14px;
-            background: #8a2be2;
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, #9a9a9a 0%, #b0b0b0 100%);
             border-radius: 50%;
             cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .prop-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
         }
         
         .prop-value {
             display: flex;
             justify-content: space-between;
             font-size: 11px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 6px;
+            color: rgba(229, 229, 229, 0.7);
+            margin-bottom: 8px;
         }
         
         .prop-value-num {
-            color: #8a2be2;
+            color: #b0b0b0;
             font-weight: 600;
         }
         
         .prop-btn {
             width: 100%;
-            padding: 10px 12px;
-            background: linear-gradient(135deg, #8a2be2 0%, #9b4dca 100%);
+            padding: 12px 14px;
+            background: linear-gradient(135deg, #6b6b6b 0%, #8a8a8a 100%);
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
             color: #ffffff;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
         }
         
         .prop-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(138, 43, 226, 0.4);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
         }
         
         .prop-btn.secondary {
-            background: rgba(138, 43, 226, 0.2);
+            background: rgba(60, 60, 60, 0.4);
+            border: 1px solid rgba(229, 229, 229, 0.12);
+        }
+        
+        .prop-btn.secondary:hover {
+            background: rgba(80, 80, 80, 0.5);
         }
         
         .prop-toggle {
             display: flex;
-            gap: 6px;
+            gap: 8px;
         }
         
         .toggle-btn {
             flex: 1;
-            padding: 8px;
-            background: rgba(138, 43, 226, 0.2);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 6px;
-            color: rgba(255, 255, 255, 0.7);
+            padding: 10px;
+            background: rgba(60, 60, 60, 0.3);
+            border: 1px solid rgba(229, 229, 229, 0.12);
+            border-radius: 8px;
+            color: rgba(229, 229, 229, 0.7);
             font-size: 11px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
         }
         
-        .toggle-btn:hover,
+        .toggle-btn:hover {
+            background: rgba(100, 100, 100, 0.4);
+            border-color: rgba(229, 229, 229, 0.2);
+            color: rgba(229, 229, 229, 0.9);
+        }
+        
         .toggle-btn.active {
-            background: rgba(138, 43, 226, 0.4);
-            border-color: #8a2be2;
+            background: linear-gradient(135deg, #6b6b6b 0%, #8a8a8a 100%);
+            border-color: rgba(229, 229, 229, 0.3);
             color: #ffffff;
         }
         
@@ -413,30 +482,31 @@
             right: 20px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             z-index: 100;
         }
         
         .viewport-btn {
-            width: 48px;
-            height: 48px;
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 10px;
-            color: #ffffff;
+            width: 52px;
+            height: 52px;
+            background: rgba(42, 42, 42, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(229, 229, 229, 0.12);
+            border-radius: 12px;
+            color: #e5e5e5;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 16px rgba(138, 43, 226, 0.2);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(229, 229, 229, 0.05);
         }
         
         .viewport-btn:hover {
-            background: rgba(138, 43, 226, 0.3);
-            border-color: #8a2be2;
+            background: rgba(80, 80, 80, 0.5);
+            border-color: rgba(229, 229, 229, 0.25);
             transform: translateX(-4px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
         }
         
         /* Stats HUD (Top Right) */
@@ -444,29 +514,30 @@
             position: absolute;
             top: 80px;
             right: 20px;
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 10px;
-            padding: 12px 16px;
+            background: rgba(42, 42, 42, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(229, 229, 229, 0.12);
+            border-radius: 12px;
+            padding: 14px 18px;
             z-index: 90;
-            box-shadow: 0 4px 16px rgba(138, 43, 226, 0.2);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(229, 229, 229, 0.05);
         }
         
         .stat-row {
             display: flex;
             justify-content: space-between;
-            gap: 20px;
-            padding: 4px 0;
-            font-size: 11px;
+            gap: 24px;
+            padding: 6px 0;
+            font-size: 12px;
         }
         
         .stat-label {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(229, 229, 229, 0.7);
+            font-weight: 500;
         }
         
         .stat-value {
-            color: #8a2be2;
+            color: #b0b0b0;
             font-weight: 600;
         }
         
@@ -476,16 +547,18 @@
             top: 80px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(138, 43, 226, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(138, 43, 226, 0.5);
-            border-radius: 8px;
-            padding: 12px 20px;
-            color: #ffffff;
+            background: rgba(42, 42, 42, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(229, 229, 229, 0.15);
+            border-radius: 10px;
+            padding: 14px 24px;
+            color: #e5e5e5;
             font-size: 13px;
+            font-weight: 500;
             z-index: 2000;
-            animation: slideDown 0.3s ease;
+            animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: none;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(229, 229, 229, 0.08);
         }
         
         .toast.show {
@@ -510,13 +583,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 10, 10, 0.95);
+            background: rgba(30, 30, 30, 0.98);
+            backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            gap: 20px;
+            gap: 24px;
         }
         
         .loading-screen.hidden {
@@ -524,10 +598,10 @@
         }
         
         .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(138, 43, 226, 0.2);
-            border-top-color: #8a2be2;
+            width: 64px;
+            height: 64px;
+            border: 4px solid rgba(120, 120, 120, 0.2);
+            border-top-color: #b0b0b0;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -538,21 +612,25 @@
         
         .loading-text {
             font-size: 16px;
-            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+            color: rgba(229, 229, 229, 0.7);
+            letter-spacing: 0.3px;
         }
         
         /* No Selection State */
         .no-selection {
             text-align: center;
-            padding: 40px 20px;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 12px;
+            padding: 48px 20px;
+            color: rgba(229, 229, 229, 0.5);
+            font-size: 13px;
+            font-weight: 500;
         }
         
         .no-selection i {
-            font-size: 32px;
-            margin-bottom: 12px;
-            opacity: 0.5;
+            font-size: 36px;
+            margin-bottom: 16px;
+            opacity: 0.4;
+            color: #b0b0b0;
         }
         
         /* Space Configuration Panel (Left Top) */
@@ -560,16 +638,16 @@
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 12px;
-            padding: 16px;
-            width: 320px;
+            background: rgba(42, 42, 42, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(229, 229, 229, 0.12);
+            border-radius: 14px;
+            padding: 18px;
+            width: 340px;
             max-height: calc(100vh - 460px);
             overflow-y: auto;
             z-index: 100;
-            box-shadow: 0 8px 32px rgba(138, 43, 226, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(229, 229, 229, 0.05);
         }
         
         .space-config-panel::-webkit-scrollbar {
@@ -577,165 +655,175 @@
         }
         
         .space-config-panel::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(30, 30, 30, 0.3);
             border-radius: 3px;
         }
         
         .space-config-panel::-webkit-scrollbar-thumb {
-            background: #8a2be2;
+            background: rgba(120, 120, 120, 0.5);
             border-radius: 3px;
+        }
+        
+        .space-config-panel::-webkit-scrollbar-thumb:hover {
+            background: rgba(140, 140, 140, 0.7);
         }
         
         .config-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(138, 43, 226, 0.3);
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(229, 229, 229, 0.1);
         }
         
         .config-title {
             font-size: 14px;
             font-weight: 600;
-            color: #8a2be2;
+            color: #d0d0d0;
             display: flex;
             align-items: center;
             gap: 8px;
+            letter-spacing: 0.3px;
         }
         
         .config-section {
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
         
         .config-section-title {
             font-size: 12px;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 8px;
+            color: rgba(229, 229, 229, 0.9);
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            letter-spacing: 0.2px;
         }
         
         .floor-material-selector {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
+            gap: 10px;
         }
         
         .floor-material-btn {
-            padding: 10px 8px;
-            background: rgba(138, 43, 226, 0.2);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 8px;
-            color: rgba(255, 255, 255, 0.7);
+            padding: 12px 10px;
+            background: rgba(60, 60, 60, 0.3);
+            border: 1px solid rgba(229, 229, 229, 0.12);
+            border-radius: 10px;
+            color: rgba(229, 229, 229, 0.7);
             font-size: 11px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
         }
         
         .floor-material-btn:hover {
-            background: rgba(138, 43, 226, 0.3);
-            border-color: #8a2be2;
+            background: rgba(100, 100, 100, 0.4);
+            border-color: rgba(229, 229, 229, 0.2);
+            transform: translateY(-2px);
         }
         
         .floor-material-btn.active {
-            background: linear-gradient(135deg, #8a2be2 0%, #9b4dca 100%);
-            border-color: #8a2be2;
+            background: linear-gradient(135deg, #6b6b6b 0%, #8a8a8a 100%);
+            border-color: rgba(229, 229, 229, 0.3);
             color: #ffffff;
         }
         
         .floor-material-icon {
-            font-size: 20px;
+            font-size: 22px;
         }
         
         .lighting-info {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(138, 43, 226, 0.2);
-            border-radius: 8px;
-            padding: 10px;
+            background: rgba(30, 30, 30, 0.5);
+            border: 1px solid rgba(229, 229, 229, 0.1);
+            border-radius: 10px;
+            padding: 12px;
         }
         
         .lighting-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 4px 0;
-            font-size: 11px;
+            padding: 6px 0;
+            font-size: 12px;
         }
         
         .lighting-type {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(229, 229, 229, 0.7);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
         
         .lighting-count {
-            color: #8a2be2;
+            color: #b0b0b0;
             font-weight: 600;
         }
         
         .entrance-exit-controls {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
         
         .entrance-exit-btn {
             flex: 1;
-            padding: 10px 12px;
-            background: rgba(138, 43, 226, 0.2);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 8px;
-            color: rgba(255, 255, 255, 0.7);
+            padding: 12px 14px;
+            background: rgba(60, 60, 60, 0.3);
+            border: 1px solid rgba(229, 229, 229, 0.12);
+            border-radius: 10px;
+            color: rgba(229, 229, 229, 0.7);
             font-size: 11px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
         }
         
         .entrance-exit-btn:hover {
-            background: rgba(138, 43, 226, 0.3);
-            border-color: #8a2be2;
+            background: rgba(100, 100, 100, 0.4);
+            border-color: rgba(229, 229, 229, 0.2);
+            transform: translateY(-2px);
         }
         
         .entrance-exit-btn.active {
-            background: linear-gradient(135deg, #8a2be2 0%, #9b4dca 100%);
-            border-color: #8a2be2;
+            background: linear-gradient(135deg, #6b6b6b 0%, #8a8a8a 100%);
+            border-color: rgba(229, 229, 229, 0.3);
             color: #ffffff;
         }
         
         .entrance-exit-icon {
-            font-size: 18px;
+            font-size: 20px;
         }
         
         .save-export-buttons {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
         
         .save-export-btn {
             flex: 1;
-            padding: 10px 12px;
+            padding: 12px 14px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             color: #ffffff;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
         }
         
         .save-export-btn.save {
@@ -743,12 +831,12 @@
         }
         
         .save-export-btn.export {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
         }
         
         .save-export-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -978,9 +1066,10 @@
             
             <div class="asset-categories">
                 <button class="asset-category active" onclick="filterCategory('all')">전체</button>
-                <button class="asset-category" onclick="filterCategory('painting')">회화</button>
+                <button class="asset-category" onclick="filterCategory('flat')">평면</button>
+                <button class="asset-category" onclick="filterCategory('3d')">입체</button>
                 <button class="asset-category" onclick="filterCategory('sculpture')">조각</button>
-                <button class="asset-category" onclick="filterCategory('photo')">사진</button>
+                <button class="asset-category" onclick="filterCategory('installation')">설치미술</button>
             </div>
             
             <div class="asset-grid" id="assetGrid">
@@ -1044,26 +1133,41 @@
         
         // Asset library data with sample images
         const assetTemplates = [
-            { name: '모나리자', type: 'painting', width: 2, height: 3, 
+            // 평면 작품 (Flat Artworks)
+            { name: '모나리자', type: 'flat', width: 2, height: 3, 
               image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/396px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg' },
-            { name: '별이 빛나는 밤', type: 'painting', width: 2.5, height: 2, 
+            { name: '별이 빛나는 밤', type: 'flat', width: 2.5, height: 2, 
               image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/600px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg' },
-            { name: '진주 귀걸이 소녀', type: 'painting', width: 1.8, height: 2.4, 
+            { name: '진주 귀걸이 소녀', type: 'flat', width: 1.8, height: 2.4, 
               image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/1665_Girl_with_a_Pearl_Earring.jpg/450px-1665_Girl_with_a_Pearl_Earring.jpg' },
-            { name: '절규', type: 'painting', width: 2, height: 2.8, 
+            { name: '절규', type: 'flat', width: 2, height: 2.8, 
               image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg/440px-Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg' },
-            { name: '키스', type: 'painting', width: 2.2, height: 2.2, 
+            { name: '키스', type: 'flat', width: 2.2, height: 2.2, 
               image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Gustav_Klimt_016.jpg/480px-Gustav_Klimt_016.jpg' },
-            { name: '게르니카', type: 'painting', width: 3.5, height: 2, 
+            { name: '게르니카', type: 'flat', width: 3.5, height: 2, 
               image: 'https://upload.wikimedia.org/wikipedia/en/thumb/7/74/PicassoGuernica.jpg/600px-PicassoGuernica.jpg' },
-            { name: '미켈란젤로 다비드', type: 'sculpture', width: 1.5, height: 4, 
+            
+            // 입체 작품 (3D Artworks)
+            { name: '입체 추상 A', type: '3d', width: 1.5, height: 2, depth: 0.8,
+              color: 0xff6b6b },
+            { name: '입체 추상 B', type: '3d', width: 1.2, height: 1.8, depth: 0.6,
+              color: 0x4ecdc4 },
+            
+            // 조각 작품 (Sculptures)
+            { name: '미켈란젤로 다비드', type: 'sculpture', width: 1.5, height: 4, depth: 1.5,
               image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/%27David%27_by_Michelangelo_Fir_JBU002.jpg/360px-%27David%27_by_Michelangelo_Fir_JBU002.jpg' },
-            { name: '비너스상', type: 'sculpture', width: 1.2, height: 3.5, 
+            { name: '비너스상', type: 'sculpture', width: 1.2, height: 3.5, depth: 1.2,
               image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Venus_de_Milo_Louvre_Ma399_n4.jpg/360px-Venus_de_Milo_Louvre_Ma399_n4.jpg' },
-            { name: '풍경 사진 A', type: 'photo', width: 2, height: 1.5, 
-              image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600' },
-            { name: '인물 사진 B', type: 'photo', width: 1.5, height: 2, 
-              image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400' },
+            { name: '현대 조각 A', type: 'sculpture', width: 2, height: 2.5, depth: 2,
+              color: 0x95e1d3 },
+            
+            // 설치 미술 (Installation Art)
+            { name: '빛 설치 작품', type: 'installation', width: 3, height: 2.5, depth: 2,
+              color: 0xffd93d, emissive: 0xffd93d, emissiveIntensity: 0.6 },
+            { name: '공간 설치 작품', type: 'installation', width: 4, height: 3, depth: 3,
+              color: 0xc792ea, emissive: 0xc792ea, emissiveIntensity: 0.4 },
+            { name: '인터랙티브 설치', type: 'installation', width: 2.5, height: 2, depth: 1.5,
+              color: 0x6bcf7f, emissive: 0x6bcf7f, emissiveIntensity: 0.5 },
         ];
         
         // Initialize
@@ -1297,8 +1401,10 @@
                 item.dataset.type = asset.type;
                 item.dataset.index = i;
                 
-                const icon = asset.type === 'painting' ? 'fa-image' : 
-                            asset.type === 'sculpture' ? 'fa-cube' : 'fa-camera';
+                const icon = asset.type === 'flat' ? 'fa-image' : 
+                            asset.type === '3d' ? 'fa-box' :
+                            asset.type === 'sculpture' ? 'fa-cube' : 
+                            asset.type === 'installation' ? 'fa-layer-group' : 'fa-image';
                 
                 item.innerHTML = `
                     <i class="fas ${icon} asset-icon"></i>
@@ -1519,25 +1625,120 @@
                 scene.remove(oldMarker);
             }
             
-            // Create entrance marker (e.g., a door or arrow)
-            const markerGeometry = new THREE.BoxGeometry(3, 2.5, 0.1);
-            const markerMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0x10b981, 
-                emissive: 0x10b981,
-                emissiveIntensity: 0.3 
-            });
-            const marker = new THREE.Mesh(markerGeometry, markerMaterial);
-            marker.name = 'entranceMarker';
+            // Create realistic door group
+            const doorGroup = new THREE.Group();
+            doorGroup.name = 'entranceMarker';
             
+            // Door frame (surround)
+            const frameMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x8b7355, 
+                roughness: 0.7,
+                metalness: 0.1
+            });
+            
+            // Frame top
+            const frameTop = new THREE.Mesh(
+                new THREE.BoxGeometry(2.2, 0.15, 0.15),
+                frameMaterial
+            );
+            frameTop.position.set(0, 2.5, 0);
+            frameTop.castShadow = true;
+            doorGroup.add(frameTop);
+            
+            // Frame left
+            const frameLeft = new THREE.Mesh(
+                new THREE.BoxGeometry(0.15, 2.5, 0.15),
+                frameMaterial
+            );
+            frameLeft.position.set(-1.1, 1.25, 0);
+            frameLeft.castShadow = true;
+            doorGroup.add(frameLeft);
+            
+            // Frame right
+            const frameRight = new THREE.Mesh(
+                new THREE.BoxGeometry(0.15, 2.5, 0.15),
+                frameMaterial
+            );
+            frameRight.position.set(1.1, 1.25, 0);
+            frameRight.castShadow = true;
+            doorGroup.add(frameRight);
+            
+            // Double doors (opening outward)
+            const doorMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0x6b4423,
+                roughness: 0.6,
+                metalness: 0.2,
+                envMapIntensity: 0.3
+            });
+            
+            // Left door (opens to the left when outward)
+            const leftDoor = new THREE.Mesh(
+                new THREE.BoxGeometry(1.0, 2.4, 0.08),
+                doorMaterial
+            );
+            leftDoor.position.set(-0.55, 1.2, -0.15); // Slightly outward
+            leftDoor.rotation.y = -Math.PI / 12; // 15 degrees open
+            leftDoor.castShadow = true;
+            leftDoor.receiveShadow = true;
+            doorGroup.add(leftDoor);
+            
+            // Right door (opens to the right when outward)
+            const rightDoor = new THREE.Mesh(
+                new THREE.BoxGeometry(1.0, 2.4, 0.08),
+                doorMaterial
+            );
+            rightDoor.position.set(0.55, 1.2, -0.15); // Slightly outward
+            rightDoor.rotation.y = Math.PI / 12; // 15 degrees open
+            rightDoor.castShadow = true;
+            rightDoor.receiveShadow = true;
+            doorGroup.add(rightDoor);
+            
+            // Door handles
+            const handleMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xd4af37, // Gold
+                roughness: 0.3,
+                metalness: 0.9
+            });
+            
+            const handleGeom = new THREE.CylinderGeometry(0.03, 0.03, 0.15, 8);
+            
+            // Left handle
+            const leftHandle = new THREE.Mesh(handleGeom, handleMaterial);
+            leftHandle.position.set(-0.2, 1.2, -0.12);
+            leftHandle.rotation.z = Math.PI / 2;
+            leftHandle.castShadow = true;
+            doorGroup.add(leftHandle);
+            
+            // Right handle
+            const rightHandle = new THREE.Mesh(handleGeom, handleMaterial);
+            rightHandle.position.set(0.2, 1.2, -0.12);
+            rightHandle.rotation.z = Math.PI / 2;
+            rightHandle.castShadow = true;
+            doorGroup.add(rightHandle);
+            
+            // Welcome mat
+            const matGeom = new THREE.BoxGeometry(2.5, 0.02, 1.2);
+            const matMat = new THREE.MeshStandardMaterial({ 
+                color: 0x8b0000,
+                roughness: 0.95,
+                metalness: 0.0
+            });
+            const mat = new THREE.Mesh(matGeom, matMat);
+            mat.position.set(0, 0.01, -0.6);
+            mat.receiveShadow = true;
+            doorGroup.add(mat);
+            
+            // Position door based on entrance location
             const hd = roomDepth / 2;
             if (currentEntrancePosition === 'front') {
-                marker.position.set(0, 1.25, hd - 0.1);
-                marker.rotation.y = Math.PI;
+                doorGroup.position.set(0, 0, hd - 0.1);
+                doorGroup.rotation.y = Math.PI; // Face inward
             } else { // back
-                marker.position.set(0, 1.25, -hd + 0.1);
+                doorGroup.position.set(0, 0, -hd + 0.1);
+                doorGroup.rotation.y = 0; // Face inward
             }
             
-            scene.add(marker);
+            scene.add(doorGroup);
         }
         
         function saveConfiguration() {
@@ -1812,40 +2013,79 @@
             // Create animated visitors along the path
             createAnimatedVisitors(pathPoints);
             
-            showToast('동선 시뮬레이션 시작 (관람객 5명)');
+            showToast('동선 시뮬레이션 시작 (관람객 6명: 어른 3명, 어린이 2명, 노인 1명)');
         }
         
         function createAnimatedVisitors(pathPoints) {
-            const visitorCount = 5;
+            const visitorCount = 6;
             visitors = [];
             
+            // Visitor types: adult, child, elderly
+            const visitorTypes = [
+                { type: 'adult', bodyHeight: 1.6, bodyRadius: 0.22, headRadius: 0.28, headY: 1.9, bodyColor: 0x4a5568, speed: 0.35 },
+                { type: 'adult', bodyHeight: 1.7, bodyRadius: 0.24, headRadius: 0.3, headY: 2.0, bodyColor: 0x2c3e50, speed: 0.32 },
+                { type: 'child', bodyHeight: 1.0, bodyRadius: 0.16, headRadius: 0.22, headY: 1.2, bodyColor: 0xe74c3c, speed: 0.45 },
+                { type: 'child', bodyHeight: 1.1, bodyRadius: 0.17, headRadius: 0.23, headY: 1.3, bodyColor: 0x3498db, speed: 0.48 },
+                { type: 'elderly', bodyHeight: 1.5, bodyRadius: 0.23, headRadius: 0.27, headY: 1.8, bodyColor: 0x34495e, speed: 0.25 },
+                { type: 'adult', bodyHeight: 1.65, bodyRadius: 0.23, headRadius: 0.29, headY: 1.95, bodyColor: 0x16a085, speed: 0.33 },
+            ];
+            
             for (let i = 0; i < visitorCount; i++) {
-                // Simple visitor representation (cylinder for body + sphere for head)
+                const visitorType = visitorTypes[i % visitorTypes.length];
                 const visitorMesh = new THREE.Group();
                 
-                // Body
-                const bodyGeom = new THREE.CylinderGeometry(0.2, 0.2, 1.5, 8);
+                // Body (cylinder with realistic proportions)
+                const bodyGeom = new THREE.CylinderGeometry(
+                    visitorType.bodyRadius * 0.9, 
+                    visitorType.bodyRadius, 
+                    visitorType.bodyHeight, 
+                    12
+                );
                 const bodyMat = new THREE.MeshStandardMaterial({ 
-                    color: 0x3b82f6,
-                    roughness: 0.8,
-                    metalness: 0.1
+                    color: visitorType.bodyColor,
+                    roughness: 0.85,
+                    metalness: 0.05
                 });
                 const body = new THREE.Mesh(bodyGeom, bodyMat);
-                body.position.y = 0.75;
+                body.position.y = visitorType.bodyHeight / 2;
                 body.castShadow = true;
+                body.receiveShadow = true;
                 visitorMesh.add(body);
                 
-                // Head
-                const headGeom = new THREE.SphereGeometry(0.25, 8, 8);
+                // Head (sphere with skin tone)
+                const headGeom = new THREE.SphereGeometry(visitorType.headRadius, 12, 12);
                 const headMat = new THREE.MeshStandardMaterial({ 
-                    color: 0xffd700,
-                    roughness: 0.9,
+                    color: 0xf5d5c2, // Skin tone
+                    roughness: 0.95,
                     metalness: 0.0
                 });
                 const head = new THREE.Mesh(headGeom, headMat);
-                head.position.y = 1.75;
+                head.position.y = visitorType.headY;
                 head.castShadow = true;
+                head.receiveShadow = true;
                 visitorMesh.add(head);
+                
+                // Arms (simple representation)
+                if (visitorType.type !== 'child') {
+                    const armGeom = new THREE.CylinderGeometry(0.06, 0.06, visitorType.bodyHeight * 0.6, 6);
+                    const armMat = new THREE.MeshStandardMaterial({ 
+                        color: visitorType.bodyColor,
+                        roughness: 0.85,
+                        metalness: 0.05
+                    });
+                    
+                    // Left arm
+                    const leftArm = new THREE.Mesh(armGeom, armMat);
+                    leftArm.position.set(-visitorType.bodyRadius - 0.08, visitorType.bodyHeight * 0.6, 0);
+                    leftArm.castShadow = true;
+                    visitorMesh.add(leftArm);
+                    
+                    // Right arm
+                    const rightArm = new THREE.Mesh(armGeom, armMat);
+                    rightArm.position.set(visitorType.bodyRadius + 0.08, visitorType.bodyHeight * 0.6, 0);
+                    rightArm.castShadow = true;
+                    visitorMesh.add(rightArm);
+                }
                 
                 // Initial position along path
                 const startIndex = Math.floor((i / visitorCount) * pathPoints.length);
@@ -1856,8 +2096,9 @@
                 // Store visitor data
                 visitors.push({
                     group: visitorMesh,
+                    type: visitorType.type,
                     pathIndex: startIndex,
-                    speed: 0.3 + Math.random() * 0.2 // Varied speeds
+                    speed: visitorType.speed
                 });
                 
                 // Add to global visitor group
