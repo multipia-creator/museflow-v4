@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuseFlow - Canvas V4 Hybrid Layout</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #F9FAFB;
+            color: #111827;
+            overflow: hidden;
+        }
+        
+        /* 3-Column Layout */
+        .canvas-container {
+            display: grid;
+            grid-template-columns: 300px 1fr 400px;
+            height: 100vh;
+            gap: 0;
+        }
+        
+        /* Left Column - History & Projects */
+        .left-column {
+            background: #FFFFFF;
+            border-right: 1px solid #E5E7EB;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .column-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        
+        .column-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #111827;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .history-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+        
+        .history-item {
+            background: #F9FAFB;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .history-item:hover {
+            background: #F3F4F6;
+            border-color: #667eea;
+            transform: translateX(4px);
+        }
+        
+        .history-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .history-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .history-meta {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        /* Center Column - AI Conversation */
+        .center-column {
+            background: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .conversation-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #E5E7EB;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .ai-status-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #ECFDF5;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #059669;
+        }
+        
+        .ai-status-badge i {
+            animation: pulse 2s infinite;
+        }
+        
+        .conversation-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .message {
+            display: flex;
+            gap: 1rem;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.user {
+            justify-content: flex-end;
+        }
+        
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        
+        .message.ai .message-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .message.user .message-avatar {
+            background: #F3F4F6;
+            color: #6B7280;
+        }
+        
+        .message-content {
+            max-width: 70%;
+            background: #F9FAFB;
+            border: 1px solid #E5E7EB;
+            border-radius: 16px;
+            padding: 1rem;
+        }
+        
+        .message.user .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .message-text {
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+        
+        .message-timestamp {
+            font-size: 0.75rem;
+            opacity: 0.6;
+        }
+        
+        .phase-progress {
+            background: #FEF3C7;
+            border: 1px solid #FCD34D;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .phase-title {
+            font-weight: 600;
+            color: #92400E;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .phase-bar {
+            background: #FDE68A;
+            border-radius: 4px;
+            height: 6px;
+            overflow: hidden;
+        }
+        
+        .phase-bar-fill {
+            background: #F59E0B;
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        
+        .input-area {
+            padding: 1.5rem;
+            border-top: 1px solid #E5E7EB;
+            background: #FFFFFF;
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+        
+        .input-box {
+            flex: 1;
+            background: #F9FAFB;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            resize: none;
+            min-height: 60px;
+            max-height: 150px;
+            transition: all 0.3s ease;
+        }
+        
+        .input-box:focus {
+            outline: none;
+            border-color: #667eea;
+            background: #FFFFFF;
+        }
+        
+        .send-button {
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        
+        .send-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Right Column - Live Canvas/Dashboard Preview */
+        .right-column {
+            background: #F9FAFB;
+            border-left: 1px solid #E5E7EB;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .preview-tabs {
+            display: flex;
+            border-bottom: 1px solid #E5E7EB;
+            background: #FFFFFF;
+        }
+        
+        .preview-tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: #6B7280;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .preview-tab:hover {
+            background: #F9FAFB;
+            color: #111827;
+        }
+        
+        .preview-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: #FFFFFF;
+        }
+        
+        .preview-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+        
+        .preview-panel {
+            display: none;
+        }
+        
+        .preview-panel.active {
+            display: block;
+        }
+        
+        /* Canvas Preview */
+        .canvas-preview {
+            background: #FFFFFF;
+            border: 2px dashed #E5E7EB;
+            border-radius: 16px;
+            min-height: 400px;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .canvas-node {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            animation: nodeAppear 0.5s ease;
+        }
+        
+        @keyframes nodeAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .canvas-node-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .canvas-node-title {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        
+        .canvas-node-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .canvas-node-content {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+        
+        /* Dashboard Preview */
+        .dashboard-preview {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .widget-preview {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 1.5rem;
+            animation: widgetAppear 0.5s ease;
+        }
+        
+        @keyframes widgetAppear {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .widget-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .widget-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .widget-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #111827;
+        }
+        
+        .widget-content {
+            font-size: 0.875rem;
+            color: #6B7280;
+            line-height: 1.6;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #9CA3AF;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+        
+        .empty-state-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-state-text {
+            font-size: 0.875rem;
+        }
+        
+        /* Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #F3F4F6;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #D1D5DB;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9CA3AF;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .canvas-container {
+                grid-template-columns: 250px 1fr 350px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .canvas-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .left-column,
+            .right-column {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas-container">
+        <!-- Left Column: History & Projects -->
+        <div class="left-column">
+            <div class="column-header">
+                <h2 class="column-title">
+                    <i class="fas fa-history"></i>
+                    History & Projects
+                </h2>
+            </div>
+            
+            <div class="history-list" id="historyList">
+                <div class="history-item active">
+                    <div class="history-title">인상주의 특별전 기획</div>
+                    <div class="history-meta">
+                        <span>전시 기획</span>
+                        <span>방금 전</span>
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-title">2024년 1분기 예산 승인</div>
+                    <div class="history-meta">
+                        <span>예산 승인</span>
+                        <span>2시간 전</span>
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-title">어린이 교육 프로그램</div>
+                    <div class="history-meta">
+                        <span>교육 프로그램</span>
+                        <span>어제</span>
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-title">현대미술 소장품 선정</div>
+                    <div class="history-meta">
+                        <span>소장품 선정</span>
+                        <span>3일 전</span>
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-title">SNS 홍보 캠페인</div>
+                    <div class="history-meta">
+                        <span>홍보 계획</span>
+                        <span>1주일 전</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Center Column: AI Conversation -->
+        <div class="center-column">
+            <div class="conversation-header">
+                <h2 class="column-title">
+                    <i class="fas fa-robot"></i>
+                    AI Conversation
+                </h2>
+                <div class="ai-status-badge">
+                    <i class="fas fa-circle"></i>
+                    <span>AI Ready</span>
+                </div>
+            </div>
+            
+            <div class="conversation-area" id="conversationArea">
+                <!-- Welcome Message -->
+                <div class="message ai">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            안녕하세요! 👋 MuseFlow AI입니다.<br>
+                            무엇을 도와드릴까요? 전시 기획, 예산 관리, 교육 프로그램 등 모든 업무를 자동화해드립니다.
+                        </div>
+                        <div class="message-timestamp">방금 전</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-area">
+                <div class="input-container">
+                    <textarea 
+                        id="messageInput" 
+                        class="input-box" 
+                        placeholder="AI에게 명령하세요... (예: 인상주의 특별전을 3000만원 예산으로 기획해줘)"
+                        rows="2"
+                    ></textarea>
+                    <button class="send-button" id="sendButton">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Column: Live Canvas/Dashboard Preview -->
+        <div class="right-column">
+            <div class="preview-tabs">
+                <div class="preview-tab active" data-tab="canvas">
+                    <i class="fas fa-project-diagram"></i> Canvas
+                </div>
+                <div class="preview-tab" data-tab="dashboard">
+                    <i class="fas fa-th"></i> Dashboard
+                </div>
+            </div>
+            
+            <div class="preview-content">
+                <!-- Canvas Preview -->
+                <div class="preview-panel active" id="canvasPreview">
+                    <div class="empty-state">
+                        <i class="fas fa-project-diagram"></i>
+                        <div class="empty-state-title">Canvas가 비어있습니다</div>
+                        <div class="empty-state-text">AI가 작업을 시작하면 여기에 노드가 표시됩니다</div>
+                    </div>
+                </div>
+                
+                <!-- Dashboard Preview -->
+                <div class="preview-panel" id="dashboardPreview">
+                    <div class="empty-state">
+                        <i class="fas fa-th"></i>
+                        <div class="empty-state-title">위젯이 없습니다</div>
+                        <div class="empty-state-text">AI가 생성한 위젯이 여기에 표시됩니다</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // State
+        let eventSource = null;
+        let sessionId = null;
+        
+        // Tab Switching
+        document.querySelectorAll('.preview-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.dataset.tab;
+                
+                // Update active tab
+                document.querySelectorAll('.preview-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update active panel
+                document.querySelectorAll('.preview-panel').forEach(p => p.classList.remove('active'));
+                document.getElementById(tabName + 'Preview').classList.add('active');
+            });
+        });
+        
+        // History Item Click
+        document.querySelectorAll('.history-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.history-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Send Message
+        document.getElementById('sendButton').addEventListener('click', sendMessage);
+        document.getElementById('messageInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message to conversation
+            addMessage('user', message);
+            
+            // Clear input
+            input.value = '';
+            
+            // Disable send button
+            document.getElementById('sendButton').disabled = true;
+            
+            // Send to AI
+            await executeAICommand(message);
+        }
+        
+        function addMessage(type, text) {
+            const conversationArea = document.getElementById('conversationArea');
+            const timestamp = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+            
+            const messageHtml = `
+                <div class="message ${type}">
+                    ${type === 'ai' ? `
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    ` : ''}
+                    <div class="message-content">
+                        <div class="message-text">${text}</div>
+                        <div class="message-timestamp">${timestamp}</div>
+                    </div>
+                    ${type === 'user' ? `
+                    <div class="message-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            conversationArea.insertAdjacentHTML('beforeend', messageHtml);
+            conversationArea.scrollTop = conversationArea.scrollHeight;
+        }
+        
+        async function executeAICommand(command) {
+            try {
+                // Add AI thinking message
+                addMessage('ai', '🤔 명령을 분석하고 있습니다...');
+                
+                // Call API
+                const response = await fetch('/api/orchestrator/execute', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        workflow_type: 'exhibition_planning',
+                        user_input: command,
+                        user_id: 'curator-demo',
+                        autonomy_preference: 'balanced'
+                    })
+                });
+                
+                const data = await response.json();
+                sessionId = data.session_id;
+                
+                // Connect to SSE
+                connectToEventStream(sessionId);
+                
+            } catch (error) {
+                console.error('AI 실행 오류:', error);
+                addMessage('ai', '❌ 오류가 발생했습니다. 다시 시도해주세요.');
+                document.getElementById('sendButton').disabled = false;
+            }
+        }
+        
+        function connectToEventStream(sessionId) {
+            if (eventSource) {
+                eventSource.close();
+            }
+            
+            eventSource = new EventSource(`/api/orchestrator/stream/${sessionId}`);
+            
+            eventSource.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                handleStreamEvent(data);
+            };
+            
+            eventSource.onerror = function(error) {
+                console.error('SSE 오류:', error);
+                eventSource.close();
+                document.getElementById('sendButton').disabled = false;
+            };
+        }
+        
+        function handleStreamEvent(data) {
+            const { type, payload } = data;
+            
+            switch (type) {
+                case 'start':
+                    addMessage('ai', `🚀 ${payload.workflow_type} 워크플로우를 시작합니다...`);
+                    break;
+                
+                case 'phase-start':
+                    addPhaseProgress(payload.phase_name, 0);
+                    break;
+                
+                case 'agent-action':
+                    updatePhaseProgress(payload.action);
+                    break;
+                
+                case 'phase-complete':
+                    updatePhaseProgress('완료', 100);
+                    
+                    // Add results to preview
+                    if (payload.result?.canvas_nodes) {
+                        addCanvasNodes(payload.result.canvas_nodes);
+                    }
+                    if (payload.result?.widgets) {
+                        addDashboardWidgets(payload.result.widgets);
+                    }
+                    break;
+                
+                case 'complete':
+                    addMessage('ai', '✅ 모든 작업이 완료되었습니다! 오른쪽 패널에서 결과를 확인하세요.');
+                    document.getElementById('sendButton').disabled = false;
+                    eventSource.close();
+                    break;
+                
+                case 'error':
+                    addMessage('ai', `❌ 오류: ${payload.message}`);
+                    document.getElementById('sendButton').disabled = false;
+                    eventSource.close();
+                    break;
+            }
+        }
+        
+        function addPhaseProgress(phaseName, progress) {
+            const conversationArea = document.getElementById('conversationArea');
+            const timestamp = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+            
+            const progressHtml = `
+                <div class="message ai">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            <strong>${phaseName}</strong> 단계를 실행하고 있습니다...
+                        </div>
+                        <div class="phase-progress" data-phase="${phaseName}">
+                            <div class="phase-title">진행 중...</div>
+                            <div class="phase-bar">
+                                <div class="phase-bar-fill" style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+                        <div class="message-timestamp">${timestamp}</div>
+                    </div>
+                </div>
+            `;
+            
+            conversationArea.insertAdjacentHTML('beforeend', progressHtml);
+            conversationArea.scrollTop = conversationArea.scrollHeight;
+        }
+        
+        function updatePhaseProgress(status, progress = null) {
+            const phaseProgress = document.querySelector('.phase-progress:last-of-type');
+            if (!phaseProgress) return;
+            
+            const title = phaseProgress.querySelector('.phase-title');
+            const fill = phaseProgress.querySelector('.phase-bar-fill');
+            
+            title.textContent = status;
+            if (progress !== null) {
+                fill.style.width = progress + '%';
+            }
+        }
+        
+        function addCanvasNodes(nodes) {
+            const canvasPreview = document.getElementById('canvasPreview');
+            canvasPreview.innerHTML = '';
+            
+            nodes.forEach(node => {
+                const nodeHtml = `
+                    <div class="canvas-node">
+                        <div class="canvas-node-header">
+                            <div class="canvas-node-title">${node.title}</div>
+                            <div class="canvas-node-icon">
+                                <i class="fas fa-cube"></i>
+                            </div>
+                        </div>
+                        <div class="canvas-node-content">
+                            ${node.description || 'Canvas 노드가 생성되었습니다.'}
+                        </div>
+                    </div>
+                `;
+                canvasPreview.insertAdjacentHTML('beforeend', nodeHtml);
+            });
+        }
+        
+        function addDashboardWidgets(widgets) {
+            const dashboardPreview = document.getElementById('dashboardPreview');
+            dashboardPreview.innerHTML = '';
+            
+            widgets.forEach(widget => {
+                const widgetHtml = `
+                    <div class="widget-preview">
+                        <div class="widget-header">
+                            <div class="widget-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="widget-title">${widget.title}</div>
+                        </div>
+                        <div class="widget-content">
+                            ${widget.description || 'Dashboard 위젯이 생성되었습니다.'}
+                        </div>
+                    </div>
+                `;
+                dashboardPreview.insertAdjacentHTML('beforeend', widgetHtml);
+            });
+        }
+    </script>
+</body>
+</html>
