@@ -13,6 +13,10 @@
     <!-- External Libraries -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
+    <!-- MuseFlow Design System -->
+    <link href="/static/css/museflow-design-system.css" rel="stylesheet">
+    <link href="/static/css/unified-navbar.css" rel="stylesheet">
+    
     <style>
         * {
             margin: 0;
@@ -21,17 +25,18 @@
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #F9FAFB;
-            color: #111827;
+            font-family: var(--font-family);
+            background: var(--museflow-bg-secondary);
+            color: var(--museflow-text-primary);
             overflow: hidden;
+            padding-top: 64px; /* Space for Unified Navbar */
         }
         
         /* 3-Column Layout */
         .canvas-container {
             display: grid;
             grid-template-columns: 300px 1fr 400px;
-            height: 100vh;
+            height: calc(100vh - 64px);
             gap: 0;
         }
         
@@ -75,13 +80,13 @@
         }
         
         .history-item:hover {
-            background: #F3F4F6;
-            border-color: #667eea;
+            background: var(--museflow-bg-tertiary);
+            border-color: var(--museflow-primary);
             transform: translateX(4px);
         }
         
         .history-item.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--museflow-primary) 0%, var(--museflow-primary-dark) 100%);
             color: white;
             border-color: transparent;
         }
@@ -173,7 +178,7 @@
         }
         
         .message.ai .message-avatar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--museflow-primary) 0%, var(--museflow-primary-dark) 100%);
             color: white;
         }
         
@@ -191,7 +196,7 @@
         }
         
         .message.user .message-content {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--museflow-primary) 0%, var(--museflow-primary-dark) 100%);
             color: white;
             border-color: transparent;
         }
@@ -271,18 +276,18 @@
             width: 50px;
             height: 50px;
             border: none;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--museflow-primary) 0%, var(--museflow-primary-dark) 100%);
             color: white;
             font-size: 1.25rem;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: var(--transition-base);
             flex-shrink: 0;
         }
         
         .send-button:hover {
             transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
         }
         
         .send-button:disabled {
@@ -519,6 +524,51 @@
     </style>
 </head>
 <body>
+    <!-- Unified Navbar -->
+    <nav class="unified-navbar">
+        <div class="navbar-container">
+            <!-- Logo -->
+            <a href="/dashboard.html" class="museflow-logo">
+                <div class="museflow-logo-icon">
+                    <i class="fas fa-landmark"></i>
+                </div>
+                <span class="museflow-logo-text">MuseFlow</span>
+            </a>
+            
+            <!-- Navigation Links -->
+            <div class="navbar-links">
+                <a href="/dashboard.html" class="navbar-link">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/canvas-v4-hybrid.html" class="navbar-link active">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Canvas</span>
+                </a>
+                <a href="/projects.html" class="navbar-link">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Projects</span>
+                </a>
+            </div>
+            
+            <!-- Right Actions -->
+            <div class="navbar-actions">
+                <button class="navbar-icon-btn" title="알림">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <button class="navbar-icon-btn" title="설정">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <a href="/account.html" class="navbar-user">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </nav>
+    
     <div class="canvas-container">
         <!-- Left Column: History & Projects -->
         <div class="left-column">

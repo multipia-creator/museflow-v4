@@ -1,0 +1,352 @@
+/**
+ * MuseFlow Design System V2
+ * Museum Workflow Platform - Brand Identity & UI Consistency
+ * 
+ * 박물관 전문성 + AI 혁신 = MuseFlow
+ */
+
+/* ============================================
+   1. Brand Color Palette
+   ============================================ */
+:root {
+    /* Primary Brand - MuseFlow Purple (AI + Innovation) */
+    --museflow-primary: #8B5CF6;
+    --museflow-primary-hover: #7C3AED;
+    --museflow-primary-light: #EDE9FE;
+    --museflow-primary-dark: #6D28D9;
+    
+    /* Secondary Brand - Museum Navy (Trust + Professionalism) */
+    --museflow-secondary: #1E3A8A;
+    --museflow-secondary-hover: #1E40AF;
+    --museflow-secondary-light: #DBEAFE;
+    
+    /* Accent - Cultural Gold (Heritage + Premium) */
+    --museflow-accent: #F59E0B;
+    --museflow-accent-hover: #D97706;
+    --museflow-accent-light: #FEF3C7;
+    
+    /* Neutral Grays */
+    --museflow-bg-primary: #FFFFFF;
+    --museflow-bg-secondary: #F9FAFB;
+    --museflow-bg-tertiary: #F3F4F6;
+    
+    --museflow-border-light: #E5E7EB;
+    --museflow-border-medium: #D1D5DB;
+    --museflow-border-dark: #9CA3AF;
+    
+    --museflow-text-primary: #111827;
+    --museflow-text-secondary: #4B5563;
+    --museflow-text-tertiary: #6B7280;
+    --museflow-text-muted: #9CA3AF;
+    
+    /* Status Colors */
+    --status-success: #10B981;
+    --status-success-bg: #D1FAE5;
+    --status-warning: #F59E0B;
+    --status-warning-bg: #FEF3C7;
+    --status-error: #EF4444;
+    --status-error-bg: #FEE2E2;
+    --status-info: #3B82F6;
+    --status-info-bg: #DBEAFE;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.12);
+    
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-full: 9999px;
+    
+    /* Spacing */
+    --space-xs: 0.25rem;  /* 4px */
+    --space-sm: 0.5rem;   /* 8px */
+    --space-md: 1rem;     /* 16px */
+    --space-lg: 1.5rem;   /* 24px */
+    --space-xl: 2rem;     /* 32px */
+    --space-2xl: 3rem;    /* 48px */
+    
+    /* Typography */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-size-xs: 0.75rem;    /* 12px */
+    --font-size-sm: 0.875rem;   /* 14px */
+    --font-size-base: 1rem;     /* 16px */
+    --font-size-lg: 1.125rem;   /* 18px */
+    --font-size-xl: 1.25rem;    /* 20px */
+    --font-size-2xl: 1.5rem;    /* 24px */
+    --font-size-3xl: 1.875rem;  /* 30px */
+    
+    /* Animation */
+    --transition-fast: 150ms ease;
+    --transition-base: 200ms ease;
+    --transition-slow: 300ms ease;
+}
+
+/* ============================================
+   2. MuseFlow Logo & Branding
+   ============================================ */
+.museflow-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--museflow-text-primary);
+    text-decoration: none;
+    transition: var(--transition-base);
+}
+
+.museflow-logo:hover {
+    color: var(--museflow-primary);
+}
+
+.museflow-logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--museflow-primary) 0%, var(--museflow-primary-dark) 100%);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.125rem;
+}
+
+.museflow-logo-text {
+    background: linear-gradient(135deg, var(--museflow-primary) 0%, var(--museflow-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ============================================
+   3. Button System
+   ============================================ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    transition: var(--transition-base);
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background: var(--museflow-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--museflow-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+    background: var(--museflow-bg-tertiary);
+    color: var(--museflow-text-primary);
+    border: 1px solid var(--museflow-border-light);
+}
+
+.btn-secondary:hover {
+    background: var(--museflow-bg-secondary);
+    border-color: var(--museflow-border-medium);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--museflow-primary);
+    border: 1.5px solid var(--museflow-primary);
+}
+
+.btn-outline:hover {
+    background: var(--museflow-primary-light);
+}
+
+/* ============================================
+   4. Card System
+   ============================================ */
+.museflow-card {
+    background: var(--museflow-bg-primary);
+    border: 1px solid var(--museflow-border-light);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    transition: var(--transition-base);
+}
+
+.museflow-card:hover {
+    border-color: var(--museflow-primary-light);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.museflow-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-md);
+}
+
+.museflow-card-title {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--museflow-text-primary);
+}
+
+/* ============================================
+   5. Badge System
+   ============================================ */
+.museflow-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    border-radius: var(--radius-full);
+}
+
+.badge-primary {
+    background: var(--museflow-primary-light);
+    color: var(--museflow-primary-dark);
+}
+
+.badge-success {
+    background: var(--status-success-bg);
+    color: #065F46;
+}
+
+.badge-warning {
+    background: var(--status-warning-bg);
+    color: #92400E;
+}
+
+.badge-info {
+    background: var(--status-info-bg);
+    color: #1E40AF;
+}
+
+/* ============================================
+   6. AI Assistant Styling
+   ============================================ */
+.ai-assistant-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, var(--museflow-primary-light) 0%, var(--status-info-bg) 100%);
+    border: 1px solid var(--museflow-primary);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--museflow-primary-dark);
+}
+
+.ai-assistant-badge i {
+    animation: ai-pulse 2s infinite;
+}
+
+@keyframes ai-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+/* ============================================
+   7. Gradient System
+   ============================================ */
+.gradient-primary {
+    background: linear-gradient(135deg, var(--museflow-primary) 0%, var(--museflow-primary-dark) 100%);
+}
+
+.gradient-secondary {
+    background: linear-gradient(135deg, var(--museflow-secondary) 0%, var(--museflow-primary) 100%);
+}
+
+.gradient-accent {
+    background: linear-gradient(135deg, var(--museflow-accent) 0%, #EA580C 100%);
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, var(--museflow-primary) 0%, var(--museflow-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ============================================
+   8. Icon System
+   ============================================ */
+.museflow-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.icon-primary {
+    background: var(--museflow-primary-light);
+    color: var(--museflow-primary);
+}
+
+.icon-secondary {
+    background: var(--museflow-secondary-light);
+    color: var(--museflow-secondary);
+}
+
+.icon-accent {
+    background: var(--museflow-accent-light);
+    color: var(--museflow-accent);
+}
+
+.icon-gradient {
+    background: linear-gradient(135deg, var(--museflow-primary) 0%, var(--museflow-primary-dark) 100%);
+    color: white;
+}
+
+/* ============================================
+   9. Utility Classes
+   ============================================ */
+.text-primary { color: var(--museflow-text-primary); }
+.text-secondary { color: var(--museflow-text-secondary); }
+.text-muted { color: var(--museflow-text-muted); }
+
+.bg-primary { background: var(--museflow-bg-primary); }
+.bg-secondary { background: var(--museflow-bg-secondary); }
+
+.border-light { border-color: var(--museflow-border-light); }
+
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+
+/* ============================================
+   10. Responsive Typography
+   ============================================ */
+@media (max-width: 768px) {
+    :root {
+        --font-size-2xl: 1.25rem;
+        --font-size-3xl: 1.5rem;
+    }
+    
+    .museflow-logo {
+        font-size: 1rem;
+    }
+    
+    .museflow-logo-icon {
+        width: 28px;
+        height: 28px;
+    }
+}
