@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>미니멀리즘 아이콘 샘플 - MuseFlow</title>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #F9FAFB;
+            padding: 2rem;
+            color: #111827;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #8B5CF6;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: #6B7280;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #E5E7EB;
+        }
+        
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .icon-card {
+            background: #F9FAFB;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .icon-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+            border-color: #8B5CF6;
+        }
+        
+        .icon-card.selected {
+            background: #F3F0FF;
+            border-color: #8B5CF6;
+            border-width: 2px;
+        }
+        
+        .icon-display {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 2rem;
+        }
+        
+        /* Color variants */
+        .icon-display.purple {
+            background: #F3F0FF;
+            color: #8B5CF6;
+        }
+        
+        .icon-display.green {
+            background: #ECFDF5;
+            color: #059669;
+        }
+        
+        .icon-display.yellow {
+            background: #FEF9C3;
+            color: #EAB308;
+        }
+        
+        .icon-display.blue {
+            background: #EFF6FF;
+            color: #3B82F6;
+        }
+        
+        .icon-display.red {
+            background: #FEF2F2;
+            color: #EF4444;
+        }
+        
+        .icon-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.25rem;
+        }
+        
+        .icon-code {
+            font-size: 0.75rem;
+            color: #6B7280;
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            word-break: break-all;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .comparison-card {
+            background: white;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .comparison-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #6B7280;
+        }
+        
+        .comparison-card.current {
+            border-color: #EF4444;
+        }
+        
+        .comparison-card.recommended {
+            border-color: #10B981;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .badge.current {
+            background: #FEF2F2;
+            color: #EF4444;
+        }
+        
+        .badge.recommended {
+            background: #ECFDF5;
+            color: #10B981;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 미니멀리즘 아이콘 샘플</h1>
+        <p class="subtitle">MuseFlow Dashboard & Canvas V4 아이콘 비교 및 추천</p>
+        
+        <!-- 1. 오늘의 작업 아이콘 -->
+        <div class="section">
+            <h2 class="section-title">📋 오늘의 작업 아이콘 (보라색)</h2>
+            <div class="comparison">
+                <div class="comparison-card current">
+                    <h3>현재 <span class="badge current">Before</span></h3>
+                    <div class="icon-display purple">
+                        <i class="fas fa-list-check"></i>
+                    </div>
+                    <div class="icon-name">체크리스트</div>
+                    <div class="icon-code">fa-list-check</div>
+                </div>
+                <div class="comparison-card recommended">
+                    <h3>추천 <span class="badge recommended">Minimal</span></h3>
+                    <div class="icon-display purple">
+                        <i class="fa-regular fa-square"></i>
+                    </div>
+                    <div class="icon-name">단순 사각형</div>
+                    <div class="icon-code">fa-regular fa-square</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #6B7280; font-size: 0.875rem;">다른 옵션들:</h3>
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <div class="icon-display purple">
+                        <i class="fa-solid fa-minus"></i>
+                    </div>
+                    <div class="icon-name">라인</div>
+                    <div class="icon-code">fa-solid fa-minus</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display purple">
+                        <i class="fa-regular fa-square-check"></i>
+                    </div>
+                    <div class="icon-name">체크 사각형</div>
+                    <div class="icon-code">fa-regular fa-square-check</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display purple">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
+                    <div class="icon-name">3줄 메뉴</div>
+                    <div class="icon-code">fa-solid fa-bars</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display purple">
+                        <i class="fa-regular fa-clipboard"></i>
+                    </div>
+                    <div class="icon-name">클립보드</div>
+                    <div class="icon-code">fa-regular fa-clipboard</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 2. 완료 아이콘 -->
+        <div class="section">
+            <h2 class="section-title">✓ 완료 아이콘 (녹색)</h2>
+            <div class="comparison">
+                <div class="comparison-card current">
+                    <h3>현재 <span class="badge current">Before</span></h3>
+                    <div class="icon-display green">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div class="icon-name">체크마크</div>
+                    <div class="icon-code">fa-solid fa-check</div>
+                </div>
+                <div class="comparison-card recommended">
+                    <h3>추천 <span class="badge recommended">유지</span></h3>
+                    <div class="icon-display green">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div class="icon-name">체크마크 (유지)</div>
+                    <div class="icon-code">fa-solid fa-check</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #6B7280; font-size: 0.875rem;">다른 옵션들:</h3>
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <div class="icon-display green">
+                        <i class="fa-regular fa-circle-check"></i>
+                    </div>
+                    <div class="icon-name">체크 원형</div>
+                    <div class="icon-code">fa-regular fa-circle-check</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display green">
+                        <i class="fa-solid fa-check-double"></i>
+                    </div>
+                    <div class="icon-name">더블 체크</div>
+                    <div class="icon-code">fa-solid fa-check-double</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display green">
+                        <i class="fa-regular fa-square-check"></i>
+                    </div>
+                    <div class="icon-name">사각 체크</div>
+                    <div class="icon-code">fa-regular fa-square-check</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 3. 진행 중 아이콘 -->
+        <div class="section">
+            <h2 class="section-title">⏱️ 진행 중 아이콘 (노란색)</h2>
+            <div class="comparison">
+                <div class="comparison-card current">
+                    <h3>현재 <span class="badge current">Before</span></h3>
+                    <div class="icon-display yellow">
+                        <i class="fa-regular fa-clock"></i>
+                    </div>
+                    <div class="icon-name">시계</div>
+                    <div class="icon-code">fa-regular fa-clock</div>
+                </div>
+                <div class="comparison-card recommended">
+                    <h3>추천 <span class="badge recommended">Minimal</span></h3>
+                    <div class="icon-display yellow">
+                        <i class="fa-regular fa-circle"></i>
+                    </div>
+                    <div class="icon-name">빈 원형</div>
+                    <div class="icon-code">fa-regular fa-circle</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #6B7280; font-size: 0.875rem;">다른 옵션들:</h3>
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <div class="icon-display yellow">
+                        <i class="fa-solid fa-circle"></i>
+                    </div>
+                    <div class="icon-name">채운 원형</div>
+                    <div class="icon-code">fa-solid fa-circle</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display yellow">
+                        <i class="fa-regular fa-circle-dot"></i>
+                    </div>
+                    <div class="icon-name">타겟 원형</div>
+                    <div class="icon-code">fa-regular fa-circle-dot</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display yellow">
+                        <i class="fa-solid fa-spinner"></i>
+                    </div>
+                    <div class="icon-name">스피너</div>
+                    <div class="icon-code">fa-solid fa-spinner</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display yellow">
+                        <i class="fa-solid fa-ellipsis"></i>
+                    </div>
+                    <div class="icon-name">점 3개</div>
+                    <div class="icon-code">fa-solid fa-ellipsis</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 4. AI 작업 진행 중 -->
+        <div class="section">
+            <h2 class="section-title">🤖 AI 작업 진행 중 아이콘 (보라색)</h2>
+            <div class="comparison">
+                <div class="comparison-card current">
+                    <h3>현재 <span class="badge current">Before</span></h3>
+                    <div class="icon-display purple">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="icon-name">로봇</div>
+                    <div class="icon-code">fa-solid fa-robot</div>
+                </div>
+                <div class="comparison-card recommended">
+                    <h3>추천 <span class="badge recommended">Minimal</span></h3>
+                    <div class="icon-display purple">
+                        <i class="fa-solid fa-sparkles"></i>
+                    </div>
+                    <div class="icon-name">스파크</div>
+                    <div class="icon-code">fa-solid fa-sparkles</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #6B7280; font-size: 0.875rem;">다른 옵션들:</h3>
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <div class="icon-display purple">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <div class="icon-name">마법 지팡이</div>
+                    <div class="icon-code">fa-solid fa-wand-magic-sparkles</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display purple">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <div class="icon-name">뇌</div>
+                    <div class="icon-code">fa-solid fa-brain</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display purple">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <div class="icon-name">번개</div>
+                    <div class="icon-code">fa-solid fa-bolt</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display purple">
+                        <i class="fa-regular fa-lightbulb"></i>
+                    </div>
+                    <div class="icon-name">전구</div>
+                    <div class="icon-code">fa-regular fa-lightbulb</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 5. 최근 생성 항목 -->
+        <div class="section">
+            <h2 class="section-title">📄 최근 생성 항목 아이콘</h2>
+            
+            <h3 style="margin-bottom: 1rem; color: #6B7280; font-size: 1rem;">전시 라벨 문서</h3>
+            <div class="icon-grid" style="margin-bottom: 2rem;">
+                <div class="icon-card">
+                    <div class="icon-display blue">
+                        <i class="fa-regular fa-file"></i>
+                    </div>
+                    <div class="icon-name">단순 파일</div>
+                    <div class="icon-code">fa-regular fa-file</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display blue">
+                        <i class="fa-regular fa-file-lines"></i>
+                    </div>
+                    <div class="icon-name">문서</div>
+                    <div class="icon-code">fa-regular fa-file-lines</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display blue">
+                        <i class="fa-regular fa-note-sticky"></i>
+                    </div>
+                    <div class="icon-name">메모</div>
+                    <div class="icon-code">fa-regular fa-note-sticky</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-bottom: 1rem; color: #6B7280; font-size: 1rem;">예산 승인 요청서</h3>
+            <div class="icon-grid" style="margin-bottom: 2rem;">
+                <div class="icon-card">
+                    <div class="icon-display yellow">
+                        <i class="fa-regular fa-circle-dot"></i>
+                    </div>
+                    <div class="icon-name">타겟 원형</div>
+                    <div class="icon-code">fa-regular fa-circle-dot</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display yellow">
+                        <i class="fa-solid fa-dollar-sign"></i>
+                    </div>
+                    <div class="icon-name">달러 기호</div>
+                    <div class="icon-code">fa-solid fa-dollar-sign</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display yellow">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                    <div class="icon-name">코인</div>
+                    <div class="icon-code">fa-solid fa-coins</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-bottom: 1rem; color: #6B7280; font-size: 1rem;">소장품 선정 보고서</h3>
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <div class="icon-display red">
+                        <i class="fa-regular fa-image"></i>
+                    </div>
+                    <div class="icon-name">이미지</div>
+                    <div class="icon-code">fa-regular fa-image</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display red">
+                        <i class="fa-solid fa-palette"></i>
+                    </div>
+                    <div class="icon-name">팔레트</div>
+                    <div class="icon-code">fa-solid fa-palette</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display red">
+                        <i class="fa-regular fa-folder"></i>
+                    </div>
+                    <div class="icon-name">폴더</div>
+                    <div class="icon-code">fa-regular fa-folder</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 최종 추천 요약 -->
+        <div class="section" style="background: #F9FAFB; padding: 2rem; border-radius: 12px; border: 2px solid #E5E7EB;">
+            <h2 class="section-title">✨ 최종 추천 (미니멀리즘)</h2>
+            <div class="icon-grid">
+                <div class="icon-card" style="background: white;">
+                    <div class="icon-display purple">
+                        <i class="fa-regular fa-square"></i>
+                    </div>
+                    <div class="icon-name">오늘의 작업</div>
+                    <div class="icon-code">fa-regular fa-square</div>
+                </div>
+                <div class="icon-card" style="background: white;">
+                    <div class="icon-display green">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div class="icon-name">완료</div>
+                    <div class="icon-code">fa-solid fa-check</div>
+                </div>
+                <div class="icon-card" style="background: white;">
+                    <div class="icon-display yellow">
+                        <i class="fa-regular fa-circle"></i>
+                    </div>
+                    <div class="icon-name">진행 중</div>
+                    <div class="icon-code">fa-regular fa-circle</div>
+                </div>
+                <div class="icon-card" style="background: white;">
+                    <div class="icon-display purple">
+                        <i class="fa-solid fa-sparkles"></i>
+                    </div>
+                    <div class="icon-name">AI 작업</div>
+                    <div class="icon-code">fa-solid fa-sparkles</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Click to select icon
+        document.querySelectorAll('.icon-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove selected from siblings
+                this.parentElement.querySelectorAll('.icon-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                // Add selected to clicked card
+                this.classList.add('selected');
+                
+                // Copy icon code to clipboard
+                const code = this.querySelector('.icon-code').textContent;
+                navigator.clipboard.writeText(code).then(() => {
+                    // Show toast
+                    const toast = document.createElement('div');
+                    toast.textContent = '✓ 클립보드에 복사됨: ' + code;
+                    toast.style.cssText = `
+                        position: fixed;
+                        bottom: 2rem;
+                        right: 2rem;
+                        background: #10B981;
+                        color: white;
+                        padding: 1rem 1.5rem;
+                        border-radius: 8px;
+                        font-weight: 600;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                        z-index: 9999;
+                        animation: slideIn 0.3s ease;
+                    `;
+                    document.body.appendChild(toast);
+                    setTimeout(() => {
+                        toast.style.animation = 'slideOut 0.3s ease';
+                        setTimeout(() => toast.remove(), 300);
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

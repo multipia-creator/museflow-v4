@@ -13,6 +13,9 @@
     <!-- External Libraries -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
+    <!-- Lucide Icons (Minimalism Design) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
     <!-- MuseFlow Design System -->
     <link href="/static/css/museflow-design-system.css" rel="stylesheet">
     <link href="/static/css/unified-navbar.css" rel="stylesheet">
@@ -1105,31 +1108,31 @@
             
             <!-- Mobile Menu Toggle -->
             <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="메뉴 열기/닫기">
-                <i class="fas fa-bars"></i>
+                <i data-lucide="menu" stroke-width="2"></i>
             </button>
             
             <!-- Main Navigation - Icon Only -->
             <ul class="unified-nav-links" id="unifiedNavLinks">
                 <li><a href="/landing.html" data-page="home" data-tooltip="Home">
-                    <i class="fas fa-home"></i>
+                    <i data-lucide="home" stroke-width="2"></i>
                 </a></li>
                 <li><a href="/dashboard.html" data-page="dashboard" data-tooltip="Dashboard">
-                    <i class="fas fa-chart-line"></i>
+                    <i data-lucide="layout-dashboard" stroke-width="2"></i>
                 </a></li>
                 <li><a href="/canvas-v4-hybrid.html" data-page="canvas" data-tooltip="Canvas" class="active">
-                    <i class="fas fa-project-diagram"></i>
+                    <i data-lucide="workflow" stroke-width="2"></i>
                 </a></li>
                 <li><a href="/workflow-tools.html" data-page="workflow" data-tooltip="Tools">
-                    <i class="fas fa-tools"></i>
+                    <i data-lucide="wrench" stroke-width="2"></i>
                 </a></li>
                 <li><a href="/budget.html" data-page="budget" data-tooltip="Budget">
-                    <i class="fas fa-dollar-sign"></i>
+                    <i data-lucide="circle-dollar-sign" stroke-width="2"></i>
                 </a></li>
                 <li><a href="/analytics-dashboard.html" data-page="analytics" data-tooltip="Analytics">
-                    <i class="fas fa-chart-bar"></i>
+                    <i data-lucide="bar-chart-3" stroke-width="2"></i>
                 </a></li>
                 <li><a href="/google-mcp.html" data-page="google-mcp" data-tooltip="Google AI">
-                    <i class="fab fa-google"></i>
+                    <i data-lucide="brain" stroke-width="2"></i>
                 </a></li>
             </ul>
             
@@ -1137,32 +1140,32 @@
             <div class="unified-nav-actions">
                 <!-- AI Recommendations -->
                 <button class="unified-nav-btn primary" onclick="showAIRecommendations()" data-tooltip="AI 추천">
-                    <i class="fas fa-robot"></i>
+                    <i data-lucide="sparkles" stroke-width="2"></i>
                 </button>
                 
                 <!-- Favorites -->
                 <button class="unified-nav-btn" onclick="filterFavorites()" data-tooltip="즐겨찾기">
-                    <i class="fas fa-star"></i>
+                    <i data-lucide="star" stroke-width="2"></i>
                 </button>
                 
                 <!-- Notifications -->
                 <button class="unified-nav-btn" onclick="toggleNotifications()" data-tooltip="알림">
-                    <i class="fas fa-bell"></i>
+                    <i data-lucide="bell" stroke-width="2"></i>
                 </button>
                 
                 <!-- Help -->
                 <a href="/help-center.html" class="unified-nav-btn" data-tooltip="도움말">
-                    <i class="fas fa-question-circle"></i>
+                    <i data-lucide="help-circle" stroke-width="2"></i>
                 </a>
                 
                 <!-- Settings -->
                 <a href="/account.html" class="unified-nav-btn" data-tooltip="설정">
-                    <i class="fas fa-cog"></i>
+                    <i data-lucide="settings" stroke-width="2"></i>
                 </a>
                 
                 <!-- Account -->
                 <a href="/account.html" class="unified-nav-btn" data-tooltip="내 계정">
-                    <i class="fas fa-user"></i>
+                    <i data-lucide="user" stroke-width="2"></i>
                 </a>
             </div>
         </div>
@@ -1171,15 +1174,15 @@
     <!-- Mobile Tab Navigation (visible only on mobile) -->
     <div class="mobile-tabs">
         <div class="mobile-tab active" data-mobile-tab="history">
-            <i class="fas fa-history"></i>
+            <i data-lucide="clock" stroke-width="2"></i>
             <span>History</span>
         </div>
         <div class="mobile-tab" data-mobile-tab="conversation">
-            <i class="fas fa-comments"></i>
+            <i data-lucide="message-circle" stroke-width="2"></i>
             <span>AI Chat</span>
         </div>
         <div class="mobile-tab" data-mobile-tab="preview">
-            <i class="fas fa-eye"></i>
+            <i data-lucide="eye" stroke-width="2"></i>
             <span>Preview</span>
         </div>
     </div>
@@ -1189,7 +1192,7 @@
         <div class="left-column">
             <div class="column-header">
                 <h2 class="column-title">
-                    <i class="fas fa-history"></i>
+                    <i data-lucide="clock" stroke-width="2"></i>
                     History & Projects
                 </h2>
             </div>
@@ -1197,40 +1200,40 @@
             <!-- Quick Actions Panel -->
             <div class="quick-actions-panel">
                 <div class="quick-actions-header">
-                    <i class="fas fa-bolt"></i>
+                    <i data-lucide="zap" stroke-width="2"></i>
                     <span>빠른 작업</span>
                 </div>
                 <div class="quick-actions-grid">
                     <button class="quick-action-btn" data-action="exhibition-label">
-                        <i class="fas fa-tag"></i>
+                        <i data-lucide="tag" stroke-width="2"></i>
                         <span>전시 라벨</span>
                     </button>
                     <button class="quick-action-btn" data-action="budget-approval">
-                        <i class="fas fa-coins"></i>
+                        <i data-lucide="coins" stroke-width="2"></i>
                         <span>예산 승인</span>
                     </button>
                     <button class="quick-action-btn" data-action="artwork-selection">
-                        <i class="fas fa-palette"></i>
+                        <i data-lucide="palette" stroke-width="2"></i>
                         <span>소장품 선정</span>
                     </button>
                     <button class="quick-action-btn" data-action="promotion-plan">
-                        <i class="fas fa-bullhorn"></i>
+                        <i data-lucide="megaphone" stroke-width="2"></i>
                         <span>홍보 계획</span>
                     </button>
                     <button class="quick-action-btn" data-action="report-writing">
-                        <i class="fas fa-file-alt"></i>
+                        <i data-lucide="file-text" stroke-width="2"></i>
                         <span>보고서</span>
                     </button>
                     <button class="quick-action-btn" data-action="schedule-management">
-                        <i class="fas fa-calendar-alt"></i>
+                        <i data-lucide="calendar" stroke-width="2"></i>
                         <span>일정 관리</span>
                     </button>
                     <button class="quick-action-btn" data-action="education-program">
-                        <i class="fas fa-graduation-cap"></i>
+                        <i data-lucide="graduation-cap" stroke-width="2"></i>
                         <span>교육 프로그램</span>
                     </button>
                     <button class="quick-action-btn" data-action="research">
-                        <i class="fas fa-search"></i>
+                        <i data-lucide="search" stroke-width="2"></i>
                         <span>자료 조사</span>
                     </button>
                 </div>
@@ -1283,11 +1286,11 @@
         <div class="center-column">
             <div class="conversation-header">
                 <h2 class="column-title">
-                    <i class="fas fa-robot"></i>
+                    <i data-lucide="sparkles" stroke-width="2"></i>
                     AI Conversation
                 </h2>
                 <div class="ai-status-badge">
-                    <i class="fas fa-circle"></i>
+                    <i data-lucide="circle" stroke-width="2"></i>
                     <span>AI Ready</span>
                 </div>
             </div>
@@ -1296,7 +1299,7 @@
                 <!-- Welcome Message -->
                 <div class="message ai">
                     <div class="message-avatar">
-                        <i class="fas fa-robot"></i>
+                        <i data-lucide="sparkles" stroke-width="2"></i>
                     </div>
                     <div class="message-content">
                         <div class="message-text">
@@ -1568,15 +1571,15 @@
             const actionsHtml = showActions && type === 'ai' ? `
                 <div class="message-actions">
                     <button class="message-action-btn" onclick="copyMessage('${messageId}')">
-                        <i class="fas fa-copy"></i>
+                        <i data-lucide="copy" stroke-width="2"></i>
                         <span>복사</span>
                     </button>
                     <button class="message-action-btn" onclick="saveToNotion('${messageId}')">
-                        <i class="fab fa-notion"></i>
+                        <i data-lucide="book-open" stroke-width="2"></i>
                         <span>Notion</span>
                     </button>
                     <button class="message-action-btn" onclick="saveToFigma('${messageId}')">
-                        <i class="fab fa-figma"></i>
+                        <i data-lucide="figma" stroke-width="2"></i>
                         <span>Figma</span>
                     </button>
                 </div>
@@ -1586,7 +1589,7 @@
                 <div class="message ${type}" id="${messageId}">
                     ${type === 'ai' ? `
                     <div class="message-avatar">
-                        <i class="fas fa-robot"></i>
+                        <i data-lucide="sparkles" stroke-width="2"></i>
                     </div>
                     ` : ''}
                     <div class="message-content">
@@ -2146,7 +2149,7 @@
             buttons.forEach(btn => {
                 const iconClass = btn.querySelector('i').className;
                 
-                if ((actionType === 'copy' && iconClass.includes('fa-copy')) ||
+                if ((actionType === 'copy' && iconClass.includes('copy')) ||
                     (actionType === 'notion' && iconClass.includes('fa-notion')) ||
                     (actionType === 'figma' && iconClass.includes('fa-figma'))) {
                     
@@ -2411,6 +2414,22 @@
                 navbar.classList.remove('navbar-hidden');
             }, 1500);
         });
+        
+        // ====================================
+        // Initialize Lucide Icons
+        // ====================================
+        lucide.createIcons();
+        
+        // Re-initialize Lucide icons after dynamic content updates
+        const originalAddMessage = window.addMessage;
+        if (originalAddMessage) {
+            window.addMessage = function(...args) {
+                const result = originalAddMessage.apply(this, args);
+                // Wait for DOM update, then re-initialize icons
+                setTimeout(() => lucide.createIcons(), 50);
+                return result;
+            };
+        }
     </script>
 </body>
 </html>

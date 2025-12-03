@@ -51,6 +51,8 @@ const exclude = [
   '/ai-orchestrator-sync.html',
   '/canvas-v4-hybrid.html',
   '/e2e-testing.html',
+  '/icon-samples.html',
+  '/icon-samples-lucide.html',
   
   // Pretty URL paths (all)
   '/account',
@@ -73,7 +75,9 @@ const exclude = [
   '/ai-orchestrator-dashboard',
   '/ai-orchestrator-sync',
   '/canvas-v4-hybrid',
-  '/e2e-testing'
+  '/e2e-testing',
+  '/icon-samples',
+  '/icon-samples-lucide'
 ];
 
 const routes = {

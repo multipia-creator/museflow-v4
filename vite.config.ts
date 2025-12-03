@@ -47,6 +47,8 @@ export default defineConfig({
         '/ai-orchestrator-sync.html',
         '/canvas-v4-hybrid.html',
         '/e2e-testing.html',
+        '/icon-samples.html',
+        '/icon-samples-lucide.html',
         
         // Pretty URL paths (Cloudflare Pages auto-redirects /page.html → /page)
         // CRITICAL: Must exclude ALL to prevent Worker 404 errors
@@ -79,7 +81,9 @@ export default defineConfig({
         '/ai-orchestrator-dashboard',
         '/ai-orchestrator-sync',
         '/canvas-v4-hybrid',
-        '/e2e-testing'
+        '/e2e-testing',
+        '/icon-samples',
+        '/icon-samples-lucide'
       ]
     }),
     devServer({

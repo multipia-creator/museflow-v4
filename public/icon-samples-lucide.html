@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucide 미니멀리즘 아이콘 샘플 - MuseFlow</title>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #F9FAFB;
+            padding: 2rem;
+            color: #111827;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #8B5CF6;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: #6B7280;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #E5E7EB;
+        }
+        
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+        
+        .icon-card {
+            background: #F9FAFB;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .icon-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(139, 92, 246, 0.2);
+            border-color: #8B5CF6;
+        }
+        
+        .icon-card.selected {
+            background: #F3F0FF;
+            border-color: #8B5CF6;
+            border-width: 3px;
+        }
+        
+        .icon-card.recommended {
+            border-color: #10B981;
+            border-width: 3px;
+        }
+        
+        .icon-display {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+        
+        .icon-display svg {
+            width: 32px;
+            height: 32px;
+        }
+        
+        /* Color variants */
+        .icon-display.purple {
+            background: #F3F0FF;
+            color: #8B5CF6;
+        }
+        
+        .icon-display.green {
+            background: #ECFDF5;
+            color: #059669;
+        }
+        
+        .icon-display.yellow {
+            background: #FEF9C3;
+            color: #EAB308;
+        }
+        
+        .icon-display.blue {
+            background: #EFF6FF;
+            color: #3B82F6;
+        }
+        
+        .icon-display.red {
+            background: #FEF2F2;
+            color: #EF4444;
+        }
+        
+        .icon-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.25rem;
+        }
+        
+        .icon-code {
+            font-size: 0.75rem;
+            color: #6B7280;
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            word-break: break-all;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .comparison-card {
+            background: white;
+            border: 3px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .comparison-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #6B7280;
+        }
+        
+        .comparison-card.current {
+            border-color: #EF4444;
+        }
+        
+        .comparison-card.recommended {
+            border-color: #10B981;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .badge.current {
+            background: #FEF2F2;
+            color: #EF4444;
+        }
+        
+        .badge.recommended {
+            background: #ECFDF5;
+            color: #10B981;
+        }
+        
+        .final-recommendations {
+            background: linear-gradient(135deg, #F3F0FF 0%, #EFF6FF 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 3px solid #8B5CF6;
+        }
+        
+        .highlight-box {
+            background: #FFFBEB;
+            border: 2px solid #F59E0B;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .highlight-box h4 {
+            color: #F59E0B;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .highlight-box p {
+            color: #78350F;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ Lucide 미니멀리즘 아이콘 샘플</h1>
+        <p class="subtitle">MuseFlow Dashboard & Canvas V4 - 심플하고 일관된 디자인</p>
+        
+        <div class="highlight-box">
+            <h4>💡 Lucide 아이콘의 장점</h4>
+            <p>
+                • 완벽한 미니멀리즘 디자인<br>
+                • 일관된 스트로크 두께 (2px)<br>
+                • 깔끔한 라운드 코너<br>
+                • 24x24 기본 크기로 최적화<br>
+                • Font Awesome보다 더 가볍고 심플
+            </p>
+        </div>
+        
+        <!-- 1. 오늘의 작업 -->
+        <div class="section">
+            <h2 class="section-title">📋 오늘의 작업 (Today's Tasks)</h2>
+            <div class="comparison">
+                <div class="comparison-card current">
+                    <h3>현재 Font Awesome <span class="badge current">Before</span></h3>
+                    <div class="icon-display purple">
+                        <i class="fas fa-list-check" style="font-size: 2rem;"></i>
+                    </div>
+                    <div class="icon-name">체크리스트 (복잡함)</div>
+                </div>
+                <div class="comparison-card recommended">
+                    <h3>추천 Lucide <span class="badge recommended">Minimal</span></h3>
+                    <div class="icon-display purple">
+                        <i data-lucide="square" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Square (심플)</div>
+                    <div class="icon-code">square</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-bottom: 1rem; color: #6B7280; font-size: 0.875rem;">다른 옵션들:</h3>
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <div class="icon-display purple">
+                        <i data-lucide="list" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">List</div>
+                    <div class="icon-code">list</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display purple">
+                        <i data-lucide="layout-list" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Layout List</div>
+                    <div class="icon-code">layout-list</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display purple">
+                        <i data-lucide="clipboard-list" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Clipboard List</div>
+                    <div class="icon-code">clipboard-list</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display purple">
+                        <i data-lucide="check-square" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Check Square</div>
+                    <div class="icon-code">check-square</div>
+                </div>
+                <div class="icon-card recommended">
+                    <div class="icon-display purple">
+                        <i data-lucide="minus" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Minus (최소)</div>
+                    <div class="icon-code">minus</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 2. 완료 -->
+        <div class="section">
+            <h2 class="section-title">✓ 완료 (Completed)</h2>
+            <div class="comparison">
+                <div class="comparison-card current">
+                    <h3>현재 Font Awesome <span class="badge recommended">Good</span></h3>
+                    <div class="icon-display green">
+                        <i class="fas fa-check" style="font-size: 2rem;"></i>
+                    </div>
+                    <div class="icon-name">Check (이미 심플함)</div>
+                </div>
+                <div class="comparison-card recommended">
+                    <h3>추천 Lucide <span class="badge recommended">유지/개선</span></h3>
+                    <div class="icon-display green">
+                        <i data-lucide="check" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Check (동일하게 심플)</div>
+                    <div class="icon-code">check</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-bottom: 1rem; color: #6B7280; font-size: 0.875rem;">다른 옵션들:</h3>
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <div class="icon-display green">
+                        <i data-lucide="check-circle" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Check Circle</div>
+                    <div class="icon-code">check-circle</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display green">
+                        <i data-lucide="check-square" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Check Square</div>
+                    <div class="icon-code">check-square</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display green">
+                        <i data-lucide="circle-check-big" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Circle Check Big</div>
+                    <div class="icon-code">circle-check-big</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 3. 진행 중 -->
+        <div class="section">
+            <h2 class="section-title">⏱️ 진행 중 (In Progress)</h2>
+            <div class="comparison">
+                <div class="comparison-card current">
+                    <h3>현재 Font Awesome <span class="badge current">Before</span></h3>
+                    <div class="icon-display yellow">
+                        <i class="far fa-clock" style="font-size: 2rem;"></i>
+                    </div>
+                    <div class="icon-name">시계 (디테일 많음)</div>
+                </div>
+                <div class="comparison-card recommended">
+                    <h3>추천 Lucide <span class="badge recommended">Minimal</span></h3>
+                    <div class="icon-display yellow">
+                        <i data-lucide="circle" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Circle (심플)</div>
+                    <div class="icon-code">circle</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-bottom: 1rem; color: #6B7280; font-size: 0.875rem;">다른 옵션들:</h3>
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <div class="icon-display yellow">
+                        <i data-lucide="circle-dot" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Circle Dot</div>
+                    <div class="icon-code">circle-dot</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display yellow">
+                        <i data-lucide="loader" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Loader</div>
+                    <div class="icon-code">loader</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display yellow">
+                        <i data-lucide="clock" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Clock (심플)</div>
+                    <div class="icon-code">clock</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display yellow">
+                        <i data-lucide="timer" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Timer</div>
+                    <div class="icon-code">timer</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 4. AI 작업 진행 중 -->
+        <div class="section">
+            <h2 class="section-title">🤖 AI 작업 진행 중 (AI Processing)</h2>
+            <div class="comparison">
+                <div class="comparison-card current">
+                    <h3>현재 Font Awesome <span class="badge current">Before</span></h3>
+                    <div class="icon-display purple">
+                        <i class="fas fa-robot" style="font-size: 2rem;"></i>
+                    </div>
+                    <div class="icon-name">로봇 (복잡함)</div>
+                </div>
+                <div class="comparison-card recommended">
+                    <h3>추천 Lucide <span class="badge recommended">Minimal</span></h3>
+                    <div class="icon-display purple">
+                        <i data-lucide="sparkles" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Sparkles (심플)</div>
+                    <div class="icon-code">sparkles</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-bottom: 1rem; color: #6B7280; font-size: 0.875rem;">다른 옵션들:</h3>
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <div class="icon-display purple">
+                        <i data-lucide="wand-sparkles" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Wand Sparkles</div>
+                    <div class="icon-code">wand-sparkles</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display purple">
+                        <i data-lucide="brain" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Brain</div>
+                    <div class="icon-code">brain</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display purple">
+                        <i data-lucide="zap" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Zap (번개)</div>
+                    <div class="icon-code">zap</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display purple">
+                        <i data-lucide="lightbulb" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Lightbulb</div>
+                    <div class="icon-code">lightbulb</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display purple">
+                        <i data-lucide="cpu" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">CPU</div>
+                    <div class="icon-code">cpu</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 5. 최근 생성 항목 -->
+        <div class="section">
+            <h2 class="section-title">📄 최근 생성 항목 (Recent Items)</h2>
+            
+            <h3 style="margin-bottom: 1rem; color: #6B7280; font-size: 1rem;">전시 라벨 문서</h3>
+            <div class="icon-grid" style="margin-bottom: 2rem;">
+                <div class="icon-card recommended">
+                    <div class="icon-display blue">
+                        <i data-lucide="file" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">File (최소)</div>
+                    <div class="icon-code">file</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display blue">
+                        <i data-lucide="file-text" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">File Text</div>
+                    <div class="icon-code">file-text</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display blue">
+                        <i data-lucide="sticky-note" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Sticky Note</div>
+                    <div class="icon-code">sticky-note</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display blue">
+                        <i data-lucide="file-edit" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">File Edit</div>
+                    <div class="icon-code">file-edit</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-bottom: 1rem; color: #6B7280; font-size: 1rem;">예산 승인 요청서</h3>
+            <div class="icon-grid" style="margin-bottom: 2rem;">
+                <div class="icon-card recommended">
+                    <div class="icon-display yellow">
+                        <i data-lucide="circle-dollar-sign" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Dollar Sign</div>
+                    <div class="icon-code">circle-dollar-sign</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display yellow">
+                        <i data-lucide="coins" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Coins</div>
+                    <div class="icon-code">coins</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display yellow">
+                        <i data-lucide="wallet" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Wallet</div>
+                    <div class="icon-code">wallet</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display yellow">
+                        <i data-lucide="banknote" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Banknote</div>
+                    <div class="icon-code">banknote</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-bottom: 1rem; color: #6B7280; font-size: 1rem;">소장품 선정 보고서</h3>
+            <div class="icon-grid">
+                <div class="icon-card recommended">
+                    <div class="icon-display red">
+                        <i data-lucide="image" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Image (최소)</div>
+                    <div class="icon-code">image</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display red">
+                        <i data-lucide="palette" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Palette</div>
+                    <div class="icon-code">palette</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display red">
+                        <i data-lucide="gallery-horizontal" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Gallery</div>
+                    <div class="icon-code">gallery-horizontal</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-display red">
+                        <i data-lucide="paintbrush" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">Paintbrush</div>
+                    <div class="icon-code">paintbrush</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 최종 추천 요약 -->
+        <div class="section final-recommendations">
+            <h2 class="section-title" style="border-color: #8B5CF6; color: #8B5CF6;">✨ 최종 추천 (Lucide 미니멀리즘)</h2>
+            <p style="color: #6B7280; margin-bottom: 2rem; font-size: 0.875rem;">
+                아래 아이콘을 클릭하면 코드가 자동으로 복사됩니다.
+            </p>
+            <div class="icon-grid">
+                <div class="icon-card" style="background: white; border-color: #8B5CF6; border-width: 3px;">
+                    <div class="icon-display purple">
+                        <i data-lucide="square" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">오늘의 작업</div>
+                    <div class="icon-code">square</div>
+                </div>
+                <div class="icon-card" style="background: white; border-color: #10B981; border-width: 3px;">
+                    <div class="icon-display green">
+                        <i data-lucide="check" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">완료</div>
+                    <div class="icon-code">check</div>
+                </div>
+                <div class="icon-card" style="background: white; border-color: #EAB308; border-width: 3px;">
+                    <div class="icon-display yellow">
+                        <i data-lucide="circle" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">진행 중</div>
+                    <div class="icon-code">circle</div>
+                </div>
+                <div class="icon-card" style="background: white; border-color: #8B5CF6; border-width: 3px;">
+                    <div class="icon-display purple">
+                        <i data-lucide="sparkles" stroke-width="2"></i>
+                    </div>
+                    <div class="icon-name">AI 작업</div>
+                    <div class="icon-code">sparkles</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Click to select icon and copy code
+        document.querySelectorAll('.icon-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove selected from all cards
+                document.querySelectorAll('.icon-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                
+                // Add selected to clicked card
+                this.classList.add('selected');
+                
+                // Get icon code
+                const codeElement = this.querySelector('.icon-code');
+                if (codeElement) {
+                    const code = codeElement.textContent;
+                    
+                    // Copy to clipboard
+                    navigator.clipboard.writeText(code).then(() => {
+                        // Show toast
+                        showToast('✓ 클립보드에 복사됨: ' + code);
+                    });
+                }
+            });
+        });
+        
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 2rem;
+                right: 2rem;
+                background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                font-weight: 600;
+                box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+                z-index: 9999;
+                animation: slideIn 0.3s ease;
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+        
+        // Add animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
