@@ -268,7 +268,7 @@ export class AIOrchestrator {
         return new WidgetAgent(this.db);
       case 'integration':
         const { IntegrationAgent } = await import('../agents/integration.agent');
-        return new IntegrationAgent(this.db);
+        return new IntegrationAgent(this.db, this.geminiApiKey);
       case 'monitor':
         const { MonitorAgent } = await import('../agents/monitor.agent');
         return new MonitorAgent(this.db);
