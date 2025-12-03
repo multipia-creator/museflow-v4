@@ -32,10 +32,12 @@ export class AIOrchestrator {
   private contextService: ContextService;
   private eventEmitter: EventEmitter;
   private db: D1Database;
+  private geminiApiKey?: string;
   private activeExecutions: Map<string, MultiAgentExecution>;
 
-  constructor(db: D1Database) {
+  constructor(db: D1Database, geminiApiKey?: string) {
     this.db = db;
+    this.geminiApiKey = geminiApiKey;
     this.workflowTemplates = new WorkflowTemplateService();
     this.contextService = new ContextService(db);
     this.eventEmitter = new EventEmitter();
@@ -254,7 +256,7 @@ export class AIOrchestrator {
     switch (agentType) {
       case 'research':
         const { ResearchAgent } = await import('../agents/research.agent');
-        return new ResearchAgent(this.db);
+        return new ResearchAgent(this.db, this.geminiApiKey);
       case 'canvas':
         const { CanvasAgent } = await import('../agents/canvas.agent');
         return new CanvasAgent(this.db);

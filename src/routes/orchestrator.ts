@@ -44,7 +44,7 @@ app.post('/execute', async (c) => {
     const userId = 1; // 임시
 
     // AI Orchestrator 실행
-    const orchestrator = new AIOrchestrator(c.env.DB);
+    const orchestrator = new AIOrchestrator(c.env.DB, c.env.GEMINI_API_KEY);
     const result = await orchestrator.execute(userId, command, mode);
 
     const response: ExecuteAIResponse = {
@@ -90,7 +90,7 @@ app.get('/stream/:sessionId', async (c) => {
   const encoder = new TextEncoder();
 
   // AI Orchestrator에서 EventEmitter 가져오기
-  const orchestrator = new AIOrchestrator(c.env.DB);
+  const orchestrator = new AIOrchestrator(c.env.DB, c.env.GEMINI_API_KEY);
   const eventEmitter = orchestrator.getEventEmitter();
 
   // 이벤트 리스너 등록
@@ -166,7 +166,7 @@ app.get('/status/:sessionId', async (c) => {
       return c.json({ error: 'Session ID is required' }, 400);
     }
 
-    const orchestrator = new AIOrchestrator(c.env.DB);
+    const orchestrator = new AIOrchestrator(c.env.DB, c.env.GEMINI_API_KEY);
     const execution = await orchestrator.getSessionStatus(sessionId);
 
     if (!execution) {
