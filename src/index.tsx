@@ -13,6 +13,8 @@ import ai from './routes/ai'
 import dashboard from './routes/dashboard'
 import orchestrator from './routes/orchestrator'
 import notion from './routes/notion'
+import figma from './routes/figma'
+import agents from './routes/agents'
 
 // Export Durable Objects
 export { CollaborationRoom } from './durable-objects/collaboration-room'
@@ -21,6 +23,7 @@ type Bindings = {
   DB: D1Database;
   GEMINI_API_KEY: string;
   NOTION_API_KEY?: string;
+  FIGMA_ACCESS_TOKEN?: string;
   COLLABORATION_ROOM: DurableObjectNamespace;
   GOOGLE_CLIENT_ID: string;
   GOOGLE_CLIENT_SECRET: string;
@@ -77,6 +80,8 @@ app.route('/api/ai', ai)
 app.route('/api/dashboard', dashboard)
 app.route('/api/orchestrator', orchestrator)
 app.route('/api/notion', notion)
+app.route('/api/figma', figma)
+app.route('/api/agents', agents)
 app.route('/api/widgets', widgets)
 
 export default app

@@ -2289,21 +2289,60 @@
             showActionSuccess(messageId, 'figma', 'Figma 저장 중...');
             
             try {
-                // TODO: Figma API 연동
-                // 현재는 Mock
-                await new Promise(resolve => setTimeout(resolve, 1500));
+                // Check Figma API status first
+                const statusResponse = await fetch('/api/figma/status');
+                const statusData = await statusResponse.json();
                 
-                showActionSuccess(messageId, 'figma', 'Figma 저장 완료!');
+                if (!statusData.configured) {
+                    console.warn('⚠️ Figma API not configured, using mock mode');
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    showActionSuccess(messageId, 'figma', 'Figma 저장 완료 (Mock)');
+                    return;
+                }
                 
-                // 자동으로 다음 단계 진행
-                setTimeout(() => {
-                    console.log('[Auto Next] Figma 저장 완료 → Dashboard 위젯 업데이트...');
-                    // TODO: Dashboard 위젯 업데이트
-                }, 2000);
+                // Real Figma API integration
+                // For now, we sync a mock canvas node
+                const nodeData = {
+                    node: {
+                        title: 'AI Generated Content',
+                        description: text.substring(0, 200),
+                        type: 'document',
+                        timestamp: new Date().toISOString()
+                    },
+                    fileKey: 'default-museflow-file' // TODO: Make this configurable
+                };
+                
+                const syncResponse = await fetch('/api/figma/sync-node', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(nodeData)
+                });
+                
+                const syncData = await syncResponse.json();
+                
+                if (syncData.success) {
+                    showActionSuccess(messageId, 'figma', 'Figma 저장 완료!');
+                    console.log('✅ Synced to Figma:', syncData.data);
+                    
+                    // Auto next step: Dashboard widget update
+                    setTimeout(() => {
+                        console.log('[Auto Next] Figma 저장 완료 → Dashboard 위젯 업데이트...');
+                    }, 2000);
+                } else {
+                    throw new Error(syncData.error || 'Figma sync failed');
+                }
                 
             } catch (error) {
-                console.error('Figma 저장 실패:', error);
-                alert('Figma 저장에 실패했습니다.');
+                console.error('❌ Figma 저장 실패:', error);
+                showActionSuccess(messageId, 'figma', 'Figma 저장 실패');
+                
+                // Show user-friendly error
+                setTimeout(() => {
+                    const btn = message.querySelector('[onclick*="saveToFigma"]');
+                    if (btn) {
+                        btn.style.opacity = '1';
+                    }
+                }, 2000);
             }
         }
         
