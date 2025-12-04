@@ -48,6 +48,7 @@ export default defineConfig({
         '/canvas-v4-hybrid.html',
         '/canvas-v4-complete.html',
         '/canvas-v5-final.html',
+        '/canvas-v5-clean.html',
         '/canvas-v5-final-BROKEN-20251204-143038.html',
         '/canvas-v6-clean.html',
         '/canvas-v6-complete.html',
