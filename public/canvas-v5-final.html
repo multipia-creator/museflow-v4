@@ -2749,9 +2749,10 @@
                 }
             });
             
-            // 🎯 카드 개별 확대/축소 (마우스 휠)
+            // 🎯 카드 개별 확대/축소 (마우스 휠 + Ctrl/Cmd)
             card.addEventListener('wheel', (e) => {
-                if (e.ctrlKey || e.metaKey) {  // Ctrl/Cmd + Wheel
+                if (e.ctrlKey || e.metaKey) {  
+                    // Ctrl/Cmd + Wheel: 카드 개별 확대/축소
                     e.preventDefault();
                     e.stopPropagation();
                     
@@ -2762,6 +2763,7 @@
                     card.style.transform = `scale(${cardScale})`;
                     card.style.transformOrigin = 'top left';
                 }
+                // Ctrl 없으면 Canvas 확대/축소로 전파됨 (기본 동작)
             }, { passive: false });
         }
         
