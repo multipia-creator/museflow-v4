@@ -50,12 +50,14 @@ const exclude = [
   '/ai-orchestrator-dashboard.html',
   '/ai-orchestrator-sync.html',
   '/canvas-v4-hybrid.html',
+  '/canvas-layout-sample.html',
   '/e2e-testing.html',
   '/icon-samples.html',
   '/icon-samples-lucide.html',
   '/3d-viewer.html',
   '/digital-twin.html',
   '/digital-twin-pro.html',
+  '/test-realtime-sync.html',
   
   // Pretty URL paths (all)
   '/account',
@@ -78,12 +80,14 @@ const exclude = [
   '/ai-orchestrator-dashboard',
   '/ai-orchestrator-sync',
   '/canvas-v4-hybrid',
+  '/canvas-layout-sample',
   '/e2e-testing',
   '/icon-samples',
   '/icon-samples-lucide',
   '/3d-viewer',
   '/digital-twin',
-  '/digital-twin-pro'
+  '/digital-twin-pro',
+  '/test-realtime-sync'
 ];
 
 const routes = {
