@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuseFlow Canvas V6</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0a0a;
+            color: #e5e5e5;
+            overflow: hidden;
+        }
+        
+        /* Grid Layout: 40px | Canvas | 40px */
+        .main-container {
+            display: grid;
+            grid-template-columns: 40px 1fr 40px;
+            height: 100vh;
+            gap: 0;
+        }
+        
+        /* Sidebars */
+        .sidebar {
+            background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+            border-right: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 3px;
+            gap: 4px;
+        }
+        
+        .sidebar.right {
+            border-right: none;
+            border-left: 1px solid #333;
+        }
+        
+        /* Icon Items */
+        .icon-item {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .icon-item:hover {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10B981;
+        }
+        
+        .icon-item.active {
+            background: rgba(16, 185, 129, 0.25);
+            color: #10B981;
+        }
+        
+        /* Badge */
+        .badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: #ef4444;
+            color: white;
+            font-size: 9px;
+            font-weight: 600;
+            min-width: 14px;
+            height: 14px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+        }
+        
+        /* Canvas Area */
+        .canvas-area {
+            background: #fafbfc;
+            position: relative;
+            overflow: hidden;
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .canvas-viewport {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            cursor: grab;
+        }
+        
+        .canvas-viewport.dragging {
+            cursor: grabbing;
+        }
+        
+        /* Detail Panels */
+        .detail-panel {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 280px;
+            background: rgba(26, 26, 26, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid #333;
+            z-index: 100;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: none;
+        }
+        
+        .detail-panel.left {
+            left: 40px;
+            border-left: none;
+        }
+        
+        .detail-panel.right {
+            right: 40px;
+            border-right: none;
+            transform: translateX(100%);
+        }
+        
+        .detail-panel.active {
+            display: block;
+            transform: translateX(0);
+        }
+        
+        .panel-header {
+            padding: 16px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e5e5e5;
+        }
+        
+        .panel-close {
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: transparent;
+            color: #666;
+            cursor: pointer;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .panel-close:hover {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10B981;
+        }
+        
+        .panel-content {
+            padding: 16px;
+            color: #999;
+            font-size: 13px;
+        }
+        
+        /* Canvas Cards */
+        .canvas-card {
+            position: absolute;
+            width: 280px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: grab;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header:active {
+            cursor: grabbing;
+        }
+        
+        .card-content {
+            padding: 16px;
+            color: #333;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar left" id="leftSidebar">
+            <div class="icon-item" data-panel="history" title="History">
+                <i data-lucide="clock" style="width:16px;height:16px"></i>
+            </div>
+            <div class="icon-item" data-panel="actions" title="Actions">
+                <i data-lucide="zap" style="width:16px;height:16px"></i>
+            </div>
+            <div class="icon-item" data-panel="projects" title="Projects">
+                <i data-lucide="folder" style="width:16px;height:16px"></i>
+            </div>
+            <div class="icon-item" data-panel="settings" title="Settings">
+                <i data-lucide="settings" style="width:16px;height:16px"></i>
+            </div>
+        </div>
+        
+        <!-- Canvas -->
+        <div class="canvas-area">
+            <div class="canvas-viewport" id="viewport"></div>
+        </div>
+        
+        <!-- Right Sidebar -->
+        <div class="sidebar right" id="rightSidebar">
+            <div class="icon-item" data-panel="stats" title="Stats">
+                <i data-lucide="bar-chart-2" style="width:16px;height:16px"></i>
+            </div>
+            <div class="icon-item" data-panel="tasks" title="Tasks">
+                <i data-lucide="check-square" style="width:16px;height:16px"></i>
+                <span class="badge">2</span>
+            </div>
+            <div class="icon-item" data-panel="ai" title="AI">
+                <i data-lucide="sparkles" style="width:16px;height:16px"></i>
+                <span class="badge">1</span>
+            </div>
+            <div class="icon-item" data-panel="alerts" title="Alerts">
+                <i data-lucide="bell" style="width:16px;height:16px"></i>
+                <span class="badge">3</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Detail Panels -->
+    <div class="detail-panel left" id="historyPanel" data-side="left">
+        <div class="panel-header">
+            <span class="panel-title">History</span>
+            <button class="panel-close" onclick="closePanel('historyPanel')">
+                <i data-lucide="x" style="width:14px;height:14px"></i>
+            </button>
+        </div>
+        <div class="panel-content">최근 작업 기록</div>
+    </div>
+    
+    <div class="detail-panel left" id="actionsPanel" data-side="left">
+        <div class="panel-header">
+            <span class="panel-title">Quick Actions</span>
+            <button class="panel-close" onclick="closePanel('actionsPanel')">
+                <i data-lucide="x" style="width:14px;height:14px"></i>
+            </button>
+        </div>
+        <div class="panel-content">빠른 작업</div>
+    </div>
+    
+    <div class="detail-panel left" id="projectsPanel" data-side="left">
+        <div class="panel-header">
+            <span class="panel-title">Projects</span>
+            <button class="panel-close" onclick="closePanel('projectsPanel')">
+                <i data-lucide="x" style="width:14px;height:14px"></i>
+            </button>
+        </div>
+        <div class="panel-content">프로젝트 목록</div>
+    </div>
+    
+    <div class="detail-panel left" id="settingsPanel" data-side="left">
+        <div class="panel-header">
+            <span class="panel-title">Settings</span>
+            <button class="panel-close" onclick="closePanel('settingsPanel')">
+                <i data-lucide="x" style="width:14px;height:14px"></i>
+            </button>
+        </div>
+        <div class="panel-content">설정</div>
+    </div>
+    
+    <div class="detail-panel right" id="statsPanel" data-side="right">
+        <div class="panel-header">
+            <span class="panel-title">Statistics</span>
+            <button class="panel-close" onclick="closePanel('statsPanel')">
+                <i data-lucide="x" style="width:14px;height:14px"></i>
+            </button>
+        </div>
+        <div class="panel-content">통계</div>
+    </div>
+    
+    <div class="detail-panel right" id="tasksPanel" data-side="right">
+        <div class="panel-header">
+            <span class="panel-title">Tasks</span>
+            <button class="panel-close" onclick="closePanel('tasksPanel')">
+                <i data-lucide="x" style="width:14px;height:14px"></i>
+            </button>
+        </div>
+        <div class="panel-content">작업 목록</div>
+    </div>
+    
+    <div class="detail-panel right" id="aiPanel" data-side="right">
+        <div class="panel-header">
+            <span class="panel-title">AI Progress</span>
+            <button class="panel-close" onclick="closePanel('aiPanel')">
+                <i data-lucide="x" style="width:14px;height:14px"></i>
+            </button>
+        </div>
+        <div class="panel-content">AI 진행 상황</div>
+    </div>
+    
+    <div class="detail-panel right" id="alertsPanel" data-side="right">
+        <div class="panel-header">
+            <span class="panel-title">Notifications</span>
+            <button class="panel-close" onclick="closePanel('alertsPanel')">
+                <i data-lucide="x" style="width:14px;height:14px"></i>
+            </button>
+        </div>
+        <div class="panel-content">알림</div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Panel state
+        const activePanels = { left: null, right: null };
+        
+        // Toggle panel
+        document.querySelectorAll('.icon-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const panelName = this.dataset.panel;
+                const panelId = panelName + 'Panel';
+                const panel = document.getElementById(panelId);
+                if (!panel) return;
+                
+                const side = panel.dataset.side;
+                const isActive = panel.classList.contains('active');
+                
+                // Close if already open
+                if (isActive) {
+                    closePanel(panelId);
+                    this.classList.remove('active');
+                    return;
+                }
+                
+                // Close other panel on same side
+                if (activePanels[side]) {
+                    closePanel(activePanels[side]);
+                }
+                
+                // Open new panel
+                panel.classList.add('active');
+                this.classList.add('active');
+                activePanels[side] = panelId;
+            });
+        });
+        
+        // Close panel function
+        function closePanel(panelId) {
+            const panel = document.getElementById(panelId);
+            if (!panel) return;
+            
+            panel.classList.remove('active');
+            const side = panel.dataset.side;
+            activePanels[side] = null;
+            
+            // Remove active from icon
+            const panelName = panelId.replace('Panel', '');
+            const icon = document.querySelector(`[data-panel="${panelName}"]`);
+            if (icon) icon.classList.remove('active');
+        }
+        
+        // Canvas dragging
+        const viewport = document.getElementById('viewport');
+        let isDragging = false;
+        let startX, startY, scrollLeft, scrollTop;
+        
+        viewport.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            viewport.classList.add('dragging');
+            startX = e.pageX;
+            startY = e.pageY;
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const x = e.pageX - startX;
+            const y = e.pageY - startY;
+            viewport.style.transform = `translate(${x}px, ${y}px)`;
+        });
+        
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            viewport.classList.remove('dragging');
+        });
+        
+        // Create sample cards
+        function createCard(title, content, x, y) {
+            const card = document.createElement('div');
+            card.className = 'canvas-card';
+            card.style.left = x + 'px';
+            card.style.top = y + 'px';
+            card.innerHTML = `
+                <div class="card-header">${title}</div>
+                <div class="card-content">${content}</div>
+            `;
+            viewport.appendChild(card);
+        }
+        
+        createCard('전시 기획안', '2025년 봄 특별전', 100, 100);
+        createCard('예산 현황', '총 30,000,000원', 400, 100);
+        createCard('마케팅 전략', 'SNS 캠페인', 700, 100);
+    </script>
+</body>
+</html>
