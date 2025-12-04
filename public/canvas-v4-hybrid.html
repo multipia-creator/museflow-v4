@@ -2394,7 +2394,7 @@
             try {
                 // AI 모델 정보 표시
                 const modelName = document.getElementById('aiModelSelect')?.options[document.getElementById('aiModelSelect').selectedIndex]?.text || 'GPT-4';
-                addMessage('ai', `🤔 ${modelName}이(가) 명령을 분석하고 있습니다...`);
+                addMessage('ai', `🤔 ${modelName}이(가) 명령을 분석하고 있습니다...`, true);
                 
                 // Add to active tasks in overview panel
                 addActiveTask(command.substring(0, 30) + '...');
@@ -2428,14 +2428,14 @@
                 
                 sessionId = data.sessionId;
                 
-                addMessage('ai', `✅ AI 세션이 시작되었습니다. (Session ID: ${sessionId.substring(0, 8)}...)`);
+                addMessage('ai', `✅ AI 세션이 시작되었습니다. (Session ID: ${sessionId.substring(0, 8)}...)`, true);
                 
                 // Connect to SSE
                 connectToEventStream(sessionId);
                 
             } catch (error) {
                 console.error('AI 실행 오류:', error);
-                addMessage('ai', `❌ 오류가 발생했습니다: ${error.message}`);
+                addMessage('ai', `❌ 오류가 발생했습니다: ${error.message}`, true);
                 document.getElementById('sendButton').disabled = false;
                 removeActiveTask();
             }
@@ -2471,9 +2471,9 @@
                     break;
                 
                 case 'session-started':
-                    addMessage('ai', `🚀 ${message}`);
+                    addMessage('ai', `🚀 ${message}`, true);
                     if (payload?.workflow) {
-                        addMessage('ai', `📋 워크플로우: ${payload.workflow.phases?.length || 0}개 단계`);
+                        addMessage('ai', `📋 워크플로우: ${payload.workflow.phases?.length || 0}개 단계`, true);
                     }
                     break;
                 
@@ -2507,7 +2507,7 @@
                     break;
                 
                 case 'phase-failed':
-                    addMessage('ai', `⚠️ 단계 실패: ${message}`);
+                    addMessage('ai', `⚠️ 단계 실패: ${message}`, true);
                     break;
                 
                 case 'session-completed':
@@ -2522,7 +2522,7 @@
                     break;
                 
                 case 'session-failed':
-                    addMessage('ai', `❌ 실행 실패: ${message || '알 수 없는 오류'}`);
+                    addMessage('ai', `❌ 실행 실패: ${message || '알 수 없는 오류'}`, true);
                     document.getElementById('sendButton').disabled = false;
                     removeActiveTask();
                     eventSource.close();
@@ -2872,7 +2872,7 @@
             messageInput.value = aiCommand;
             
             // 환영 메시지 표시
-            addMessage('ai', `👋 안녕하세요! Dashboard에서 "${title}" 작업을 전달받았습니다. 자동으로 실행하시겠습니까?`);
+            addMessage('ai', `👋 안녕하세요! Dashboard에서 "${title}" 작업을 전달받았습니다. 자동으로 실행하시겠습니까?`, true);
             
             // 2초 후 자동 실행 (사용자가 확인할 시간 제공)
             setTimeout(() => {
@@ -3317,7 +3317,7 @@
                 messageInput.value = command.prompt;
                 
                 // 환영 메시지
-                addMessage('ai', `${command.icon} "${command.title}" 작업을 시작합니다. 자동으로 실행하시겠습니까?`);
+                addMessage('ai', `${command.icon} "${command.title}" 작업을 시작합니다. 자동으로 실행하시겠습니까?`, true);
                 
                 // 모바일: Conversation 탭으로 자동 전환
                 if (window.innerWidth <= 768) {
