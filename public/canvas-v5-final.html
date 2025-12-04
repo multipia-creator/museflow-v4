@@ -347,6 +347,41 @@
             background: #7C3AED;
         }
         
+        /* AI Model Selector in Floating Input */
+        .floating-ai-input select {
+            background: transparent;
+            border: 1px solid #E5E7EB;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 13px;
+            color: #6B7280;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.15s;
+        }
+        
+        .floating-ai-input select:hover {
+            border-color: #8B5CF6;
+            background: #F9FAFB;
+        }
+        
+        .floating-ai-input select:focus {
+            border-color: #8B5CF6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        /* Voice Recording State */
+        .floating-ai-input button.recording {
+            background: #EF4444;
+            color: white;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
         .conversation-header {
             padding: 1.5rem;
             border-bottom: 1px solid #E5E7EB;
@@ -2215,8 +2250,14 @@
             </div>
         </div>
         
-        <!-- Floating AI Input (Notion Style) -->
+        <!-- Floating AI Input (Notion Style - Enhanced) -->
         <div class="floating-ai-input" id="floatingInput">
+            <select id="aiModelSelect" title="AI 모델 선택">
+                <option value="gpt-4" selected>GPT-4</option>
+                <option value="gpt-3.5">GPT-3.5</option>
+                <option value="claude-3">Claude</option>
+                <option value="gemini-pro">Gemini</option>
+            </select>
             <input 
                 type="text" 
                 id="messageInput" 
@@ -2224,19 +2265,10 @@
                 autocomplete="off"
             />
             <div class="quick-buttons">
-                <button id="modelButton" title="AI 모델 선택">🤖</button>
-                <button id="voiceButton" title="음성 입력">🎤</button>
+                <button id="voiceButton" title="음성 입력 (클릭하여 시작)">🎤</button>
                 <button id="sendButton" class="send-btn" title="전송">▶</button>
             </div>
         </div>
-        
-        <!-- Hidden AI Model Selector -->
-        <select id="aiModelSelect" style="display: none;">
-            <option value="gpt-4" selected>GPT-4</option>
-            <option value="gpt-3.5">GPT-3.5</option>
-            <option value="claude-3">Claude 3</option>
-            <option value="gemini-pro">Gemini Pro</option>
-        </select>
         
         <!-- Right Column: Real-time Status (Simplified) -->
         <div class="right-column">
@@ -3142,30 +3174,10 @@
             }
         });
         
-        // 🤖 AI Model Selector (모달 방식)
-        document.getElementById('modelButton').addEventListener('click', () => {
-            const modelSelect = document.getElementById('aiModelSelect');
-            const currentModel = modelSelect.options[modelSelect.selectedIndex].text;
-            const newModel = prompt('AI 모델 선택:\n1. GPT-4\n2. GPT-3.5\n3. Claude 3\n4. Gemini Pro', currentModel);
-            
-            if (newModel) {
-                const modelMap = {
-                    '1': 'gpt-4',
-                    'GPT-4': 'gpt-4',
-                    '2': 'gpt-3.5',
-                    'GPT-3.5': 'gpt-3.5',
-                    '3': 'claude-3',
-                    'Claude 3': 'claude-3',
-                    '4': 'gemini-pro',
-                    'Gemini Pro': 'gemini-pro'
-                };
-                
-                const value = modelMap[newModel] || modelMap[newModel.trim()];
-                if (value) {
-                    modelSelect.value = value;
-                    showToast(`🤖 AI 모델: ${modelSelect.options[modelSelect.selectedIndex].text}`);
-                }
-            }
+        // 🤖 AI Model Selector (드롭다운 방식 - 변경 시 알림)
+        document.getElementById('aiModelSelect').addEventListener('change', (e) => {
+            const selectedModel = e.target.options[e.target.selectedIndex].text;
+            showToast(`🤖 AI 모델: ${selectedModel}`);
         });
         
         async function sendMessage() {
