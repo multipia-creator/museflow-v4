@@ -727,6 +727,41 @@ cards.forEach(card => {
         </div>
     `;
     
+    // Card drag functionality
+    let cardDragging = false;
+    let cardStartX, cardStartY, cardInitialX, cardInitialY;
+    
+    cardEl.addEventListener('mousedown', function(e) {
+        if (e.target.closest('.card-header')) {
+            cardDragging = true;
+            cardStartX = e.clientX;
+            cardStartY = e.clientY;
+            cardInitialX = parseInt(cardEl.style.left) || 0;
+            cardInitialY = parseInt(cardEl.style.top) || 0;
+            cardEl.style.cursor = 'grabbing';
+            cardEl.style.zIndex = '1000';
+            e.stopPropagation();
+        }
+    });
+    
+    document.addEventListener('mousemove', function(e) {
+        if (cardDragging && cardEl.style.cursor === 'grabbing') {
+            e.preventDefault();
+            const deltaX = (e.clientX - cardStartX) / scale;
+            const deltaY = (e.clientY - cardStartY) / scale;
+            cardEl.style.left = (cardInitialX + deltaX) + 'px';
+            cardEl.style.top = (cardInitialY + deltaY) + 'px';
+        }
+    });
+    
+    document.addEventListener('mouseup', function() {
+        if (cardDragging && cardEl.style.cursor === 'grabbing') {
+            cardDragging = false;
+            cardEl.style.cursor = 'move';
+            cardEl.style.zIndex = 'auto';
+        }
+    });
+    
     viewport.appendChild(cardEl);
 });
 
