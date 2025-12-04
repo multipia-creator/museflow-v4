@@ -39,10 +39,9 @@
         .canvas-container {
             display: grid;
             grid-template-columns: 250px 1fr 240px;  /* Left 250px | Center 1fr (~80%) | Right 240px */
-            grid-template-rows: 1fr 180px;            /* Canvas | Input */
+            grid-template-rows: 1fr;                  /* Canvas 100% (입력창 플로팅으로 이동) */
             grid-template-areas:
-                "left canvas right"
-                "left input  right";
+                "left canvas right";
             height: calc(100vh - 64px - 48px);  /* Full height - navbar - footer */
             gap: 0;
             overflow: hidden;
@@ -275,15 +274,76 @@
             color: #374151;
         }
         
-        /* Center Input Area - AI Command Input (Bottom Fixed) */
-        .center-input {
-            grid-area: input;
-            background: linear-gradient(135deg, #FFFFFF 0%, #F9FAFB 100%);
-            border-top: 1px solid #E5E7EB;
+        /* ==================== Floating AI Input (Notion Style) ==================== */
+        .floating-ai-input {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            max-width: calc(100vw - 540px);  /* 250px(left) + 240px(right) + 50px(margin) */
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            padding: 12px 16px;
             display: flex;
-            flex-direction: column;
-            padding: 16px;
+            align-items: center;
             gap: 12px;
+            z-index: 1000;
+            transition: all 0.2s ease;
+        }
+        
+        .floating-ai-input:hover {
+            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.15);
+            border-color: rgba(139, 92, 246, 0.4);
+        }
+        
+        .floating-ai-input input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 15px;
+            color: #111827;
+            outline: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        .floating-ai-input input::placeholder {
+            color: #9CA3AF;
+        }
+        
+        .floating-ai-input .quick-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .floating-ai-input button {
+            background: transparent;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.15s;
+        }
+        
+        .floating-ai-input button:hover {
+            background: #F3F4F6;
+        }
+        
+        .floating-ai-input button.send-btn {
+            background: #8B5CF6;
+            color: white;
+        }
+        
+        .floating-ai-input button.send-btn:hover {
+            background: #7C3AED;
         }
         
         .conversation-header {
@@ -2146,51 +2206,34 @@
                 <button class="canvas-fit" id="fitCanvas" title="전체 보기">
                     <i class="fas fa-expand"></i>
                 </button>
+                <button class="canvas-auto-arrange" id="autoArrange" title="카드 자동정렬">
+                    <i class="fas fa-th"></i>
+                </button>
             </div>
         </div>
         
-        <!-- Center Input: AI Command Input (Bottom Fixed) -->
-        <div class="center-input">
-            <div class="input-area">
-                <!-- AI 모델 선택 & 설정 바 -->
-                <div class="ai-settings-bar">
-                    <div class="ai-model-selector">
-                        <label for="aiModelSelect">
-                            <i data-lucide="sparkles" stroke-width="2"></i>
-                            AI 모델
-                        </label>
-                        <select id="aiModelSelect" class="model-select">
-                            <option value="gpt-4" selected>GPT-4 (가장 강력)</option>
-                            <option value="gpt-3.5">GPT-3.5 Turbo (빠름)</option>
-                            <option value="claude-3">Claude 3 Opus</option>
-                            <option value="gemini-pro">Gemini Pro</option>
-                        </select>
-                    </div>
-                    <div class="ai-status">
-                        <span class="status-indicator online"></span>
-                        <span class="status-text">온라인</span>
-                    </div>
-                </div>
-                
-                <div class="input-container">
-                    <textarea 
-                        id="messageInput" 
-                        class="input-box" 
-                        placeholder="AI에게 명령하세요... (예: 인상주의 특별전을 3000만원 예산으로 기획해줘)"
-                        rows="2"
-                    ></textarea>
-                    <div class="input-actions">
-                        <button class="voice-input-button" id="voiceButton" title="음성 입력">
-                            <i class="fas fa-microphone"></i>
-                        </button>
-                        <button class="send-button" id="sendButton" title="전송">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </div>
+        <!-- Floating AI Input (Notion Style) -->
+        <div class="floating-ai-input" id="floatingInput">
+            <input 
+                type="text" 
+                id="messageInput" 
+                placeholder="AI에게 명령하세요... (/ 키로 포커스)"
+                autocomplete="off"
+            />
+            <div class="quick-buttons">
+                <button id="modelButton" title="AI 모델 선택">🤖</button>
+                <button id="voiceButton" title="음성 입력">🎤</button>
+                <button id="sendButton" class="send-btn" title="전송">▶</button>
             </div>
         </div>
-        <!-- End of center-input -->
+        
+        <!-- Hidden AI Model Selector -->
+        <select id="aiModelSelect" style="display: none;">
+            <option value="gpt-4" selected>GPT-4</option>
+            <option value="gpt-3.5">GPT-3.5</option>
+            <option value="claude-3">Claude 3</option>
+            <option value="gemini-pro">Gemini Pro</option>
+        </select>
         
         <!-- Right Column: Real-time Status (Simplified) -->
         <div class="right-column">
@@ -2379,6 +2422,26 @@
             updateCanvasTransform();
         });
         
+        // 🎯 자동정렬 버튼
+        document.getElementById('autoArrange').addEventListener('click', autoArrangeCards);
+        
+        // ⌨️ 키보드 단축키: / 키로 입력창 포커스 (Notion 스타일)
+        document.addEventListener('keydown', (e) => {
+            // / 키로 입력창 포커스
+            if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                const activeEl = document.activeElement;
+                if (activeEl.tagName !== 'INPUT' && activeEl.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                    document.getElementById('messageInput').focus();
+                }
+            }
+            
+            // Esc 키로 포커스 해제
+            if (e.key === 'Escape') {
+                document.activeElement.blur();
+            }
+        });
+        
         // Update Canvas Transform
         function updateCanvasTransform() {
             canvasViewport.style.transform = `translate(${canvas.x}px, ${canvas.y}px) scale(${canvas.scale})`;
@@ -2403,31 +2466,31 @@
             card.style.top = position.y + 'px';
             card.style.width = '320px';
             
-            // 🎨 Unified Card Type Icons & Colors
+            // 🎨 Minimal Emoji Icons (교수님 요청)
             const typeConfig = {
                 // Text & Documents
-                'text': { icon: '📝', color: '#3B82F6' },
-                'markdown': { icon: '📋', color: '#8B5CF6' },
-                'pdf': { icon: '📄', color: '#EC4899' },
+                'text': { icon: '📄', color: '#6B7280' },
+                'markdown': { icon: '📄', color: '#8B5CF6' },
+                'pdf': { icon: '📄', color: '#EF4444' },
                 
                 // Media
-                'image': { icon: '🖼️', color: '#10B981' },
-                'video': { icon: '🎬', color: '#EF4444' },
+                'image': { icon: '🖼', color: '#10B981' },
+                'video': { icon: '▶', color: '#EF4444' },
                 'audio': { icon: '🎵', color: '#F59E0B' },
                 
                 // Data Visualization
                 'chart': { icon: '📊', color: '#06B6D4' },
-                'budget': { icon: '📊', color: '#06B6D4' },
+                'budget': { icon: '💰', color: '#10B981' },
                 'timeline': { icon: '📅', color: '#8B5CF6' },
                 
                 // Presentations
-                'slides': { icon: '📽️', color: '#F59E0B' },
-                'spreadsheet': { icon: '📈', color: '#10B981' },
+                'slides': { icon: '▶', color: '#F59E0B' },
+                'spreadsheet': { icon: '📊', color: '#10B981' },
                 
                 // External
                 'figma': { icon: '🎨', color: '#A855F7' },
-                'notion': { icon: '📓', color: '#000000' },
-                'widget': { icon: '🧩', color: '#6B7280' }
+                'notion': { icon: '📝', color: '#000000' },
+                'widget': { icon: '⚙', color: '#6B7280' }
             };
             
             const config = typeConfig[type] || { icon: '📄', color: '#6B7280' };
@@ -2435,8 +2498,8 @@
             card.innerHTML = `
                 <div class="card-header">
                     <div class="card-title">
-                        <span style="font-size: 18px; margin-right: 8px;">${config.icon}</span>
-                        <span style="color: ${config.color}; font-weight: 600;">${title}</span>
+                        <span style="font-size: 16px; margin-right: 6px;">${config.icon}</span>
+                        <span style="color: #111827; font-weight: 600; font-size: 14px;">${title}</span>
                     </div>
                     <div class="card-actions">
                         <button onclick="copyCardContent('${cardId}')" title="복사">
@@ -2645,10 +2708,11 @@
             };
         }
         
-        // Make card draggable
+        // Make card draggable + mouse wheel zoom (교수님 요청)
         function makeCardDraggable(card) {
             let isDragging = false;
             let dragOffsetX, dragOffsetY;
+            let cardScale = 1;  // 개별 카드 확대/축소
             
             const header = card.querySelector('.card-header');
             
@@ -2684,6 +2748,21 @@
                     card.classList.remove('dragging');
                 }
             });
+            
+            // 🎯 카드 개별 확대/축소 (마우스 휠)
+            card.addEventListener('wheel', (e) => {
+                if (e.ctrlKey || e.metaKey) {  // Ctrl/Cmd + Wheel
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const delta = e.deltaY > 0 ? 0.9 : 1.1;
+                    cardScale *= delta;
+                    cardScale = Math.max(0.5, Math.min(2, cardScale));  // 0.5x ~ 2x
+                    
+                    card.style.transform = `scale(${cardScale})`;
+                    card.style.transformOrigin = 'top left';
+                }
+            }, { passive: false });
         }
         
         // Card Actions
@@ -2713,6 +2792,24 @@
                 canvas.cards.splice(cardIndex, 1);
                 showToast('🗑️ 카드가 삭제되었습니다.');
             }
+        }
+        
+        // 🎯 카드 자동정렬 (Grid 3열, 교수님 요청)
+        function autoArrangeCards() {
+            const cols = 3;
+            const cardWidth = 360;
+            const cardHeight = 280;
+            
+            canvas.cards.forEach((cardData, index) => {
+                const x = (index % cols) * cardWidth + 50;
+                const y = Math.floor(index / cols) * cardHeight + 50;
+                
+                cardData.element.style.left = x + 'px';
+                cardData.element.style.top = y + 'px';
+                cardData.element.style.transform = 'scale(1)';  // 크기 초기화
+            });
+            
+            showToast('✨ 카드가 자동정렬되었습니다!');
         }
         
         // ==========================================
@@ -3031,12 +3128,38 @@
             document.head.appendChild(style);
         }
         
-        // Send Message
+        // 🎯 Floating Input Interactions
         document.getElementById('sendButton').addEventListener('click', sendMessage);
         document.getElementById('messageInput').addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 sendMessage();
+            }
+        });
+        
+        // 🤖 AI Model Selector (모달 방식)
+        document.getElementById('modelButton').addEventListener('click', () => {
+            const modelSelect = document.getElementById('aiModelSelect');
+            const currentModel = modelSelect.options[modelSelect.selectedIndex].text;
+            const newModel = prompt('AI 모델 선택:\n1. GPT-4\n2. GPT-3.5\n3. Claude 3\n4. Gemini Pro', currentModel);
+            
+            if (newModel) {
+                const modelMap = {
+                    '1': 'gpt-4',
+                    'GPT-4': 'gpt-4',
+                    '2': 'gpt-3.5',
+                    'GPT-3.5': 'gpt-3.5',
+                    '3': 'claude-3',
+                    'Claude 3': 'claude-3',
+                    '4': 'gemini-pro',
+                    'Gemini Pro': 'gemini-pro'
+                };
+                
+                const value = modelMap[newModel] || modelMap[newModel.trim()];
+                if (value) {
+                    modelSelect.value = value;
+                    showToast(`🤖 AI 모델: ${modelSelect.options[modelSelect.selectedIndex].text}`);
+                }
             }
         });
         
