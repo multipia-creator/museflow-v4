@@ -50,17 +50,72 @@
         /* Left Column - History & Projects (Dark Theme) */
         .left-column {
             grid-area: left;
-            background: #1E1E1E;
-            border-right: 1px solid #2D2D30;
+            background: linear-gradient(180deg, #1F2937 0%, #111827 100%);
+            border-right: 1px solid #374151;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
         
+        /* User Profile Header */
+        .user-profile-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #374151;
+            background: rgba(31, 41, 55, 0.5);
+            backdrop-filter: blur(10px);
+        }
+        
+        .user-profile-content {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-greeting {
+            font-size: 0.75rem;
+            color: #9CA3AF;
+            margin-bottom: 0.25rem;
+        }
+        
+        .user-greeting-emoji {
+            display: inline-block;
+            animation: wave 2s ease-in-out infinite;
+        }
+        
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(20deg); }
+            75% { transform: rotate(-20deg); }
+        }
+        
+        .user-name {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #F9FAFB;
+        }
+        
         .column-header {
             padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid #2D2D30;
-            background: #252526;
+            border-bottom: 1px solid #374151;
+            background: rgba(55, 65, 81, 0.3);
         }
         
         .column-title {
@@ -74,14 +129,144 @@
         
         .column-title i {
             font-size: 1.125rem;
-            color: #8B5CF6;
+            color: #10B981;
+        }
+        
+        /* Navigation Menu - Modern Dark Theme */
+        .nav-menu {
+            padding: 0.5rem 0;
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .nav-item {
+            position: relative;
+            padding: 0.875rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #D1D5DB;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: rgba(55, 65, 81, 0.5);
+            color: #F9FAFB;
+        }
+        
+        .nav-item.active {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+            border-left-color: #10B981;
+            font-weight: 600;
+        }
+        
+        .nav-item-icon {
+            font-size: 1.125rem;
+            width: 24px;
+            text-align: center;
+            opacity: 0.8;
+        }
+        
+        .nav-item.active .nav-item-icon {
+            opacity: 1;
+        }
+        
+        .nav-item-badge {
+            margin-left: auto;
+            background: #F59E0B;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.125rem 0.5rem;
+            border-radius: 12px;
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        /* Expandable Section */
+        .nav-expandable {
+            position: relative;
+        }
+        
+        .nav-expandable-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-right: 1rem;
+        }
+        
+        .nav-expand-icon {
+            font-size: 0.875rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-expandable.expanded .nav-expand-icon {
+            transform: rotate(180deg);
+        }
+        
+        .nav-submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .nav-expandable.expanded .nav-submenu {
+            max-height: 300px;
+        }
+        
+        .nav-subitem {
+            padding: 0.75rem 1.5rem 0.75rem 3.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #9CA3AF;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .nav-subitem::before {
+            content: '';
+            position: absolute;
+            left: 2.25rem;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4B5563;
+        }
+        
+        .nav-subitem:hover {
+            color: #D1D5DB;
+            background: rgba(55, 65, 81, 0.3);
+        }
+        
+        .nav-subitem:hover::before {
+            background: #10B981;
+        }
+        
+        .nav-subitem-arrow {
+            margin-left: auto;
+            font-size: 0.75rem;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        .nav-subitem:hover .nav-subitem-arrow {
+            opacity: 1;
         }
         
         /* Quick Actions Panel - Dark Theme */
         .quick-actions-panel {
-            padding: 1rem;
-            border-bottom: 1px solid #2D2D30;
-            background: #252526;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #374151;
+            background: rgba(17, 24, 39, 0.5);
+            margin-top: auto;
         }
         
         .quick-actions-header {
@@ -108,6 +293,54 @@
         }
         
         /* Minimalist Quick Action Buttons - Dark */
+        /* Upload Section */
+        .upload-section {
+            padding: 1.5rem;
+            background: rgba(17, 24, 39, 0.8);
+            border-top: 1px solid #374151;
+        }
+        
+        .upload-area {
+            border: 2px dashed #374151;
+            border-radius: 12px;
+            padding: 2rem 1rem;
+            text-align: center;
+            background: rgba(31, 41, 55, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover {
+            border-color: #10B981;
+            background: rgba(16, 185, 129, 0.05);
+        }
+        
+        .upload-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        .upload-text {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: #F9FAFB;
+            margin-bottom: 0.25rem;
+        }
+        
+        .upload-hint {
+            font-size: 0.8125rem;
+            color: #9CA3AF;
+        }
+        
         .quick-action-btn {
             display: flex;
             flex-direction: column;
@@ -115,12 +348,12 @@
             justify-content: center;
             gap: 0.5rem;
             padding: 1rem 0.5rem;
-            background: #2D2D30;
-            border: 1px solid #3E3E42;
+            background: rgba(55, 65, 81, 0.5);
+            border: 1px solid #374151;
             border-radius: 8px;
             font-size: 0.6875rem;
             font-weight: 500;
-            color: #CCCCCC;
+            color: #D1D5DB;
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -136,15 +369,15 @@
         }
         
         .quick-action-btn:hover {
-            background: #3E3E42;
-            border-color: #8B5CF6;
-            color: #A78BFA;
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10B981;
+            color: #10B981;
             transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
         }
         
         .quick-action-btn:hover i {
-            color: #A78BFA;
+            color: #10B981;
             transform: scale(1.05);
         }
         
@@ -156,45 +389,49 @@
         .history-list {
             flex: 1;
             overflow-y: auto;
-            padding: 1rem;
-            background: #1E1E1E;
+            padding: 0;
+            background: transparent;
         }
         
         .history-item {
-            background: #2D2D30;
-            border: 1px solid #3E3E42;
-            border-radius: 8px;
-            padding: 0.875rem 1rem;
-            margin-bottom: 0.5rem;
+            position: relative;
+            background: transparent;
+            border: none;
+            border-left: 3px solid transparent;
+            border-radius: 0;
+            padding: 0.875rem 1.5rem;
+            margin-bottom: 0;
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            color: #CCCCCC;
+            color: #D1D5DB;
         }
         
         .history-item:hover {
-            background: #3E3E42;
-            border-color: #A78BFA;
-            transform: translateX(2px);
-            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);
+            background: rgba(55, 65, 81, 0.5);
+            color: #F9FAFB;
         }
         
         .history-item.active {
-            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
-            color: white;
-            border-color: transparent;
-            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+            background: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+            border-left-color: #10B981;
+            font-weight: 600;
         }
         
         .history-title {
-            font-weight: 600;
+            font-weight: 500;
             font-size: 0.8125rem;
-            margin-bottom: 0.375rem;
-            line-height: 1.3;
+            margin-bottom: 0.25rem;
+            line-height: 1.4;
+        }
+        
+        .history-item.active .history-title {
+            font-weight: 600;
         }
         
         .history-meta {
             font-size: 0.6875rem;
-            opacity: 0.7;
+            opacity: 0.6;
             display: flex;
             justify-content: space-between;
             gap: 0.5rem;
@@ -774,8 +1011,8 @@
         /* Right Column - Real-time Status (Dark Theme) */
         .right-column {
             grid-area: right;
-            background: #1E1E1E;
-            border-left: 1px solid #2D2D30;
+            background: linear-gradient(180deg, #1F2937 0%, #111827 100%);
+            border-left: 1px solid #374151;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -949,28 +1186,31 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 0.875rem;
-            background: #2D2D30;
-            border: 1px solid #3E3E42;
-            border-radius: var(--radius-md);
+            padding: 1rem;
+            background: rgba(55, 65, 81, 0.5);
+            border: 1px solid #374151;
+            border-radius: 12px;
             transition: var(--transition-base);
         }
         
         .stat-card-mini:hover {
-            border-color: #A78BFA;
-            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
-            background: #3E3E42;
+            border-color: #10B981;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+            background: rgba(16, 185, 129, 0.1);
+            transform: translateY(-2px);
         }
         
         .stat-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: var(--radius-md);
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.125rem;
+            font-size: 1.25rem;
             flex-shrink: 0;
+            background: rgba(16, 185, 129, 0.15);
+            color: #10B981;
         }
         
         .stat-info {
@@ -980,13 +1220,14 @@
         .stat-label {
             font-size: 0.75rem;
             color: #9CA3AF;
-            margin-bottom: 0.125rem;
+            margin-bottom: 0.25rem;
+            font-weight: 500;
         }
         
         .stat-value {
-            font-size: 1.125rem;
+            font-size: 1.25rem;
             font-weight: 700;
-            color: #E4E4E7;
+            color: #F9FAFB;
         }
         
         /* Section Headers */
@@ -2123,102 +2364,87 @@
     <div class="canvas-container">
         <!-- Left Column: History & Projects -->
         <div class="left-column">
-            <div class="column-header">
-                <h2 class="column-title">
-                    <i data-lucide="clock" stroke-width="2"></i>
-                    History & Projects
-                </h2>
-            </div>
-            
-            <!-- Quick Actions Panel -->
-            <div class="quick-actions-panel">
-                <div class="quick-actions-header">
-                    <i data-lucide="zap" stroke-width="2"></i>
-                    <span>빠른 작업</span>
-                </div>
-                <div class="quick-actions-grid">
-                    <button class="quick-action-btn" data-action="exhibition-label">
-                        <i data-lucide="tag" stroke-width="2"></i>
-                        <span>전시 라벨</span>
-                    </button>
-                    <button class="quick-action-btn" data-action="budget-approval">
-                        <i data-lucide="coins" stroke-width="2"></i>
-                        <span>예산 승인</span>
-                    </button>
-                    <button class="quick-action-btn" data-action="artwork-selection">
-                        <i data-lucide="palette" stroke-width="2"></i>
-                        <span>소장품 선정</span>
-                    </button>
-                    <button class="quick-action-btn" data-action="promotion-plan">
-                        <i data-lucide="megaphone" stroke-width="2"></i>
-                        <span>홍보 계획</span>
-                    </button>
-                    <button class="quick-action-btn" data-action="report-writing">
-                        <i data-lucide="file-text" stroke-width="2"></i>
-                        <span>보고서</span>
-                    </button>
-                    <button class="quick-action-btn" data-action="schedule-management">
-                        <i data-lucide="calendar" stroke-width="2"></i>
-                        <span>일정 관리</span>
-                    </button>
-                    <button class="quick-action-btn" data-action="education-program">
-                        <i data-lucide="graduation-cap" stroke-width="2"></i>
-                        <span>교육 프로그램</span>
-                    </button>
-                    <button class="quick-action-btn" data-action="research">
-                        <i data-lucide="search" stroke-width="2"></i>
-                        <span>자료 조사</span>
-                    </button>
-                    <button class="quick-action-btn" data-action="visitor-guide">
-                        <i data-lucide="message-circle" stroke-width="2"></i>
-                        <span>방문객 안내</span>
-                    </button>
-                    <button class="quick-action-btn" data-action="space-optimization">
-                        <i data-lucide="layout" stroke-width="2"></i>
-                        <span>공간 최적화</span>
-                    </button>
+            <!-- User Profile Header -->
+            <div class="user-profile-header">
+                <div class="user-profile-content">
+                    <div class="user-avatar">교</div>
+                    <div class="user-info">
+                        <div class="user-greeting">Hello <span class="user-greeting-emoji">👋</span></div>
+                        <div class="user-name">남현우 교수</div>
+                    </div>
                 </div>
             </div>
             
-            <div class="history-list" id="historyList">
-                <div class="history-item active">
-                    <div class="history-title">인상주의 특별전 기획</div>
-                    <div class="history-meta">
-                        <span>전시 기획</span>
-                        <span>방금 전</span>
+            <!-- Navigation Menu -->
+            <nav class="nav-menu">
+                <div class="nav-item active">
+                    <i class="nav-item-icon" data-lucide="layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </div>
+                
+                <div class="nav-item">
+                    <i class="nav-item-icon" data-lucide="message-square"></i>
+                    <span>Messages</span>
+                    <span class="nav-item-badge">3</span>
+                </div>
+                
+                <div class="nav-item">
+                    <i class="nav-item-icon" data-lucide="message-circle"></i>
+                    <span>Chat</span>
+                </div>
+                
+                <div class="nav-item">
+                    <i class="nav-item-icon" data-lucide="trophy"></i>
+                    <span>Challenges</span>
+                </div>
+                
+                <!-- Expandable Classes Section -->
+                <div class="nav-item nav-expandable expanded">
+                    <div class="nav-expandable-header">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <i class="nav-item-icon" data-lucide="book-open"></i>
+                            <span>Classes</span>
+                        </div>
+                        <i class="nav-expand-icon" data-lucide="chevron-down"></i>
                     </div>
                 </div>
                 
-                <div class="history-item">
-                    <div class="history-title">2024년 1분기 예산 승인</div>
-                    <div class="history-meta">
-                        <span>예산 승인</span>
-                        <span>2시간 전</span>
+                <div class="nav-submenu">
+                    <div class="nav-subitem">
+                        <span>Maths</span>
+                    </div>
+                    <div class="nav-subitem">
+                        <span>English</span>
+                        <i class="nav-subitem-arrow" data-lucide="chevron-right"></i>
+                    </div>
+                    <div class="nav-subitem">
+                        <span>Economics</span>
+                    </div>
+                    <div class="nav-subitem">
+                        <span>Accounts</span>
                     </div>
                 </div>
                 
-                <div class="history-item">
-                    <div class="history-title">어린이 교육 프로그램</div>
-                    <div class="history-meta">
-                        <span>교육 프로그램</span>
-                        <span>어제</span>
-                    </div>
+                <div class="nav-item">
+                    <i class="nav-item-icon" data-lucide="calendar"></i>
+                    <span>Timetable</span>
                 </div>
                 
-                <div class="history-item">
-                    <div class="history-title">현대미술 소장품 선정</div>
-                    <div class="history-meta">
-                        <span>소장품 선정</span>
-                        <span>3일 전</span>
-                    </div>
+                <div class="nav-item">
+                    <i class="nav-item-icon" data-lucide="bell"></i>
+                    <span>Notifications</span>
+                    <span class="nav-item-badge">3</span>
                 </div>
-                
-                <div class="history-item">
-                    <div class="history-title">SNS 홍보 캠페인</div>
-                    <div class="history-meta">
-                        <span>홍보 계획</span>
-                        <span>1주일 전</span>
+            </nav>
+            
+            <!-- Upload Section -->
+            <div class="upload-section">
+                <div class="upload-area">
+                    <div class="upload-icon">
+                        <i data-lucide="plus"></i>
                     </div>
+                    <div class="upload-text">Upload new class</div>
+                    <div class="upload-hint">Drag and drop</div>
                 </div>
             </div>
         </div>
@@ -5133,6 +5359,16 @@
         // Initialize Lucide Icons
         // ====================================
         lucide.createIcons();
+        
+        // Expandable Navigation Menu
+        document.querySelectorAll('.nav-expandable').forEach(expandable => {
+            const header = expandable.querySelector('.nav-expandable-header');
+            if (header) {
+                header.addEventListener('click', () => {
+                    expandable.classList.toggle('expanded');
+                });
+            }
+        });
         
         // Re-initialize Lucide icons after dynamic content updates
         const originalAddMessage = window.addMessage;
