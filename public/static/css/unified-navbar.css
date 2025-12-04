@@ -1,6 +1,6 @@
 /**
- * MuseFlow Unified Navigation Bar - Minimalism Design
- * V10.5.1 - Extracted from component to prevent style conflicts
+ * MuseFlow Unified Navigation Bar - Dark Theme
+ * V10.6.0 - Dark theme matching footer design
  */
 
 .unified-navbar {
@@ -8,9 +8,9 @@
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(255, 255, 255, 0.92);
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--gray-200, #E5E7EB);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 1000;
     padding: 0;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -21,8 +21,8 @@
 }
 
 .unified-navbar.navbar-scrolled {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
 }
 
 .unified-nav-container {
@@ -39,7 +39,7 @@
     align-items: center;
     gap: 0.75rem;
     text-decoration: none;
-    color: var(--gray-900, #111827);
+    color: #e5e5e5;
     font-weight: 700;
     font-size: 1.25rem;
     transition: all 0.3s;
@@ -72,7 +72,7 @@
     justify-content: center;
     width: 44px;
     height: 44px;
-    color: var(--gray-600, #4B5563);
+    color: #9CA3AF;
     text-decoration: none;
     border-radius: 12px;
     transition: all 0.3s;
@@ -81,16 +81,16 @@
 }
 
 .unified-nav-links a:hover {
-    background: rgba(139, 92, 246, 0.1);
+    background: rgba(139, 92, 246, 0.2);
     color: var(--primary, #8B5CF6);
     transform: scale(1.05);
 }
 
 .unified-nav-links a.active {
-    background: rgba(139, 92, 246, 0.15);
+    background: rgba(139, 92, 246, 0.25);
     color: var(--primary, #8B5CF6);
-    border: 1px solid rgba(139, 92, 246, 0.3);
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
 }
 
 /* Tooltip on hover */
@@ -125,12 +125,12 @@
 }
 
 .unified-nav-btn {
-    background: rgba(139, 92, 246, 0.1);
-    border: 1px solid rgba(139, 92, 246, 0.2);
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.3);
     width: 44px;
     height: 44px;
     border-radius: 12px;
-    color: var(--gray-700, #374151);
+    color: #9CA3AF;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -141,9 +141,9 @@
 }
 
 .unified-nav-btn:hover {
-    background: rgba(139, 92, 246, 0.15);
+    background: rgba(139, 92, 246, 0.25);
     transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
     color: var(--primary, #8B5CF6);
 }
 
@@ -189,7 +189,7 @@
     height: 44px;
     background: none;
     border: none;
-    color: var(--gray-900, #111827);
+    color: #e5e5e5;
     font-size: 1.5rem;
     cursor: pointer;
     border-radius: 12px;
@@ -197,7 +197,7 @@
 }
 
 .mobile-menu-toggle:hover {
-    background: rgba(139, 92, 246, 0.1);
+    background: rgba(139, 92, 246, 0.2);
     color: var(--primary, #8B5CF6);
 }
 
@@ -228,16 +228,16 @@
         top: 64px;
         left: 0;
         right: 0;
-        background: rgba(255, 255, 255, 0.98);
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
         backdrop-filter: blur(20px);
-        border-bottom: 1px solid var(--gray-200, #E5E7EB);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         flex-direction: column;
         gap: 0;
         padding: 0;
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     }
     
     .unified-nav-links.mobile-open {
