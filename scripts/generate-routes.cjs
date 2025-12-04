@@ -50,6 +50,7 @@ const exclude = [
   '/ai-orchestrator-dashboard.html',
   '/ai-orchestrator-sync.html',
   '/canvas-v4-hybrid.html',
+  '/canvas-v4-complete.html',
   '/canvas-v5-final.html',
   '/canvas-v5-final-BROKEN-20251204-143038.html',
   '/canvas-v6-clean.html',
