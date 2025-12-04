@@ -388,10 +388,163 @@
             background: #FFFFFF;
         }
         
+        /* AI 모델 선택 & 설정 바 */
+        .ai-settings-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%);
+            border-radius: 10px;
+            border: 1px solid #D1D5DB;
+        }
+        
+        .ai-model-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .ai-model-selector label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .model-select {
+            padding: 0.5rem 2.5rem 0.5rem 1rem;
+            border: 2px solid #D1D5DB;
+            border-radius: 8px;
+            background: #FFFFFF;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #1F2937;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+        }
+        
+        .model-select:hover {
+            border-color: var(--museflow-primary);
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.15);
+        }
+        
+        .model-select:focus {
+            outline: none;
+            border-color: var(--museflow-primary);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .ai-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-indicator.online {
+            background: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+        
+        .status-indicator.offline {
+            background: #EF4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+        }
+        
+        .status-text {
+            color: #6B7280;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
         .input-container {
             display: flex;
             gap: 1rem;
             align-items: flex-end;
+        }
+        
+        .input-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        
+        .voice-input-button {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #E5E7EB;
+            border-radius: var(--radius-md);
+            background: #FFFFFF;
+            color: #6B7280;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            position: relative;
+        }
+        
+        .voice-input-button:hover {
+            border-color: var(--museflow-primary);
+            color: var(--museflow-primary);
+            background: #F9FAFB;
+            transform: scale(1.05);
+        }
+        
+        .voice-input-button.recording {
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+            color: white;
+            border-color: #DC2626;
+            animation: recording-pulse 1.5s infinite;
+        }
+        
+        @keyframes recording-pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+        }
+        
+        .voice-input-button.recording::after {
+            content: '🎤';
+            position: absolute;
+            top: -25px;
+            right: -10px;
+            font-size: 1.5rem;
+            animation: float 2s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .voice-input-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
         
         .input-box {
@@ -1352,6 +1505,58 @@
             .stat-value {
                 font-size: 1.125rem;
             }
+            
+            /* Mobile: AI Settings Bar */
+            .ai-settings-bar {
+                flex-direction: column;
+                gap: 0.75rem;
+                padding: 0.75rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .ai-model-selector {
+                width: 100%;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .ai-model-selector label {
+                font-size: 0.75rem;
+            }
+            
+            .model-select {
+                width: 100%;
+                font-size: 0.8125rem;
+                padding: 0.625rem 2.5rem 0.625rem 0.875rem;
+            }
+            
+            .ai-status {
+                width: 100%;
+                justify-content: center;
+                padding: 0.625rem;
+                font-size: 0.75rem;
+            }
+            
+            /* Mobile: Input Actions */
+            .input-actions {
+                gap: 0.5rem;
+            }
+            
+            .voice-input-button,
+            .send-button {
+                width: 44px;
+                height: 44px;
+                font-size: 1.125rem;
+            }
+            
+            .input-box {
+                font-size: 16px; /* Prevent iOS zoom */
+                min-height: 50px;
+            }
+            
+            .input-area {
+                padding: 1rem;
+            }
         }
         
         /* Tablet Portrait */
@@ -1667,6 +1872,26 @@
             </div>
             
             <div class="input-area">
+                <!-- AI 모델 선택 & 설정 바 -->
+                <div class="ai-settings-bar">
+                    <div class="ai-model-selector">
+                        <label for="aiModelSelect">
+                            <i data-lucide="sparkles" stroke-width="2"></i>
+                            AI 모델
+                        </label>
+                        <select id="aiModelSelect" class="model-select">
+                            <option value="gpt-4" selected>GPT-4 (가장 강력)</option>
+                            <option value="gpt-3.5">GPT-3.5 Turbo (빠름)</option>
+                            <option value="claude-3">Claude 3 Opus</option>
+                            <option value="gemini-pro">Gemini Pro</option>
+                        </select>
+                    </div>
+                    <div class="ai-status">
+                        <span class="status-indicator online"></span>
+                        <span class="status-text">온라인</span>
+                    </div>
+                </div>
+                
                 <div class="input-container">
                     <textarea 
                         id="messageInput" 
@@ -1674,9 +1899,14 @@
                         placeholder="AI에게 명령하세요... (예: 인상주의 특별전을 3000만원 예산으로 기획해줘)"
                         rows="2"
                     ></textarea>
-                    <button class="send-button" id="sendButton">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
+                    <div class="input-actions">
+                        <button class="voice-input-button" id="voiceButton" title="음성 입력">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <button class="send-button" id="sendButton" title="전송">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1895,6 +2125,195 @@
             });
         });
         
+        // ==========================================
+        // 🎯 AI 모델 선택 및 음성 입력 기능
+        // ==========================================
+        
+        // 현재 선택된 AI 모델
+        let currentAIModel = 'gpt-4';
+        
+        // AI 모델 선택 이벤트
+        const aiModelSelect = document.getElementById('aiModelSelect');
+        if (aiModelSelect) {
+            aiModelSelect.addEventListener('change', function(e) {
+                currentAIModel = e.target.value;
+                console.log('✅ AI 모델 변경:', currentAIModel);
+                
+                // UI 피드백
+                showToast(`AI 모델이 ${e.target.options[e.target.selectedIndex].text}로 변경되었습니다.`);
+            });
+        }
+        
+        // 음성 인식 초기화 (Web Speech API)
+        let recognition = null;
+        let isRecording = false;
+        
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'ko-KR';
+            recognition.continuous = false;
+            recognition.interimResults = true;
+            recognition.maxAlternatives = 1;
+            
+            recognition.onstart = function() {
+                console.log('🎤 음성 인식 시작');
+                isRecording = true;
+                const voiceButton = document.getElementById('voiceButton');
+                if (voiceButton) {
+                    voiceButton.classList.add('recording');
+                }
+            };
+            
+            recognition.onresult = function(event) {
+                let finalTranscript = '';
+                let interimTranscript = '';
+                
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript;
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+                
+                const messageInput = document.getElementById('messageInput');
+                if (finalTranscript) {
+                    // 최종 결과를 입력창에 추가
+                    messageInput.value += (messageInput.value ? ' ' : '') + finalTranscript;
+                    console.log('✅ 음성 인식 완료:', finalTranscript);
+                } else if (interimTranscript) {
+                    // 중간 결과를 미리 보기
+                    console.log('🎤 인식 중:', interimTranscript);
+                }
+            };
+            
+            recognition.onerror = function(event) {
+                console.error('❌ 음성 인식 오류:', event.error);
+                isRecording = false;
+                const voiceButton = document.getElementById('voiceButton');
+                if (voiceButton) {
+                    voiceButton.classList.remove('recording');
+                }
+                
+                // 사용자 친화적 오류 메시지
+                let errorMessage = '음성 인식 중 오류가 발생했습니다.';
+                switch(event.error) {
+                    case 'no-speech':
+                        errorMessage = '음성이 감지되지 않았습니다. 다시 시도해주세요.';
+                        break;
+                    case 'audio-capture':
+                        errorMessage = '마이크를 사용할 수 없습니다. 마이크 권한을 확인해주세요.';
+                        break;
+                    case 'not-allowed':
+                        errorMessage = '마이크 권한이 거부되었습니다. 브라우저 설정을 확인해주세요.';
+                        break;
+                    case 'network':
+                        errorMessage = '네트워크 오류가 발생했습니다.';
+                        break;
+                }
+                showToast(errorMessage, 'error');
+            };
+            
+            recognition.onend = function() {
+                console.log('🎤 음성 인식 종료');
+                isRecording = false;
+                const voiceButton = document.getElementById('voiceButton');
+                if (voiceButton) {
+                    voiceButton.classList.remove('recording');
+                }
+            };
+        }
+        
+        // 음성 입력 버튼 이벤트
+        const voiceButton = document.getElementById('voiceButton');
+        if (voiceButton) {
+            voiceButton.addEventListener('click', function() {
+                if (!recognition) {
+                    showToast('이 브라우저는 음성 인식을 지원하지 않습니다. Chrome, Edge, Safari를 사용해주세요.', 'error');
+                    return;
+                }
+                
+                if (isRecording) {
+                    // 녹음 중지
+                    recognition.stop();
+                    console.log('⏹️ 음성 인식 중지');
+                } else {
+                    // 녹음 시작
+                    try {
+                        recognition.start();
+                        showToast('🎤 음성 입력을 시작합니다. 말씀해주세요.');
+                    } catch (error) {
+                        console.error('음성 인식 시작 실패:', error);
+                        showToast('음성 인식을 시작할 수 없습니다.', 'error');
+                    }
+                }
+            });
+        }
+        
+        // Toast 알림 함수
+        function showToast(message, type = 'info') {
+            // 기존 toast 제거
+            const existingToast = document.querySelector('.custom-toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            
+            const toast = document.createElement('div');
+            toast.className = `custom-toast toast-${type}`;
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'error' ? '#EF4444' : '#10B981'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 10000;
+                animation: slideInRight 0.3s ease-out;
+                font-weight: 500;
+                max-width: 350px;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease-out';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        
+        // Toast 애니메이션 CSS 추가
+        if (!document.getElementById('toast-animations')) {
+            const style = document.createElement('style');
+            style.id = 'toast-animations';
+            style.textContent = `
+                @keyframes slideInRight {
+                    from {
+                        transform: translateX(400px);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+                @keyframes slideOutRight {
+                    from {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateX(400px);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
         // Send Message
         document.getElementById('sendButton').addEventListener('click', sendMessage);
         document.getElementById('messageInput').addEventListener('keydown', function(e) {
@@ -1973,8 +2392,9 @@
         
         async function executeAICommand(command) {
             try {
-                // Add AI thinking message
-                addMessage('ai', '🤔 명령을 분석하고 있습니다...');
+                // AI 모델 정보 표시
+                const modelName = document.getElementById('aiModelSelect')?.options[document.getElementById('aiModelSelect').selectedIndex]?.text || 'GPT-4';
+                addMessage('ai', `🤔 ${modelName}이(가) 명령을 분석하고 있습니다...`);
                 
                 // Add to active tasks in overview panel
                 addActiveTask(command.substring(0, 30) + '...');
@@ -1988,6 +2408,7 @@
                     body: JSON.stringify({
                         command: command,
                         mode: 'conversational',
+                        aiModel: currentAIModel, // ⭐ AI 모델 정보 추가
                         projectContext: {
                             projectId: 'canvas-demo',
                             projectName: 'Canvas V4 작업',
