@@ -570,7 +570,10 @@ body {
         <option>Claude 3.5</option>
         <option>Gemini Pro</option>
     </select>
-    <input class="ai-field" placeholder="AI에게 질문...">
+    <button class="ai-voice" id="voiceBtn" title="음성 입력">
+        <i data-lucide="mic" style="width:16px;height:16px"></i>
+    </button>
+    <input class="ai-field" id="aiInput" placeholder="AI에게 질문하거나 음성 입력...">
     <button class="ai-send">
         <i data-lucide="send" style="width:16px;height:16px"></i>
     </button>

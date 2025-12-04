@@ -1,0 +1,4669 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuseFlow - Canvas V4 Hybrid Layout</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Lucide Icons (Minimalism Design) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- MuseFlow Design System - Removed external CSS for standalone deployment -->
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background: var(--museflow-bg-secondary);
+            color: var(--museflow-text-primary);
+            overflow: hidden;
+            padding-top: 64px; /* Space for Unified Navbar */
+        }
+        
+        /* 3-Column Layout - Infinite Canvas Center */
+        .canvas-container {
+            display: grid;
+            grid-template-columns: 300px 1fr 400px;
+            height: calc(100vh - 64px);
+            gap: 0;
+            position: relative;
+        }
+        
+        /* Left Column - History & Projects */
+        .left-column {
+            background: #FFFFFF;
+            border-right: 1px solid #E5E7EB;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .column-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #E5E7EB;
+            background: #FAFBFC;
+        }
+        
+        .column-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #111827;
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+        }
+        
+        .column-title i {
+            font-size: 1.125rem;
+            color: #8B5CF6;
+        }
+        
+        /* Quick Actions Panel - Clean Design */
+        .quick-actions-panel {
+            padding: 1rem;
+            border-bottom: 1px solid #E5E7EB;
+            background: #FAFBFC;
+        }
+        
+        .quick-actions-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6B7280;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .quick-actions-header i {
+            font-size: 0.875rem;
+            color: #8B5CF6;
+        }
+        
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+        
+        /* Minimalist Quick Action Buttons */
+        .quick-action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 0.5rem;
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 0.6875rem;
+            font-weight: 500;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .quick-action-btn i {
+            font-size: 1.125rem;
+            color: #6B7280;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .quick-action-btn span {
+            line-height: 1.2;
+        }
+        
+        .quick-action-btn:hover {
+            background: #F9FAFB;
+            border-color: #8B5CF6;
+            color: #8B5CF6;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .quick-action-btn:hover i {
+            color: #8B5CF6;
+            transform: scale(1.05);
+        }
+        
+        .quick-action-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* History List - Clean Design */
+        .history-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            background: white;
+        }
+        
+        .history-item {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 0.875rem 1rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .history-item:hover {
+            background: #F9FAFB;
+            border-color: #8B5CF6;
+            transform: translateX(2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .history-item.active {
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+        }
+        
+        .history-title {
+            font-weight: 600;
+            font-size: 0.8125rem;
+            margin-bottom: 0.375rem;
+            line-height: 1.3;
+        }
+        
+        .history-meta {
+            font-size: 0.6875rem;
+            opacity: 0.7;
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+        
+        /* Center Column - Infinite Canvas */
+        .center-column {
+            background: #0a0a0a;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Canvas Viewport */
+        #canvasViewport {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform-origin: 0 0;
+            cursor: grab;
+        }
+        
+        #canvasViewport.dragging {
+            cursor: grabbing;
+        }
+        
+        /* Canvas Background Grid */
+        .center-column::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Canvas Cards */
+        .card {
+            position: absolute;
+            width: 300px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            cursor: move;
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.3);
+        }
+        
+        .card-thumbnail {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        .card-thumbnail.video {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .card-thumbnail.audio {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .card-thumbnail.image {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        
+        .card-thumbnail.data {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        
+        .card-thumbnail.document {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-header {
+            padding: 12px 16px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #111;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: grab;
+        }
+        
+        .card-header:active {
+            cursor: grabbing;
+        }
+        
+        .card-content {
+            padding: 16px;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .card-meta {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .ai-status-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #ECFDF5;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #059669;
+        }
+        
+        .ai-status-badge i {
+            animation: pulse 2s infinite;
+        }
+        
+        .conversation-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .message {
+            display: flex;
+            gap: 1rem;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.user {
+            justify-content: flex-end;
+        }
+        
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        
+        .message.ai .message-avatar {
+            background: linear-gradient(135deg, var(--museflow-primary) 0%, var(--museflow-primary-dark) 100%);
+            color: white;
+        }
+        
+        .message.user .message-avatar {
+            background: #F3F4F6;
+            color: #6B7280;
+        }
+        
+        .message-content {
+            max-width: 70%;
+            background: #F9FAFB;
+            border: 1px solid #E5E7EB;
+            border-radius: 16px;
+            padding: 1rem;
+        }
+        
+        .message.user .message-content {
+            background: linear-gradient(135deg, var(--museflow-primary) 0%, var(--museflow-primary-dark) 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .message-text {
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+        
+        .message-timestamp {
+            font-size: 0.75rem;
+            opacity: 0.6;
+        }
+        
+        /* AI Message Action Buttons */
+        .message-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid #E5E7EB;
+        }
+        
+        .message-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .message-action-btn i {
+            font-size: 0.875rem;
+            color: #6B7280;
+            transition: color 0.2s;
+        }
+        
+        .message-action-btn:hover {
+            background: #F9FAFB;
+            border-color: #8B5CF6;
+            color: #8B5CF6;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .message-action-btn:hover i {
+            color: #8B5CF6;
+        }
+        
+        .message-action-btn.success {
+            background: #ECFDF5;
+            border-color: #10B981;
+            color: #059669;
+        }
+        
+        .message-action-btn.success i {
+            color: #10B981;
+        }
+        
+        .phase-progress {
+            background: #FEF3C7;
+            border: 1px solid #FCD34D;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .phase-title {
+            font-weight: 600;
+            color: #92400E;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .phase-bar {
+            background: #FDE68A;
+            border-radius: 4px;
+            height: 6px;
+            overflow: hidden;
+        }
+        
+        .phase-bar-fill {
+            background: #F59E0B;
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        
+        /* Canvas Controls - Bottom Right */
+        .canvas-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 100;
+        }
+        
+        .canvas-control-btn {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .canvas-control-btn:hover {
+            background: #fff;
+            border-color: #8B5CF6;
+            color: #8B5CF6;
+            transform: scale(1.05);
+        }
+        
+        #zoomLevel {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+        }
+        
+        /* AI Input - Bottom Center Floating */
+        .input-area {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* AI 모델 선택 & 설정 바 */
+        .ai-settings-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%);
+            border-radius: 10px;
+            border: 1px solid #D1D5DB;
+        }
+        
+        .ai-model-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .ai-model-selector label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .model-select {
+            padding: 0.5rem 2.5rem 0.5rem 1rem;
+            border: 2px solid #D1D5DB;
+            border-radius: 8px;
+            background: #FFFFFF;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #1F2937;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+        }
+        
+        .model-select:hover {
+            border-color: var(--museflow-primary);
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.15);
+        }
+        
+        .model-select:focus {
+            outline: none;
+            border-color: var(--museflow-primary);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .ai-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-indicator.online {
+            background: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+        
+        .status-indicator.offline {
+            background: #EF4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+        }
+        
+        .status-text {
+            color: #6B7280;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+        
+        .input-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        
+        .voice-input-button {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #E5E7EB;
+            border-radius: var(--radius-md);
+            background: #FFFFFF;
+            color: #6B7280;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            position: relative;
+        }
+        
+        .voice-input-button:hover {
+            border-color: var(--museflow-primary);
+            color: var(--museflow-primary);
+            background: #F9FAFB;
+            transform: scale(1.05);
+        }
+        
+        .voice-input-button.recording {
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+            color: white;
+            border-color: #DC2626;
+            animation: recording-pulse 1.5s infinite;
+        }
+        
+        @keyframes recording-pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+        }
+        
+        .voice-input-button.recording::after {
+            content: '🎤';
+            position: absolute;
+            top: -25px;
+            right: -10px;
+            font-size: 1.5rem;
+            animation: float 2s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .voice-input-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .input-box {
+            flex: 1;
+            background: #F9FAFB;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            resize: none;
+            min-height: 60px;
+            max-height: 150px;
+            transition: all 0.3s ease;
+        }
+        
+        .input-box:focus {
+            outline: none;
+            border-color: #667eea;
+            background: #FFFFFF;
+        }
+        
+        .send-button {
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--museflow-primary) 0%, var(--museflow-primary-dark) 100%);
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: var(--transition-base);
+            flex-shrink: 0;
+        }
+        
+        .send-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+        
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Right Column - Live Canvas/Dashboard Preview */
+        .right-column {
+            background: #F9FAFB;
+            border-left: 1px solid #E5E7EB;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .preview-tabs {
+            display: flex;
+            border-bottom: 1px solid #E5E7EB;
+            background: #FFFFFF;
+        }
+        
+        .preview-tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: #6B7280;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .preview-tab:hover {
+            background: #F9FAFB;
+            color: #111827;
+        }
+        
+        .preview-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: #FFFFFF;
+        }
+        
+        .preview-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+        
+        .preview-panel {
+            display: none;
+        }
+        
+        .preview-panel.active {
+            display: block;
+        }
+        
+        /* Live Stats Cards */
+        .live-stats {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            padding: 1rem;
+        }
+        
+        .stat-card-mini {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem;
+            background: white;
+            border: 1px solid var(--museflow-border-light);
+            border-radius: var(--radius-md);
+            transition: var(--transition-base);
+        }
+        
+        .stat-card-mini:hover {
+            border-color: var(--museflow-primary);
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.1);
+        }
+        
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.125rem;
+            flex-shrink: 0;
+        }
+        
+        .stat-info {
+            flex: 1;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--museflow-text-secondary);
+            margin-bottom: 0.125rem;
+        }
+        
+        .stat-value {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--museflow-text-primary);
+        }
+        
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: var(--museflow-bg-tertiary);
+            border-bottom: 1px solid var(--museflow-border-light);
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--museflow-text-secondary);
+        }
+        
+        .section-header i {
+            color: var(--museflow-primary);
+        }
+        
+        /* Active Tasks */
+        .active-tasks-section {
+            margin-top: 1rem;
+            background: white;
+            border: 1px solid var(--museflow-border-light);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        
+        .active-tasks-list {
+            padding: 1rem;
+        }
+        
+        .no-tasks {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--museflow-text-tertiary);
+        }
+        
+        .no-tasks i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.3;
+        }
+        
+        .no-tasks p {
+            font-size: 0.875rem;
+        }
+        
+        /* Recent Items */
+        .recent-items-section {
+            margin-top: 1rem;
+            background: white;
+            border: 1px solid var(--museflow-border-light);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        
+        .recent-items-list {
+            padding: 0.5rem;
+        }
+        
+        .recent-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            transition: var(--transition-base);
+            cursor: pointer;
+        }
+        
+        .recent-item:hover {
+            background: var(--museflow-bg-tertiary);
+        }
+        
+        .recent-icon {
+            font-size: 1.5rem;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--museflow-bg-secondary);
+            border-radius: var(--radius-sm);
+            flex-shrink: 0;
+        }
+        
+        .recent-info {
+            flex: 1;
+        }
+        
+        .recent-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--museflow-text-primary);
+            margin-bottom: 0.125rem;
+        }
+        
+        .recent-time {
+            font-size: 0.75rem;
+            color: var(--museflow-text-tertiary);
+        }
+        
+        /* Widgets Grid */
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            padding: 1rem;
+        }
+        
+        .widget-card {
+            background: white;
+            border: 1px solid var(--museflow-border-light);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            transition: var(--transition-base);
+        }
+        
+        .widget-card:hover {
+            border-color: var(--museflow-primary);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+        }
+        
+        /* ⭐ Drag & Drop Styles */
+        .widget-card[draggable="true"] {
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        .widget-card[draggable="true"]:active {
+            cursor: grabbing !important;
+        }
+        
+        .widget-card.dragging {
+            opacity: 0.5;
+            transform: rotate(3deg);
+        }
+        
+        .preview-panel.drop-zone-active {
+            background: rgba(139, 92, 246, 0.05);
+            border: 2px dashed var(--museflow-primary);
+            animation: dropZonePulse 1.5s infinite;
+        }
+        
+        @keyframes dropZonePulse {
+            0%, 100% {
+                background: rgba(139, 92, 246, 0.05);
+            }
+            50% {
+                background: rgba(139, 92, 246, 0.1);
+            }
+        }
+        
+        .widget-header-small {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 700;
+            color: var(--museflow-text-secondary);
+            margin-bottom: 0.75rem;
+        }
+        
+        .widget-header-small i {
+            color: var(--museflow-primary);
+        }
+        
+        .widget-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--museflow-text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .widget-progress {
+            height: 6px;
+            background: var(--museflow-bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .widget-progress-bar {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+        
+        .widget-footer {
+            font-size: 0.75rem;
+            color: var(--museflow-text-tertiary);
+        }
+        
+        .widget-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .widget-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: var(--museflow-bg-secondary);
+            border-radius: var(--radius-sm);
+            font-size: 0.8125rem;
+        }
+        
+        .widget-chart-mini {
+            display: flex;
+            align-items: flex-end;
+            gap: 0.5rem;
+            height: 80px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .chart-bar {
+            flex: 1;
+            border-radius: 4px 4px 0 0;
+            transition: height 0.3s ease;
+        }
+        
+        /* Results Section */
+        .results-section {
+            padding: 1rem;
+        }
+        
+        /* Canvas Preview */
+        .canvas-preview {
+            background: #FFFFFF;
+            border: 2px dashed #E5E7EB;
+            border-radius: 16px;
+            min-height: 400px;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .canvas-node {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            animation: nodeAppear 0.5s ease;
+            position: absolute; /* Changed from relative to absolute for drag & drop */
+            overflow: hidden;
+            cursor: move;
+            user-select: none;
+            min-width: 280px;
+            max-width: 400px;
+            transition: box-shadow 0.2s ease;
+        }
+        
+        .canvas-node:hover {
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
+        }
+        
+        .canvas-node.dragging {
+            opacity: 0.8;
+            cursor: grabbing;
+            z-index: 1000;
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.5);
+        }
+        
+        /* Node type colors */
+        .canvas-node[data-type="budget"] {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        .canvas-node[data-type="chart"] {
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .canvas-node[data-type="concept"] {
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+        
+        .canvas-node[data-type="education"] {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+        
+        .canvas-node[data-type="artwork"] {
+            background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%);
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+        }
+        
+        .canvas-node[data-type="document"] {
+            background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+        
+        /* Node connection indicator */
+        .canvas-node::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.5) 50%, transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes nodeAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .canvas-node-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .canvas-node-title {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        
+        .canvas-node-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .canvas-node-content {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+        
+        /* Dashboard Preview */
+        .dashboard-preview {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .widget-preview {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 1.5rem;
+            animation: widgetAppear 0.5s ease;
+        }
+        
+        @keyframes widgetAppear {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .widget-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .widget-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .widget-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #111827;
+        }
+        
+        .widget-content {
+            font-size: 0.875rem;
+            color: #6B7280;
+            line-height: 1.6;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #9CA3AF;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+        
+        .empty-state-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-state-text {
+            font-size: 0.875rem;
+        }
+        
+        /* Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #F3F4F6;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #D1D5DB;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9CA3AF;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .canvas-container {
+                grid-template-columns: 250px 1fr 350px;
+            }
+        }
+        
+        /* Mobile Optimizations - Enhanced */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 120px; /* Navbar + Mobile Tabs */
+                -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
+            }
+            
+            .canvas-container {
+                grid-template-columns: 1fr;
+                height: calc(100vh - 120px);
+                position: relative;
+            }
+            
+            /* Mobile Tab Navigation - Enhanced */
+            .mobile-tabs {
+                display: flex;
+                position: fixed;
+                top: 64px;
+                left: 0;
+                right: 0;
+                background: white;
+                border-bottom: 2px solid var(--museflow-border-light);
+                z-index: 100;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none; /* Firefox */
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            }
+            
+            .mobile-tabs::-webkit-scrollbar {
+                display: none; /* Chrome, Safari */
+            }
+            
+            .mobile-tab {
+                flex: 1;
+                min-width: 90px;
+                padding: 1rem 0.75rem;
+                text-align: center;
+                font-size: 0.8rem;
+                font-weight: 600;
+                color: var(--museflow-text-secondary);
+                border-bottom: 3px solid transparent;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                cursor: pointer;
+                white-space: nowrap;
+                -webkit-tap-highlight-color: transparent;
+                user-select: none;
+            }
+            
+            .mobile-tab:active {
+                transform: scale(0.95);
+                background: var(--museflow-bg-secondary);
+            }
+            
+            .mobile-tab i {
+                display: block;
+                font-size: 1.5rem;
+                margin-bottom: 0.375rem;
+                transition: transform 0.3s ease;
+            }
+            
+            .mobile-tab.active {
+                color: var(--museflow-primary);
+                border-bottom-color: var(--museflow-primary);
+                background: linear-gradient(to bottom, var(--museflow-primary-light) 0%, white 100%);
+            }
+            
+            .mobile-tab.active i {
+                transform: scale(1.1);
+            }
+            
+            /* Mobile Columns - Enhanced */
+            .left-column,
+            .center-column,
+            .right-column {
+                display: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: var(--museflow-bg-secondary);
+                overflow-y: auto;
+                overflow-x: hidden;
+                -webkit-overflow-scrolling: touch;
+                will-change: transform, opacity;
+            }
+            
+            .left-column.mobile-active,
+            .center-column.mobile-active,
+            .right-column.mobile-active {
+                display: flex;
+                animation: slideInMobile 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            
+            @keyframes slideInMobile {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            /* Mobile Input Area - Enhanced */
+            .input-area {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: white;
+                border-top: 1px solid var(--museflow-border-light);
+                padding: 0.875rem;
+                z-index: 99;
+                box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+                safe-area-inset-bottom: env(safe-area-inset-bottom);
+                padding-bottom: calc(0.875rem + env(safe-area-inset-bottom));
+            }
+            
+            .message-input-container {
+                gap: 0.625rem;
+            }
+            
+            .message-input {
+                font-size: 16px !important; /* Prevent iOS zoom */
+                padding: 0.875rem !important;
+                border-radius: 12px !important;
+                min-height: 48px;
+                resize: none;
+                max-height: 120px;
+            }
+            
+            .send-button {
+                width: 48px;
+                height: 48px;
+                min-width: 48px;
+                border-radius: 12px;
+                font-size: 1.25rem;
+                transition: all 0.2s ease;
+            }
+            
+            .send-button:active {
+                transform: scale(0.9);
+            }
+            
+            /* Conversation Area Mobile - Enhanced */
+            .conversation-area {
+                padding-bottom: 100px; /* Space for fixed input */
+                padding-top: 1rem;
+            }
+            
+            .message-wrapper {
+                margin-bottom: 1rem;
+            }
+            
+            .message-bubble {
+                max-width: 85%;
+                padding: 0.875rem 1rem;
+                font-size: 0.95rem;
+                line-height: 1.5;
+            }
+            
+            /* Preview Tabs Mobile - Enhanced */
+            .preview-tabs {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                gap: 0.5rem;
+                padding: 0 0.5rem;
+            }
+            
+            .preview-tabs::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .preview-tab {
+                font-size: 0.85rem;
+                padding: 0.75rem 1.25rem;
+                min-width: auto;
+                white-space: nowrap;
+                border-radius: 8px;
+            }
+            
+            /* History Items - Touch-friendly */
+            .history-item {
+                padding: 1.125rem;
+                margin-bottom: 0.75rem;
+                border-radius: 12px;
+                transition: all 0.2s ease;
+                min-height: 64px;
+            }
+            
+            .history-item:active {
+                transform: scale(0.98);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            }
+            
+            .history-title {
+                font-size: 0.95rem;
+                line-height: 1.4;
+            }
+            
+            .history-time {
+                font-size: 0.75rem;
+                margin-top: 0.375rem;
+            }
+            
+            /* Quick Actions Mobile - Enhanced */
+            .quick-actions-panel {
+                padding: 1rem;
+            }
+            
+            .quick-actions-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.75rem;
+            }
+            
+            .quick-action-btn {
+                padding: 1rem 0.5rem;
+                font-size: 0.7rem;
+                min-height: 80px;
+                border-radius: 12px;
+                transition: all 0.2s ease;
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            .quick-action-btn:active {
+                transform: scale(0.95);
+                box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+            }
+            
+            .quick-action-btn i {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .quick-action-btn span {
+                font-size: 0.7rem;
+                line-height: 1.3;
+                display: block;
+            }
+            
+            /* Live Stats Mobile - Enhanced */
+            .live-stats {
+                padding: 1rem;
+                gap: 0.75rem;
+            }
+            
+            .stat-card-mini {
+                padding: 1rem;
+                border-radius: 12px;
+                min-height: 72px;
+            }
+            
+            .stat-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.125rem;
+            }
+            
+            .stat-value {
+                font-size: 1.25rem;
+                font-weight: 700;
+            }
+            
+            .stat-label {
+                font-size: 0.75rem;
+            }
+            
+            /* Widgets Mobile - Enhanced */
+            .widgets-container {
+                padding: 1rem;
+                gap: 0.875rem;
+            }
+            
+            .widget-card {
+                padding: 1rem;
+                border-radius: 12px;
+                transition: all 0.2s ease;
+            }
+            
+            .widget-card:active {
+                transform: scale(0.98);
+            }
+            
+            .widget-title {
+                font-size: 0.85rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .widget-value {
+                font-size: 1.5rem;
+                font-weight: 700;
+            }
+            
+            /* Column Headers Mobile */
+            .column-header {
+                padding: 1rem;
+                position: sticky;
+                top: 0;
+                background: white;
+                z-index: 10;
+                border-bottom: 1px solid var(--museflow-border-light);
+            }
+            
+            .column-title {
+                font-size: 1rem;
+            }
+            
+            /* Scrollbar Hide Mobile */
+            .left-column::-webkit-scrollbar,
+            .center-column::-webkit-scrollbar,
+            .right-column::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .left-column,
+            .center-column,
+            .right-column {
+                scrollbar-width: none;
+            }
+            
+            /* Safe Area Support */
+            @supports (padding: max(0px)) {
+                body {
+                    padding-top: max(120px, env(safe-area-inset-top) + 120px);
+                }
+                
+                .mobile-tabs {
+                    top: max(64px, env(safe-area-inset-top) + 64px);
+                }
+            }
+        }
+        
+        /* Small Mobile Devices (iPhone SE, etc.) */
+        @media (max-width: 375px) {
+            .mobile-tab {
+                min-width: 75px;
+                padding: 0.875rem 0.5rem;
+                font-size: 0.7rem;
+            }
+            
+            .mobile-tab i {
+                font-size: 1.25rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .quick-actions-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+            }
+            
+            .quick-action-btn {
+                min-height: 72px;
+                padding: 0.75rem 0.375rem;
+            }
+            
+            .quick-action-btn i {
+                font-size: 1.25rem;
+            }
+            
+            .quick-action-btn span {
+                font-size: 0.65rem;
+            }
+            
+            .message-bubble {
+                max-width: 90%;
+                padding: 0.75rem 0.875rem;
+                font-size: 0.9rem;
+            }
+            
+            .stat-card-mini {
+                padding: 0.875rem;
+            }
+            
+            .stat-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+            
+            .stat-value {
+                font-size: 1.125rem;
+            }
+            
+            /* Mobile: AI Settings Bar */
+            .ai-settings-bar {
+                flex-direction: column;
+                gap: 0.75rem;
+                padding: 0.75rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .ai-model-selector {
+                width: 100%;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .ai-model-selector label {
+                font-size: 0.75rem;
+            }
+            
+            .model-select {
+                width: 100%;
+                font-size: 0.8125rem;
+                padding: 0.625rem 2.5rem 0.625rem 0.875rem;
+            }
+            
+            .ai-status {
+                width: 100%;
+                justify-content: center;
+                padding: 0.625rem;
+                font-size: 0.75rem;
+            }
+            
+            /* Mobile: Input Actions */
+            .input-actions {
+                gap: 0.5rem;
+            }
+            
+            .voice-input-button,
+            .send-button {
+                width: 44px;
+                height: 44px;
+                font-size: 1.125rem;
+            }
+            
+            .input-box {
+                font-size: 16px; /* Prevent iOS zoom */
+                min-height: 50px;
+            }
+            
+            .input-area {
+                padding: 1rem;
+            }
+        }
+        
+        /* Tablet Portrait */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .canvas-container {
+                grid-template-columns: 280px 1fr 380px;
+            }
+            
+            .quick-actions-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        /* Tablet Landscape */
+        @media (min-width: 1025px) and (max-width: 1200px) {
+            .canvas-container {
+                grid-template-columns: 280px 1fr 400px;
+            }
+        }
+        
+        /* Hide mobile tabs on desktop */
+        .mobile-tabs {
+            display: none;
+        }
+        
+        /* Touch Device Optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            /* Larger tap targets for touch devices */
+            button,
+            .history-item,
+            .quick-action-btn,
+            .preview-tab,
+            .mobile-tab {
+                min-height: 44px; /* iOS minimum */
+            }
+            
+            /* Disable hover effects on touch devices */
+            .history-item:hover,
+            .quick-action-btn:hover,
+            .preview-tab:hover {
+                transform: none;
+            }
+            
+            /* Better scroll momentum */
+            * {
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+        
+        /* High DPI Screens */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            /* Sharper text rendering */
+            body {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+        }
+        
+        /* Landscape Mobile */
+        @media (max-width: 768px) and (orientation: landscape) {
+            body {
+                padding-top: 100px; /* Reduced for landscape */
+            }
+            
+            .mobile-tabs {
+                padding: 0.5rem 0;
+            }
+            
+            .mobile-tab {
+                padding: 0.625rem 0.5rem;
+            }
+            
+            .mobile-tab i {
+                font-size: 1.125rem;
+                margin-bottom: 0.125rem;
+            }
+            
+            .canvas-container {
+                height: calc(100vh - 100px);
+            }
+            
+            .input-area {
+                padding: 0.625rem;
+            }
+            
+            .conversation-area {
+                padding-bottom: 75px;
+            }
+        }
+    </style>
+
+    <style>
+        /* MuseFlow Footer Styles */
+        .museflow-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #e5e5e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 999999;
+            font-size: 0.75rem;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .museflow-footer-content {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .museflow-footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: #8B5CF6;
+        }
+
+        .museflow-footer-divider {
+            width: 1px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .museflow-footer-text {
+            color: #e5e5e5;
+        }
+
+        .museflow-footer-version {
+            font-weight: 600;
+            color: #60A5FA;
+        }
+
+        /* Adjust body padding to prevent content overlap */
+        body {
+            padding-bottom: 40px !important;
+        }
+    </style>
+
+</head>
+<body>
+    <!-- MuseFlow Unified Navigation Bar Component - Identical to Dashboard -->
+    <nav class="unified-navbar">
+        <div class="unified-nav-container">
+            <!-- Logo -->
+            <a href="/landing.html" class="unified-nav-logo">
+                <img src="/static/images/logo-neon-m.png" alt="MuseFlow" loading="lazy">
+                <span>MuseFlow</span>
+            </a>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="메뉴 열기/닫기">
+                <i data-lucide="menu" stroke-width="2"></i>
+            </button>
+            
+            <!-- Main Navigation - Icon Only -->
+            <ul class="unified-nav-links" id="unifiedNavLinks">
+                <li><a href="/landing.html" data-page="home" data-tooltip="Home">
+                    <i data-lucide="home" stroke-width="2"></i>
+                </a></li>
+                <li><a href="/dashboard.html" data-page="dashboard" data-tooltip="Dashboard">
+                    <i data-lucide="layout-dashboard" stroke-width="2"></i>
+                </a></li>
+                <li><a href="/canvas-v4-hybrid.html" data-page="canvas" data-tooltip="Canvas" class="active">
+                    <i data-lucide="workflow" stroke-width="2"></i>
+                </a></li>
+                <li><a href="/workflow-tools.html" data-page="workflow" data-tooltip="Tools">
+                    <i data-lucide="wrench" stroke-width="2"></i>
+                </a></li>
+                <li><a href="/budget.html" data-page="budget" data-tooltip="Budget">
+                    <i data-lucide="circle-dollar-sign" stroke-width="2"></i>
+                </a></li>
+                <li><a href="/analytics-dashboard.html" data-page="analytics" data-tooltip="Analytics">
+                    <i data-lucide="bar-chart-3" stroke-width="2"></i>
+                </a></li>
+                <li><a href="/google-mcp.html" data-page="google-mcp" data-tooltip="Google AI">
+                    <i data-lucide="brain" stroke-width="2"></i>
+                </a></li>
+            </ul>
+            
+            <!-- Actions - Icon Only -->
+            <div class="unified-nav-actions">
+                <!-- AI Recommendations -->
+                <button class="unified-nav-btn primary" onclick="showAIRecommendations()" data-tooltip="AI 추천">
+                    <i data-lucide="sparkles" stroke-width="2"></i>
+                </button>
+                
+                <!-- Favorites -->
+                <button class="unified-nav-btn" onclick="filterFavorites()" data-tooltip="즐겨찾기">
+                    <i data-lucide="star" stroke-width="2"></i>
+                </button>
+                
+                <!-- Notifications -->
+                <button class="unified-nav-btn" onclick="toggleNotifications()" data-tooltip="알림">
+                    <i data-lucide="bell" stroke-width="2"></i>
+                </button>
+                
+                <!-- Help -->
+                <a href="/help-center.html" class="unified-nav-btn" data-tooltip="도움말">
+                    <i data-lucide="help-circle" stroke-width="2"></i>
+                </a>
+                
+                <!-- Settings -->
+                <a href="/account.html" class="unified-nav-btn" data-tooltip="설정">
+                    <i data-lucide="settings" stroke-width="2"></i>
+                </a>
+                
+                <!-- Account -->
+                <a href="/account.html" class="unified-nav-btn" data-tooltip="내 계정">
+                    <i data-lucide="user" stroke-width="2"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Mobile Tab Navigation (visible only on mobile) -->
+    <div class="mobile-tabs">
+        <div class="mobile-tab active" data-mobile-tab="history">
+            <i data-lucide="clock" stroke-width="2"></i>
+            <span>History</span>
+        </div>
+        <div class="mobile-tab" data-mobile-tab="conversation">
+            <i data-lucide="message-circle" stroke-width="2"></i>
+            <span>AI Chat</span>
+        </div>
+        <div class="mobile-tab" data-mobile-tab="preview">
+            <i data-lucide="eye" stroke-width="2"></i>
+            <span>Preview</span>
+        </div>
+    </div>
+    
+    <div class="canvas-container">
+        <!-- Left Column: History & Projects -->
+        <div class="left-column">
+            <div class="column-header">
+                <h2 class="column-title">
+                    <i data-lucide="clock" stroke-width="2"></i>
+                    History & Projects
+                </h2>
+            </div>
+            
+            <!-- Quick Actions Panel -->
+            <div class="quick-actions-panel">
+                <div class="quick-actions-header">
+                    <i data-lucide="zap" stroke-width="2"></i>
+                    <span>빠른 작업</span>
+                </div>
+                <div class="quick-actions-grid">
+                    <button class="quick-action-btn" data-action="exhibition-label">
+                        <i data-lucide="tag" stroke-width="2"></i>
+                        <span>전시 라벨</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="budget-approval">
+                        <i data-lucide="coins" stroke-width="2"></i>
+                        <span>예산 승인</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="artwork-selection">
+                        <i data-lucide="palette" stroke-width="2"></i>
+                        <span>소장품 선정</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="promotion-plan">
+                        <i data-lucide="megaphone" stroke-width="2"></i>
+                        <span>홍보 계획</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="report-writing">
+                        <i data-lucide="file-text" stroke-width="2"></i>
+                        <span>보고서</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="schedule-management">
+                        <i data-lucide="calendar" stroke-width="2"></i>
+                        <span>일정 관리</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="education-program">
+                        <i data-lucide="graduation-cap" stroke-width="2"></i>
+                        <span>교육 프로그램</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="research">
+                        <i data-lucide="search" stroke-width="2"></i>
+                        <span>자료 조사</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="visitor-guide">
+                        <i data-lucide="message-circle" stroke-width="2"></i>
+                        <span>방문객 안내</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="space-optimization">
+                        <i data-lucide="layout" stroke-width="2"></i>
+                        <span>공간 최적화</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="history-list" id="historyList">
+                <div class="history-item active">
+                    <div class="history-title">인상주의 특별전 기획</div>
+                    <div class="history-meta">
+                        <span>전시 기획</span>
+                        <span>방금 전</span>
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-title">2024년 1분기 예산 승인</div>
+                    <div class="history-meta">
+                        <span>예산 승인</span>
+                        <span>2시간 전</span>
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-title">어린이 교육 프로그램</div>
+                    <div class="history-meta">
+                        <span>교육 프로그램</span>
+                        <span>어제</span>
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-title">현대미술 소장품 선정</div>
+                    <div class="history-meta">
+                        <span>소장품 선정</span>
+                        <span>3일 전</span>
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-title">SNS 홍보 캠페인</div>
+                    <div class="history-meta">
+                        <span>홍보 계획</span>
+                        <span>1주일 전</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Center Column: AI Conversation -->
+        <div class="right-column">
+            <div class="preview-tabs">
+                <div class="preview-tab active" data-tab="overview">
+                    <i class="fas fa-chart-line"></i> 실시간 현황
+                </div>
+                <div class="preview-tab" data-tab="widgets">
+                    <i class="fas fa-th"></i> 위젯
+                </div>
+                <div class="preview-tab" data-tab="results">
+                    <i class="fas fa-file-alt"></i> 생성 결과
+                </div>
+            </div>
+            
+            <div class="preview-content">
+                <!-- Overview Panel - 실시간 현황 -->
+                <div class="preview-panel active" id="overviewPanel">
+                    <div class="live-stats">
+                        <div class="stat-card-mini">
+                            <div class="stat-icon" style="background: var(--museflow-primary-light); color: var(--museflow-primary);">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-label">오늘의 작업</div>
+                                <div class="stat-value">5개</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card-mini">
+                            <div class="stat-icon" style="background: var(--status-success-bg); color: var(--status-success);">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-label">완료</div>
+                                <div class="stat-value">3개</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card-mini">
+                            <div class="stat-icon" style="background: var(--status-warning-bg); color: var(--status-warning);">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-label">진행 중</div>
+                                <div class="stat-value" id="activeTasksCount">0개</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI 작업 진행 상황 -->
+                    <div class="active-tasks-section">
+                        <div class="section-header">
+                            <i class="fas fa-robot"></i>
+                            <span>AI 작업 진행 중</span>
+                        </div>
+                        <div id="activeTasksList" class="active-tasks-list">
+                            <div class="no-tasks">
+                                <i class="fas fa-coffee"></i>
+                                <p>현재 진행 중인 작업이 없습니다</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 최근 생성 항목 -->
+                    <div class="recent-items-section">
+                        <div class="section-header">
+                            <i class="fas fa-history"></i>
+                            <span>최근 생성 항목</span>
+                        </div>
+                        <div id="recentItemsList" class="recent-items-list">
+                            <div class="recent-item">
+                                <div class="recent-icon">📝</div>
+                                <div class="recent-info">
+                                    <div class="recent-title">전시 라벨 문서</div>
+                                    <div class="recent-time">5분 전</div>
+                                </div>
+                            </div>
+                            <div class="recent-item">
+                                <div class="recent-icon">💰</div>
+                                <div class="recent-info">
+                                    <div class="recent-title">예산 승인 요청서</div>
+                                    <div class="recent-time">1시간 전</div>
+                                </div>
+                            </div>
+                            <div class="recent-item">
+                                <div class="recent-icon">🎨</div>
+                                <div class="recent-info">
+                                    <div class="recent-title">소장품 선정 보고서</div>
+                                    <div class="recent-time">어제</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Widgets Panel - 대시보드 위젯 (103개 동적 로딩) -->
+                <div class="preview-panel" id="widgetsPanel">
+                    <!-- Widget Controls -->
+                    <div class="widget-controls" style="padding: 1rem; background: white; border-bottom: 1px solid var(--museflow-border-light); position: sticky; top: 0; z-index: 10;">
+                        <div style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;">
+                            <input 
+                                type="text" 
+                                id="widgetSearch" 
+                                placeholder="위젯 검색... (이름, 설명)" 
+                                style="flex: 1; padding: 0.625rem 1rem; border: 1px solid var(--museflow-border-light); border-radius: var(--radius-md); font-size: 0.875rem;"
+                            />
+                            <button id="refreshWidgets" style="padding: 0.625rem 1rem; background: var(--museflow-primary); color: white; border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600; white-space: nowrap;">
+                                <i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i>
+                            </button>
+                        </div>
+                        <div id="widgetCategories" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            <!-- Categories will be loaded dynamically -->
+                        </div>
+                        <div id="widgetCount" style="margin-top: 0.75rem; font-size: 0.875rem; color: var(--museflow-text-secondary);">
+                            로딩 중...
+                        </div>
+                    </div>
+                    
+                    <!-- Widgets Grid - Dynamic Loading -->
+                    <div class="widgets-grid" id="liveWidgets" style="padding: 1rem; max-height: calc(100vh - 300px); overflow-y: auto;">
+                        <div class="loading-state" style="text-align: center; padding: 3rem 1rem; color: var(--museflow-text-secondary);">
+                            <i data-lucide="loader" class="spin" style="width: 48px; height: 48px; margin: 0 auto 1rem;"></i>
+                            <div style="font-size: 1rem; font-weight: 600;">위젯 로딩 중...</div>
+                            <div style="font-size: 0.875rem; margin-top: 0.5rem;">103개 위젯을 불러오고 있습니다</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Results Panel - AI 생성 결과 -->
+                <div class="preview-panel" id="resultsPanel">
+                    <!-- Canvas Controls -->
+                    <div id="canvasControls" style="padding: 1rem; background: white; border-bottom: 1px solid var(--museflow-border-light); display: none;">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <i data-lucide="move" style="width: 18px; height: 18px; color: var(--museflow-primary);"></i>
+                                <span style="font-size: 0.875rem; font-weight: 600; color: var(--museflow-text-primary);">노드를 드래그하여 재배치</span>
+                            </div>
+                            <button 
+                                id="resetLayoutBtn" 
+                                onclick="resetCanvasLayout()"
+                                style="
+                                    padding: 0.5rem 1rem;
+                                    background: white;
+                                    color: var(--museflow-text-secondary);
+                                    border: 1px solid var(--museflow-border-light);
+                                    border-radius: var(--radius-md);
+                                    font-size: 0.875rem;
+                                    font-weight: 500;
+                                    cursor: pointer;
+                                    transition: all 0.2s ease;
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.5rem;
+                                "
+                                onmouseover="this.style.background='var(--museflow-bg-secondary)'; this.style.borderColor='var(--museflow-primary)'; this.style.color='var(--museflow-primary)';"
+                                onmouseout="this.style.background='white'; this.style.borderColor='var(--museflow-border-light)'; this.style.color='var(--museflow-text-secondary)';"
+                            >
+                                <i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i>
+                                레이아웃 초기화
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="canvasResults" class="results-section">
+                        <div class="empty-state">
+                            <i class="fas fa-magic"></i>
+                            <div class="empty-state-title">AI 생성 결과</div>
+                            <div class="empty-state-text">AI가 작업을 완료하면 여기에 결과가 표시됩니다</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+        <!-- Right Column: Live Dashboard -->
+        <div class="center-column">
+            <!-- Infinite Canvas Viewport -->
+            <div id="canvasViewport"></div>
+            
+            <!-- Canvas Controls - Bottom Right -->
+            <div class="canvas-controls">
+                <div class="canvas-control-btn" id="zoomIn" title="확대">
+                    <i data-lucide="plus"></i>
+                </div>
+                <div id="zoomLevel">100%</div>
+                <div class="canvas-control-btn" id="zoomOut" title="축소">
+                    <i data-lucide="minus"></i>
+                </div>
+                <div class="canvas-control-btn" id="fitScreen" title="화면 맞춤">
+                    <i data-lucide="maximize-2"></i>
+                </div>
+            </div>
+            
+            <div class="input-area">
+                <!-- AI 모델 선택 & 설정 바 -->
+                <div class="ai-settings-bar">
+                    <div class="ai-model-selector">
+                        <label for="aiModelSelect">
+                            <i data-lucide="sparkles" stroke-width="2"></i>
+                            AI 모델
+                        </label>
+                        <select id="aiModelSelect" class="model-select">
+                            <option value="gpt-4" selected>GPT-4 (가장 강력)</option>
+                            <option value="gpt-3.5">GPT-3.5 Turbo (빠름)</option>
+                            <option value="claude-3">Claude 3 Opus</option>
+                            <option value="gemini-pro">Gemini Pro</option>
+                        </select>
+                    </div>
+                    <div class="ai-status">
+                        <span class="status-indicator online"></span>
+                        <span class="status-text">온라인</span>
+                    </div>
+                </div>
+                
+                <div class="input-container">
+                    <textarea 
+                        id="messageInput" 
+                        class="input-box" 
+                        placeholder="AI에게 명령하세요... (예: 인상주의 특별전을 3000만원 예산으로 기획해줘)"
+                        rows="2"
+                    ></textarea>
+                    <div class="input-actions">
+                        <button class="voice-input-button" id="voiceButton" title="음성 입력">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <button class="send-button" id="sendButton" title="전송">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    <script>
+        // State
+        let eventSource = null;
+        let sessionId = null;
+        
+        // ⭐ Conversation History
+        let conversationHistory = [];
+        let currentConversationId = null;
+        
+        // Tab Switching - Updated for new panels
+        document.querySelectorAll('.preview-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.dataset.tab;
+                
+                // Update active tab
+                document.querySelectorAll('.preview-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update active panel
+                document.querySelectorAll('.preview-panel').forEach(p => p.classList.remove('active'));
+                
+                // Show corresponding panel
+                const panelMap = {
+                    'overview': 'overviewPanel',
+                    'widgets': 'widgetsPanel',
+                    'results': 'resultsPanel'
+                };
+                
+                const panelId = panelMap[tabName];
+                if (panelId) {
+                    document.getElementById(panelId).classList.add('active');
+                }
+            });
+        });
+        
+        // History Item Click
+        document.querySelectorAll('.history-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.history-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // ==========================================
+        // 🎯 AI 모델 선택 및 음성 입력 기능
+        // ==========================================
+        
+        // 현재 선택된 AI 모델
+        let currentAIModel = 'gpt-4';
+        
+        // AI 모델 선택 이벤트
+        const aiModelSelect = document.getElementById('aiModelSelect');
+        if (aiModelSelect) {
+            aiModelSelect.addEventListener('change', function(e) {
+                currentAIModel = e.target.value;
+                console.log('✅ AI 모델 변경:', currentAIModel);
+                
+                // UI 피드백
+                showToast(`AI 모델이 ${e.target.options[e.target.selectedIndex].text}로 변경되었습니다.`);
+            });
+        }
+        
+        // 음성 인식 초기화 (Web Speech API)
+        let recognition = null;
+        let isRecording = false;
+        
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'ko-KR';
+            recognition.continuous = false;
+            recognition.interimResults = true;
+            recognition.maxAlternatives = 1;
+            
+            recognition.onstart = function() {
+                console.log('🎤 음성 인식 시작');
+                isRecording = true;
+                const voiceButton = document.getElementById('voiceButton');
+                if (voiceButton) {
+                    voiceButton.classList.add('recording');
+                }
+            };
+            
+            recognition.onresult = function(event) {
+                let finalTranscript = '';
+                let interimTranscript = '';
+                
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript;
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+                
+                const messageInput = document.getElementById('messageInput');
+                if (finalTranscript) {
+                    // 최종 결과를 입력창에 추가
+                    messageInput.value += (messageInput.value ? ' ' : '') + finalTranscript;
+                    console.log('✅ 음성 인식 완료:', finalTranscript);
+                } else if (interimTranscript) {
+                    // 중간 결과를 미리 보기
+                    console.log('🎤 인식 중:', interimTranscript);
+                }
+            };
+            
+            recognition.onerror = function(event) {
+                console.error('❌ 음성 인식 오류:', event.error);
+                isRecording = false;
+                const voiceButton = document.getElementById('voiceButton');
+                if (voiceButton) {
+                    voiceButton.classList.remove('recording');
+                }
+                
+                // 사용자 친화적 오류 메시지
+                let errorMessage = '음성 인식 중 오류가 발생했습니다.';
+                switch(event.error) {
+                    case 'no-speech':
+                        errorMessage = '음성이 감지되지 않았습니다. 다시 시도해주세요.';
+                        break;
+                    case 'audio-capture':
+                        errorMessage = '마이크를 사용할 수 없습니다. 마이크 권한을 확인해주세요.';
+                        break;
+                    case 'not-allowed':
+                        errorMessage = '마이크 권한이 거부되었습니다. 브라우저 설정을 확인해주세요.';
+                        break;
+                    case 'network':
+                        errorMessage = '네트워크 오류가 발생했습니다.';
+                        break;
+                }
+                showToast(errorMessage, 'error');
+            };
+            
+            recognition.onend = function() {
+                console.log('🎤 음성 인식 종료');
+                isRecording = false;
+                const voiceButton = document.getElementById('voiceButton');
+                if (voiceButton) {
+                    voiceButton.classList.remove('recording');
+                }
+            };
+        }
+        
+        // 음성 입력 버튼 이벤트
+        const voiceButton = document.getElementById('voiceButton');
+        if (voiceButton) {
+            voiceButton.addEventListener('click', function() {
+                if (!recognition) {
+                    showToast('이 브라우저는 음성 인식을 지원하지 않습니다. Chrome, Edge, Safari를 사용해주세요.', 'error');
+                    return;
+                }
+                
+                if (isRecording) {
+                    // 녹음 중지
+                    recognition.stop();
+                    console.log('⏹️ 음성 인식 중지');
+                } else {
+                    // 녹음 시작
+                    try {
+                        recognition.start();
+                        showToast('🎤 음성 입력을 시작합니다. 말씀해주세요.');
+                    } catch (error) {
+                        console.error('음성 인식 시작 실패:', error);
+                        showToast('음성 인식을 시작할 수 없습니다.', 'error');
+                    }
+                }
+            });
+        }
+        
+        // Toast 알림 함수
+        function showToast(message, type = 'info') {
+            // 기존 toast 제거
+            const existingToast = document.querySelector('.custom-toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            
+            const toast = document.createElement('div');
+            toast.className = `custom-toast toast-${type}`;
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'error' ? '#EF4444' : '#10B981'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 10000;
+                animation: slideInRight 0.3s ease-out;
+                font-weight: 500;
+                max-width: 350px;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease-out';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        
+        // Toast 애니메이션 CSS 추가
+        if (!document.getElementById('toast-animations')) {
+            const style = document.createElement('style');
+            style.id = 'toast-animations';
+            style.textContent = `
+                @keyframes slideInRight {
+                    from {
+                        transform: translateX(400px);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+                @keyframes slideOutRight {
+                    from {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateX(400px);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        // Send Message
+        document.getElementById('sendButton').addEventListener('click', sendMessage);
+        document.getElementById('messageInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message to conversation
+            addMessage('user', message);
+            
+            // Clear input
+            input.value = '';
+            
+            // Disable send button
+            document.getElementById('sendButton').disabled = true;
+            
+            // Send to AI
+            await executeAICommand(message);
+        }
+        
+        function addMessage(type, text, showActions = false) {
+            const conversationArea = document.getElementById('conversationArea');
+            const timestamp = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+            const messageId = `msg_${Date.now()}`;
+            
+            const actionsHtml = showActions && type === 'ai' ? `
+                <div class="message-actions">
+                    <button class="message-action-btn" onclick="copyMessage('${messageId}')">
+                        <i data-lucide="copy" stroke-width="2"></i>
+                        <span>복사</span>
+                    </button>
+                    <button class="message-action-btn" onclick="saveToNotion('${messageId}')">
+                        <i data-lucide="book-open" stroke-width="2"></i>
+                        <span>Notion</span>
+                    </button>
+                    <button class="message-action-btn" onclick="saveToFigma('${messageId}')">
+                        <i data-lucide="figma" stroke-width="2"></i>
+                        <span>Figma</span>
+                    </button>
+                </div>
+            ` : '';
+            
+            const messageHtml = `
+                <div class="message ${type}" id="${messageId}">
+                    ${type === 'ai' ? `
+                    <div class="message-avatar">
+                        <i data-lucide="sparkles" stroke-width="2"></i>
+                    </div>
+                    ` : ''}
+                    <div class="message-content">
+                        <div class="message-text">${text}</div>
+                        <div class="message-timestamp">${timestamp}</div>
+                        ${actionsHtml}
+                    </div>
+                    ${type === 'user' ? `
+                    <div class="message-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            conversationArea.insertAdjacentHTML('beforeend', messageHtml);
+            conversationArea.scrollTop = conversationArea.scrollHeight;
+            
+            // ⭐ Save to conversation history
+            conversationHistory.push({
+                id: messageId,
+                type: type,
+                text: text,
+                timestamp: timestamp,
+                showActions: showActions
+            });
+            
+            // Auto-save conversation to localStorage
+            saveConversation();
+            
+            return messageId;
+        }
+        
+        /**
+         * ⭐ Save conversation to localStorage
+         */
+        function saveConversation() {
+            if (!currentConversationId) {
+                currentConversationId = `conv_${Date.now()}`;
+            }
+            
+            const conversation = {
+                id: currentConversationId,
+                title: getConversationTitle(),
+                messages: conversationHistory,
+                timestamp: new Date().toISOString(),
+                aiModel: currentAIModel || 'gpt-4'
+            };
+            
+            // Get existing conversations
+            const saved = JSON.parse(localStorage.getItem('museflow_conversations') || '[]');
+            
+            // Update or add current conversation
+            const index = saved.findIndex(c => c.id === currentConversationId);
+            if (index >= 0) {
+                saved[index] = conversation;
+            } else {
+                saved.unshift(conversation);
+            }
+            
+            // Keep only last 50 conversations
+            const limited = saved.slice(0, 50);
+            localStorage.setItem('museflow_conversations', JSON.stringify(limited));
+            
+            console.log('💾 Conversation saved:', currentConversationId);
+        }
+        
+        /**
+         * ⭐ Get conversation title (from first user message)
+         */
+        function getConversationTitle() {
+            const firstUserMessage = conversationHistory.find(m => m.type === 'user');
+            if (firstUserMessage) {
+                const title = firstUserMessage.text.substring(0, 50);
+                return title + (firstUserMessage.text.length > 50 ? '...' : '');
+            }
+            return '새 대화';
+        }
+        
+        /**
+         * ⭐ Load conversation from localStorage
+         */
+        function loadConversation(conversationId) {
+            const saved = JSON.parse(localStorage.getItem('museflow_conversations') || '[]');
+            const conversation = saved.find(c => c.id === conversationId);
+            
+            if (conversation) {
+                currentConversationId = conversation.id;
+                conversationHistory = conversation.messages;
+                
+                // Clear conversation area
+                const conversationArea = document.getElementById('conversationArea');
+                conversationArea.innerHTML = '';
+                
+                // Render all messages
+                conversation.messages.forEach(msg => {
+                    addMessage(msg.type, msg.text, msg.showActions);
+                });
+                
+                console.log('📂 Conversation loaded:', conversationId);
+                showToast('대화를 불러왔습니다.');
+            }
+        }
+        
+        /**
+         * ⭐ Start new conversation
+         */
+        function startNewConversation() {
+            currentConversationId = null;
+            conversationHistory = [];
+            
+            const conversationArea = document.getElementById('conversationArea');
+            conversationArea.innerHTML = `
+                <div class="message ai" id="welcome-msg">
+                    <div class="message-avatar">
+                        <i data-lucide="sparkles" stroke-width="2"></i>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            안녕하세요! 👋 MuseFlow AI입니다.<br>
+                            무엇을 도와드릴까요? 전시 기획, 예산 관리, 교육 프로그램 등 모든 업무를 자동화해드립니다.
+                        </div>
+                        <div class="message-timestamp">방금 전</div>
+                    </div>
+                </div>
+            `;
+            
+            lucide.createIcons();
+            console.log('🆕 New conversation started');
+            showToast('새 대화를 시작했습니다.');
+        }
+        
+        /**
+         * ⭐ Get all saved conversations
+         */
+        function getSavedConversations() {
+            return JSON.parse(localStorage.getItem('museflow_conversations') || '[]');
+        }
+        
+        async function executeAICommand(command) {
+            try {
+                // AI 모델 정보 표시
+                const modelName = document.getElementById('aiModelSelect')?.options[document.getElementById('aiModelSelect').selectedIndex]?.text || 'GPT-4';
+                addMessage('ai', `🤔 ${modelName}이(가) 명령을 분석하고 있습니다...`, true);
+                
+                // Add to active tasks in overview panel
+                addActiveTask(command.substring(0, 30) + '...');
+                
+                // Call API (백엔드 스키마에 맞춤)
+                const response = await fetch('/api/orchestrator/execute', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        command: command,
+                        mode: 'conversational',
+                        aiModel: currentAIModel, // ⭐ AI 모델 정보 추가
+                        projectContext: {
+                            projectId: 'canvas-demo',
+                            projectName: 'Canvas V4 작업',
+                            source: 'canvas-v4-hybrid'
+                        },
+                        options: {
+                            autoApprove: false
+                        }
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'API 호출 실패');
+                }
+                
+                sessionId = data.sessionId;
+                
+                addMessage('ai', `✅ AI 세션이 시작되었습니다. (Session ID: ${sessionId.substring(0, 8)}...)`, true);
+                
+                // Connect to SSE
+                connectToEventStream(sessionId);
+                
+            } catch (error) {
+                console.error('AI 실행 오류:', error);
+                addMessage('ai', `❌ 오류가 발생했습니다: ${error.message}`, true);
+                document.getElementById('sendButton').disabled = false;
+                removeActiveTask();
+            }
+        }
+        
+        function connectToEventStream(sessionId) {
+            if (eventSource) {
+                eventSource.close();
+            }
+            
+            eventSource = new EventSource(`/api/orchestrator/stream/${sessionId}`);
+            
+            eventSource.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                handleStreamEvent(data);
+            };
+            
+            eventSource.onerror = function(error) {
+                console.error('SSE 오류:', error);
+                eventSource.close();
+                document.getElementById('sendButton').disabled = false;
+            };
+        }
+        
+        function handleStreamEvent(data) {
+            const { type, message, data: payload } = data;
+            
+            console.log('[SSE Event]', type, message);
+            
+            switch (type) {
+                case 'connection-established':
+                    console.log('[SSE] 연결 성공:', message);
+                    break;
+                
+                case 'session-started':
+                    addMessage('ai', `🚀 ${message}`, true);
+                    if (payload?.workflow) {
+                        addMessage('ai', `📋 워크플로우: ${payload.workflow.phases?.length || 0}개 단계`, true);
+                    }
+                    break;
+                
+                case 'phase-started':
+                    const phaseName = payload?.phaseName || message;
+                    addPhaseProgress(phaseName, 0);
+                    break;
+                
+                case 'agent-action':
+                    updatePhaseProgress(message || payload?.action || '작업 중...');
+                    break;
+                
+                case 'phase-completed':
+                    updatePhaseProgress('완료', 100);
+                    
+                    // Add results to preview
+                    if (payload?.result?.canvasNodes) {
+                        addCanvasNodes(payload.result.canvasNodes);
+                        // Phase 완료 메시지에 액션 버튼 표시
+                        addMessage('ai', `✅ ${payload.phaseName || 'Phase'} 완료! Canvas 노드 ${payload.result.canvasNodes.length}개가 생성되었습니다.`, true);
+                    }
+                    if (payload?.result?.widgets) {
+                        addDashboardWidgets(payload.result.widgets);
+                        addMessage('ai', `📊 Dashboard 위젯 ${payload.result.widgets.length}개가 업데이트되었습니다.`, true);
+                    }
+                    
+                    // 생성 결과 탭으로 자동 전환
+                    if (payload?.result?.canvasNodes || payload?.result?.widgets) {
+                        switchToResultsTab();
+                    }
+                    break;
+                
+                case 'phase-failed':
+                    addMessage('ai', `⚠️ 단계 실패: ${message}`, true);
+                    break;
+                
+                case 'session-completed':
+                    // 완료 메시지에 액션 버튼 표시
+                    addMessage('ai', '✅ 모든 작업이 완료되었습니다! 우측 "생성 결과" 탭에서 확인하세요.', true);
+                    document.getElementById('sendButton').disabled = false;
+                    removeActiveTask();
+                    eventSource.close();
+                    
+                    // 완료된 작업 수 업데이트
+                    updateCompletedTasksCount();
+                    break;
+                
+                case 'session-failed':
+                    addMessage('ai', `❌ 실행 실패: ${message || '알 수 없는 오류'}`, true);
+                    document.getElementById('sendButton').disabled = false;
+                    removeActiveTask();
+                    eventSource.close();
+                    break;
+                
+                default:
+                    console.log('[SSE] Unknown event type:', type);
+            }
+        }
+        
+        function addPhaseProgress(phaseName, progress) {
+            const conversationArea = document.getElementById('conversationArea');
+            const timestamp = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+            
+            const progressHtml = `
+                <div class="message ai">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            <strong>${phaseName}</strong> 단계를 실행하고 있습니다...
+                        </div>
+                        <div class="phase-progress" data-phase="${phaseName}">
+                            <div class="phase-title">진행 중...</div>
+                            <div class="phase-bar">
+                                <div class="phase-bar-fill" style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+                        <div class="message-timestamp">${timestamp}</div>
+                    </div>
+                </div>
+            `;
+            
+            conversationArea.insertAdjacentHTML('beforeend', progressHtml);
+            conversationArea.scrollTop = conversationArea.scrollHeight;
+        }
+        
+        function switchToResultsTab() {
+            // 우측 패널의 "생성 결과" 탭으로 자동 전환
+            const previewTabs = document.querySelectorAll('.preview-tab');
+            const previewPanels = document.querySelectorAll('.preview-panel');
+            
+            previewTabs.forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.getAttribute('data-tab') === 'results') {
+                    tab.classList.add('active');
+                }
+            });
+            
+            previewPanels.forEach(panel => {
+                panel.classList.remove('active');
+                if (panel.id === 'resultsPanel') {
+                    panel.classList.add('active');
+                }
+            });
+            
+            // 모바일: Preview 탭으로 자동 전환
+            if (window.innerWidth <= 768) {
+                const mobileTabs = document.querySelectorAll('.mobile-tab');
+                mobileTabs.forEach(tab => {
+                    tab.classList.remove('active');
+                    if (tab.getAttribute('data-mobile-tab') === 'preview') {
+                        tab.classList.add('active');
+                    }
+                });
+                
+                document.querySelector('.left-column').classList.remove('mobile-active');
+                document.querySelector('.center-column').classList.remove('mobile-active');
+                document.querySelector('.right-column').classList.add('mobile-active');
+            }
+        }
+        
+        function updateCompletedTasksCount() {
+            const completedCount = document.getElementById('completedTasksCount');
+            if (completedCount) {
+                const currentValue = parseInt(completedCount.textContent) || 0;
+                completedCount.textContent = `${currentValue + 1}개`;
+            }
+        }
+        
+        function updatePhaseProgress(status, progress = null) {
+            const phaseProgress = document.querySelector('.phase-progress:last-of-type');
+            if (!phaseProgress) return;
+            
+            const title = phaseProgress.querySelector('.phase-title');
+            const fill = phaseProgress.querySelector('.phase-bar-fill');
+            
+            title.textContent = status;
+            if (progress !== null) {
+                fill.style.width = progress + '%';
+            }
+        }
+        
+        function addCanvasNodes(nodes) {
+            const resultsSection = document.getElementById('canvasResults');
+            resultsSection.innerHTML = '';
+            
+            // Make canvas container relative for absolute positioning
+            resultsSection.style.position = 'relative';
+            resultsSection.style.minHeight = '600px';
+            resultsSection.style.overflow = 'visible';
+            
+            // Node type configuration
+            const nodeConfig = {
+                'budget': { icon: 'coins', label: '예산' },
+                'chart': { icon: 'chart-bar', label: '차트' },
+                'concept': { icon: 'lightbulb', label: '컨셉' },
+                'education': { icon: 'graduation-cap', label: '교육' },
+                'artwork': { icon: 'palette', label: '작품' },
+                'document': { icon: 'file-text', label: '문서' },
+                'default': { icon: 'box', label: '노드' }
+            };
+            
+            nodes.forEach((node, index) => {
+                const nodeType = node.type || 'default';
+                const config = nodeConfig[nodeType] || nodeConfig.default;
+                
+                // Add connection indicator for sequential nodes
+                const connectionLine = index > 0 ? `
+                    <div style="height: 20px; width: 2px; background: linear-gradient(180deg, transparent 0%, #8B5CF6 50%, transparent 100%); margin: 0 auto -10px; opacity: 0.5;"></div>
+                ` : '';
+                
+                // Load saved position or calculate default position
+                const savedLayout = loadCanvasLayout();
+                const savedNode = savedLayout.nodes?.find(n => n.id === node.id || n.index === index);
+                
+                const defaultX = 50;
+                const defaultY = 50 + (index * 180); // Stack vertically with spacing
+                const posX = savedNode?.x ?? defaultX;
+                const posY = savedNode?.y ?? defaultY;
+                
+                const nodeHtml = `
+                    <div class="canvas-node" 
+                         data-type="${nodeType}" 
+                         data-node-id="${node.id || index}"
+                         data-index="${index}"
+                         style="left: ${posX}px; top: ${posY}px;">
+                        <div class="canvas-node-header">
+                            <div class="canvas-node-title">
+                                <i data-lucide="grip-vertical" stroke-width="2" style="width: 16px; height: 16px; opacity: 0.5; margin-right: 0.5rem; display: inline-block;"></i>
+                                ${node.title}
+                            </div>
+                            <div class="canvas-node-icon">
+                                <i data-lucide="${config.icon}" stroke-width="2"></i>
+                            </div>
+                        </div>
+                        <div class="canvas-node-content">
+                            ${node.description || `${config.label} 노드가 생성되었습니다.`}
+                        </div>
+                        <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.2); font-size: 0.75rem; opacity: 0.8;">
+                            <i data-lucide="clock" stroke-width="2" style="width: 12px; height: 12px; display: inline-block; vertical-align: middle;"></i>
+                            ${new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })}
+                        </div>
+                    </div>
+                `;
+                resultsSection.insertAdjacentHTML('beforeend', nodeHtml);
+            });
+            
+            // Re-initialize Lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            
+            // Show canvas controls
+            const canvasControls = document.getElementById('canvasControls');
+            if (canvasControls && nodes.length > 0) {
+                canvasControls.style.display = 'block';
+            }
+            
+            // Initialize drag & drop for all nodes
+            initializeCanvasDragDrop();
+            
+            // Draw connection lines between nodes
+            drawConnectionLines();
+            
+            // Dashboard에 노드 생성 알림
+            notifyDashboardUpdate({
+                type: 'canvas_nodes',
+                title: `Canvas 노드 ${nodes.length}개 생성`,
+                data: nodes
+            });
+            
+            // 실시간 현황 업데이트
+            updateOverviewStats();
+        }
+        
+        function addDashboardWidgets(widgets) {
+            const resultsSection = document.getElementById('canvasResults');
+            
+            widgets.forEach(widget => {
+                const widgetHtml = `
+                    <div class="widget-preview" style="background: white; border: 1px solid var(--museflow-border-light); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 0.75rem;">
+                        <div class="widget-header" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <div class="widget-icon" style="color: var(--museflow-primary);">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="widget-title" style="font-weight: 700; color: var(--museflow-text-primary);">${widget.title}</div>
+                        </div>
+                        <div class="widget-content" style="font-size: 0.875rem; color: var(--museflow-text-secondary);">
+                            ${widget.description || 'Dashboard 위젯이 생성되었습니다.'}
+                        </div>
+                    </div>
+                `;
+                resultsSection.insertAdjacentHTML('beforeend', widgetHtml);
+            });
+            
+            // Dashboard에 위젯 생성 알림
+            notifyDashboardUpdate({
+                type: 'dashboard_widgets',
+                title: `Dashboard 위젯 ${widgets.length}개 생성`,
+                data: widgets
+            });
+            
+            // 실시간 현황 업데이트
+            updateOverviewStats();
+            
+            // Results 탭으로 자동 전환
+            document.querySelectorAll('.preview-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector('[data-tab="results"]').classList.add('active');
+            document.querySelectorAll('.preview-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById('resultsPanel').classList.add('active');
+        }
+        
+        /**
+         * 실시간 현황 업데이트
+         */
+        function updateOverviewStats() {
+            // 진행 중인 작업 카운트 업데이트
+            const activeCount = document.getElementById('activeTasksCount');
+            if (activeCount) {
+                const currentValue = parseInt(activeCount.textContent) || 0;
+                activeCount.textContent = `${currentValue + 1}개`;
+            }
+        }
+        
+        /**
+         * AI 작업 시작 시 실시간 현황 표시
+         */
+        function addActiveTask(taskName) {
+            const activeTasksList = document.getElementById('activeTasksList');
+            const noTasks = activeTasksList.querySelector('.no-tasks');
+            
+            if (noTasks) {
+                noTasks.remove();
+            }
+            
+            const taskHtml = `
+                <div class="active-task-item" id="task-${Date.now()}" style="padding: 0.75rem; background: var(--museflow-primary-light); border-radius: var(--radius-md); margin-bottom: 0.5rem; animation: slideIn 0.3s ease;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <i class="fas fa-spinner fa-spin" style="color: var(--museflow-primary);"></i>
+                        <span style="font-size: 0.875rem; font-weight: 600; color: var(--museflow-text-primary);">${taskName}</span>
+                    </div>
+                    <div class="task-progress" style="height: 4px; background: rgba(139, 92, 246, 0.2); border-radius: 2px; overflow: hidden;">
+                        <div class="task-progress-bar" style="height: 100%; background: var(--museflow-primary); width: 0%; transition: width 1s ease;"></div>
+                    </div>
+                </div>
+            `;
+            
+            activeTasksList.insertAdjacentHTML('beforeend', taskHtml);
+            
+            // Progress bar 애니메이션
+            setTimeout(() => {
+                const progressBar = activeTasksList.querySelector('.task-progress-bar:last-of-type');
+                if (progressBar) {
+                    progressBar.style.width = '60%';
+                }
+            }, 100);
+        }
+        
+        /**
+         * AI 작업 완료 시 실시간 현황에서 제거
+         */
+        function removeActiveTask() {
+            const activeTasksList = document.getElementById('activeTasksList');
+            const tasks = activeTasksList.querySelectorAll('.active-task-item');
+            
+            if (tasks.length > 0) {
+                tasks[tasks.length - 1].remove();
+            }
+            
+            if (activeTasksList.children.length === 0) {
+                activeTasksList.innerHTML = `
+                    <div class="no-tasks">
+                        <i class="fas fa-coffee"></i>
+                        <p>현재 진행 중인 작업이 없습니다</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // ==========================================
+        // Dashboard → Canvas 연동: Task 자동 실행
+        // ==========================================
+        
+        /**
+         * 페이지 로드 시 Dashboard에서 전달된 Task가 있는지 확인
+         */
+        function checkPendingDashboardTask() {
+            const pendingTask = localStorage.getItem('pending_canvas_task');
+            
+            if (pendingTask) {
+                try {
+                    const taskData = JSON.parse(pendingTask);
+                    console.log('[Canvas ← Dashboard] Received task:', taskData);
+                    
+                    // Task 데이터 삭제 (한 번만 실행)
+                    localStorage.removeItem('pending_canvas_task');
+                    
+                    // Task에 맞는 AI 명령 자동 실행
+                    executeTaskFromDashboard(taskData);
+                    
+                } catch (error) {
+                    console.error('[Canvas] Task parsing error:', error);
+                }
+            }
+        }
+        
+        /**
+         * Dashboard Task를 Canvas AI 명령으로 변환 및 실행
+         */
+        function executeTaskFromDashboard(taskData) {
+            const { title, type, project } = taskData;
+            
+            // Task 유형별 AI 명령 생성
+            let aiCommand = '';
+            
+            switch (type) {
+                case 'document':
+                    aiCommand = `${project || '프로젝트'}의 "${title}" 문서를 작성해주세요. 전시 라벨, 보도자료, 기획안 등을 포함해주세요.`;
+                    break;
+                case 'budget':
+                    aiCommand = `${project || '프로젝트'}의 예산안을 작성해주세요. 항목별 예산 분석과 차트를 포함해주세요.`;
+                    break;
+                case 'promotion':
+                    aiCommand = `${project || '프로젝트'}의 홍보 계획을 수립해주세요. SNS 콘텐츠, 이메일 캠페인, 보도자료를 포함해주세요.`;
+                    break;
+                case 'research':
+                    aiCommand = `"${title}"에 대한 학술 자료를 조사해주세요. 위키피디아, MET Museum, Google Scholar에서 검색해주세요.`;
+                    break;
+                default:
+                    aiCommand = `${project || '프로젝트'}의 "${title}" 작업을 도와주세요.`;
+            }
+            
+            // AI 명령 자동 입력
+            const messageInput = document.getElementById('messageInput');
+            messageInput.value = aiCommand;
+            
+            // 환영 메시지 표시
+            addMessage('ai', `👋 안녕하세요! Dashboard에서 "${title}" 작업을 전달받았습니다. 자동으로 실행하시겠습니까?`, true);
+            
+            // 2초 후 자동 실행 (사용자가 확인할 시간 제공)
+            setTimeout(() => {
+                sendMessage();
+            }, 2000);
+        }
+        
+        /**
+         * Canvas → Dashboard 위젯 업데이트 알림
+         */
+        function notifyDashboardUpdate(updateData) {
+            // LocalStorage를 통한 Dashboard 업데이트 알림
+            const dashboardUpdates = JSON.parse(localStorage.getItem('dashboard_updates') || '[]');
+            dashboardUpdates.push({
+                timestamp: Date.now(),
+                type: updateData.type,
+                title: updateData.title,
+                data: updateData.data
+            });
+            
+            localStorage.setItem('dashboard_updates', JSON.stringify(dashboardUpdates));
+            
+            console.log('[Canvas → Dashboard] Update sent:', updateData);
+        }
+        
+        // ==========================================
+        // AI Message Action Buttons
+        // ==========================================
+        
+        /**
+         * 메시지 복사
+         */
+        function copyMessage(messageId) {
+            const message = document.getElementById(messageId);
+            const textElement = message.querySelector('.message-text');
+            const text = textElement.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showActionSuccess(messageId, 'copy', '복사 완료!');
+                
+                // 자동으로 다음 단계 진행 (2초 후)
+                setTimeout(() => {
+                    console.log('[Auto Next] 복사 완료 → 다음 작업 대기 중...');
+                }, 2000);
+            }).catch(err => {
+                console.error('복사 실패:', err);
+                alert('복사에 실패했습니다.');
+            });
+        }
+        
+        /**
+         * Notion에 저장
+         */
+        async function saveToNotion(messageId) {
+            const message = document.getElementById(messageId);
+            const textElement = message.querySelector('.message-text');
+            const text = textElement.innerText;
+            
+            showActionSuccess(messageId, 'notion', 'Notion 저장 중...');
+            
+            try {
+                // Get title from current conversation context
+                const conversationTitle = document.querySelector('.column-title')?.textContent || 'AI 대화 결과';
+                
+                // Call Notion API
+                const response = await fetch('/api/notion/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title: conversationTitle + ' - ' + new Date().toLocaleDateString('ko-KR'),
+                        content: text,
+                        type: 'budget-approval'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log('[Notion] Saved successfully:', result);
+                    showActionSuccess(messageId, 'notion', 'Notion 저장 완료! ✓');
+                    
+                    // 자동으로 다음 단계 진행
+                    setTimeout(() => {
+                        console.log('[Auto Next] Notion 저장 완료 → Dashboard 위젯 업데이트...');
+                        notifyDashboardUpdate({
+                            type: 'notion-saved',
+                            data: {
+                                messageId,
+                                notionPageId: result.notionPageId,
+                                url: result.url,
+                                timestamp: result.createdAt
+                            }
+                        });
+                    }, 1000);
+                } else {
+                    throw new Error(result.error || 'Notion 저장 실패');
+                }
+                
+            } catch (error) {
+                console.error('Notion 저장 실패:', error);
+                showActionSuccess(messageId, 'notion', 'Notion 저장 실패 ✗');
+                alert('Notion 저장에 실패했습니다: ' + error.message);
+            }
+        }
+        
+        /**
+         * Figma에 저장
+         */
+        async function saveToFigma(messageId) {
+            const message = document.getElementById(messageId);
+            const textElement = message.querySelector('.message-text');
+            const text = textElement.innerText;
+            
+            showActionSuccess(messageId, 'figma', 'Figma 저장 중...');
+            
+            try {
+                // Check Figma API status first
+                const statusResponse = await fetch('/api/figma/status');
+                const statusData = await statusResponse.json();
+                
+                if (!statusData.configured) {
+                    console.warn('⚠️ Figma API not configured, using mock mode');
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    showActionSuccess(messageId, 'figma', 'Figma 저장 완료 (Mock)');
+                    return;
+                }
+                
+                // Real Figma API integration
+                // For now, we sync a mock canvas node
+                const nodeData = {
+                    node: {
+                        title: 'AI Generated Content',
+                        description: text.substring(0, 200),
+                        type: 'document',
+                        timestamp: new Date().toISOString()
+                    },
+                    fileKey: 'default-museflow-file' // TODO: Make this configurable
+                };
+                
+                const syncResponse = await fetch('/api/figma/sync-node', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(nodeData)
+                });
+                
+                const syncData = await syncResponse.json();
+                
+                if (syncData.success) {
+                    showActionSuccess(messageId, 'figma', 'Figma 저장 완료!');
+                    console.log('✅ Synced to Figma:', syncData.data);
+                    
+                    // Auto next step: Dashboard widget update
+                    setTimeout(() => {
+                        console.log('[Auto Next] Figma 저장 완료 → Dashboard 위젯 업데이트...');
+                    }, 2000);
+                } else {
+                    throw new Error(syncData.error || 'Figma sync failed');
+                }
+                
+            } catch (error) {
+                console.error('❌ Figma 저장 실패:', error);
+                showActionSuccess(messageId, 'figma', 'Figma 저장 실패');
+                
+                // Show user-friendly error
+                setTimeout(() => {
+                    const btn = message.querySelector('[onclick*="saveToFigma"]');
+                    if (btn) {
+                        btn.style.opacity = '1';
+                    }
+                }, 2000);
+            }
+        }
+        
+        /**
+         * 액션 성공 UI 업데이트
+         */
+        function showActionSuccess(messageId, actionType, message) {
+            const messageElement = document.getElementById(messageId);
+            const buttons = messageElement.querySelectorAll('.message-action-btn');
+            
+            buttons.forEach(btn => {
+                const iconClass = btn.querySelector('i').className;
+                
+                if ((actionType === 'copy' && iconClass.includes('copy')) ||
+                    (actionType === 'notion' && iconClass.includes('fa-notion')) ||
+                    (actionType === 'figma' && iconClass.includes('fa-figma'))) {
+                    
+                    btn.classList.add('success');
+                    const span = btn.querySelector('span');
+                    const originalText = span.textContent;
+                    span.textContent = '✓ ' + message;
+                    
+                    // 3초 후 원래 상태로
+                    setTimeout(() => {
+                        btn.classList.remove('success');
+                        span.textContent = originalText;
+                    }, 3000);
+                }
+            });
+        }
+        
+        // 페이지 로드 시 Dashboard Task 확인
+        checkPendingDashboardTask();
+        
+        // ==========================================
+        // Mobile Tab Navigation
+        // ==========================================
+        
+        /**
+         * 모바일 탭 전환 핸들러
+         */
+        function initializeMobileTabs() {
+            const mobileTabs = document.querySelectorAll('.mobile-tab');
+            const leftColumn = document.querySelector('.left-column');
+            const centerColumn = document.querySelector('.center-column');
+            const rightColumn = document.querySelector('.right-column');
+            
+            // 기본값: conversation (AI Chat) 탭 활성화
+            if (window.innerWidth <= 768) {
+                centerColumn.classList.add('mobile-active');
+            }
+            
+            // Enhanced mobile tab switching with touch support
+            let touchStartX = 0;
+            let touchEndX = 0;
+            let currentTabIndex = 1; // Start with conversation (middle)
+            const tabNames = ['history', 'conversation', 'preview'];
+            
+            function switchToTab(tabName) {
+                // Remove active class from all tabs
+                mobileTabs.forEach(t => t.classList.remove('active'));
+                
+                // Add active to clicked tab
+                const targetTab = Array.from(mobileTabs).find(t => 
+                    t.getAttribute('data-mobile-tab') === tabName
+                );
+                if (targetTab) {
+                    targetTab.classList.add('active');
+                }
+                
+                // Use requestAnimationFrame for smooth transitions
+                requestAnimationFrame(() => {
+                    // Hide all columns
+                    leftColumn.classList.remove('mobile-active');
+                    centerColumn.classList.remove('mobile-active');
+                    rightColumn.classList.remove('mobile-active');
+                    
+                    // Show selected column
+                    switch(tabName) {
+                        case 'history':
+                            leftColumn.classList.add('mobile-active');
+                            currentTabIndex = 0;
+                            break;
+                        case 'conversation':
+                            centerColumn.classList.add('mobile-active');
+                            currentTabIndex = 1;
+                            break;
+                        case 'preview':
+                            rightColumn.classList.add('mobile-active');
+                            currentTabIndex = 2;
+                            break;
+                    }
+                    
+                    // Scroll to top of new column
+                    const activeColumn = document.querySelector('.mobile-active');
+                    if (activeColumn) {
+                        activeColumn.scrollTop = 0;
+                    }
+                });
+            }
+            
+            mobileTabs.forEach(tab => {
+                // Click/Touch event
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const tabName = this.getAttribute('data-mobile-tab');
+                    switchToTab(tabName);
+                    
+                    // Haptic feedback for supported devices
+                    if (navigator.vibrate) {
+                        navigator.vibrate(10);
+                    }
+                });
+                
+                // Accessibility: Keyboard support
+                tab.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        const tabName = this.getAttribute('data-mobile-tab');
+                        switchToTab(tabName);
+                    }
+                });
+            });
+            
+            // Swipe gesture support for tab switching
+            const container = document.querySelector('.canvas-container');
+            
+            container.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+            
+            container.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, { passive: true });
+            
+            function handleSwipe() {
+                const swipeThreshold = 50; // Minimum swipe distance
+                const diff = touchStartX - touchEndX;
+                
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) {
+                        // Swipe left - next tab
+                        if (currentTabIndex < tabNames.length - 1) {
+                            switchToTab(tabNames[currentTabIndex + 1]);
+                        }
+                    } else {
+                        // Swipe right - previous tab
+                        if (currentTabIndex > 0) {
+                            switchToTab(tabNames[currentTabIndex - 1]);
+                        }
+                    }
+                }
+            }
+        }
+        
+        // 화면 크기 변경 감지
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                // Desktop: 모든 컬럼 표시
+                document.querySelectorAll('.left-column, .center-column, .right-column').forEach(col => {
+                    col.classList.remove('mobile-active');
+                });
+            } else {
+                // Mobile: 활성 탭에 따라 컬럼 표시
+                initializeMobileTabs();
+            }
+        });
+        
+        // 페이지 로드 시 모바일 탭 초기화
+        if (window.innerWidth <= 768) {
+            initializeMobileTabs();
+        }
+        
+        // ==========================================
+        // Quick Actions - Dashboard 메뉴 통합
+        // ==========================================
+        
+        /**
+         * Quick Action 명령어 매핑
+         */
+        const quickActionCommands = {
+            'exhibition-label': {
+                title: '전시 라벨 작성',
+                prompt: '전시 라벨을 작성해주세요. 작품명, 작가, 연도, 재료, 크기, 소장 정보를 포함한 전문적인 라벨을 만들어주세요.',
+                icon: '📝'
+            },
+            'budget-approval': {
+                title: '예산 승인 요청',
+                prompt: '예산 승인 요청 문서를 작성해주세요. 항목별 예산, 사용 목적, 기대 효과를 포함해주세요.',
+                icon: '💰'
+            },
+            'artwork-selection': {
+                title: '소장품 선정',
+                prompt: '전시 소장품 선정 기획안을 작성해주세요. 작품 목록, 선정 기준, 배치 계획을 포함해주세요.',
+                icon: '🎨'
+            },
+            'promotion-plan': {
+                title: '홍보 계획 수립',
+                prompt: '홍보 계획을 수립해주세요. SNS 콘텐츠, 보도자료, 이메일 캠페인, 일정을 포함해주세요.',
+                icon: '📢'
+            },
+            'report-writing': {
+                title: '보고서 작성',
+                prompt: '업무 보고서를 작성해주세요. 현황, 성과, 과제, 향후 계획을 포함해주세요.',
+                icon: '📄'
+            },
+            'schedule-management': {
+                title: '전시 일정 관리',
+                prompt: '전시 일정 관리 계획을 작성해주세요. 준비 단계별 체크리스트와 마일스톤을 포함해주세요.',
+                icon: '🗓️'
+            },
+            'education-program': {
+                title: '교육 프로그램 기획',
+                prompt: '교육 프로그램을 기획해주세요. 대상, 커리큘럼, 활동 내용, 평가 방법을 포함해주세요.',
+                icon: '👥'
+            },
+            'research': {
+                title: '학술 자료 조사',
+                prompt: '학술 자료를 조사해주세요. Wikipedia, MET Museum, Google Scholar에서 관련 정보를 수집해주세요.',
+                icon: '🔍'
+            },
+            'visitor-guide': {
+                title: '방문객 안내',
+                prompt: 'AI 챗봇을 통해 방문객 질문에 답변하고 전시 동선을 추천해주세요.',
+                icon: '💬'
+            },
+            'space-optimization': {
+                title: '공간 최적화',
+                prompt: '전시 공간의 작품 배치를 3D 시뮬레이션으로 최적화해주세요. 방문객 동선과 혼잡도를 분석해주세요.',
+                icon: '🏛️',
+                action: () => {
+                    // 현재 Canvas 데이터를 Digital Twin으로 전달
+                    const canvasData = {
+                        widgets: Array.from(document.querySelectorAll('.widget')).length,
+                        timestamp: new Date().toISOString(),
+                        source: 'canvas-v4'
+                    };
+                    
+                    // LocalStorage에 데이터 저장
+                    localStorage.setItem('museflow_canvas_data', JSON.stringify(canvasData));
+                    
+                    // Digital Twin 페이지 열기
+                    window.open('/digital-twin', '_blank');
+                    
+                    // Console log
+                    console.log('🏛️ 디지털 트윈 미술관 Pro 열기 - 데이터 전달 완료');
+                }
+            }
+        };
+        
+        /**
+         * Quick Action 버튼 클릭 핸들러
+         */
+        document.querySelectorAll('.quick-action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const action = this.getAttribute('data-action');
+                const command = quickActionCommands[action];
+                
+                if (!command) return;
+                
+                // Special action handler (e.g., 3D Viewer)
+                if (command.action) {
+                    command.action();
+                    return;
+                }
+                
+                // AI 입력창에 프롬프트 자동 입력
+                const messageInput = document.getElementById('messageInput');
+                messageInput.value = command.prompt;
+                
+                // 환영 메시지
+                addMessage('ai', `${command.icon} "${command.title}" 작업을 시작합니다. 자동으로 실행하시겠습니까?`, true);
+                
+                // 모바일: Conversation 탭으로 자동 전환
+                if (window.innerWidth <= 768) {
+                    document.querySelectorAll('.mobile-tab').forEach(tab => {
+                        tab.classList.remove('active');
+                        if (tab.getAttribute('data-mobile-tab') === 'conversation') {
+                            tab.classList.add('active');
+                        }
+                    });
+                    
+                    document.querySelector('.left-column').classList.remove('mobile-active');
+                    document.querySelector('.center-column').classList.add('mobile-active');
+                    document.querySelector('.right-column').classList.remove('mobile-active');
+                }
+                
+                // 입력창 포커스
+                messageInput.focus();
+                
+                // 2초 후 자동 전송
+                setTimeout(() => {
+                    sendMessage();
+                }, 2000);
+            });
+        });
+        
+        // ====================================
+        // Unified Navbar JavaScript - Identical to Dashboard
+        // ====================================
+        
+        // Mobile Menu Toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const unifiedNavLinks = document.getElementById('unifiedNavLinks');
+        
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                unifiedNavLinks.classList.toggle('mobile-open');
+                
+                // Change icon
+                const icon = this.querySelector('i');
+                if (unifiedNavLinks.classList.contains('mobile-open')) {
+                    icon.className = 'fas fa-times';
+                } else {
+                    icon.className = 'fas fa-bars';
+                }
+            });
+            
+            // Close menu when clicking a link
+            document.querySelectorAll('.unified-nav-links a').forEach(link => {
+                link.addEventListener('click', function() {
+                    unifiedNavLinks.classList.remove('mobile-open');
+                    mobileMenuToggle.classList.remove('active');
+                    const icon = mobileMenuToggle.querySelector('i');
+                    icon.className = 'fas fa-bars';
+                });
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.unified-navbar')) {
+                    unifiedNavLinks.classList.remove('mobile-open');
+                    mobileMenuToggle.classList.remove('active');
+                    const icon = mobileMenuToggle.querySelector('i');
+                    if (icon) icon.className = 'fas fa-bars';
+                }
+            });
+        }
+        
+        // Fallback functions if not defined on page
+        window.showAIRecommendations = window.showAIRecommendations || function() {
+            console.log('[Canvas V4] AI Recommendations clicked');
+        };
+        
+        window.filterFavorites = window.filterFavorites || function() {
+            console.log('[Canvas V4] Favorites clicked');
+        };
+        
+        window.toggleNotifications = window.toggleNotifications || function() {
+            console.log('[Canvas V4] Notifications clicked');
+        };
+        
+        // Scroll Animation - Hide/Show Navbar
+        let lastScrollTop = 0;
+        let scrollTimeout;
+        
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.unified-navbar');
+            if (!navbar) return;
+            
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Add scrolled class for shadow effect
+            if (currentScroll > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+            
+            // Hide navbar on scroll down, show on scroll up
+            if (currentScroll > lastScrollTop && currentScroll > 100) {
+                navbar.classList.add('navbar-hidden');
+            } else {
+                navbar.classList.remove('navbar-hidden');
+            }
+            
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+            
+            // Show navbar when user stops scrolling
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                navbar.classList.remove('navbar-hidden');
+            }, 1500);
+        });
+        
+        // ==========================================
+        // Widget System - Dynamic Loading (103 Widgets)
+        // ==========================================
+        
+        let allWidgets = [];
+        let allCategories = [];
+        let selectedCategory = null;
+        
+        /**
+         * Load all widgets from API
+         */
+        async function loadWidgets() {
+            try {
+                const response = await fetch('/api/widgets');
+                const result = await response.json();
+                
+                if (result.success) {
+                    allWidgets = result.data;
+                    renderWidgets(allWidgets);
+                    updateWidgetCount(allWidgets.length, allWidgets.length);
+                    console.log(`✅ Loaded ${allWidgets.length} widgets`);
+                } else {
+                    throw new Error(result.error || 'Failed to load widgets');
+                }
+            } catch (error) {
+                console.error('❌ Widget loading error:', error);
+                document.getElementById('liveWidgets').innerHTML = `
+                    <div class="error-state" style="text-align: center; padding: 3rem 1rem; color: var(--status-error);">
+                        <i data-lucide="alert-circle" style="width: 48px; height: 48px; margin: 0 auto 1rem;"></i>
+                        <div style="font-size: 1rem; font-weight: 600;">위젯 로딩 실패</div>
+                        <div style="font-size: 0.875rem; margin-top: 0.5rem;">${error.message}</div>
+                    </div>
+                `;
+                lucide.createIcons();
+            }
+        }
+        
+        /**
+         * Load widget categories from API
+         */
+        async function loadCategories() {
+            try {
+                const response = await fetch('/api/widgets/categories');
+                const result = await response.json();
+                
+                if (result.success) {
+                    allCategories = result.data;
+                    renderCategories(allCategories);
+                    console.log(`✅ Loaded ${allCategories.length} categories`);
+                }
+            } catch (error) {
+                console.error('❌ Category loading error:', error);
+            }
+        }
+        
+        /**
+         * Render category filter buttons
+         */
+        function renderCategories(categories) {
+            const container = document.getElementById('widgetCategories');
+            
+            const categoryButtons = categories.map(cat => `
+                <button 
+                    class="category-btn ${selectedCategory === cat.category ? 'active' : ''}" 
+                    data-category="${cat.category}"
+                    style="
+                        padding: 0.5rem 0.875rem;
+                        background: ${selectedCategory === cat.category ? 'var(--museflow-primary)' : 'white'};
+                        color: ${selectedCategory === cat.category ? 'white' : 'var(--museflow-text-primary)'};
+                        border: 1px solid ${selectedCategory === cat.category ? 'var(--museflow-primary)' : 'var(--museflow-border-light)'};
+                        border-radius: var(--radius-full);
+                        font-size: 0.8125rem;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                    "
+                    onmouseover="if(!this.classList.contains('active')) this.style.background='var(--museflow-primary-light)'"
+                    onmouseout="if(!this.classList.contains('active')) this.style.background='white'"
+                >
+                    ${cat.category} <span style="opacity: 0.75;">(${cat.count})</span>
+                </button>
+            `).join('');
+            
+            container.innerHTML = `
+                <button 
+                    class="category-btn ${selectedCategory === null ? 'active' : ''}" 
+                    data-category="all"
+                    style="
+                        padding: 0.5rem 0.875rem;
+                        background: ${selectedCategory === null ? 'var(--museflow-primary)' : 'white'};
+                        color: ${selectedCategory === null ? 'white' : 'var(--museflow-text-primary)'};
+                        border: 1px solid ${selectedCategory === null ? 'var(--museflow-primary)' : 'var(--museflow-border-light)'};
+                        border-radius: var(--radius-full);
+                        font-size: 0.8125rem;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                    "
+                    onmouseover="if(!this.classList.contains('active')) this.style.background='var(--museflow-primary-light)'"
+                    onmouseout="if(!this.classList.contains('active')) this.style.background='white'"
+                >
+                    전체 <span style="opacity: 0.75;">(${allWidgets.length})</span>
+                </button>
+                ${categoryButtons}
+            `;
+            
+            // Add click handlers
+            container.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const category = this.dataset.category;
+                    selectedCategory = category === 'all' ? null : category;
+                    
+                    // Update active state
+                    container.querySelectorAll('.category-btn').forEach(b => {
+                        b.classList.remove('active');
+                        b.style.background = 'white';
+                        b.style.color = 'var(--museflow-text-primary)';
+                        b.style.borderColor = 'var(--museflow-border-light)';
+                    });
+                    this.classList.add('active');
+                    this.style.background = 'var(--museflow-primary)';
+                    this.style.color = 'white';
+                    this.style.borderColor = 'var(--museflow-primary)';
+                    
+                    // Filter widgets
+                    filterWidgets();
+                });
+            });
+        }
+        
+        /**
+         * Filter widgets by category and search
+         */
+        function filterWidgets() {
+            const searchTerm = document.getElementById('widgetSearch').value.toLowerCase();
+            
+            let filtered = allWidgets;
+            
+            // Filter by category
+            if (selectedCategory) {
+                filtered = filtered.filter(w => w.category === selectedCategory);
+            }
+            
+            // Filter by search
+            if (searchTerm) {
+                filtered = filtered.filter(w => 
+                    w.name.toLowerCase().includes(searchTerm) || 
+                    (w.description && w.description.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            renderWidgets(filtered);
+            updateWidgetCount(filtered.length, allWidgets.length);
+        }
+        
+        /**
+         * Render widgets grid
+         */
+        function renderWidgets(widgets) {
+            const container = document.getElementById('liveWidgets');
+            
+            if (widgets.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="text-align: center; padding: 3rem 1rem; color: var(--museflow-text-secondary);">
+                        <i data-lucide="search-x" style="width: 48px; height: 48px; margin: 0 auto 1rem;"></i>
+                        <div style="font-size: 1rem; font-weight: 600;">위젯을 찾을 수 없습니다</div>
+                        <div style="font-size: 0.875rem; margin-top: 0.5rem;">검색어 또는 필터를 변경해보세요</div>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+            
+            const widgetCards = widgets.map(widget => {
+                const iconMap = {
+                    'fa-sparkles': 'sparkles',
+                    'fa-magic': 'wand-2',
+                    'fa-smile': 'smile',
+                    'fa-lightbulb': 'lightbulb',
+                    'fa-camera': 'camera',
+                    'fa-graduation-cap': 'graduation-cap',
+                    'fa-language': 'languages',
+                    'fa-user-tie': 'user-check',
+                    'fa-headphones': 'headphones',
+                    'fa-universal-access': 'accessibility',
+                    'fa-child': 'baby',
+                    'fa-chart-line': 'line-chart',
+                    'fa-chart-pie': 'pie-chart',
+                    'fa-chart-bar': 'bar-chart',
+                    'fa-chart-area': 'radar',
+                    'fa-circle': 'circle',
+                    'fa-calendar-check': 'calendar-check',
+                    'fa-comment-dots': 'message-circle',
+                    'fa-globe': 'globe',
+                    'fa-coins': 'coins',
+                    'fa-calendar': 'calendar',
+                    'fa-tasks': 'list-checks',
+                    'fa-users': 'users'
+                };
+                
+                const lucideIcon = iconMap[widget.icon] || 'box';
+                
+                return `
+                    <div class="widget-card" 
+                         data-widget-id="${widget.id}" 
+                         data-widget-name="${widget.name}"
+                         data-widget-category="${widget.category}"
+                         draggable="true"
+                         style="cursor: grab; transition: all 0.2s ease;" 
+                         onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(139, 92, 246, 0.15)';"
+                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                        <div class="widget-header-small">
+                            <i data-lucide="grip-vertical" style="width: 14px; height: 14px; margin-right: 0.25rem; opacity: 0.5;"></i>
+                            <i data-lucide="${lucideIcon}" style="width: 18px; height: 18px;"></i>
+                            <span>${widget.name}</span>
+                        </div>
+                        <div class="widget-content" style="font-size: 0.8125rem; color: var(--museflow-text-secondary); margin-top: 0.5rem; line-height: 1.4;">
+                            ${widget.description || '위젯 설명 없음'}
+                        </div>
+                        <div class="widget-footer" style="display: flex; align-items: center; justify-content: space-between; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--museflow-border-light);">
+                            <span style="font-size: 0.75rem; color: var(--museflow-text-tertiary);">${widget.category}</span>
+                            <button class="add-widget-btn" style="padding: 0.375rem 0.75rem; background: var(--museflow-primary); color: white; border: none; border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 600; cursor: pointer;">
+                                추가
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+                    ${widgetCards}
+                </div>
+            `;
+            
+            // Re-initialize Lucide icons
+            lucide.createIcons();
+            
+            // Add click handlers for "추가" buttons
+            container.querySelectorAll('.add-widget-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const widgetCard = this.closest('.widget-card');
+                    const widgetId = widgetCard.dataset.widgetId;
+                    const widget = allWidgets.find(w => w.id == widgetId);
+                    
+                    if (widget) {
+                        addWidgetToDashboard(widget);
+                    }
+                });
+            });
+            
+            // ⭐ Add drag and drop handlers for widget cards
+            container.querySelectorAll('.widget-card').forEach(card => {
+                // Drag start
+                card.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.effectAllowed = 'copy';
+                    e.dataTransfer.setData('widget-id', this.dataset.widgetId);
+                    e.dataTransfer.setData('widget-name', this.dataset.widgetName);
+                    
+                    // Visual feedback
+                    this.style.opacity = '0.5';
+                    this.style.cursor = 'grabbing';
+                    
+                    console.log('🎯 Dragging widget:', this.dataset.widgetName);
+                });
+                
+                // Drag end
+                card.addEventListener('dragend', function(e) {
+                    this.style.opacity = '1';
+                    this.style.cursor = 'grab';
+                });
+            });
+        }
+        
+        /**
+         * Update widget count display
+         */
+        function updateWidgetCount(showing, total) {
+            const countEl = document.getElementById('widgetCount');
+            countEl.innerHTML = `
+                <i data-lucide="box" style="width: 14px; height: 14px;"></i>
+                <span>${showing}개 위젯 표시 중</span>
+                ${showing !== total ? `<span style="opacity: 0.75;"> / 전체 ${total}개</span>` : ''}
+            `;
+            lucide.createIcons();
+        }
+        
+        /**
+         * Add widget to dashboard
+         */
+        function addWidgetToDashboard(widget) {
+            console.log('✨ Adding widget to dashboard:', widget.name);
+            
+            // Show success notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background: var(--status-success);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: var(--radius-md);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <i data-lucide="check-circle" style="width: 20px; height: 20px;"></i>
+                    <div>
+                        <div style="font-weight: 600;">${widget.name}</div>
+                        <div style="font-size: 0.875rem; opacity: 0.9;">Dashboard에 추가되었습니다</div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+            
+            // TODO: Actually add to dashboard via API
+            // This would call the dashboard API to persist the widget
+        }
+        
+        /**
+         * Initialize widget system
+         */
+        async function initializeWidgetSystem() {
+            await Promise.all([
+                loadWidgets(),
+                loadCategories()
+            ]);
+            
+            // Initialize drop zones after widgets are loaded
+            initializeDropZones();
+        }
+        
+        /**
+         * ⭐ Initialize Drop Zones for Widget Drag & Drop
+         */
+        function initializeDropZones() {
+            const dropZones = [
+                document.getElementById('overviewPanel'),
+                document.getElementById('widgetsPanel'),
+                document.getElementById('resultsPanel')
+            ];
+            
+            dropZones.forEach(zone => {
+                if (!zone) return;
+                
+                // Drag over
+                zone.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'copy';
+                    
+                    // Visual feedback
+                    this.style.backgroundColor = 'rgba(139, 92, 246, 0.05)';
+                    this.style.border = '2px dashed var(--museflow-primary)';
+                });
+                
+                // Drag leave
+                zone.addEventListener('dragleave', function(e) {
+                    if (e.target === this) {
+                        this.style.backgroundColor = '';
+                        this.style.border = '';
+                    }
+                });
+                
+                // Drop
+                zone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove visual feedback
+                    this.style.backgroundColor = '';
+                    this.style.border = '';
+                    
+                    // Get widget data
+                    const widgetId = e.dataTransfer.getData('widget-id');
+                    const widgetName = e.dataTransfer.getData('widget-name');
+                    
+                    if (widgetId) {
+                        const widget = allWidgets.find(w => w.id == widgetId);
+                        if (widget) {
+                            console.log('✅ Widget dropped:', widgetName);
+                            addWidgetToDashboard(widget);
+                            
+                            // Haptic feedback (if supported)
+                            if (navigator.vibrate) {
+                                navigator.vibrate(50);
+                            }
+                        }
+                    }
+                });
+            });
+            
+            console.log('🎯 Drop zones initialized for drag & drop');
+        }
+        
+        // ==========================================
+        // Canvas Node Drag & Drop System
+        // ==========================================
+        
+        let draggedNode = null;
+        let dragOffset = { x: 0, y: 0 };
+        let canvasLayout = { nodes: [] };
+        
+        /**
+         * Initialize drag & drop for all canvas nodes
+         */
+        function initializeCanvasDragDrop() {
+            const nodes = document.querySelectorAll('.canvas-node');
+            
+            nodes.forEach(node => {
+                // Mouse down - start dragging
+                node.addEventListener('mousedown', (e) => {
+                    // Don't drag if clicking on buttons or interactive elements
+                    if (e.target.closest('button')) return;
+                    
+                    draggedNode = node;
+                    draggedNode.classList.add('dragging');
+                    
+                    const rect = node.getBoundingClientRect();
+                    const parentRect = node.parentElement.getBoundingClientRect();
+                    
+                    dragOffset.x = e.clientX - rect.left;
+                    dragOffset.y = e.clientY - rect.top;
+                    
+                    // Prevent text selection
+                    e.preventDefault();
+                });
+                
+                // Touch support for mobile
+                node.addEventListener('touchstart', (e) => {
+                    if (e.target.closest('button')) return;
+                    
+                    draggedNode = node;
+                    draggedNode.classList.add('dragging');
+                    
+                    const rect = node.getBoundingClientRect();
+                    const touch = e.touches[0];
+                    
+                    dragOffset.x = touch.clientX - rect.left;
+                    dragOffset.y = touch.clientY - rect.top;
+                    
+                    e.preventDefault();
+                });
+            });
+        }
+        
+        /**
+         * Handle mouse/touch move globally
+         */
+        document.addEventListener('mousemove', (e) => {
+            if (!draggedNode) return;
+            
+            const parentRect = draggedNode.parentElement.getBoundingClientRect();
+            
+            let x = e.clientX - parentRect.left - dragOffset.x;
+            let y = e.clientY - parentRect.top - dragOffset.y;
+            
+            // Boundary constraints
+            x = Math.max(0, Math.min(x, parentRect.width - draggedNode.offsetWidth));
+            y = Math.max(0, Math.min(y, parentRect.height - draggedNode.offsetHeight));
+            
+            draggedNode.style.left = x + 'px';
+            draggedNode.style.top = y + 'px';
+            
+            // Redraw connection lines
+            drawConnectionLines();
+        });
+        
+        document.addEventListener('touchmove', (e) => {
+            if (!draggedNode) return;
+            
+            const touch = e.touches[0];
+            const parentRect = draggedNode.parentElement.getBoundingClientRect();
+            
+            let x = touch.clientX - parentRect.left - dragOffset.x;
+            let y = touch.clientY - parentRect.top - dragOffset.y;
+            
+            x = Math.max(0, Math.min(x, parentRect.width - draggedNode.offsetWidth));
+            y = Math.max(0, Math.min(y, parentRect.height - draggedNode.offsetHeight));
+            
+            draggedNode.style.left = x + 'px';
+            draggedNode.style.top = y + 'px';
+            
+            drawConnectionLines();
+            e.preventDefault();
+        });
+        
+        /**
+         * Handle mouse/touch up - end dragging
+         */
+        document.addEventListener('mouseup', () => {
+            if (draggedNode) {
+                draggedNode.classList.remove('dragging');
+                
+                // Save layout to localStorage
+                saveCanvasLayout();
+                
+                draggedNode = null;
+            }
+        });
+        
+        document.addEventListener('touchend', () => {
+            if (draggedNode) {
+                draggedNode.classList.remove('dragging');
+                saveCanvasLayout();
+                draggedNode = null;
+            }
+        });
+        
+        /**
+         * Draw SVG connection lines between nodes
+         */
+        function drawConnectionLines() {
+            // Remove existing SVG
+            const existingSvg = document.getElementById('canvasConnectionsSvg');
+            if (existingSvg) {
+                existingSvg.remove();
+            }
+            
+            const resultsSection = document.getElementById('canvasResults');
+            if (!resultsSection) return;
+            
+            const nodes = Array.from(resultsSection.querySelectorAll('.canvas-node'));
+            if (nodes.length < 2) return;
+            
+            // Create SVG overlay
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.id = 'canvasConnectionsSvg';
+            svg.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 0;
+            `;
+            
+            // Draw lines between sequential nodes
+            for (let i = 0; i < nodes.length - 1; i++) {
+                const node1 = nodes[i];
+                const node2 = nodes[i + 1];
+                
+                const rect1 = node1.getBoundingClientRect();
+                const rect2 = node2.getBoundingClientRect();
+                const parentRect = resultsSection.getBoundingClientRect();
+                
+                // Calculate centers
+                const x1 = rect1.left - parentRect.left + rect1.width / 2;
+                const y1 = rect1.top - parentRect.top + rect1.height;
+                const x2 = rect2.left - parentRect.left + rect2.width / 2;
+                const y2 = rect2.top - parentRect.top;
+                
+                // Create curved path
+                const midY = (y1 + y2) / 2;
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', `M ${x1} ${y1} Q ${x1} ${midY}, ${(x1 + x2) / 2} ${midY} T ${x2} ${y2}`);
+                path.setAttribute('stroke', '#8B5CF6');
+                path.setAttribute('stroke-width', '2');
+                path.setAttribute('fill', 'none');
+                path.setAttribute('opacity', '0.4');
+                path.setAttribute('stroke-dasharray', '5,5');
+                
+                svg.appendChild(path);
+                
+                // Add arrow marker
+                const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+                marker.id = `arrow-${i}`;
+                marker.setAttribute('markerWidth', '10');
+                marker.setAttribute('markerHeight', '10');
+                marker.setAttribute('refX', '5');
+                marker.setAttribute('refY', '3');
+                marker.setAttribute('orient', 'auto');
+                marker.setAttribute('markerUnits', 'strokeWidth');
+                
+                const arrowPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                arrowPath.setAttribute('d', 'M0,0 L0,6 L9,3 z');
+                arrowPath.setAttribute('fill', '#8B5CF6');
+                arrowPath.setAttribute('opacity', '0.4');
+                
+                marker.appendChild(arrowPath);
+                svg.appendChild(marker);
+                path.setAttribute('marker-end', `url(#arrow-${i})`);
+            }
+            
+            resultsSection.insertBefore(svg, resultsSection.firstChild);
+        }
+        
+        /**
+         * Save canvas layout to localStorage
+         */
+        function saveCanvasLayout() {
+            const nodes = document.querySelectorAll('.canvas-node');
+            const layout = {
+                nodes: Array.from(nodes).map(node => ({
+                    id: node.dataset.nodeId,
+                    index: parseInt(node.dataset.index),
+                    x: parseInt(node.style.left) || 0,
+                    y: parseInt(node.style.top) || 0,
+                    type: node.dataset.type
+                })),
+                timestamp: new Date().toISOString()
+            };
+            
+            try {
+                localStorage.setItem('museflow_canvas_layout', JSON.stringify(layout));
+                console.log('✅ Canvas layout saved:', layout);
+            } catch (error) {
+                console.error('❌ Failed to save canvas layout:', error);
+            }
+        }
+        
+        /**
+         * Load canvas layout from localStorage
+         */
+        function loadCanvasLayout() {
+            try {
+                const saved = localStorage.getItem('museflow_canvas_layout');
+                if (saved) {
+                    const layout = JSON.parse(saved);
+                    console.log('✅ Canvas layout loaded:', layout);
+                    return layout;
+                }
+            } catch (error) {
+                console.error('❌ Failed to load canvas layout:', error);
+            }
+            return { nodes: [] };
+        }
+        
+        /**
+         * Reset canvas layout to default positions
+         */
+        function resetCanvasLayout() {
+            localStorage.removeItem('museflow_canvas_layout');
+            
+            const nodes = document.querySelectorAll('.canvas-node');
+            nodes.forEach((node, index) => {
+                const defaultX = 50;
+                const defaultY = 50 + (index * 180);
+                
+                node.style.left = defaultX + 'px';
+                node.style.top = defaultY + 'px';
+            });
+            
+            drawConnectionLines();
+            
+            console.log('✅ Canvas layout reset to default');
+        }
+        
+        // ⭐ Debounce function for search performance
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // Search input handler with debounce (300ms)
+        const debouncedFilter = debounce(() => {
+            filterWidgets();
+        }, 300);
+        
+        document.getElementById('widgetSearch')?.addEventListener('input', function() {
+            debouncedFilter();
+        });
+        
+        // Refresh button handler
+        document.getElementById('refreshWidgets')?.addEventListener('click', async function() {
+            this.innerHTML = '<i data-lucide="loader" class="spin" style="width: 16px; height: 16px;"></i>';
+            lucide.createIcons();
+            
+            await initializeWidgetSystem();
+            
+            this.innerHTML = '<i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i>';
+            lucide.createIcons();
+        });
+        
+        // Initialize on page load
+        initializeWidgetSystem();
+        
+        // ========== INFINITE CANVAS FUNCTIONALITY ==========
+        
+        const viewport = document.getElementById('canvasViewport');
+        let scale = 1, translateX = 0, translateY = 0;
+        let isDragging = false, startX, startY;
+        
+        // Canvas Pan (Drag)
+        viewport.addEventListener('mousedown', e => {
+            // Only pan if not clicking on a card
+            if (!e.target.closest('.card')) {
+                isDragging = true;
+                viewport.classList.add('dragging');
+                startX = e.pageX - translateX;
+                startY = e.pageY - translateY;
+            }
+        });
+        
+        document.addEventListener('mousemove', e => {
+            if (!isDragging) return;
+            e.preventDefault();
+            translateX = e.pageX - startX;
+            translateY = e.pageY - startY;
+            viewport.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+        });
+        
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                viewport.classList.remove('dragging');
+            }
+        });
+        
+        // Canvas Zoom (Ctrl + Wheel)
+        viewport.addEventListener('wheel', e => {
+            if (!e.ctrlKey) return;
+            e.preventDefault();
+            const oldScale = scale;
+            scale = Math.max(0.1, Math.min(3, scale * (e.deltaY > 0 ? 0.9 : 1.1)));
+            viewport.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+            document.getElementById('zoomLevel').textContent = Math.round(scale * 100) + '%';
+        });
+        
+        // Zoom Controls
+        document.getElementById('zoomIn').addEventListener('click', () => {
+            scale = Math.min(3, scale * 1.2);
+            viewport.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+            document.getElementById('zoomLevel').textContent = Math.round(scale * 100) + '%';
+        });
+        
+        document.getElementById('zoomOut').addEventListener('click', () => {
+            scale = Math.max(0.1, scale * 0.8);
+            viewport.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+            document.getElementById('zoomLevel').textContent = Math.round(scale * 100) + '%';
+        });
+        
+        document.getElementById('fitScreen').addEventListener('click', () => {
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+            viewport.style.transform = 'translate(0, 0) scale(1)';
+            document.getElementById('zoomLevel').textContent = '100%';
+        });
+        
+        // ========== CANVAS CARDS ==========
+        
+        const cardsData = [
+            { title: '홍보 영상', content: '전시 소개 영상 (3:45)', icon: 'video', type: 'video', size: '125 MB', format: 'MP4', x: 100, y: 100 },
+            { title: '오디오 가이드', content: '전시 해설 음성 (한/영)', icon: 'headphones', type: 'audio', size: '8.5 MB', format: 'MP3', x: 450, y: 100 },
+            { title: '전시 포스터', content: '메인 비주얼 디자인', icon: 'image', type: 'image', size: '4.2 MB', format: 'PNG', x: 800, y: 100 },
+            { title: '관람객 통계', content: '월간 리포트', icon: 'bar-chart-2', type: 'data', size: '1.8 MB', format: 'XLSX', x: 100, y: 350 },
+            { title: '큐레이터 노트', content: '작품 해설 원고', icon: 'file-text', type: 'document', size: '2.4 MB', format: 'DOCX', x: 450, y: 350 },
+            { title: '3D 모델', content: '유물 스캔 데이터', icon: 'box', type: 'data', size: '89 MB', format: 'GLB', x: 800, y: 350 },
+            { title: '현장 사진', content: '설치 진행 사진 (24장)', icon: 'camera', type: 'image', size: '45 MB', format: 'JPG', x: 100, y: 600 },
+            { title: '피드백', content: '관람객 의견 수집', icon: 'message-circle', type: 'document', size: '512 KB', format: 'PDF', x: 450, y: 600 },
+            { title: '일정표', content: '전시 운영 스케줄', icon: 'calendar', type: 'document', size: '1.2 MB', format: 'PDF', x: 800, y: 600 }
+        ];
+        
+        cardsData.forEach(cardData => {
+            const cardEl = document.createElement('div');
+            cardEl.className = 'card';
+            cardEl.style.left = cardData.x + 'px';
+            cardEl.style.top = cardData.y + 'px';
+            
+            cardEl.innerHTML = `
+                <div class="card-thumbnail ${cardData.type}">
+                    <i data-lucide="${cardData.icon}" style="width:60px;height:60px;color:rgba(255,255,255,0.9);stroke-width:1.5"></i>
+                </div>
+                <div class="card-header">
+                    <i data-lucide="${cardData.icon}" style="width:16px;height:16px"></i>
+                    ${cardData.title}
+                </div>
+                <div class="card-content">
+                    ${cardData.content}
+                    <div class="card-meta">
+                        <span>📦 ${cardData.size}</span>
+                        <span>📄 ${cardData.format}</span>
+                    </div>
+                </div>
+            `;
+            
+            // Card Drag Functionality
+            let cardDragging = false;
+            let cardStartX, cardStartY, cardInitialX, cardInitialY;
+            
+            // Card Selection
+            cardEl.addEventListener('click', function(e) {
+                // Remove selection from other cards
+                document.querySelectorAll('.card').forEach(c => c.style.border = 'none');
+                // Highlight selected card
+                this.style.border = '3px solid #8B5CF6';
+                e.stopPropagation();
+            });
+            
+            // Card Drag
+            cardEl.querySelector('.card-header').addEventListener('mousedown', function(e) {
+                cardDragging = true;
+                cardStartX = e.clientX;
+                cardStartY = e.clientY;
+                cardInitialX = parseInt(cardEl.style.left) || 0;
+                cardInitialY = parseInt(cardEl.style.top) || 0;
+                cardEl.style.cursor = 'grabbing';
+                cardEl.style.zIndex = '1000';
+                e.stopPropagation();
+            });
+            
+            document.addEventListener('mousemove', function(e) {
+                if (cardDragging) {
+                    e.preventDefault();
+                    const deltaX = (e.clientX - cardStartX) / scale;
+                    const deltaY = (e.clientY - cardStartY) / scale;
+                    cardEl.style.left = (cardInitialX + deltaX) + 'px';
+                    cardEl.style.top = (cardInitialY + deltaY) + 'px';
+                }
+            });
+            
+            document.addEventListener('mouseup', function() {
+                if (cardDragging) {
+                    cardDragging = false;
+                    cardEl.style.cursor = 'move';
+                    cardEl.style.zIndex = 'auto';
+                }
+            });
+            
+            viewport.appendChild(cardEl);
+        });
+        
+        // Deselect card when clicking canvas
+        viewport.addEventListener('click', function(e) {
+            if (e.target === viewport) {
+                document.querySelectorAll('.card').forEach(c => c.style.border = 'none');
+            }
+        });
+        
+        // ====================================
+        // Initialize Lucide Icons
+        // ====================================
+        lucide.createIcons();
+        
+        // Re-initialize Lucide icons after dynamic content updates
+        const originalAddMessage = window.addMessage;
+        if (originalAddMessage) {
+            window.addMessage = function(...args) {
+                const result = originalAddMessage.apply(this, args);
+                // Wait for DOM update, then re-initialize icons
+                setTimeout(() => lucide.createIcons(), 50);
+                return result;
+            };
+        }
+    </script>
+
+    <!-- MuseFlow Footer -->
+    <footer class="museflow-footer">
+        <div class="museflow-footer-content">
+            <div class="museflow-footer-logo">
+                ✨ MuseFlow
+            </div>
+            <div class="museflow-footer-divider"></div>
+            <div class="museflow-footer-text">
+                Copyright © 2026, Imageroot
+            </div>
+            <div class="museflow-footer-divider"></div>
+            <div class="museflow-footer-text">
+                Made by Hyun Woo Nam Professor
+            </div>
+            <div class="museflow-footer-divider"></div>
+            <div class="museflow-footer-version">
+                V4.0
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
