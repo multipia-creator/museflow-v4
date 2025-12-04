@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .test-box {
+            width: 200px;
+            height: 100px;
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px;
+        }
+        
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1F2937 0%, #111827 100%);
+            border-right: 1px solid #374151;
+        }
+        
+        .icon {
+            width: 34px;
+            height: 28px;
+            margin: 4px 3px;
+            background: rgba(16, 185, 129, 0.2);
+            border-radius: 5px;
+            color: #10B981;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="icon">H</div>
+        <div class="icon">A</div>
+        <div class="icon">P</div>
+        <div class="icon">S</div>
+    </div>
+    
+    <div style="margin-left: 60px;">
+        <h1>CSS Loading Test</h1>
+        <div class="test-box">
+            If you see purple box with white text, CSS works!
+        </div>
+        <p>This is a minimal test to verify CSS is loading correctly.</p>
+    </div>
+</body>
+</html>
