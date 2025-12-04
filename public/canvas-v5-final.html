@@ -35,26 +35,289 @@
             padding-top: 64px; /* Space for Unified Navbar */
         }
         
-        /* 3-Column + 2-Row Layout (Canvas V5) */
+        /* Full Canvas Layout - 100% Width */
         .canvas-container {
             display: grid;
-            grid-template-columns: 250px 1fr 240px;  /* Left 250px | Center 1fr (~80%) | Right 240px */
-            grid-template-rows: 1fr;                  /* Canvas 100% (입력창 플로팅으로 이동) */
-            grid-template-areas:
-                "left canvas right";
+            grid-template-columns: 1fr;  /* 100% Canvas */
+            grid-template-rows: 1fr;
+            grid-template-areas: "canvas";
             height: calc(100vh - 64px - 48px);  /* Full height - navbar - footer */
             gap: 0;
             overflow: hidden;
+            position: relative;
         }
         
-        /* Left Column - History & Projects (Dark Theme) */
-        .left-column {
-            grid-area: left;
-            background: linear-gradient(180deg, #1F2937 0%, #111827 100%);
-            border-right: 1px solid #374151;
+        /* ========== Floating Panels ========== */
+        .floating-panel {
+            position: fixed;
+            background: rgba(31, 41, 55, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid #374151;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .floating-panel.hidden {
+            display: none;
+        }
+        
+        .floating-panel.minimized {
+            width: auto !important;
+            height: auto !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+        }
+        
+        .floating-panel.minimized .panel-content {
+            display: none;
+        }
+        
+        /* Panel Header (Draggable) */
+        .panel-header {
+            padding: 12px 16px;
+            background: rgba(55, 65, 81, 0.5);
+            border-bottom: 1px solid #374151;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: move;
+            user-select: none;
+        }
+        
+        .panel-header:active {
+            cursor: grabbing;
+        }
+        
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: #F9FAFB;
+        }
+        
+        .panel-title i {
+            font-size: 1.125rem;
+            color: #10B981;
+        }
+        
+        .panel-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .panel-btn {
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: transparent;
+            color: #9CA3AF;
+            cursor: pointer;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+        
+        .panel-btn:hover {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+        }
+        
+        .panel-btn.btn-close:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #EF4444;
+        }
+        
+        /* Panel Content */
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        /* Resize Handles */
+        .resize-handle {
+            position: absolute;
+            background: transparent;
+            z-index: 10;
+        }
+        
+        .resize-n, .resize-s {
+            height: 8px;
+            left: 0;
+            right: 0;
+            cursor: ns-resize;
+        }
+        
+        .resize-n { top: -4px; }
+        .resize-s { bottom: -4px; }
+        
+        .resize-e, .resize-w {
+            width: 8px;
+            top: 0;
+            bottom: 0;
+            cursor: ew-resize;
+        }
+        
+        .resize-e { right: -4px; }
+        .resize-w { left: -4px; }
+        
+        .resize-ne, .resize-se, .resize-sw, .resize-nw {
+            width: 12px;
+            height: 12px;
+        }
+        
+        .resize-ne {
+            top: -6px;
+            right: -6px;
+            cursor: nesw-resize;
+        }
+        
+        .resize-se {
+            bottom: -6px;
+            right: -6px;
+            cursor: nwse-resize;
+        }
+        
+        .resize-sw {
+            bottom: -6px;
+            left: -6px;
+            cursor: nesw-resize;
+        }
+        
+        .resize-nw {
+            top: -6px;
+            left: -6px;
+            cursor: nwse-resize;
+        }
+        
+        /* History Panel Specific */
+        #historyPanel {
+            top: 80px;
+            left: 20px;
+            width: 320px;
+            min-width: 250px;
+            max-width: 500px;
+            height: 500px;
+            min-height: 300px;
+            max-height: calc(100vh - 180px);
+        }
+        
+        /* Status Panel Specific */
+        #statusPanel {
+            top: 80px;
+            right: 20px;
+            width: 300px;
+            min-width: 250px;
+            max-width: 450px;
+            height: 450px;
+            min-height: 300px;
+            max-height: calc(100vh - 180px);
+        }
+        
+        /* Minimized Panel Bar (상단 고정) */
+        .minimized-panels {
+            position: fixed;
+            top: 64px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 1001;
+            padding: 8px;
+        }
+        
+        .minimized-panel-item {
+            background: rgba(31, 41, 55, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .minimized-panel-item:hover {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10B981;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.2);
+        }
+        
+        .minimized-panel-item i {
+            font-size: 1.125rem;
+            color: #10B981;
+        }
+        
+        .minimized-panel-item span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #F9FAFB;
+        }
+        
+        /* Toggle Buttons (Canvas 좌상단) */
+        .panel-toggles {
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            display: flex;
+            gap: 8px;
+            z-index: 999;
+        }
+        
+        .panel-toggle-btn {
+            background: rgba(31, 41, 55, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #F9FAFB;
+            font-size: 0.875rem;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .panel-toggle-btn:hover {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10B981;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.2);
+        }
+        
+        .panel-toggle-btn i {
+            font-size: 1rem;
+            color: #10B981;
+        }
+        
+        .panel-toggle-btn.active {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: #10B981;
+        }
+        
+        /* Left Column Content (now inside floating panel) */
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            height: 100%;
         }
         
         /* User Profile Header */
@@ -2132,8 +2395,28 @@
     </div>
     
     <div class="canvas-container">
-        <!-- Left Column: History & Projects -->
-        <div class="left-column">
+        
+        <!-- Minimized Panels Bar (상단 중앙) -->
+        <div class="minimized-panels" id="minimizedPanels"></div>
+        
+        <!-- History Panel (Floating) -->
+        <div class="floating-panel" id="historyPanel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <i data-lucide="clock"></i>
+                    <span>History & Projects</span>
+                </div>
+                <div class="panel-actions">
+                    <button class="panel-btn btn-minimize" data-panel="history" title="최소화">
+                        <i data-lucide="minus"></i>
+                    </button>
+                    <button class="panel-btn btn-close" data-panel="history" title="닫기">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-content">
+                <div class="left-column">
             <div class="column-header">
                 <h2 class="column-title">
                     <i data-lucide="clock" stroke-width="2"></i>
@@ -2231,11 +2514,21 @@
                         <span>1주일 전</span>
                     </div>
                 </div>
+                </div>
             </div>
+            
+            <!-- Resize Handles -->
+            <div class="resize-handle resize-n"></div>
+            <div class="resize-handle resize-e"></div>
+            <div class="resize-handle resize-s"></div>
+            <div class="resize-handle resize-w"></div>
+            <div class="resize-handle resize-ne"></div>
+            <div class="resize-handle resize-se"></div>
+            <div class="resize-handle resize-sw"></div>
+            <div class="resize-handle resize-nw"></div>
         </div>
         
-        <!-- Center Column: AI Conversation -->
-        <!-- Center Canvas: Infinite Canvas for Generated Results -->
+        <!-- Center Canvas: Infinite Canvas for Generated Results (100%) -->
         <div class="center-canvas" id="infiniteCanvas">
             <!-- Canvas Viewport (Transformable) -->
             <div class="canvas-viewport" id="canvasViewport">
@@ -2281,17 +2574,24 @@
             </div>
         </div>
         
-        <!-- Right Column: Real-time Status (Simplified) -->
-        <div class="right-column">
-            <!-- Header -->
-            <div class="column-header" style="border-bottom: 1px solid #E5E7EB;">
-                <h2 class="column-title">
-                    <i class="fas fa-chart-line"></i>
-                    실시간 현황
-                </h2>
+        <!-- Status Panel (Floating) -->
+        <div class="floating-panel" id="statusPanel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <i data-lucide="bar-chart-2"></i>
+                    <span>실시간 현황</span>
+                </div>
+                <div class="panel-actions">
+                    <button class="panel-btn btn-minimize" data-panel="status" title="최소화">
+                        <i data-lucide="minus"></i>
+                    </button>
+                    <button class="panel-btn btn-close" data-panel="status" title="닫기">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
             </div>
-            
-            <div class="preview-content" style="padding: 1rem;">
+            <div class="panel-content">
+                <div class="preview-content" style="padding: 1rem;">
                 <!-- Overview Panel - 실시간 현황 -->
                 <div id="overviewPanel">
                     <div class="live-stats">
@@ -2372,11 +2672,330 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Resize Handles -->
+            <div class="resize-handle resize-n"></div>
+            <div class="resize-handle resize-e"></div>
+            <div class="resize-handle resize-s"></div>
+            <div class="resize-handle resize-w"></div>
+            <div class="resize-handle resize-ne"></div>
+            <div class="resize-handle resize-se"></div>
+            <div class="resize-handle resize-sw"></div>
+            <div class="resize-handle resize-nw"></div>
         </div>
-        <!-- End of Right Column -->
+        <!-- End of Status Panel -->
     </div>
     
     <script>
+        // ==========================================
+        // 🎯 Floating Panels System
+        // ==========================================
+        
+        // Panel State Management
+        const panelState = {
+            history: {
+                visible: true,
+                minimized: false,
+                position: { x: 20, y: 80 },
+                size: { width: 320, height: 500 },
+                zIndex: 1000
+            },
+            status: {
+                visible: true,
+                minimized: false,
+                position: { x: null, y: 80 },  // null means right-aligned
+                size: { width: 300, height: 450 },
+                zIndex: 1000
+            }
+        };
+        
+        // Load panel state from localStorage
+        function loadPanelState() {
+            const saved = localStorage.getItem('canvas-v5-panels');
+            if (saved) {
+                try {
+                    const loaded = JSON.parse(saved);
+                    Object.assign(panelState, loaded);
+                } catch (e) {
+                    console.error('Failed to load panel state:', e);
+                }
+            }
+        }
+        
+        // Save panel state to localStorage
+        function savePanelState() {
+            localStorage.setItem('canvas-v5-panels', JSON.stringify(panelState));
+        }
+        
+        // Initialize Panels
+        function initializePanels() {
+            loadPanelState();
+            
+            ['history', 'status'].forEach(panelName => {
+                const panel = document.getElementById(`${panelName}Panel`);
+                const state = panelState[panelName];
+                
+                if (!panel) return;
+                
+                // Apply initial state
+                if (!state.visible) {
+                    panel.classList.add('hidden');
+                }
+                
+                if (state.minimized) {
+                    minimizePanel(panelName, false);
+                } else {
+                    // Set position and size
+                    applyPanelState(panelName);
+                }
+                
+                // Setup drag and resize
+                makePanelDraggable(panel, panelName);
+                makePanelResizable(panel, panelName);
+                
+                // Setup buttons
+                const minimizeBtn = panel.querySelector('.btn-minimize');
+                const closeBtn = panel.querySelector('.btn-close');
+                
+                if (minimizeBtn) {
+                    minimizeBtn.addEventListener('click', () => minimizePanel(panelName));
+                }
+                
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => closePanel(panelName));
+                }
+            });
+        }
+        
+        // Apply panel state (position & size)
+        function applyPanelState(panelName) {
+            const panel = document.getElementById(`${panelName}Panel`);
+            const state = panelState[panelName];
+            
+            if (!panel || !state) return;
+            
+            panel.style.width = `${state.size.width}px`;
+            panel.style.height = `${state.size.height}px`;
+            panel.style.zIndex = state.zIndex;
+            
+            if (state.position.x !== null) {
+                panel.style.left = `${state.position.x}px`;
+                panel.style.right = 'auto';
+            } else {
+                panel.style.right = '20px';
+                panel.style.left = 'auto';
+            }
+            
+            panel.style.top = `${state.position.y}px`;
+        }
+        
+        // Make panel draggable
+        function makePanelDraggable(panel, panelName) {
+            const header = panel.querySelector('.panel-header');
+            if (!header) return;
+            
+            let isDragging = false;
+            let dragOffsetX = 0;
+            let dragOffsetY = 0;
+            
+            header.addEventListener('mousedown', (e) => {
+                if (e.target.closest('.panel-btn')) return;  // Don't drag when clicking buttons
+                
+                isDragging = true;
+                dragOffsetX = e.clientX - panel.offsetLeft;
+                dragOffsetY = e.clientY - panel.offsetTop;
+                
+                panel.style.zIndex = ++panelState[panelName].zIndex;
+                header.style.cursor = 'grabbing';
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                
+                const x = e.clientX - dragOffsetX;
+                const y = e.clientY - dragOffsetY;
+                
+                panel.style.left = `${x}px`;
+                panel.style.right = 'auto';
+                panel.style.top = `${y}px`;
+                
+                panelState[panelName].position.x = x;
+                panelState[panelName].position.y = y;
+            });
+            
+            document.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    header.style.cursor = 'move';
+                    savePanelState();
+                }
+            });
+        }
+        
+        // Make panel resizable
+        function makePanelResizable(panel, panelName) {
+            const handles = panel.querySelectorAll('.resize-handle');
+            
+            handles.forEach(handle => {
+                let isResizing = false;
+                let startX, startY, startWidth, startHeight, startLeft, startTop;
+                
+                handle.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    isResizing = true;
+                    
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    startWidth = panel.offsetWidth;
+                    startHeight = panel.offsetHeight;
+                    startLeft = panel.offsetLeft;
+                    startTop = panel.offsetTop;
+                    
+                    document.body.style.cursor = handle.style.cursor;
+                });
+                
+                document.addEventListener('mousemove', (e) => {
+                    if (!isResizing) return;
+                    
+                    const dx = e.clientX - startX;
+                    const dy = e.clientY - startY;
+                    
+                    const classList = handle.className;
+                    
+                    if (classList.includes('resize-e') || classList.includes('resize-se') || classList.includes('resize-ne')) {
+                        panel.style.width = `${Math.max(250, startWidth + dx)}px`;
+                    }
+                    
+                    if (classList.includes('resize-w') || classList.includes('resize-sw') || classList.includes('resize-nw')) {
+                        const newWidth = Math.max(250, startWidth - dx);
+                        panel.style.width = `${newWidth}px`;
+                        panel.style.left = `${startLeft + (startWidth - newWidth)}px`;
+                    }
+                    
+                    if (classList.includes('resize-s') || classList.includes('resize-se') || classList.includes('resize-sw')) {
+                        panel.style.height = `${Math.max(300, startHeight + dy)}px`;
+                    }
+                    
+                    if (classList.includes('resize-n') || classList.includes('resize-ne') || classList.includes('resize-nw')) {
+                        const newHeight = Math.max(300, startHeight - dy);
+                        panel.style.height = `${newHeight}px`;
+                        panel.style.top = `${startTop + (startHeight - newHeight)}px`;
+                    }
+                });
+                
+                document.addEventListener('mouseup', () => {
+                    if (isResizing) {
+                        isResizing = false;
+                        document.body.style.cursor = 'default';
+                        
+                        // Save new size and position
+                        panelState[panelName].size.width = panel.offsetWidth;
+                        panelState[panelName].size.height = panel.offsetHeight;
+                        panelState[panelName].position.x = panel.offsetLeft;
+                        panelState[panelName].position.y = panel.offsetTop;
+                        savePanelState();
+                    }
+                });
+            });
+        }
+        
+        // Minimize panel (Option A: show as small icon at top)
+        function minimizePanel(panelName, save = true) {
+            const panel = document.getElementById(`${panelName}Panel`);
+            const minimizedBar = document.getElementById('minimizedPanels');
+            
+            if (!panel || !minimizedBar) return;
+            
+            // Hide panel
+            panel.classList.add('hidden');
+            panelState[panelName].visible = false;
+            panelState[panelName].minimized = true;
+            
+            // Add to minimized bar
+            const icon = panelName === 'history' ? 'clock' : 'bar-chart-2';
+            const title = panelName === 'history' ? 'History' : 'Status';
+            
+            const item = document.createElement('div');
+            item.className = 'minimized-panel-item';
+            item.dataset.panel = panelName;
+            item.innerHTML = `
+                <i data-lucide="${icon}"></i>
+                <span>${title}</span>
+            `;
+            
+            item.addEventListener('click', () => restorePanel(panelName));
+            minimizedBar.appendChild(item);
+            
+            // Reinitialize icons
+            lucide.createIcons();
+            
+            if (save) savePanelState();
+        }
+        
+        // Restore panel from minimized state
+        function restorePanel(panelName) {
+            const panel = document.getElementById(`${panelName}Panel`);
+            const minimizedBar = document.getElementById('minimizedPanels');
+            
+            if (!panel || !minimizedBar) return;
+            
+            // Show panel
+            panel.classList.remove('hidden');
+            panelState[panelName].visible = true;
+            panelState[panelName].minimized = false;
+            
+            // Remove from minimized bar
+            const item = minimizedBar.querySelector(`[data-panel="${panelName}"]`);
+            if (item) item.remove();
+            
+            savePanelState();
+        }
+        
+        // Close panel
+        function closePanel(panelName) {
+            const panel = document.getElementById(`${panelName}Panel`);
+            if (!panel) return;
+            
+            panel.classList.add('hidden');
+            panelState[panelName].visible = false;
+            savePanelState();
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // H: Toggle History panel
+            if (e.key === 'h' && !e.ctrlKey && !e.metaKey && !e.target.matches('input, textarea')) {
+                e.preventDefault();
+                const state = panelState.history;
+                if (state.visible) {
+                    closePanel('history');
+                } else {
+                    restorePanel('history');
+                }
+            }
+            
+            // S: Toggle Status panel
+            if (e.key === 's' && !e.ctrlKey && !e.metaKey && !e.target.matches('input, textarea')) {
+                e.preventDefault();
+                const state = panelState.status;
+                if (state.visible) {
+                    closePanel('status');
+                } else {
+                    restorePanel('status');
+                }
+            }
+            
+            // Esc: Close all panels
+            if (e.key === 'Escape' && !e.target.matches('input, textarea')) {
+                closePanel('history');
+                closePanel('status');
+            }
+        });
+        
+        // Initialize panels on load
+        initializePanels();
+        
         // ==========================================
         // 🎨 Canvas V5 - Infinite Canvas State
         // ==========================================
