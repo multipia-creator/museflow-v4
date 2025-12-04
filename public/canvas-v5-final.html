@@ -318,6 +318,11 @@
             flex-direction: column;
             overflow: hidden;
             height: 100%;
+            background: transparent;
+        }
+        
+        .left-column .column-header {
+            display: none;  /* Hide duplicate header (using panel header instead) */
         }
         
         /* User Profile Header */
@@ -1042,13 +1047,22 @@
         
         /* Right Column - Live Canvas/Dashboard Preview */
         /* Right Column - Real-time Status (Dark Theme) */
+        /* Right Column (now inside status panel) - Remove grid-area */
         .right-column {
-            grid-area: right;
-            background: linear-gradient(180deg, #1F2937 0%, #111827 100%);
-            border-left: 1px solid #374151;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            height: 100%;
+            background: transparent;
+        }
+        
+        .right-column .column-header {
+            display: none;  /* Hide duplicate header (using panel header instead) */
+        }
+        
+        .right-column .preview-content {
+            flex: 1;
+            overflow-y: auto;
         }
         
         /* ========== Canvas Card Styles ========== */
@@ -2417,13 +2431,6 @@
             </div>
             <div class="panel-content">
                 <div class="left-column">
-            <div class="column-header">
-                <h2 class="column-title">
-                    <i data-lucide="clock" stroke-width="2"></i>
-                    History & Projects
-                </h2>
-            </div>
-            
             <!-- Quick Actions Panel -->
             <div class="quick-actions-panel">
                 <div class="quick-actions-header">
