@@ -35,19 +35,95 @@
             padding-top: 64px; /* Space for Unified Navbar */
         }
         
-        /* Full Canvas Layout - 100% Width */
+        /* Hybrid Layout - Condensed Icon Bars + Canvas */
         .canvas-container {
             display: grid;
-            grid-template-columns: 1fr;  /* 100% Canvas */
+            grid-template-columns: 64px 1fr 64px;  /* Left Icon Bar + Canvas + Right Icon Bar */
             grid-template-rows: 1fr;
-            grid-template-areas: "canvas";
+            grid-template-areas: "left-bar canvas right-bar";
             height: calc(100vh - 64px - 48px);  /* Full height - navbar - footer */
             gap: 0;
             overflow: hidden;
             position: relative;
         }
         
-        /* ========== Floating Panels ========== */
+        /* ========== Condensed Icon Bars ========== */
+        .condensed-icon-bar {
+            grid-area: left-bar;
+            background: linear-gradient(180deg, #1F2937 0%, #111827 100%);
+            border-right: 1px solid #374151;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 0;
+            gap: 8px;
+            z-index: 900;
+        }
+
+        .condensed-icon-bar.right {
+            grid-area: right-bar;
+            border-right: none;
+            border-left: 1px solid #374151;
+        }
+
+        .icon-bar-item {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(55, 65, 81, 0.5);
+            border-radius: 12px;
+            color: #9CA3AF;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .icon-bar-item:hover {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+            transform: scale(1.1);
+        }
+
+        .icon-bar-item.active {
+            background: rgba(16, 185, 129, 0.3);
+            color: #10B981;
+            border: 1px solid #10B981;
+        }
+
+        .icon-bar-item i {
+            font-size: 20px;
+        }
+
+        /* Tooltip */
+        .icon-bar-item::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 60px;
+            background: rgba(31, 41, 55, 0.98);
+            color: #F9FAFB;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            border: 1px solid #374151;
+            z-index: 1001;
+        }
+
+        .icon-bar-item.right::after {
+            left: auto;
+            right: 60px;
+        }
+
+        .icon-bar-item:hover::after {
+            opacity: 1;
+        }
+
+        /* ========== Floating Detail Panels ========== */
         .floating-panel {
             position: fixed;
             background: rgba(31, 41, 55, 0.98);
@@ -2491,6 +2567,38 @@
     
     <div class="canvas-container">
         
+        <!-- Left Condensed Icon Bar -->
+        <div class="condensed-icon-bar">
+            <div class="icon-bar-item" data-panel="history" data-tooltip="History & Projects">
+                <i data-lucide="clock"></i>
+            </div>
+            <div class="icon-bar-item" data-panel="quick-actions" data-tooltip="Quick Actions">
+                <i data-lucide="zap"></i>
+            </div>
+            <div class="icon-bar-item" data-panel="projects" data-tooltip="Projects">
+                <i data-lucide="folder"></i>
+            </div>
+            <div class="icon-bar-item" data-panel="settings" data-tooltip="Settings">
+                <i data-lucide="settings"></i>
+            </div>
+        </div>
+
+        <!-- Right Condensed Status Bar -->
+        <div class="condensed-icon-bar right">
+            <div class="icon-bar-item right" data-panel="stats" data-tooltip="Statistics">
+                <i data-lucide="bar-chart-2"></i>
+            </div>
+            <div class="icon-bar-item right" data-panel="tasks" data-tooltip="Tasks">
+                <i data-lucide="check-circle"></i>
+            </div>
+            <div class="icon-bar-item right" data-panel="ai-progress" data-tooltip="AI Progress">
+                <i data-lucide="cpu"></i>
+            </div>
+            <div class="icon-bar-item right" data-panel="notifications" data-tooltip="Notifications">
+                <i data-lucide="bell"></i>
+            </div>
+        </div>
+
         <!-- Minimized Panels Bar (상단 중앙) -->
         <div class="minimized-panels" id="minimizedPanels"></div>
         
@@ -2778,20 +2886,101 @@
     
     <script>
         // ==========================================
+        // 🎯 Condensed Icon Bar System
+        // ==========================================
+        
+        // Icon Bar Toggle Logic
+        function initIconBarToggle() {
+            const iconBarItems = document.querySelectorAll('.icon-bar-item');
+            
+            iconBarItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const panelName = this.getAttribute('data-panel');
+                    
+                    // Toggle active state
+                    const wasActive = this.classList.contains('active');
+                    
+                    // Remove active from all items
+                    iconBarItems.forEach(i => i.classList.remove('active'));
+                    
+                    if (!wasActive) {
+                        this.classList.add('active');
+                        showDetailPanel(panelName);
+                    } else {
+                        hideDetailPanel(panelName);
+                    }
+                });
+            });
+        }
+        
+        // Show Detail Panel
+        function showDetailPanel(panelName) {
+            // Map panel names to actual panel IDs
+            const panelMap = {
+                'history': 'historyPanel',
+                'quick-actions': 'historyPanel',  // Same panel for now
+                'projects': 'historyPanel',
+                'settings': 'historyPanel',
+                'stats': 'statusPanel',
+                'tasks': 'statusPanel',
+                'ai-progress': 'statusPanel',
+                'notifications': 'statusPanel'
+            };
+            
+            const panelId = panelMap[panelName];
+            const panel = document.getElementById(panelId);
+            
+            if (panel) {
+                panel.classList.remove('hidden');
+                
+                // Update panel state
+                const stateName = panelId === 'historyPanel' ? 'history' : 'status';
+                panelState[stateName].visible = true;
+                panelState[stateName].minimized = false;
+                savePanelState();
+            }
+        }
+        
+        // Hide Detail Panel
+        function hideDetailPanel(panelName) {
+            const panelMap = {
+                'history': 'historyPanel',
+                'quick-actions': 'historyPanel',
+                'projects': 'historyPanel',
+                'settings': 'historyPanel',
+                'stats': 'statusPanel',
+                'tasks': 'statusPanel',
+                'ai-progress': 'statusPanel',
+                'notifications': 'statusPanel'
+            };
+            
+            const panelId = panelMap[panelName];
+            const panel = document.getElementById(panelId);
+            
+            if (panel) {
+                panel.classList.add('hidden');
+                
+                // Update panel state
+                const stateName = panelId === 'historyPanel' ? 'history' : 'status';
+                panelState[stateName].visible = false;
+                savePanelState();
+            }
+        }
+
         // 🎯 Floating Panels System
         // ==========================================
         
         // Panel State Management
         const panelState = {
             history: {
-                visible: true,
+                visible: false,  // Hidden by default, shown via icon click
                 minimized: false,
-                position: { x: 20, y: 80 },
+                position: { x: 80, y: 80 },  // Offset from left icon bar
                 size: { width: 320, height: 500 },
                 zIndex: 1000
             },
             status: {
-                visible: true,
+                visible: false,  // Hidden by default, shown via icon click
                 minimized: false,
                 position: { x: null, y: 80 },  // null means right-aligned
                 size: { width: 300, height: 450 },
@@ -3085,6 +3274,9 @@
         
         // Initialize panels on load
         initializePanels();
+        
+        // Initialize Icon Bar Toggle
+        initIconBarToggle();
         
         // ==========================================
         // 🎨 Canvas V5 - Infinite Canvas State
