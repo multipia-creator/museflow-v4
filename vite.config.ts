@@ -52,6 +52,7 @@ export default defineConfig({
         '/canvas-v6-complete.html',
         '/canvas-complete.html',
         '/canvas-final.html',
+        '/canvas-enhanced.html',
         '/test-css.html',
         '/canvas-layout-sample.html',
         '/e2e-testing.html',

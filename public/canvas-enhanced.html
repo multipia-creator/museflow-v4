@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MuseFlow Canvas - Enhanced</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Inter, sans-serif;
+    background: #0a0a0a;
+    color: #e5e5e5;
+    overflow: hidden;
+}
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    z-index: 1001;
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #e5e5e5;
+}
+
+.navbar-logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.navbar-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.navbar-btn {
+    width: 44px;
+    height: 44px;
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 12px;
+    color: #9CA3AF;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.navbar-btn:hover {
+    background: rgba(139, 92, 246, 0.25);
+    color: #8B5CF6;
+    transform: scale(1.05);
+}
+
+/* Container with navbar offset */
+.container {
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    height: calc(100vh - 64px - 48px); /* navbar + footer */
+    margin-top: 64px;
+}
+
+.sidebar {
+    background: linear-gradient(180deg, #1a1a1a, #0f0f0f);
+    border-right: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+    padding: 8px 3px;
+    gap: 4px;
+}
+
+.sidebar.right {
+    border-left: 1px solid #333;
+    border-right: none;
+}
+
+.icon {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.2s;
+    position: relative;
+}
+
+.icon:hover {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+}
+
+.icon.active {
+    background: rgba(16, 185, 129, 0.25);
+    color: #10b981;
+}
+
+.badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: #ef4444;
+    color: #fff;
+    font-size: 9px;
+    min-width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+}
+
+.canvas {
+    background: #fafbfc;
+    overflow: hidden;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    position: relative;
+}
+
+.viewport {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    cursor: grab;
+}
+
+.viewport.dragging {
+    cursor: grabbing;
+}
+
+.panel {
+    position: fixed;
+    top: 64px;
+    bottom: 48px;
+    width: 280px;
+    background: rgba(26, 26, 26, 0.98);
+    border: 1px solid #333;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: 0.3s;
+    display: none;
+}
+
+.panel.left {
+    left: 40px;
+}
+
+.panel.right {
+    right: 40px;
+    transform: translateX(100%);
+}
+
+.panel.active {
+    display: block;
+    transform: translateX(0);
+}
+
+.panel-header {
+    padding: 16px;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+}
+
+.panel-title {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.panel-close {
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    color: #666;
+    cursor: pointer;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel-close:hover {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+}
+
+.panel-content {
+    padding: 16px;
+    color: #999;
+    font-size: 13px;
+}
+
+/* Media Card with thumbnail */
+.card {
+    position: absolute;
+    width: 300px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    cursor: move;
+}
+
+.card-thumbnail {
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+
+.card-thumbnail.video {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.card-thumbnail.audio {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.card-thumbnail.image {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.card-thumbnail.document {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.card-thumbnail.data {
+    background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+}
+
+.card-header {
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-content {
+    padding: 16px;
+    color: #333;
+    font-size: 13px;
+}
+
+.card-meta {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #e5e7eb;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.controls {
+    position: fixed;
+    bottom: 68px;
+    right: 60px;
+    display: flex;
+    gap: 8px;
+    background: rgba(26, 26, 26, 0.98);
+    padding: 8px 12px;
+    border-radius: 12px;
+    border: 1px solid #333;
+    z-index: 50;
+}
+
+.ctrl-btn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #374151;
+    background: rgba(17, 24, 39, 0.6);
+    color: #9ca3af;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ctrl-btn:hover {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+}
+
+.zoom-level {
+    color: #9ca3af;
+    font-size: 13px;
+    min-width: 45px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ai-input {
+    position: fixed;
+    bottom: 68px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    background: rgba(26, 26, 26, 0.98);
+    padding: 12px 16px;
+    border-radius: 16px;
+    border: 1px solid #333;
+    z-index: 50;
+}
+
+.ai-select {
+    padding: 6px 10px;
+    background: rgba(17, 24, 39, 0.6);
+    border: 1px solid #374151;
+    border-radius: 8px;
+    color: #e5e7eb;
+    font-size: 13px;
+}
+
+.ai-field {
+    flex: 1;
+    min-width: 300px;
+    padding: 8px 12px;
+    background: rgba(17, 24, 39, 0.6);
+    border: 1px solid #374151;
+    border-radius: 10px;
+    color: #e5e7eb;
+    font-size: 14px;
+}
+
+.ai-field:focus {
+    outline: none;
+    border-color: #10b981;
+}
+
+.ai-send {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: #10b981;
+    color: #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ai-send:hover {
+    background: #059669;
+}
+
+/* Footer */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    font-size: 13px;
+    color: #9ca3af;
+    z-index: 1000;
+}
+
+.footer-left {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.footer-link {
+    color: #9ca3af;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-link:hover {
+    color: #8B5CF6;
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="navbar-logo">
+        <div class="navbar-logo-icon">
+            <i data-lucide="layers" style="width:20px;height:20px"></i>
+        </div>
+        <span>MuseFlow</span>
+    </div>
+    <div class="navbar-actions">
+        <button class="navbar-btn" title="알림">
+            <i data-lucide="bell" style="width:18px;height:18px"></i>
+        </button>
+        <button class="navbar-btn" title="도움말">
+            <i data-lucide="help-circle" style="width:18px;height:18px"></i>
+        </button>
+        <button class="navbar-btn" title="설정">
+            <i data-lucide="settings" style="width:18px;height:18px"></i>
+        </button>
+        <button class="navbar-btn" title="계정">
+            <i data-lucide="user" style="width:18px;height:18px"></i>
+        </button>
+    </div>
+</nav>
+
+<!-- Main Container -->
+<div class="container">
+    <div class="sidebar left">
+        <div class="icon" data-panel="history"><i data-lucide="clock" style="width:16px;height:16px"></i></div>
+        <div class="icon" data-panel="actions"><i data-lucide="zap" style="width:16px;height:16px"></i></div>
+        <div class="icon" data-panel="projects"><i data-lucide="folder" style="width:16px;height:16px"></i></div>
+        <div class="icon" data-panel="settings"><i data-lucide="settings" style="width:16px;height:16px"></i></div>
+    </div>
+    <div class="canvas">
+        <div class="viewport" id="vp"></div>
+    </div>
+    <div class="sidebar right">
+        <div class="icon" data-panel="stats"><i data-lucide="bar-chart-2" style="width:16px;height:16px"></i></div>
+        <div class="icon" data-panel="tasks"><i data-lucide="check-square" style="width:16px;height:16px"></i><span class="badge">2</span></div>
+        <div class="icon" data-panel="ai"><i data-lucide="sparkles" style="width:16px;height:16px"></i><span class="badge">1</span></div>
+        <div class="icon" data-panel="alerts"><i data-lucide="bell" style="width:16px;height:16px"></i><span class="badge">3</span></div>
+    </div>
+</div>
+
+<!-- Panels -->
+<div class="panel left" id="historyPanel" data-side="left">
+    <div class="panel-header">
+        <span class="panel-title">History</span>
+        <button class="panel-close" onclick="closePanel('historyPanel')">
+            <i data-lucide="x" style="width:14px;height:14px"></i>
+        </button>
+    </div>
+    <div class="panel-content">최근 작업 기록</div>
+</div>
+
+<div class="panel left" id="actionsPanel" data-side="left">
+    <div class="panel-header">
+        <span class="panel-title">Actions</span>
+        <button class="panel-close" onclick="closePanel('actionsPanel')">
+            <i data-lucide="x" style="width:14px;height:14px"></i>
+        </button>
+    </div>
+    <div class="panel-content">빠른 작업</div>
+</div>
+
+<div class="panel left" id="projectsPanel" data-side="left">
+    <div class="panel-header">
+        <span class="panel-title">Projects</span>
+        <button class="panel-close" onclick="closePanel('projectsPanel')">
+            <i data-lucide="x" style="width:14px;height:14px"></i>
+        </button>
+    </div>
+    <div class="panel-content">프로젝트</div>
+</div>
+
+<div class="panel left" id="settingsPanel" data-side="left">
+    <div class="panel-header">
+        <span class="panel-title">Settings</span>
+        <button class="panel-close" onclick="closePanel('settingsPanel')">
+            <i data-lucide="x" style="width:14px;height:14px"></i>
+        </button>
+    </div>
+    <div class="panel-content">설정</div>
+</div>
+
+<div class="panel right" id="statsPanel" data-side="right">
+    <div class="panel-header">
+        <span class="panel-title">Stats</span>
+        <button class="panel-close" onclick="closePanel('statsPanel')">
+            <i data-lucide="x" style="width:14px;height:14px"></i>
+        </button>
+    </div>
+    <div class="panel-content">통계</div>
+</div>
+
+<div class="panel right" id="tasksPanel" data-side="right">
+    <div class="panel-header">
+        <span class="panel-title">Tasks</span>
+        <button class="panel-close" onclick="closePanel('tasksPanel')">
+            <i data-lucide="x" style="width:14px;height:14px"></i>
+        </button>
+    </div>
+    <div class="panel-content">작업 목록</div>
+</div>
+
+<div class="panel right" id="aiPanel" data-side="right">
+    <div class="panel-header">
+        <span class="panel-title">AI Assistant</span>
+        <button class="panel-close" onclick="closePanel('aiPanel')">
+            <i data-lucide="x" style="width:14px;height:14px"></i>
+        </button>
+    </div>
+    <div class="panel-content">AI 진행 상황</div>
+</div>
+
+<div class="panel right" id="alertsPanel" data-side="right">
+    <div class="panel-header">
+        <span class="panel-title">Alerts</span>
+        <button class="panel-close" onclick="closePanel('alertsPanel')">
+            <i data-lucide="x" style="width:14px;height:14px"></i>
+        </button>
+    </div>
+    <div class="panel-content">알림</div>
+</div>
+
+<!-- Controls -->
+<div class="controls">
+    <button class="ctrl-btn" id="zoomOut">
+        <i data-lucide="zoom-out" style="width:14px;height:14px"></i>
+    </button>
+    <span class="zoom-level" id="zoomLevel">100%</span>
+    <button class="ctrl-btn" id="zoomIn">
+        <i data-lucide="zoom-in" style="width:14px;height:14px"></i>
+    </button>
+    <button class="ctrl-btn" id="fitScreen">
+        <i data-lucide="maximize-2" style="width:14px;height:14px"></i>
+    </button>
+</div>
+
+<!-- AI Input -->
+<div class="ai-input">
+    <select class="ai-select">
+        <option>GPT-4o</option>
+        <option>Claude 3.5</option>
+        <option>Gemini Pro</option>
+    </select>
+    <input class="ai-field" placeholder="AI에게 질문...">
+    <button class="ai-send">
+        <i data-lucide="send" style="width:16px;height:16px"></i>
+    </button>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-left">
+        <span>© 2025 MuseFlow</span>
+        <a href="#" class="footer-link">도움말</a>
+        <a href="#" class="footer-link">개인정보처리방침</a>
+        <a href="#" class="footer-link">서비스 약관</a>
+    </div>
+    <div class="footer-right">
+        <span>v4.0.0</span>
+    </div>
+</footer>
+
+<script>
+lucide.createIcons();
+
+// Panel Management
+const activePanels = { left: null, right: null };
+const viewport = document.getElementById('vp');
+let scale = 1, translateX = 0, translateY = 0, isDragging = false, startX, startY;
+
+function closePanel(panelId) {
+    const panel = document.getElementById(panelId);
+    if (!panel) return;
+    panel.classList.remove('active');
+    activePanels[panel.dataset.side] = null;
+    const icon = document.querySelector(`[data-panel="${panelId.replace('Panel', '')}"]`);
+    if (icon) icon.classList.remove('active');
+}
+
+document.querySelectorAll('.icon').forEach(icon => {
+    icon.addEventListener('click', function() {
+        const panelName = this.dataset.panel + 'Panel';
+        const panel = document.getElementById(panelName);
+        if (!panel) return;
+        
+        const side = panel.dataset.side;
+        if (panel.classList.contains('active')) {
+            closePanel(panelName);
+            this.classList.remove('active');
+            return;
+        }
+        
+        if (activePanels[side]) closePanel(activePanels[side]);
+        panel.classList.add('active');
+        this.classList.add('active');
+        activePanels[side] = panelName;
+    });
+});
+
+// Canvas Interaction
+viewport.addEventListener('mousedown', e => {
+    isDragging = true;
+    viewport.classList.add('dragging');
+    startX = e.pageX - translateX;
+    startY = e.pageY - translateY;
+});
+
+document.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    e.preventDefault();
+    translateX = e.pageX - startX;
+    translateY = e.pageY - startY;
+    viewport.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+});
+
+document.addEventListener('mouseup', () => {
+    if (isDragging) {
+        isDragging = false;
+        viewport.classList.remove('dragging');
+    }
+});
+
+// Zoom
+viewport.addEventListener('wheel', e => {
+    if (!e.ctrlKey) return;
+    e.preventDefault();
+    scale = Math.max(0.1, Math.min(3, scale * (e.deltaY > 0 ? 0.9 : 1.1)));
+    viewport.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    document.getElementById('zoomLevel').textContent = Math.round(scale * 100) + '%';
+});
+
+document.getElementById('zoomIn').addEventListener('click', () => {
+    scale = Math.min(3, scale * 1.2);
+    viewport.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    document.getElementById('zoomLevel').textContent = Math.round(scale * 100) + '%';
+});
+
+document.getElementById('zoomOut').addEventListener('click', () => {
+    scale = Math.max(0.1, scale * 0.8);
+    viewport.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    document.getElementById('zoomLevel').textContent = Math.round(scale * 100) + '%';
+});
+
+document.getElementById('fitScreen').addEventListener('click', () => {
+    scale = 1;
+    translateX = 0;
+    translateY = 0;
+    viewport.style.transform = 'translate(0, 0) scale(1)';
+    document.getElementById('zoomLevel').textContent = '100%';
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        Object.values(activePanels).forEach(p => p && closePanel(p));
+        document.querySelectorAll('.icon.active').forEach(i => i.classList.remove('active'));
+    }
+    const num = parseInt(e.key);
+    if (num >= 1 && num <= 8) {
+        const icons = Array.from(document.querySelectorAll('.icon'));
+        icons[num - 1]?.click();
+    }
+});
+
+// Sample Cards with Thumbnails
+const cards = [
+    { title: '홍보 영상', content: '전시 소개 영상 (3:45)', icon: 'video', type: 'video', size: '125 MB', format: 'MP4', x: 100, y: 100 },
+    { title: '오디오 가이드', content: '전시 해설 음성 (한/영)', icon: 'headphones', type: 'audio', size: '8.5 MB', format: 'MP3', x: 450, y: 100 },
+    { title: '전시 포스터', content: '메인 비주얼 디자인', icon: 'image', type: 'image', size: '4.2 MB', format: 'PNG', x: 800, y: 100 },
+    { title: '관람객 통계', content: '월간 리포트', icon: 'bar-chart-2', type: 'data', size: '1.8 MB', format: 'XLSX', x: 100, y: 350 },
+    { title: '큐레이터 노트', content: '작품 해설 원고', icon: 'file-text', type: 'document', size: '2.4 MB', format: 'DOCX', x: 450, y: 350 },
+    { title: '3D ��델', content: '유물 스캔 데이터', icon: 'box', type: 'data', size: '89 MB', format: 'GLB', x: 800, y: 350 },
+    { title: '현장 사진', content: '설치 진행 사진 (24장)', icon: 'camera', type: 'image', size: '45 MB', format: 'JPG', x: 100, y: 600 },
+    { title: '피드백', content: '관람객 의견 수집', icon: 'message-circle', type: 'document', size: '512 KB', format: 'PDF', x: 450, y: 600 },
+    { title: '일정표', content: '전시 운영 스케줄', icon: 'calendar', type: 'document', size: '1.2 MB', format: 'PDF', x: 800, y: 600 }
+];
+
+cards.forEach(card => {
+    const cardEl = document.createElement('div');
+    cardEl.className = 'card';
+    cardEl.style.left = card.x + 'px';
+    cardEl.style.top = card.y + 'px';
+    
+    cardEl.innerHTML = `
+        <div class="card-thumbnail ${card.type}">
+            <i data-lucide="${card.icon}" style="width:60px;height:60px;color:rgba(255,255,255,0.9);stroke-width:1.5"></i>
+        </div>
+        <div class="card-header">
+            <i data-lucide="${card.icon}" style="width:16px;height:16px"></i>
+            ${card.title}
+        </div>
+        <div class="card-content">
+            ${card.content}
+            <div class="card-meta">
+                <span>📦 ${card.size}</span>
+                <span>📄 ${card.format}</span>
+            </div>
+        </div>
+    `;
+    
+    viewport.appendChild(cardEl);
+});
+
+lucide.createIcons();
+</script>
+</body>
+</html>
