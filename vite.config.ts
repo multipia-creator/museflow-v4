@@ -50,6 +50,7 @@ export default defineConfig({
         '/canvas-v5-final-BROKEN-20251204-143038.html',
         '/canvas-v6-clean.html',
         '/canvas-v6-complete.html',
+        '/canvas-complete.html',
         '/canvas-final.html',
         '/test-css.html',
         '/canvas-layout-sample.html',
