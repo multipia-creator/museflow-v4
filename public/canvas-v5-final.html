@@ -123,6 +123,31 @@
             opacity: 1;
         }
 
+        /* Badge for Notification Count */
+        .icon-bar-item .badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            min-width: 18px;
+            height: 18px;
+            background: #EF4444;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+            border: 2px solid #1F2937;
+            animation: badge-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badge-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
         /* ========== Floating Detail Panels ========== */
         .floating-panel {
             position: fixed;
@@ -2590,12 +2615,15 @@
             </div>
             <div class="icon-bar-item right" data-panel="tasks" data-tooltip="Tasks">
                 <i data-lucide="check-circle"></i>
+                <span class="badge">2</span>
             </div>
             <div class="icon-bar-item right" data-panel="ai-progress" data-tooltip="AI Progress">
                 <i data-lucide="cpu"></i>
+                <span class="badge">1</span>
             </div>
             <div class="icon-bar-item right" data-panel="notifications" data-tooltip="Notifications">
                 <i data-lucide="bell"></i>
+                <span class="badge">3</span>
             </div>
         </div>
 
@@ -2882,6 +2910,362 @@
             <div class="resize-handle resize-nw"></div>
         </div>
         <!-- End of Status Panel -->
+
+        <!-- Quick Actions Panel (Floating) -->
+        <div class="floating-panel hidden" id="quickActionsPanel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <i data-lucide="zap"></i>
+                    <span>Quick Actions</span>
+                </div>
+                <div class="panel-actions">
+                    <button class="panel-btn btn-minimize" data-panel="quick-actions" title="최소화">
+                        <i data-lucide="minus"></i>
+                    </button>
+                    <button class="panel-btn btn-close" data-panel="quick-actions" title="닫기">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-content">
+                <div class="quick-actions-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 16px;">
+                    <button class="quick-action-btn" style="padding: 12px; background: rgba(55, 65, 81, 0.5); border: 1px solid #374151; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                        <i data-lucide="file-text" style="margin-bottom: 8px;"></i>
+                        <div style="font-size: 12px; color: #9CA3AF;">전시 라벨</div>
+                    </button>
+                    <button class="quick-action-btn" style="padding: 12px; background: rgba(55, 65, 81, 0.5); border: 1px solid #374151; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                        <i data-lucide="dollar-sign" style="margin-bottom: 8px;"></i>
+                        <div style="font-size: 12px; color: #9CA3AF;">예산 승인</div>
+                    </button>
+                    <button class="quick-action-btn" style="padding: 12px; background: rgba(55, 65, 81, 0.5); border: 1px solid #374151; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                        <i data-lucide="calendar" style="margin-bottom: 8px;"></i>
+                        <div style="font-size: 12px; color: #9CA3AF;">일정 관리</div>
+                    </button>
+                    <button class="quick-action-btn" style="padding: 12px; background: rgba(55, 65, 81, 0.5); border: 1px solid #374151; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                        <i data-lucide="users" style="margin-bottom: 8px;"></i>
+                        <div style="font-size: 12px; color: #9CA3AF;">팀 관리</div>
+                    </button>
+                </div>
+            </div>
+            <!-- Resize Handles -->
+            <div class="resize-handle resize-n"></div>
+            <div class="resize-handle resize-e"></div>
+            <div class="resize-handle resize-s"></div>
+            <div class="resize-handle resize-w"></div>
+            <div class="resize-handle resize-ne"></div>
+            <div class="resize-handle resize-se"></div>
+            <div class="resize-handle resize-sw"></div>
+            <div class="resize-handle resize-nw"></div>
+        </div>
+
+        <!-- Projects Panel (Floating) -->
+        <div class="floating-panel hidden" id="projectsPanel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <i data-lucide="folder"></i>
+                    <span>Projects</span>
+                </div>
+                <div class="panel-actions">
+                    <button class="panel-btn btn-minimize" data-panel="projects" title="최소화">
+                        <i data-lucide="minus"></i>
+                    </button>
+                    <button class="panel-btn btn-close" data-panel="projects" title="닫기">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-content" style="padding: 16px;">
+                <div class="project-list">
+                    <div class="project-item" style="padding: 12px; margin-bottom: 8px; background: rgba(55, 65, 81, 0.5); border: 1px solid #374151; border-radius: 8px; cursor: pointer;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <i data-lucide="folder-open" style="color: #10B981;"></i>
+                            <div style="flex: 1;">
+                                <div style="font-size: 14px; font-weight: 600; color: #F9FAFB; margin-bottom: 4px;">2025 인상주의 특별전</div>
+                                <div style="font-size: 12px; color: #9CA3AF;">진행 중 • 마감: 2025.03.15</div>
+                            </div>
+                            <div style="background: rgba(16, 185, 129, 0.2); color: #10B981; padding: 4px 8px; border-radius: 4px; font-size: 11px;">75%</div>
+                        </div>
+                    </div>
+                    <div class="project-item" style="padding: 12px; margin-bottom: 8px; background: rgba(55, 65, 81, 0.5); border: 1px solid #374151; border-radius: 8px; cursor: pointer;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <i data-lucide="folder" style="color: #9CA3AF;"></i>
+                            <div style="flex: 1;">
+                                <div style="font-size: 14px; font-weight: 600; color: #F9FAFB; margin-bottom: 4px;">디지털 아카이브 구축</div>
+                                <div style="font-size: 12px; color: #9CA3AF;">계획 중 • 시작: 2025.04.01</div>
+                            </div>
+                            <div style="background: rgba(156, 163, 175, 0.2); color: #9CA3AF; padding: 4px 8px; border-radius: 4px; font-size: 11px;">0%</div>
+                        </div>
+                    </div>
+                    <div class="project-item" style="padding: 12px; margin-bottom: 8px; background: rgba(55, 65, 81, 0.5); border: 1px solid #374151; border-radius: 8px; cursor: pointer;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <i data-lucide="folder-check" style="color: #10B981;"></i>
+                            <div style="flex: 1;">
+                                <div style="font-size: 14px; font-weight: 600; color: #F9FAFB; margin-bottom: 4px;">2024 연말 결산 보고</div>
+                                <div style="font-size: 12px; color: #9CA3AF;">완료 • 2024.12.31</div>
+                            </div>
+                            <div style="background: rgba(16, 185, 129, 0.2); color: #10B981; padding: 4px 8px; border-radius: 4px; font-size: 11px;">100%</div>
+                        </div>
+                    </div>
+                </div>
+                <button style="width: 100%; margin-top: 12px; padding: 10px; background: rgba(16, 185, 129, 0.2); border: 1px solid #10B981; border-radius: 8px; color: #10B981; cursor: pointer; font-size: 13px; font-weight: 600;">
+                    <i data-lucide="plus" style="margin-right: 6px;"></i>
+                    새 프로젝트
+                </button>
+            </div>
+            <!-- Resize Handles -->
+            <div class="resize-handle resize-n"></div>
+            <div class="resize-handle resize-e"></div>
+            <div class="resize-handle resize-s"></div>
+            <div class="resize-handle resize-w"></div>
+            <div class="resize-handle resize-ne"></div>
+            <div class="resize-handle resize-se"></div>
+            <div class="resize-handle resize-sw"></div>
+            <div class="resize-handle resize-nw"></div>
+        </div>
+
+        <!-- Settings Panel (Floating) -->
+        <div class="floating-panel hidden" id="settingsPanel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <i data-lucide="settings"></i>
+                    <span>Settings</span>
+                </div>
+                <div class="panel-actions">
+                    <button class="panel-btn btn-minimize" data-panel="settings" title="최소화">
+                        <i data-lucide="minus"></i>
+                    </button>
+                    <button class="panel-btn btn-close" data-panel="settings" title="닫기">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-content" style="padding: 16px;">
+                <div class="settings-section" style="margin-bottom: 20px;">
+                    <div style="font-size: 13px; font-weight: 600; color: #9CA3AF; margin-bottom: 12px;">Display</div>
+                    <label style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(55, 65, 81, 0.5); border: 1px solid #374151; border-radius: 8px; margin-bottom: 8px; cursor: pointer;">
+                        <span style="color: #F9FAFB; font-size: 14px;">Dark Mode</span>
+                        <input type="checkbox" checked style="width: 40px; height: 20px;">
+                    </label>
+                    <label style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(55, 65, 81, 0.5); border: 1px solid #374151; border-radius: 8px; cursor: pointer;">
+                        <span style="color: #F9FAFB; font-size: 14px;">Grid Background</span>
+                        <input type="checkbox" checked style="width: 40px; height: 20px;">
+                    </label>
+                </div>
+                <div class="settings-section" style="margin-bottom: 20px;">
+                    <div style="font-size: 13px; font-weight: 600; color: #9CA3AF; margin-bottom: 12px;">Canvas</div>
+                    <label style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(55, 65, 81, 0.5); border: 1px solid #374151; border-radius: 8px; margin-bottom: 8px;">
+                        <span style="color: #F9FAFB; font-size: 14px;">Zoom Level</span>
+                        <input type="range" min="0.25" max="3" step="0.25" value="1" style="width: 100px;">
+                    </label>
+                    <label style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: rgba(55, 65, 81, 0.5); border: 1px solid #374151; border-radius: 8px; cursor: pointer;">
+                        <span style="color: #F9FAFB; font-size: 14px;">Snap to Grid</span>
+                        <input type="checkbox" style="width: 40px; height: 20px;">
+                    </label>
+                </div>
+                <div class="settings-section">
+                    <div style="font-size: 13px; font-weight: 600; color: #9CA3AF; margin-bottom: 12px;">Keyboard Shortcuts</div>
+                    <div style="padding: 10px; background: rgba(55, 65, 81, 0.5); border: 1px solid #374151; border-radius: 8px; font-size: 12px; color: #9CA3AF; line-height: 1.8;">
+                        <div><kbd style="background: #1F2937; padding: 2px 6px; border-radius: 4px;">1-8</kbd> Toggle Panels</div>
+                        <div><kbd style="background: #1F2937; padding: 2px 6px; border-radius: 4px;">H</kbd> Toggle History</div>
+                        <div><kbd style="background: #1F2937; padding: 2px 6px; border-radius: 4px;">S</kbd> Toggle Status</div>
+                        <div><kbd style="background: #1F2937; padding: 2px 6px; border-radius: 4px;">Esc</kbd> Close All Panels</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Resize Handles -->
+            <div class="resize-handle resize-n"></div>
+            <div class="resize-handle resize-e"></div>
+            <div class="resize-handle resize-s"></div>
+            <div class="resize-handle resize-w"></div>
+            <div class="resize-handle resize-ne"></div>
+            <div class="resize-handle resize-se"></div>
+            <div class="resize-handle resize-sw"></div>
+            <div class="resize-handle resize-nw"></div>
+        </div>
+
+        <!-- Tasks Panel (Floating) -->
+        <div class="floating-panel hidden" id="tasksPanel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <i data-lucide="check-circle"></i>
+                    <span>Tasks</span>
+                </div>
+                <div class="panel-actions">
+                    <button class="panel-btn btn-minimize" data-panel="tasks" title="최소화">
+                        <i data-lucide="minus"></i>
+                    </button>
+                    <button class="panel-btn btn-close" data-panel="tasks" title="닫기">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-content" style="padding: 16px;">
+                <div class="task-list">
+                    <div class="task-item" style="padding: 12px; margin-bottom: 8px; background: rgba(55, 65, 81, 0.5); border: 1px solid #374151; border-radius: 8px; display: flex; align-items: start; gap: 12px;">
+                        <input type="checkbox" style="margin-top: 4px; width: 18px; height: 18px;">
+                        <div style="flex: 1;">
+                            <div style="font-size: 14px; color: #F9FAFB; margin-bottom: 4px;">전시 라벨 최종 검토</div>
+                            <div style="font-size: 12px; color: #9CA3AF;">마감: 오늘</div>
+                        </div>
+                        <span style="background: rgba(239, 68, 68, 0.2); color: #EF4444; padding: 2px 8px; border-radius: 4px; font-size: 11px;">High</span>
+                    </div>
+                    <div class="task-item" style="padding: 12px; margin-bottom: 8px; background: rgba(55, 65, 81, 0.5); border: 1px solid #374151; border-radius: 8px; display: flex; align-items: start; gap: 12px;">
+                        <input type="checkbox" style="margin-top: 4px; width: 18px; height: 18px;">
+                        <div style="flex: 1;">
+                            <div style="font-size: 14px; color: #F9FAFB; margin-bottom: 4px;">예산 승인 요청</div>
+                            <div style="font-size: 12px; color: #9CA3AF;">마감: 내일</div>
+                        </div>
+                        <span style="background: rgba(251, 191, 36, 0.2); color: #FBBF24; padding: 2px 8px; border-radius: 4px; font-size: 11px;">Medium</span>
+                    </div>
+                    <div class="task-item" style="padding: 12px; margin-bottom: 8px; background: rgba(55, 65, 81, 0.5); border: 1px solid #374151; border-radius: 8px; display: flex; align-items: start; gap: 12px;">
+                        <input type="checkbox" checked style="margin-top: 4px; width: 18px; height: 18px;">
+                        <div style="flex: 1;">
+                            <div style="font-size: 14px; color: #9CA3AF; text-decoration: line-through; margin-bottom: 4px;">회의록 작성</div>
+                            <div style="font-size: 12px; color: #9CA3AF;">완료</div>
+                        </div>
+                        <span style="background: rgba(16, 185, 129, 0.2); color: #10B981; padding: 2px 8px; border-radius: 4px; font-size: 11px;">Done</span>
+                    </div>
+                </div>
+                <button style="width: 100%; margin-top: 12px; padding: 10px; background: rgba(16, 185, 129, 0.2); border: 1px solid #10B981; border-radius: 8px; color: #10B981; cursor: pointer; font-size: 13px; font-weight: 600;">
+                    <i data-lucide="plus" style="margin-right: 6px;"></i>
+                    새 작업
+                </button>
+            </div>
+            <!-- Resize Handles -->
+            <div class="resize-handle resize-n"></div>
+            <div class="resize-handle resize-e"></div>
+            <div class="resize-handle resize-s"></div>
+            <div class="resize-handle resize-w"></div>
+            <div class="resize-handle resize-ne"></div>
+            <div class="resize-handle resize-se"></div>
+            <div class="resize-handle resize-sw"></div>
+            <div class="resize-handle resize-nw"></div>
+        </div>
+
+        <!-- AI Progress Panel (Floating) -->
+        <div class="floating-panel hidden" id="aiProgressPanel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <i data-lucide="cpu"></i>
+                    <span>AI Progress</span>
+                </div>
+                <div class="panel-actions">
+                    <button class="panel-btn btn-minimize" data-panel="ai-progress" title="최소화">
+                        <i data-lucide="minus"></i>
+                    </button>
+                    <button class="panel-btn btn-close" data-panel="ai-progress" title="닫기">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-content" style="padding: 16px;">
+                <div class="ai-task-list">
+                    <div class="ai-task-item" style="padding: 12px; margin-bottom: 8px; background: rgba(55, 65, 81, 0.5); border: 1px solid #374151; border-radius: 8px;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                            <div style="width: 32px; height: 32px; background: rgba(16, 185, 129, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                <i data-lucide="zap" style="width: 16px; height: 16px; color: #10B981;"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-size: 14px; font-weight: 600; color: #F9FAFB;">전시 라벨 자동 생성</div>
+                                <div style="font-size: 12px; color: #9CA3AF;">진행 중...</div>
+                            </div>
+                        </div>
+                        <div style="width: 100%; height: 8px; background: rgba(55, 65, 81, 0.5); border-radius: 4px; overflow: hidden;">
+                            <div style="width: 65%; height: 100%; background: linear-gradient(90deg, #10B981, #059669); animation: pulse 2s ease-in-out infinite;"></div>
+                        </div>
+                        <div style="font-size: 11px; color: #9CA3AF; margin-top: 4px; text-align: right;">65%</div>
+                    </div>
+                    <div class="ai-task-item" style="padding: 12px; margin-bottom: 8px; background: rgba(55, 65, 81, 0.5); border: 1px solid #374151; border-radius: 8px;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                            <div style="width: 32px; height: 32px; background: rgba(251, 191, 36, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                <i data-lucide="image" style="width: 16px; height: 16px; color: #FBBF24;"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-size: 14px; font-weight: 600; color: #F9FAFB;">이미지 분석</div>
+                                <div style="font-size: 12px; color: #9CA3AF;">대기 중...</div>
+                            </div>
+                        </div>
+                        <div style="width: 100%; height: 8px; background: rgba(55, 65, 81, 0.5); border-radius: 4px; overflow: hidden;">
+                            <div style="width: 0%; height: 100%; background: #9CA3AF;"></div>
+                        </div>
+                        <div style="font-size: 11px; color: #9CA3AF; margin-top: 4px; text-align: right;">0%</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Resize Handles -->
+            <div class="resize-handle resize-n"></div>
+            <div class="resize-handle resize-e"></div>
+            <div class="resize-handle resize-s"></div>
+            <div class="resize-handle resize-w"></div>
+            <div class="resize-handle resize-ne"></div>
+            <div class="resize-handle resize-se"></div>
+            <div class="resize-handle resize-sw"></div>
+            <div class="resize-handle resize-nw"></div>
+        </div>
+
+        <!-- Notifications Panel (Floating) -->
+        <div class="floating-panel hidden" id="notificationsPanel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <i data-lucide="bell"></i>
+                    <span>Notifications</span>
+                </div>
+                <div class="panel-actions">
+                    <button class="panel-btn btn-minimize" data-panel="notifications" title="최소화">
+                        <i data-lucide="minus"></i>
+                    </button>
+                    <button class="panel-btn btn-close" data-panel="notifications" title="닫기">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="panel-content" style="padding: 16px;">
+                <div class="notification-list">
+                    <div class="notification-item" style="padding: 12px; margin-bottom: 8px; background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10B981; border-radius: 8px;">
+                        <div style="display: flex; align-items: start; gap: 12px;">
+                            <i data-lucide="check-circle" style="color: #10B981; margin-top: 2px;"></i>
+                            <div style="flex: 1;">
+                                <div style="font-size: 14px; font-weight: 600; color: #F9FAFB; margin-bottom: 4px;">작업 완료</div>
+                                <div style="font-size: 12px; color: #9CA3AF;">전시 라벨 문서가 생성되었습니다.</div>
+                                <div style="font-size: 11px; color: #6B7280; margin-top: 4px;">5분 전</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="notification-item" style="padding: 12px; margin-bottom: 8px; background: rgba(59, 130, 246, 0.1); border-left: 3px solid #3B82F6; border-radius: 8px;">
+                        <div style="display: flex; align-items: start; gap: 12px;">
+                            <i data-lucide="info" style="color: #3B82F6; margin-top: 2px;"></i>
+                            <div style="flex: 1;">
+                                <div style="font-size: 14px; font-weight: 600; color: #F9FAFB; margin-bottom: 4px;">새 댓글</div>
+                                <div style="font-size: 12px; color: #9CA3AF;">김철수님이 예산 승인 문서에 댓글을 남겼습니다.</div>
+                                <div style="font-size: 11px; color: #6B7280; margin-top: 4px;">1시간 전</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="notification-item" style="padding: 12px; margin-bottom: 8px; background: rgba(251, 191, 36, 0.1); border-left: 3px solid #FBBF24; border-radius: 8px;">
+                        <div style="display: flex; align-items: start; gap: 12px;">
+                            <i data-lucide="alert-triangle" style="color: #FBBF24; margin-top: 2px;"></i>
+                            <div style="flex: 1;">
+                                <div style="font-size: 14px; font-weight: 600; color: #F9FAFB; margin-bottom: 4px;">마감 임박</div>
+                                <div style="font-size: 12px; color: #9CA3AF;">전시 라벨 검토 마감이 내일입니다.</div>
+                                <div style="font-size: 11px; color: #6B7280; margin-top: 4px;">3시간 전</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button style="width: 100%; margin-top: 12px; padding: 8px; background: transparent; border: 1px solid #374151; border-radius: 8px; color: #9CA3AF; cursor: pointer; font-size: 12px;">
+                    모두 읽음으로 표시
+                </button>
+            </div>
+            <!-- Resize Handles -->
+            <div class="resize-handle resize-n"></div>
+            <div class="resize-handle resize-e"></div>
+            <div class="resize-handle resize-s"></div>
+            <div class="resize-handle resize-w"></div>
+            <div class="resize-handle resize-ne"></div>
+            <div class="resize-handle resize-se"></div>
+            <div class="resize-handle resize-sw"></div>
+            <div class="resize-handle resize-nw"></div>
+        </div>
     </div>
     
     <script>
@@ -2915,16 +3299,16 @@
         
         // Show Detail Panel
         function showDetailPanel(panelName) {
-            // Map panel names to actual panel IDs
+            // Map panel names to actual panel IDs (each icon has its own panel)
             const panelMap = {
                 'history': 'historyPanel',
-                'quick-actions': 'historyPanel',  // Same panel for now
-                'projects': 'historyPanel',
-                'settings': 'historyPanel',
+                'quick-actions': 'quickActionsPanel',
+                'projects': 'projectsPanel',
+                'settings': 'settingsPanel',
                 'stats': 'statusPanel',
-                'tasks': 'statusPanel',
-                'ai-progress': 'statusPanel',
-                'notifications': 'statusPanel'
+                'tasks': 'tasksPanel',
+                'ai-progress': 'aiProgressPanel',
+                'notifications': 'notificationsPanel'
             };
             
             const panelId = panelMap[panelName];
@@ -2945,13 +3329,13 @@
         function hideDetailPanel(panelName) {
             const panelMap = {
                 'history': 'historyPanel',
-                'quick-actions': 'historyPanel',
-                'projects': 'historyPanel',
-                'settings': 'historyPanel',
+                'quick-actions': 'quickActionsPanel',
+                'projects': 'projectsPanel',
+                'settings': 'settingsPanel',
                 'stats': 'statusPanel',
-                'tasks': 'statusPanel',
-                'ai-progress': 'statusPanel',
-                'notifications': 'statusPanel'
+                'tasks': 'tasksPanel',
+                'ai-progress': 'aiProgressPanel',
+                'notifications': 'notificationsPanel'
             };
             
             const panelId = panelMap[panelName];
@@ -3106,6 +3490,49 @@
                 if (isDragging) {
                     isDragging = false;
                     header.style.cursor = 'move';
+                    
+                    // Snap to edge feature (magnet effect)
+                    const snapDistance = 20; // pixels
+                    const rect = panel.getBoundingClientRect();
+                    const viewportWidth = window.innerWidth;
+                    const viewportHeight = window.innerHeight;
+                    
+                    let snappedX = panelState[panelName].position.x;
+                    let snappedY = panelState[panelName].position.y;
+                    
+                    // Snap to left edge
+                    if (rect.left < snapDistance + 64) {
+                        snappedX = 64 + 8; // Icon bar width + margin
+                    }
+                    
+                    // Snap to right edge
+                    if (viewportWidth - rect.right < snapDistance + 64) {
+                        snappedX = viewportWidth - rect.width - 64 - 8; // Icon bar width + margin
+                    }
+                    
+                    // Snap to top edge
+                    if (rect.top < snapDistance + 64) {
+                        snappedY = 64 + 8; // Navbar height + margin
+                    }
+                    
+                    // Snap to bottom edge
+                    if (viewportHeight - rect.bottom < snapDistance + 48) {
+                        snappedY = viewportHeight - rect.height - 48 - 8; // Footer height + margin
+                    }
+                    
+                    // Apply snapped position with smooth transition
+                    if (snappedX !== panelState[panelName].position.x || snappedY !== panelState[panelName].position.y) {
+                        panel.style.transition = 'all 0.2s ease';
+                        panel.style.left = `${snappedX}px`;
+                        panel.style.top = `${snappedY}px`;
+                        panelState[panelName].position.x = snappedX;
+                        panelState[panelName].position.y = snappedY;
+                        
+                        setTimeout(() => {
+                            panel.style.transition = '';
+                        }, 200);
+                    }
+                    
                     savePanelState();
                 }
             });
@@ -3243,32 +3670,51 @@
         
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
+            // Number keys 1-8: Toggle panels
+            if (!e.ctrlKey && !e.metaKey && !e.target.matches('input, textarea')) {
+                const panelMap = {
+                    '1': 'history',
+                    '2': 'quick-actions',
+                    '3': 'projects',
+                    '4': 'settings',
+                    '5': 'stats',
+                    '6': 'tasks',
+                    '7': 'ai-progress',
+                    '8': 'notifications'
+                };
+                
+                const panelName = panelMap[e.key];
+                if (panelName) {
+                    e.preventDefault();
+                    const iconBar = document.querySelector(`[data-panel="${panelName}"]`);
+                    if (iconBar) {
+                        iconBar.click();
+                    }
+                }
+            }
+            
             // H: Toggle History panel
             if (e.key === 'h' && !e.ctrlKey && !e.metaKey && !e.target.matches('input, textarea')) {
                 e.preventDefault();
-                const state = panelState.history;
-                if (state.visible) {
-                    closePanel('history');
-                } else {
-                    restorePanel('history');
-                }
+                const iconBar = document.querySelector('[data-panel="history"]');
+                if (iconBar) iconBar.click();
             }
             
             // S: Toggle Status panel
             if (e.key === 's' && !e.ctrlKey && !e.metaKey && !e.target.matches('input, textarea')) {
                 e.preventDefault();
-                const state = panelState.status;
-                if (state.visible) {
-                    closePanel('status');
-                } else {
-                    restorePanel('status');
-                }
+                const iconBar = document.querySelector('[data-panel="stats"]');
+                if (iconBar) iconBar.click();
             }
             
             // Esc: Close all panels
             if (e.key === 'Escape' && !e.target.matches('input, textarea')) {
-                closePanel('history');
-                closePanel('status');
+                document.querySelectorAll('.floating-panel:not(.hidden)').forEach(panel => {
+                    panel.classList.add('hidden');
+                });
+                document.querySelectorAll('.icon-bar-item.active').forEach(item => {
+                    item.classList.remove('active');
+                });
             }
         });
         
