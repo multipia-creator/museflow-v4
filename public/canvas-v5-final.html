@@ -145,59 +145,140 @@
         }
         
         /* Resize Handles */
+        /* Resize Handles - Visible on Hover */
         .resize-handle {
             position: absolute;
             background: transparent;
             z-index: 10;
+            transition: background 0.2s ease, opacity 0.2s ease;
         }
         
+        .floating-panel:hover .resize-handle {
+            background: rgba(16, 185, 129, 0.3);
+        }
+        
+        /* Top & Bottom Resize Handles */
         .resize-n, .resize-s {
-            height: 8px;
+            height: 6px;
             left: 0;
             right: 0;
             cursor: ns-resize;
         }
         
-        .resize-n { top: -4px; }
-        .resize-s { bottom: -4px; }
+        .resize-n { 
+            top: 0;
+            border-top: 2px solid transparent;
+        }
         
+        .resize-s { 
+            bottom: 0;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .floating-panel:hover .resize-n {
+            border-top-color: #10B981;
+        }
+        
+        .floating-panel:hover .resize-s {
+            border-bottom-color: #10B981;
+        }
+        
+        /* Left & Right Resize Handles */
         .resize-e, .resize-w {
-            width: 8px;
+            width: 6px;
             top: 0;
             bottom: 0;
             cursor: ew-resize;
         }
         
-        .resize-e { right: -4px; }
-        .resize-w { left: -4px; }
+        .resize-e { 
+            right: 0;
+            border-right: 2px solid transparent;
+        }
         
+        .resize-w { 
+            left: 0;
+            border-left: 2px solid transparent;
+        }
+        
+        .floating-panel:hover .resize-e {
+            border-right-color: #10B981;
+        }
+        
+        .floating-panel:hover .resize-w {
+            border-left-color: #10B981;
+        }
+        
+        /* Corner Resize Handles */
         .resize-ne, .resize-se, .resize-sw, .resize-nw {
-            width: 12px;
-            height: 12px;
+            width: 16px;
+            height: 16px;
+            background: transparent;
+        }
+        
+        .resize-ne::after,
+        .resize-se::after,
+        .resize-sw::after,
+        .resize-nw::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10B981;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        .floating-panel:hover .resize-ne::after,
+        .floating-panel:hover .resize-se::after,
+        .floating-panel:hover .resize-sw::after,
+        .floating-panel:hover .resize-nw::after {
+            opacity: 0.8;
         }
         
         .resize-ne {
-            top: -6px;
-            right: -6px;
+            top: -4px;
+            right: -4px;
             cursor: nesw-resize;
+        }
+        
+        .resize-ne::after {
+            top: 4px;
+            right: 4px;
         }
         
         .resize-se {
-            bottom: -6px;
-            right: -6px;
+            bottom: -4px;
+            right: -4px;
             cursor: nwse-resize;
+        }
+        
+        .resize-se::after {
+            bottom: 4px;
+            right: 4px;
         }
         
         .resize-sw {
-            bottom: -6px;
-            left: -6px;
+            bottom: -4px;
+            left: -4px;
             cursor: nesw-resize;
         }
         
+        .resize-sw::after {
+            bottom: 4px;
+            left: 4px;
+        }
+        
         .resize-nw {
-            top: -6px;
-            left: -6px;
+            top: -4px;
+            left: -4px;
             cursor: nwse-resize;
+        }
+        
+        .resize-nw::after {
+            top: 4px;
+            left: 4px;
         }
         
         /* History Panel Specific */
