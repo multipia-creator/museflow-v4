@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas V4 레이아웃 샘플 - MuseFlow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --museflow-primary: #8B5CF6;
+            --museflow-primary-dark: #7C3AED;
+            --museflow-primary-light: #EDE9FE;
+            --museflow-text-primary: #1F2937;
+            --museflow-text-secondary: #6B7280;
+            --museflow-border-light: #E5E7EB;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 0.75rem;
+            --spacing-lg: 1rem;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #F9FAFB;
+            color: var(--museflow-text-primary);
+            overflow: hidden;
+        }
+
+        /* 전체 컨테이너 */
+        .canvas-wrapper {
+            display: flex;
+            height: 100vh;
+            padding-top: 64px; /* 네비게이션 바 */
+            padding-bottom: 48px; /* Footer */
+        }
+
+        /* 상단 네비게이션 (기존) */
+        .top-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* 좌측 사이드바 */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid var(--museflow-border-light);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--museflow-border-light);
+        }
+
+        .sidebar-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--museflow-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .history-item,
+        .action-item {
+            padding: var(--spacing-sm);
+            margin-bottom: 0.25rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8125rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .history-item:hover,
+        .action-item:hover {
+            background: var(--museflow-primary-light);
+            color: var(--museflow-primary);
+        }
+
+        /* AI Chat 영역 (접을 수 있음) */
+        .ai-chat-section {
+            max-height: 300px;
+            transition: max-height 0.3s ease;
+        }
+
+        .ai-chat-section.collapsed {
+            max-height: 48px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-md);
+            cursor: pointer;
+            background: var(--museflow-primary-light);
+            border-bottom: 1px solid var(--museflow-border-light);
+        }
+
+        .section-header:hover {
+            background: #DDD6FE;
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s;
+        }
+
+        .collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .chat-preview {
+            padding: var(--spacing-md);
+            font-size: 0.8125rem;
+            color: var(--museflow-text-secondary);
+        }
+
+        /* 메인 캔버스 영역 */
+        .main-canvas {
+            flex: 1;
+            background: #FAFAFA;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .canvas-header {
+            background: white;
+            border-bottom: 1px solid var(--museflow-border-light);
+            padding: var(--spacing-md) var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .canvas-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .canvas-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .canvas-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--museflow-border-light);
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .canvas-btn:hover {
+            background: var(--museflow-primary-light);
+            border-color: var(--museflow-primary);
+            color: var(--museflow-primary);
+        }
+
+        .canvas-btn.primary {
+            background: var(--museflow-primary);
+            color: white;
+            border-color: var(--museflow-primary);
+        }
+
+        .canvas-btn.primary:hover {
+            background: var(--museflow-primary-dark);
+        }
+
+        /* 무한 캔버스 */
+        .infinite-canvas {
+            position: relative;
+            width: 100%;
+            height: calc(100% - 60px);
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            overflow: auto;
+        }
+
+        .canvas-content {
+            position: relative;
+            width: 3000px;
+            height: 3000px;
+            padding: 2rem;
+        }
+
+        /* 캔버스 아이템 (샘플) */
+        .canvas-item {
+            position: absolute;
+            background: white;
+            border: 2px solid var(--museflow-border-light);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            cursor: move;
+            transition: box-shadow 0.2s;
+        }
+
+        .canvas-item:hover {
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.2);
+            border-color: var(--museflow-primary);
+        }
+
+        .canvas-item.image {
+            width: 400px;
+            height: 300px;
+        }
+
+        .canvas-item.text {
+            width: 500px;
+            padding: var(--spacing-lg);
+        }
+
+        .canvas-item.chart {
+            width: 450px;
+            height: 350px;
+        }
+
+        .item-header {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--museflow-border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #F9FAFB;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .item-title {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .item-btn {
+            padding: 0.25rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .item-btn:hover {
+            background: var(--museflow-primary-light);
+            color: var(--museflow-primary);
+        }
+
+        .item-content {
+            padding: var(--spacing-md);
+        }
+
+        .sample-image {
+            width: 100%;
+            height: 240px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .sample-text {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: var(--museflow-text-secondary);
+        }
+
+        /* 줌 컨트롤 */
+        .zoom-controls {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: white;
+            border: 1px solid var(--museflow-border-light);
+            border-radius: 8px;
+            padding: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .zoom-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--museflow-primary-light);
+            color: var(--museflow-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+
+        .zoom-btn:hover {
+            background: var(--museflow-primary);
+            color: white;
+        }
+
+        .zoom-level {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        /* Footer (꼬리말) */
+        .canvas-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 48px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #e5e5e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            font-size: 0.75rem;
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: var(--museflow-primary);
+        }
+
+        .footer-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .footer-text {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-version {
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 500;
+        }
+
+        /* 정보 태그 */
+        .info-tag {
+            position: fixed;
+            top: 80px;
+            right: 1rem;
+            background: #FEF3C7;
+            border: 2px solid #F59E0B;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: #92400E;
+            z-index: 999;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- 정보 태그 -->
+    <div class="info-tag">
+        📋 레이아웃 샘플 화면 - 컨펌 후 적용
+    </div>
+
+    <!-- 상단 네비게이션 -->
+    <div class="top-navbar">
+        <div class="navbar-logo">
+            <i data-lucide="sparkles"></i>
+            MuseFlow Canvas V4
+        </div>
+    </div>
+
+    <!-- 메인 컨테이너 -->
+    <div class="canvas-wrapper">
+        <!-- 좌측 사이드바 (280px) -->
+        <aside class="sidebar">
+            <!-- History -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">
+                    <i data-lucide="clock" style="width: 14px; height: 14px;"></i>
+                    Recent History
+                </div>
+                <div class="history-item">
+                    <i data-lucide="file-text" style="width: 16px; height: 16px;"></i>
+                    인상주의 전시 기획
+                </div>
+                <div class="history-item">
+                    <i data-lucide="image" style="width: 16px; height: 16px;"></i>
+                    전시 포스터 생성
+                </div>
+                <div class="history-item">
+                    <i data-lucide="bar-chart" style="width: 16px; height: 16px;"></i>
+                    예산 분석
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">
+                    <i data-lucide="zap" style="width: 14px; height: 14px;"></i>
+                    Quick Actions
+                </div>
+                <div class="action-item">
+                    <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
+                    새 프로젝트
+                </div>
+                <div class="action-item">
+                    <i data-lucide="upload" style="width: 16px; height: 16px;"></i>
+                    파일 업로드
+                </div>
+                <div class="action-item">
+                    <i data-lucide="wand-2" style="width: 16px; height: 16px;"></i>
+                    AI 생성
+                </div>
+            </div>
+
+            <!-- AI Chat (접을 수 있음) -->
+            <div class="sidebar-section ai-chat-section" id="aiChatSection">
+                <div class="section-header" onclick="toggleChat()">
+                    <div class="sidebar-title" style="margin: 0;">
+                        <i data-lucide="message-square" style="width: 14px; height: 14px;"></i>
+                        AI Conversation
+                    </div>
+                    <i data-lucide="chevron-down" class="toggle-icon" style="width: 16px; height: 16px;"></i>
+                </div>
+                <div class="chat-preview">
+                    💬 AI와 대화하기<br>
+                    <span style="font-size: 0.75rem; opacity: 0.7;">(클릭하여 접기/펼치기)</span>
+                </div>
+            </div>
+
+            <!-- Widgets -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">
+                    <i data-lucide="box" style="width: 14px; height: 14px;"></i>
+                    Widgets (103개)
+                </div>
+                <div class="action-item">
+                    <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+                    위젯 검색...
+                </div>
+            </div>
+        </aside>
+
+        <!-- 메인 캔버스 영역 (80%+) -->
+        <main class="main-canvas">
+            <div class="canvas-header">
+                <div class="canvas-title">
+                    <i data-lucide="layout" style="width: 20px; height: 20px;"></i>
+                    무한 캔버스
+                </div>
+                <div class="canvas-controls">
+                    <button class="canvas-btn">
+                        <i data-lucide="save" style="width: 16px; height: 16px;"></i>
+                        저장
+                    </button>
+                    <button class="canvas-btn">
+                        <i data-lucide="download" style="width: 16px; height: 16px;"></i>
+                        내보내기
+                    </button>
+                    <button class="canvas-btn primary">
+                        <i data-lucide="play" style="width: 16px; height: 16px;"></i>
+                        AI 생성
+                    </button>
+                </div>
+            </div>
+
+            <div class="infinite-canvas">
+                <div class="canvas-content">
+                    <!-- 샘플 이미지 아이템 1 -->
+                    <div class="canvas-item image" style="left: 100px; top: 100px;">
+                        <div class="item-header">
+                            <div class="item-title">
+                                <i data-lucide="image" style="width: 14px; height: 14px;"></i>
+                                전시 포스터
+                            </div>
+                            <div class="item-actions">
+                                <button class="item-btn" title="복사">
+                                    <i data-lucide="copy" style="width: 16px; height: 16px;"></i>
+                                </button>
+                                <button class="item-btn" title="이동">
+                                    <i data-lucide="move" style="width: 16px; height: 16px;"></i>
+                                </button>
+                                <button class="item-btn" title="삭제">
+                                    <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="item-content">
+                            <div class="sample-image">
+                                🖼️ AI 생성 이미지
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 샘플 텍스트 아이템 -->
+                    <div class="canvas-item text" style="left: 550px; top: 100px;">
+                        <div class="item-header">
+                            <div class="item-title">
+                                <i data-lucide="file-text" style="width: 14px; height: 14px;"></i>
+                                전시 기획서
+                            </div>
+                            <div class="item-actions">
+                                <button class="item-btn" title="복사">
+                                    <i data-lucide="copy" style="width: 16px; height: 16px;"></i>
+                                </button>
+                                <button class="item-btn" title="이동">
+                                    <i data-lucide="move" style="width: 16px; height: 16px;"></i>
+                                </button>
+                                <button class="item-btn" title="삭제">
+                                    <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="item-content">
+                            <div class="sample-text">
+                                <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--museflow-text-primary);">
+                                    인상주의 특별전 기획
+                                </h3>
+                                <p style="margin-bottom: 0.5rem;">
+                                    <strong>기간:</strong> 2025년 3월 ~ 5월 (3개월)<br>
+                                    <strong>예산:</strong> 3,000만원<br>
+                                    <strong>목표:</strong> 1만명 관람객 유치
+                                </p>
+                                <p style="font-size: 0.8125rem;">
+                                    이번 전시는 19세기 프랑스 인상주의 화가들의 대표작을 중심으로 구성됩니다. 
+                                    모네, 르누아르, 드가 등 주요 작가들의 작품을 통해 인상주의의 역사와 의의를 
+                                    관람객들에게 전달하고자 합니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 샘플 이미지 아이템 2 -->
+                    <div class="canvas-item image" style="left: 100px; top: 450px;">
+                        <div class="item-header">
+                            <div class="item-title">
+                                <i data-lucide="palette" style="width: 14px; height: 14px;"></i>
+                                작품 이미지
+                            </div>
+                            <div class="item-actions">
+                                <button class="item-btn" title="복사">
+                                    <i data-lucide="copy" style="width: 16px; height: 16px;"></i>
+                                </button>
+                                <button class="item-btn" title="이동">
+                                    <i data-lucide="move" style="width: 16px; height: 16px;"></i>
+                                </button>
+                                <button class="item-btn" title="삭제">
+                                    <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="item-content">
+                            <div class="sample-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                🎨 Artwork
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 샘플 차트 아이템 -->
+                    <div class="canvas-item chart" style="left: 550px; top: 450px;">
+                        <div class="item-header">
+                            <div class="item-title">
+                                <i data-lucide="bar-chart-2" style="width: 14px; height: 14px;"></i>
+                                예산 분석
+                            </div>
+                            <div class="item-actions">
+                                <button class="item-btn" title="복사">
+                                    <i data-lucide="copy" style="width: 16px; height: 16px;"></i>
+                                </button>
+                                <button class="item-btn" title="이동">
+                                    <i data-lucide="move" style="width: 16px; height: 16px;"></i>
+                                </button>
+                                <button class="item-btn" title="삭제">
+                                    <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="item-content">
+                            <div class="sample-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                📊 Chart Data
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 줌 컨트롤 -->
+            <div class="zoom-controls">
+                <button class="zoom-btn" onclick="alert('줌 아웃')">−</button>
+                <span class="zoom-level">100%</span>
+                <button class="zoom-btn" onclick="alert('줌 인')">+</button>
+                <div style="width: 1px; height: 24px; background: var(--museflow-border-light); margin: 0 0.5rem;"></div>
+                <button class="zoom-btn" onclick="alert('리셋')" title="리셋">
+                    <i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i>
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer (꼬리말) -->
+    <footer class="canvas-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i data-lucide="sparkles" style="width: 16px; height: 16px;"></i>
+                MuseFlow
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-text">
+                Copyright © 2026, Imageroot
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-text">
+                Made by Hyun Woo Nam Professor
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-version" id="version">
+                V4.0.0
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Lucide 아이콘 초기화
+        lucide.createIcons();
+
+        // AI Chat 토글
+        function toggleChat() {
+            const section = document.getElementById('aiChatSection');
+            section.classList.toggle('collapsed');
+        }
+
+        // 버전 자동 업데이트 (예시)
+        function updateVersion() {
+            const version = document.getElementById('version');
+            // package.json에서 버전을 가져오거나 빌드 시 자동 주입
+            const currentVersion = 'V4.0.0'; // 자동으로 업데이트됨
+            version.textContent = currentVersion;
+        }
+
+        updateVersion();
+
+        // 캔버스 아이템 드래그 (간단한 데모)
+        let isDragging = false;
+        let currentItem = null;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        document.querySelectorAll('.canvas-item').forEach(item => {
+            item.addEventListener('mousedown', function(e) {
+                if (e.target.closest('.item-btn')) return; // 버튼 클릭은 제외
+                
+                isDragging = true;
+                currentItem = this;
+                const rect = this.getBoundingClientRect();
+                offsetX = e.clientX - rect.left;
+                offsetY = e.clientY - rect.top;
+                this.style.cursor = 'grabbing';
+                this.style.zIndex = 1000;
+            });
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (isDragging && currentItem) {
+                const canvas = document.querySelector('.canvas-content');
+                const canvasRect = canvas.getBoundingClientRect();
+                
+                let newX = e.clientX - canvasRect.left - offsetX + canvas.parentElement.scrollLeft;
+                let newY = e.clientY - canvasRect.top - offsetY + canvas.parentElement.scrollTop;
+                
+                // 그리드 스냅 (20px)
+                newX = Math.round(newX / 20) * 20;
+                newY = Math.round(newY / 20) * 20;
+                
+                currentItem.style.left = newX + 'px';
+                currentItem.style.top = newY + 'px';
+            }
+        });
+
+        document.addEventListener('mouseup', function() {
+            if (isDragging && currentItem) {
+                currentItem.style.cursor = 'move';
+                currentItem.style.zIndex = '';
+                isDragging = false;
+                currentItem = null;
+            }
+        });
+    </script>
+</body>
+</html>
