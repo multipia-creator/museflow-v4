@@ -38,7 +38,7 @@
         /* 3-Column + 2-Row Layout (Canvas V5) */
         .canvas-container {
             display: grid;
-            grid-template-columns: 300px 1fr 280px;  /* Left | Center | Right (축소: 400→280) */
+            grid-template-columns: 250px 1fr 240px;  /* Left 250px | Center 1fr (~80%) | Right 240px */
             grid-template-rows: 1fr 180px;            /* Canvas | Input */
             grid-template-areas:
                 "left canvas right"
@@ -2403,40 +2403,40 @@
             card.style.top = position.y + 'px';
             card.style.width = '320px';
             
-            // Card type icon mapping
-            const typeIcons = {
+            // 🎨 Unified Card Type Icons & Colors
+            const typeConfig = {
                 // Text & Documents
-                'text': 'file-text',
-                'markdown': 'file-code',
-                'pdf': 'file-pdf',
+                'text': { icon: '📝', color: '#3B82F6' },
+                'markdown': { icon: '📋', color: '#8B5CF6' },
+                'pdf': { icon: '📄', color: '#EC4899' },
                 
                 // Media
-                'image': 'image',
-                'video': 'video',
-                'audio': 'music',
+                'image': { icon: '🖼️', color: '#10B981' },
+                'video': { icon: '🎬', color: '#EF4444' },
+                'audio': { icon: '🎵', color: '#F59E0B' },
                 
                 // Data Visualization
-                'chart': 'bar-chart-2',
-                'budget': 'dollar-sign',
-                'timeline': 'calendar',
+                'chart': { icon: '📊', color: '#06B6D4' },
+                'budget': { icon: '📊', color: '#06B6D4' },
+                'timeline': { icon: '📅', color: '#8B5CF6' },
                 
                 // Presentations
-                'slides': 'presentation',
-                'spreadsheet': 'table',
+                'slides': { icon: '📽️', color: '#F59E0B' },
+                'spreadsheet': { icon: '📈', color: '#10B981' },
                 
                 // External
-                'figma': 'figma',
-                'notion': 'book-open',
-                'widget': 'box'
+                'figma': { icon: '🎨', color: '#A855F7' },
+                'notion': { icon: '📓', color: '#000000' },
+                'widget': { icon: '🧩', color: '#6B7280' }
             };
             
-            const icon = typeIcons[type] || 'file';
+            const config = typeConfig[type] || { icon: '📄', color: '#6B7280' };
             
             card.innerHTML = `
                 <div class="card-header">
                     <div class="card-title">
-                        <i class="fas fa-${icon}"></i>
-                        ${title}
+                        <span style="font-size: 18px; margin-right: 8px;">${config.icon}</span>
+                        <span style="color: ${config.color}; font-weight: 600;">${title}</span>
                     </div>
                     <div class="card-actions">
                         <button onclick="copyCardContent('${cardId}')" title="복사">
@@ -2635,8 +2635,8 @@
         // Get next card position (auto-layout)
         function getNextCardPosition() {
             const cols = 3;
-            const cardWidth = 340;  // 320 + 20 gap
-            const cardHeight = 260; // 240 + 20 gap
+            const cardWidth = 360;  // 340 + 20 gap (increased spacing)
+            const cardHeight = 280; // 260 + 20 gap (increased spacing)
             const index = canvas.cards.length;
             
             return {
