@@ -815,6 +815,36 @@
             box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
         }
         
+        /* ⭐ Drag & Drop Styles */
+        .widget-card[draggable="true"] {
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        .widget-card[draggable="true"]:active {
+            cursor: grabbing !important;
+        }
+        
+        .widget-card.dragging {
+            opacity: 0.5;
+            transform: rotate(3deg);
+        }
+        
+        .preview-panel.drop-zone-active {
+            background: rgba(139, 92, 246, 0.05);
+            border: 2px dashed var(--museflow-primary);
+            animation: dropZonePulse 1.5s infinite;
+        }
+        
+        @keyframes dropZonePulse {
+            0%, 100% {
+                background: rgba(139, 92, 246, 0.05);
+            }
+            50% {
+                background: rgba(139, 92, 246, 0.1);
+            }
+        }
+        
         .widget-header-small {
             display: flex;
             align-items: center;
@@ -2091,6 +2121,10 @@
         let eventSource = null;
         let sessionId = null;
         
+        // ⭐ Conversation History
+        let conversationHistory = [];
+        let currentConversationId = null;
+        
         // Tab Switching - Updated for new panels
         document.querySelectorAll('.preview-tab').forEach(tab => {
             tab.addEventListener('click', function() {
@@ -2387,7 +2421,125 @@
             conversationArea.insertAdjacentHTML('beforeend', messageHtml);
             conversationArea.scrollTop = conversationArea.scrollHeight;
             
+            // ⭐ Save to conversation history
+            conversationHistory.push({
+                id: messageId,
+                type: type,
+                text: text,
+                timestamp: timestamp,
+                showActions: showActions
+            });
+            
+            // Auto-save conversation to localStorage
+            saveConversation();
+            
             return messageId;
+        }
+        
+        /**
+         * ⭐ Save conversation to localStorage
+         */
+        function saveConversation() {
+            if (!currentConversationId) {
+                currentConversationId = `conv_${Date.now()}`;
+            }
+            
+            const conversation = {
+                id: currentConversationId,
+                title: getConversationTitle(),
+                messages: conversationHistory,
+                timestamp: new Date().toISOString(),
+                aiModel: currentAIModel || 'gpt-4'
+            };
+            
+            // Get existing conversations
+            const saved = JSON.parse(localStorage.getItem('museflow_conversations') || '[]');
+            
+            // Update or add current conversation
+            const index = saved.findIndex(c => c.id === currentConversationId);
+            if (index >= 0) {
+                saved[index] = conversation;
+            } else {
+                saved.unshift(conversation);
+            }
+            
+            // Keep only last 50 conversations
+            const limited = saved.slice(0, 50);
+            localStorage.setItem('museflow_conversations', JSON.stringify(limited));
+            
+            console.log('💾 Conversation saved:', currentConversationId);
+        }
+        
+        /**
+         * ⭐ Get conversation title (from first user message)
+         */
+        function getConversationTitle() {
+            const firstUserMessage = conversationHistory.find(m => m.type === 'user');
+            if (firstUserMessage) {
+                const title = firstUserMessage.text.substring(0, 50);
+                return title + (firstUserMessage.text.length > 50 ? '...' : '');
+            }
+            return '새 대화';
+        }
+        
+        /**
+         * ⭐ Load conversation from localStorage
+         */
+        function loadConversation(conversationId) {
+            const saved = JSON.parse(localStorage.getItem('museflow_conversations') || '[]');
+            const conversation = saved.find(c => c.id === conversationId);
+            
+            if (conversation) {
+                currentConversationId = conversation.id;
+                conversationHistory = conversation.messages;
+                
+                // Clear conversation area
+                const conversationArea = document.getElementById('conversationArea');
+                conversationArea.innerHTML = '';
+                
+                // Render all messages
+                conversation.messages.forEach(msg => {
+                    addMessage(msg.type, msg.text, msg.showActions);
+                });
+                
+                console.log('📂 Conversation loaded:', conversationId);
+                showToast('대화를 불러왔습니다.');
+            }
+        }
+        
+        /**
+         * ⭐ Start new conversation
+         */
+        function startNewConversation() {
+            currentConversationId = null;
+            conversationHistory = [];
+            
+            const conversationArea = document.getElementById('conversationArea');
+            conversationArea.innerHTML = `
+                <div class="message ai" id="welcome-msg">
+                    <div class="message-avatar">
+                        <i data-lucide="sparkles" stroke-width="2"></i>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            안녕하세요! 👋 MuseFlow AI입니다.<br>
+                            무엇을 도와드릴까요? 전시 기획, 예산 관리, 교육 프로그램 등 모든 업무를 자동화해드립니다.
+                        </div>
+                        <div class="message-timestamp">방금 전</div>
+                    </div>
+                </div>
+            `;
+            
+            lucide.createIcons();
+            console.log('🆕 New conversation started');
+            showToast('새 대화를 시작했습니다.');
+        }
+        
+        /**
+         * ⭐ Get all saved conversations
+         */
+        function getSavedConversations() {
+            return JSON.parse(localStorage.getItem('museflow_conversations') || '[]');
         }
         
         async function executeAICommand(command) {
@@ -3635,10 +3787,16 @@
                 const lucideIcon = iconMap[widget.icon] || 'box';
                 
                 return `
-                    <div class="widget-card" data-widget-id="${widget.id}" style="cursor: pointer; transition: all 0.2s ease;" 
+                    <div class="widget-card" 
+                         data-widget-id="${widget.id}" 
+                         data-widget-name="${widget.name}"
+                         data-widget-category="${widget.category}"
+                         draggable="true"
+                         style="cursor: grab; transition: all 0.2s ease;" 
                          onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(139, 92, 246, 0.15)';"
                          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
                         <div class="widget-header-small">
+                            <i data-lucide="grip-vertical" style="width: 14px; height: 14px; margin-right: 0.25rem; opacity: 0.5;"></i>
                             <i data-lucide="${lucideIcon}" style="width: 18px; height: 18px;"></i>
                             <span>${widget.name}</span>
                         </div>
@@ -3675,6 +3833,28 @@
                     if (widget) {
                         addWidgetToDashboard(widget);
                     }
+                });
+            });
+            
+            // ⭐ Add drag and drop handlers for widget cards
+            container.querySelectorAll('.widget-card').forEach(card => {
+                // Drag start
+                card.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.effectAllowed = 'copy';
+                    e.dataTransfer.setData('widget-id', this.dataset.widgetId);
+                    e.dataTransfer.setData('widget-name', this.dataset.widgetName);
+                    
+                    // Visual feedback
+                    this.style.opacity = '0.5';
+                    this.style.cursor = 'grabbing';
+                    
+                    console.log('🎯 Dragging widget:', this.dataset.widgetName);
+                });
+                
+                // Drag end
+                card.addEventListener('dragend', function(e) {
+                    this.style.opacity = '1';
+                    this.style.cursor = 'grab';
                 });
             });
         }
@@ -3740,6 +3920,70 @@
                 loadWidgets(),
                 loadCategories()
             ]);
+            
+            // Initialize drop zones after widgets are loaded
+            initializeDropZones();
+        }
+        
+        /**
+         * ⭐ Initialize Drop Zones for Widget Drag & Drop
+         */
+        function initializeDropZones() {
+            const dropZones = [
+                document.getElementById('overviewPanel'),
+                document.getElementById('widgetsPanel'),
+                document.getElementById('resultsPanel')
+            ];
+            
+            dropZones.forEach(zone => {
+                if (!zone) return;
+                
+                // Drag over
+                zone.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'copy';
+                    
+                    // Visual feedback
+                    this.style.backgroundColor = 'rgba(139, 92, 246, 0.05)';
+                    this.style.border = '2px dashed var(--museflow-primary)';
+                });
+                
+                // Drag leave
+                zone.addEventListener('dragleave', function(e) {
+                    if (e.target === this) {
+                        this.style.backgroundColor = '';
+                        this.style.border = '';
+                    }
+                });
+                
+                // Drop
+                zone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove visual feedback
+                    this.style.backgroundColor = '';
+                    this.style.border = '';
+                    
+                    // Get widget data
+                    const widgetId = e.dataTransfer.getData('widget-id');
+                    const widgetName = e.dataTransfer.getData('widget-name');
+                    
+                    if (widgetId) {
+                        const widget = allWidgets.find(w => w.id == widgetId);
+                        if (widget) {
+                            console.log('✅ Widget dropped:', widgetName);
+                            addWidgetToDashboard(widget);
+                            
+                            // Haptic feedback (if supported)
+                            if (navigator.vibrate) {
+                                navigator.vibrate(50);
+                            }
+                        }
+                    }
+                });
+            });
+            
+            console.log('🎯 Drop zones initialized for drag & drop');
         }
         
         // ==========================================
@@ -3996,9 +4240,26 @@
             console.log('✅ Canvas layout reset to default');
         }
         
-        // Search input handler
-        document.getElementById('widgetSearch')?.addEventListener('input', function() {
+        // ⭐ Debounce function for search performance
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // Search input handler with debounce (300ms)
+        const debouncedFilter = debounce(() => {
             filterWidgets();
+        }, 300);
+        
+        document.getElementById('widgetSearch')?.addEventListener('input', function() {
+            debouncedFilter();
         });
         
         // Refresh button handler
