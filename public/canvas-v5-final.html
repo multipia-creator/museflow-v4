@@ -2403,11 +2403,30 @@
             card.style.top = position.y + 'px';
             card.style.width = '320px';
             
-            // Card type icon
+            // Card type icon mapping
             const typeIcons = {
+                // Text & Documents
                 'text': 'file-text',
+                'markdown': 'file-code',
+                'pdf': 'file-pdf',
+                
+                // Media
                 'image': 'image',
+                'video': 'video',
+                'audio': 'music',
+                
+                // Data Visualization
                 'chart': 'bar-chart-2',
+                'budget': 'dollar-sign',
+                'timeline': 'calendar',
+                
+                // Presentations
+                'slides': 'presentation',
+                'spreadsheet': 'table',
+                
+                // External
+                'figma': 'figma',
+                'notion': 'book-open',
                 'widget': 'box'
             };
             
@@ -2456,13 +2475,160 @@
         // Format card content based on type
         function formatCardContent(type, content) {
             switch (type) {
+                // ========== Images ==========
                 case 'image':
-                    return `<img src="${content}" alt="Generated Image">`;
+                    return `
+                        <div class="image-card-content">
+                            <img src="${content.url || content}" alt="${content.alt || 'Generated Image'}" 
+                                 style="width: 100%; height: auto; border-radius: 8px;">
+                            ${content.caption ? `<div class="image-caption" style="margin-top: 8px; font-size: 13px; color: #6B7280;">${content.caption}</div>` : ''}
+                        </div>`;
+                
+                // ========== Videos ==========
+                case 'video':
+                    return `
+                        <div class="video-card-content">
+                            <video controls style="width: 100%; border-radius: 8px;" ${content.autoplay ? 'autoplay' : ''}>
+                                <source src="${content.url || content}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            ${content.caption ? `<div class="video-caption" style="margin-top: 8px; font-size: 13px; color: #6B7280;">${content.caption}</div>` : ''}
+                        </div>`;
+                
+                // ========== Audio ==========
+                case 'audio':
+                    return `
+                        <div class="audio-card-content">
+                            <audio controls style="width: 100%;">
+                                <source src="${content.url || content}" type="audio/mpeg">
+                                Your browser does not support the audio tag.
+                            </audio>
+                            <div class="audio-info" style="margin-top: 12px; display: flex; justify-content: space-between; font-size: 13px; color: #6B7280;">
+                                <span>🎵 ${content.title || '오디오 파일'}</span>
+                                ${content.duration ? `<span>${content.duration}</span>` : ''}
+                            </div>
+                        </div>`;
+                
+                // ========== Budget Chart ==========
+                case 'budget':
                 case 'chart':
-                    return `<div class="chart-container">${content}</div>`;
+                    const chartId = `chart-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+                    setTimeout(() => {
+                        renderBudgetChart(chartId, content);
+                    }, 100);
+                    return `
+                        <div class="budget-card-content">
+                            <canvas id="${chartId}" width="280" height="180"></canvas>
+                            ${content.summary ? `
+                                <div class="budget-summary" style="margin-top: 12px; padding: 12px; background: #F9FAFB; border-radius: 8px; font-size: 13px;">
+                                    ${content.summary}
+                                </div>
+                            ` : ''}
+                        </div>`;
+                
+                // ========== PDF ==========
+                case 'pdf':
+                    return `
+                        <div class="pdf-card-content">
+                            <div class="pdf-preview" style="background: #F3F4F6; padding: 20px; text-align: center; border-radius: 8px;">
+                                <i class="fas fa-file-pdf" style="font-size: 48px; color: #EF4444;"></i>
+                                <div style="margin-top: 12px; font-size: 14px; color: #374151;">${content.filename || 'document.pdf'}</div>
+                                <a href="${content.url || content}" target="_blank" style="display: inline-block; margin-top: 12px; padding: 8px 16px; background: #EF4444; color: white; border-radius: 6px; text-decoration: none; font-size: 13px;">
+                                    <i class="fas fa-external-link-alt"></i> 열기
+                                </a>
+                            </div>
+                        </div>`;
+                
+                // ========== Slides ==========
+                case 'slides':
+                    return `
+                        <div class="slides-card-content">
+                            <div class="slide-preview" style="position: relative;">
+                                <img src="${content.slides ? content.slides[content.currentSlide || 0] : content}" 
+                                     style="width: 100%; border-radius: 8px;" alt="Slide">
+                                <div class="slide-nav" style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
+                                    <button onclick="prevSlide('${content.id}')" style="padding: 8px 12px; background: #F3F4F6; border: none; border-radius: 6px; cursor: pointer;">◀</button>
+                                    <span style="font-size: 13px; color: #6B7280;">${(content.currentSlide || 0) + 1} / ${content.slides ? content.slides.length : 1}</span>
+                                    <button onclick="nextSlide('${content.id}')" style="padding: 8px 12px; background: #F3F4F6; border: none; border-radius: 6px; cursor: pointer;">▶</button>
+                                </div>
+                            </div>
+                        </div>`;
+                
+                // ========== Figma Embed ==========
+                case 'figma':
+                    return `
+                        <div class="figma-card-content">
+                            <iframe src="${content.embedUrl || content}" 
+                                    style="width: 100%; height: 400px; border: none; border-radius: 8px;" 
+                                    allowfullscreen>
+                            </iframe>
+                        </div>`;
+                
+                // ========== Notion Embed ==========
+                case 'notion':
+                    return `
+                        <div class="notion-card-content">
+                            <div style="background: #F3F4F6; padding: 20px; text-align: center; border-radius: 8px;">
+                                <div style="font-size: 24px; margin-bottom: 8px;">📝</div>
+                                <div style="font-size: 14px; color: #374151; margin-bottom: 12px;">${content.title || 'Notion Page'}</div>
+                                <a href="${content.url || content}" target="_blank" style="display: inline-block; padding: 8px 16px; background: #000; color: white; border-radius: 6px; text-decoration: none; font-size: 13px;">
+                                    <i class="fas fa-external-link-alt"></i> Notion에서 열기
+                                </a>
+                            </div>
+                        </div>`;
+                
+                // ========== Markdown ==========
+                case 'markdown':
+                    // Simple markdown rendering (basic support)
+                    let md = content.replace(/\n/g, '<br>');
+                    md = md.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    md = md.replace(/\*(.*?)\*/g, '<em>$1</em>');
+                    md = md.replace(/`(.*?)`/g, '<code style="background: #F3F4F6; padding: 2px 6px; border-radius: 4px; font-size: 13px;">$1</code>');
+                    return `<div class="markdown-content" style="line-height: 1.6;">${md}</div>`;
+                
+                // ========== Text (Default) ==========
                 case 'text':
                 default:
-                    return `<p>${content.replace(/\n/g, '<br>')}</p>`;
+                    return `<p style="line-height: 1.6; margin: 0;">${content.replace ? content.replace(/\n/g, '<br>') : content}</p>`;
+            }
+        }
+        
+        // ========== Budget Chart Renderer ==========
+        function renderBudgetChart(chartId, data) {
+            const canvas = document.getElementById(chartId);
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Simple budget chart rendering (without Chart.js for now)
+            if (data.type === 'pie' || !data.type) {
+                // Draw simple pie chart
+                const total = data.values ? data.values.reduce((a, b) => a + b, 0) : 100;
+                const colors = ['#8B5CF6', '#3B82F6', '#10B981', '#F59E0B', '#EF4444'];
+                
+                let startAngle = -Math.PI / 2;
+                (data.values || [60, 40]).forEach((value, index) => {
+                    const sliceAngle = (value / total) * 2 * Math.PI;
+                    
+                    ctx.fillStyle = colors[index % colors.length];
+                    ctx.beginPath();
+                    ctx.moveTo(140, 90);
+                    ctx.arc(140, 90, 70, startAngle, startAngle + sliceAngle);
+                    ctx.closePath();
+                    ctx.fill();
+                    
+                    startAngle += sliceAngle;
+                });
+                
+                // Draw legend
+                (data.labels || ['사용', '잔액']).forEach((label, index) => {
+                    ctx.fillStyle = colors[index % colors.length];
+                    ctx.fillRect(10, 10 + index * 20, 12, 12);
+                    
+                    ctx.fillStyle = '#374151';
+                    ctx.font = '12px Inter, sans-serif';
+                    ctx.fillText(label, 28, 20 + index * 20);
+                });
             }
         }
         
@@ -2553,18 +2719,82 @@
         // 🧪 Test: Create sample cards on load
         // ==========================================
         window.addEventListener('load', () => {
-            // Sample card 1
+            // Sample 1: Text Card
             createCanvasCard({
                 type: 'text',
-                title: '전시 라벨 초안',
+                title: '📝 전시 라벨 초안',
                 content: '작품명: 별이 빛나는 밤\n작가: 빈센트 반 고흐\n제작연도: 1889년\n재료: 캔버스에 유채\n\n이 작품은 고흐가 생레미의 정신병원에 머물던 시기에 그린 것으로...'
             });
             
-            // Sample card 2
+            // Sample 2: Budget Chart Card
             createCanvasCard({
-                type: 'text',
-                title: '예산 승인 요청',
-                content: '특별전: 인상주의 걸작전\n예산: 30,000,000원\n기간: 2025.03 ~ 2025.05\n\n항목별 예산:\n- 작품 대여료: 15,000,000원\n- 전시 공간 구성: 8,000,000원\n- 홍보 마케팅: 5,000,000원\n- 기타: 2,000,000원'
+                type: 'budget',
+                title: '💰 예산 현황',
+                content: {
+                    values: [18500000, 11500000],
+                    labels: ['사용 (62%)', '잔액 (38%)'],
+                    type: 'pie',
+                    summary: '<strong>총 예산:</strong> 30,000,000원<br><strong>사용:</strong> 18,500,000원 (62%)<br><strong>잔액:</strong> 11,500,000원 (38%)'
+                }
+            });
+            
+            // Sample 3: Image Card
+            createCanvasCard({
+                type: 'image',
+                title: '🖼️ 전시 포스터',
+                content: {
+                    url: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=400',
+                    alt: '전시 포스터',
+                    caption: '인상주의 걸작전 - 2025.03 ~ 2025.05'
+                }
+            });
+            
+            // Sample 4: Video Card
+            createCanvasCard({
+                type: 'video',
+                title: '🎬 홍보 영상',
+                content: {
+                    url: 'https://www.w3schools.com/html/mov_bbb.mp4',
+                    caption: '뮤지엄 홍보 영상 (30초)'
+                }
+            });
+            
+            // Sample 5: Audio Card
+            createCanvasCard({
+                type: 'audio',
+                title: '🎤 오디오 가이드',
+                content: {
+                    url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+                    title: '전시 오디오 가이드',
+                    duration: '03:24'
+                }
+            });
+            
+            // Sample 6: PDF Card
+            createCanvasCard({
+                type: 'pdf',
+                title: '📄 제안서',
+                content: {
+                    url: 'https://example.com/proposal.pdf',
+                    filename: '인상주의_특별전_제안서.pdf'
+                }
+            });
+            
+            // Sample 7: Markdown Card
+            createCanvasCard({
+                type: 'markdown',
+                title: '📋 체크리스트',
+                content: '## 준비사항\n\n- [x] 예산 승인\n- [x] 작품 대여 계약\n- [ ] 전시 공간 설계\n- [ ] 홍보 자료 제작\n\n**중요**: *3월 1일까지* 모든 준비 완료'
+            });
+            
+            // Sample 8: Notion Card
+            createCanvasCard({
+                type: 'notion',
+                title: '📝 Notion 문서',
+                content: {
+                    url: 'https://notion.so/example',
+                    title: '프로젝트 관리 문서'
+                }
             });
         });
         
