@@ -38,7 +38,7 @@
         /* 3-Column + 2-Row Layout (Canvas V5) */
         .canvas-container {
             display: grid;
-            grid-template-columns: 300px 1fr 400px;  /* Left | Center | Right */
+            grid-template-columns: 300px 1fr 280px;  /* Left | Center | Right (축소: 400→280) */
             grid-template-rows: 1fr 180px;            /* Canvas | Input */
             grid-template-areas:
                 "left canvas right"
@@ -2192,23 +2192,19 @@
         </div>
         <!-- End of center-input -->
         
-        <!-- Right Column: Live Dashboard -->
+        <!-- Right Column: Real-time Status (Simplified) -->
         <div class="right-column">
-            <div class="preview-tabs">
-                <div class="preview-tab active" data-tab="overview">
-                    <i class="fas fa-chart-line"></i> 실시간 현황
-                </div>
-                <div class="preview-tab" data-tab="widgets">
-                    <i class="fas fa-th"></i> 위젯
-                </div>
-                <div class="preview-tab" data-tab="results">
-                    <i class="fas fa-file-alt"></i> 생성 결과
-                </div>
+            <!-- Header -->
+            <div class="column-header" style="border-bottom: 1px solid #E5E7EB;">
+                <h2 class="column-title">
+                    <i class="fas fa-chart-line"></i>
+                    실시간 현황
+                </h2>
             </div>
             
-            <div class="preview-content">
+            <div class="preview-content" style="padding: 1rem;">
                 <!-- Overview Panel - 실시간 현황 -->
-                <div class="preview-panel active" id="overviewPanel">
+                <div id="overviewPanel">
                     <div class="live-stats">
                         <div class="stat-card-mini">
                             <div class="stat-icon" style="background: var(--museflow-primary-light); color: var(--museflow-primary);">
@@ -2286,85 +2282,9 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- Widgets Panel - 대시보드 위젯 (103개 동적 로딩) -->
-                <div class="preview-panel" id="widgetsPanel">
-                    <!-- Widget Controls -->
-                    <div class="widget-controls" style="padding: 1rem; background: white; border-bottom: 1px solid var(--museflow-border-light); position: sticky; top: 0; z-index: 10;">
-                        <div style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;">
-                            <input 
-                                type="text" 
-                                id="widgetSearch" 
-                                placeholder="위젯 검색... (이름, 설명)" 
-                                style="flex: 1; padding: 0.625rem 1rem; border: 1px solid var(--museflow-border-light); border-radius: var(--radius-md); font-size: 0.875rem;"
-                            />
-                            <button id="refreshWidgets" style="padding: 0.625rem 1rem; background: var(--museflow-primary); color: white; border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600; white-space: nowrap;">
-                                <i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i>
-                            </button>
-                        </div>
-                        <div id="widgetCategories" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                            <!-- Categories will be loaded dynamically -->
-                        </div>
-                        <div id="widgetCount" style="margin-top: 0.75rem; font-size: 0.875rem; color: var(--museflow-text-secondary);">
-                            로딩 중...
-                        </div>
-                    </div>
-                    
-                    <!-- Widgets Grid - Dynamic Loading -->
-                    <div class="widgets-grid" id="liveWidgets" style="padding: 1rem; max-height: calc(100vh - 300px); overflow-y: auto;">
-                        <div class="loading-state" style="text-align: center; padding: 3rem 1rem; color: var(--museflow-text-secondary);">
-                            <i data-lucide="loader" class="spin" style="width: 48px; height: 48px; margin: 0 auto 1rem;"></i>
-                            <div style="font-size: 1rem; font-weight: 600;">위젯 로딩 중...</div>
-                            <div style="font-size: 0.875rem; margin-top: 0.5rem;">103개 위젯을 불러오고 있습니다</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Results Panel - AI 생성 결과 -->
-                <div class="preview-panel" id="resultsPanel">
-                    <!-- Canvas Controls -->
-                    <div id="canvasControls" style="padding: 1rem; background: white; border-bottom: 1px solid var(--museflow-border-light); display: none;">
-                        <div style="display: flex; align-items: center; justify-content: space-between;">
-                            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                <i data-lucide="move" style="width: 18px; height: 18px; color: var(--museflow-primary);"></i>
-                                <span style="font-size: 0.875rem; font-weight: 600; color: var(--museflow-text-primary);">노드를 드래그하여 재배치</span>
-                            </div>
-                            <button 
-                                id="resetLayoutBtn" 
-                                onclick="resetCanvasLayout()"
-                                style="
-                                    padding: 0.5rem 1rem;
-                                    background: white;
-                                    color: var(--museflow-text-secondary);
-                                    border: 1px solid var(--museflow-border-light);
-                                    border-radius: var(--radius-md);
-                                    font-size: 0.875rem;
-                                    font-weight: 500;
-                                    cursor: pointer;
-                                    transition: all 0.2s ease;
-                                    display: flex;
-                                    align-items: center;
-                                    gap: 0.5rem;
-                                "
-                                onmouseover="this.style.background='var(--museflow-bg-secondary)'; this.style.borderColor='var(--museflow-primary)'; this.style.color='var(--museflow-primary)';"
-                                onmouseout="this.style.background='white'; this.style.borderColor='var(--museflow-border-light)'; this.style.color='var(--museflow-text-secondary)';"
-                            >
-                                <i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i>
-                                레이아웃 초기화
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div id="canvasResults" class="results-section">
-                        <div class="empty-state">
-                            <i class="fas fa-magic"></i>
-                            <div class="empty-state-title">AI 생성 결과</div>
-                            <div class="empty-state-text">AI가 작업을 완료하면 여기에 결과가 표시됩니다</div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
+        <!-- End of Right Column -->
     </div>
     
     <script>
