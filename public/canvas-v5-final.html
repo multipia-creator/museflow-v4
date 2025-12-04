@@ -35,10 +35,10 @@
             padding-top: 64px; /* Space for Unified Navbar */
         }
         
-        /* Hybrid Layout - Condensed Icon Bars + Canvas */
+        /* Hybrid Layout - Ultra Compact Condensed Menus + Canvas */
         .canvas-container {
             display: grid;
-            grid-template-columns: 64px 1fr 64px;  /* Left Icon Bar + Canvas + Right Icon Bar */
+            grid-template-columns: 40px 1fr 40px;  /* Ultra compact sidebars */
             grid-template-rows: 1fr;
             grid-template-areas: "left-bar canvas right-bar";
             height: calc(100vh - 64px - 48px);  /* Full height - navbar - footer */
@@ -47,67 +47,106 @@
             position: relative;
         }
         
-        /* ========== Condensed Icon Bars ========== */
+        /* ========== Ultra Compact Fixed Condensed Menus ========== */
         .condensed-icon-bar {
             grid-area: left-bar;
             background: linear-gradient(180deg, #1F2937 0%, #111827 100%);
             border-right: 1px solid #374151;
             display: flex;
             flex-direction: column;
-            align-items: stretch;
-            padding: 12px 4px;
-            gap: 4px;
+            align-items: center;
+            padding: 8px 2px;
+            gap: 2px;
             z-index: 900;
-            width: 64px;
+            width: 40px;
+            position: fixed;
+            left: 0;
+            top: 64px;
+            bottom: 48px;
+            overflow-y: auto;
         }
 
         .condensed-icon-bar.right {
             grid-area: right-bar;
             border-right: none;
             border-left: 1px solid #374151;
+            left: auto;
+            right: 0;
+        }
+
+        /* Hide scrollbar but keep functionality */
+        .condensed-icon-bar::-webkit-scrollbar {
+            width: 2px;
+        }
+
+        .condensed-icon-bar::-webkit-scrollbar-thumb {
+            background: rgba(16, 185, 129, 0.3);
+            border-radius: 1px;
         }
 
         .icon-bar-item {
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 6px 4px;
-            background: rgba(55, 65, 81, 0.5);
-            border-radius: 8px;
+            width: 36px;
+            height: 32px;
+            padding: 2px;
+            background: transparent;
+            border-radius: 6px;
             color: #9CA3AF;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
             position: relative;
-            gap: 2px;
+            border: 1px solid transparent;
         }
 
         .icon-bar-item:hover {
-            background: rgba(16, 185, 129, 0.2);
+            background: rgba(16, 185, 129, 0.15);
             color: #10B981;
+            border-color: rgba(16, 185, 129, 0.3);
         }
 
         .icon-bar-item.active {
-            background: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.2);
             color: #10B981;
-            border: 1px solid #10B981;
+            border-color: #10B981;
         }
 
         .icon-bar-item i {
-            font-size: 16px;
+            font-size: 14px;
             flex-shrink: 0;
         }
 
         .icon-bar-item .item-label {
-            font-size: 9px;
-            line-height: 1.2;
-            text-align: center;
+            display: none; /* Hidden by default, show on hover via tooltip */
+        }
+
+        /* Tooltip for labels */
+        .icon-bar-item::after {
+            content: attr(data-label);
+            position: absolute;
+            left: 45px;
+            background: rgba(31, 41, 55, 0.98);
+            color: #F9FAFB;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
             font-weight: 500;
-            color: inherit;
-            max-width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
             white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            border: 1px solid #10B981;
+            z-index: 1001;
+        }
+
+        .icon-bar-item.right::after {
+            left: auto;
+            right: 45px;
+        }
+
+        .icon-bar-item:hover::after {
+            opacity: 1;
         }
 
         /* Badge for Notification Count */
@@ -135,23 +174,44 @@
             50% { transform: scale(1.1); }
         }
 
-        /* ========== Floating Detail Panels ========== */
+        /* ========== Fixed Expandable Sidebar Panels ========== */
         .floating-panel {
             position: fixed;
             background: rgba(31, 41, 55, 0.98);
             backdrop-filter: blur(20px);
-            border: 1px solid #374151;
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            z-index: 1000;
+            border-right: 1px solid #374151;
+            box-shadow: 2px 0 16px rgba(0, 0, 0, 0.3);
+            z-index: 950;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 280px;
+            top: 64px;
+            bottom: 48px;
+            left: 40px;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .floating-panel.right-side {
+            left: auto;
+            right: 40px;
+            border-right: none;
+            border-left: 1px solid #374151;
+            transform: translateX(100%);
+            box-shadow: -2px 0 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .floating-panel.visible {
+            transform: translateX(0);
         }
         
         .floating-panel.hidden {
-            display: none;
+            transform: translateX(-100%);
+        }
+
+        .floating-panel.right-side.hidden {
+            transform: translateX(100%);
         }
         
         .floating-panel.minimized {
@@ -2579,45 +2639,37 @@
     
     <div class="canvas-container">
         
-        <!-- Left Condensed Icon Bar -->
+        <!-- Left Ultra Compact Fixed Menu -->
         <div class="condensed-icon-bar">
-            <div class="icon-bar-item" data-panel="history">
+            <div class="icon-bar-item" data-panel="history" data-label="History">
                 <i data-lucide="clock"></i>
-                <span class="item-label">History</span>
             </div>
-            <div class="icon-bar-item" data-panel="quick-actions">
+            <div class="icon-bar-item" data-panel="quick-actions" data-label="Quick Actions">
                 <i data-lucide="zap"></i>
-                <span class="item-label">Actions</span>
             </div>
-            <div class="icon-bar-item" data-panel="projects">
+            <div class="icon-bar-item" data-panel="projects" data-label="Projects">
                 <i data-lucide="folder"></i>
-                <span class="item-label">Projects</span>
             </div>
-            <div class="icon-bar-item" data-panel="settings">
+            <div class="icon-bar-item" data-panel="settings" data-label="Settings">
                 <i data-lucide="settings"></i>
-                <span class="item-label">Settings</span>
             </div>
         </div>
 
-        <!-- Right Condensed Status Bar -->
+        <!-- Right Ultra Compact Fixed Menu -->
         <div class="condensed-icon-bar right">
-            <div class="icon-bar-item right" data-panel="stats">
+            <div class="icon-bar-item right" data-panel="stats" data-label="Statistics">
                 <i data-lucide="bar-chart-2"></i>
-                <span class="item-label">Stats</span>
             </div>
-            <div class="icon-bar-item right" data-panel="tasks">
+            <div class="icon-bar-item right" data-panel="tasks" data-label="Tasks (2)">
                 <i data-lucide="check-circle"></i>
-                <span class="item-label">Tasks</span>
                 <span class="badge">2</span>
             </div>
-            <div class="icon-bar-item right" data-panel="ai-progress">
+            <div class="icon-bar-item right" data-panel="ai-progress" data-label="AI Progress (1)">
                 <i data-lucide="cpu"></i>
-                <span class="item-label">AI</span>
                 <span class="badge">1</span>
             </div>
-            <div class="icon-bar-item right" data-panel="notifications">
+            <div class="icon-bar-item right" data-panel="notifications" data-label="Notifications (3)">
                 <i data-lucide="bell"></i>
-                <span class="item-label">Alerts</span>
                 <span class="badge">3</span>
             </div>
         </div>
@@ -2795,7 +2847,7 @@
         </div>
         
         <!-- Status Panel (Floating) -->
-        <div class="floating-panel" id="statusPanel">
+        <div class="floating-panel right-side hidden" id="statusPanel">
             <div class="panel-header">
                 <div class="panel-title">
                     <i data-lucide="bar-chart-2"></i>
@@ -3079,7 +3131,7 @@
         </div>
 
         <!-- Tasks Panel (Floating) -->
-        <div class="floating-panel hidden" id="tasksPanel">
+        <div class="floating-panel right-side hidden" id="tasksPanel">
             <div class="panel-header">
                 <div class="panel-title">
                     <i data-lucide="check-circle"></i>
@@ -3138,7 +3190,7 @@
         </div>
 
         <!-- AI Progress Panel (Floating) -->
-        <div class="floating-panel hidden" id="aiProgressPanel">
+        <div class="floating-panel right-side hidden" id="aiProgressPanel">
             <div class="panel-header">
                 <div class="panel-title">
                     <i data-lucide="cpu"></i>
@@ -3199,7 +3251,7 @@
         </div>
 
         <!-- Notifications Panel (Floating) -->
-        <div class="floating-panel hidden" id="notificationsPanel">
+        <div class="floating-panel right-side hidden" id="notificationsPanel">
             <div class="panel-header">
                 <div class="panel-title">
                     <i data-lucide="bell"></i>
@@ -3306,17 +3358,25 @@
                 'notifications': 'notificationsPanel'
             };
             
+            const rightPanels = ['stats', 'tasks', 'ai-progress', 'notifications'];
+            const isRightPanel = rightPanels.includes(panelName);
+            
+            // Close other panels on the same side
+            const allPanels = document.querySelectorAll('.floating-panel');
+            allPanels.forEach(p => {
+                const isRight = p.classList.contains('right-side');
+                if (isRight === isRightPanel) {
+                    p.classList.remove('visible');
+                    p.classList.add('hidden');
+                }
+            });
+            
             const panelId = panelMap[panelName];
             const panel = document.getElementById(panelId);
             
             if (panel) {
                 panel.classList.remove('hidden');
-                
-                // Update panel state
-                const stateName = panelId === 'historyPanel' ? 'history' : 'status';
-                panelState[stateName].visible = true;
-                panelState[stateName].minimized = false;
-                savePanelState();
+                panel.classList.add('visible');
             }
         }
         
@@ -3338,11 +3398,7 @@
             
             if (panel) {
                 panel.classList.add('hidden');
-                
-                // Update panel state
-                const stateName = panelId === 'historyPanel' ? 'history' : 'status';
-                panelState[stateName].visible = false;
-                savePanelState();
+                panel.classList.remove('visible');
             }
         }
 
@@ -3659,8 +3715,13 @@
             if (!panel) return;
             
             panel.classList.add('hidden');
-            panelState[panelName].visible = false;
-            savePanelState();
+            panel.classList.remove('visible');
+            
+            // Deactivate corresponding icon
+            const iconBar = document.querySelector(`[data-panel="${panelName}"]`);
+            if (iconBar) {
+                iconBar.classList.remove('active');
+            }
         }
         
         // Keyboard shortcuts
