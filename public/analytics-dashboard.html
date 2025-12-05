@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>분석 대시보드 - MuseFlow</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/unified-navbar.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -153,15 +154,50 @@
 
 </head>
 <body>
-    <!-- Load Unified Navigation -->
-    <div id="unified-navbar-container"></div>
-    <script>
-        fetch('/static/components/unified-navbar.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('unified-navbar-container').innerHTML = html;
-            });
-    </script>
+    <!-- MuseFlow Unified Navigation Bar - Inline Version -->
+    <nav class="unified-navbar">
+        <div class="unified-nav-container">
+            <!-- Logo -->
+            <a href="/landing.html" class="unified-nav-logo">
+                <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="navLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#A78BFA;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#C084FC;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="50" cy="50" r="45" fill="url(#navLogoGrad)" opacity="0.15"/>
+                    <path d="M 30 35 L 50 25 L 70 35 L 70 55 L 50 65 L 30 55 Z" fill="url(#navLogoGrad)" opacity="0.9"/>
+                    <circle cx="50" cy="45" r="8" fill="#ffffff" opacity="0.9"/>
+                </svg>
+                <span>MuseFlow</span>
+            </a>
+            
+            <!-- Main Navigation -->
+            <ul class="unified-nav-links">
+                <li><a href="/landing.html" data-page="home" data-tooltip="Home"><i class="fas fa-home"></i></a></li>
+                <li><a href="/dashboard.html" data-page="dashboard" data-tooltip="Dashboard"><i class="fas fa-chart-line"></i></a></li>
+                <li><a href="/canvas-ultimate-clean.html" data-page="canvas" data-tooltip="Canvas"><i class="fas fa-project-diagram"></i></a></li>
+                <li><a href="/workflow-tools.html" data-page="workflow" data-tooltip="Tools"><i class="fas fa-tools"></i></a></li>
+                <li><a href="/budget.html" data-page="budget" data-tooltip="Budget"><i class="fas fa-dollar-sign"></i></a></li>
+                <li><a href="/analytics-dashboard.html" data-page="analytics" data-tooltip="Analytics"><i class="fas fa-chart-bar"></i></a></li>
+            </ul>
+            
+            <!-- Actions -->
+            <div class="unified-nav-actions">
+                <button class="unified-nav-btn" onclick="toggleNotifications()" data-tooltip="알림">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <a href="/account.html" class="unified-nav-btn" data-tooltip="설정">
+                    <i class="fas fa-cog"></i>
+                </a>
+                <a href="/account.html" class="unified-nav-btn" data-tooltip="내 계정">
+                    <i class="fas fa-user"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
 
     <div style="max-width: 1600px; margin: 0 auto; padding: 1.5rem;">
         <!-- Header -->
