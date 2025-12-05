@@ -1805,6 +1805,130 @@ setTimeout(() => {
     createAutoWorkflowConnections();
 }, 500);
 
+// ============================================
+// Canvas-Dashboard 데이터 연동
+// ============================================
+
+/**
+ * Dashboard로 Canvas 업데이트 전송
+ * @param {string} updateType - 'canvas_nodes' 또는 'dashboard_widgets'
+ * @param {object} updateData - { title, items[] }
+ */
+function sendToDashboard(updateType, updateData) {
+    try {
+        const updates = JSON.parse(localStorage.getItem('dashboard_updates') || '[]');
+        
+        updates.push({
+            type: updateType,
+            title: updateData.title || 'Canvas 업데이트',
+            data: updateData.items || [],
+            timestamp: Date.now()
+        });
+        
+        localStorage.setItem('dashboard_updates', JSON.stringify(updates));
+        console.log(`✅ [Canvas → Dashboard] Sent ${updateType}:`, updateData.title, `(${updateData.items?.length || 0} items)`);
+    } catch (error) {
+        console.error('❌ [Canvas → Dashboard] Error:', error);
+    }
+}
+
+/**
+ * Canvas 상태를 Dashboard로 전송
+ */
+function syncCanvasStateToDashboard() {
+    const cards = Array.from(viewport.querySelectorAll('.card'));
+    
+    if (cards.length === 0) return;
+    
+    const cardData = cards.map(card => {
+        const header = card.querySelector('.card-header');
+        const content = card.querySelector('.card-content p');
+        
+        return {
+            title: header ? header.textContent.trim() : 'Untitled',
+            content: content ? content.textContent.trim() : '',
+            x: card.style.left,
+            y: card.style.top,
+            status: 'active',
+            timestamp: Date.now()
+        };
+    });
+    
+    sendToDashboard('canvas_nodes', {
+        title: `Canvas 상태 (${cards.length}개 노드)`,
+        items: cardData
+    });
+}
+
+// 카드 삭제 시 Dashboard 알림
+document.addEventListener('keydown', e => {
+    if ((e.key === 'Delete' || e.key === 'Backspace') && selectedCard) {
+        const cardTitle = selectedCard.querySelector('.card-header').textContent.trim();
+        
+        // Dashboard로 삭제 알림 전송
+        sendToDashboard('canvas_nodes', {
+            title: '카드 삭제',
+            items: [{ 
+                title: cardTitle, 
+                status: 'deleted',
+                timestamp: Date.now()
+            }]
+        });
+    }
+});
+
+// 초기 Canvas 상태 전송 (페이지 로드 후 2초 후)
+setTimeout(() => {
+    syncCanvasStateToDashboard();
+    console.log('🚀 [Canvas → Dashboard] Initial sync completed');
+}, 2000);
+
+// 자동 동기화 (10초마다)
+setInterval(() => {
+    syncCanvasStateToDashboard();
+}, 10000);
+
+// localStorage 저장 함수 (Canvas 상태 복원용)
+function saveCanvasState() {
+    const cards = Array.from(viewport.querySelectorAll('.card'));
+    
+    const state = {
+        cards: cards.map(card => ({
+            id: card.dataset.id || Math.random().toString(36).substr(2, 9),
+            title: card.querySelector('.card-header')?.textContent.trim() || '',
+            content: card.querySelector('.card-content p')?.textContent.trim() || '',
+            x: card.style.left,
+            y: card.style.top,
+            width: card.style.width,
+            height: card.style.height
+        })),
+        connections: connections.map(conn => ({
+            from: conn.from.querySelector('.card-header')?.textContent.trim() || '',
+            to: conn.to.querySelector('.card-header')?.textContent.trim() || ''
+        })),
+        viewport: {
+            translateX,
+            translateY,
+            scale
+        },
+        timestamp: Date.now()
+    };
+    
+    localStorage.setItem('canvas_state', JSON.stringify(state));
+    console.log('💾 Canvas 상태 저장됨:', cards.length, '개 카드');
+}
+
+// 자동 저장 (10초마다)
+setInterval(saveCanvasState, 10000);
+
+// 페이지 종료 시 저장
+window.addEventListener('beforeunload', () => {
+    saveCanvasState();
+    syncCanvasStateToDashboard();
+});
+
+console.log('✅ Canvas-Dashboard 연동 초기화 완료');
+
 lucide.createIcons();
 </script>
 </body>
