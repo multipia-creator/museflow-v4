@@ -55,6 +55,13 @@
             border-radius: 16px;
             padding: 1.25rem;
             margin-bottom: 1.5rem;
+            max-height: 400px;
+            position: relative;
+        }
+        
+        .chart-container canvas {
+            max-height: 350px !important;
+            height: 350px !important;
         }
         
         .metric-badge {
@@ -354,6 +361,7 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                         legend: { display: false }
                     },
@@ -389,6 +397,7 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                         legend: {
                             position: 'bottom',
@@ -413,6 +422,7 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                         legend: { display: false }
                     },
@@ -448,6 +458,7 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                         legend: {
                             position: 'bottom',
