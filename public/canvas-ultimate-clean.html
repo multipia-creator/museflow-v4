@@ -1929,6 +1929,126 @@ window.addEventListener('beforeunload', () => {
 
 console.log('✅ Canvas-Dashboard 연동 초기화 완료');
 
+// ============================================
+// AI 어시스턴트 기능
+// ============================================
+
+/**
+ * AI 응답 표시 함수
+ */
+function showAIResponse(message, isError = false) {
+    const aiPanel = document.getElementById('aiPanel');
+    const panelContent = aiPanel.querySelector('.panel-content > div');
+    
+    // AI 패널 자동 열기
+    if (!aiPanel.classList.contains('active')) {
+        document.querySelector('[data-panel="ai"]').click();
+    }
+    
+    // 응답 메시지 추가
+    const responseHtml = `
+        <div style="padding: 0.75rem; background: ${isError ? 'rgba(239, 68, 68, 0.1)' : 'rgba(139, 92, 246, 0.1)'}; border-radius: 8px; border-left: 3px solid ${isError ? '#EF4444' : '#8B5CF6'}; margin-bottom: 0.75rem;">
+            <div style="font-size: 0.875rem; color: #9CA3AF; margin-bottom: 0.5rem;">${new Date().toLocaleTimeString('ko-KR')}</div>
+            <div style="font-size: 0.9375rem; color: #e5e5e5; line-height: 1.5;">${message}</div>
+        </div>
+    `;
+    
+    panelContent.insertAdjacentHTML('afterbegin', responseHtml);
+    
+    // 최대 10개 응답만 유지
+    const responses = panelContent.querySelectorAll('div[style*="padding: 0.75rem"]');
+    if (responses.length > 10) {
+        responses[responses.length - 1].remove();
+    }
+}
+
+/**
+ * AI API 호출 함수
+ */
+async function callAI(message, model = 'GPT-4o') {
+    try {
+        showAIResponse(`🤖 AI 분석 중... (${model})`, false);
+        
+        const response = await fetch('/api/ai/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: message,
+                model: model,
+                context: {
+                    page: 'canvas',
+                    cardCount: viewport.querySelectorAll('.card').length,
+                    connections: connections.length
+                }
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`AI API 에러: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.success && data.response) {
+            showAIResponse(data.response, false);
+            console.log('✅ [Canvas AI] Response:', data.response);
+            
+            // Dashboard로 AI 활동 전송
+            sendToDashboard('dashboard_widgets', {
+                title: 'AI 어시스턴트 활동',
+                items: [{
+                    title: `AI 질문: ${message.substring(0, 30)}...`,
+                    content: data.response.substring(0, 100),
+                    status: 'completed',
+                    timestamp: Date.now()
+                }]
+            });
+        } else {
+            throw new Error(data.error || 'AI 응답 실패');
+        }
+    } catch (error) {
+        console.error('❌ [Canvas AI] Error:', error);
+        showAIResponse(`❌ AI 오류: ${error.message}`, true);
+    }
+}
+
+/**
+ * AI 입력 전송 처리
+ */
+function sendAIMessage() {
+    const input = document.getElementById('aiInput');
+    const select = document.querySelector('.ai-select');
+    const message = input.value.trim();
+    
+    if (!message) {
+        showAIResponse('❌ 메시지를 입력해주세요.', true);
+        return;
+    }
+    
+    const model = select.value;
+    console.log(`📤 [Canvas AI] Sending: "${message}" (${model})`);
+    
+    // AI 호출
+    callAI(message, model);
+    
+    // 입력창 초기화
+    input.value = '';
+}
+
+// AI 전송 버튼 이벤트
+document.querySelector('.ai-send')?.addEventListener('click', sendAIMessage);
+
+// AI 입력창 Enter 키 이벤트
+document.getElementById('aiInput')?.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        sendAIMessage();
+    }
+});
+
+console.log('✅ Canvas AI 어시스턴트 초기화 완료');
+
 lucide.createIcons();
 </script>
 </body>

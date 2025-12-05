@@ -336,4 +336,130 @@ async function generateDocumentWithGemini(
   return generatedText.trim()
 }
 
+// ==========================================
+// AI Chat Endpoint - General Conversation
+// ==========================================
+ai.post('/chat', async (c) => {
+  try {
+    const { message, model, context } = await c.req.json()
+    
+    if (!message || typeof message !== 'string') {
+      return c.json({ 
+        success: false, 
+        error: 'Invalid message' 
+      }, 400)
+    }
+    
+    const geminiApiKey = c.env.GEMINI_API_KEY
+    if (!geminiApiKey) {
+      console.error('❌ GEMINI_API_KEY not configured')
+      return c.json({ 
+        success: false, 
+        error: 'Gemini API key not configured',
+        message: 'GEMINI_API_KEY 환경 변수가 설정되지 않았습니다.'
+      }, 500)
+    }
+    
+    // Generate chat response with Gemini
+    const response = await generateChatResponseWithGemini(
+      message,
+      model || 'GPT-4o',
+      context || {},
+      geminiApiKey
+    )
+    
+    return c.json({
+      success: true,
+      response: response,
+      model: model || 'Gemini 1.5 Flash'
+    })
+    
+  } catch (error) {
+    console.error('❌ AI Chat Error:', error)
+    return c.json({
+      success: false,
+      error: 'AI chat failed',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    }, 500)
+  }
+})
+
+// ==========================================
+// Generate Chat Response with Gemini
+// ==========================================
+async function generateChatResponseWithGemini(
+  message: string,
+  model: string,
+  context: any,
+  apiKey: string
+): Promise<string> {
+  const systemPrompt = `
+당신은 MuseFlow Canvas의 AI 어시스턴트입니다.
+현재 사용자는 Canvas 페이지에서 박물관/미술관 워크플로우를 작업하고 있습니다.
+
+**현재 상태**:
+- 페이지: ${context.page || 'canvas'}
+- 카드 개수: ${context.cardCount || 0}개
+- 연결선: ${context.connections || 0}개
+
+**당신의 역할**:
+1. Canvas 사용법 안내
+2. 워크플로우 작성 도움
+3. 박물관/미술관 전시 기획 조언
+4. 일반적인 질문 응답
+
+**응답 스타일**:
+- 친절하고 전문적인 톤
+- 간결하고 명확한 답변 (100-150자)
+- 필요시 구체적인 예시 제공
+- 이모지 사용 가능 (적절한 경우)
+
+**예시**:
+Q: 전시 기획 어떻게 시작해?
+A: 전시 기획은 주제 선정부터 시작합니다! 먼저 타겟 관람객을 정하고, 전시 컨셉을 구체화하세요. Canvas에서 '새 카드 만들기'로 아이디어를 시각화해보세요 💡
+
+Q: 카드를 어떻게 연결하나요?
+A: 카드를 드래그해서 다른 카드 위에 놓으면 자동으로 연결됩니다. 또는 카드 사이를 클릭해서 수동으로 연결할 수 있어요 🔗
+`
+  
+  const requestBody = {
+    contents: [{
+      parts: [{
+        text: `${systemPrompt}\n\n사용자 질문: "${message}"\n\n답변:`
+      }]
+    }],
+    generationConfig: {
+      temperature: 0.8,
+      topK: 40,
+      topP: 0.95,
+      maxOutputTokens: 512,
+    }
+  }
+  
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    }
+  )
+  
+  if (!response.ok) {
+    const errorText = await response.text()
+    throw new Error(`Gemini API Error: ${response.status} - ${errorText}`)
+  }
+  
+  const data = await response.json()
+  
+  const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text
+  if (!generatedText) {
+    throw new Error('No response from Gemini API')
+  }
+  
+  return generatedText.trim()
+}
+
 export default ai
