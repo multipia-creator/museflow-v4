@@ -653,29 +653,19 @@ body {
     z-index: 0;
 }
 
-/* SVG Curved Connection Lines */
-.connection-svg {
+.card-connector {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.connection-path {
-    fill: none;
-    stroke: rgba(139, 92, 246, 0.6);
-    stroke-width: 2.5;
+    background: rgba(139, 92, 246, 0.5);
+    height: 2px;
+    transform-origin: 0 0;
     transition: all 0.3s ease;
-    filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.4));
+    pointer-events: none;
 }
 
-.connection-path:hover {
-    stroke: rgba(139, 92, 246, 0.9);
-    stroke-width: 3;
-    filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.6));
+.card-connector.active {
+    background: rgba(139, 92, 246, 0.8);
+    height: 3px;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
 }
 
 .card-connector-dot {
@@ -724,25 +714,7 @@ body {
 <nav class="unified-navbar">
     <div class="unified-nav-container">
         <a href="/" class="unified-nav-logo">
-            <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
-                        <stop offset="50%" style="stop-color:#A78BFA;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#C084FC;stop-opacity:1" />
-                    </linearGradient>
-                    <filter id="glow">
-                        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                        <feMerge>
-                            <feMergeNode in="coloredBlur"/>
-                            <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                    </filter>
-                </defs>
-                <circle cx="50" cy="50" r="45" fill="url(#logoGrad)" opacity="0.15"/>
-                <path d="M 30 35 L 50 25 L 70 35 L 70 55 L 50 65 L 30 55 Z" fill="url(#logoGrad)" filter="url(#glow)" opacity="0.9"/>
-                <circle cx="50" cy="45" r="8" fill="#ffffff" opacity="0.9"/>
-            </svg>
+            <img src="/static/images/logo-neon-m.png" alt="MuseFlow">
             <span>MuseFlow</span>
         </a>
         <ul class="unified-nav-links">
@@ -954,7 +926,7 @@ body {
             <div style="display: flex; flex-direction: column; gap: 1rem;">
                 <div style="padding: 1rem; background: rgba(139, 92, 246, 0.1); border-radius: 8px; border: 1px solid rgba(139, 92, 246, 0.2);">
                     <div style="font-size: 0.875rem; color: #9CA3AF; margin-bottom: 0.5rem;">총 카드 수</div>
-                    <div style="font-size: 2rem; font-weight: 700; color: #8B5CF6;">8</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #8B5CF6;">9</div>
                 </div>
                 <div style="padding: 1rem; background: rgba(34, 197, 94, 0.1); border-radius: 8px; border: 1px solid rgba(34, 197, 94, 0.2);">
                     <div style="font-size: 0.875rem; color: #9CA3AF; margin-bottom: 0.5rem;">완료된 작업</div>
@@ -1341,8 +1313,8 @@ function calculateCenteredLayout() {
     const canvasHeight = window.innerHeight;
     const cardWidth = 300;
     const cardHeight = 350;
-    const cols = 4;
-    const rows = 2;
+    const cols = 3;
+    const rows = 3;
     const hGap = 150;
     const vGap = 120;
     
@@ -1358,7 +1330,6 @@ function calculateCenteredLayout() {
 }
 
 // Sample Cards with Thumbnails (positions will be auto-calculated)
-// 4x2 Card Layout (8 cards total)
 const cardTemplates = [
     { title: '홍보 영상', content: '전시 소개 영상 (3:45)', icon: 'video', type: 'video', size: '125 MB', format: 'MP4', preview: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' },
     { title: '오디오 가이드', content: '전시 해설 음성 (한/영)', icon: 'headphones', type: 'audio', size: '8.5 MB', format: 'MP3', preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
@@ -1367,15 +1338,16 @@ const cardTemplates = [
     { title: '큐레이터 노트', content: '작품 해설 원고', icon: 'file-text', type: 'document', size: '2.4 MB', format: 'DOCX' },
     { title: '3D 모델', content: '유물 스캔 데이터', icon: 'box', type: 'data', size: '89 MB', format: 'GLB' },
     { title: '현장 사진', content: '설치 진행 사진 (24장)', icon: 'camera', type: 'image', size: '45 MB', format: 'JPG', preview: 'https://picsum.photos/400/300?random=2' },
-    { title: '피드백', content: '관람객 의견 수집', icon: 'message-circle', type: 'document', size: '512 KB', format: 'PDF' }
+    { title: '피드백', content: '관람객 의견 수집', icon: 'message-circle', type: 'document', size: '512 KB', format: 'PDF' },
+    { title: '일정표', content: '전시 운영 스케줄', icon: 'calendar', type: 'document', size: '1.2 MB', format: 'PDF' }
 ];
 
 // Generate cards with auto-centered positions
 function generateCenteredCards() {
     const layout = calculateCenteredLayout();
     const cards = cardTemplates.map((template, index) => {
-        const row = Math.floor(index / 4);
-        const col = index % 4;
+        const row = Math.floor(index / 3);
+        const col = index % 3;
         return {
             ...template,
             x: layout.startX + col * (layout.cardWidth + layout.hGap),
@@ -1627,7 +1599,7 @@ function createConnection(fromCard, toCard) {
     const conn = {
         from: fromCard,
         to: toCard,
-        path: null
+        line: null
     };
     connections.push(conn);
     updateConnectionLine(conn);
@@ -1635,7 +1607,7 @@ function createConnection(fromCard, toCard) {
 }
 
 function updateConnectionLine(conn) {
-    // Get card positions
+    // Get card positions directly from their style properties
     const fromX = parseInt(conn.from.style.left) || 0;
     const fromY = parseInt(conn.from.style.top) || 0;
     const fromWidth = conn.from.offsetWidth;
@@ -1652,40 +1624,19 @@ function updateConnectionLine(conn) {
     const endX = toX;
     const endY = toY + toHeight / 2;
     
-    // Create SVG container if not exists
-    if (!conn.path) {
-        let svg = viewport.querySelector('.connection-svg');
-        if (!svg) {
-            svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            svg.setAttribute('class', 'connection-svg');
-            svg.setAttribute('width', '100%');
-            svg.setAttribute('height', '100%');
-            svg.style.position = 'absolute';
-            svg.style.top = '0';
-            svg.style.left = '0';
-            svg.style.pointerEvents = 'none';
-            svg.style.zIndex = '0';
-            viewport.insertBefore(svg, viewport.firstChild);
-        }
-        
-        conn.path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        conn.path.setAttribute('class', 'connection-path');
-        svg.appendChild(conn.path);
+    const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+    const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+    
+    if (!conn.line) {
+        conn.line = document.createElement('div');
+        conn.line.className = 'card-connector';
+        viewport.appendChild(conn.line);
     }
     
-    // Calculate smooth Bezier curve
-    const dx = endX - startX;
-    const dy = endY - startY;
-    const curveOffset = Math.abs(dx) * 0.5;
-    
-    const cp1x = startX + curveOffset;
-    const cp1y = startY;
-    const cp2x = endX - curveOffset;
-    const cp2y = endY;
-    
-    // SVG Path: M (start) C (control1, control2, end)
-    const pathData = `M ${startX} ${startY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${endX} ${endY}`;
-    conn.path.setAttribute('d', pathData);
+    conn.line.style.left = startX + 'px';
+    conn.line.style.top = startY + 'px';
+    conn.line.style.width = distance + 'px';
+    conn.line.style.transform = `rotate(${angle}deg)`;
 }
 
 function updateAllConnections() {
@@ -1825,15 +1776,14 @@ function createAutoWorkflowConnections() {
         if (title) cardsByTitle[title] = card;
     });
     
-    // Define workflow connections for 4x2 layout (8 cards)
+    // Define workflow connections (from → to)
     const workflowConnections = [
         ['홍보 영상', '전시 포스터'],      // Video → Poster design
-        ['오디오 가이드', '전시 포스터'],  // Audio → Poster
-        ['전시 포스터', '관람객 통계'],    // Poster → Stats
-        ['큐레이터 노트', '3D 모델'],      // Curator → 3D
-        ['3D 모델', '현장 사진'],          // 3D → Photos
+        ['전시 포스터', '현장 사진'],      // Poster → Site photos
+        ['오디오 가이드', '큐레이터 노트'], // Audio guide → Curator notes
         ['관람객 통계', '피드백'],         // Stats → Feedback
-        ['현장 사진', '피드백']            // Photos → Feedback
+        ['3D 모델', '관람객 통계'],        // 3D model → Stats
+        ['현장 사진', '일정표']            // Photos → Schedule
     ];
     
     // Create connections
