@@ -653,7 +653,7 @@ body {
     z-index: 0;
 }
 
-/* SVG Connection Lines */
+/* SVG Curved Connection Lines */
 .connection-svg {
     position: absolute;
     top: 0;
@@ -667,9 +667,9 @@ body {
 .connection-path {
     fill: none;
     stroke: rgba(139, 92, 246, 0.6);
-    stroke-width: 2;
+    stroke-width: 2.5;
     transition: all 0.3s ease;
-    filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.4));
+    filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.4));
 }
 
 .connection-path:hover {
@@ -726,14 +726,22 @@ body {
         <a href="/" class="unified-nav-logo">
             <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#A78BFA;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#C084FC;stop-opacity:1" />
                     </linearGradient>
+                    <filter id="glow">
+                        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                        <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
                 </defs>
-                <rect x="10" y="15" width="80" height="20" rx="5" fill="url(#logo-grad)" opacity="0.9"/>
-                <rect x="10" y="40" width="60" height="20" rx="5" fill="url(#logo-grad)" opacity="0.7"/>
-                <rect x="10" y="65" width="70" height="20" rx="5" fill="url(#logo-grad)" opacity="0.8"/>
+                <circle cx="50" cy="50" r="45" fill="url(#logoGrad)" opacity="0.15"/>
+                <path d="M 30 35 L 50 25 L 70 35 L 70 55 L 50 65 L 30 55 Z" fill="url(#logoGrad)" filter="url(#glow)" opacity="0.9"/>
+                <circle cx="50" cy="45" r="8" fill="#ffffff" opacity="0.9"/>
             </svg>
             <span>MuseFlow</span>
         </a>
@@ -1349,62 +1357,31 @@ function calculateCenteredLayout() {
     return { startX, startY, hGap, vGap, cardWidth };
 }
 
-// Workflow-based Card Templates (arranged in process order)
-// Museum workflow: Planning → Content → Design → Execution → Analysis → Feedback
+// Sample Cards with Thumbnails (positions will be auto-calculated)
 const cardTemplates = [
-    // Phase 1: Planning & Content Creation
-    { title: '큐레이터 노트', content: '작품 해설 원고', icon: 'file-text', type: 'document', size: '2.4 MB', format: 'DOCX', phase: 1 },
-    { title: '3D 모델', content: '유물 스캔 데이터', icon: 'box', type: 'data', size: '89 MB', format: 'GLB', phase: 1 },
-    { title: '오디오 가이드', content: '전시 해설 음성 (한/영)', icon: 'headphones', type: 'audio', size: '8.5 MB', format: 'MP3', preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', phase: 1 },
-    
-    // Phase 2: Design & Promotion
-    { title: '전시 포스터', content: '메인 비주얼 디자인', icon: 'image', type: 'image', size: '4.2 MB', format: 'PNG', preview: 'https://picsum.photos/400/300?random=1', phase: 2 },
-    { title: '홍보 영상', content: '전시 소개 영상 (3:45)', icon: 'video', type: 'video', size: '125 MB', format: 'MP4', preview: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', phase: 2 },
-    { title: '일정표', content: '전시 운영 스케줄', icon: 'calendar', type: 'document', size: '1.2 MB', format: 'PDF', phase: 2 },
-    
-    // Phase 3: Execution & Documentation
-    { title: '현장 사진', content: '설치 진행 사진 (24장)', icon: 'camera', type: 'image', size: '45 MB', format: 'JPG', preview: 'https://picsum.photos/400/300?random=2', phase: 3 },
-    
-    // Phase 4: Analysis & Feedback
-    { title: '관람객 통계', content: '월간 리포트', icon: 'bar-chart-2', type: 'data', size: '1.8 MB', format: 'XLSX', phase: 4 },
-    { title: '피드백', content: '관람객 의견 수집', icon: 'message-circle', type: 'document', size: '512 KB', format: 'PDF', phase: 4 }
+    { title: '홍보 영상', content: '전시 소개 영상 (3:45)', icon: 'video', type: 'video', size: '125 MB', format: 'MP4', preview: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' },
+    { title: '오디오 가이드', content: '전시 해설 음성 (한/영)', icon: 'headphones', type: 'audio', size: '8.5 MB', format: 'MP3', preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+    { title: '전시 포스터', content: '메인 비주얼 디자인', icon: 'image', type: 'image', size: '4.2 MB', format: 'PNG', preview: 'https://picsum.photos/400/300?random=1' },
+    { title: '관람객 통계', content: '월간 리포트', icon: 'bar-chart-2', type: 'data', size: '1.8 MB', format: 'XLSX' },
+    { title: '큐레이터 노트', content: '작품 해설 원고', icon: 'file-text', type: 'document', size: '2.4 MB', format: 'DOCX' },
+    { title: '3D 모델', content: '유물 스캔 데이터', icon: 'box', type: 'data', size: '89 MB', format: 'GLB' },
+    { title: '현장 사진', content: '설치 진행 사진 (24장)', icon: 'camera', type: 'image', size: '45 MB', format: 'JPG', preview: 'https://picsum.photos/400/300?random=2' },
+    { title: '피드백', content: '관람객 의견 수집', icon: 'message-circle', type: 'document', size: '512 KB', format: 'PDF' },
+    { title: '일정표', content: '전시 운영 스케줄', icon: 'calendar', type: 'document', size: '1.2 MB', format: 'PDF' }
 ];
 
-// Generate cards with workflow-based layout (left-to-right flow)
+// Generate cards with auto-centered positions
 function generateCenteredCards() {
-    const canvasWidth = window.innerWidth;
-    const canvasHeight = window.innerHeight;
-    const cardWidth = 300;
-    const cardHeight = 350;
-    const hGap = 200;
-    const vGap = 120;
-    
-    // Group cards by phase
-    const phases = [
-        cardTemplates.filter(c => c.phase === 1), // Planning (3 cards)
-        cardTemplates.filter(c => c.phase === 2), // Design (3 cards)
-        cardTemplates.filter(c => c.phase === 3), // Execution (1 card)
-        cardTemplates.filter(c => c.phase === 4)  // Analysis (2 cards)
-    ];
-    
-    // Calculate starting positions
-    const totalWidth = 4 * cardWidth + 3 * hGap;
-    const startX = (canvasWidth - totalWidth) / 2;
-    const startY = (canvasHeight - cardHeight * 2 - vGap) / 2 + 100;
-    
-    const cards = [];
-    let phaseIndex = 0;
-    
-    phases.forEach((phaseCards, col) => {
-        phaseCards.forEach((template, row) => {
-            cards.push({
-                ...template,
-                x: startX + col * (cardWidth + hGap),
-                y: startY + row * (cardHeight + vGap)
-            });
-        });
+    const layout = calculateCenteredLayout();
+    const cards = cardTemplates.map((template, index) => {
+        const row = Math.floor(index / 3);
+        const col = index % 3;
+        return {
+            ...template,
+            x: layout.startX + col * (layout.cardWidth + layout.hGap),
+            y: layout.startY + row * (layout.cardWidth + layout.vGap)
+        };
     });
-    
     return cards;
 }
 
@@ -1675,9 +1652,8 @@ function updateConnectionLine(conn) {
     const endX = toX;
     const endY = toY + toHeight / 2;
     
-    // Create SVG if not exists
+    // Create SVG container if not exists
     if (!conn.path) {
-        // Create or get SVG container
         let svg = viewport.querySelector('.connection-svg');
         if (!svg) {
             svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -1692,23 +1668,22 @@ function updateConnectionLine(conn) {
             viewport.insertBefore(svg, viewport.firstChild);
         }
         
-        // Create path element
         conn.path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         conn.path.setAttribute('class', 'connection-path');
         svg.appendChild(conn.path);
     }
     
-    // Calculate cubic Bezier curve control points
+    // Calculate smooth Bezier curve
     const dx = endX - startX;
     const dy = endY - startY;
-    const curveStrength = Math.abs(dx) * 0.5; // Horizontal curve amount
+    const curveOffset = Math.abs(dx) * 0.5;
     
-    const cp1x = startX + curveStrength;
+    const cp1x = startX + curveOffset;
     const cp1y = startY;
-    const cp2x = endX - curveStrength;
+    const cp2x = endX - curveOffset;
     const cp2y = endY;
     
-    // Create path data (cubic Bezier curve)
+    // SVG Path: M (start) C (control1, control2, end)
     const pathData = `M ${startX} ${startY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${endX} ${endY}`;
     conn.path.setAttribute('d', pathData);
 }
@@ -1850,21 +1825,14 @@ function createAutoWorkflowConnections() {
         if (title) cardsByTitle[title] = card;
     });
     
-    // Define workflow connections (sequential museum process)
+    // Define workflow connections (from → to)
     const workflowConnections = [
-        // Phase 1 → Phase 2 (Content to Design)
-        ['큐레이터 노트', '전시 포스터'],  // Curator notes → Poster
-        ['3D 모델', '전시 포스터'],        // 3D model → Poster
-        ['오디오 가이드', '홍보 영상'],  // Audio → Video
-        
-        // Phase 2 → Phase 3 (Design to Execution)
-        ['전시 포스터', '현장 사진'],      // Poster → Photos
-        ['홍보 영상', '현장 사진'],        // Video → Photos
-        ['일정표', '현장 사진'],          // Schedule → Photos
-        
-        // Phase 3 → Phase 4 (Execution to Analysis)
-        ['현장 사진', '관람객 통계'],    // Photos → Stats
-        ['관람객 통계', '피드백']       // Stats → Feedback
+        ['홍보 영상', '전시 포스터'],      // Video → Poster design
+        ['전시 포스터', '현장 사진'],      // Poster → Site photos
+        ['오디오 가이드', '큐레이터 노트'], // Audio guide → Curator notes
+        ['관람객 통계', '피드백'],         // Stats → Feedback
+        ['3D 모델', '관람객 통계'],        // 3D model → Stats
+        ['현장 사진', '일정표']            // Photos → Schedule
     ];
     
     // Create connections
