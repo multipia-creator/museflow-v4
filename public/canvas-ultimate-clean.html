@@ -563,6 +563,85 @@ body {
     animation: slideIn 0.3s ease-out;
 }
 
+/* Card Click Effects */
+.card:hover {
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);
+    transform: translateY(-2px);
+}
+
+.card-thumbnail:hover {
+    cursor: pointer;
+}
+
+/* Modal Viewer */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    max-width: 90vw;
+    max-height: 90vh;
+    position: relative;
+    animation: scaleIn 0.3s ease-out;
+}
+
+.modal-content img {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+.modal-content video {
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: 12px;
+}
+
+.modal-close {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
 /* Connection Lines (Google Opal Style) */
 .connection-canvas {
     position: absolute;
@@ -678,7 +757,57 @@ body {
             <i data-lucide="x" style="width:14px;height:14px"></i>
         </button>
     </div>
-    <div class="panel-content">최근 작업 기록</div>
+    <div class="panel-content">
+        <div style="padding: 1rem;">
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div style="padding: 0.75rem; background: rgba(139, 92, 246, 0.05); border-radius: 8px; border-left: 3px solid #8B5CF6;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <i data-lucide="image" style="width:16px;height:16px;color:#8B5CF6;"></i>
+                        <div>
+                            <div style="font-weight: 600; color: #e5e5e5; font-size: 0.9375rem;">포스터 이미지 편집</div>
+                            <div style="font-size: 0.8125rem; color: #9CA3AF;">방금 전</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 0.75rem; background: rgba(139, 92, 246, 0.05); border-radius: 8px; border-left: 3px solid #6366F1;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <i data-lucide="video" style="width:16px;height:16px;color:#6366F1;"></i>
+                        <div>
+                            <div style="font-weight: 600; color: #e5e5e5; font-size: 0.9375rem;">영상 렌더링 완료</div>
+                            <div style="font-size: 0.8125rem; color: #9CA3AF;">5분 전</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 0.75rem; background: rgba(139, 92, 246, 0.05); border-radius: 8px; border-left: 3px solid #22C55E;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <i data-lucide="link" style="width:16px;height:16px;color:#22C55E;"></i>
+                        <div>
+                            <div style="font-weight: 600; color: #e5e5e5; font-size: 0.9375rem;">카드 연결 생성</div>
+                            <div style="font-size: 0.8125rem; color: #9CA3AF;">10분 전</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 0.75rem; background: rgba(139, 92, 246, 0.05); border-radius: 8px; border-left: 3px solid #F97316;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <i data-lucide="move" style="width:16px;height:16px;color:#F97316;"></i>
+                        <div>
+                            <div style="font-weight: 600; color: #e5e5e5; font-size: 0.9375rem;">카드 재배치</div>
+                            <div style="font-size: 0.8125rem; color: #9CA3AF;">15분 전</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 0.75rem; background: rgba(139, 92, 246, 0.05); border-radius: 8px; border-left: 3px solid #3B82F6;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <i data-lucide="save" style="width:16px;height:16px;color:#3B82F6;"></i>
+                        <div>
+                            <div style="font-weight: 600; color: #e5e5e5; font-size: 0.9375rem;">프로젝트 저장</div>
+                            <div style="font-size: 0.8125rem; color: #9CA3AF;">30분 전</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="panel left" id="actionsPanel" data-side="left">
@@ -746,7 +875,43 @@ body {
             <i data-lucide="x" style="width:14px;height:14px"></i>
         </button>
     </div>
-    <div class="panel-content">설정</div>
+    <div class="panel-content">
+        <div style="padding: 1rem;">
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <div>
+                    <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.5rem; font-size: 0.9375rem;">테마</div>
+                    <select style="width: 100%; padding: 0.5rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 8px; color: #e5e5e5; cursor: pointer;">
+                        <option>다크 모드</option>
+                        <option>라이트 모드</option>
+                        <option>시스템 설정</option>
+                    </select>
+                </div>
+                <div>
+                    <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.5rem; font-size: 0.9375rem;">그리드 크기</div>
+                    <input type="range" min="50" max="500" value="150" style="width: 100%; cursor: pointer;">
+                    <div style="font-size: 0.8125rem; color: #9CA3AF; margin-top: 0.25rem;">150px</div>
+                </div>
+                <div>
+                    <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.5rem; font-size: 0.9375rem;">자동 저장</div>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" checked style="width: 16px; height: 16px; cursor: pointer;">
+                        <span style="color: #e5e5e5; font-size: 0.9375rem;">변경 사항 자동 저장</span>
+                    </label>
+                </div>
+                <div>
+                    <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.5rem; font-size: 0.9375rem;">연결선 표시</div>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" checked style="width: 16px; height: 16px; cursor: pointer;">
+                        <span style="color: #e5e5e5; font-size: 0.9375rem;">워크플로우 연결선 보기</span>
+                    </label>
+                </div>
+                <button style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.75rem; border-radius: 8px; color: #EF4444; cursor: pointer; font-weight: 600; margin-top: 1rem;">
+                    <i data-lucide="refresh-cw" style="width:14px;height:14px;display:inline-block;margin-right:8px;"></i>
+                    설정 초기화
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="panel right" id="statsPanel" data-side="right">
@@ -917,6 +1082,12 @@ body {
     <button class="ai-send">
         <i data-lucide="send" style="width:16px;height:16px"></i>
     </button>
+</div>
+
+<!-- Modal Viewer -->
+<div class="modal-overlay" id="modalViewer">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-content" id="modalContent"></div>
 </div>
 
 <!-- Footer -->
@@ -1145,7 +1316,7 @@ function calculateCenteredLayout() {
     const cols = 3;
     const rows = 3;
     const hGap = 150;
-    const vGap = 180;
+    const vGap = 120;
     
     // Calculate total grid size
     const gridWidth = cols * cardWidth + (cols - 1) * hGap;
@@ -1200,6 +1371,8 @@ function createCard(card) {
     cardEl.style.top = card.y + 'px';
     cardEl.style.zIndex = maxZIndex++;
     cardEl.dataset.type = card.type;
+    cardEl.dataset.title = card.title;
+    if (card.preview) cardEl.dataset.preview = card.preview;
     
     // Build thumbnail content based on type and preview availability
     let thumbnailContent = '';
@@ -1250,9 +1423,24 @@ function createCard(card) {
         <div class="connection-handle" title="연결선 만들기"></div>
     `;
     
+    // Thumbnail click for modal viewer
+    const thumbnail = cardEl.querySelector('.card-thumbnail');
+    if (thumbnail) {
+        thumbnail.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const type = cardEl.dataset.type;
+            const preview = cardEl.dataset.preview;
+            const title = cardEl.dataset.title;
+            
+            if (preview && (type === 'image' || type === 'video')) {
+                openModal(type, preview, title);
+            }
+        });
+    }
+    
     // Card selection
     cardEl.addEventListener('click', function(e) {
-        if (!e.target.classList.contains('resize-handle')) {
+        if (!e.target.classList.contains('resize-handle') && !e.target.closest('.card-thumbnail')) {
             selectCard(cardEl);
             e.stopPropagation();
         }
@@ -1529,6 +1717,93 @@ window.addAICard = function(type, title, content, imageUrl = null) {
     console.log('✅ AI 생성 카드 추가:', title, '(' + type + ')');
     return cardEl;
 };
+
+// Modal Viewer Functions
+function openModal(type, url, title) {
+    const modal = document.getElementById('modalViewer');
+    const content = document.getElementById('modalContent');
+    
+    if (type === 'image') {
+        content.innerHTML = `<img src="${url}" alt="${title}">`;
+    } else if (type === 'video') {
+        content.innerHTML = `<video src="${url}" controls autoplay style="outline: none;"></video>`;
+    }
+    
+    modal.classList.add('active');
+    console.log('🖼️ 모달 열림:', title);
+}
+
+function closeModal() {
+    const modal = document.getElementById('modalViewer');
+    const content = document.getElementById('modalContent');
+    
+    // Stop video if playing
+    const video = content.querySelector('video');
+    if (video) {
+        video.pause();
+        video.currentTime = 0;
+    }
+    
+    modal.classList.remove('active');
+    content.innerHTML = '';
+    console.log('❌ 모달 닫힘');
+}
+
+// Close modal on overlay click
+document.getElementById('modalViewer').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+
+// Close modal on Escape key  
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const modal = document.getElementById('modalViewer');
+        if (modal.classList.contains('active')) {
+            closeModal();
+        }
+    }
+});
+
+// Auto-create workflow connections based on typical museum workflow
+function createAutoWorkflowConnections() {
+    const allCards = document.querySelectorAll('.card');
+    const cardsByTitle = {};
+    
+    allCards.forEach(card => {
+        const title = card.dataset.title;
+        if (title) cardsByTitle[title] = card;
+    });
+    
+    // Define workflow connections (from → to)
+    const workflowConnections = [
+        ['홍보 영상', '전시 포스터'],      // Video → Poster design
+        ['전시 포스터', '현장 사진'],      // Poster → Site photos
+        ['오디오 가이드', '큐레이터 노트'], // Audio guide → Curator notes
+        ['관람객 통계', '피드백'],         // Stats → Feedback
+        ['3D 모델', '관람객 통계'],        // 3D model → Stats
+        ['현장 사진', '일정표']            // Photos → Schedule
+    ];
+    
+    // Create connections
+    workflowConnections.forEach(([fromTitle, toTitle]) => {
+        const fromCard = cardsByTitle[fromTitle];
+        const toCard = cardsByTitle[toTitle];
+        
+        if (fromCard && toCard) {
+            createConnection(fromCard, toCard);
+            console.log('🔗 자동 연결:', fromTitle, '→', toTitle);
+        }
+    });
+    
+    console.log('✅ 워크플로우 자동 연결 완료:', workflowConnections.length, '개 연결');
+}
+
+// Initialize auto workflow after cards are created
+setTimeout(() => {
+    createAutoWorkflowConnections();
+}, 500);
 
 lucide.createIcons();
 </script>
