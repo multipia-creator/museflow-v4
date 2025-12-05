@@ -911,7 +911,7 @@ function createCard(card) {
     let cardDragging = false;
     let cardStartX, cardStartY, cardInitialX, cardInitialY;
     
-    cardEl.addEventListener('mousedown', function(e) {
+    const onCardMouseDown = function(e) {
         // Only drag from card header, not from resize handles
         if (e.target.closest('.card-header') && !e.target.classList.contains('resize-handle')) {
             cardDragging = true;
@@ -923,26 +923,34 @@ function createCard(card) {
             
             // CRITICAL: Prevent canvas from dragging
             e.stopPropagation();
-            e.preventDefault();
+            
+            console.log('🎯 카드 드래그 시작:', cardEl.querySelector('.card-header').textContent.trim());
         }
-    });
+    };
     
-    document.addEventListener('mousemove', function(e) {
-        if (cardDragging && cardEl.style.cursor === 'grabbing') {
+    const onCardMouseMove = function(e) {
+        if (cardDragging) {
             e.preventDefault();
+            e.stopPropagation();
+            
             const deltaX = (e.clientX - cardStartX) / scale;
             const deltaY = (e.clientY - cardStartY) / scale;
             cardEl.style.left = (cardInitialX + deltaX) + 'px';
             cardEl.style.top = (cardInitialY + deltaY) + 'px';
         }
-    });
+    };
     
-    document.addEventListener('mouseup', function() {
-        if (cardDragging && cardEl.style.cursor === 'grabbing') {
+    const onCardMouseUp = function() {
+        if (cardDragging) {
             cardDragging = false;
             cardEl.style.cursor = 'move';
+            console.log('✅ 카드 드래그 완료');
         }
-    });
+    };
+    
+    cardEl.addEventListener('mousedown', onCardMouseDown);
+    document.addEventListener('mousemove', onCardMouseMove);
+    document.addEventListener('mouseup', onCardMouseUp);
     
     // Resize functionality
     setupResizeHandles(cardEl);
