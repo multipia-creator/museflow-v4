@@ -925,8 +925,8 @@
         
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
-            // Load real data from D1 database
-            await loadRealBudgetData();
+            // Load real data from D1 database (disabled - using mock data)
+            // await loadRealBudgetData();
             
             calculateSummary();
             renderBudgetTable();
@@ -1096,14 +1096,14 @@
         }
     </script>
     
-    <!-- Notification System -->
-    <script src="/static/js/notification-system.js"></script>
+    <!-- Notification System (Disabled - requires backend API) -->
+    <!-- <script src="/static/js/notification-system.js"></script> -->
     
     <!-- Error Logger -->
     <script src="/static/js/error-logger.js"></script>
     
-    <!-- Notification Automation -->
-    <script src="/static/js/notification-automation.js"></script>
+    <!-- Notification Automation (Disabled - requires backend API) -->
+    <!-- <script src="/static/js/notification-automation.js"></script> -->
     
     <!-- Floating Action Button -->
     <script src="/static/js/components/floating-action.js"></script>
