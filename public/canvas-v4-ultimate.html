@@ -44,6 +44,7 @@
         
         /* Left Column - History & Projects */
         .left-column {
+            grid-column: 1;
             background: #FFFFFF;
             border-right: 1px solid #E5E7EB;
             display: flex;
@@ -195,6 +196,7 @@
         
         /* Center Column - Infinite Canvas */
         .center-column {
+            grid-column: 2;
             background: #0a0a0a;
             position: relative;
             overflow: hidden;
@@ -745,6 +747,7 @@
         
         /* Right Column - Live Canvas/Dashboard Preview */
         .right-column {
+            grid-column: 3;
             background: #F9FAFB;
             border-left: 1px solid #E5E7EB;
             display: flex;
@@ -2253,9 +2256,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    
-        <!-- Right Column: Live Dashboard -->
+        
+        <!-- Center Column: Infinite Canvas -->
         <div class="center-column">
             <!-- Infinite Canvas Viewport -->
             <div id="canvasViewport"></div>
@@ -2313,7 +2315,8 @@
                 </div>
             </div>
         </div>
-        
+    </div> <!-- End of canvas-container -->
+    
     <script>
         // State
         let eventSource = null;
