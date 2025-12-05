@@ -345,9 +345,6 @@ body {
 }
 
 .controls {
-    position: fixed;
-    bottom: 68px;
-    right: 60px;
     display: flex;
     gap: 8px;
     background: rgba(26, 26, 26, 0.98);
@@ -616,20 +613,6 @@ body {
     <div class="panel-content">알림</div>
 </div>
 
-<!-- Controls -->
-<div class="controls">
-    <button class="ctrl-btn" id="zoomOut">
-        <i data-lucide="zoom-out" style="width:14px;height:14px"></i>
-    </button>
-    <span class="zoom-level" id="zoomLevel">100%</span>
-    <button class="ctrl-btn" id="zoomIn">
-        <i data-lucide="zoom-in" style="width:14px;height:14px"></i>
-    </button>
-    <button class="ctrl-btn" id="fitScreen">
-        <i data-lucide="maximize-2" style="width:14px;height:14px"></i>
-    </button>
-</div>
-
 <!-- AI Input -->
 <div class="ai-input">
     <select class="ai-select">
@@ -641,6 +624,21 @@ body {
         <i data-lucide="mic" style="width:16px;height:16px"></i>
     </button>
     <input class="ai-field" id="aiInput" placeholder="AI에게 질문하거나 음성 입력...">
+    
+    <!-- Zoom Controls (moved here) -->
+    <div class="controls">
+        <button class="ctrl-btn" id="zoomOut">
+            <i data-lucide="zoom-out" style="width:14px;height:14px"></i>
+        </button>
+        <span class="zoom-level" id="zoomLevel">100%</span>
+        <button class="ctrl-btn" id="zoomIn">
+            <i data-lucide="zoom-in" style="width:14px;height:14px"></i>
+        </button>
+        <button class="ctrl-btn" id="fitScreen">
+            <i data-lucide="maximize-2" style="width:14px;height:14px"></i>
+        </button>
+    </div>
+    
     <button class="ai-send">
         <i data-lucide="send" style="width:16px;height:16px"></i>
     </button>
@@ -756,6 +754,23 @@ document.querySelectorAll('.icon').forEach(icon => {
         this.classList.add('active');
         activePanels[side] = panelName;
     });
+});
+
+// Open initial panels on page load
+window.addEventListener('load', function() {
+    // Open left panel: Actions
+    const leftIcon = document.querySelector('.icon[data-panel="actions"]');
+    if (leftIcon) {
+        leftIcon.click();
+        console.log('✅ 왼쪽 사이드바 (Actions) 자동 열림');
+    }
+    
+    // Open right panel: Stats
+    const rightIcon = document.querySelector('.icon[data-panel="stats"]');
+    if (rightIcon) {
+        rightIcon.click();
+        console.log('✅ 오른쪽 사이드바 (Stats) 자동 열림');
+    }
 });
 
 // Canvas Interaction
@@ -931,23 +946,29 @@ function createCard(card) {
     let cardStartX, cardStartY, cardInitialX, cardInitialY;
     
     const onCardMouseDown = function(e) {
-        // Check if clicking on card header (including children like icon and text)
-        const headerElement = cardEl.querySelector('.card-header');
-        const clickedOnHeader = headerElement && (e.target === headerElement || headerElement.contains(e.target));
-        
-        if (clickedOnHeader && !e.target.classList.contains('resize-handle')) {
-            cardDragging = true;
-            cardStartX = e.clientX;
-            cardStartY = e.clientY;
-            cardInitialX = parseInt(cardEl.style.left) || 0;
-            cardInitialY = parseInt(cardEl.style.top) || 0;
-            cardEl.style.cursor = 'grabbing';
-            
-            // CRITICAL: Prevent canvas from dragging
-            e.stopPropagation();
-            
-            console.log('🎯 카드 드래그 시작:', headerElement.textContent.trim());
+        // Don't drag if clicking on resize handles
+        if (e.target.classList.contains('resize-handle')) {
+            return;
         }
+        
+        // Don't drag if clicking on video/audio controls
+        if (e.target.tagName === 'VIDEO' || e.target.tagName === 'AUDIO') {
+            return;
+        }
+        
+        // Allow drag from anywhere on the card
+        cardDragging = true;
+        cardStartX = e.clientX;
+        cardStartY = e.clientY;
+        cardInitialX = parseInt(cardEl.style.left) || 0;
+        cardInitialY = parseInt(cardEl.style.top) || 0;
+        cardEl.style.cursor = 'grabbing';
+        
+        // CRITICAL: Prevent canvas from dragging
+        e.stopPropagation();
+        
+        const headerElement = cardEl.querySelector('.card-header');
+        console.log('🎯 카드 드래그 시작:', headerElement ? headerElement.textContent.trim() : 'Unknown');
     };
     
     const onCardMouseMove = function(e) {
