@@ -1078,7 +1078,7 @@ document.addEventListener('mouseup', () => {
 
 // Zoom
 viewport.addEventListener('wheel', e => {
-    if (!e.ctrlKey) return;
+    // Allow zoom with mouse wheel (no Ctrl key required)
     e.preventDefault();
     scale = Math.max(0.1, Math.min(3, scale * (e.deltaY > 0 ? 0.9 : 1.1)));
     viewport.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
