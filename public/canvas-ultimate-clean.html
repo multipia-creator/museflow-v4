@@ -956,6 +956,397 @@ body {
         bottom: 48px;
     }
 }
+
+/* ============================================
+   WIDGET PANEL - MINIMALIST DESIGN SYSTEM
+   ============================================ */
+
+/* Lucide Icons Base */
+.icon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.5px;
+  flex-shrink: 0;
+}
+
+.icon-xs {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2px;
+}
+
+/* Widget Panel Base */
+#widgetPanel .panel-content {
+  padding: 4px 0;
+  overflow-y: auto;
+}
+
+/* Search & Filter Toolbar */
+.widget-toolbar {
+  padding: 16px 20px;
+  background: #0a0a0a;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.widget-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 11px 14px;
+  transition: all 0.2s;
+}
+
+.widget-search-box:focus-within {
+  border-color: #8B5CF6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.08);
+  background: #222;
+}
+
+.widget-search-box .icon {
+  stroke: #666;
+  margin-right: 10px;
+}
+
+.widget-search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e5e5e5;
+  font-size: 14px;
+}
+
+.widget-search-box input::placeholder {
+  color: #666;
+}
+
+.widget-btn-clear {
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.widget-btn-clear:hover {
+  color: #e5e5e5;
+}
+
+/* Filter Chips */
+.widget-filter-chips {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.widget-chip {
+  padding: 7px 12px;
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  font-size: 12px;
+  color: #9CA3AF;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.widget-chip:hover {
+  background: #222;
+  color: #e5e5e5;
+  border-color: rgba(255,255,255,0.15);
+}
+
+.widget-chip.active {
+  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+  color: white;
+  border-color: #8B5CF6;
+}
+
+/* Category Groups - Color System */
+.category-group {
+  margin: 4px 8px;
+  border-radius: 12px;
+  border-left: 2px solid;
+  transition: all 0.2s;
+}
+
+/* Blue - Advanced Analytics */
+.category-advanced-analytics {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.06) 0%, rgba(37, 99, 235, 0.03) 100%);
+  border-left-color: rgba(59, 130, 246, 0.25);
+}
+
+.category-advanced-analytics .category-header {
+  color: #60A5FA;
+}
+
+.category-advanced-analytics .category-icon {
+  stroke: #60A5FA;
+}
+
+.category-advanced-analytics .widget-item:hover {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+/* Amber - Museum Professional */
+.category-museum-professional {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.06) 0%, rgba(245, 158, 11, 0.03) 100%);
+  border-left-color: rgba(251, 191, 36, 0.25);
+}
+
+.category-museum-professional .category-header {
+  color: #FCD34D;
+}
+
+.category-museum-professional .category-icon {
+  stroke: #FCD34D;
+}
+
+.category-museum-professional .widget-item:hover {
+  background: rgba(251, 191, 36, 0.1);
+  border-color: rgba(251, 191, 36, 0.35);
+}
+
+/* Green - Visitor Experience */
+.category-visitor-experience {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.06) 0%, rgba(22, 163, 74, 0.03) 100%);
+  border-left-color: rgba(34, 197, 94, 0.25);
+}
+
+.category-visitor-experience .category-header {
+  color: #4ADE80;
+}
+
+.category-visitor-experience .category-icon {
+  stroke: #4ADE80;
+}
+
+.category-visitor-experience .widget-item:hover {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+/* Slate - Operations */
+.category-operations {
+  background: linear-gradient(135deg, rgba(100, 116, 139, 0.06) 0%, rgba(71, 85, 105, 0.03) 100%);
+  border-left-color: rgba(100, 116, 139, 0.25);
+}
+
+.category-operations .category-header {
+  color: #94A3B8;
+}
+
+.category-operations .category-icon {
+  stroke: #94A3B8;
+}
+
+.category-operations .widget-item:hover {
+  background: rgba(100, 116, 139, 0.1);
+  border-color: rgba(100, 116, 139, 0.35);
+}
+
+/* Purple - Collaboration (Brand Color) */
+.category-collaboration {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.06) 0%, rgba(124, 58, 237, 0.03) 100%);
+  border-left-color: rgba(139, 92, 246, 0.25);
+}
+
+.category-collaboration .category-header {
+  color: #A78BFA;
+}
+
+.category-collaboration .category-icon {
+  stroke: #A78BFA;
+}
+
+.category-collaboration .widget-item:hover {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: rgba(139, 92, 246, 0.35);
+}
+
+/* Emerald - Finance */
+.category-finance {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.06) 0%, rgba(5, 150, 105, 0.03) 100%);
+  border-left-color: rgba(16, 185, 129, 0.25);
+}
+
+.category-finance .category-header {
+  color: #34D399;
+}
+
+.category-finance .category-icon {
+  stroke: #34D399;
+}
+
+.category-finance .widget-item:hover {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+/* Category Header */
+.category-header {
+  display: flex;
+  align-items: center;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+  gap: 10px;
+}
+
+.category-header:hover {
+  background: rgba(255,255,255,0.02);
+}
+
+.category-chevron {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  stroke: currentColor;
+  opacity: 0.6;
+}
+
+.category-group[data-expanded="true"] .category-chevron {
+  transform: rotate(0deg);
+}
+
+.category-group[data-expanded="false"] .category-chevron {
+  transform: rotate(-90deg);
+}
+
+.category-name {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.category-badge {
+  background: rgba(255,255,255,0.08);
+  color: currentColor;
+  padding: 3px 9px;
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.7;
+}
+
+/* Category Content (Accordion) */
+.category-content {
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-bottom: 8px;
+}
+
+/* Widget Items */
+.widget-item {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  margin: 6px 12px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 10px;
+  cursor: grab;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 12px;
+}
+
+.widget-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+
+.widget-item:active {
+  cursor: grabbing;
+  transform: translateX(2px);
+}
+
+.widget-item.dragging {
+  opacity: 0.4;
+}
+
+.widget-icon-wrapper {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.widget-item:hover .widget-icon-wrapper {
+  background: rgba(255,255,255,0.08);
+  transform: scale(1.05);
+}
+
+.widget-icon-wrapper .icon {
+  stroke: currentColor;
+  opacity: 0.9;
+}
+
+.widget-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.widget-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e5e5e5;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  line-height: 1.4;
+}
+
+.widget-description {
+  font-size: 11.5px;
+  color: #9CA3AF;
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.badge-premium {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 7px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 5px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.widget-price {
+  font-size: 12px;
+  font-weight: 700;
+  color: #8B5CF6;
+  margin-left: 4px;
+  flex-shrink: 0;
+}
 </style>
 </head>
 <body>
@@ -993,6 +1384,7 @@ body {
     </div>
     <div class="sidebar right">
         <div class="icon" data-panel="stats"><i data-lucide="bar-chart-2" style="width:16px;height:16px"></i></div>
+        <div class="icon" data-panel="widget"><i data-lucide="package" style="width:16px;height:16px"></i><span class="badge">29</span></div>
         <div class="icon" data-panel="tasks"><i data-lucide="check-square" style="width:16px;height:16px"></i><span class="badge">2</span></div>
         <div class="icon" data-panel="ai"><i data-lucide="sparkles" style="width:16px;height:16px"></i><span class="badge">1</span></div>
         <div class="icon" data-panel="alerts"><i data-lucide="bell" style="width:16px;height:16px"></i><span class="badge">3</span></div>
@@ -1303,6 +1695,338 @@ body {
     </div>
 </div>
 
+<!-- Widget Panel -->
+<div class="panel right" id="widgetPanel" data-side="right">
+    <div class="panel-header">
+        <span class="panel-title">
+            <i data-lucide="package" class="icon" style="margin-right:8px;"></i>
+            위젯
+        </span>
+        <button class="panel-close" onclick="closePanel('widgetPanel')">
+            <i data-lucide="x" style="width:14px;height:14px"></i>
+        </button>
+    </div>
+    
+    <!-- Search & Filter Toolbar -->
+    <div class="widget-toolbar">
+        <div class="widget-search-box">
+            <i data-lucide="search" class="icon"></i>
+            <input type="text" 
+                   id="widgetSearch" 
+                   placeholder="위젯 검색 (Cmd+K)..."
+                   autocomplete="off">
+            <button id="widgetClearSearch" class="widget-btn-clear" style="display:none;">
+                <i data-lucide="x" class="icon"></i>
+            </button>
+        </div>
+        
+        <div class="widget-filter-chips">
+            <button class="widget-chip active" data-filter="all">
+                <i data-lucide="grid-3x3" class="icon-xs"></i>
+                전체
+            </button>
+            <button class="widget-chip" data-filter="premium">
+                <i data-lucide="star" class="icon-xs"></i>
+                프리미엄
+            </button>
+            <button class="widget-chip" data-filter="free">
+                <i data-lucide="gift" class="icon-xs"></i>
+                무료
+            </button>
+            <button class="widget-chip" data-filter="recent">
+                <i data-lucide="clock" class="icon-xs"></i>
+                최근
+            </button>
+        </div>
+    </div>
+    
+    <div class="panel-content">
+        <div id="widgetCategoryList">
+            <!-- 📊 고급 분석 & 인사이트 -->
+            <div class="category-group category-advanced-analytics" 
+                 data-category="advanced-analytics"
+                 data-expanded="true">
+                <div class="category-header" onclick="toggleWidgetCategory('advanced-analytics')">
+                    <i data-lucide="chevron-down" class="category-chevron icon"></i>
+                    <i data-lucide="trending-up" class="icon category-icon"></i>
+                    <span class="category-name">고급 분석 & 인사이트</span>
+                    <span class="category-badge">7</span>
+                </div>
+                
+                <div class="category-content">
+                    <div class="widget-item" draggable="true" data-widget-type="visitor-dwell-time" data-premium="true">
+                        <div class="widget-icon-wrapper">
+                            <i data-lucide="clock" class="icon"></i>
+                        </div>
+                        <div class="widget-info">
+                            <div class="widget-name">
+                                관람객 체류 시간 분석
+                                <span class="badge-premium">
+                                    <i data-lucide="star" class="icon-xs"></i>
+                                    Premium
+                                </span>
+                            </div>
+                            <div class="widget-description">
+                                전시실별 평균 체류 시간과 인기 전시물 패턴 분석
+                            </div>
+                        </div>
+                        <div class="widget-price">₩7,900</div>
+                    </div>
+                    
+                    <div class="widget-item" draggable="true" data-widget-type="predictive-visitors" data-premium="true">
+                        <div class="widget-icon-wrapper">
+                            <i data-lucide="brain" class="icon"></i>
+                        </div>
+                        <div class="widget-info">
+                            <div class="widget-name">
+                                예측 관람객 수
+                                <span class="badge-premium">
+                                    <i data-lucide="star" class="icon-xs"></i>
+                                    Premium
+                                </span>
+                            </div>
+                            <div class="widget-description">
+                                AI 기반 방문자 예측 및 최적 인력 배치 제안
+                            </div>
+                        </div>
+                        <div class="widget-price">₩9,900</div>
+                    </div>
+                    
+                    <div class="widget-item" draggable="true" data-widget-type="exhibition-effectiveness" data-premium="true">
+                        <div class="widget-icon-wrapper">
+                            <i data-lucide="bar-chart-3" class="icon"></i>
+                        </div>
+                        <div class="widget-info">
+                            <div class="widget-name">
+                                전시 효과성 대시보드
+                                <span class="badge-premium">
+                                    <i data-lucide="star" class="icon-xs"></i>
+                                    Premium
+                                </span>
+                            </div>
+                            <div class="widget-description">
+                                관람객 피드백, QR 스캔율, 오디오 가이드 사용률 종합
+                            </div>
+                        </div>
+                        <div class="widget-price">₩7,900</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 🏛️ 박물관 전문 기능 -->
+            <div class="category-group category-museum-professional" 
+                 data-category="museum-professional"
+                 data-expanded="false">
+                <div class="category-header" onclick="toggleWidgetCategory('museum-professional')">
+                    <i data-lucide="chevron-right" class="category-chevron icon"></i>
+                    <i data-lucide="landmark" class="icon category-icon"></i>
+                    <span class="category-name">박물관 전문 기능</span>
+                    <span class="category-badge">6</span>
+                </div>
+                
+                <div class="category-content" style="display:none;">
+                    <div class="widget-item" draggable="true" data-widget-type="artifact-loan-status">
+                        <div class="widget-icon-wrapper">
+                            <i data-lucide="package" class="icon"></i>
+                        </div>
+                        <div class="widget-info">
+                            <div class="widget-name">소장품 대출 현황</div>
+                            <div class="widget-description">
+                                대출 중인 작품 목록과 반납 예정일 알림
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="widget-item" draggable="true" data-widget-type="conservation-workflow">
+                        <div class="widget-icon-wrapper">
+                            <i data-lucide="wrench" class="icon"></i>
+                        </div>
+                        <div class="widget-info">
+                            <div class="widget-name">보존 처리 워크플로우</div>
+                            <div class="widget-description">
+                                처리 대기 목록과 진행 단계별 현황
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 👥 관람객 경험 -->
+            <div class="category-group category-visitor-experience" 
+                 data-category="visitor-experience"
+                 data-expanded="false">
+                <div class="category-header" onclick="toggleWidgetCategory('visitor-experience')">
+                    <i data-lucide="chevron-right" class="category-chevron icon"></i>
+                    <i data-lucide="users" class="icon category-icon"></i>
+                    <span class="category-name">관람객 경험</span>
+                    <span class="category-badge">5</span>
+                </div>
+                
+                <div class="category-content" style="display:none;">
+                    <div class="widget-item" draggable="true" data-widget-type="live-satisfaction">
+                        <div class="widget-icon-wrapper">
+                            <i data-lucide="smile-plus" class="icon"></i>
+                        </div>
+                        <div class="widget-info">
+                            <div class="widget-name">실시간 만족도 조사</div>
+                            <div class="widget-description">
+                                QR 피드백 수집과 긍정/부정 비율
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="widget-item" draggable="true" data-widget-type="audio-guide-usage">
+                        <div class="widget-icon-wrapper">
+                            <i data-lucide="headphones" class="icon"></i>
+                        </div>
+                        <div class="widget-info">
+                            <div class="widget-name">오디오 가이드 사용 통계</div>
+                            <div class="widget-description">
+                                언어별 사용률과 인기 트랙 순위
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 💼 운영 & 관리 -->
+            <div class="category-group category-operations" 
+                 data-category="operations"
+                 data-expanded="false">
+                <div class="category-header" onclick="toggleWidgetCategory('operations')">
+                    <i data-lucide="chevron-right" class="category-chevron icon"></i>
+                    <i data-lucide="settings" class="icon category-icon"></i>
+                    <span class="category-name">운영 & 관리</span>
+                    <span class="category-badge">5</span>
+                </div>
+                
+                <div class="category-content" style="display:none;">
+                    <div class="widget-item" draggable="true" data-widget-type="facility-inspection">
+                        <div class="widget-icon-wrapper">
+                            <i data-lucide="clipboard-check" class="icon"></i>
+                        </div>
+                        <div class="widget-info">
+                            <div class="widget-name">시설 점검 체크리스트</div>
+                            <div class="widget-description">
+                                일일 점검 항목과 이슈 보고
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="widget-item" draggable="true" data-widget-type="cctv-monitoring" data-premium="true">
+                        <div class="widget-icon-wrapper">
+                            <i data-lucide="video" class="icon"></i>
+                        </div>
+                        <div class="widget-info">
+                            <div class="widget-name">
+                                CCTV 모니터링 현황
+                                <span class="badge-premium">
+                                    <i data-lucide="star" class="icon-xs"></i>
+                                    Premium
+                                </span>
+                            </div>
+                            <div class="widget-description">
+                                카메라 작동 상태와 녹화 용량
+                            </div>
+                        </div>
+                        <div class="widget-price">₩5,900</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 🤝 협업 & 커뮤니케이션 -->
+            <div class="category-group category-collaboration" 
+                 data-category="collaboration"
+                 data-expanded="false">
+                <div class="category-header" onclick="toggleWidgetCategory('collaboration')">
+                    <i data-lucide="chevron-right" class="category-chevron icon"></i>
+                    <i data-lucide="message-square" class="icon category-icon"></i>
+                    <span class="category-name">협업 & 커뮤니케이션</span>
+                    <span class="category-badge">3</span>
+                </div>
+                
+                <div class="category-content" style="display:none;">
+                    <div class="widget-item" draggable="true" data-widget-type="team-messenger">
+                        <div class="widget-icon-wrapper">
+                            <i data-lucide="message-circle" class="icon"></i>
+                        </div>
+                        <div class="widget-info">
+                            <div class="widget-name">팀 메신저</div>
+                            <div class="widget-description">
+                                실시간 채팅과 부서별 채널
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="widget-item" draggable="true" data-widget-type="kanban-board" data-premium="true">
+                        <div class="widget-icon-wrapper">
+                            <i data-lucide="trello" class="icon"></i>
+                        </div>
+                        <div class="widget-info">
+                            <div class="widget-name">
+                                프로젝트 칸반 보드
+                                <span class="badge-premium">
+                                    <i data-lucide="star" class="icon-xs"></i>
+                                    Premium
+                                </span>
+                            </div>
+                            <div class="widget-description">
+                                To-Do/In Progress/Done 업무 관리
+                            </div>
+                        </div>
+                        <div class="widget-price">₩4,900</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 📈 재무 & 수익 -->
+            <div class="category-group category-finance" 
+                 data-category="finance"
+                 data-expanded="false">
+                <div class="category-header" onclick="toggleWidgetCategory('finance')">
+                    <i data-lucide="chevron-right" class="category-chevron icon"></i>
+                    <i data-lucide="dollar-sign" class="icon category-icon"></i>
+                    <span class="category-name">재무 & 수익</span>
+                    <span class="category-badge">3</span>
+                </div>
+                
+                <div class="category-content" style="display:none;">
+                    <div class="widget-item" draggable="true" data-widget-type="donor-dashboard" data-premium="true">
+                        <div class="widget-icon-wrapper">
+                            <i data-lucide="heart" class="icon"></i>
+                        </div>
+                        <div class="widget-info">
+                            <div class="widget-name">
+                                기부자 관리 대시보드
+                                <span class="badge-premium">
+                                    <i data-lucide="star" class="icon-xs"></i>
+                                    Premium
+                                </span>
+                            </div>
+                            <div class="widget-description">
+                                기부 이력 추적과 VIP 후원자 관리
+                            </div>
+                        </div>
+                        <div class="widget-price">₩4,900</div>
+                    </div>
+                    
+                    <div class="widget-item" draggable="true" data-widget-type="museum-shop-sales">
+                        <div class="widget-icon-wrapper">
+                            <i data-lucide="shopping-cart" class="icon"></i>
+                        </div>
+                        <div class="widget-info">
+                            <div class="widget-name">굿즈 판매 현황</div>
+                            <div class="widget-description">
+                                상품별 매출과 재고 수준 알림
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- AI Input -->
 <div class="ai-input">
     <select class="ai-select">
@@ -1355,6 +2079,174 @@ body {
 
 <script>
 lucide.createIcons();
+
+// ========== WIDGET PANEL - ACCORDION & SEARCH ==========
+function toggleWidgetCategory(categoryId) {
+  const group = document.querySelector(`[data-category="${categoryId}"]`);
+  if (!group) return;
+  
+  const content = group.querySelector('.category-content');
+  const isExpanded = group.dataset.expanded === 'true';
+  
+  // Toggle
+  group.dataset.expanded = !isExpanded;
+  
+  // Animation
+  if (!isExpanded) {
+    content.style.display = 'block';
+    const height = content.scrollHeight;
+    content.style.maxHeight = '0px';
+    requestAnimationFrame(() => {
+      content.style.maxHeight = height + 'px';
+    });
+  } else {
+    content.style.maxHeight = '0px';
+    setTimeout(() => {
+      content.style.display = 'none';
+    }, 350);
+  }
+  
+  // Re-initialize Lucide icons
+  lucide.createIcons();
+}
+
+// Widget Search
+const widgetSearchInput = document.getElementById('widgetSearch');
+const widgetClearBtn = document.getElementById('widgetClearSearch');
+
+widgetSearchInput?.addEventListener('input', (e) => {
+  const query = e.target.value.trim().toLowerCase();
+  
+  if (query.length > 0) {
+    filterWidgets(query);
+    widgetClearBtn.style.display = 'flex';
+  } else {
+    resetWidgetFilter();
+    widgetClearBtn.style.display = 'none';
+  }
+});
+
+widgetClearBtn?.addEventListener('click', () => {
+  widgetSearchInput.value = '';
+  resetWidgetFilter();
+  widgetClearBtn.style.display = 'none';
+});
+
+function filterWidgets(query) {
+  const allWidgets = document.querySelectorAll('.widget-item');
+  const allCategories = document.querySelectorAll('.category-group');
+  
+  allCategories.forEach(category => {
+    const categoryWidgets = category.querySelectorAll('.widget-item');
+    let hasVisibleWidget = false;
+    
+    categoryWidgets.forEach(widget => {
+      const name = widget.querySelector('.widget-name')?.textContent.toLowerCase() || '';
+      const desc = widget.querySelector('.widget-description')?.textContent.toLowerCase() || '';
+      
+      if (name.includes(query) || desc.includes(query)) {
+        widget.style.display = 'flex';
+        hasVisibleWidget = true;
+      } else {
+        widget.style.display = 'none';
+      }
+    });
+    
+    // Show category if it has visible widgets
+    if (hasVisibleWidget) {
+      category.style.display = 'block';
+      category.dataset.expanded = 'true';
+      category.querySelector('.category-content').style.display = 'block';
+      category.querySelector('.category-content').style.maxHeight = '9999px';
+    } else {
+      category.style.display = 'none';
+    }
+  });
+  
+  lucide.createIcons();
+}
+
+function resetWidgetFilter() {
+  const allWidgets = document.querySelectorAll('.widget-item');
+  const allCategories = document.querySelectorAll('.category-group');
+  
+  allWidgets.forEach(widget => {
+    widget.style.display = 'flex';
+  });
+  
+  allCategories.forEach(category => {
+    category.style.display = 'block';
+  });
+  
+  lucide.createIcons();
+}
+
+// Filter Chips
+document.querySelectorAll('.widget-chip').forEach(chip => {
+  chip.addEventListener('click', (e) => {
+    document.querySelectorAll('.widget-chip').forEach(c => c.classList.remove('active'));
+    e.currentTarget.classList.add('active');
+    
+    const filter = e.currentTarget.dataset.filter;
+    applyWidgetFilter(filter);
+  });
+});
+
+function applyWidgetFilter(filter) {
+  const allWidgets = document.querySelectorAll('.widget-item');
+  const allCategories = document.querySelectorAll('.category-group');
+  
+  allCategories.forEach(category => {
+    const categoryWidgets = category.querySelectorAll('.widget-item');
+    let hasVisibleWidget = false;
+    
+    categoryWidgets.forEach(widget => {
+      let isVisible = false;
+      
+      switch (filter) {
+        case 'premium':
+          isVisible = widget.dataset.premium === 'true';
+          break;
+        case 'free':
+          isVisible = widget.dataset.premium !== 'true';
+          break;
+        case 'recent':
+          // TODO: Implement recent widgets from localStorage
+          isVisible = false;
+          break;
+        case 'all':
+        default:
+          isVisible = true;
+      }
+      
+      widget.style.display = isVisible ? 'flex' : 'none';
+      if (isVisible) hasVisibleWidget = true;
+    });
+    
+    if (hasVisibleWidget) {
+      category.style.display = 'block';
+      category.dataset.expanded = 'true';
+      category.querySelector('.category-content').style.display = 'block';
+      category.querySelector('.category-content').style.maxHeight = '9999px';
+    } else {
+      category.style.display = 'none';
+    }
+  });
+  
+  lucide.createIcons();
+}
+
+// Keyboard Shortcut (Cmd+K to focus search)
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    const widgetPanel = document.getElementById('widgetPanel');
+    if (!widgetPanel.classList.contains('open')) {
+      openPanel('widgetPanel');
+    }
+    widgetSearchInput?.focus();
+  }
+});
 
 // ========== WEB SPEECH API - VOICE INPUT ==========
 let recognition = null;
