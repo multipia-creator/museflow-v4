@@ -1949,6 +1949,63 @@
             timelineCard.insertAdjacentHTML('beforeend', timelineHtml);
         }
         
+        // ============================================
+        // SAMPLE DATA INITIALIZATION
+        // ============================================
+        
+        function initializeSampleData() {
+            console.log('📊 [Dashboard] Initializing sample data...');
+            
+            // Sample Timeline Data
+            const sampleTimelineData = {
+                type: 'dashboard_widgets',
+                title: '샘플 프로젝트 활동',
+                data: [
+                    {
+                        title: '🎨 전시 기획안 작성 완료',
+                        content: '2024 현대미술 특별전 기획안이 최종 승인되었습니다.',
+                        status: 'completed',
+                        timestamp: Date.now() - 3600000 // 1시간 전
+                    },
+                    {
+                        title: '🖼️ 작품 큐레이션 진행 중',
+                        content: '총 45점의 작품 중 32점 선정 완료',
+                        status: 'in-progress',
+                        timestamp: Date.now() - 7200000 // 2시간 전
+                    },
+                    {
+                        title: '💰 예산 계획 수립',
+                        content: '전시 예산 1억 5천만원 확정',
+                        status: 'completed',
+                        timestamp: Date.now() - 10800000 // 3시간 전
+                    },
+                    {
+                        title: '📅 일정 조율 중',
+                        content: '작가 미팅 및 작품 운송 일정 협의',
+                        status: 'pending',
+                        timestamp: Date.now() - 14400000 // 4시간 전
+                    },
+                    {
+                        title: '🤖 AI 큐레이터 분석 완료',
+                        content: '작품 배치 및 동선 최적화 제안 수신',
+                        status: 'completed',
+                        timestamp: Date.now() - 18000000 // 5시간 전
+                    }
+                ]
+            };
+            
+            // Add sample data to timeline
+            if (sampleTimelineData.data && sampleTimelineData.data.length > 0) {
+                sampleTimelineData.data.forEach((item, index) => {
+                    setTimeout(() => {
+                        addWidgetToTimeline(sampleTimelineData.type, item);
+                    }, index * 200); // 200ms 간격으로 순차 추가
+                });
+                
+                console.log('✅ [Dashboard] Sample timeline data added:', sampleTimelineData.data.length, 'items');
+            }
+        }
+        
         // Dashboard 로드 시 Polling 시작
         window.addEventListener('DOMContentLoaded', () => {
             console.log('[Dashboard] Starting real-time polling for Canvas updates');
@@ -1959,6 +2016,11 @@
             
             // 즉시 한 번 확인
             checkCanvasUpdates();
+            
+            // 샘플 데이터 초기화 (2초 후)
+            setTimeout(() => {
+                initializeSampleData();
+            }, 2000);
         });
     </script>
 
