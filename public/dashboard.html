@@ -1772,6 +1772,12 @@
             setInterval(async () => {
                 try {
                     const response = await fetch(`/api/dashboard/updates?since=${lastUpdateTimestamp}`);
+                    
+                    if (!response.ok) {
+                        console.warn(`[Dashboard Polling] API returned ${response.status}: ${response.statusText}`);
+                        return;
+                    }
+                    
                     const data = await response.json();
                     
                     if (data.success && data.updates.length > 0) {

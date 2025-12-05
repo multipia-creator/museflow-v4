@@ -16,35 +16,52 @@ const app = new Hono<{ Bindings: Bindings }>()
  */
 app.post('/sync', async (c) => {
   try {
-    const { node_id, node_type, node_title, status, completed_at, data } = await c.req.json()
+    const { node_id, node_type, node_title, status, completed_at, data, widget_id } = await c.req.json()
 
-    // 1. D1 Database에 저장
+    // 1. D1 Database에 저장 (올바른 스키마 사용)
     const result = await c.env.DB.prepare(`
       INSERT INTO canvas_dashboard_sync (
-        node_id, node_type, node_title, status, completed_at, data, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
+        canvas_node_id, 
+        canvas_node_type, 
+        dashboard_widget_id,
+        sync_data, 
+        sync_timestamp,
+        sync_status,
+        created_at
+      ) VALUES (?, ?, ?, ?, datetime('now'), ?, datetime('now'))
     `).bind(
       node_id,
       node_type,
-      node_title,
-      status || 'in-progress',
-      completed_at || null,
-      JSON.stringify(data)
+      widget_id || `widget-${node_id}`, // widget_id 없으면 자동 생성
+      JSON.stringify({
+        node_title,
+        status: status || 'pending',
+        completed_at,
+        data
+      }),
+      status === 'completed' ? 'completed' : 'pending'
     ).run()
 
     // 2. Task 매핑: Canvas Node → Dashboard Timeline Item 자동 업데이트
-    if (status === 'completed') {
-      await c.env.DB.prepare(`
-        UPDATE dashboard_timeline_items
-        SET status = 'completed', completed_at = datetime('now')
-        WHERE title = ?
-      `).bind(node_title).run()
+    if (status === 'completed' && node_title) {
+      // Note: dashboard_timeline_items 테이블이 있다면 업데이트
+      try {
+        await c.env.DB.prepare(`
+          UPDATE dashboard_timeline_items
+          SET status = 'completed', completed_at = datetime('now')
+          WHERE title = ?
+        `).bind(node_title).run()
+      } catch (e) {
+        // 테이블이 없어도 계속 진행
+        console.warn('dashboard_timeline_items table not found, skipping update')
+      }
     }
 
     return c.json({
       success: true,
       message: 'Dashboard에 실시간 반영되었습니다.',
       node_id,
+      sync_id: result.meta.last_row_id,
       timestamp: new Date().toISOString()
     })
   } catch (error) {
@@ -66,16 +83,31 @@ app.get('/updates', async (c) => {
     const since = c.req.query('since') || '0' // Timestamp (밀리초)
 
     const result = await c.env.DB.prepare(`
-      SELECT * FROM canvas_dashboard_sync
-      WHERE created_at > datetime(?, 'unixepoch', 'subsec')
-      ORDER BY created_at DESC
+      SELECT 
+        id,
+        canvas_node_id as node_id,
+        canvas_node_type as node_type,
+        dashboard_widget_id as widget_id,
+        sync_data,
+        sync_timestamp,
+        sync_status as status,
+        created_at
+      FROM canvas_dashboard_sync
+      WHERE sync_timestamp > datetime(?, 'unixepoch', 'subsec')
+      ORDER BY sync_timestamp DESC
       LIMIT 50
     `).bind(parseInt(since) / 1000).all()
 
+    // Parse sync_data JSON for each result
+    const updates = (result.results || []).map((row: any) => ({
+      ...row,
+      sync_data: JSON.parse(row.sync_data || '{}')
+    }))
+
     return c.json({
       success: true,
-      updates: result.results || [],
-      count: result.results?.length || 0,
+      updates,
+      count: updates.length,
       timestamp: Date.now()
     })
   } catch (error) {
@@ -83,7 +115,8 @@ app.get('/updates', async (c) => {
     return c.json({
       success: false,
       error: 'Dashboard 업데이트 조회 실패',
-      updates: []
+      updates: [],
+      message: error instanceof Error ? error.message : 'Unknown error'
     }, 500)
   }
 })

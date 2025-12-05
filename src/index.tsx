@@ -84,4 +84,19 @@ app.route('/api/figma', figma)
 app.route('/api/agents', agents)
 app.route('/api/widgets', widgets)
 
+// 404 handler for API routes (prevent fallback to landing.html)
+app.notFound((c) => {
+  // Only handle /api/* paths with 404 JSON response
+  if (c.req.path.startsWith('/api/')) {
+    return c.json({
+      success: false,
+      error: 'Not Found',
+      message: `API endpoint ${c.req.path} does not exist`,
+      timestamp: new Date().toISOString()
+    }, 404)
+  }
+  // For non-API paths, let Cloudflare Pages handle (serve static files or landing)
+  return c.notFound()
+})
+
 export default app
