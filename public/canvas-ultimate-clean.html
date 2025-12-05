@@ -719,7 +719,24 @@ body {
             <i data-lucide="x" style="width:14px;height:14px"></i>
         </button>
     </div>
-    <div class="panel-content">프로젝트</div>
+    <div class="panel-content">
+        <div style="padding: 1rem;">
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div style="padding: 0.75rem; background: rgba(139, 92, 246, 0.1); border-radius: 8px; border-left: 3px solid #8B5CF6; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.2)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.1)'">
+                    <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.25rem;">박물관 전시 프로젝트</div>
+                    <div style="font-size: 0.875rem; color: #9CA3AF;">마지막 수정: 2시간 전</div>
+                </div>
+                <div style="padding: 0.75rem; background: rgba(34, 197, 94, 0.1); border-radius: 8px; border-left: 3px solid #22C55E; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(34, 197, 94, 0.2)'" onmouseout="this.style.background='rgba(34, 197, 94, 0.1)'">
+                    <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.25rem;">예술 작품 아카이브</div>
+                    <div style="font-size: 0.875rem; color: #9CA3AF;">마지막 수정: 1일 전</div>
+                </div>
+                <div style="padding: 0.75rem; background: rgba(249, 115, 22, 0.1); border-radius: 8px; border-left: 3px solid #F97316; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(249, 115, 22, 0.2)'" onmouseout="this.style.background='rgba(249, 115, 22, 0.1)'">
+                    <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.25rem;">관람객 경험 디자인</div>
+                    <div style="font-size: 0.875rem; color: #9CA3AF;">마지막 수정: 3일 전</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="panel left" id="settingsPanel" data-side="left">
@@ -770,7 +787,33 @@ body {
             <i data-lucide="x" style="width:14px;height:14px"></i>
         </button>
     </div>
-    <div class="panel-content">작업 목록</div>
+    <div class="panel-content">
+        <div style="padding: 1rem;">
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div style="padding: 0.75rem; background: rgba(139, 92, 246, 0.05); border-radius: 8px; display: flex; align-items: center; gap: 0.75rem;">
+                    <input type="checkbox" style="width: 16px; height: 16px; cursor: pointer;">
+                    <div>
+                        <div style="font-size: 0.9375rem; color: #e5e5e5;">홍보 영상 편집 완료</div>
+                        <div style="font-size: 0.8125rem; color: #9CA3AF; margin-top: 0.25rem;">기한: 오늘</div>
+                    </div>
+                </div>
+                <div style="padding: 0.75rem; background: rgba(139, 92, 246, 0.05); border-radius: 8px; display: flex; align-items: center; gap: 0.75rem;">
+                    <input type="checkbox" checked style="width: 16px; height: 16px; cursor: pointer;">
+                    <div>
+                        <div style="font-size: 0.9375rem; color: #9CA3AF; text-decoration: line-through;">오디오 가이드 녹음</div>
+                        <div style="font-size: 0.8125rem; color: #9CA3AF; margin-top: 0.25rem;">완료됨</div>
+                    </div>
+                </div>
+                <div style="padding: 0.75rem; background: rgba(139, 92, 246, 0.05); border-radius: 8px; display: flex; align-items: center; gap: 0.75rem;">
+                    <input type="checkbox" style="width: 16px; height: 16px; cursor: pointer;">
+                    <div>
+                        <div style="font-size: 0.9375rem; color: #e5e5e5;">포스터 디자인 승인</div>
+                        <div style="font-size: 0.8125rem; color: #9CA3AF; margin-top: 0.25rem;">기한: 내일</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="panel right" id="aiPanel" data-side="right">
@@ -780,7 +823,27 @@ body {
             <i data-lucide="x" style="width:14px;height:14px"></i>
         </button>
     </div>
-    <div class="panel-content">AI 진행 상황</div>
+    <div class="panel-content">
+        <div style="padding: 1rem;">
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div style="padding: 0.75rem; background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%); border-radius: 8px; border: 1px solid rgba(139, 92, 246, 0.2);">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <div style="width: 8px; height: 8px; border-radius: 50%; background: #22C55E; animation: pulse 2s infinite;"></div>
+                        <div style="font-weight: 600; color: #e5e5e5;">이미지 생성 중...</div>
+                    </div>
+                    <div style="font-size: 0.875rem; color: #9CA3AF;">진행률: 73%</div>
+                    <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 0.5rem; overflow: hidden;">
+                        <div style="width: 73%; height: 100%; background: linear-gradient(90deg, #8B5CF6, #6366F1); transition: width 0.3s;"></div>
+                    </div>
+                </div>
+                <div style="padding: 0.75rem; background: rgba(139, 92, 246, 0.05); border-radius: 8px;">
+                    <div style="font-size: 0.875rem; color: #9CA3AF; margin-bottom: 0.5rem;">최근 AI 작업</div>
+                    <div style="font-size: 0.9375rem; color: #e5e5e5;">• 배경 제거 (3분 전)</div>
+                    <div style="font-size: 0.9375rem; color: #e5e5e5;">• 텍스트 번역 (15분 전)</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="panel right" id="alertsPanel" data-side="right">
@@ -790,7 +853,39 @@ body {
             <i data-lucide="x" style="width:14px;height:14px"></i>
         </button>
     </div>
-    <div class="panel-content">알림</div>
+    <div class="panel-content">
+        <div style="padding: 1rem;">
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div style="padding: 0.75rem; background: rgba(239, 68, 68, 0.1); border-radius: 8px; border-left: 3px solid #EF4444;">
+                    <div style="display: flex; align-items: start; gap: 0.5rem;">
+                        <i data-lucide="alert-circle" style="width:16px;height:16px;color:#EF4444;flex-shrink:0;margin-top:2px;"></i>
+                        <div>
+                            <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.25rem;">프로젝트 마감일 임박</div>
+                            <div style="font-size: 0.875rem; color: #9CA3AF;">박물관 전시 - 2일 남음</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 0.75rem; background: rgba(59, 130, 246, 0.1); border-radius: 8px; border-left: 3px solid #3B82F6;">
+                    <div style="display: flex; align-items: start; gap: 0.5rem;">
+                        <i data-lucide="info" style="width:16px;height:16px;color:#3B82F6;flex-shrink:0;margin-top:2px;"></i>
+                        <div>
+                            <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.25rem;">새로운 업데이트</div>
+                            <div style="font-size: 0.875rem; color: #9CA3AF;">Canvas v4 기능 추가됨</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 0.75rem; background: rgba(34, 197, 94, 0.1); border-radius: 8px; border-left: 3px solid #22C55E;">
+                    <div style="display: flex; align-items: start; gap: 0.5rem;">
+                        <i data-lucide="check-circle" style="width:16px;height:16px;color:#22C55E;flex-shrink:0;margin-top:2px;"></i>
+                        <div>
+                            <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.25rem;">작업 완료</div>
+                            <div style="font-size: 0.875rem; color: #9CA3AF;">오디오 가이드 녹음 완료</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- AI Input -->
@@ -1173,6 +1268,11 @@ function createCard(card) {
             return;
         }
         
+        // Don't drag if clicking on connection handle
+        if (e.target.classList.contains('connection-handle')) {
+            return;
+        }
+        
         // Don't drag if clicking on video/audio controls
         if (e.target.tagName === 'VIDEO' || e.target.tagName === 'AUDIO') {
             return;
@@ -1219,6 +1319,12 @@ function createCard(card) {
     
     // Resize functionality
     setupResizeHandles(cardEl);
+    
+    // Connection handle functionality
+    setupConnectionHandles(cardEl);
+    
+    // Update connections when this card moves
+    cardEl.addEventListener('mouseup', updateAllConnections);
     
     viewport.appendChild(cardEl);
     return cardEl;
@@ -1387,20 +1493,7 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Update connections when cards move or canvas transforms
-const originalCreateCard = createCard;
-createCard = function(card) {
-    const cardEl = originalCreateCard(card);
-    setupConnectionHandles(cardEl);
-    
-    // Update connections when this card moves
-    cardEl.addEventListener('mouseup', updateAllConnections);
-    
-    return cardEl;
-};
-
 // Update connections on viewport transformation
-const originalViewportTransform = viewport.style.transform;
 const viewportObserver = new MutationObserver(updateAllConnections);
 viewportObserver.observe(viewport, { attributes: true, attributeFilter: ['style'] });
 
