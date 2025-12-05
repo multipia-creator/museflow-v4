@@ -601,23 +601,31 @@ body {
 
 .connection-handle {
     position: absolute;
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
     background: #8B5CF6;
-    border: 2px solid #ffffff;
+    border: 3px solid #ffffff;
     cursor: crosshair;
-    opacity: 0;
-    transition: opacity 0.2s;
+    opacity: 0.6;
+    transition: all 0.2s;
     z-index: 10;
-    right: -6px;
+    right: -8px;
     top: 50%;
     transform: translateY(-50%);
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
 }
 
 .card:hover .connection-handle,
 .card.selected .connection-handle {
     opacity: 1;
+    transform: translateY(-50%) scale(1.2);
+}
+
+.connection-handle:hover {
+    background: #f59e0b;
+    border-color: #ffffff;
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.8);
 }
 </style>
 </head>
@@ -627,7 +635,7 @@ body {
 <nav class="unified-navbar">
     <div class="unified-nav-container">
         <a href="/" class="unified-nav-logo">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect fill='%238B5CF6' width='40' height='40' rx='12'/%3E%3Cpath d='M20 10 L30 20 L20 30 L10 20 Z' fill='white'/%3E%3C/svg%3E" alt="MuseFlow">
+            <img src="/static/images/logo-neon-m.png" alt="MuseFlow">
             <span>MuseFlow</span>
         </a>
         <ul class="unified-nav-links">
@@ -640,8 +648,6 @@ body {
             <button class="unified-nav-btn" title="설정"><i class="fas fa-cog"></i></button>
             <button class="unified-nav-btn" title="계정"><i class="fas fa-user-circle"></i></button>
         </div>
-    </div>
-</nav>
     </div>
 </nav>
 
@@ -682,7 +688,28 @@ body {
             <i data-lucide="x" style="width:14px;height:14px"></i>
         </button>
     </div>
-    <div class="panel-content">빠른 작업</div>
+    <div class="panel-content">
+        <div style="padding: 1rem;">
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <button style="background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%); border: none; padding: 0.75rem 1rem; border-radius: 8px; color: white; cursor: pointer; font-weight: 600; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <i data-lucide="plus" style="width:14px;height:14px;display:inline-block;margin-right:8px;"></i>
+                    새 카드 만들기
+                </button>
+                <button style="background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.75rem 1rem; border-radius: 8px; color: #e5e5e5; cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.25)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.15)'">
+                    <i data-lucide="upload" style="width:14px;height:14px;display:inline-block;margin-right:8px;"></i>
+                    파일 업로드
+                </button>
+                <button style="background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.75rem 1rem; border-radius: 8px; color: #e5e5e5; cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.25)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.15)'">
+                    <i data-lucide="layout" style="width:14px;height:14px;display:inline-block;margin-right:8px;"></i>
+                    레이아웃 정렬
+                </button>
+                <button style="background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.75rem 1rem; border-radius: 8px; color: #e5e5e5; cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.25)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.15)'">
+                    <i data-lucide="save" style="width:14px;height:14px;display:inline-block;margin-right:8px;"></i>
+                    프로젝트 저장
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="panel left" id="projectsPanel" data-side="left">
@@ -712,7 +739,28 @@ body {
             <i data-lucide="x" style="width:14px;height:14px"></i>
         </button>
     </div>
-    <div class="panel-content">통계</div>
+    <div class="panel-content">
+        <div style="padding: 1rem;">
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <div style="padding: 1rem; background: rgba(139, 92, 246, 0.1); border-radius: 8px; border: 1px solid rgba(139, 92, 246, 0.2);">
+                    <div style="font-size: 0.875rem; color: #9CA3AF; margin-bottom: 0.5rem;">총 카드 수</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #8B5CF6;">9</div>
+                </div>
+                <div style="padding: 1rem; background: rgba(34, 197, 94, 0.1); border-radius: 8px; border: 1px solid rgba(34, 197, 94, 0.2);">
+                    <div style="font-size: 0.875rem; color: #9CA3AF; margin-bottom: 0.5rem;">완료된 작업</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #22C55E;">5</div>
+                </div>
+                <div style="padding: 1rem; background: rgba(249, 115, 22, 0.1); border-radius: 8px; border: 1px solid rgba(249, 115, 22, 0.2);">
+                    <div style="font-size: 0.875rem; color: #9CA3AF; margin-bottom: 0.5rem;">진행 중</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #F97316;">4</div>
+                </div>
+                <div style="padding: 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 8px; border: 1px solid rgba(59, 130, 246, 0.2);">
+                    <div style="font-size: 0.875rem; color: #9CA3AF; margin-bottom: 0.5rem;">연결 수</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #3B82F6;">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="panel right" id="tasksPanel" data-side="right">
@@ -1001,8 +1049,8 @@ function calculateCenteredLayout() {
     const cardHeight = 350;
     const cols = 3;
     const rows = 3;
-    const hGap = 400;
-    const vGap = 350;
+    const hGap = 250;
+    const vGap = 280;
     
     // Calculate total grid size
     const gridWidth = cols * cardWidth + (cols - 1) * hGap;
@@ -1265,17 +1313,25 @@ function createConnection(fromCard, toCard) {
 }
 
 function updateConnectionLine(conn) {
-    const fromRect = conn.from.getBoundingClientRect();
-    const toRect = conn.to.getBoundingClientRect();
-    const vpRect = viewport.getBoundingClientRect();
+    // Get card positions directly from their style properties
+    const fromX = parseInt(conn.from.style.left) || 0;
+    const fromY = parseInt(conn.from.style.top) || 0;
+    const fromWidth = conn.from.offsetWidth;
+    const fromHeight = conn.from.offsetHeight;
     
-    const fromX = (fromRect.right - vpRect.left) / scale;
-    const fromY = (fromRect.top + fromRect.height / 2 - vpRect.top) / scale;
-    const toX = (toRect.left - vpRect.left) / scale;
-    const toY = (toRect.top + toRect.height / 2 - vpRect.top) / scale;
+    const toX = parseInt(conn.to.style.left) || 0;
+    const toY = parseInt(conn.to.style.top) || 0;
+    const toWidth = conn.to.offsetWidth;
+    const toHeight = conn.to.offsetHeight;
     
-    const distance = Math.sqrt(Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2));
-    const angle = Math.atan2(toY - fromY, toX - fromX) * 180 / Math.PI;
+    // Calculate connection points (right side of from card, left side of to card)
+    const startX = fromX + fromWidth;
+    const startY = fromY + fromHeight / 2;
+    const endX = toX;
+    const endY = toY + toHeight / 2;
+    
+    const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+    const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
     
     if (!conn.line) {
         conn.line = document.createElement('div');
@@ -1283,8 +1339,8 @@ function updateConnectionLine(conn) {
         viewport.appendChild(conn.line);
     }
     
-    conn.line.style.left = fromX + 'px';
-    conn.line.style.top = fromY + 'px';
+    conn.line.style.left = startX + 'px';
+    conn.line.style.top = startY + 'px';
     conn.line.style.width = distance + 'px';
     conn.line.style.transform = `rotate(${angle}deg)`;
 }
