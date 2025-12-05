@@ -760,6 +760,11 @@ document.querySelectorAll('.icon').forEach(icon => {
 
 // Canvas Interaction
 viewport.addEventListener('mousedown', e => {
+    // Don't drag canvas if clicking on a card
+    if (e.target.closest('.card')) {
+        return;
+    }
+    
     isDragging = true;
     viewport.classList.add('dragging');
     startX = e.pageX - translateX;
@@ -898,6 +903,7 @@ function createCard(card) {
     cardEl.addEventListener('click', function(e) {
         if (!e.target.classList.contains('resize-handle')) {
             selectCard(cardEl);
+            e.stopPropagation();
         }
     });
     
@@ -906,6 +912,7 @@ function createCard(card) {
     let cardStartX, cardStartY, cardInitialX, cardInitialY;
     
     cardEl.addEventListener('mousedown', function(e) {
+        // Only drag from card header, not from resize handles
         if (e.target.closest('.card-header') && !e.target.classList.contains('resize-handle')) {
             cardDragging = true;
             cardStartX = e.clientX;
@@ -913,7 +920,10 @@ function createCard(card) {
             cardInitialX = parseInt(cardEl.style.left) || 0;
             cardInitialY = parseInt(cardEl.style.top) || 0;
             cardEl.style.cursor = 'grabbing';
+            
+            // CRITICAL: Prevent canvas from dragging
             e.stopPropagation();
+            e.preventDefault();
         }
     });
     
