@@ -1306,7 +1306,8 @@
         }
         
         /* Mobile Optimizations - Enhanced */
-        @media (max-width: 768px) {
+        /* IMPORTANT: Only apply to actual mobile devices, not desktop */
+        @media (max-width: 768px) and (hover: none) and (pointer: coarse) {
             body {
                 padding-top: 120px; /* Navbar + Mobile Tabs */
                 -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
