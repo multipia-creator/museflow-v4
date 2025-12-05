@@ -848,13 +848,13 @@ document.addEventListener('keydown', e => {
 
 // Sample Cards with Thumbnails
 const cards = [
-    { title: '홍보 영상', content: '전시 소개 영상 (3:45)', icon: 'video', type: 'video', size: '125 MB', format: 'MP4', x: 100, y: 100 },
-    { title: '오디오 가이드', content: '전시 해설 음성 (한/영)', icon: 'headphones', type: 'audio', size: '8.5 MB', format: 'MP3', x: 450, y: 100 },
-    { title: '전시 포스터', content: '메인 비주얼 디자인', icon: 'image', type: 'image', size: '4.2 MB', format: 'PNG', x: 800, y: 100 },
+    { title: '홍보 영상', content: '전시 소개 영상 (3:45)', icon: 'video', type: 'video', size: '125 MB', format: 'MP4', x: 100, y: 100, preview: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' },
+    { title: '오디오 가이드', content: '전시 해설 음성 (한/영)', icon: 'headphones', type: 'audio', size: '8.5 MB', format: 'MP3', x: 450, y: 100, preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+    { title: '전시 포스터', content: '메인 비주얼 디자인', icon: 'image', type: 'image', size: '4.2 MB', format: 'PNG', x: 800, y: 100, preview: 'https://picsum.photos/400/300?random=1' },
     { title: '관람객 통계', content: '월간 리포트', icon: 'bar-chart-2', type: 'data', size: '1.8 MB', format: 'XLSX', x: 100, y: 350 },
     { title: '큐레이터 노트', content: '작품 해설 원고', icon: 'file-text', type: 'document', size: '2.4 MB', format: 'DOCX', x: 450, y: 350 },
     { title: '3D ��델', content: '유물 스캔 데이터', icon: 'box', type: 'data', size: '89 MB', format: 'GLB', x: 800, y: 350 },
-    { title: '현장 사진', content: '설치 진행 사진 (24장)', icon: 'camera', type: 'image', size: '45 MB', format: 'JPG', x: 100, y: 600 },
+    { title: '현장 사진', content: '설치 진행 사진 (24장)', icon: 'camera', type: 'image', size: '45 MB', format: 'JPG', x: 100, y: 600, preview: 'https://picsum.photos/400/300?random=2' },
     { title: '피드백', content: '관람객 의견 수집', icon: 'message-circle', type: 'document', size: '512 KB', format: 'PDF', x: 450, y: 600 },
     { title: '일정표', content: '전시 운영 스케줄', icon: 'calendar', type: 'document', size: '1.2 MB', format: 'PDF', x: 800, y: 600 }
 ];
@@ -872,9 +872,28 @@ function createCard(card) {
     cardEl.style.zIndex = maxZIndex++;
     cardEl.dataset.type = card.type;
     
+    // Build thumbnail content based on type and preview availability
+    let thumbnailContent = '';
+    if (card.preview) {
+        if (card.type === 'image') {
+            thumbnailContent = `<img src="${card.preview}" alt="${card.title}" style="width:100%;height:100%;object-fit:cover;">`;
+        } else if (card.type === 'video') {
+            thumbnailContent = `<video src="${card.preview}" style="width:100%;height:100%;object-fit:cover;" muted loop autoplay></video>`;
+        } else if (card.type === 'audio') {
+            thumbnailContent = `
+                <i data-lucide="${card.icon}" style="width:60px;height:60px;color:rgba(255,255,255,0.9);stroke-width:1.5;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></i>
+                <audio src="${card.preview}" controls style="position:absolute;bottom:10px;left:10px;right:10px;width:calc(100% - 20px);"></audio>
+            `;
+        } else {
+            thumbnailContent = `<i data-lucide="${card.icon}" style="width:60px;height:60px;color:rgba(255,255,255,0.9);stroke-width:1.5"></i>`;
+        }
+    } else {
+        thumbnailContent = `<i data-lucide="${card.icon}" style="width:60px;height:60px;color:rgba(255,255,255,0.9);stroke-width:1.5"></i>`;
+    }
+    
     cardEl.innerHTML = `
         <div class="card-thumbnail ${card.type}">
-            <i data-lucide="${card.icon}" style="width:60px;height:60px;color:rgba(255,255,255,0.9);stroke-width:1.5"></i>
+            ${thumbnailContent}
         </div>
         <div class="card-header">
             <i data-lucide="${card.icon}" style="width:16px;height:16px"></i>
@@ -912,8 +931,11 @@ function createCard(card) {
     let cardStartX, cardStartY, cardInitialX, cardInitialY;
     
     const onCardMouseDown = function(e) {
-        // Only drag from card header, not from resize handles
-        if (e.target.closest('.card-header') && !e.target.classList.contains('resize-handle')) {
+        // Check if clicking on card header (including children like icon and text)
+        const headerElement = cardEl.querySelector('.card-header');
+        const clickedOnHeader = headerElement && (e.target === headerElement || headerElement.contains(e.target));
+        
+        if (clickedOnHeader && !e.target.classList.contains('resize-handle')) {
             cardDragging = true;
             cardStartX = e.clientX;
             cardStartY = e.clientY;
@@ -924,7 +946,7 @@ function createCard(card) {
             // CRITICAL: Prevent canvas from dragging
             e.stopPropagation();
             
-            console.log('🎯 카드 드래그 시작:', cardEl.querySelector('.card-header').textContent.trim());
+            console.log('🎯 카드 드래그 시작:', headerElement.textContent.trim());
         }
     };
     
