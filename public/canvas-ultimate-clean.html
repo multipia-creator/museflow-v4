@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes">
 <title>MuseFlow Canvas - Enhanced</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -706,6 +706,256 @@ body {
     border-color: #ffffff;
     box-shadow: 0 0 20px rgba(245, 158, 11, 0.8);
 }
+
+/* ============================================
+   MOBILE OPTIMIZATION
+   ============================================ */
+
+@media (max-width: 768px) {
+    /* Navbar Mobile */
+    .unified-nav-container {
+        padding: 0.5rem 1rem;
+        height: 56px;
+    }
+    
+    .unified-nav-logo {
+        font-size: 1rem;
+        gap: 0.5rem;
+    }
+    
+    .unified-nav-logo img {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .unified-nav-links {
+        gap: 0.25rem;
+    }
+    
+    .unified-nav-links a {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+    
+    /* Sidebar Mobile - 전체 너비로 하단에 표시 */
+    .left-sidebar,
+    .right-sidebar {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 60vh;
+        top: auto;
+        bottom: 0;
+        border-radius: 20px 20px 0 0;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .left-sidebar.open {
+        transform: translateY(0);
+    }
+    
+    .right-sidebar.open {
+        transform: translateY(0);
+    }
+    
+    /* Sidebar Toggle Buttons - 하단 고정 */
+    .sidebar-toggle-left {
+        bottom: 56px;
+        top: auto;
+        left: 1rem;
+        width: 48px;
+        height: 48px;
+    }
+    
+    .sidebar-toggle-right {
+        bottom: 56px;
+        top: auto;
+        right: 1rem;
+        width: 48px;
+        height: 48px;
+    }
+    
+    /* Panel Selector Mobile */
+    .panel-selector {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.75rem;
+    }
+    
+    .panel-btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+        min-width: 60px;
+    }
+    
+    /* Cards Mobile - 터치 친화적 크기 */
+    .card {
+        min-width: 200px !important;
+        max-width: 280px !important;
+        padding: 1rem;
+    }
+    
+    .card-header h3 {
+        font-size: 0.9rem;
+    }
+    
+    .card-thumbnail {
+        height: 120px;
+    }
+    
+    .card-content {
+        font-size: 0.8rem;
+    }
+    
+    /* AI Input Mobile - 전체 너비 */
+    .ai-input {
+        left: 0;
+        right: 0;
+        bottom: 56px;
+        transform: none;
+        flex-direction: column;
+        padding: 1rem;
+        border-radius: 20px 20px 0 0;
+        gap: 0.75rem;
+        max-width: 100%;
+    }
+    
+    .ai-select {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 14px;
+    }
+    
+    .ai-field {
+        min-width: auto;
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 14px;
+    }
+    
+    .ai-send {
+        width: 100%;
+        height: 44px;
+        border-radius: 12px;
+        font-size: 1rem;
+    }
+    
+    /* Zoom Controls Mobile */
+    .zoom-controls {
+        bottom: 116px;
+        right: 1rem;
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+    
+    .zoom-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    /* Footer Mobile */
+    .footer {
+        height: 56px;
+        padding: 0 1rem;
+        font-size: 0.75rem;
+        gap: 1rem;
+    }
+    
+    .footer-left {
+        gap: 0.75rem;
+    }
+    
+    /* Canvas Viewport Mobile */
+    #canvasViewport {
+        top: 56px;
+        bottom: 56px;
+    }
+    
+    /* Modal Mobile */
+    .modal-content {
+        width: 95%;
+        max-width: 95%;
+        padding: 1rem;
+    }
+    
+    .modal-close {
+        top: 0.5rem;
+        right: 0.5rem;
+        width: 36px;
+        height: 36px;
+        font-size: 1.2rem;
+    }
+}
+
+/* 터치 디바이스 최적화 */
+@media (hover: none) and (pointer: coarse) {
+    /* 터치 타겟 크기 증가 */
+    .card {
+        touch-action: pan-x pan-y;
+    }
+    
+    .zoom-btn,
+    .panel-btn,
+    .sidebar-toggle-left,
+    .sidebar-toggle-right {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    /* 호버 효과 제거 */
+    .card:hover {
+        transform: none;
+    }
+    
+    .connection-handle {
+        opacity: 1;
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* 작은 모바일 (iPhone SE 등) */
+@media (max-width: 375px) {
+    .unified-nav-logo span {
+        display: none;
+    }
+    
+    .card {
+        min-width: 180px !important;
+        max-width: 240px !important;
+    }
+    
+    .ai-input {
+        padding: 0.75rem;
+    }
+    
+    .footer {
+        font-size: 0.7rem;
+    }
+}
+
+/* 가로 모드 */
+@media (max-width: 768px) and (orientation: landscape) {
+    .left-sidebar,
+    .right-sidebar {
+        height: 80vh;
+    }
+    
+    .ai-input {
+        bottom: 48px;
+    }
+    
+    .footer {
+        height: 48px;
+    }
+    
+    #canvasViewport {
+        top: 56px;
+        bottom: 48px;
+    }
+}
 </style>
 </head>
 <body>
@@ -1173,6 +1423,10 @@ const activePanels = { left: null, right: null };
 const viewport = document.getElementById('vp');
 let scale = 1, translateX = 0, translateY = 0, isDragging = false, startX, startY;
 
+// Touch Support Variables
+let lastTouchDistance = 0;
+let isTouching = false;
+
 function closePanel(panelId) {
     const panel = document.getElementById(panelId);
     if (!panel) return;
@@ -1244,6 +1498,73 @@ document.addEventListener('mouseup', () => {
     if (isDragging) {
         isDragging = false;
         viewport.classList.remove('dragging');
+    }
+});
+
+// ============================================
+// TOUCH EVENTS for Mobile
+// ============================================
+
+// Touch Start
+viewport.addEventListener('touchstart', e => {
+    if (e.target.closest('.card')) {
+        return;
+    }
+    
+    if (e.touches.length === 1) {
+        // Single touch - pan
+        isTouching = true;
+        isDragging = true;
+        viewport.classList.add('dragging');
+        startX = e.touches[0].pageX - translateX;
+        startY = e.touches[0].pageY - translateY;
+    } else if (e.touches.length === 2) {
+        // Two finger pinch - zoom
+        const touch1 = e.touches[0];
+        const touch2 = e.touches[1];
+        lastTouchDistance = Math.hypot(
+            touch2.pageX - touch1.pageX,
+            touch2.pageY - touch1.pageY
+        );
+    }
+}, { passive: false });
+
+// Touch Move
+viewport.addEventListener('touchmove', e => {
+    if (e.touches.length === 1 && isDragging) {
+        // Single touch - pan
+        e.preventDefault();
+        translateX = e.touches[0].pageX - startX;
+        translateY = e.touches[0].pageY - startY;
+        viewport.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    } else if (e.touches.length === 2) {
+        // Two finger pinch - zoom
+        e.preventDefault();
+        const touch1 = e.touches[0];
+        const touch2 = e.touches[1];
+        const currentDistance = Math.hypot(
+            touch2.pageX - touch1.pageX,
+            touch2.pageY - touch1.pageY
+        );
+        
+        if (lastTouchDistance > 0) {
+            const delta = currentDistance - lastTouchDistance;
+            scale = Math.max(0.1, Math.min(3, scale * (1 + delta * 0.01)));
+            viewport.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+            document.getElementById('zoomLevel').textContent = Math.round(scale * 100) + '%';
+        }
+        
+        lastTouchDistance = currentDistance;
+    }
+}, { passive: false });
+
+// Touch End
+viewport.addEventListener('touchend', e => {
+    if (e.touches.length === 0) {
+        isDragging = false;
+        isTouching = false;
+        viewport.classList.remove('dragging');
+        lastTouchDistance = 0;
     }
 });
 
@@ -1505,6 +1826,51 @@ function createCard(card) {
     document.addEventListener('mousemove', onCardMouseMove);
     document.addEventListener('mouseup', onCardMouseUp);
     
+    // Touch Events for Card Dragging
+    const onCardTouchStart = function(e) {
+        if (e.target.classList.contains('resize-handle') || 
+            e.target.classList.contains('connection-handle') ||
+            e.target.tagName === 'VIDEO' || 
+            e.target.tagName === 'AUDIO') {
+            return;
+        }
+        
+        cardDragging = true;
+        const touch = e.touches[0];
+        cardStartX = touch.clientX;
+        cardStartY = touch.clientY;
+        cardInitialX = parseInt(cardEl.style.left) || 0;
+        cardInitialY = parseInt(cardEl.style.top) || 0;
+        
+        e.stopPropagation();
+        console.log('🎯 카드 터치 드래그 시작');
+    };
+    
+    const onCardTouchMove = function(e) {
+        if (cardDragging) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const touch = e.touches[0];
+            const deltaX = (touch.clientX - cardStartX) / scale;
+            const deltaY = (touch.clientY - cardStartY) / scale;
+            cardEl.style.left = (cardInitialX + deltaX) + 'px';
+            cardEl.style.top = (cardInitialY + deltaY) + 'px';
+        }
+    };
+    
+    const onCardTouchEnd = function() {
+        if (cardDragging) {
+            cardDragging = false;
+            updateAllConnections();
+            console.log('✅ 카드 터치 드래그 완료');
+        }
+    };
+    
+    cardEl.addEventListener('touchstart', onCardTouchStart, { passive: false });
+    cardEl.addEventListener('touchmove', onCardTouchMove, { passive: false });
+    cardEl.addEventListener('touchend', onCardTouchEnd);
+    
     // Resize functionality
     setupResizeHandles(cardEl);
     
@@ -1513,6 +1879,7 @@ function createCard(card) {
     
     // Update connections when this card moves
     cardEl.addEventListener('mouseup', updateAllConnections);
+    cardEl.addEventListener('touchend', updateAllConnections);
     
     viewport.appendChild(cardEl);
     return cardEl;
