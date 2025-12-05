@@ -95,8 +95,9 @@ app.notFound((c) => {
       timestamp: new Date().toISOString()
     }, 404)
   }
-  // For non-API paths, let Cloudflare Pages handle (serve static files or landing)
-  return c.notFound()
+  // For non-API paths (HTML files), return simple 404 message
+  // Don't call c.notFound() to avoid infinite loop
+  return c.text('404 Not Found', 404)
 })
 
 export default app
