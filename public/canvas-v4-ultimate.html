@@ -4476,9 +4476,19 @@
         
         // ========== INFINITE CANVAS FUNCTIONALITY ==========
         
-        const viewport = document.getElementById('canvasViewport');
-        let scale = 1, translateX = 0, translateY = 0;
-        let isDragging = false, startX, startY;
+        // Initialize canvas after DOM is fully loaded
+        window.addEventListener('load', function() {
+            console.log('🎨 Initializing Infinite Canvas...');
+            
+            const viewport = document.getElementById('canvasViewport');
+            if (!viewport) {
+                console.error('❌ Canvas viewport element not found!');
+                return;
+            }
+            console.log('✅ Canvas viewport found');
+            
+            let scale = 1, translateX = 0, translateY = 0;
+            let isDragging = false, startX, startY;
         
         // Canvas Pan (Drag)
         viewport.addEventListener('mousedown', e => {
@@ -4618,7 +4628,10 @@
             });
             
             viewport.appendChild(cardEl);
+            console.log('✅ Card created:', cardData.title);
         });
+        
+        console.log(`✅ ${cardsData.length} cards created successfully!`);
         
         // Deselect card when clicking canvas
         viewport.addEventListener('click', function(e) {
@@ -4626,6 +4639,14 @@
                 document.querySelectorAll('.card').forEach(c => c.style.border = 'none');
             }
         });
+        
+            // Re-initialize Lucide icons for cards
+            setTimeout(() => {
+                lucide.createIcons();
+                console.log('✅ Lucide icons initialized for canvas cards');
+            }, 100);
+            
+        }); // End of window.addEventListener('load')
         
         // ====================================
         // Initialize Lucide Icons
