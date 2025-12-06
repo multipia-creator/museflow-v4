@@ -3774,11 +3774,16 @@ if (canvasContainer && viewport) {
     canvasContainer.addEventListener('drop', (e) => {
         e.preventDefault();
         console.log('💧 DROP 이벤트 발생!', 'draggedWidgetData:', draggedWidgetData);
+        console.log('📍 Drop 위치:', `clientX=${e.clientX}, clientY=${e.clientY}`);
         
         if (!draggedWidgetData) {
-            console.warn('⚠️ Widget 데이터가 없습니다. dragstart 이벤트가 제대로 발생하지 않았을 수 있습니다.');
+            console.error('❌ CRITICAL: draggedWidgetData is null!');
+            console.error('   → dragstart 이벤트가 발생하지 않았거나, Widget에 드래그 리스너가 등록되지 않았습니다.');
+            console.error('   → Widget Panel이 열려있고, Category가 펼쳐져 있는지 확인하세요.');
             return;
         }
+        
+        console.log('✅ draggedWidgetData 확인됨:', draggedWidgetData);
         
         // Canvas 좌표 계산 (Canvas 컨테이너 기준)
         const canvasRect = canvasContainer.getBoundingClientRect();
@@ -3826,16 +3831,19 @@ if (canvasContainer && viewport) {
         }
         
         viewport.appendChild(card);
+        console.log('✅ Card가 viewport에 추가됨');
         
         // Lucide 아이콘 렌더링
         lucide.createIcons();
+        console.log('✅ Lucide 아이콘 렌더링 완료');
         
         // Dashboard 동기화
         setTimeout(() => {
             syncCanvasStateToDashboard();
+            console.log('✅ Dashboard 동기화 완료');
         }, 100);
         
-        console.log('✅ Widget 노드 생성:', draggedWidgetData.name, `at (${Math.round(x / zoom)}, ${Math.round(y / zoom)})`);
+        console.log('🎉 Widget 노드 생성 완료:', draggedWidgetData.name, `at (${Math.round(x / zoom)}, ${Math.round(y / zoom)})`);
         
         // 드래그 데이터 초기화
         draggedWidgetData = null;
