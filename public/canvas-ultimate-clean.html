@@ -3704,16 +3704,19 @@ if (widgetPanel) {
     console.error('❌ widgetPanel 요소를 찾을 수 없습니다!');
 }
 
-// Canvas에 드롭 가능하도록 설정
-// viewport 변수는 이미 위에서 선언됨 (line 2663)
+// Canvas 전체 영역에 드롭 가능하도록 설정
+// Canvas 영역 = .canvas 클래스 (viewport의 부모 컨테이너)
+const canvasContainer = document.querySelector('.canvas');
 
-if (viewport) {
-    viewport.addEventListener('dragover', (e) => {
+if (canvasContainer && viewport) {
+    // Canvas 전체 영역에 dragover 이벤트
+    canvasContainer.addEventListener('dragover', (e) => {
         e.preventDefault();
         e.dataTransfer.dropEffect = 'copy';
     });
 
-    viewport.addEventListener('drop', (e) => {
+    // Canvas 전체 영역에 drop 이벤트
+    canvasContainer.addEventListener('drop', (e) => {
         e.preventDefault();
         
         if (!draggedWidgetData) {
@@ -3721,10 +3724,10 @@ if (viewport) {
             return;
         }
         
-        // Canvas 좌표 계산 (viewport 기준)
-        const viewportRect = viewport.getBoundingClientRect();
-        const x = e.clientX - viewportRect.left - pan.x;
-        const y = e.clientY - viewportRect.top - pan.y;
+        // Canvas 좌표 계산 (Canvas 컨테이너 기준)
+        const canvasRect = canvasContainer.getBoundingClientRect();
+        const x = e.clientX - canvasRect.left - pan.x;
+        const y = e.clientY - canvasRect.top - pan.y;
         
         // Widget 카드 데이터 생성 (createCard 함수 사용)
         const widgetCard = {
@@ -3782,9 +3785,9 @@ if (viewport) {
         draggedWidgetData = null;
     });
     
-    console.log('✅ Canvas 드롭 이벤트 등록 완료');
+    console.log('✅ Canvas 전체 영역 드롭 이벤트 등록 완료 (.canvas)');
 } else {
-    console.error('❌ viewport 요소를 찾을 수 없습니다!');
+    console.error('❌ Canvas 컨테이너 또는 viewport 요소를 찾을 수 없습니다!');
 }
 
 console.log('✅ Widget 드래그앤드롭 초기화 완료');
