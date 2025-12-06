@@ -2647,19 +2647,19 @@ html { visibility: visible; opacity: 1; }
     <div class="panel-content">
         <div style="padding: 1rem;">
             <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                <button style="background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%); border: none; padding: 0.75rem 1rem; border-radius: 8px; color: white; cursor: pointer; font-weight: 600; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                <button onclick="createNewCard()" style="background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%); border: none; padding: 0.75rem 1rem; border-radius: 8px; color: white; cursor: pointer; font-weight: 600; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
                     <i data-lucide="plus" style="width:14px;height:14px;display:inline-block;margin-right:8px;"></i>
                     새 카드 만들기
                 </button>
-                <button style="background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.75rem 1rem; border-radius: 8px; color: #e5e5e5; cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.25)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.15)'">
+                <button onclick="uploadFile()" style="background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.75rem 1rem; border-radius: 8px; color: #e5e5e5; cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.25)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.15)'">
                     <i data-lucide="upload" style="width:14px;height:14px;display:inline-block;margin-right:8px;"></i>
                     파일 업로드
                 </button>
-                <button style="background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.75rem 1rem; border-radius: 8px; color: #e5e5e5; cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.25)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.15)'">
+                <button onclick="arrangeLayout()" style="background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.75rem 1rem; border-radius: 8px; color: #e5e5e5; cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.25)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.15)'">
                     <i data-lucide="layout" style="width:14px;height:14px;display:inline-block;margin-right:8px;"></i>
                     레이아웃 정렬
                 </button>
-                <button style="background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.75rem 1rem; border-radius: 8px; color: #e5e5e5; cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.25)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.15)'">
+                <button onclick="saveProject()" style="background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.75rem 1rem; border-radius: 8px; color: #e5e5e5; cursor: pointer; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.25)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.15)'">
                     <i data-lucide="save" style="width:14px;height:14px;display:inline-block;margin-right:8px;"></i>
                     프로젝트 저장
                 </button>
@@ -2719,20 +2719,31 @@ html { visibility: visible; opacity: 1; }
                     <div style="font-size: 0.8125rem; color: #9CA3AF; margin-top: 0.25rem;">150px</div>
                 </div>
                 <div>
-                    <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.5rem; font-size: 0.9375rem;">자동 저장</div>
+                    <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.5rem; font-size: 0.9375rem;">그리드 표시</div>
                     <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                        <input type="checkbox" checked style="width: 16px; height: 16px; cursor: pointer;">
-                        <span style="color: #e5e5e5; font-size: 0.9375rem;">변경 사항 자동 저장</span>
+                        <input type="checkbox" id="showGrid" checked style="width: 16px; height: 16px; cursor: pointer;">
+                        <span style="color: #e5e5e5; font-size: 0.9375rem;">그리드 표시</span>
                     </label>
                 </div>
                 <div>
-                    <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.5rem; font-size: 0.9375rem;">연결선 표시</div>
+                    <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.5rem; font-size: 0.9375rem;">스냅 기능</div>
                     <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                        <input type="checkbox" checked style="width: 16px; height: 16px; cursor: pointer;">
-                        <span style="color: #e5e5e5; font-size: 0.9375rem;">워크플로우 연결선 보기</span>
+                        <input type="checkbox" id="snapToGrid" checked style="width: 16px; height: 16px; cursor: pointer;">
+                        <span style="color: #e5e5e5; font-size: 0.9375rem;">그리드에 스냅</span>
                     </label>
                 </div>
-                <button style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.75rem; border-radius: 8px; color: #EF4444; cursor: pointer; font-weight: 600; margin-top: 1rem;">
+                <div>
+                    <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.5rem; font-size: 0.9375rem;">자동 저장</div>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="autoSave" checked style="width: 16px; height: 16px; cursor: pointer;">
+                        <span style="color: #e5e5e5; font-size: 0.9375rem;">변경 사항 자동 저장</span>
+                    </label>
+                </div>
+                <button onclick="saveSettings()" style="width: 100%; background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%); border: none; padding: 0.75rem; border-radius: 8px; color: white; cursor: pointer; font-weight: 600; margin-top: 1rem;">
+                    <i data-lucide="save" style="width:14px;height:14px;display:inline-block;margin-right:8px;"></i>
+                    설정 저장
+                </button>
+                <button style="width: 100%; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.75rem; border-radius: 8px; color: #EF4444; cursor: pointer; font-weight: 600; margin-top: 0.5rem;">
                     <i data-lucide="refresh-cw" style="width:14px;height:14px;display:inline-block;margin-right:8px;"></i>
                     설정 초기화
                 </button>
@@ -2753,19 +2764,15 @@ html { visibility: visible; opacity: 1; }
             <div style="display: flex; flex-direction: column; gap: 1rem;">
                 <div style="padding: 1rem; background: rgba(139, 92, 246, 0.1); border-radius: 8px; border: 1px solid rgba(139, 92, 246, 0.2);">
                     <div style="font-size: 0.875rem; color: #9CA3AF; margin-bottom: 0.5rem;">총 카드 수</div>
-                    <div style="font-size: 2rem; font-weight: 700; color: #8B5CF6;">9</div>
-                </div>
-                <div style="padding: 1rem; background: rgba(34, 197, 94, 0.1); border-radius: 8px; border: 1px solid rgba(34, 197, 94, 0.2);">
-                    <div style="font-size: 0.875rem; color: #9CA3AF; margin-bottom: 0.5rem;">완료된 작업</div>
-                    <div style="font-size: 2rem; font-weight: 700; color: #22C55E;">5</div>
-                </div>
-                <div style="padding: 1rem; background: rgba(249, 115, 22, 0.1); border-radius: 8px; border: 1px solid rgba(249, 115, 22, 0.2);">
-                    <div style="font-size: 0.875rem; color: #9CA3AF; margin-bottom: 0.5rem;">진행 중</div>
-                    <div style="font-size: 2rem; font-weight: 700; color: #F97316;">4</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #8B5CF6;" data-stat="cards">9</div>
                 </div>
                 <div style="padding: 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 8px; border: 1px solid rgba(59, 130, 246, 0.2);">
                     <div style="font-size: 0.875rem; color: #9CA3AF; margin-bottom: 0.5rem;">연결 수</div>
-                    <div style="font-size: 2rem; font-weight: 700; color: #3B82F6;">0</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #3B82F6;" data-stat="connections">0</div>
+                </div>
+                <div style="padding: 1rem; background: rgba(34, 197, 94, 0.1); border-radius: 8px; border: 1px solid rgba(34, 197, 94, 0.2);">
+                    <div style="font-size: 0.875rem; color: #9CA3AF; margin-bottom: 0.5rem;">마지막 저장</div>
+                    <div style="font-size: 1rem; font-weight: 600; color: #22C55E;" data-stat="last-saved">방금 전</div>
                 </div>
             </div>
         </div>
@@ -3759,6 +3766,10 @@ html { visibility: visible; opacity: 1; }
         </button>
         <button class="ctrl-btn" id="fitScreen">
             <i data-lucide="maximize-2" style="width:14px;height:14px"></i>
+        </button>
+        <button class="ctrl-btn" id="connectionMode" onclick="enableConnectionMode()" 
+                title="연결 모드 (C 키)" style="margin-left: 0.5rem;">
+            <i data-lucide="link" style="width:14px;height:14px"></i>
         </button>
     </div>
     
@@ -6373,6 +6384,9 @@ lucide.createIcons();
 <!-- AI Orchestrator Engine -->
 <script src="/static/js/ai-orchestrator-engine.js" defer></script>
 <script src="/static/js/ai-orchestrator-workflows.js" defer></script>
+
+<!-- Canvas Full Functionality - v22.0.0 -->
+<script src="/static/js/canvas-full-functionality.js" defer></script>
 
 <!-- AI Orchestrator Integration for Canvas -->
 <script>
