@@ -2718,6 +2718,10 @@ const activePanels = { left: null, right: null };
 const viewport = document.getElementById('vp');
 let scale = 1, translateX = 0, translateY = 0, isDragging = false, startX, startY;
 
+// Pan/Zoom 객체 (Widget 드롭 좌표 계산용)
+const pan = { x: 0, y: 0 };
+let zoom = 1;
+
 // Touch Support Variables
 let lastTouchDistance = 0;
 let isTouching = false;
@@ -2794,6 +2798,11 @@ document.addEventListener('mousemove', e => {
     e.preventDefault();
     translateX = e.pageX - startX;
     translateY = e.pageY - startY;
+    
+    // pan 객체 동기화 (Widget 드롭 좌표 계산용)
+    pan.x = translateX;
+    pan.y = translateY;
+    
     viewport.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
 });
 
@@ -2876,18 +2885,21 @@ viewport.addEventListener('wheel', e => {
     // Allow zoom with mouse wheel (no Ctrl key required)
     e.preventDefault();
     scale = Math.max(0.1, Math.min(3, scale * (e.deltaY > 0 ? 0.9 : 1.1)));
+    zoom = scale; // zoom 변수 동기화
     viewport.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
     document.getElementById('zoomLevel').textContent = Math.round(scale * 100) + '%';
 });
 
 document.getElementById('zoomIn').addEventListener('click', () => {
     scale = Math.min(3, scale * 1.2);
+    zoom = scale; // zoom 변수 동기화
     viewport.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
     document.getElementById('zoomLevel').textContent = Math.round(scale * 100) + '%';
 });
 
 document.getElementById('zoomOut').addEventListener('click', () => {
     scale = Math.max(0.1, scale * 0.8);
+    zoom = scale; // zoom 변수 동기화
     viewport.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
     document.getElementById('zoomLevel').textContent = Math.round(scale * 100) + '%';
 });
@@ -4021,7 +4033,7 @@ document.addEventListener('keydown', (e) => {
     }
     
     // Command Palette가 열려있을 때만 처리
-    if (!commandPaletteOverlay.classList.contains('active')) return;
+    if (!commandPaletteOverlay || !commandPaletteOverlay.classList.contains('active')) return;
     
     // ESC로 닫기
     if (e.key === 'Escape') {
