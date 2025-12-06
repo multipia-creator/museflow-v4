@@ -3657,16 +3657,22 @@ document.getElementById('aiInput')?.addEventListener('keypress', (e) => {
 console.log('✅ Canvas AI 어시스턴트 초기화 완료');
 
 // ============================================
-// Widget 드래그앤드롭 기능
+// Widget 드래그앤드롭 기능 (이벤트 위임 패턴)
 // ============================================
 
 let draggedWidgetData = null;
 
-// Widget 드래그 시작
-document.querySelectorAll('.widget-item').forEach(widget => {
-    widget.addEventListener('dragstart', (e) => {
+// 이벤트 위임: widgetPanel에 이벤트 리스너 등록
+const widgetPanel = document.getElementById('widgetPanel');
+
+if (widgetPanel) {
+    // dragstart 이벤트 위임
+    widgetPanel.addEventListener('dragstart', (e) => {
+        const widget = e.target.closest('.widget-item');
+        if (!widget) return;
+        
         const widgetType = widget.dataset.widgetType;
-        const widgetName = widget.querySelector('.widget-name')?.textContent || 'New Widget';
+        const widgetName = widget.querySelector('.widget-name')?.textContent?.replace(/Premium/g, '').trim() || 'New Widget';
         const widgetDesc = widget.querySelector('.widget-description')?.textContent || '';
         const isPremium = widget.querySelector('.badge-premium') !== null;
         
@@ -3685,77 +3691,101 @@ document.querySelectorAll('.widget-item').forEach(widget => {
         console.log('🎨 Widget 드래그 시작:', widgetName);
     });
     
-    widget.addEventListener('dragend', (e) => {
-        widget.style.opacity = '1';
+    // dragend 이벤트 위임
+    widgetPanel.addEventListener('dragend', (e) => {
+        const widget = e.target.closest('.widget-item');
+        if (widget) {
+            widget.style.opacity = '1';
+        }
     });
-});
+    
+    console.log('✅ Widget 패널 이벤트 위임 등록 완료');
+} else {
+    console.error('❌ widgetPanel 요소를 찾을 수 없습니다!');
+}
 
 // Canvas에 드롭 가능하도록 설정
-// viewport 변수는 이미 위에서 선언됨 (line 2413)
+// viewport 변수는 이미 위에서 선언됨 (line 2663)
 
-viewport.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'copy';
-});
+if (viewport) {
+    viewport.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'copy';
+    });
 
-viewport.addEventListener('drop', (e) => {
-    e.preventDefault();
-    
-    if (!draggedWidgetData) {
-        console.warn('⚠️ Widget 데이터가 없습니다');
-        return;
-    }
-    
-    // Canvas 좌표 계산 (viewport 기준)
-    const viewportRect = viewport.getBoundingClientRect();
-    const x = e.clientX - viewportRect.left - pan.x;
-    const y = e.clientY - viewportRect.top - pan.y;
-    
-    // Widget 노드 생성
-    const card = createCardElement(
-        draggedWidgetData.name,
-        draggedWidgetData.description,
-        x / zoom,
-        y / zoom
-    );
-    
-    // Widget 타입 데이터 추가
-    card.dataset.widgetType = draggedWidgetData.type;
-    card.dataset.isPremium = draggedWidgetData.isPremium;
-    
-    // Premium 뱃지 추가
-    if (draggedWidgetData.isPremium) {
-        const header = card.querySelector('.card-header');
-        if (header) {
-            const premiumBadge = document.createElement('span');
-            premiumBadge.className = 'badge-premium';
-            premiumBadge.textContent = '⭐ PRO';
-            premiumBadge.style.cssText = `
-                display: inline-block;
-                margin-left: 8px;
-                padding: 2px 6px;
-                font-size: 9px;
-                font-weight: 600;
-                background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
-                border-radius: 4px;
-                color: white;
-            `;
-            header.appendChild(premiumBadge);
+    viewport.addEventListener('drop', (e) => {
+        e.preventDefault();
+        
+        if (!draggedWidgetData) {
+            console.warn('⚠️ Widget 데이터가 없습니다');
+            return;
         }
-    }
+        
+        // Canvas 좌표 계산 (viewport 기준)
+        const viewportRect = viewport.getBoundingClientRect();
+        const x = e.clientX - viewportRect.left - pan.x;
+        const y = e.clientY - viewportRect.top - pan.y;
+        
+        // Widget 카드 데이터 생성 (createCard 함수 사용)
+        const widgetCard = {
+            title: draggedWidgetData.name,
+            content: draggedWidgetData.description || '위젯 설명이 없습니다.',
+            type: 'widget',
+            icon: 'box',
+            size: 'Widget',
+            format: draggedWidgetData.isPremium ? 'Premium' : 'Free',
+            x: x / zoom,
+            y: y / zoom
+        };
+        
+        // createCard 함수로 카드 생성 (기존 함수 재사용)
+        const card = createCard(widgetCard);
+        
+        // Widget 타입 데이터 추가
+        card.dataset.widgetType = draggedWidgetData.type;
+        card.dataset.isPremium = draggedWidgetData.isPremium;
     
-    viewport.appendChild(card);
+        // Premium 뱃지 추가
+        if (draggedWidgetData.isPremium) {
+            const header = card.querySelector('.card-header');
+            if (header) {
+                const premiumBadge = document.createElement('span');
+                premiumBadge.className = 'badge-premium';
+                premiumBadge.textContent = '⭐ PRO';
+                premiumBadge.style.cssText = `
+                    display: inline-block;
+                    margin-left: 8px;
+                    padding: 2px 6px;
+                    font-size: 9px;
+                    font-weight: 600;
+                    background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+                    border-radius: 4px;
+                    color: white;
+                `;
+                header.appendChild(premiumBadge);
+            }
+        }
+        
+        viewport.appendChild(card);
+        
+        // Lucide 아이콘 렌더링
+        lucide.createIcons();
+        
+        // Dashboard 동기화
+        setTimeout(() => {
+            syncCanvasToDashboard();
+        }, 100);
+        
+        console.log('✅ Widget 노드 생성:', draggedWidgetData.name, `at (${Math.round(x / zoom)}, ${Math.round(y / zoom)})`);
+        
+        // 드래그 데이터 초기화
+        draggedWidgetData = null;
+    });
     
-    // Dashboard 동기화
-    setTimeout(() => {
-        syncCanvasToDashboard();
-    }, 100);
-    
-    console.log('✅ Widget 노드 생성:', draggedWidgetData.name, `at (${Math.round(x)}, ${Math.round(y)})`);
-    
-    // 드래그 데이터 초기화
-    draggedWidgetData = null;
-});
+    console.log('✅ Canvas 드롭 이벤트 등록 완료');
+} else {
+    console.error('❌ viewport 요소를 찾을 수 없습니다!');
+}
 
 console.log('✅ Widget 드래그앤드롭 초기화 완료');
 
