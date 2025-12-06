@@ -315,14 +315,24 @@ body {
     width: 300px;
     min-width: 200px;
     min-height: 200px;
-    background: transparent;
-    border-radius: 0;
-    border: none;
-    outline: none;
-    box-shadow: none;
+    background: transparent !important;
+    border-radius: 0 !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
     overflow: visible;
     cursor: move;
     transition: box-shadow 0.2s, transform 0.1s;
+}
+
+.card * {
+    border: none !important;
+    outline: none !important;
+}
+
+.card::before,
+.card::after {
+    display: none !important;
 }
 
 .card.selected {
