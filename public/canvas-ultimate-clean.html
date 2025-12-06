@@ -311,33 +311,39 @@ body {
 
 /* Media Card with thumbnail */
 .card {
-    position: absolute;
+    position: absolute !important;
     width: 300px;
     min-width: 200px;
     min-height: 200px;
-    background: #ffffff;
+    background: #ffffff !important;
     border-radius: 16px !important;
-    border: none !important;
-    outline: none !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
-    overflow: hidden;
+    border: 0 none transparent !important;
+    outline: 0 none transparent !important;
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.08), 0 2px 8px rgba(139, 92, 246, 0.04) !important;
+    overflow: hidden !important;
     cursor: move;
     transition: all 0.3s ease;
 }
 
 .card:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06) !important;
-    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(139, 92, 246, 0.12), 0 4px 12px rgba(139, 92, 246, 0.06) !important;
+    transform: translateY(-2px) !important;
+    border: 0 none transparent !important;
+    outline: 0 none transparent !important;
 }
 
 .card.selected {
     box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3), 0 8px 30px rgba(139, 92, 246, 0.2) !important;
     z-index: 1000 !important;
+    border: 0 none transparent !important;
+    outline: 0 none transparent !important;
 }
 
-.card * {
-    border: none !important;
-    outline: none !important;
+.card *,
+.card *::before,
+.card *::after {
+    border: 0 none transparent !important;
+    outline: 0 none transparent !important;
 }
 
 .card.selected {
