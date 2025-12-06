@@ -965,6 +965,11 @@
         }
         
         @media (max-width: 1024px) {
+            .nav-links {
+                display: flex !important;
+                gap: 1.5rem !important;
+            }
+            
             .nav-signup-btn span {
                 display: none;
             }
@@ -976,7 +981,8 @@
         
         @media (max-width: 768px) {
             .nav-links {
-                display: none;
+                display: flex !important;
+                gap: 1.5rem !important;
             }
             
             .nav-signup-btn {
@@ -2270,7 +2276,7 @@ html { visibility: visible; opacity: 1; }
                 
                 <a href="/signup.html" class="nav-signup-btn">
                     <i class="fas fa-sparkles" aria-hidden="true"></i> 
-                    <span>MuseFlow 슈퍼 에이전트 잠금 해제</span>
+                    <span>무료로 시작하기</span>
                     <i class="fas fa-arrow-right" style="font-size: 0.875rem;" aria-hidden="true"></i>
                 </a>
                 <a href="/login.html" class="nav-login-btn">
@@ -3181,7 +3187,7 @@ html { visibility: visible; opacity: 1; }
         const translations = {
             ko: {
                 // Navigation
-                signup: 'MuseFlow 슈퍼 에이전트 잠금 해제',
+                signup: '무료로 시작하기',
                 login: '로그인',
                 langName: '영어',
                 langFlag: '🇺🇸',
