@@ -464,6 +464,75 @@
                 font-size: 1.25rem;
             }
         }
+    
+    /* Screen Reader Only - Accessibility */
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+    
+    .sr-only-focusable:focus {
+        position: static;
+        width: auto;
+        height: auto;
+        margin: 0;
+        overflow: visible;
+        clip: auto;
+        white-space: normal;
+    }
+    
+    /* Skip to Content Link - WCAG 2.1 Guideline 2.4.1 */
+    .skip-link {
+        position: absolute;
+        top: -100px;
+        left: 0;
+        background: #000;
+        color: #fff;
+        padding: 1rem 2rem;
+        text-decoration: none;
+        font-weight: 600;
+        z-index: 100000;
+        border-radius: 0 0 8px 0;
+        transition: top 0.3s ease;
+    }
+    
+    .skip-link:focus {
+        top: 0;
+        outline: 3px solid #c4b5fd;
+        outline-offset: 2px;
+    }
+    
+    /* Enhanced Focus Styles for Keyboard Navigation */
+    *:focus {
+        outline: 2px solid #c4b5fd;
+        outline-offset: 2px;
+    }
+    
+    *:focus:not(:focus-visible) {
+        outline: none;
+    }
+    
+    *:focus-visible {
+        outline: 3px solid #c4b5fd;
+        outline-offset: 3px;
+        box-shadow: 0 0 0 4px rgba(196, 181, 253, 0.3);
+    }
+    
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+        outline: 3px solid #c4b5fd;
+        outline-offset: 2px;
+    }
     </style>
     
     <!-- Unified Footer CSS -->
@@ -476,6 +545,11 @@
     <script src="/static/js/analytics-ga4.js" async></script>
     </head>
 <body>
+    <!-- Skip to Content for Keyboard Navigation -->
+    <a href="#main-content" class="skip-link">
+        메인 콘텐츠로 건너뛰기
+    </a>
+    
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -491,11 +565,11 @@
             </div>
             
             <ul class="nav-links" id="nav-links">
-                <li><a href="/landing">홈</a></li>
-                <li><a href="/about">소개</a></li>
-                <li><a href="/modules">모듈</a></li>
-                <li><a href="/dashboard">대시보드</a></li>
-                <li><a href="/canvas-ultimate-clean">캔버스</a></li>
+                <li role="none"><a href="/landing" role="menuitem">홈</a></li>
+                <li role="none"><a href="/about" role="menuitem">소개</a></li>
+                <li role="none"><a href="/modules" role="menuitem">모듈</a></li>
+                <li role="none"><a href="/dashboard" role="menuitem">대시보드</a></li>
+                <li role="none"><a href="/canvas-ultimate-clean" role="menuitem">캔버스</a></li>
             </ul>
         </div>
     </nav>
@@ -512,7 +586,7 @@
         <div class="module-card">
             <div class="module-header">
                 <div class="module-icon">
-                    <i class="fas fa-tachometer-alt"></i>
+                    <i class="fas fa-tachometer-alt" aria-hidden="true"></i>
                 </div>
                 <div class="module-info">
                     <h2>Dashboard<span class="badge badge-new">Updated</span></h2>
@@ -542,10 +616,10 @@
             
             <div class="module-actions">
                 <a href="/dashboard" class="btn btn-primary">
-                    <i class="fas fa-play"></i> Dashboard 시작하기
+                    <i class="fas fa-play" aria-hidden="true"></i> Dashboard 시작하기
                 </a>
                 <a href="/about" class="btn btn-secondary">
-                    <i class="fas fa-info-circle"></i> 더 알아보기
+                    <i class="fas fa-info-circle" aria-hidden="true"></i> 더 알아보기
                 </a>
             </div>
         </div>
@@ -554,7 +628,7 @@
         <div class="module-card">
             <div class="module-header">
                 <div class="module-icon">
-                    <i class="fas fa-palette"></i>
+                    <i class="fas fa-palette" aria-hidden="true"></i>
                 </div>
                 <div class="module-info">
                     <h2>Canvas Widget System<span class="badge badge-new">87 Widgets</span></h2>
@@ -587,7 +661,7 @@
                         Command Palette (Cmd+K)로 "전시 기획" 검색 → 관련 Widget 5개 추가<br>
                         (작품 리서치, 예산 계산, 기획안 작성, 일정 관리, 홍보 계획)<br><br>
                         
-                        <strong style="color: #a78bfa;">Step 2 - Drag & Drop:</strong><br>
+                        <strong style="color: #c4b5fd;">Step 2 - Drag & Drop:</strong><br>
                         Widget Panel에서 Canvas로 드래그 → 자동 노드 생성 및 배치<br>
                         연결선으로 워크플로우 흐름 정의 (순차/병렬 실행)<br><br>
                         
@@ -595,17 +669,17 @@
                         AI Orchestrator가 연결된 노드 순서를 분석하여 자동 실행<br>
                         각 Widget의 AI Agent가 작업 수행 → 결과를 다음 노드로 전달<br><br>
                         
-                        <strong style="color: #60a5fa;">결과:</strong> 5개 Widget → 19개 자동 노드 → 3.2초 완성 ⚡
+                        <strong style="color: #93c5fd;">결과:</strong> 5개 Widget → 19개 자동 노드 → 3.2초 완성 ⚡
                     </p>
                 </div>
             </div>
             
             <div class="module-actions">
                 <a href="/canvas-ultimate-clean" class="btn btn-primary">
-                    <i class="fas fa-play"></i> Canvas 시작하기
+                    <i class="fas fa-play" aria-hidden="true"></i> Canvas 시작하기
                 </a>
                 <a href="/about" class="btn btn-secondary">
-                    <i class="fas fa-cubes"></i> Widget 카탈로그
+                    <i class="fas fa-cubes" aria-hidden="true"></i> Widget 카탈로그
                 </a>
             </div>
         </div>
@@ -641,7 +715,7 @@
                 </p>
                 <div style="background: rgba(15, 10, 31, 0.5); padding: 1.5rem; border-radius: 12px; margin-top: 1rem; border-left: 4px solid #8b5cf6;">
                     <p style="margin: 0; line-height: 1.8; font-size: 0.95rem;">
-                        <strong style="color: #a78bfa;">Phase 1 - Research (병렬):</strong><br>
+                        <strong style="color: #c4b5fd;">Phase 1 - Research (병렬):</strong><br>
                         1️⃣ Gemini Research Agent: 인상파 작가 5명 리서치<br>
                         2️⃣ Museum API Agent: 국내 소장 작품 검색<br><br>
                         
@@ -649,17 +723,17 @@
                         3️⃣ Docs Creator Agent: 기획안 초안 자동 작성<br>
                         4️⃣ Budget Calculator Agent: 전시 비용 자동 산출<br><br>
                         
-                        <strong style="color: #a78bfa;">Phase 3 - Integration (병렬):</strong><br>
+                        <strong style="color: #c4b5fd;">Phase 3 - Integration (병렬):</strong><br>
                         5️⃣ Calendar Sync Agent: 6개월 일정 자동 등록<br>
                         6️⃣ Email Notifier Agent: 팀원 5명에게 알림 발송<br><br>
                         
-                        <strong style="color: #60a5fa;">결과:</strong> 총 19개 노드, 6개 Phase, 평균 3.2초 완성 ⚡
+                        <strong style="color: #93c5fd;">결과:</strong> 총 19개 노드, 6개 Phase, 평균 3.2초 완성 ⚡
                     </p>
                 </div>
             </div>
             
             <div style="background: rgba(139, 92, 246, 0.1); padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0;">
-                <h4 style="margin: 0 0 1rem 0; color: #a78bfa;">📊 성능 지표</h4>
+                <h4 style="margin: 0 0 1rem 0; color: #c4b5fd;">📊 성능 지표</h4>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem;">
                     <div style="text-align: center;">
                         <div style="font-size: 2rem; font-weight: 700; color: #8b5cf6;">15</div>
@@ -682,10 +756,10 @@
             
             <div class="module-actions">
                 <a href="/workflow.html" class="btn btn-primary">
-                    <i class="fas fa-brain"></i> Orchestrator 체험하기
+                    <i class="fas fa-brain" aria-hidden="true"></i> Orchestrator 체험하기
                 </a>
                 <a href="/about" class="btn btn-secondary">
-                    <i class="fas fa-book-open"></i> 기술 문서 보기
+                    <i class="fas fa-book-open" aria-hidden="true"></i> 기술 문서 보기
                 </a>
             </div>
         </div>
@@ -694,7 +768,7 @@
         <div class="module-card">
             <div class="module-header">
                 <div class="module-icon">
-                    <i class="fas fa-project-diagram"></i>
+                    <i class="fas fa-project-diagram" aria-hidden="true"></i>
                 </div>
                 <div class="module-info">
                     <h2>Workflow Automation</h2>
@@ -724,10 +798,10 @@
             
             <div class="module-actions">
                 <a href="/workflow" class="btn btn-primary">
-                    <i class="fas fa-play"></i> 템플릿 시작하기
+                    <i class="fas fa-play" aria-hidden="true"></i> 템플릿 시작하기
                 </a>
                 <a href="/about" class="btn btn-secondary">
-                    <i class="fas fa-th-large"></i> 템플릿 갤러리
+                    <i class="fas fa-th-large" aria-hidden="true"></i> 템플릿 갤러리
                 </a>
             </div>
         </div>
@@ -736,7 +810,7 @@
         <div class="module-card">
             <div class="module-header">
                 <div class="module-icon">
-                    <i class="fas fa-calculator"></i>
+                    <i class="fas fa-calculator" aria-hidden="true"></i>
                 </div>
                 <div class="module-info">
                     <h2>Budget Management</h2>
@@ -766,7 +840,7 @@
             
             <div class="module-actions">
                 <a href="/budget" class="btn btn-primary">
-                    <i class="fas fa-play"></i> Budget 시작하기
+                    <i class="fas fa-play" aria-hidden="true"></i> Budget 시작하기
                 </a>
             </div>
         </div>
@@ -775,7 +849,7 @@
         <div class="module-card">
             <div class="module-header">
                 <div class="module-icon">
-                    <i class="fas fa-chart-bar"></i>
+                    <i class="fas fa-chart-bar" aria-hidden="true"></i>
                 </div>
                 <div class="module-info">
                     <h2>Analytics Dashboard<span class="badge badge-new">GA4</span></h2>
@@ -805,7 +879,7 @@
             
             <div class="module-actions">
                 <a href="/analytics-dashboard" class="btn btn-primary">
-                    <i class="fas fa-play"></i> Analytics 시작하기
+                    <i class="fas fa-play" aria-hidden="true"></i> Analytics 시작하기
                 </a>
             </div>
         </div>
@@ -814,7 +888,7 @@
         <div class="module-card">
             <div class="module-header">
                 <div class="module-icon">
-                    <i class="fas fa-robot"></i>
+                    <i class="fas fa-robot" aria-hidden="true"></i>
                 </div>
                 <div class="module-info">
                     <h2>AI Assistant<span class="badge badge-premium">Gemini</span></h2>
@@ -844,7 +918,7 @@
             
             <div class="module-actions">
                 <a href="/canvas-ultimate-clean" class="btn btn-primary">
-                    <i class="fas fa-play"></i> AI Chat 시작하기
+                    <i class="fas fa-play" aria-hidden="true"></i> AI Chat 시작하기
                 </a>
             </div>
         </div>
@@ -853,7 +927,7 @@
         <div class="module-card">
             <div class="module-header">
                 <div class="module-icon">
-                    <i class="fas fa-cube"></i>
+                    <i class="fas fa-cube" aria-hidden="true"></i>
                 </div>
                 <div class="module-info">
                     <h2>Digital Twin</h2>
@@ -882,7 +956,7 @@
             
             <div class="module-actions">
                 <a href="/digital-twin-pro" class="btn btn-primary">
-                    <i class="fas fa-play"></i> Digital Twin 시작하기
+                    <i class="fas fa-play" aria-hidden="true"></i> Digital Twin 시작하기
                 </a>
             </div>
         </div>
@@ -891,7 +965,7 @@
         <div class="module-card">
             <div class="module-header">
                 <div class="module-icon">
-                    <i class="fas fa-vr-cardboard"></i>
+                    <i class="fas fa-vr-cardboard" aria-hidden="true"></i>
                 </div>
                 <div class="module-info">
                     <h2>AR/VR Demo</h2>
@@ -920,7 +994,7 @@
             
             <div class="module-actions">
                 <a href="/ar-vr-demo" class="btn btn-primary">
-                    <i class="fas fa-play"></i> AR/VR 체험하기
+                    <i class="fas fa-play" aria-hidden="true"></i> AR/VR 체험하기
                 </a>
             </div>
         </div>
@@ -1006,5 +1080,9 @@
             }
         });
     </script>
+
+    <!-- ⌨️  Keyboard Navigation & Accessibility -->
+    <script src="/static/js/keyboard-navigation.js"></script>
+    
 </body>
 </html>

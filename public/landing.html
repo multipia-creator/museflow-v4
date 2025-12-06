@@ -158,7 +158,7 @@
             padding: 0.625rem 1.25rem;
             background: rgba(59, 130, 246, 0.1);
             border: 1px solid rgba(59, 130, 246, 0.3);
-            color: #60a5fa;
+            color: #93c5fd;
             border-radius: 8px;
             text-decoration: none;
             font-size: 0.875rem;
@@ -541,7 +541,7 @@
             background: rgba(139, 92, 246, 0.2);
             border: 1px solid rgba(139, 92, 246, 0.5);
             border-radius: 100px;
-            color: #a78bfa;
+            color: #c4b5fd;
             font-weight: 600;
             font-size: 0.875rem;
             text-transform: uppercase;
@@ -886,7 +886,7 @@
             background: rgba(139, 92, 246, 0.2);
             border: 1px solid rgba(139, 92, 246, 0.5);
             border-radius: 100px;
-            color: #a78bfa;
+            color: #c4b5fd;
             font-weight: 600;
             font-size: 0.875rem;
         }
@@ -1821,6 +1821,75 @@
                 text-align: center !important;
             }
         }
+    
+    /* Screen Reader Only - Accessibility */
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+    
+    .sr-only-focusable:focus {
+        position: static;
+        width: auto;
+        height: auto;
+        margin: 0;
+        overflow: visible;
+        clip: auto;
+        white-space: normal;
+    }
+    
+    /* Skip to Content Link - WCAG 2.1 Guideline 2.4.1 */
+    .skip-link {
+        position: absolute;
+        top: -100px;
+        left: 0;
+        background: #000;
+        color: #fff;
+        padding: 1rem 2rem;
+        text-decoration: none;
+        font-weight: 600;
+        z-index: 100000;
+        border-radius: 0 0 8px 0;
+        transition: top 0.3s ease;
+    }
+    
+    .skip-link:focus {
+        top: 0;
+        outline: 3px solid #c4b5fd;
+        outline-offset: 2px;
+    }
+    
+    /* Enhanced Focus Styles for Keyboard Navigation */
+    *:focus {
+        outline: 2px solid #c4b5fd;
+        outline-offset: 2px;
+    }
+    
+    *:focus:not(:focus-visible) {
+        outline: none;
+    }
+    
+    *:focus-visible {
+        outline: 3px solid #c4b5fd;
+        outline-offset: 3px;
+        box-shadow: 0 0 0 4px rgba(196, 181, 253, 0.3);
+    }
+    
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+        outline: 3px solid #c4b5fd;
+        outline-offset: 2px;
+    }
     </style>
 
     <style>
@@ -1870,7 +1939,7 @@
 
         .museflow-footer-version {
             font-weight: 600;
-            color: #60A5FA;
+            color: #93c5fd;
         }
 
         /* Adjust body padding to prevent content overlap */
@@ -2160,6 +2229,11 @@ html { visibility: visible; opacity: 1; }
     <script src="/static/js/analytics-ga4.js" async></script>
     </head>
 <body>
+    <!-- Skip to Content for Keyboard Navigation -->
+    <a href="#hero-section" class="skip-link">
+        메인 콘텐츠로 건너뛰기
+    </a>
+    
     <!-- Main Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
@@ -2176,28 +2250,28 @@ html { visibility: visible; opacity: 1; }
             </div>
             
             <ul class="nav-links" id="nav-links">
-                <li><a href="/landing">홈</a></li>
-                <li><a href="/about">소개</a></li>
-                <li><a href="/modules">모듈</a></li>
-                <li><a href="#pricing">가격</a></li>
+                <li role="none"><a href="/landing" role="menuitem">홈</a></li>
+                <li role="none"><a href="/about" role="menuitem">소개</a></li>
+                <li role="none"><a href="/modules" role="menuitem">모듈</a></li>
+                <li role="none"><a href="#pricing" role="menuitem">가격</a></li>
             </ul>
             <div style="display: flex; align-items: center; gap: 0.75rem;">
                 <!-- Dashboard Button -->
-                <a href="/dashboard.html" class="nav-app-btn" style="background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.3); color: #a78bfa;">
-                    <i class="fas fa-chart-line" style="display: inline-block; width: 1em; text-align: center;"></i>
+                <a href="/dashboard.html" class="nav-app-btn" style="background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.3); color: #c4b5fd;">
+                    <i class="fas fa-chart-line" style="display: inline-block; width: 1em; text-align: center;" aria-hidden="true"></i>
                     <span>대시보드</span>
                 </a>
                 
                 <!-- Canvas Button -->
-                <a href="/canvas-ultimate-clean.html" class="nav-app-btn" style="background: rgba(236, 72, 153, 0.1); border-color: rgba(236, 72, 153, 0.3); color: #f9a8d4;">
-                    <i class="fas fa-palette" style="display: inline-block; width: 1em; text-align: center;"></i>
+                <a href="/canvas-ultimate-clean.html" class="nav-app-btn" style="background: rgba(236, 72, 153, 0.1); border-color: rgba(236, 72, 153, 0.3); color: #fbb6ce;">
+                    <i class="fas fa-palette" style="display: inline-block; width: 1em; text-align: center;" aria-hidden="true"></i>
                     <span>캔버스</span>
                 </a>
                 
                 <a href="/signup.html" class="nav-signup-btn">
-                    <i class="fas fa-sparkles"></i> 
+                    <i class="fas fa-sparkles" aria-hidden="true"></i> 
                     <span>MuseFlow 슈퍼 에이전트 잠금 해제</span>
-                    <i class="fas fa-arrow-right" style="font-size: 0.875rem;"></i>
+                    <i class="fas fa-arrow-right" style="font-size: 0.875rem;" aria-hidden="true"></i>
                 </a>
                 <a href="/login.html" class="nav-login-btn">
                     로그인
@@ -2245,41 +2319,41 @@ html { visibility: visible; opacity: 1; }
             <!-- AI Workspace Search -->
             <div class="ai-workspace" style="max-width: 800px; margin: 0 auto 2rem; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 1.5rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
                 <div style="position: relative; margin-bottom: 1rem;">
-                    <input type="text" id="ai-search" data-i18n-placeholder="searchPlaceholder" placeholder="당신의 전시를 디자인하세요" style="width: 100%; padding: 1rem 8rem 1rem 1.5rem; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-size: 1rem;" />
+                    <input type="text" id="ai-search" data-i18n-placeholder="searchPlaceholder" placeholder="당신의 전시를 디자인하세요" style="width: 100%; padding: 1rem 8rem 1rem 1.5rem; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-size: 1rem;" / aria-label="AI 검색 입력" role="searchbox">
                     
                     <!-- Voice Recognition Button -->
-                    <button id="voice-btn" class="voice-btn" title="음성 인식" style="position: absolute; right: 5rem; top: 50%; transform: translateY(-50%); background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); padding: 0.75rem; border-radius: 10px; color: #a78bfa; cursor: pointer; font-weight: 600; transition: all 0.3s ease;">
-                        <i class="fas fa-microphone" id="voice-icon"></i>
+                    <button id="voice-btn" class="voice-btn" title="음성 인식" style="position: absolute; right: 5rem; top: 50%; transform: translateY(-50%); background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); padding: 0.75rem; border-radius: 10px; color: #c4b5fd; cursor: pointer; font-weight: 600; transition: all 0.3s ease;" aria-label="음성 인식 시작" role="button">
+                        <i class="fas fa-microphone" id="voice-icon" aria-hidden="true"></i>
                     </button>
                     
                     <!-- Search Button -->
-                    <button id="search-btn" style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); border: none; padding: 0.75rem 1.5rem; border-radius: 10px; color: white; cursor: pointer; font-weight: 600;">
-                        <i class="fas fa-search"></i>
+                    <button id="search-btn" style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); border: none; padding: 0.75rem 1.5rem; border-radius: 10px; color: white; cursor: pointer; font-weight: 600;" aria-label="검색 실행" role="button">
+                        <i class="fas fa-search" aria-hidden="true"></i>
                     </button>
                 </div>
                 <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;">
-                    <button class="ai-tool-btn" data-tool="exhibition" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                    <button class="ai-tool-btn" data-tool="exhibition" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #c4b5fd; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
                         <span data-i18n="toolPlanExhibition">🎯 전시 기획하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="budget" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                    <button class="ai-tool-btn" data-tool="budget" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #c4b5fd; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
                         <span data-i18n="toolCalculateBudget">💰 예산 계산하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="artwork" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                    <button class="ai-tool-btn" data-tool="artwork" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #c4b5fd; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
                         <span data-i18n="toolSelectArtworks">🏛️ 작품 선정하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="visitor" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                    <button class="ai-tool-btn" data-tool="visitor" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #c4b5fd; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
                         <span data-i18n="toolPredictVisitors">👥 관람객 예측하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="space" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                    <button class="ai-tool-btn" data-tool="space" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #c4b5fd; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
                         <span data-i18n="toolDesignSpace">🏗️ 공간 설계하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="schedule" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                    <button class="ai-tool-btn" data-tool="schedule" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #c4b5fd; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
                         <span data-i18n="toolManageSchedule">📋 일정 관리하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="guide" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                    <button class="ai-tool-btn" data-tool="guide" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #c4b5fd; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
                         <span data-i18n="toolCreateGuide">💬 가이드 만들기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="all" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                    <button class="ai-tool-btn" data-tool="all" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #c4b5fd; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
                         <span data-i18n="toolViewAll">🤖 전체 보기</span>
                     </button>
                 </div>
@@ -2287,17 +2361,17 @@ html { visibility: visible; opacity: 1; }
             
             <div class="hero-cta-group">
                 <a href="#features" class="hero-cta-secondary">
-                    <i class="fas fa-info-circle"></i> <span data-i18n="learnMore">Learn More</span>
+                    <i class="fas fa-info-circle" aria-hidden="true"></i> <span data-i18n="learnMore">Learn More</span>
                 </a>
             </div>
             
             <!-- Auth Buttons -->
             <div class="hero-cta-group" style="margin-top: 1.5rem;">
                 <a href="/signup.html" class="hero-cta-primary">
-                    <i class="fas fa-user-plus"></i> <span data-i18n="signupButton">가입하기</span>
+                    <i class="fas fa-user-plus" aria-hidden="true"></i> <span data-i18n="signupButton">가입하기</span>
                 </a>
                 <a href="/login.html" class="hero-cta-secondary">
-                    <i class="fas fa-sign-in-alt"></i> <span data-i18n="loginButton">로그인</span>
+                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i> <span data-i18n="loginButton">로그인</span>
                 </a>
             </div>
             
@@ -2335,7 +2409,7 @@ html { visibility: visible; opacity: 1; }
                 <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; backdrop-filter: blur(40px); background: rgba(0, 0, 0, 0.3);">
                     <!-- Pulsing Play Button -->
                     <div class="demo-play-button" style="width: 100px; height: 100px; background: rgba(255, 255, 255, 0.2); border: 3px solid white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; animation: pulse 2s infinite;">
-                        <i class="fas fa-play" style="font-size: 2.5rem; color: white; margin-left: 8px;"></i>
+                        <i class="fas fa-play" style="font-size: 2.5rem; color: white; margin-left: 8px;" aria-hidden="true"></i>
                     </div>
                     
                     <!-- Coming Soon Text -->
@@ -2345,7 +2419,7 @@ html { visibility: visible; opacity: 1; }
                         
                         <!-- Notify Me Button -->
                         <button id="notify-btn" style="padding: 1rem 2rem; background: white; color: #8b5cf6; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);">
-                            <i class="fas fa-bell"></i> <span data-i18n="notifyButton">Notify Me When Available</span>
+                            <i class="fas fa-bell" aria-hidden="true"></i> <span data-i18n="notifyButton">Notify Me When Available</span>
                         </button>
                     </div>
                 </div>
@@ -2355,7 +2429,7 @@ html { visibility: visible; opacity: 1; }
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem;">
                 <div style="text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="width: 64px; height: 64px; margin: 0 auto 1rem; background: rgba(139, 92, 246, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-bolt" style="font-size: 2rem; color: #8b5cf6;"></i>
+                        <i class="fas fa-bolt" style="font-size: 2rem; color: #8b5cf6;" aria-hidden="true"></i>
                     </div>
                     <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-i18n="demoFeature1Title">87개 Widget System</h4>
                     <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="demoFeature1Desc">드래그앤드롭으로 완성하는 전시 워크플로우</p>
@@ -2363,7 +2437,7 @@ html { visibility: visible; opacity: 1; }
                 
                 <div style="text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="width: 64px; height: 64px; margin: 0 auto 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-brain" style="font-size: 2rem; color: #3b82f6;"></i>
+                        <i class="fas fa-brain" style="font-size: 2rem; color: #3b82f6;" aria-hidden="true"></i>
                     </div>
                     <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-i18n="demoFeature2Title">Gemini AI Assistant</h4>
                     <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="demoFeature2Desc">Context 기반 지능형 업무 지원</p>
@@ -2371,7 +2445,7 @@ html { visibility: visible; opacity: 1; }
                 
                 <div style="text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="width: 64px; height: 64px; margin: 0 auto 1rem; background: rgba(236, 72, 153, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-chart-line" style="font-size: 2rem; color: #ec4899;"></i>
+                        <i class="fas fa-chart-line" style="font-size: 2rem; color: #ec4899;" aria-hidden="true"></i>
                     </div>
                     <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-i18n="demoFeature3Title">Google Analytics 4</h4>
                     <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="demoFeature3Desc">실시간 사용자 행동 분석 및 인사이트</p>
@@ -2396,7 +2470,7 @@ html { visibility: visible; opacity: 1; }
                 </p>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem auto; max-width: 900px;">
                     <div style="background: rgba(139, 92, 246, 0.1); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(139, 92, 246, 0.2);">
-                        <div style="font-size: 2rem; font-weight: 700; color: #a78bfa; margin-bottom: 0.5rem;">15</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #c4b5fd; margin-bottom: 0.5rem;">15</div>
                         <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">AI Agent Types</div>
                     </div>
                     <div style="background: rgba(236, 72, 153, 0.1); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(236, 72, 153, 0.2);">
@@ -2404,7 +2478,7 @@ html { visibility: visible; opacity: 1; }
                         <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">Execution Phases</div>
                     </div>
                     <div style="background: rgba(139, 92, 246, 0.1); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(139, 92, 246, 0.2);">
-                        <div style="font-size: 2rem; font-weight: 700; color: #a78bfa; margin-bottom: 0.5rem;">3.2s</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #c4b5fd; margin-bottom: 0.5rem;">3.2s</div>
                         <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">Avg. Completion</div>
                     </div>
                     <div style="background: rgba(236, 72, 153, 0.1); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(236, 72, 153, 0.2);">
@@ -2675,11 +2749,11 @@ html { visibility: visible; opacity: 1; }
                 <div class="pricing-price" style="font-size: 3.5rem; margin-bottom: 0.25rem;">$0</div>
                 <div class="pricing-period" data-i18n="pricingFreePeriod" style="font-size: 1rem; margin-bottom: 2rem; opacity: 0.6;">Forever free</div>
                 <ul class="pricing-features" style="text-align: left; margin-bottom: 2.5rem;">
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature1">Up to 5 workflows</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature2">2 team members</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature3">Basic AI agents</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature4">100 museum API requests/day</span></li>
-                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature5">Community support</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingFreeFeature1">Up to 5 workflows</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingFreeFeature2">2 team members</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingFreeFeature3">Basic AI agents</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingFreeFeature4">100 museum API requests/day</span></li>
+                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingFreeFeature5">Community support</span></li>
                 </ul>
                 <button class="pricing-cta" data-i18n="pricingFreeCta" style="width: 100%; padding: 1rem; font-size: 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateY(0)';">Get Started</button>
             </div>
@@ -2691,13 +2765,13 @@ html { visibility: visible; opacity: 1; }
                 <div class="pricing-price" data-i18n="pricingProPrice" style="font-size: 3.5rem; margin-bottom: 0.25rem; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">$99</div>
                 <div class="pricing-period" data-i18n="pricingProPeriod" style="font-size: 1rem; margin-bottom: 2rem; opacity: 0.6;">per month</div>
                 <ul class="pricing-features" style="text-align: left; margin-bottom: 2.5rem;">
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature1">Unlimited workflows</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature2">10 team members</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature3">All 8 AI agents</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature4">Unlimited museum API</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature5">AR/VR experiences</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature6">Real-time collaboration</span></li>
-                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature7">Priority support</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature1">Unlimited workflows</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature2">10 team members</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature3">All 8 AI agents</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature4">Unlimited museum API</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature5">AR/VR experiences</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature6">Real-time collaboration</span></li>
+                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature7">Priority support</span></li>
                 </ul>
                 <button class="pricing-cta" data-i18n="pricingProCta" style="width: 100%; padding: 1rem; font-size: 1rem; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); border: none; color: white; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4); font-weight: 600;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 40px rgba(139, 92, 246, 0.6)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 32px rgba(139, 92, 246, 0.4)';">Start Free Trial</button>
             </div>
@@ -2708,13 +2782,13 @@ html { visibility: visible; opacity: 1; }
                 <div class="pricing-price" data-i18n="pricingEnterprisePrice" style="font-size: 3.5rem; margin-bottom: 0.25rem;">Custom</div>
                 <div class="pricing-period" data-i18n="pricingEnterprisePeriod" style="font-size: 1rem; margin-bottom: 2rem; opacity: 0.6;">Contact us</div>
                 <ul class="pricing-features" style="text-align: left; margin-bottom: 2.5rem;">
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature1">Everything in Pro</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature2">Unlimited team members</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature3">Custom AI training</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature4">Dedicated infrastructure</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature5">On-premise deployment</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature6">24/7 phone support</span></li>
-                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature7">SLA guarantee</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature1">Everything in Pro</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature2">Unlimited team members</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature3">Custom AI training</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature4">Dedicated infrastructure</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature5">On-premise deployment</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature6">24/7 phone support</span></li>
+                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature7">SLA guarantee</span></li>
                 </ul>
                 <button class="pricing-cta" data-i18n="pricingEnterpriseCta" style="width: 100%; padding: 1rem; font-size: 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateY(0)';">Contact Sales</button>
             </div>
@@ -2752,16 +2826,16 @@ html { visibility: visible; opacity: 1; }
                     by Google's Gemini 2.0 and running on Cloudflare's global edge network.
                 </p>
                 <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; max-width: 700px; margin-bottom: 2rem;">
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Gemini 2.0 Flash</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">TypeScript 5.7</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Hono 4.10</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Cloudflare Workers</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">D1 Database</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Durable Objects</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Three.js</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">WebXR API</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Chart.js</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Notion API</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">Gemini 2.0 Flash</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">TypeScript 5.7</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">Hono 4.10</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">Cloudflare Workers</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">D1 Database</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">Durable Objects</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">Three.js</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">WebXR API</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">Chart.js</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">Notion API</span>
                 </div>
                 <div class="agent-cta-group">
                     <a href="#features" class="agent-btn agent-btn-primary">Explore Features</a>
@@ -2790,23 +2864,23 @@ html { visibility: visible; opacity: 1; }
     <nav class="mobile-bottom-nav">
         <div class="mobile-bottom-nav-container">
             <a href="#hero" class="mobile-nav-item active">
-                <i class="fas fa-home"></i>
+                <i class="fas fa-home" aria-hidden="true"></i>
                 <span>홈</span>
             </a>
             <a href="#modules" class="mobile-nav-item">
-                <i class="fas fa-th-large"></i>
+                <i class="fas fa-th-large" aria-hidden="true"></i>
                 <span>모듈</span>
             </a>
             <a href="/dashboard.html" class="mobile-nav-item">
-                <i class="fas fa-chart-line"></i>
+                <i class="fas fa-chart-line" aria-hidden="true"></i>
                 <span>대시보드</span>
             </a>
             <a href="/canvas-ultimate-clean.html" class="mobile-nav-item">
-                <i class="fas fa-palette"></i>
+                <i class="fas fa-palette" aria-hidden="true"></i>
                 <span>캔버스</span>
             </a>
             <a href="#pricing" class="mobile-nav-item">
-                <i class="fas fa-tag"></i>
+                <i class="fas fa-tag" aria-hidden="true"></i>
                 <span>가격</span>
             </a>
         </div>
@@ -2818,40 +2892,40 @@ html { visibility: visible; opacity: 1; }
             <div class="footer-section">
                 <h4>Product</h4>
                 <ul>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#modules">Modules</a></li>
-                    <li><a href="#pricing">Pricing</a></li>
-                    <li><a href="/admin.html">Platform Dashboard</a></li>
+                    <li role="none"><a href="#features" role="menuitem">Features</a></li>
+                    <li role="none"><a href="#modules" role="menuitem">Modules</a></li>
+                    <li role="none"><a href="#pricing" role="menuitem">Pricing</a></li>
+                    <li role="none"><a href="/admin.html" role="menuitem">Platform Dashboard</a></li>
                 </ul>
             </div>
             
             <div class="footer-section">
                 <h4>Resources</h4>
                 <ul>
-                    <li><a href="/admin.html">Admin Dashboard</a></li>
-                    <li><a href="/ar-vr-demo.html">AR/VR Demo</a></li>
-                    <li><a href="#">Documentation</a></li>
-                    <li><a href="#">API Reference</a></li>
+                    <li role="none"><a href="/admin.html" role="menuitem">Admin Dashboard</a></li>
+                    <li role="none"><a href="/ar-vr-demo.html" role="menuitem">AR/VR Demo</a></li>
+                    <li role="none"><a href="#" role="menuitem">Documentation</a></li>
+                    <li role="none"><a href="#" role="menuitem">API Reference</a></li>
                 </ul>
             </div>
             
             <div class="footer-section">
                 <h4>Company</h4>
                 <ul>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li role="none"><a href="#about" role="menuitem">About</a></li>
+                    <li role="none"><a href="#" role="menuitem">Blog</a></li>
+                    <li role="none"><a href="#" role="menuitem">Careers</a></li>
+                    <li role="none"><a href="#" role="menuitem">Contact</a></li>
                 </ul>
             </div>
             
             <div class="footer-section">
                 <h4>Connect</h4>
                 <ul>
-                    <li><a href="#"><i class="fab fa-github"></i> GitHub</a></li>
-                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
-                    <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
-                    <li><a href="#"><i class="fas fa-envelope"></i> Email</a></li>
+                    <li><a href="#"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a></li>
+                    <li><a href="#"><i class="fab fa-twitter" aria-hidden="true"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
+                    <li><a href="#"><i class="fas fa-envelope" aria-hidden="true"></i> Email</a></li>
                 </ul>
             </div>
         </div>
@@ -5208,5 +5282,9 @@ html { visibility: visible; opacity: 1; }
         });
     </script>
 
+
+    <!-- ⌨️  Keyboard Navigation & Accessibility -->
+    <script src="/static/js/keyboard-navigation.js"></script>
+    
 </body>
 </html>
