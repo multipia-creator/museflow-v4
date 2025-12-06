@@ -2456,6 +2456,13 @@ function toggleWidgetCategory(categoryId) {
   
   // Re-initialize Lucide icons
   lucide.createIcons();
+  
+  // 카테고리 펼침 시 Widget 드래그 리스너 재등록
+  if (!isExpanded && typeof attachWidgetDragListeners === 'function') {
+    setTimeout(() => {
+      attachWidgetDragListeners();
+    }, 100);
+  }
 }
 
 // Widget Search
@@ -3657,49 +3664,70 @@ document.getElementById('aiInput')?.addEventListener('keypress', (e) => {
 console.log('✅ Canvas AI 어시스턴트 초기화 완료');
 
 // ============================================
-// Widget 드래그앤드롭 기능 (이벤트 위임 패턴)
+// Widget 드래그앤드롭 기능 (MutationObserver + 직접 이벤트)
 // ============================================
 
 let draggedWidgetData = null;
 
-// 이벤트 위임: widgetPanel에 이벤트 리스너 등록
-const widgetPanel = document.getElementById('widgetPanel');
-
-if (widgetPanel) {
-    // dragstart 이벤트 위임
-    widgetPanel.addEventListener('dragstart', (e) => {
-        const widget = e.target.closest('.widget-item');
-        if (!widget) return;
-        
-        const widgetType = widget.dataset.widgetType;
-        const widgetName = widget.querySelector('.widget-name')?.textContent?.replace(/Premium/g, '').trim() || 'New Widget';
-        const widgetDesc = widget.querySelector('.widget-description')?.textContent || '';
-        const isPremium = widget.querySelector('.badge-premium') !== null;
-        
-        draggedWidgetData = {
-            type: widgetType,
-            name: widgetName,
-            description: widgetDesc,
-            isPremium: isPremium
-        };
-        
-        e.dataTransfer.effectAllowed = 'copy';
-        e.dataTransfer.setData('text/plain', JSON.stringify(draggedWidgetData));
-        
-        // 드래그 중 시각적 피드백
-        widget.style.opacity = '0.5';
-        console.log('🎨 Widget 드래그 시작:', widgetName);
-    });
+// Widget 아이템에 드래그 이벤트 리스너 추가하는 함수
+function attachWidgetDragListeners() {
+    const widgets = document.querySelectorAll('.widget-item');
     
-    // dragend 이벤트 위임
-    widgetPanel.addEventListener('dragend', (e) => {
-        const widget = e.target.closest('.widget-item');
-        if (widget) {
+    widgets.forEach(widget => {
+        // 이미 리스너가 등록되어 있으면 스킵
+        if (widget.dataset.dragListenerAttached) return;
+        
+        // dragstart 이벤트
+        widget.addEventListener('dragstart', (e) => {
+            const widgetType = widget.dataset.widgetType;
+            const widgetName = widget.querySelector('.widget-name')?.textContent?.replace(/Premium/g, '').trim() || 'New Widget';
+            const widgetDesc = widget.querySelector('.widget-description')?.textContent || '';
+            const isPremium = widget.querySelector('.badge-premium') !== null;
+            
+            draggedWidgetData = {
+                type: widgetType,
+                name: widgetName,
+                description: widgetDesc,
+                isPremium: isPremium
+            };
+            
+            e.dataTransfer.effectAllowed = 'copy';
+            e.dataTransfer.setData('text/plain', JSON.stringify(draggedWidgetData));
+            
+            // 드래그 중 시각적 피드백
+            widget.style.opacity = '0.5';
+            console.log('🎨 Widget 드래그 시작:', widgetName, draggedWidgetData);
+        });
+        
+        // dragend 이벤트
+        widget.addEventListener('dragend', (e) => {
             widget.style.opacity = '1';
-        }
+            console.log('🎨 Widget 드래그 종료');
+        });
+        
+        // 리스너 등록 플래그
+        widget.dataset.dragListenerAttached = 'true';
     });
     
-    console.log('✅ Widget 패널 이벤트 위임 등록 완료');
+    console.log(`✅ Widget 드래그 리스너 등록 완료: ${widgets.length}개`);
+}
+
+// 초기 로드 시 리스너 등록
+attachWidgetDragListeners();
+
+// MutationObserver로 동적 Widget 감지
+const widgetPanel = document.getElementById('widgetPanel');
+if (widgetPanel) {
+    const observer = new MutationObserver(() => {
+        attachWidgetDragListeners();
+    });
+    
+    observer.observe(widgetPanel, {
+        childList: true,
+        subtree: true
+    });
+    
+    console.log('✅ Widget 동적 감지 시스템 활성화');
 } else {
     console.error('❌ widgetPanel 요소를 찾을 수 없습니다!');
 }
@@ -3713,14 +3741,16 @@ if (canvasContainer && viewport) {
     canvasContainer.addEventListener('dragover', (e) => {
         e.preventDefault();
         e.dataTransfer.dropEffect = 'copy';
+        // console.log('🎯 dragover 이벤트 발생'); // 디버깅용 (너무 많이 출력되므로 주석)
     });
 
     // Canvas 전체 영역에 drop 이벤트
     canvasContainer.addEventListener('drop', (e) => {
         e.preventDefault();
+        console.log('💧 DROP 이벤트 발생!', 'draggedWidgetData:', draggedWidgetData);
         
         if (!draggedWidgetData) {
-            console.warn('⚠️ Widget 데이터가 없습니다');
+            console.warn('⚠️ Widget 데이터가 없습니다. dragstart 이벤트가 제대로 발생하지 않았을 수 있습니다.');
             return;
         }
         
