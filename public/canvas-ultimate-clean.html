@@ -689,18 +689,17 @@ body {
 
 .card-connector {
     position: absolute;
-    background: rgba(139, 92, 246, 0.7);
-    height: 3px;
+    background: transparent;
+    height: 2px;
+    border-top: 2px dashed #9ca3af;
     transform-origin: 0 0;
     transition: all 0.3s ease;
     pointer-events: none;
-    border: none;
 }
 
 .card-connector.active {
-    background: rgba(139, 92, 246, 1);
-    height: 4px;
-    box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+    border-top: 2px dashed #6b7280;
+    box-shadow: 0 0 8px rgba(156, 163, 175, 0.3);
 }
 
 .card-connector-dot {
