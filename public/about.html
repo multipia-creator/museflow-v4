@@ -86,6 +86,126 @@
             color: #8b5cf6;
         }
         
+        /* App Buttons (Dashboard & Canvas) */
+        .nav-app-btn {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            border: 1px solid;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        .nav-app-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.2);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-app-btn i {
+            font-size: 0.875rem;
+            display: inline-block !important;
+        }
+        
+        .nav-app-btn span {
+            display: inline-block !important;
+        }
+        
+        /* Signup Button */
+        .nav-signup-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #93c5fd;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .nav-signup-btn:hover {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-1px);
+        }
+        
+        /* Login Button */
+        .nav-login-btn {
+            padding: 0.625rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .nav-login-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        /* Icon Buttons */
+        .nav-icon-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        
+        .nav-icon-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        /* Language Selector */
+        .nav-lang-select {
+            padding: 0.625rem 1rem;
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            color: white;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .nav-lang-select:hover {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.6);
+        }
+        
         /* Mobile Menu Toggle */
         .mobile-menu-toggle {
             display: none;
@@ -601,9 +721,42 @@
                 <li role="none"><a href="/landing" role="menuitem">홈</a></li>
                 <li role="none"><a href="/about" role="menuitem">소개</a></li>
                 <li role="none"><a href="/modules" role="menuitem">모듈</a></li>
-                <li role="none"><a href="/dashboard" role="menuitem">대시보드</a></li>
-                <li role="none"><a href="/canvas-ultimate-clean" role="menuitem">캔버스</a></li>
+                <li role="none"><a href="#pricing" role="menuitem">가격</a></li>
             </ul>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <!-- Dashboard Button -->
+                <a href="/dashboard" class="nav-app-btn" style="background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.3); color: #c4b5fd;">
+                    <i class="fas fa-chart-line" style="display: inline-block; width: 1em; text-align: center;" aria-hidden="true"></i>
+                    <span>대시보드</span>
+                </a>
+                
+                <!-- Canvas Button -->
+                <a href="/canvas-ultimate-clean" class="nav-app-btn" style="background: rgba(236, 72, 153, 0.1); border-color: rgba(236, 72, 153, 0.3); color: #fbb6ce;">
+                    <i class="fas fa-palette" style="display: inline-block; width: 1em; text-align: center;" aria-hidden="true"></i>
+                    <span>캔버스</span>
+                </a>
+                
+                <a href="/signup" class="nav-signup-btn">
+                    <i class="fas fa-sparkles" aria-hidden="true"></i> 
+                    <span>무료로 시작하기</span>
+                    <i class="fas fa-arrow-right" style="font-size: 0.875rem;" aria-hidden="true"></i>
+                </a>
+                <a href="/login" class="nav-login-btn">
+                    로그인
+                </a>
+                
+                <!-- Language Selector -->
+                <select id="lang-select" class="nav-lang-select" title="언어 선택">
+                    <option value="ko">🇰🇷 한국어</option>
+                    <option value="en">🇺🇸 English</option>
+                </select>
+                
+                <!-- MyPage Button -->
+                <a href="/account" class="nav-icon-btn" title="내 계정">
+                    <span style="font-size: 1rem;">👤</span>
+                    <span class="mypage-text">내 계정</span>
+                </a>
+            </div>
         </div>
     </nav>
 
