@@ -16,6 +16,7 @@ const exclude = [
   '/static/*',
   '/manifest.json',
   '/sw.js',
+  '/version.json',
   
   // Root path (CRITICAL)
   '/',
