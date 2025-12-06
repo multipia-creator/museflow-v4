@@ -3441,7 +3441,7 @@ document.querySelectorAll('.widget-item').forEach(widget => {
 });
 
 // Canvas에 드롭 가능하도록 설정
-const viewport = document.getElementById('viewport');
+// viewport 변수는 이미 위에서 선언됨 (line 2413)
 
 viewport.addEventListener('dragover', (e) => {
     e.preventDefault();
