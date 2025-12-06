@@ -4227,12 +4227,120 @@ const cardTemplates = [
     { title: '홍보 영상', content: '전시 소개 영상 (3:45)', icon: 'video', type: 'video', size: '125 MB', format: 'MP4', preview: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' },
     { title: '오디오 가이드', content: '전시 해설 음성 (한/영)', icon: 'headphones', type: 'audio', size: '8.5 MB', format: 'MP3', preview: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
     { title: '전시 포스터', content: '메인 비주얼 디자인', icon: 'image', type: 'image', size: '4.2 MB', format: 'PNG', preview: 'https://picsum.photos/400/300?random=1' },
-    { title: '관람객 통계', content: '월간 리포트', icon: 'bar-chart-2', type: 'data', size: '1.8 MB', format: 'XLSX' },
-    { title: '큐레이터 노트', content: '작품 해설 원고', icon: 'file-text', type: 'document', size: '2.4 MB', format: 'DOCX' },
-    { title: '3D 모델', content: '유물 스캔 데이터', icon: 'box', type: 'data', size: '89 MB', format: 'GLB' },
+    { 
+        title: '관람객 통계', 
+        content: '월간 리포트', 
+        icon: 'bar-chart-2', 
+        type: 'data', 
+        size: '1.8 MB', 
+        format: 'XLSX',
+        data: {
+            period: '2024년 11월',
+            totalVisitors: 3847,
+            dailyAverage: 128,
+            weekdayAvg: 95,
+            weekendAvg: 215,
+            peakTime: '14:00-16:00',
+            ageGroups: {
+                '10대': 12,
+                '20대': 28,
+                '30대': 35,
+                '40대': 15,
+                '50대+': 10
+            },
+            satisfaction: 4.6
+        }
+    },
+    { 
+        title: '큐레이터 노트', 
+        content: '작품 해설 원고', 
+        icon: 'file-text', 
+        type: 'document', 
+        size: '2.4 MB', 
+        format: 'DOCX',
+        data: {
+            작품명: '시간의 흐름',
+            작가: '김미래',
+            제작년도: '2023',
+            재료: '혼합재료, 디지털 미디어',
+            크기: '150 x 200 cm',
+            설명: '이 작품은 시간의 흐름과 변화를 시각적으로 표현한 작품입니다. 작가는 전통적인 회화 기법과 현대적인 디지털 미디어를 결합하여 과거와 현재, 미래가 공존하는 순간을 포착했습니다.',
+            관람포인트: [
+                '좌측 하단의 시계 모티프',
+                '중앙의 빛의 흐름',
+                '우측 상단의 추상적 형태'
+            ]
+        }
+    },
+    { 
+        title: '3D 모델', 
+        content: '유물 스캔 데이터', 
+        icon: 'box', 
+        type: 'data', 
+        size: '89 MB', 
+        format: 'GLB',
+        data: {
+            유물명: '청자 상감모란문 매병',
+            시대: '고려시대 (12세기)',
+            크기: '높이 42cm, 구경 8cm',
+            스캔정보: {
+                해상도: '0.1mm',
+                폴리곤수: '2.5M',
+                텍스처: '4K (4096x4096)',
+                스캔방식: '구조광 3D 스캐닝'
+            },
+            특징: '상감기법으로 모란문양을 새긴 고려청자의 대표작',
+            보존상태: '양호 (일부 복원)',
+            소장처: '국립중앙박물관'
+        }
+    },
     { title: '현장 사진', content: '설치 진행 사진 (24장)', icon: 'camera', type: 'image', size: '45 MB', format: 'JPG', preview: 'https://picsum.photos/400/300?random=2' },
-    { title: '피드백', content: '관람객 의견 수집', icon: 'message-circle', type: 'document', size: '512 KB', format: 'PDF' },
-    { title: '일정표', content: '전시 운영 스케줄', icon: 'calendar', type: 'document', size: '1.2 MB', format: 'PDF' }
+    { 
+        title: '피드백', 
+        content: '관람객 의견 수집', 
+        icon: 'message-circle', 
+        type: 'document', 
+        size: '512 KB', 
+        format: 'PDF',
+        data: {
+            총응답수: 156,
+            평균평점: 4.6,
+            긍정: 142,
+            부정: 14,
+            주요의견: [
+                { 평점: 5, 의견: '작품 배치가 동선을 고려해서 잘 되어있어요', 날짜: '2024-12-05' },
+                { 평점: 5, 의견: '오디오 가이드가 정말 유익했습니다', 날짜: '2024-12-05' },
+                { 평점: 4, 의견: '조명이 조금 어두운 것 같아요', 날짜: '2024-12-04' },
+                { 평점: 5, 의견: '전시 구성이 훌륭합니다!', 날짜: '2024-12-04' },
+                { 평점: 3, 의견: '휴식 공간이 부족합니다', 날짜: '2024-12-03' }
+            ]
+        }
+    },
+    { 
+        title: '일정표', 
+        content: '전시 운영 스케줄', 
+        icon: 'calendar', 
+        type: 'document', 
+        size: '1.2 MB', 
+        format: 'PDF',
+        data: {
+            전시기간: '2024.11.01 - 2025.01.31',
+            운영시간: '10:00 - 18:00 (입장마감 17:30)',
+            휴관일: '매주 월요일, 1월 1일',
+            특별이벤트: [
+                { 날짜: '2024-12-14', 시간: '14:00', 이벤트: '큐레이터 토크', 장소: '전시장 내' },
+                { 날짜: '2024-12-21', 시간: '15:00', 이벤트: '작가와의 대화', 장소: '세미나실' },
+                { 날짜: '2024-12-28', 시간: '14:00', 이벤트: '어린이 체험 프로그램', 장소: '교육실' },
+                { 날짜: '2025-01-11', 시간: '16:00', 이벤트: '전시 연계 워크숍', 장소: '교육실' }
+            ],
+            관람료: {
+                성인: '10,000원',
+                청소년: '7,000원',
+                어린이: '5,000원',
+                단체: '20% 할인'
+            }
+        }
+    }
 ];
 
 // Generate cards with auto-centered positions
@@ -4342,9 +4450,23 @@ function createCard(card) {
     }
     
     // Card selection
+    // Store card data
+    if (card.data) {
+        cardEl.dataset.cardData = JSON.stringify(card.data);
+    }
+    
+    // Card single click - select
     cardEl.addEventListener('click', function(e) {
-        if (!e.target.classList.contains('resize-handle') && !e.target.closest('.card-thumbnail')) {
+        if (!e.target.classList.contains('resize-handle') && !e.target.closest('.card-thumbnail') && !e.target.closest('.card-action-btn')) {
             selectCard(cardEl);
+            e.stopPropagation();
+        }
+    });
+    
+    // Card double click - show data
+    cardEl.addEventListener('dblclick', function(e) {
+        if (!e.target.classList.contains('resize-handle') && !e.target.closest('.card-thumbnail')) {
+            showCardDataModal(cardEl);
             e.stopPropagation();
         }
     });
@@ -5623,6 +5745,127 @@ function showToast(message, type = 'info') {
         toast.style.animation = 'slideOut 0.3s ease-out';
         setTimeout(() => toast.remove(), 300);
     }, 3000);
+}
+
+// Show Card Data Modal
+function showCardDataModal(cardEl) {
+    const title = cardEl.querySelector('.card-title span')?.textContent || cardEl.dataset.title;
+    const dataStr = cardEl.dataset.cardData;
+    
+    if (!dataStr) {
+        showToast('이 카드에는 상세 데이터가 없습니다', 'info');
+        return;
+    }
+    
+    const data = JSON.parse(dataStr);
+    
+    // Create modal overlay
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 10001;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(4px);
+        animation: fadeIn 0.2s ease-out;
+    `;
+    
+    // Create modal content
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: white;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        animation: slideUp 0.3s ease-out;
+    `;
+    
+    // Build content HTML
+    let contentHTML = `
+        <div style="position: sticky; top: 0; background: white; border-bottom: 1px solid #e5e7eb; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-radius: 12px 12px 0 0;">
+            <h2 style="margin: 0; font-size: 20px; color: #1f2937;">${title}</h2>
+            <button onclick="this.closest('[style*=fixed]').remove()" style="border: none; background: #f3f4f6; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+            </button>
+        </div>
+        <div style="padding: 24px;">
+    `;
+    
+    // Format data based on type
+    function formatValue(key, value) {
+        if (typeof value === 'object' && value !== null) {
+            if (Array.isArray(value)) {
+                return `
+                    <div style="margin-top: 8px;">
+                        <strong style="color: #374151;">${key}:</strong>
+                        <ul style="margin: 8px 0; padding-left: 20px;">
+                            ${value.map(item => {
+                                if (typeof item === 'object') {
+                                    return `<li style="margin: 8px 0; padding: 12px; background: #f9fafb; border-radius: 6px; border-left: 3px solid #3b82f6;">${Object.entries(item).map(([k, v]) => `<div><strong>${k}:</strong> ${v}</div>`).join('')}</li>`;
+                                }
+                                return `<li style="margin: 4px 0;">${item}</li>`;
+                            }).join('')}
+                        </ul>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div style="margin-top: 12px; padding: 12px; background: #f9fafb; border-radius: 8px;">
+                        <strong style="color: #374151; display: block; margin-bottom: 8px;">${key}:</strong>
+                        ${Object.entries(value).map(([k, v]) => `
+                            <div style="margin: 6px 0; padding-left: 12px;">
+                                <span style="color: #6b7280;">${k}:</span>
+                                <span style="color: #1f2937; font-weight: 500;">${v}${typeof v === 'number' && k.includes('%') ? '%' : ''}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+        }
+        return `
+            <div style="margin: 12px 0; padding: 12px; background: white; border: 1px solid #e5e7eb; border-radius: 6px;">
+                <strong style="color: #374151;">${key}:</strong>
+                <span style="color: #1f2937; margin-left: 8px;">${value}</span>
+            </div>
+        `;
+    }
+    
+    contentHTML += Object.entries(data).map(([key, value]) => formatValue(key, value)).join('');
+    contentHTML += '</div>';
+    
+    modalContent.innerHTML = contentHTML;
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+    
+    // Close on backdrop click
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
+    
+    // Close on ESC key
+    const escHandler = (e) => {
+        if (e.key === 'Escape') {
+            modal.remove();
+            document.removeEventListener('keydown', escHandler);
+        }
+    };
+    document.addEventListener('keydown', escHandler);
+    
+    // Initialize lucide icons in modal
+    setTimeout(() => lucide.createIcons(), 0);
+    
+    console.log('📊 카드 데이터 모달 열림:', title);
 }
 
 lucide.createIcons();
