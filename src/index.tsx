@@ -15,6 +15,10 @@ import orchestrator from './routes/orchestrator'
 import notion from './routes/notion'
 import figma from './routes/figma'
 import agents from './routes/agents'
+import geminiApi from './api-gemini'
+import googleWorkspace from './api-google-workspace'
+import museumApi from './api-museum'
+import databaseApi from './api-database'
 
 // Export Durable Objects
 export { CollaborationRoom } from './durable-objects/collaboration-room'
@@ -27,11 +31,15 @@ type Bindings = {
   COLLABORATION_ROOM: DurableObjectNamespace;
   GOOGLE_CLIENT_ID: string;
   GOOGLE_CLIENT_SECRET: string;
+  GOOGLE_REFRESH_TOKEN?: string;
   NAVER_CLIENT_ID: string;
   NAVER_CLIENT_SECRET: string;
   KAKAO_CLIENT_ID: string;
   KAKAO_CLIENT_SECRET: string;
   JWT_SECRET: string;
+  ENABLE_GOOGLE_WORKSPACE?: string;
+  MUSEUM_API_KEY?: string;
+  MUSEUM_API_BASE_URL?: string;
 };
 
 const app = new Hono<{ Bindings: Bindings }>()
@@ -83,6 +91,10 @@ app.route('/api/notion', notion)
 app.route('/api/figma', figma)
 app.route('/api/agents', agents)
 app.route('/api/widgets', widgets)
+app.route('/api/gemini', geminiApi)
+app.route('/api/google-workspace', googleWorkspace)
+app.route('/api/museum', museumApi)
+app.route('/api/db', databaseApi)
 
 // 404 handler for API routes (prevent fallback to landing.html)
 app.notFound((c) => {

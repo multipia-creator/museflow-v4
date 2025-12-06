@@ -598,35 +598,128 @@ class AIOrchestrator {
     }
 
     async createDocument(params) {
+        // Try real Google Workspace API first
+        try {
+            const response = await fetch('/api/google-workspace/docs/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: params.title,
+                    content: params.content || ''
+                })
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                console.log('✅ [Google Docs API] Real API call succeeded');
+                return {
+                    id: data.documentId,
+                    url: data.documentUrl,
+                    title: params.title,
+                    realAPI: true
+                };
+            }
+        } catch (error) {
+            console.warn('⚠️ [Google Docs API] Falling back to simulation:', error);
+        }
+        
+        // Fallback to simulation
         return new Promise(resolve => {
             setTimeout(() => {
                 resolve({
                     id: `doc_${Date.now()}`,
                     url: `https://docs.google.com/document/d/${Date.now()}`,
-                    title: params.title
+                    title: params.title,
+                    realAPI: false
                 });
             }, 500);
         });
     }
 
     async scheduleEvent(params) {
+        // Try real Google Calendar API first
+        try {
+            const response = await fetch('/api/google-workspace/calendar/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: params.title,
+                    description: params.description || '',
+                    startDate: params.startDate,
+                    endDate: params.endDate,
+                    location: params.location || ''
+                })
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                console.log('✅ [Google Calendar API] Real API call succeeded');
+                return {
+                    id: data.eventId,
+                    url: data.eventUrl,
+                    title: params.title,
+                    realAPI: true
+                };
+            }
+        } catch (error) {
+            console.warn('⚠️ [Google Calendar API] Falling back to simulation:', error);
+        }
+        
+        // Fallback to simulation
         return new Promise(resolve => {
             setTimeout(() => {
                 resolve({
                     id: `event_${Date.now()}`,
                     url: `https://calendar.google.com/event/${Date.now()}`,
-                    title: params.title
+                    title: params.title,
+                    realAPI: false
                 });
             }, 400);
         });
     }
 
     async sendEmail(params) {
+        // Try real Gmail API first
+        try {
+            const response = await fetch('/api/google-workspace/gmail/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    to: params.recipients,
+                    subject: params.subject,
+                    body: params.body || '',
+                    cc: params.cc || [],
+                    bcc: params.bcc || []
+                })
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                console.log('✅ [Gmail API] Real API call succeeded');
+                return {
+                    sent: params.recipients.length,
+                    subject: params.subject,
+                    messageId: data.messageId,
+                    realAPI: true
+                };
+            }
+        } catch (error) {
+            console.warn('⚠️ [Gmail API] Falling back to simulation:', error);
+        }
+        
+        // Fallback to simulation
         return new Promise(resolve => {
             setTimeout(() => {
                 resolve({
                     sent: params.recipients.length,
-                    subject: params.subject
+                    subject: params.subject,
+                    realAPI: false
                 });
             }, 600);
         });
@@ -654,6 +747,38 @@ class AIOrchestrator {
     }
 
     async fetchMuseumData(params) {
+        // Try real Museum API first
+        try {
+            const response = await fetch('/api/museum/artwork/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    query: params.query || params.keyword || '인상주의',
+                    limit: params.limit || 10,
+                    category: params.category || 'all'
+                })
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                console.log('✅ [Museum API] Real API call succeeded');
+                return {
+                    artworks: data.data.artworks || [],
+                    metadata: {
+                        count: data.data.total || 0,
+                        source: 'Museum API',
+                        query: data.data.query,
+                        realAPI: !data.fallback
+                    }
+                };
+            }
+        } catch (error) {
+            console.warn('⚠️ [Museum API] Falling back to simulation:', error);
+        }
+        
+        // Fallback to simulation
         return new Promise(resolve => {
             setTimeout(() => {
                 resolve({
@@ -661,7 +786,7 @@ class AIOrchestrator {
                         { id: 1, title: '모네 - 수련', year: 1916 },
                         { id: 2, title: '르누아르 - 뱃놀이', year: 1881 }
                     ],
-                    metadata: { count: 2, source: 'Museum API' }
+                    metadata: { count: 2, source: 'Museum API (Simulation)', realAPI: false }
                 });
             }, 700);
         });
