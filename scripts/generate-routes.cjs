@@ -74,6 +74,7 @@ const exclude = [
   '/test-realtime-sync.html',
   '/about.html',
   '/modules.html',
+  '/contact.html',
   
   // Pretty URL paths (all)
   '/account',
@@ -82,6 +83,7 @@ const exclude = [
   '/ar-vr-demo',
   '/canvas',
   '/canvas-v3',
+  '/contact',
   '/dashboard',
   '/dashboard-v2',
   '/forgot-password',
