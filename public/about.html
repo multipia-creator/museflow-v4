@@ -94,6 +94,53 @@
             color: #8b5cf6;
         }
         
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        .mobile-menu-toggle span {
+            width: 24px;
+            height: 2px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: flex;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 300px;
+                height: 100vh;
+                background: rgba(15, 10, 31, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 6rem 2rem 2rem;
+                gap: 2rem;
+                transition: right 0.3s ease;
+                z-index: 999;
+                border-left: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .nav-links a {
+                font-size: 1.25rem;
+            }
+        }
+        
         /* Hero Section */
         .hero {
             padding: 8rem 2rem 4rem;
@@ -305,18 +352,129 @@
             color: rgba(255, 255, 255, 0.6);
         }
         
-        /* Mobile Responsive */
+        /* Mobile Responsive - Professional Level */
         @media (max-width: 768px) {
+            /* Typography */
+            .hero {
+                padding: 6rem 1.5rem 3rem;
+            }
+            
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
+                line-height: 1.2;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .section {
+                padding: 3rem 1.5rem;
             }
             
             .section-title {
+                font-size: 1.75rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1rem;
+            }
+            
+            /* Navigation */
+            .nav-links {
+                display: none;
+            }
+            
+            .nav-container {
+                padding: 1rem 1.5rem;
+            }
+            
+            /* Vision & Mission Cards */
+            .vision-mission {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .vm-card {
+                padding: 1.5rem;
+            }
+            
+            .vm-card h3 {
+                font-size: 1.25rem;
+            }
+            
+            /* Stats */
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
+            
+            .stat-label {
+                font-size: 0.875rem;
+            }
+            
+            /* Tech Stack */
+            .tech-stack {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .tech-item {
+                padding: 1.25rem;
+            }
+            
+            .tech-item i {
                 font-size: 2rem;
             }
             
-            .nav-links {
-                display: none;
+            /* Roadmap */
+            .roadmap-item {
+                flex-direction: column;
+                gap: 0.75rem;
+                padding: 1.25rem;
+            }
+            
+            .roadmap-date {
+                min-width: auto;
+            }
+            
+            /* Team */
+            .team {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .team-member {
+                padding: 1.5rem;
+            }
+            
+            .team-member i {
+                font-size: 3rem;
+            }
+        }
+        
+        /* Small Mobile (max-width: 480px) */
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
             }
         }
     </style>
@@ -328,7 +486,15 @@
             <a href="/landing" class="nav-logo">
                 <span class="nav-logo-text">MuseFlow</span>
             </a>
-            <ul class="nav-links">
+            
+            <!-- Mobile Menu Toggle -->
+            <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <ul class="nav-links" id="nav-links">
                 <li><a href="/landing">홈</a></li>
                 <li><a href="/about">소개</a></li>
                 <li><a href="/modules">모듈</a></li>
@@ -540,6 +706,32 @@
         // Track page view
         trackEvent('about_page_view', {
             page_location: window.location.href
+        });
+        
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileToggle = document.getElementById('mobile-menu-toggle');
+            const navLinks = document.getElementById('nav-links');
+            
+            if (mobileToggle && navLinks) {
+                mobileToggle.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                });
+                
+                // Close menu when clicking a link
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        navLinks.classList.remove('active');
+                    });
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!navLinks.contains(e.target) && !mobileToggle.contains(e.target)) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+            }
         });
     </script>
 </body>

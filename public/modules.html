@@ -283,23 +283,165 @@
             color: rgba(255, 255, 255, 0.6);
         }
         
-        /* Mobile Responsive */
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        .mobile-menu-toggle span {
+            width: 24px;
+            height: 2px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        /* Mobile Responsive - Professional Level */
         @media (max-width: 768px) {
+            /* Mobile Menu */
+            .mobile-menu-toggle {
+                display: flex;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 300px;
+                height: 100vh;
+                background: rgba(15, 10, 31, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 6rem 2rem 2rem;
+                gap: 2rem;
+                transition: right 0.3s ease;
+                z-index: 999;
+                border-left: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .nav-links a {
+                font-size: 1.25rem;
+            }
+            
+            /* Typography */
+            .hero {
+                padding: 6rem 1.5rem 3rem;
+            }
+            
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .nav-container {
+                padding: 1rem 1.5rem;
+            }
+            
+            /* Module Container */
+            .modules-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            /* Module Cards */
+            .module-card {
+                padding: 2rem 1.5rem;
+                margin-bottom: 2rem;
             }
             
             .module-header {
                 flex-direction: column;
+                align-items: center;
                 text-align: center;
+                gap: 1rem;
             }
             
+            .module-icon {
+                width: 64px;
+                height: 64px;
+                font-size: 2rem;
+            }
+            
+            .module-info h2 {
+                font-size: 1.5rem;
+            }
+            
+            .module-info p {
+                font-size: 1rem;
+            }
+            
+            /* Module Content */
+            .module-content h3 {
+                font-size: 1.125rem;
+            }
+            
+            .module-content li {
+                font-size: 0.9375rem;
+                padding: 0.5rem 0;
+                padding-left: 1.75rem;
+            }
+            
+            /* Use Cases */
+            .use-cases {
+                padding: 1.25rem;
+            }
+            
+            .use-cases h4 {
+                font-size: 1rem;
+            }
+            
+            .use-cases p {
+                font-size: 0.9375rem;
+            }
+            
+            /* Buttons */
             .module-actions {
                 flex-direction: column;
+                gap: 0.75rem;
             }
             
-            .nav-links {
-                display: none;
+            .btn {
+                padding: 0.875rem 1.5rem;
+                text-align: center;
+                width: 100%;
+            }
+            
+            /* Badge */
+            .badge {
+                display: block;
+                margin: 0.5rem auto 0;
+                width: fit-content;
+            }
+        }
+        
+        /* Small Mobile (max-width: 480px) */
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+            
+            .module-card {
+                padding: 1.5rem 1rem;
+            }
+            
+            .module-icon {
+                width: 56px;
+                height: 56px;
+                font-size: 1.75rem;
+            }
+            
+            .module-info h2 {
+                font-size: 1.25rem;
             }
         }
     </style>
@@ -311,7 +453,15 @@
             <a href="/landing" class="nav-logo">
                 <span class="nav-logo-text">MuseFlow</span>
             </a>
-            <ul class="nav-links">
+            
+            <!-- Mobile Menu Toggle -->
+            <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <ul class="nav-links" id="nav-links">
                 <li><a href="/landing">홈</a></li>
                 <li><a href="/about">소개</a></li>
                 <li><a href="/modules">모듈</a></li>
@@ -683,6 +833,35 @@
                     button_link: this.getAttribute('href')
                 });
             });
+        });
+        
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileToggle = document.getElementById('mobile-menu-toggle');
+            const navLinks = document.getElementById('nav-links');
+            
+            if (mobileToggle && navLinks) {
+                mobileToggle.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                    trackEvent('mobile_menu_toggle', {
+                        state: navLinks.classList.contains('active') ? 'open' : 'close'
+                    });
+                });
+                
+                // Close menu when clicking a link
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        navLinks.classList.remove('active');
+                    });
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!navLinks.contains(e.target) && !mobileToggle.contains(e.target)) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+            }
         });
     </script>
 </body>
