@@ -1347,6 +1347,100 @@ body {
   margin-left: 4px;
   flex-shrink: 0;
 }
+
+/* Widget Panel Scrollbar - Improved */
+#widgetPanel .panel-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+#widgetPanel .panel-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#widgetPanel .panel-content::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.15);
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+
+#widgetPanel .panel-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.3);
+}
+
+/* Category Badge Enhancement */
+.category-badge {
+  background: rgba(255,255,255,0.12);
+  color: currentColor;
+  padding: 4px 10px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0.9;
+  border: 1px solid rgba(255,255,255,0.1);
+  min-width: 28px;
+  text-align: center;
+}
+
+/* Search Box Enhancement */
+.widget-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
+  border: 1px solid rgba(139, 92, 246, 0.15);
+  border-radius: 12px;
+  padding: 12px 16px;
+  transition: all 0.2s;
+}
+
+.widget-search-box:focus-within {
+  border-color: #8B5CF6;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.12);
+  background: linear-gradient(135deg, #222 0%, #2a2a2a 100%);
+}
+
+.widget-search-box .icon {
+  stroke: #8B5CF6;
+  margin-right: 12px;
+  width: 18px;
+  height: 18px;
+}
+
+.widget-search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e5e5e5;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.widget-search-box input::placeholder {
+  color: #666;
+  font-weight: 400;
+}
+
+/* Hint Text Below Search */
+.widget-search-hint {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #666;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.widget-search-hint kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 10px;
+  color: #8B5CF6;
+  margin: 0 2px;
+}
 </style>
 </head>
 <body>
@@ -1713,7 +1807,7 @@ body {
             <i data-lucide="search" class="icon"></i>
             <input type="text" 
                    id="widgetSearch" 
-                   placeholder="위젯 검색 (Cmd+K)..."
+                   placeholder="🔍 위젯 검색... (Cmd+K로 빠른 접근)"
                    autocomplete="off">
             <button id="widgetClearSearch" class="widget-btn-clear" style="display:none;">
                 <i data-lucide="x" class="icon"></i>
@@ -1738,6 +1832,10 @@ body {
                 최근
             </button>
         </div>
+        
+        <div class="widget-search-hint">
+            💡 <kbd>Cmd</kbd> + <kbd>K</kbd> 로 빠르게 검색하거나, 카테고리를 클릭하여 위젯을 탐색하세요
+        </div>
     </div>
     
     <div class="panel-content">
@@ -1745,15 +1843,15 @@ body {
             <!-- 📊 고급 분석 & 인사이트 -->
             <div class="category-group category-advanced-analytics" 
                  data-category="advanced-analytics"
-                 data-expanded="true">
+                 data-expanded="false">
                 <div class="category-header" onclick="toggleWidgetCategory('advanced-analytics')">
-                    <i data-lucide="chevron-down" class="category-chevron icon"></i>
+                    <i data-lucide="chevron-right" class="category-chevron icon"></i>
                     <i data-lucide="trending-up" class="icon category-icon"></i>
                     <span class="category-name">고급 분석 & 인사이트</span>
                     <span class="category-badge">7</span>
                 </div>
                 
-                <div class="category-content">
+                <div class="category-content" style="display:none;">
                     <div class="widget-item" draggable="true" data-widget-type="visitor-dwell-time" data-premium="true">
                         <div class="widget-icon-wrapper">
                             <i data-lucide="clock" class="icon"></i>
