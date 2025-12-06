@@ -376,7 +376,7 @@ body {
 
 .card-thumbnail {
     width: 100%;
-    height: 180px;
+    height: 160px;
     background: linear-gradient(135deg, #C8A5FF 0%, #A5D5FF 100%);
     display: flex;
     align-items: center;
@@ -420,31 +420,93 @@ body {
 }
 
 .card-header {
-    padding: 12px 16px;
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: #fff;
-    font-weight: 600;
-    font-size: 14px;
+    padding: 10px 12px;
+    background: #ffffff;
+    color: #1f2937;
+    font-weight: 500;
+    font-size: 13px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e7eb;
 }
 
-.card-content {
-    padding: 16px;
-    background: #F5F0FF;
-    color: #333;
-    font-size: 13px;
+.card-header.video {
+    background: linear-gradient(to right, #FFF5F5, #ffffff);
+    border-left: 3px solid #EF4444;
 }
 
-.card-meta {
+.card-header.audio {
+    background: linear-gradient(to right, #F0F9FF, #ffffff);
+    border-left: 3px solid #3B82F6;
+}
+
+.card-header.image {
+    background: linear-gradient(to right, #FFF7ED, #ffffff);
+    border-left: 3px solid #F59E0B;
+}
+
+.card-header.document {
+    background: linear-gradient(to right, #FDF4FF, #ffffff);
+    border-left: 3px solid #A855F7;
+}
+
+.card-header.data {
+    background: linear-gradient(to right, #F0FDF4, #ffffff);
+    border-left: 3px solid #10B981;
+}
+
+.card-title {
     display: flex;
-    gap: 12px;
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid #e5e7eb;
-    font-size: 12px;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+}
+
+.card-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.card-action-btn {
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: #f3f4f6;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
     color: #6b7280;
+}
+
+.card-action-btn:hover {
+    background: #e5e7eb;
+    color: #374151;
+    transform: scale(1.05);
+}
+
+.card-action-btn:active {
+    transform: scale(0.95);
+}
+
+.card-footer {
+    padding: 8px 12px;
+    background: #f9fafb;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    color: #6b7280;
+    border-radius: 0 0 8px 8px;
+}
+
+.card-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .controls {
@@ -4228,16 +4290,26 @@ function createCard(card) {
         <div class="card-thumbnail ${card.type}">
             ${thumbnailContent}
         </div>
-        <div class="card-header">
-            <i data-lucide="${card.icon}" style="width:16px;height:16px"></i>
-            ${card.title}
-        </div>
-        <div class="card-content">
-            ${card.content}
-            <div class="card-meta">
-                <span>📦 ${card.size}</span>
-                <span>📄 ${card.format}</span>
+        <div class="card-header ${card.type}">
+            <div class="card-title">
+                <i data-lucide="${card.icon}" style="width:14px;height:14px"></i>
+                <span>${card.title}</span>
             </div>
+            <div class="card-actions">
+                <button class="card-action-btn" title="복사" onclick="event.stopPropagation(); copyCard(this)">
+                    <i data-lucide="copy" style="width:14px;height:14px"></i>
+                </button>
+                <button class="card-action-btn" title="노션으로 내보내기" onclick="event.stopPropagation(); exportToNotion(this)">
+                    <i data-lucide="book-open" style="width:14px;height:14px"></i>
+                </button>
+                <button class="card-action-btn" title="피그마로 내보내기" onclick="event.stopPropagation(); exportToFigma(this)">
+                    <i data-lucide="figma" style="width:14px;height:14px"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-footer">
+            <span class="card-meta-item"><i data-lucide="hard-drive" style="width:12px;height:12px"></i> ${card.size}</span>
+            <span class="card-meta-item"><i data-lucide="file-text" style="width:12px;height:12px"></i> ${card.format}</span>
         </div>
         
         <!-- Resize Handles -->
@@ -5491,6 +5563,67 @@ commandPaletteOverlay?.addEventListener('click', (e) => {
 });
 
 console.log('✅ Command Palette (Cmd+K) 초기화 완료');
+
+// Card Action Functions
+function copyCard(btn) {
+    const card = btn.closest('.card');
+    const title = card.querySelector('.card-title span').textContent;
+    const type = card.dataset.type;
+    
+    const cardData = {
+        title: title,
+        type: type,
+        timestamp: new Date().toISOString()
+    };
+    
+    navigator.clipboard.writeText(JSON.stringify(cardData, null, 2))
+        .then(() => {
+            showToast('✅ 카드가 복사되었습니다', 'success');
+        })
+        .catch(() => {
+            showToast('❌ 복사 실패', 'error');
+        });
+}
+
+function exportToNotion(btn) {
+    const card = btn.closest('.card');
+    const title = card.querySelector('.card-title span').textContent;
+    showToast(`📝 "${title}" 노션으로 내보내기 준비중...`, 'info');
+    // TODO: Implement Notion API integration
+}
+
+function exportToFigma(btn) {
+    const card = btn.closest('.card');
+    const title = card.querySelector('.card-title span').textContent;
+    showToast(`🎨 "${title}" 피그마로 내보내기 준비중...`, 'info');
+    // TODO: Implement Figma API integration
+}
+
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        padding: 12px 20px;
+        background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+        color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 10000;
+        font-size: 14px;
+        animation: slideIn 0.3s ease-out;
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
 
 lucide.createIcons();
 </script>
