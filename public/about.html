@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About MuseFlow - AI-Powered Museum Workflow Platform</title>
+    <meta name="description" content="Learn about MuseFlow's vision, mission, and cutting-edge technology powering museum workflow automation.">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX', {
+            'page_title': 'MuseFlow About',
+            'send_page_view': true
+        });
+    </script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="/static/css/fontawesome-all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(15, 10, 31, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+        
+        .nav-logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #8b5cf6;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(135deg, #1a0b2e 0%, #16213e 100%);
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        /* Content Sections */
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        /* Vision & Mission */
+        .vision-mission {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .vm-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .vm-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-4px);
+        }
+        
+        .vm-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #8b5cf6;
+        }
+        
+        .vm-card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+        }
+        
+        /* Tech Stack */
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .tech-item {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .tech-item i {
+            font-size: 2.5rem;
+            color: #8b5cf6;
+            margin-bottom: 1rem;
+        }
+        
+        .tech-item h4 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tech-item p {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* Roadmap */
+        .roadmap {
+            margin-top: 3rem;
+        }
+        
+        .roadmap-item {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #8b5cf6;
+            border-radius: 8px;
+        }
+        
+        .roadmap-date {
+            font-size: 0.875rem;
+            color: #8b5cf6;
+            font-weight: 600;
+            min-width: 100px;
+        }
+        
+        .roadmap-content h4 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .roadmap-content p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+        
+        /* Team */
+        .team {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .team-member {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .team-member i {
+            font-size: 4rem;
+            color: #8b5cf6;
+            margin-bottom: 1rem;
+        }
+        
+        .team-member h4 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .team-member p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.875rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background: rgba(15, 10, 31, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .footer p {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/landing" class="nav-logo">
+                <span class="nav-logo-text">MuseFlow</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/landing">홈</a></li>
+                <li><a href="/about">소개</a></li>
+                <li><a href="/modules">모듈</a></li>
+                <li><a href="/dashboard">대시보드</a></li>
+                <li><a href="/canvas-ultimate-clean">캔버스</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>About MuseFlow</h1>
+        <p>뮤지엄 워크플로우 혁신을 위한 AI 기반 통합 플랫폼</p>
+    </section>
+
+    <!-- Vision & Mission -->
+    <section class="section">
+        <h2 class="section-title">Vision & Mission</h2>
+        <p class="section-subtitle">우리의 비전과 미션</p>
+        
+        <div class="vision-mission">
+            <div class="vm-card">
+                <h3><i class="fas fa-eye"></i> Vision</h3>
+                <p>
+                    전 세계 뮤지엄이 AI 기술을 활용하여 더 효율적이고 창의적으로 운영되는 미래를 만듭니다. 
+                    87개의 전문 Widget과 D1 Database를 통해 뮤지엄 업무의 모든 측면을 디지털화하고 자동화합니다.
+                </p>
+            </div>
+            
+            <div class="vm-card">
+                <h3><i class="fas fa-bullseye"></i> Mission</h3>
+                <p>
+                    큐레이터와 뮤지엄 전문가들이 창의적인 업무에 집중할 수 있도록, 반복적이고 시간 소모적인 작업을 
+                    AI와 자동화로 대체합니다. Canvas 기반 시각적 워크플로우로 복잡한 프로젝트를 직관적으로 관리합니다.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics -->
+    <section class="section" style="background: rgba(139, 92, 246, 0.05);">
+        <h2 class="section-title">핵심 성과</h2>
+        <p class="section-subtitle">데이터로 증명하는 MuseFlow의 가치</p>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">87</div>
+                <div class="stat-label">전문 Widget</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">177</div>
+                <div class="stat-label">총 Widget 개수</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">80%</div>
+                <div class="stat-label">업무 효율 향상</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">모바일 최적화</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Stack -->
+    <section class="section">
+        <h2 class="section-title">Technology Stack</h2>
+        <p class="section-subtitle">월드클래스 기술로 구축된 플랫폼</p>
+        
+        <div class="tech-stack">
+            <div class="tech-item">
+                <i class="fas fa-cube"></i>
+                <h4>Hono Framework</h4>
+                <p>Edge-first TypeScript 프레임워크</p>
+            </div>
+            
+            <div class="tech-item">
+                <i class="fas fa-cloud"></i>
+                <h4>Cloudflare Pages</h4>
+                <p>글로벌 엣지 네트워크 배포</p>
+            </div>
+            
+            <div class="tech-item">
+                <i class="fas fa-database"></i>
+                <h4>D1 Database</h4>
+                <p>SQLite 기반 분산 데이터베이스</p>
+            </div>
+            
+            <div class="tech-item">
+                <i class="fas fa-brain"></i>
+                <h4>Gemini AI</h4>
+                <p>Google AI 기반 지능형 어시스턴트</p>
+            </div>
+            
+            <div class="tech-item">
+                <i class="fas fa-chart-line"></i>
+                <h4>Google Analytics 4</h4>
+                <p>실시간 사용자 행동 분석</p>
+            </div>
+            
+            <div class="tech-item">
+                <i class="fas fa-mobile-alt"></i>
+                <h4>Progressive Web App</h4>
+                <p>오프라인 지원 & 푸시 알림</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team -->
+    <section class="section" style="background: rgba(236, 72, 153, 0.05);">
+        <h2 class="section-title">Team</h2>
+        <p class="section-subtitle">MuseFlow를 만드는 사람들</p>
+        
+        <div class="team">
+            <div class="team-member">
+                <i class="fas fa-user-tie"></i>
+                <h4>남현우 교수</h4>
+                <p>Project Lead & AI Architect</p>
+                <p style="margin-top: 0.5rem; color: rgba(255, 255, 255, 0.5);">
+                    Enterprise AI & Performance Specialist
+                </p>
+            </div>
+            
+            <div class="team-member">
+                <i class="fas fa-code"></i>
+                <h4>Development Team</h4>
+                <p>Full-stack Development</p>
+                <p style="margin-top: 0.5rem; color: rgba(255, 255, 255, 0.5);">
+                    TypeScript, Hono, Cloudflare
+                </p>
+            </div>
+            
+            <div class="team-member">
+                <i class="fas fa-paint-brush"></i>
+                <h4>Design Team</h4>
+                <p>UI/UX Design</p>
+                <p style="margin-top: 0.5rem; color: rgba(255, 255, 255, 0.5);">
+                    Figma Level Design System
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section class="section">
+        <h2 class="section-title">Roadmap</h2>
+        <p class="section-subtitle">MuseFlow의 진화 과정</p>
+        
+        <div class="roadmap">
+            <div class="roadmap-item">
+                <div class="roadmap-date">2024 Q4</div>
+                <div class="roadmap-content">
+                    <h4>✅ V14.6 - Performance + Analytics</h4>
+                    <p>Font Awesome Self-hosting, Google Analytics 4 통합, Custom Event Tracking</p>
+                </div>
+            </div>
+            
+            <div class="roadmap-item">
+                <div class="roadmap-date">2024 Q4</div>
+                <div class="roadmap-content">
+                    <h4>✅ V14.5 - Widget Customization</h4>
+                    <p>87 Widget System, Context Menu, Edit Modal, Search & Filtering</p>
+                </div>
+            </div>
+            
+            <div class="roadmap-item">
+                <div class="roadmap-date">2025 Q1</div>
+                <div class="roadmap-content">
+                    <h4>🚧 V15.0 - Premium Payment</h4>
+                    <p>Stripe 통합, Widget 구매 시스템, 구독 관리</p>
+                </div>
+            </div>
+            
+            <div class="roadmap-item">
+                <div class="roadmap-date">2025 Q2</div>
+                <div class="roadmap-content">
+                    <h4>📋 V16.0 - AI Recommendation</h4>
+                    <p>Gemini AI 기반 Widget 추천, 사용 패턴 분석</p>
+                </div>
+            </div>
+            
+            <div class="roadmap-item">
+                <div class="roadmap-date">2025 Q3</div>
+                <div class="roadmap-content">
+                    <h4>📋 V17.0 - Real-time Collaboration</h4>
+                    <p>WebSocket 기반 실시간 협업, 다중 사용자 편집</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 MuseFlow by Imageroot. Technology Transfer by Prof. Hyun Woo Nam</p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem;">
+            <a href="https://gallerypia.com" style="color: #8b5cf6; text-decoration: none;">gallerypia.com</a>
+        </p>
+    </footer>
+
+    <!-- Analytics Helper -->
+    <script>
+        function trackEvent(eventName, eventParams = {}) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, eventParams);
+                console.log('📊 Analytics Event:', eventName, eventParams);
+            }
+        }
+        
+        // Track page view
+        trackEvent('about_page_view', {
+            page_location: window.location.href
+        });
+    </script>
+</body>
+</html>
