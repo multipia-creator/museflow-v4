@@ -2713,6 +2713,104 @@ document.getElementById('voiceBtn')?.addEventListener('click', () => {
     }
 });
 
+// ============================================
+// D1 Database에서 Widget 동적 로딩
+// ============================================
+let widgetsLoadedFromD1 = false;
+
+async function loadWidgetsFromD1() {
+    // 이미 로드되었으면 스킵
+    if (widgetsLoadedFromD1) {
+        console.log('✅ Widgets already loaded from D1');
+        return;
+    }
+    
+    try {
+        console.log('🔄 Loading widgets from D1 Database...');
+        
+        // API 호출 (6개 카테고리별)
+        const categories = [
+            'advanced-analytics',
+            'museum-professional',
+            'visitor-experience',
+            'operations',
+            'collaboration',
+            'financial'
+        ];
+        
+        for (const category of categories) {
+            const response = await fetch(`/api/widgets?category=${category}`);
+            const data = await response.json();
+            
+            if (!data.success) {
+                console.error(`❌ Failed to load ${category} widgets:`, data.error);
+                continue;
+            }
+            
+            const widgets = data.data || [];
+            console.log(`✅ Loaded ${widgets.length} widgets for category: ${category}`);
+            
+            // category-content 영역 찾기
+            const categoryGroup = document.querySelector(`.category-${category}`);
+            if (!categoryGroup) {
+                console.warn(`⚠️ Category group not found: ${category}`);
+                continue;
+            }
+            
+            const categoryContent = categoryGroup.querySelector('.category-content');
+            if (!categoryContent) {
+                console.warn(`⚠️ Category content not found: ${category}`);
+                continue;
+            }
+            
+            // 기존 Widget 유지하고 새 Widget 추가
+            const existingWidgets = categoryContent.querySelectorAll('.widget-item');
+            const existingTypes = Array.from(existingWidgets).map(w => w.dataset.widgetType);
+            
+            widgets.forEach(widget => {
+                // 이미 존재하는 Widget은 스킵
+                if (existingTypes.includes(widget.type)) {
+                    return;
+                }
+                
+                // Premium 뱃지 HTML
+                const premiumBadge = widget.premium ? 
+                    `<span class="premium-badge">⭐ PRO</span>` : '';
+                
+                // Price HTML
+                const priceHTML = widget.price ? 
+                    `<span class="widget-price">${widget.price}</span>` : '';
+                
+                // Widget HTML 생성
+                const widgetHTML = `
+                    <div class="widget-item" draggable="true" data-widget-type="${widget.type}"${widget.premium ? ' data-premium="true"' : ''}>
+                        <div class="widget-icon-wrapper">
+                            <i data-lucide="${widget.icon || 'box'}" class="icon"></i>
+                        </div>
+                        <div class="widget-info">
+                            <div class="widget-name">${widget.name} ${premiumBadge}</div>
+                            <div class="widget-description">${widget.description || ''}</div>
+                            ${priceHTML}
+                        </div>
+                    </div>
+                `;
+                
+                // DOM에 추가
+                categoryContent.insertAdjacentHTML('beforeend', widgetHTML);
+            });
+            
+            // Lucide Icons 다시 초기화
+            lucide.createIcons();
+        }
+        
+        widgetsLoadedFromD1 = true;
+        console.log('🎉 All widgets loaded from D1 Database!');
+        
+    } catch (error) {
+        console.error('❌ Error loading widgets from D1:', error);
+    }
+}
+
 // Panel Management
 const activePanels = { left: null, right: null };
 const viewport = document.getElementById('vp');
@@ -2753,12 +2851,18 @@ document.querySelectorAll('.icon').forEach(icon => {
         this.classList.add('active');
         activePanels[side] = panelName;
         
-        // Widget Panel이 열릴 때 드래그 리스너 등록
-        if (panelName === 'widgetPanel' && typeof attachWidgetDragListeners === 'function') {
-            setTimeout(() => {
-                attachWidgetDragListeners();
-                console.log('🔧 Widget Panel 열림 → 드래그 리스너 재등록');
-            }, 100);
+        // Widget Panel이 열릴 때 드래그 리스너 등록 + D1 Database에서 Widget 로드
+        if (panelName === 'widgetPanel') {
+            // D1 Database에서 Widget 동적 로드
+            loadWidgetsFromD1();
+            
+            // 드래그 리스너 등록
+            if (typeof attachWidgetDragListeners === 'function') {
+                setTimeout(() => {
+                    attachWidgetDragListeners();
+                    console.log('🔧 Widget Panel 열림 → 드래그 리스너 재등록');
+                }, 300); // D1 로딩 후 실행되도록 지연
+            }
         }
     });
 });
