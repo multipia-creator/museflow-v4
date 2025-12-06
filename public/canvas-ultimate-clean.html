@@ -1383,6 +1383,46 @@ body {
   text-align: center;
 }
 
+/* ========================================
+   Color Picker Styles
+   ======================================== */
+.color-picker {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.color-option {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.color-option:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.color-option.selected {
+  border-color: #8B5CF6;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3);
+}
+
+.color-option.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #000;
+  font-size: 18px;
+  font-weight: bold;
+}
+
 /* Search Box Enhancement */
 .widget-search-box {
   position: relative;
@@ -1421,6 +1461,37 @@ body {
 .widget-search-box input::placeholder {
   color: #666;
   font-weight: 400;
+}
+
+/* Widget Select Boxes */
+.widget-select {
+  flex: 1;
+  padding: 10px 14px;
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 10px;
+  color: #e5e5e5;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.widget-select:hover {
+  background: rgba(139, 92, 246, 0.12);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.widget-select:focus {
+  border-color: #8B5CF6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+.widget-select option {
+  background: #1a1a1a;
+  color: #e5e5e5;
+  padding: 8px;
 }
 
 /* Hint Text Below Search */
@@ -1493,6 +1564,66 @@ body {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+/* ========================================
+   Context Menu Styles
+   ======================================== */
+.context-menu {
+  position: fixed;
+  background: rgba(17, 24, 39, 0.98);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 12px;
+  padding: 8px 0;
+  min-width: 200px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5),
+              0 0 0 1px rgba(139, 92, 246, 0.1);
+  z-index: 10000;
+  backdrop-filter: blur(20px);
+  animation: fadeIn 0.15s ease;
+}
+
+.context-menu-item {
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: #e5e5e5;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.context-menu-item:hover {
+  background: rgba(139, 92, 246, 0.15);
+  color: #fff;
+}
+
+.context-menu-item i {
+  width: 18px;
+  height: 18px;
+  color: #8B5CF6;
+  flex-shrink: 0;
+}
+
+.context-menu-item.danger {
+  color: #EF4444;
+}
+
+.context-menu-item.danger:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #FCA5A5;
+}
+
+.context-menu-item.danger i {
+  color: #EF4444;
+}
+
+.context-menu-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 4px 0;
 }
 
 .command-palette-header {
@@ -1692,6 +1823,270 @@ body {
   .command-palette-body {
     max-height: 300px;
   }
+}
+
+/* ============================================
+   CONTEXT MENU & EDIT MODAL
+   ============================================ */
+
+/* Context Menu */
+.context-menu {
+  position: fixed;
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.98) 0%, rgba(31, 41, 55, 0.98) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 20px rgba(139, 92, 246, 0.2);
+  min-width: 180px;
+  z-index: 10001;
+  animation: contextMenuSlide 0.2s ease-out;
+}
+
+@keyframes contextMenuSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.context-menu-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #e5e5e5;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.context-menu-item:hover {
+  background: rgba(139, 92, 246, 0.2);
+  transform: translateX(4px);
+}
+
+.context-menu-item i {
+  color: #8B5CF6;
+}
+
+.context-menu-danger {
+  color: #EF4444;
+}
+
+.context-menu-danger i {
+  color: #EF4444;
+}
+
+.context-menu-danger:hover {
+  background: rgba(239, 68, 68, 0.15);
+}
+
+/* Edit Modal Overlay */
+.edit-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10002;
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Edit Modal */
+.edit-modal {
+  width: 500px;
+  max-width: 90%;
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.98) 0%, rgba(31, 41, 55, 0.98) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(139, 92, 246, 0.2);
+  animation: modalSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.edit-modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(139, 92, 246, 0.05);
+}
+
+.edit-modal-header h3 {
+  margin: 0;
+  color: #e5e5e5;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.edit-modal-close {
+  background: transparent;
+  border: none;
+  color: #9CA3AF;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #e5e5e5;
+}
+
+.edit-modal-body {
+  padding: 24px;
+}
+
+.edit-form-group {
+  margin-bottom: 20px;
+}
+
+.edit-form-group:last-child {
+  margin-bottom: 0;
+}
+
+.edit-form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #9CA3AF;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.edit-input, .edit-textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 12px 16px;
+  color: #e5e5e5;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.edit-input:focus, .edit-textarea:focus {
+  outline: none;
+  border-color: #8B5CF6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.edit-input::placeholder, .edit-textarea::placeholder {
+  color: #6B7280;
+}
+
+.edit-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Color Picker */
+.color-picker {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.color-option {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.color-option:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.color-option.selected {
+  border-color: #8B5CF6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+}
+
+.color-option.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+/* Edit Modal Footer */
+.edit-modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.edit-btn-cancel, .edit-btn-save {
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.edit-btn-cancel {
+  background: rgba(255, 255, 255, 0.05);
+  color: #9CA3AF;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.edit-btn-cancel:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #e5e5e5;
+}
+
+.edit-btn-save {
+  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+  color: white;
+}
+
+.edit-btn-save:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
 }
 </style>
 </head>
@@ -2085,6 +2480,27 @@ body {
             </button>
         </div>
         
+        <!-- Category & Sort Controls -->
+        <div style="display: flex; gap: 12px; margin-top: 12px;">
+            <select id="categoryFilter" class="widget-select">
+                <option value="all">모든 카테고리</option>
+                <option value="advanced-analytics">📊 고급 분석 & 인사이트</option>
+                <option value="museum-professional">🏛️ 뮤지엄 전문 기능</option>
+                <option value="visitor-experience">👥 관람객 경험</option>
+                <option value="operations">💼 운영 & 관리</option>
+                <option value="collaboration">🤝 협업 & 커뮤니케이션</option>
+                <option value="financial">💰 재무 & 수익 분석</option>
+            </select>
+            
+            <select id="sortFilter" class="widget-select">
+                <option value="default">기본 정렬</option>
+                <option value="name-asc">이름 (가나다순)</option>
+                <option value="name-desc">이름 (역순)</option>
+                <option value="price-asc">가격 (낮은순)</option>
+                <option value="price-desc">가격 (높은순)</option>
+            </select>
+        </div>
+        
         <div class="widget-search-hint">
             💡 <kbd>Cmd</kbd> + <kbd>K</kbd> 로 빠르게 검색하거나, 카테고리를 클릭하여 위젯을 탐색하세요
         </div>
@@ -2414,6 +2830,76 @@ body {
     <div class="modal-content" id="modalContent"></div>
 </div>
 
+<!-- Context Menu for Widget Nodes -->
+<div class="context-menu" id="widgetContextMenu" style="display: none;">
+    <div class="context-menu-item" onclick="editWidgetNode()">
+        <i data-lucide="edit" style="width:16px;height:16px;"></i>
+        <span>편집</span>
+    </div>
+    <div class="context-menu-item" onclick="duplicateWidgetNode()">
+        <i data-lucide="copy" style="width:16px;height:16px;"></i>
+        <span>복제</span>
+    </div>
+    <div class="context-menu-item context-menu-danger" onclick="deleteWidgetNode()">
+        <i data-lucide="trash-2" style="width:16px;height:16px;"></i>
+        <span>삭제</span>
+    </div>
+</div>
+
+<!-- Widget Edit Modal -->
+<div class="edit-modal-overlay" id="widgetEditModal" style="display: none;">
+    <div class="edit-modal">
+        <div class="edit-modal-header">
+            <h3>✏️ Widget 편집</h3>
+            <button class="edit-modal-close" onclick="closeEditModal()">
+                <i data-lucide="x" style="width:18px;height:18px;"></i>
+            </button>
+        </div>
+        <div class="edit-modal-body">
+            <div class="edit-form-group">
+                <label>이름</label>
+                <input type="text" id="editWidgetName" class="edit-input" placeholder="Widget 이름">
+            </div>
+            <div class="edit-form-group">
+                <label>설명</label>
+                <textarea id="editWidgetDescription" class="edit-textarea" placeholder="Widget 설명" rows="3"></textarea>
+            </div>
+            <div class="edit-form-group">
+                <label>색상</label>
+                <div class="color-picker">
+                    <div class="color-option" data-color="#FFFFFF" style="background: #FFFFFF;" title="기본"></div>
+                    <div class="color-option" data-color="#8B5CF6" style="background: #8B5CF6;" title="보라색"></div>
+                    <div class="color-option" data-color="#3B82F6" style="background: #3B82F6;" title="파란색"></div>
+                    <div class="color-option" data-color="#10B981" style="background: #10B981;" title="녹색"></div>
+                    <div class="color-option" data-color="#F59E0B" style="background: #F59E0B;" title="노란색"></div>
+                    <div class="color-option" data-color="#EF4444" style="background: #EF4444;" title="빨간색"></div>
+                </div>
+            </div>
+        </div>
+        <div class="edit-modal-footer">
+            <button class="edit-btn-cancel" onclick="closeEditModal()">취소</button>
+            <button class="edit-btn-save" onclick="saveWidgetEdit()">저장</button>
+        </div>
+    </div>
+</div>
+
+<!-- Context Menu -->
+<div id="contextMenu" class="context-menu" style="display: none;">
+    <div class="context-menu-item" onclick="editNodeFromContextMenu()">
+        <i data-lucide="edit-3"></i>
+        <span>편집</span>
+    </div>
+    <div class="context-menu-item" onclick="duplicateNodeFromContextMenu()">
+        <i data-lucide="copy"></i>
+        <span>복제</span>
+    </div>
+    <div class="context-menu-divider"></div>
+    <div class="context-menu-item danger" onclick="deleteNodeFromContextMenu()">
+        <i data-lucide="trash-2"></i>
+        <span>삭제</span>
+    </div>
+</div>
+
 <!-- Footer -->
 <footer class="footer">
     <div class="footer-left">
@@ -2434,6 +2920,34 @@ lucide.createIcons();
 // Widget 드래그앤드롭 - 전역 변수 및 함수 (최우선 정의)
 // ============================================
 let draggedWidgetData = null;
+
+// ============================================
+// Widget 커스터마이징 - 전역 변수
+// ============================================
+let currentEditingNode = null;
+let selectedColor = '#FFFFFF';
+let contextMenuTarget = null;
+
+// localStorage 키
+const WIDGET_CONFIGS_KEY = 'canvas_widget_configs';
+const WIDGET_USAGE_STATS_KEY = 'widget_usage_stats';
+
+// Widget 설정 로드
+function loadWidgetConfigs() {
+    const configs = localStorage.getItem(WIDGET_CONFIGS_KEY);
+    return configs ? JSON.parse(configs) : {};
+}
+
+// Widget 설정 저장
+function saveWidgetConfig(widgetId, config) {
+    const configs = loadWidgetConfigs();
+    configs[widgetId] = {
+        ...config,
+        updated_at: new Date().toISOString()
+    };
+    localStorage.setItem(WIDGET_CONFIGS_KEY, JSON.stringify(configs));
+    console.log('💾 Widget config saved:', widgetId, config);
+}
 
 // Widget 아이템에 드래그 이벤트 리스너 추가하는 함수
 function attachWidgetDragListeners() {
@@ -2462,6 +2976,10 @@ function attachWidgetDragListeners() {
             
             // 드래그 중 시각적 피드백
             widget.style.opacity = '0.5';
+            
+            // Add to recent widgets
+            addToRecentWidgets(widgetType);
+            
             console.log('🎨 Widget 드래그 시작:', widgetName, draggedWidgetData);
         });
         
@@ -2571,9 +3089,198 @@ function filterWidgets(query) {
   lucide.createIcons();
 }
 
+// ============================================
+// Widget Filter Functions
+// ============================================
+let currentFilter = 'all';
+let recentWidgets = [];
+
+// Filter Chips Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    const filterChips = document.querySelectorAll('.widget-chip');
+    
+    filterChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            const filterType = chip.dataset.filter;
+            
+            // Update active state
+            filterChips.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            
+            // Apply filter
+            currentFilter = filterType;
+            applyWidgetFilter(filterType);
+            
+            console.log('🔍 Filter 적용:', filterType);
+        });
+    });
+    
+    // Category Filter
+    const categoryFilter = document.getElementById('categoryFilter');
+    categoryFilter?.addEventListener('change', (e) => {
+        const category = e.target.value;
+        applyCategoryFilter(category);
+        console.log('📂 Category Filter:', category);
+    });
+    
+    // Sort Filter
+    const sortFilter = document.getElementById('sortFilter');
+    sortFilter?.addEventListener('change', (e) => {
+        const sortType = e.target.value;
+        applySortFilter(sortType);
+        console.log('🔢 Sort Filter:', sortType);
+    });
+    
+    // Load recent widgets from localStorage
+    loadRecentWidgets();
+});
+
+function applyWidgetFilter(filterType) {
+    const allWidgets = document.querySelectorAll('.widget-item');
+    const allCategories = document.querySelectorAll('.category-group');
+    
+    allCategories.forEach(category => {
+        const categoryWidgets = category.querySelectorAll('.widget-item');
+        let hasVisibleWidget = false;
+        
+        categoryWidgets.forEach(widget => {
+            const isPremium = widget.dataset.premium === 'true';
+            const widgetType = widget.dataset.widgetType;
+            let isVisible = false;
+            
+            switch(filterType) {
+                case 'all':
+                    isVisible = true;
+                    break;
+                case 'premium':
+                    isVisible = isPremium;
+                    break;
+                case 'free':
+                    isVisible = !isPremium;
+                    break;
+                case 'recent':
+                    isVisible = recentWidgets.includes(widgetType);
+                    break;
+            }
+            
+            widget.style.display = isVisible ? 'flex' : 'none';
+            if (isVisible) hasVisibleWidget = true;
+        });
+        
+        // Show/hide category
+        if (hasVisibleWidget) {
+            category.style.display = 'block';
+            category.dataset.expanded = 'true';
+            const content = category.querySelector('.category-content');
+            content.style.display = 'block';
+            content.style.maxHeight = '9999px';
+        } else {
+            category.style.display = 'none';
+        }
+    });
+    
+    lucide.createIcons();
+}
+
+function loadRecentWidgets() {
+    const saved = localStorage.getItem('recent_widgets');
+    recentWidgets = saved ? JSON.parse(saved) : [];
+    console.log('📋 Recent Widgets 로드:', recentWidgets.length);
+}
+
+function addToRecentWidgets(widgetType) {
+    if (!recentWidgets.includes(widgetType)) {
+        recentWidgets.unshift(widgetType);
+        
+        // Keep only last 10
+        if (recentWidgets.length > 10) {
+            recentWidgets = recentWidgets.slice(0, 10);
+        }
+        
+        localStorage.setItem('recent_widgets', JSON.stringify(recentWidgets));
+        console.log('✅ Recent Widget 추가:', widgetType);
+    }
+}
+
+// ============================================
+// Category Filter Function
+// ============================================
+function applyCategoryFilter(category) {
+    const allCategories = document.querySelectorAll('.category-group');
+    
+    if (category === 'all') {
+        // Show all categories
+        allCategories.forEach(cat => {
+            cat.style.display = 'block';
+        });
+    } else {
+        // Show only selected category
+        allCategories.forEach(cat => {
+            if (cat.dataset.category === category) {
+                cat.style.display = 'block';
+                cat.dataset.expanded = 'true';
+                const content = cat.querySelector('.category-content');
+                content.style.display = 'block';
+                content.style.maxHeight = '9999px';
+            } else {
+                cat.style.display = 'none';
+            }
+        });
+    }
+    
+    lucide.createIcons();
+}
+
+// ============================================
+// Sort Filter Function
+// ============================================
+function applySortFilter(sortType) {
+    const allCategories = document.querySelectorAll('.category-group');
+    
+    allCategories.forEach(category => {
+        const widgetList = Array.from(category.querySelectorAll('.widget-item'));
+        const content = category.querySelector('.category-content');
+        
+        // Sort widgets
+        widgetList.sort((a, b) => {
+            const nameA = a.querySelector('.widget-name')?.textContent?.trim().toLowerCase() || '';
+            const nameB = b.querySelector('.widget-name')?.textContent?.trim().toLowerCase() || '';
+            const priceA = parseFloat(a.querySelector('.widget-price')?.textContent?.replace(/[^\d]/g, '') || '0');
+            const priceB = parseFloat(b.querySelector('.widget-price')?.textContent?.replace(/[^\d]/g, '') || '0');
+            
+            switch(sortType) {
+                case 'name-asc':
+                    return nameA.localeCompare(nameB);
+                case 'name-desc':
+                    return nameB.localeCompare(nameA);
+                case 'price-asc':
+                    return priceA - priceB;
+                case 'price-desc':
+                    return priceB - priceA;
+                default:
+                    return 0;
+            }
+        });
+        
+        // Re-append sorted widgets
+        widgetList.forEach(widget => {
+            content.appendChild(widget);
+        });
+    });
+    
+    lucide.createIcons();
+    
+    // Re-attach drag listeners
+    setTimeout(() => {
+        if (typeof attachWidgetDragListeners === 'function') {
+            attachWidgetDragListeners();
+        }
+    }, 100);
+}
+
 function resetWidgetFilter() {
-  const allWidgets = document.querySelectorAll('.widget-item');
-  const allCategories = document.querySelectorAll('.category-group');
+    const allWidgets = document.querySelectorAll('.widget-item');
+    const allCategories = document.querySelectorAll('.category-group');
   
   allWidgets.forEach(widget => {
     widget.style.display = 'flex';
@@ -3292,6 +3999,9 @@ function createCard(card) {
     cardEl.addEventListener('touchmove', onCardTouchMove, { passive: false });
     cardEl.addEventListener('touchend', onCardTouchEnd);
     
+    // Context Menu (Right-click)
+    cardEl.addEventListener('contextmenu', (e) => showContextMenu(e, cardEl));
+    
     // Resize functionality
     setupResizeHandles(cardEl);
     
@@ -3506,6 +4216,121 @@ window.addAICard = function(type, title, content, imageUrl = null) {
     return cardEl;
 };
 
+// ============================================
+// Context Menu Functions
+// ============================================
+function showContextMenu(e, nodeElement) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const contextMenu = document.getElementById('contextMenu');
+    contextMenuTarget = nodeElement;
+    
+    // Position context menu
+    contextMenu.style.left = e.pageX + 'px';
+    contextMenu.style.top = e.pageY + 'px';
+    contextMenu.style.display = 'block';
+    
+    // Re-initialize Lucide icons
+    lucide.createIcons();
+    
+    console.log('📋 Context Menu 열림:', nodeElement.querySelector('.card-header')?.textContent || 'Node');
+}
+
+function hideContextMenu() {
+    const contextMenu = document.getElementById('contextMenu');
+    contextMenu.style.display = 'none';
+    contextMenuTarget = null;
+}
+
+function editNodeFromContextMenu() {
+    if (!contextMenuTarget) return;
+    
+    const nodeHeader = contextMenuTarget.querySelector('.card-header')?.textContent || '';
+    const nodeDesc = contextMenuTarget.querySelector('.card-description')?.textContent || '';
+    const currentColor = contextMenuTarget.style.borderColor || '#FFFFFF';
+    
+    // Open edit modal
+    document.getElementById('editWidgetName').value = nodeHeader;
+    document.getElementById('editWidgetDescription').value = nodeDesc;
+    selectedColor = currentColor;
+    
+    // Highlight selected color
+    document.querySelectorAll('.color-option').forEach(opt => {
+        opt.classList.toggle('selected', opt.dataset.color === currentColor);
+    });
+    
+    document.getElementById('editModal').style.display = 'flex';
+    currentEditingNode = contextMenuTarget;
+    
+    hideContextMenu();
+    console.log('✏️ Edit 모달 열림:', nodeHeader);
+}
+
+function duplicateNodeFromContextMenu() {
+    if (!contextMenuTarget) return;
+    
+    const original = contextMenuTarget;
+    const clone = original.cloneNode(true);
+    
+    // Offset position
+    const originalX = parseInt(original.style.left) || 0;
+    const originalY = parseInt(original.style.top) || 0;
+    clone.style.left = (originalX + 30) + 'px';
+    clone.style.top = (originalY + 30) + 'px';
+    
+    // Add to viewport
+    viewport.appendChild(clone);
+    
+    // Re-attach event listeners
+    makeCardDraggable(clone);
+    addResizeHandles(clone);
+    addConnectionHandle(clone);
+    
+    // Add context menu listener
+    clone.addEventListener('contextmenu', (e) => showContextMenu(e, clone));
+    
+    selectCard(clone);
+    lucide.createIcons();
+    
+    hideContextMenu();
+    
+    const nodeName = original.querySelector('.card-header')?.textContent || 'Node';
+    console.log('📋 노드 복제 완료:', nodeName);
+    
+    // Sync to Dashboard
+    syncCanvasToDashboard();
+}
+
+function deleteNodeFromContextMenu() {
+    if (!contextMenuTarget) return;
+    
+    const nodeName = contextMenuTarget.querySelector('.card-header')?.textContent || 'Node';
+    
+    if (confirm(`"${nodeName}" 노드를 삭제하시겠습니까?`)) {
+        // Remove all connections
+        const connections = document.querySelectorAll('.connection-line');
+        connections.forEach(conn => {
+            if (conn.dataset.from === contextMenuTarget.id || conn.dataset.to === contextMenuTarget.id) {
+                conn.remove();
+            }
+        });
+        
+        // Remove node
+        contextMenuTarget.remove();
+        
+        console.log('🗑️ 노드 삭제 완료:', nodeName);
+        
+        // Sync to Dashboard
+        syncCanvasToDashboard();
+    }
+    
+    hideContextMenu();
+}
+
+// Close context menu on outside click
+document.addEventListener('click', hideContextMenu);
+
 // Modal Viewer Functions
 function openModal(type, url, title) {
     const modal = document.getElementById('modalViewer');
@@ -3536,6 +4361,84 @@ function closeModal() {
     content.innerHTML = '';
     console.log('❌ 모달 닫힘');
 }
+
+// ============================================
+// Edit Modal Functions
+// ============================================
+function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+    currentEditingNode = null;
+    selectedColor = '#FFFFFF';
+    console.log('❌ Edit 모달 닫힘');
+}
+
+function saveWidgetEdit() {
+    if (!currentEditingNode) return;
+    
+    const newName = document.getElementById('editWidgetName').value.trim();
+    const newDesc = document.getElementById('editWidgetDescription').value.trim();
+    
+    if (!newName) {
+        alert('위젯 이름을 입력해주세요.');
+        return;
+    }
+    
+    // Update node
+    const header = currentEditingNode.querySelector('.card-header');
+    const desc = currentEditingNode.querySelector('.card-description');
+    
+    if (header) header.textContent = newName;
+    if (desc) desc.textContent = newDesc;
+    
+    // Update color
+    currentEditingNode.style.borderColor = selectedColor;
+    currentEditingNode.style.boxShadow = `0 4px 20px ${selectedColor}33`;
+    
+    // Save to localStorage
+    const widgetId = currentEditingNode.id || `widget-${Date.now()}`;
+    if (!currentEditingNode.id) currentEditingNode.id = widgetId;
+    
+    saveWidgetConfig(widgetId, {
+        name: newName,
+        description: newDesc,
+        color: selectedColor,
+        x: parseInt(currentEditingNode.style.left) || 0,
+        y: parseInt(currentEditingNode.style.top) || 0,
+        width: currentEditingNode.offsetWidth,
+        height: currentEditingNode.offsetHeight
+    });
+    
+    closeEditModal();
+    
+    // Sync to Dashboard
+    syncCanvasToDashboard();
+    
+    console.log('💾 위젯 편집 저장 완료:', newName);
+}
+
+// Color picker event listeners
+document.addEventListener('DOMContentLoaded', () => {
+    const colorOptions = document.querySelectorAll('.color-option');
+    
+    colorOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            selectedColor = option.dataset.color;
+            
+            colorOptions.forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            
+            console.log('🎨 색상 선택:', selectedColor);
+        });
+    });
+});
+
+// Close edit modal on outside click
+document.addEventListener('click', (e) => {
+    const editModal = document.getElementById('editModal');
+    if (e.target === editModal) {
+        closeEditModal();
+    }
+});
 
 // Close modal on overlay click
 document.getElementById('modalViewer').addEventListener('click', function(e) {
