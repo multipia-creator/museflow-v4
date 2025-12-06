@@ -23,67 +23,39 @@
 
 ---
 
-## 🎨 V19.0 What's New - Canvas Pastel Theme Edition!
+## 🎨 V19.0 What's New - Canvas Card Pastel Theme!
 
-### 🖼️ **Canvas 전체 화이트 & 파스텔 테마 완전 적용**
+### 🖼️ **Canvas 카드 배경 파스텔 톤 적용**
 
 **배포일**: 2025-12-06  
-**Production URL**: https://d1bf3535.museflow.pages.dev  
-**Canvas URL**: https://d1bf3535.museflow.pages.dev/canvas-ultimate-clean
+**Production URL**: https://9efc3b41.museflow.pages.dev  
+**Canvas URL**: https://9efc3b41.museflow.pages.dev/canvas-ultimate-clean
 
-#### **🎨 파스텔 카드 색상 (9개 카테고리)**
+#### **🎨 파스텔 카드 배경 색상 (6개 타입)**
 
-| 카드 타입 | 새로운 파스텔 톤 그라데이션 | 색상 코드 |
+| 카드 타입 | 파스텔 톤 그라데이션 | 색상 코드 |
 |---------|------------------------|----------|
-| 🎬 홍보 영상 | 연핑크 → 연블루 | `#FFE5E5 → #E5F5FF` |
-| 🎧 오디오 가이드 | 연블루 → 연그린 | `#E5F5FF → #E5FFE5` |
-| 🖼️ 전시 포스터 | 연오렌지 → 연핑크 | `#FFF5E5 → #FFE5F5` |
-| 📊 관람객 통계 | 연보라 → 연블루 | `#F5E5FF → #E5F5FF` |
-| 📄 큐레이터 노트 | 연오렌지 → 연핑크 | `#FFF5E5 → #FFE5F0` |
-| 🎁 3D 모델 | 연블루 → 연민트 | `#E5F5FF → #E5FFF5` |
-| 🌄 환경 사진 | 연민트 → 연그린 | `#E5FFF5 → #F5FFE5` |
-| 💬 피드백 | 연핑크 → 연피치 | `#FFE5F0 → #FFF5E5` |
-| 📅 일정표 | 연피치 → 연옐로우 | `#FFF5E5 → #FFFFE5` |
+| 🎬 Video (홍보 영상) | 연핑크 → 연블루 | `#FFE5E5 → #E5F5FF` |
+| 🎧 Audio (오디오 가이드) | 연블루 → 연그린 | `#E5F5FF → #E5FFE5` |
+| 🖼️ Image (전시 포스터) | 연오렌지 → 연핑크 | `#FFF5E5 → #FFE5F5` |
+| 📄 Document (큐레이터 노트) | 연오렌지 → 연핑크 | `#FFF5E5 → #FFE5F0` |
+| 📊 Data/Chart (관람객 통계) | 연블루 → 연민트 | `#E5F5FF → #E5FFF5` |
+| 🎯 Default (기본) | 연보라 → 연블루 | `#F5E5FF → #E5F5FF` |
 
-#### **🌟 전체 UI 화이트 테마 통일**
+#### **✨ 변경 사항**
 
-1. **Canvas Workspace**
-   - Body Background: `#F9FAFB` (라이트 그레이)
-   - Canvas Background: `#fafbfc` (화이트/그리드 패턴)
+- ✅ **카드 배경 (.card-thumbnail)**: 다크 그라데이션 → 파스텔 톤 그라데이션
+- ✅ **Sidebar, Panel, Controls**: 다크 테마 유지 (변경 없음)
+- ✅ **Canvas workspace**: 다크 테마 유지 (#0a0a0a)
+- ✅ **Footer, Navbar**: 다크 테마 유지 (변경 없음)
+- ✅ **카드 푸터**: 초록색 그라데이션 유지 (#10b981)
 
-2. **Sidebar & Panel**
-   - Sidebar: `linear-gradient(180deg, #f9fafb, #f3f4f6)`
-   - Panel: `rgba(255, 255, 255, 0.98)`
-   - Border: `#e5e7eb` (라이트 그레이)
+#### **📝 UI 일관성**
 
-3. **Controls & Buttons**
-   - Background: `rgba(255, 255, 255, 0.98)`
-   - Border: `#e5e7eb`
-   - Hover: `rgba(167, 243, 208, 0.3)` (파스텔 민트)
-
-4. **AI Input Field**
-   - Background: `#f9fafb`
-   - Border: `#d1d5db`
-   - Focus: `#86efac` (파스텔 그린)
-
-5. **Footer**
-   - Background: `linear-gradient(135deg, #ffffff 0%, #f9fafb 100%)`
-   - Border: `#e5e7eb`
-
-#### **📝 Text Color 최적화**
-
-- Primary Text: `#1F2937` (다크 그레이)
-- Secondary Text: `#6b7280` (미디움 그레이)
-- Card Header: `#065f46` (다크 그린)
-- Card Footer: `#A7F3D0 → #86EFAC` (파스텔 민트 그린)
-
-#### **✨ UI/UX 개선사항**
-
-- ✅ 모든 카드가 밝은 파스텔 톤 배경
-- ✅ 화이트 테마로 가독성 극대화
-- ✅ 색상 일관성 유지 (카테고리별 구분)
-- ✅ WCAG AAA 접근성 유지
-- ✅ 모바일 최적화 유지
+- Canvas UI: 다크 테마 (블랙/그레이)
+- 카드 배경: 밝은 파스텔 톤 (카테고리별 색상 구분)
+- 텍스트: 화이트/라이트 그레이 (다크 배경용)
+- 접근성: WCAG AAA 유지
 
 ---
 
@@ -1064,14 +1036,14 @@ public/
 - ✅ **Screen Reader**: ARIA labels 완비
 - ✅ **Focus Indicators**: 명확한 포커스 상태
 
-### 🚀 **Production URLs (V19.0 - Canvas Pastel Theme)**
-- **Latest (V19.0)**: https://d1bf3535.museflow.pages.dev
-- **Landing**: https://d1bf3535.museflow.pages.dev/landing
-- **About**: https://d1bf3535.museflow.pages.dev/about
-- **Modules**: https://d1bf3535.museflow.pages.dev/modules
-- **Canvas (Pastel Theme 🎨)**: https://d1bf3535.museflow.pages.dev/canvas-ultimate-clean
-- **Dashboard**: https://d1bf3535.museflow.pages.dev/dashboard
-- **Contact**: https://d1bf3535.museflow.pages.dev/contact
+### 🚀 **Production URLs (V19.0 - Canvas Card Pastel)**
+- **Latest (V19.0)**: https://9efc3b41.museflow.pages.dev
+- **Landing**: https://9efc3b41.museflow.pages.dev/landing
+- **About**: https://9efc3b41.museflow.pages.dev/about
+- **Modules**: https://9efc3b41.museflow.pages.dev/modules
+- **Canvas (Card Pastel 🎨)**: https://9efc3b41.museflow.pages.dev/canvas-ultimate-clean
+- **Dashboard**: https://9efc3b41.museflow.pages.dev/dashboard
+- **Contact**: https://9efc3b41.museflow.pages.dev/contact
 - **Primary Domain**: https://museflow.life
 
 ---
