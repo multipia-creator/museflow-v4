@@ -6,13 +6,25 @@
     <title>MuseFlow.life - AI-Powered Museum Workflow Platform</title>
     <meta name="description" content="Transform your museum operations with AI-powered workflow automation, multi-agent system, and real-time collaboration.">
     
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX', {
+            'page_title': 'MuseFlow Landing',
+            'send_page_view': true
+        });
+    </script>
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/fontawesome-all.min.css" rel="stylesheet">
     
     <!-- Styles -->
     <link rel="stylesheet" href="/static/css/world-class-ui.css">
@@ -4817,6 +4829,58 @@
             </div>
         </div>
     </footer>
+
+    <!-- Analytics Helper Functions -->
+    <script>
+        // Analytics Event Tracking Helper
+        function trackEvent(eventName, eventParams = {}) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, eventParams);
+                console.log('📊 Analytics Event:', eventName, eventParams);
+            }
+        }
+
+        // Track button clicks
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track CTA button clicks
+            const ctaButtons = document.querySelectorAll('.cta-primary, .cta-secondary, .nav-app-btn');
+            ctaButtons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const btnText = this.textContent.trim();
+                    const btnHref = this.getAttribute('href') || 'no-link';
+                    trackEvent('button_click', {
+                        button_text: btnText,
+                        button_link: btnHref,
+                        page_location: window.location.pathname
+                    });
+                });
+            });
+
+            // Track module card clicks
+            const moduleCards = document.querySelectorAll('.module-card a');
+            moduleCards.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const moduleName = this.closest('.module-card')?.querySelector('h3')?.textContent || 'unknown';
+                    trackEvent('module_click', {
+                        module_name: moduleName,
+                        action: this.textContent.trim()
+                    });
+                });
+            });
+
+            // Track scroll depth
+            let maxScroll = 0;
+            window.addEventListener('scroll', function() {
+                const scrollPercent = Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
+                if (scrollPercent > maxScroll && scrollPercent % 25 === 0) {
+                    maxScroll = scrollPercent;
+                    trackEvent('scroll_depth', {
+                        percent: scrollPercent
+                    });
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
