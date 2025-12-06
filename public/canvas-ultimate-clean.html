@@ -2428,6 +2428,54 @@ body {
 <script>
 lucide.createIcons();
 
+// ============================================
+// Widget 드래그앤드롭 - 전역 변수 및 함수 (최우선 정의)
+// ============================================
+let draggedWidgetData = null;
+
+// Widget 아이템에 드래그 이벤트 리스너 추가하는 함수
+function attachWidgetDragListeners() {
+    const widgets = document.querySelectorAll('.widget-item');
+    
+    widgets.forEach(widget => {
+        // 이미 리스너가 등록되어 있으면 스킵
+        if (widget.dataset.dragListenerAttached) return;
+        
+        // dragstart 이벤트
+        widget.addEventListener('dragstart', (e) => {
+            const widgetType = widget.dataset.widgetType;
+            const widgetName = widget.querySelector('.widget-name')?.textContent?.replace(/Premium/g, '').trim() || 'New Widget';
+            const widgetDesc = widget.querySelector('.widget-description')?.textContent || '';
+            const isPremium = widget.querySelector('.badge-premium') !== null;
+            
+            draggedWidgetData = {
+                type: widgetType,
+                name: widgetName,
+                description: widgetDesc,
+                isPremium: isPremium
+            };
+            
+            e.dataTransfer.effectAllowed = 'copy';
+            e.dataTransfer.setData('text/plain', JSON.stringify(draggedWidgetData));
+            
+            // 드래그 중 시각적 피드백
+            widget.style.opacity = '0.5';
+            console.log('🎨 Widget 드래그 시작:', widgetName, draggedWidgetData);
+        });
+        
+        // dragend 이벤트
+        widget.addEventListener('dragend', (e) => {
+            widget.style.opacity = '1';
+            console.log('🎨 Widget 드래그 종료');
+        });
+        
+        // 리스너 등록 플래그
+        widget.dataset.dragListenerAttached = 'true';
+    });
+    
+    console.log(`✅ Widget 드래그 리스너 등록 완료: ${widgets.length}개`);
+}
+
 // ========== WIDGET PANEL - ACCORDION & SEARCH ==========
 function toggleWidgetCategory(categoryId) {
   const group = document.querySelector(`[data-category="${categoryId}"]`);
@@ -2700,6 +2748,14 @@ document.querySelectorAll('.icon').forEach(icon => {
         panel.classList.add('active');
         this.classList.add('active');
         activePanels[side] = panelName;
+        
+        // Widget Panel이 열릴 때 드래그 리스너 등록
+        if (panelName === 'widgetPanel' && typeof attachWidgetDragListeners === 'function') {
+            setTimeout(() => {
+                attachWidgetDragListeners();
+                console.log('🔧 Widget Panel 열림 → 드래그 리스너 재등록');
+            }, 100);
+        }
     });
 });
 
@@ -3664,56 +3720,14 @@ document.getElementById('aiInput')?.addEventListener('keypress', (e) => {
 console.log('✅ Canvas AI 어시스턴트 초기화 완료');
 
 // ============================================
-// Widget 드래그앤드롭 기능 (MutationObserver + 직접 이벤트)
+// Widget 드래그앤드롭 초기화 (MutationObserver + DOM Ready)
 // ============================================
 
-let draggedWidgetData = null;
-
-// Widget 아이템에 드래그 이벤트 리스너 추가하는 함수
-function attachWidgetDragListeners() {
-    const widgets = document.querySelectorAll('.widget-item');
-    
-    widgets.forEach(widget => {
-        // 이미 리스너가 등록되어 있으면 스킵
-        if (widget.dataset.dragListenerAttached) return;
-        
-        // dragstart 이벤트
-        widget.addEventListener('dragstart', (e) => {
-            const widgetType = widget.dataset.widgetType;
-            const widgetName = widget.querySelector('.widget-name')?.textContent?.replace(/Premium/g, '').trim() || 'New Widget';
-            const widgetDesc = widget.querySelector('.widget-description')?.textContent || '';
-            const isPremium = widget.querySelector('.badge-premium') !== null;
-            
-            draggedWidgetData = {
-                type: widgetType,
-                name: widgetName,
-                description: widgetDesc,
-                isPremium: isPremium
-            };
-            
-            e.dataTransfer.effectAllowed = 'copy';
-            e.dataTransfer.setData('text/plain', JSON.stringify(draggedWidgetData));
-            
-            // 드래그 중 시각적 피드백
-            widget.style.opacity = '0.5';
-            console.log('🎨 Widget 드래그 시작:', widgetName, draggedWidgetData);
-        });
-        
-        // dragend 이벤트
-        widget.addEventListener('dragend', (e) => {
-            widget.style.opacity = '1';
-            console.log('🎨 Widget 드래그 종료');
-        });
-        
-        // 리스너 등록 플래그
-        widget.dataset.dragListenerAttached = 'true';
-    });
-    
-    console.log(`✅ Widget 드래그 리스너 등록 완료: ${widgets.length}개`);
-}
-
-// 초기 로드 시 리스너 등록
-attachWidgetDragListeners();
+// DOM Ready 후 초기 리스너 등록
+document.addEventListener('DOMContentLoaded', () => {
+    attachWidgetDragListeners();
+    console.log('🔧 DOMContentLoaded: Widget 드래그 리스너 초기화');
+});
 
 // MutationObserver로 동적 Widget 감지
 const widgetPanel = document.getElementById('widgetPanel');
