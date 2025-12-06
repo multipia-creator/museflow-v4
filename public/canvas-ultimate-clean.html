@@ -1441,6 +1441,256 @@ body {
   color: #8B5CF6;
   margin: 0 2px;
 }
+
+/* ============================================
+   COMMAND PALETTE (Cmd+K)
+   ============================================ */
+
+.command-palette-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: none;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 15vh;
+  z-index: 10000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.command-palette-overlay.active {
+  display: flex;
+}
+
+.command-palette {
+  width: 600px;
+  max-width: 90%;
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.98) 0%, rgba(31, 41, 55, 0.98) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(139, 92, 246, 0.2);
+  overflow: hidden;
+  animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.command-palette-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(139, 92, 246, 0.05);
+}
+
+.command-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.command-search-icon {
+  width: 20px;
+  height: 20px;
+  color: #8B5CF6;
+  flex-shrink: 0;
+}
+
+.command-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e5e5e5;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+.command-search-input::placeholder {
+  color: #9CA3AF;
+}
+
+.command-palette-hint {
+  font-size: 11px;
+  color: #6B7280;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.command-palette-hint kbd {
+  padding: 2px 6px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 10px;
+}
+
+.command-palette-body {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.command-palette-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.command-palette-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.command-palette-body::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 3px;
+}
+
+.command-palette-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+
+.command-category {
+  padding: 12px 20px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.command-item {
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-left: 3px solid transparent;
+}
+
+.command-item:hover,
+.command-item.selected {
+  background: rgba(139, 92, 246, 0.15);
+  border-left-color: #8B5CF6;
+}
+
+.command-item-icon {
+  width: 18px;
+  height: 18px;
+  color: #8B5CF6;
+  flex-shrink: 0;
+}
+
+.command-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.command-item-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #e5e5e5;
+  margin-bottom: 2px;
+}
+
+.command-item-desc {
+  font-size: 12px;
+  color: #9CA3AF;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.command-item-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 9px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+  border-radius: 4px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.command-palette-empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: #6B7280;
+}
+
+.command-palette-empty-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  color: #4B5563;
+}
+
+.command-palette-empty-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.command-palette-footer {
+  padding: 12px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.command-palette-shortcuts {
+  display: flex;
+  gap: 16px;
+  font-size: 11px;
+  color: #6B7280;
+}
+
+.command-palette-shortcut {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.command-palette-shortcut kbd {
+  padding: 2px 6px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 10px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .command-palette {
+    width: 95%;
+    max-height: 70vh;
+  }
+  
+  .command-palette-body {
+    max-height: 300px;
+  }
+}
 </style>
 </head>
 <body>
@@ -3509,7 +3759,290 @@ viewport.addEventListener('drop', (e) => {
 
 console.log('✅ Widget 드래그앤드롭 초기화 완료');
 
+// ============================================
+// Command Palette (Cmd+K) 기능
+// ============================================
+
+const commandPaletteOverlay = document.getElementById('commandPaletteOverlay');
+const commandSearchInput = document.getElementById('commandSearchInput');
+const commandPaletteBody = document.getElementById('commandPaletteBody');
+let selectedCommandIndex = 0;
+let filteredCommands = [];
+
+// 모든 Widget 데이터 수집
+function getAllWidgets() {
+    const widgets = [];
+    document.querySelectorAll('.widget-item').forEach(widget => {
+        const widgetType = widget.dataset.widgetType;
+        const widgetName = widget.querySelector('.widget-name')?.textContent || '';
+        const widgetDesc = widget.querySelector('.widget-description')?.textContent || '';
+        const isPremium = widget.querySelector('.badge-premium') !== null;
+        const categoryGroup = widget.closest('.category-group');
+        const category = categoryGroup?.querySelector('.category-name')?.textContent || 'General';
+        const iconElement = widget.querySelector('.widget-icon-wrapper i');
+        const iconName = iconElement?.getAttribute('data-lucide') || 'box';
+        
+        widgets.push({
+            type: widgetType,
+            name: widgetName,
+            description: widgetDesc,
+            isPremium: isPremium,
+            category: category,
+            icon: iconName
+        });
+    });
+    return widgets;
+}
+
+// Command Palette 열기
+function openCommandPalette() {
+    commandPaletteOverlay.classList.add('active');
+    commandSearchInput.value = '';
+    commandSearchInput.focus();
+    selectedCommandIndex = 0;
+    renderCommandList('');
+}
+
+// Command Palette 닫기
+function closeCommandPalette() {
+    commandPaletteOverlay.classList.remove('active');
+}
+
+// Command 리스트 렌더링
+function renderCommandList(query) {
+    const allWidgets = getAllWidgets();
+    
+    // 검색 필터링
+    if (query.trim()) {
+        filteredCommands = allWidgets.filter(widget => 
+            widget.name.toLowerCase().includes(query.toLowerCase()) ||
+            widget.description.toLowerCase().includes(query.toLowerCase()) ||
+            widget.category.toLowerCase().includes(query.toLowerCase())
+        );
+    } else {
+        filteredCommands = allWidgets;
+    }
+    
+    // 카테고리별로 그룹화
+    const categories = {};
+    filteredCommands.forEach(widget => {
+        if (!categories[widget.category]) {
+            categories[widget.category] = [];
+        }
+        categories[widget.category].push(widget);
+    });
+    
+    // HTML 생성
+    if (filteredCommands.length === 0) {
+        commandPaletteBody.innerHTML = `
+            <div class="command-palette-empty">
+                <i data-lucide="search-x" class="command-palette-empty-icon"></i>
+                <div class="command-palette-empty-text">검색 결과가 없습니다</div>
+            </div>
+        `;
+    } else {
+        let html = '';
+        Object.keys(categories).forEach((category, catIndex) => {
+            html += `<div class="command-category">${category}</div>`;
+            categories[category].forEach((widget, widgetIndex) => {
+                const globalIndex = filteredCommands.indexOf(widget);
+                const selectedClass = globalIndex === selectedCommandIndex ? 'selected' : '';
+                html += `
+                    <div class="command-item ${selectedClass}" data-index="${globalIndex}">
+                        <i data-lucide="${widget.icon}" class="command-item-icon"></i>
+                        <div class="command-item-info">
+                            <div class="command-item-name">${widget.name}</div>
+                            <div class="command-item-desc">${widget.description}</div>
+                        </div>
+                        ${widget.isPremium ? '<span class="command-item-badge">⭐ PRO</span>' : ''}
+                    </div>
+                `;
+            });
+        });
+        commandPaletteBody.innerHTML = html;
+    }
+    
+    // Lucide 아이콘 다시 렌더링
+    lucide.createIcons();
+    
+    // 클릭 이벤트 추가
+    document.querySelectorAll('.command-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const index = parseInt(item.dataset.index);
+            selectCommand(index);
+        });
+    });
+}
+
+// Command 선택 (Enter 키 또는 클릭)
+function selectCommand(index) {
+    if (index < 0 || index >= filteredCommands.length) return;
+    
+    const widget = filteredCommands[index];
+    
+    // Canvas 중앙에 노드 생성
+    const viewportRect = viewport.getBoundingClientRect();
+    const centerX = (viewportRect.width / 2 - pan.x) / zoom;
+    const centerY = (viewportRect.height / 2 - pan.y) / zoom;
+    
+    const card = createCardElement(
+        widget.name,
+        widget.description,
+        centerX - 90, // 카드 너비 절반만큼 왼쪽으로
+        centerY - 40  // 카드 높이 절반만큼 위로
+    );
+    
+    // Widget 타입 데이터 추가
+    card.dataset.widgetType = widget.type;
+    card.dataset.isPremium = widget.isPremium;
+    
+    // Premium 뱃지 추가
+    if (widget.isPremium) {
+        const header = card.querySelector('.card-header');
+        if (header) {
+            const premiumBadge = document.createElement('span');
+            premiumBadge.className = 'badge-premium';
+            premiumBadge.textContent = '⭐ PRO';
+            premiumBadge.style.cssText = `
+                display: inline-block;
+                margin-left: 8px;
+                padding: 2px 6px;
+                font-size: 9px;
+                font-weight: 600;
+                background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+                border-radius: 4px;
+                color: white;
+            `;
+            header.appendChild(premiumBadge);
+        }
+    }
+    
+    viewport.appendChild(card);
+    
+    // Dashboard 동기화
+    setTimeout(() => {
+        syncCanvasToDashboard();
+    }, 100);
+    
+    console.log('✅ Command Palette에서 Widget 생성:', widget.name);
+    
+    // Command Palette 닫기
+    closeCommandPalette();
+}
+
+// 키보드 이벤트 (Cmd+K, ↑↓, Enter, ESC)
+document.addEventListener('keydown', (e) => {
+    // Cmd+K 또는 Ctrl+K로 열기
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        if (commandPaletteOverlay.classList.contains('active')) {
+            closeCommandPalette();
+        } else {
+            openCommandPalette();
+        }
+        return;
+    }
+    
+    // Command Palette가 열려있을 때만 처리
+    if (!commandPaletteOverlay.classList.contains('active')) return;
+    
+    // ESC로 닫기
+    if (e.key === 'Escape') {
+        e.preventDefault();
+        closeCommandPalette();
+        return;
+    }
+    
+    // Enter로 선택
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        selectCommand(selectedCommandIndex);
+        return;
+    }
+    
+    // ↓ 화살표
+    if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        selectedCommandIndex = Math.min(selectedCommandIndex + 1, filteredCommands.length - 1);
+        renderCommandList(commandSearchInput.value);
+        
+        // 선택된 항목으로 스크롤
+        const selectedItem = document.querySelector('.command-item.selected');
+        if (selectedItem) {
+            selectedItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+        return;
+    }
+    
+    // ↑ 화살표
+    if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        selectedCommandIndex = Math.max(selectedCommandIndex - 1, 0);
+        renderCommandList(commandSearchInput.value);
+        
+        // 선택된 항목으로 스크롤
+        const selectedItem = document.querySelector('.command-item.selected');
+        if (selectedItem) {
+            selectedItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+        return;
+    }
+});
+
+// 검색 입력 이벤트
+commandSearchInput?.addEventListener('input', (e) => {
+    selectedCommandIndex = 0; // 검색 시 첫 번째 항목 선택
+    renderCommandList(e.target.value);
+});
+
+// Overlay 클릭 시 닫기
+commandPaletteOverlay?.addEventListener('click', (e) => {
+    if (e.target === commandPaletteOverlay) {
+        closeCommandPalette();
+    }
+});
+
+console.log('✅ Command Palette (Cmd+K) 초기화 완료');
+
 lucide.createIcons();
 </script>
+
+<!-- Command Palette Modal -->
+<div id="commandPaletteOverlay" class="command-palette-overlay">
+    <div class="command-palette">
+        <div class="command-palette-header">
+            <div class="command-search-wrapper">
+                <i data-lucide="search" class="command-search-icon"></i>
+                <input 
+                    type="text" 
+                    id="commandSearchInput"
+                    class="command-search-input" 
+                    placeholder="위젯 검색... (이름, 설명, 카테고리)"
+                    autocomplete="off"
+                />
+            </div>
+            <div class="command-palette-hint">
+                <kbd>↑</kbd> <kbd>↓</kbd> 이동
+                <kbd>Enter</kbd> 선택
+                <kbd>ESC</kbd> 닫기
+            </div>
+        </div>
+        <div id="commandPaletteBody" class="command-palette-body">
+            <!-- JavaScript로 동적 생성 -->
+        </div>
+        <div class="command-palette-footer">
+            <div class="command-palette-shortcuts">
+                <div class="command-palette-shortcut">
+                    <kbd>Cmd</kbd> + <kbd>K</kbd>
+                    <span>열기/닫기</span>
+                </div>
+            </div>
+            <div style="font-size: 11px; color: #6B7280;">
+                29개 위젯 사용 가능
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
