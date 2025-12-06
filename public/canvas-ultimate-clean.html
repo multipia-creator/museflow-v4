@@ -1588,7 +1588,7 @@ body {
         <div style="padding: 1rem;">
             <div style="display: flex; flex-direction: column; gap: 0.75rem;">
                 <div style="padding: 0.75rem; background: rgba(139, 92, 246, 0.1); border-radius: 8px; border-left: 3px solid #8B5CF6; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.2)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.1)'">
-                    <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.25rem;">박물관 전시 프로젝트</div>
+                    <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.25rem;">뮤지엄 전시 프로젝트</div>
                     <div style="font-size: 0.875rem; color: #9CA3AF;">마지막 수정: 2시간 전</div>
                 </div>
                 <div style="padding: 0.75rem; background: rgba(34, 197, 94, 0.1); border-radius: 8px; border-left: 3px solid #22C55E; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(34, 197, 94, 0.2)'" onmouseout="this.style.background='rgba(34, 197, 94, 0.1)'">
@@ -1762,7 +1762,7 @@ body {
                         <i data-lucide="alert-circle" style="width:16px;height:16px;color:#EF4444;flex-shrink:0;margin-top:2px;"></i>
                         <div>
                             <div style="font-weight: 600; color: #e5e5e5; margin-bottom: 0.25rem;">프로젝트 마감일 임박</div>
-                            <div style="font-size: 0.875rem; color: #9CA3AF;">박물관 전시 - 2일 남음</div>
+                            <div style="font-size: 0.875rem; color: #9CA3AF;">뮤지엄 전시 - 2일 남음</div>
                         </div>
                     </div>
                 </div>
@@ -1911,14 +1911,14 @@ body {
                 </div>
             </div>
             
-            <!-- 🏛️ 박물관 전문 기능 -->
+            <!-- 🏛️ 뮤지엄 전문 기능 -->
             <div class="category-group category-museum-professional" 
                  data-category="museum-professional"
                  data-expanded="false">
                 <div class="category-header" onclick="toggleWidgetCategory('museum-professional')">
                     <i data-lucide="chevron-right" class="category-chevron icon"></i>
                     <i data-lucide="landmark" class="icon category-icon"></i>
-                    <span class="category-name">박물관 전문 기능</span>
+                    <span class="category-name">뮤지엄 전문 기능</span>
                     <span class="category-badge">6</span>
                 </div>
                 
@@ -3405,6 +3405,109 @@ document.getElementById('aiInput')?.addEventListener('keypress', (e) => {
 });
 
 console.log('✅ Canvas AI 어시스턴트 초기화 완료');
+
+// ============================================
+// Widget 드래그앤드롭 기능
+// ============================================
+
+let draggedWidgetData = null;
+
+// Widget 드래그 시작
+document.querySelectorAll('.widget-item').forEach(widget => {
+    widget.addEventListener('dragstart', (e) => {
+        const widgetType = widget.dataset.widgetType;
+        const widgetName = widget.querySelector('.widget-name')?.textContent || 'New Widget';
+        const widgetDesc = widget.querySelector('.widget-description')?.textContent || '';
+        const isPremium = widget.querySelector('.badge-premium') !== null;
+        
+        draggedWidgetData = {
+            type: widgetType,
+            name: widgetName,
+            description: widgetDesc,
+            isPremium: isPremium
+        };
+        
+        e.dataTransfer.effectAllowed = 'copy';
+        e.dataTransfer.setData('text/plain', JSON.stringify(draggedWidgetData));
+        
+        // 드래그 중 시각적 피드백
+        widget.style.opacity = '0.5';
+        console.log('🎨 Widget 드래그 시작:', widgetName);
+    });
+    
+    widget.addEventListener('dragend', (e) => {
+        widget.style.opacity = '1';
+    });
+});
+
+// Canvas에 드롭 가능하도록 설정
+const viewport = document.getElementById('viewport');
+
+viewport.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+});
+
+viewport.addEventListener('drop', (e) => {
+    e.preventDefault();
+    
+    if (!draggedWidgetData) {
+        console.warn('⚠️ Widget 데이터가 없습니다');
+        return;
+    }
+    
+    // Canvas 좌표 계산 (viewport 기준)
+    const viewportRect = viewport.getBoundingClientRect();
+    const x = e.clientX - viewportRect.left - pan.x;
+    const y = e.clientY - viewportRect.top - pan.y;
+    
+    // Widget 노드 생성
+    const card = createCardElement(
+        draggedWidgetData.name,
+        draggedWidgetData.description,
+        x / zoom,
+        y / zoom
+    );
+    
+    // Widget 타입 데이터 추가
+    card.dataset.widgetType = draggedWidgetData.type;
+    card.dataset.isPremium = draggedWidgetData.isPremium;
+    
+    // Premium 뱃지 추가
+    if (draggedWidgetData.isPremium) {
+        const header = card.querySelector('.card-header');
+        if (header) {
+            const premiumBadge = document.createElement('span');
+            premiumBadge.className = 'badge-premium';
+            premiumBadge.textContent = '⭐ PRO';
+            premiumBadge.style.cssText = `
+                display: inline-block;
+                margin-left: 8px;
+                padding: 2px 6px;
+                font-size: 9px;
+                font-weight: 600;
+                background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+                border-radius: 4px;
+                color: white;
+            `;
+            header.appendChild(premiumBadge);
+        }
+    }
+    
+    viewport.appendChild(card);
+    
+    // Dashboard 동기화
+    setTimeout(() => {
+        syncCanvasToDashboard();
+    }, 100);
+    
+    console.log('✅ Widget 노드 생성:', draggedWidgetData.name, `at (${Math.round(x)}, ${Math.round(y)})`);
+    
+    // 드래그 데이터 초기화
+    draggedWidgetData = null;
+});
+
+console.log('✅ Widget 드래그앤드롭 초기화 완료');
 
 lucide.createIcons();
 </script>

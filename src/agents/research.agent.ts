@@ -343,7 +343,7 @@ ${results.slice(0, 5).map((r, i) => `${i + 1}. ${r.title}: ${r.content.substring
   }
 
   /**
-   * 박물관 API 검색 (예: MET Museum API)
+   * 뮤지엄 API 검색 (예: MET Museum API)
    */
   private async searchMuseumAPI(query: string): Promise<ResearchResult[]> {
     try {

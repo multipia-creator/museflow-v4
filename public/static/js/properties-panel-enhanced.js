@@ -384,7 +384,7 @@ const PropertiesPanelEnhanced = {
     };
     
     return `
-당신은 박물관 학예사를 돕는 AI 어시스턴트입니다.
+당신은 뮤지엄 학예사를 돕는 AI 어시스턴트입니다.
 
 노드 유형: ${nodeTypeKorean[context.category] || context.category}
 노드 제목: ${context.nodeTitle || '(미정)'}

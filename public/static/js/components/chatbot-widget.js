@@ -44,7 +44,7 @@ class ChatbotWidget {
               </svg>
             </div>
             <div class="chatbot-header-text">
-              <h3>박물관 AI 가이드</h3>
+              <h3>뮤지엄 AI 가이드</h3>
               <p class="chatbot-status">
                 <span class="chatbot-status-dot"></span>
                 온라인

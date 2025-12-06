@@ -10,12 +10,12 @@ const TooltipSystem = {
     accession_number: {
       title: '소장번호 (Accession Number)',
       short: '작품이 수집될 때 부여되는 고유 식별자',
-      long: `작품이 박물관 소장품에 포함될 때 부여되는 영구적이고 고유한 식별자입니다. 
+      long: `작품이 뮤지엄 소장품에 포함될 때 부여되는 영구적이고 고유한 식별자입니다. 
              형식: YYYY.### (예: 2025.047)
              • YYYY = 수집 연도 (예: 2025)
              • ### = 순차 번호 (예: 047)
              
-             소장번호는 모든 박물관 시스템과 출판물에서 정확한 추적을 가능하게 합니다.`,
+             소장번호는 모든 뮤지엄 시스템과 출판물에서 정확한 추적을 가능하게 합니다.`,
       example: '2025.047 (2025년에 수집된 47번째 작품)',
       learnMoreUrl: '/help/accession-numbers',
       videoId: 'accession-basics'

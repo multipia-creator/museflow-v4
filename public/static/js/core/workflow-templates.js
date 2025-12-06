@@ -37,7 +37,7 @@ const WorkflowTemplates = {
           width: 180,
           height: 80,
           config: {
-            prompt: '다음 주제로 박물관 전시 기획안을 작성해주세요. 1) 전시 개요, 2) 주요 전시품, 3) 관람 포인트, 4) 교육 프로그램'
+            prompt: '다음 주제로 뮤지엄 전시 기획안을 작성해주세요. 1) 전시 개요, 2) 주요 전시품, 3) 관람 포인트, 4) 교육 프로그램'
           }
         },
         {
@@ -108,7 +108,7 @@ const WorkflowTemplates = {
           width: 180,
           height: 80,
           config: {
-            prompt: '다음 주제로 박물관 교육 프로그램을 기획해주세요. 1) 프로그램 목표, 2) 대상 연령, 3) 활동 내용, 4) 준비물'
+            prompt: '다음 주제로 뮤지엄 교육 프로그램을 기획해주세요. 1) 프로그램 목표, 2) 대상 연령, 3) 활동 내용, 4) 준비물'
           }
         },
         {
@@ -137,7 +137,7 @@ const WorkflowTemplates = {
           height: 80,
           config: {
             to: 'parents@museum.kr',
-            subject: '[박물관] 어린이 도자기 체험 교실 안내'
+            subject: '[뮤지엄] 어린이 도자기 체험 교실 안내'
           }
         }
       ],
@@ -206,7 +206,7 @@ const WorkflowTemplates = {
           height: 80,
           config: {
             to: 'subscribers@museum.kr',
-            subject: '[박물관] 여름 특별전 안내'
+            subject: '[뮤지엄] 여름 특별전 안내'
           }
         },
         {

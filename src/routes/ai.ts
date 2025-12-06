@@ -70,7 +70,7 @@ async function analyzeCommandWithGemini(
   }[role] || '학예사'
   
   const systemPrompt = `
-당신은 박물관/미술관 워크플로우 AI 어시스턴트입니다.
+당신은 뮤지엄/미술관 워크플로우 AI 어시스턴트입니다.
 현재 사용자 역할: ${roleContext}
 
 사용자의 자연어 명령을 분석해서 다음 JSON 형식으로 응답해주세요:
@@ -268,7 +268,7 @@ async function generateDocumentWithGemini(
   }[role] || '학예사'
   
   const systemPrompt = `
-당신은 박물관/미술관 전문 문서 작성 AI입니다.
+당신은 뮤지엄/미술관 전문 문서 작성 AI입니다.
 현재 사용자 역할: ${roleContext}
 
 주제: "${title}"
@@ -395,7 +395,7 @@ async function generateChatResponseWithGemini(
 ): Promise<string> {
   const systemPrompt = `
 당신은 MuseFlow Canvas의 AI 어시스턴트입니다.
-현재 사용자는 Canvas 페이지에서 박물관/미술관 워크플로우를 작업하고 있습니다.
+현재 사용자는 Canvas 페이지에서 뮤지엄/미술관 워크플로우를 작업하고 있습니다.
 
 **현재 상태**:
 - 페이지: ${context.page || 'canvas'}
@@ -405,7 +405,7 @@ async function generateChatResponseWithGemini(
 **당신의 역할**:
 1. Canvas 사용법 안내
 2. 워크플로우 작성 도움
-3. 박물관/미술관 전시 기획 조언
+3. 뮤지엄/미술관 전시 기획 조언
 4. 일반적인 질문 응답
 
 **응답 스타일**:

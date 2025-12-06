@@ -2687,7 +2687,7 @@
             }
             
             // ==========================================
-            // 박물관 전문 위젯
+            // 뮤지엄 전문 위젯
             // ==========================================
             
             // 전시 상태 보드
@@ -2778,9 +2778,9 @@
                 return `
                     <div style="padding: 1rem;">
                         ${[
-                            {title: '청자 매병', museum: '도쿄국립박물관', dday: 'D-45', status: 'out'},
+                            {title: '청자 매병', museum: '도쿄국립뮤지엄', dday: 'D-45', status: 'out'},
                             {title: '백자 항아리', museum: '메트로폴리탄 미술관', dday: 'D-12', status: 'return-soon'},
-                            {title: '고려 불상', museum: '루브르 박물관', dday: '대여중', status: 'out'}
+                            {title: '고려 불상', museum: '루브르 뮤지엄', dday: '대여중', status: 'out'}
                         ].map(loan => `
                             <div style="background: var(--bg-tertiary); padding: 0.75rem; margin-bottom: 0.75rem; border-radius: var(--radius-md); border-left: 4px solid ${loan.status === 'return-soon' ? '#F59E0B' : '#3B82F6'};">
                                 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
@@ -3436,7 +3436,7 @@
                 return `
                     <div style="padding: 1rem; max-height: 400px; overflow-y: auto;">
                         ${[
-                            {title: '루브르 박물관, 새로운 전시 개막', source: 'Art News', time: '2시간 전'},
+                            {title: '루브르 뮤지엄, 새로운 전시 개막', source: 'Art News', time: '2시간 전'},
                             {title: '메트로폴리탄, AI 큐레이션 도입', source: 'Museum Today', time: '5시간 전'},
                             {title: '한국 미술, 글로벌 주목받아', source: 'Korea Art', time: '1일 전'},
                             {title: '디지털 아카이브 혁신', source: 'Tech Museum', time: '2일 전'}
@@ -3544,7 +3544,7 @@
                 `;
             }
             
-            // ===== 박물관 운영 특화 위젯 (8개) =====
+            // ===== 뮤지엄 운영 특화 위젯 (8개) =====
             
             // 입장권 판매 현황
             if (type === 'ticket-sales') {
@@ -3700,7 +3700,7 @@
                 `;
             }
             
-            // 박물관 패스 현황
+            // 뮤지엄 패스 현황
             if (type === 'museum-pass') {
                 return `
                     <div style="display: flex; flex-direction: column; gap: 1rem;">
@@ -3804,7 +3804,7 @@
                 return `
                     <div style="display: flex; flex-direction: column; gap: 0.75rem;">
                         ${[
-                            { title: '박물관 운영 매뉴얼', icon: 'fa-book', color: '#8B5CF6' },
+                            { title: '뮤지엄 운영 매뉴얼', icon: 'fa-book', color: '#8B5CF6' },
                             { title: '소장품 관리 가이드', icon: 'fa-box', color: '#10B981' },
                             { title: '전시 기획 템플릿', icon: 'fa-file-alt', color: '#F59E0B' },
                             { title: '보존 처리 절차', icon: 'fa-shield-alt', color: '#3B82F6' }
@@ -3881,7 +3881,7 @@
                     <div style="display: flex; flex-direction: column; gap: 0.75rem;">
                         ${[
                             { title: '"특별전시 관람객 급증"', source: '문화일보', time: '2시간 전' },
-                            { title: '박물관 교육프로그램 인기', source: '한국일보', time: '5시간 전' },
+                            { title: '뮤지엄 교육프로그램 인기', source: '한국일보', time: '5시간 전' },
                             { title: '신규 소장품 공개 예정', source: '연합뉴스', time: '1일 전' }
                         ].map(news => `
                             <div style="padding: 0.75rem; background: var(--bg-secondary); border-radius: var(--radius-md); border-left: 3px solid var(--primary); cursor: pointer; transition: all 0.2s;" onmouseover="this.style.transform='translateX(4px)'" onmouseout="this.style.transform='translateX(0)'">

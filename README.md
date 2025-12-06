@@ -129,7 +129,7 @@
 - ✅ **20개 큐레이터 전용 AI 노드**: AI Exhibition Design, AI Artwork Analysis, AI Budget Optimizer 등
 - ✅ **80% 작업 자동화**: Task → AI Workflow → Auto-completion
 - ✅ **One-Click Workflow Launch**: 상황별 템플릿 즉시 실행
-- ✅ **Context-Aware AI**: 박물관 업무 맥락 이해
+- ✅ **Context-Aware AI**: 뮤지엄 업무 맥락 이해
 
 ### 📊 **Impact Metrics (Phase 4-8)**
 

@@ -56,7 +56,7 @@ export class I18nService {
       nav: {
         home: '홈',
         workflows: '워크플로',
-        museum: '박물관',
+        museum: '뮤지엄',
         chatbot: '챗봇',
         admin: '관리자',
         settings: '설정',

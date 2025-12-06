@@ -56,7 +56,7 @@ app.post('/session', async (c) => {
         sessionId: session.sessionId,
         userId: session.userId,
         startedAt: session.startedAt,
-        greeting: '안녕하세요! 저는 박물관 가이드 AI입니다. 무엇을 도와드릴까요? 😊',
+        greeting: '안녕하세요! 저는 뮤지엄 가이드 AI입니다. 무엇을 도와드릴까요? 😊',
       },
     });
   } catch (error: any) {
