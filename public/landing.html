@@ -2030,14 +2030,14 @@
             <!-- <img src="/static/images/logo-neon-m.png" alt="MuseFlow" class="hero-logo"> -->
             
             <h1 class="hero-title" data-i18n="heroTitle">
-                뮤지엄 워크플로우 혁신<br>
-                <span style="background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">87개 AI Widget으로</span>
+                AI Orchestrator로 혁신하는<br>
+                <span style="background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">뮤지엄 워크플로우</span>
             </h1>
             
             <p class="hero-subtitle" data-i18n="heroSubtitle">
-                드래그앤드롭으로 완성하는 전시 기획부터 운영까지. 
-                Gemini AI 기반 지능형 어시스턴트와 실시간 협업. 
-                큐레이터를 위한 차세대 통합 플랫폼.
+                15개 AI Agent를 조율하여 복잡한 업무를 3-5초 만에 완전 자동화. 
+                87개 전문 Widget, MCP Protocol 기반 Multi-Agent 통신, 
+                실시간 협업으로 8시간 작업을 1시간으로 단축.
             </p>
             
             <!-- AI Workspace Search -->
@@ -2101,12 +2101,12 @@
             
             <div class="hero-stats">
                 <div class="hero-stat">
-                    <div class="hero-stat-number">8</div>
-                    <div class="hero-stat-label" data-i18n="aiAgents">AI Agents</div>
+                    <div class="hero-stat-number">15</div>
+                    <div class="hero-stat-label" data-i18n="aiAgents">AI Agent Types</div>
                 </div>
                 <div class="hero-stat">
                     <div class="hero-stat-number">19</div>
-                    <div class="hero-stat-label" data-i18n="autoNodes">Auto-Generated Nodes</div>
+                    <div class="hero-stat-label" data-i18n="autoNodes">Auto Nodes/Workflow</div>
                 </div>
                 <div class="hero-stat">
                     <div class="hero-stat-number">3s</div>
@@ -2181,6 +2181,41 @@
     <!-- Features Section - Apple Style -->
     <section id="features" style="padding: 0; margin: 0;">
         <div class="agents-grid">
+            <!-- AI Orchestrator Engine -->
+            <div class="agent-card-hero" style="grid-column: 1 / -1; background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%); border: 2px solid rgba(139, 92, 246, 0.3);">
+                <div class="agent-visual">
+                    <div class="agent-icon-large" style="font-size: 5rem;">🧩</div>
+                </div>
+                <h2 class="agent-title-large" style="font-size: 3.5rem;" data-i18n="featureOrchestratorTitle">AI Orchestrator<br>Engine</h2>
+                <p class="agent-description-large" style="font-size: 1.25rem; max-width: 900px; margin: 0 auto;" data-i18n="featureOrchestratorDesc">
+                    Multi-Agent Coordination Engine with 15 AI node types and MCP protocol.
+                    Real-time execution tracking, intelligent workflow optimization, and conditional branching.
+                    Transform 8-hour tasks into 1-hour with 80% automation rate.
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem auto; max-width: 900px;">
+                    <div style="background: rgba(139, 92, 246, 0.1); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(139, 92, 246, 0.2);">
+                        <div style="font-size: 2rem; font-weight: 700; color: #a78bfa; margin-bottom: 0.5rem;">15</div>
+                        <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">AI Agent Types</div>
+                    </div>
+                    <div style="background: rgba(236, 72, 153, 0.1); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(236, 72, 153, 0.2);">
+                        <div style="font-size: 2rem; font-weight: 700; color: #f472b6; margin-bottom: 0.5rem;">6</div>
+                        <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">Execution Phases</div>
+                    </div>
+                    <div style="background: rgba(139, 92, 246, 0.1); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(139, 92, 246, 0.2);">
+                        <div style="font-size: 2rem; font-weight: 700; color: #a78bfa; margin-bottom: 0.5rem;">3.2s</div>
+                        <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">Avg. Completion</div>
+                    </div>
+                    <div style="background: rgba(236, 72, 153, 0.1); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(236, 72, 153, 0.2);">
+                        <div style="font-size: 2rem; font-weight: 700; color: #f472b6; margin-bottom: 0.5rem;">80%</div>
+                        <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">Automation Rate</div>
+                    </div>
+                </div>
+                <div class="agent-cta-group">
+                    <a href="/workflow.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/workflow.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                </div>
+            </div>
+            
             <!-- AI Workflow Generation -->
             <div class="agent-card-hero">
                 <div class="agent-visual">
@@ -2188,8 +2223,9 @@
                 </div>
                 <h2 class="agent-title-large" data-i18n="feature1Title">AI Workflow<br>Generation</h2>
                 <p class="agent-description-large" data-i18n="feature1Desc">
-                    Transform natural language into complete workflows in 3-5 seconds.
+                    Natural language to complete workflows in 3-5 seconds.
                     19 auto-generated nodes across 6 phases with budget estimation.
+                    Powered by AI Orchestrator's intelligent routing system.
                 </p>
                 <div class="agent-cta-group">
                     <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
@@ -2204,12 +2240,20 @@
                 </div>
                 <h2 class="agent-title-large" data-i18n="feature2Title">Multi-Agent<br>System</h2>
                 <p class="agent-description-large" data-i18n="feature2Desc">
-                    8 specialized AI agents working together via MCP protocol.
-                    Exhibition planning, financial analysis, and visitor prediction.
+                    15 specialized AI agents orchestrated via MCP protocol.
+                    Gemini Research, Budget Calculator, Docs Creator, Calendar Sync, Email Notifier.
+                    Intelligent task distribution with parallel/sequential execution.
                 </p>
+                <div style="display: flex; gap: 0.5rem; justify-content: center; margin: 1rem 0; flex-wrap: wrap;">
+                    <span style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem;">🔬 Research Agent</span>
+                    <span style="padding: 0.5rem 1rem; background: rgba(236, 72, 153, 0.1); border: 1px solid rgba(236, 72, 153, 0.3); border-radius: 100px; font-size: 0.875rem;">💰 Budget Agent</span>
+                    <span style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem;">📄 Docs Agent</span>
+                    <span style="padding: 0.5rem 1rem; background: rgba(236, 72, 153, 0.1); border: 1px solid rgba(236, 72, 153, 0.3); border-radius: 100px; font-size: 0.875rem;">📅 Calendar Agent</span>
+                    <span style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem;">📧 Email Agent</span>
+                </div>
                 <div class="agent-cta-group">
-                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
-                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                    <a href="/workflow.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/workflow.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
                 </div>
             </div>
             
@@ -2872,8 +2916,8 @@
                 navAbout: '소개',
                 
                 // Hero Section
-                heroTitle: 'AI 기반 뮤지엄<br>워크플로우 플랫폼',
-                heroSubtitle: '지능형 워크플로우 자동화, 멀티 에이전트 AI 시스템, 실시간 협업으로 뮤지엄 운영을 혁신하세요. 문화기관의 미래를 위해 설계되었습니다.',
+                heroTitle: 'AI Orchestrator로 혁신하는<br>뮤지엄 워크플로우',
+                heroSubtitle: '15개 AI Agent를 조율하여 복잡한 업무를 3-5초 만에 완전 자동화. 87개 전문 Widget, MCP Protocol 기반 Multi-Agent 통신, 실시간 협업으로 8시간 작업을 1시간으로 단축.',
                 launchPlatform: '플랫폼 시작하기',
                 learnMore: '더 알아보기',
                 signupButton: '가입하기',
@@ -3046,8 +3090,8 @@
                 navAbout: 'About',
                 
                 // Hero Section
-                heroTitle: 'AI-Powered Museum<br>Workflow Platform',
-                heroSubtitle: 'Transform your museum operations with intelligent workflow automation, multi-agent AI system, and real-time collaboration. Built for the future of cultural institutions.',
+                heroTitle: 'AI Orchestrator for<br>Museum Workflows',
+                heroSubtitle: 'Coordinate 15 AI Agents to fully automate complex tasks in 3-5 seconds. 87 professional Widgets, MCP Protocol-based Multi-Agent communication, real-time collaboration. Reduce 8-hour tasks to 1 hour.',
                 launchPlatform: 'Launch Platform',
                 learnMore: 'Learn More',
                 signupButton: 'Sign Up',

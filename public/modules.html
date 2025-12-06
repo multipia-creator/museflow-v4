@@ -564,23 +564,39 @@
             <div class="module-content">
                 <h3>주요 기능</h3>
                 <ul>
-                    <li>87개 전문 Widget (HTML 13개 + D1 Database 74개)</li>
-                    <li>Widget → Canvas 드래그앤드롭 자동 노드 생성</li>
-                    <li>Context Menu (우클릭): 편집/삭제/복제</li>
-                    <li>Edit Modal: Widget 이름/설명/색상 커스터마이징</li>
-                    <li>Real-time Search & Filtering (Premium/Free/Recent)</li>
-                    <li>Command Palette (Cmd+K): 87개 Widget 검색</li>
-                    <li>localStorage 자동 저장/복원</li>
+                    <li><strong>87개 전문 Widget:</strong> D1 Database 동적 로딩 (13 HTML + 74 DB)</li>
+                    <li><strong>24개 카테고리:</strong> 행정(16), Museum Professional(16), Visitor Experience(14), Operations(13) 등</li>
+                    <li><strong>Drag & Drop:</strong> Widget → Canvas 자동 노드 생성 (위치/크기/연결 자동 설정)</li>
+                    <li><strong>Widget Customization:</strong> 우클릭 Context Menu로 편집/삭제/복제, Color Picker 16색상</li>
+                    <li><strong>Search & Filtering:</strong> 실시간 검색, Premium/Free/Recent/Category 필터, 자동 확장</li>
+                    <li><strong>Command Palette (Cmd+K):</strong> Fuzzy Search로 87개 Widget 즉시 검색 및 추가</li>
+                    <li><strong>Auto-Save:</strong> localStorage 자동 저장/복원, Dashboard Sync 기능</li>
+                    <li><strong>Premium System:</strong> 24개 Premium Widget, Stripe 결제 연동 준비</li>
                 </ul>
             </div>
             
             <div class="use-cases">
-                <h4>💡 사용 사례</h4>
+                <h4>💡 AI Orchestrator 연계 시나리오</h4>
                 <p>
-                    <strong>전시 콘텐츠 제작 워크플로우:</strong> "홍보 영상" Widget을 Canvas에 드래그하고, 
-                    "전시 포스터" → "현장 사진" → "일정표"를 순서대로 연결하여 시각적 워크플로우를 완성합니다. 
-                    각 Widget을 우클릭하여 세부 설정을 편집하고, Cmd+K로 필요한 Widget을 즉시 검색하여 추가할 수 있습니다.
+                    <strong>전시 기획 Complete Workflow:</strong>
                 </p>
+                <div style="background: rgba(15, 10, 31, 0.5); padding: 1.5rem; border-radius: 12px; margin-top: 1rem; border-left: 4px solid #ec4899;">
+                    <p style="margin: 0; line-height: 1.8; font-size: 0.95rem;">
+                        <strong style="color: #ec4899;">Step 1 - Widget Selection:</strong><br>
+                        Command Palette (Cmd+K)로 "전시 기획" 검색 → 관련 Widget 5개 추가<br>
+                        (작품 리서치, 예산 계산, 기획안 작성, 일정 관리, 홍보 계획)<br><br>
+                        
+                        <strong style="color: #a78bfa;">Step 2 - Drag & Drop:</strong><br>
+                        Widget Panel에서 Canvas로 드래그 → 자동 노드 생성 및 배치<br>
+                        연결선으로 워크플로우 흐름 정의 (순차/병렬 실행)<br><br>
+                        
+                        <strong style="color: #ec4899;">Step 3 - AI Orchestration:</strong><br>
+                        AI Orchestrator가 연결된 노드 순서를 분석하여 자동 실행<br>
+                        각 Widget의 AI Agent가 작업 수행 → 결과를 다음 노드로 전달<br><br>
+                        
+                        <strong style="color: #60a5fa;">결과:</strong> 5개 Widget → 19개 자동 노드 → 3.2초 완성 ⚡
+                    </p>
+                </div>
             </div>
             
             <div class="module-actions">
@@ -593,7 +609,87 @@
             </div>
         </div>
 
-        <!-- Module 3: Workflow Automation -->
+        <!-- Module 3: AI Orchestrator -->
+        <div class="module-card" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%); border: 2px solid rgba(139, 92, 246, 0.2);">
+            <div class="module-header">
+                <div class="module-icon" style="background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); font-size: 2.5rem;">
+                    🧩
+                </div>
+                <div class="module-info">
+                    <h2>AI Orchestrator<span class="badge badge-premium">Pro</span></h2>
+                    <p>Multi-Agent 조율 엔진</p>
+                </div>
+            </div>
+            
+            <div class="module-content">
+                <h3>핵심 기술</h3>
+                <ul>
+                    <li><strong>15개 AI Agent Types:</strong> Gemini Research, Budget Calculator, Docs Creator, Calendar Sync, Email Notifier, Analytics Logger 등</li>
+                    <li><strong>MCP Protocol:</strong> Model Context Protocol 기반 Agent 간 표준 통신</li>
+                    <li><strong>Real-time Execution Tracking:</strong> 노드 그래프 실시간 실행 상태 추적 및 시각화</li>
+                    <li><strong>Smart Routing:</strong> 조건부 분기(Conditional), 병렬 실행(Parallel), 순차 실행(Sequential)</li>
+                    <li><strong>Error Handling:</strong> 자동 재시도(Retry), 대체 경로(Fallback), 롤백(Rollback) 기능</li>
+                    <li><strong>Performance:</strong> 평균 3.2초 워크플로우 완성, 최대 50개 노드 동시 실행</li>
+                </ul>
+            </div>
+            
+            <div class="use-cases">
+                <h4>🎯 Orchestration 시나리오</h4>
+                <p>
+                    <strong>"인상파 전시" 명령어 입력 시, AI Orchestrator가 6개 AI Agent를 지능적으로 조율:</strong>
+                </p>
+                <div style="background: rgba(15, 10, 31, 0.5); padding: 1.5rem; border-radius: 12px; margin-top: 1rem; border-left: 4px solid #8b5cf6;">
+                    <p style="margin: 0; line-height: 1.8; font-size: 0.95rem;">
+                        <strong style="color: #a78bfa;">Phase 1 - Research (병렬):</strong><br>
+                        1️⃣ Gemini Research Agent: 인상파 작가 5명 리서치<br>
+                        2️⃣ Museum API Agent: 국내 소장 작품 검색<br><br>
+                        
+                        <strong style="color: #f472b6;">Phase 2 - Planning (순차):</strong><br>
+                        3️⃣ Docs Creator Agent: 기획안 초안 자동 작성<br>
+                        4️⃣ Budget Calculator Agent: 전시 비용 자동 산출<br><br>
+                        
+                        <strong style="color: #a78bfa;">Phase 3 - Integration (병렬):</strong><br>
+                        5️⃣ Calendar Sync Agent: 6개월 일정 자동 등록<br>
+                        6️⃣ Email Notifier Agent: 팀원 5명에게 알림 발송<br><br>
+                        
+                        <strong style="color: #60a5fa;">결과:</strong> 총 19개 노드, 6개 Phase, 평균 3.2초 완성 ⚡
+                    </p>
+                </div>
+            </div>
+            
+            <div style="background: rgba(139, 92, 246, 0.1); padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0;">
+                <h4 style="margin: 0 0 1rem 0; color: #a78bfa;">📊 성능 지표</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: 700; color: #8b5cf6;">15</div>
+                        <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">Agent Types</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: 700; color: #ec4899;">3.2s</div>
+                        <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">평균 완성 시간</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: 700; color: #8b5cf6;">80%</div>
+                        <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">자동화율</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: 700; color: #ec4899;">50</div>
+                        <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">최대 동시 노드</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="module-actions">
+                <a href="/workflow.html" class="btn btn-primary">
+                    <i class="fas fa-brain"></i> Orchestrator 체험하기
+                </a>
+                <a href="/about" class="btn btn-secondary">
+                    <i class="fas fa-book-open"></i> 기술 문서 보기
+                </a>
+            </div>
+        </div>
+
+        <!-- Module 4: Workflow Automation -->
         <div class="module-card">
             <div class="module-header">
                 <div class="module-icon">
@@ -601,36 +697,36 @@
                 </div>
                 <div class="module-info">
                     <h2>Workflow Automation</h2>
-                    <p>AI 기반 업무 자동화</p>
+                    <p>AI Orchestrator 기반 템플릿</p>
                 </div>
             </div>
             
             <div class="module-content">
                 <h3>주요 기능</h3>
                 <ul>
-                    <li>15개 AI 노드 타입 (Gemini Research, Docs Create, Budget Calc 등)</li>
-                    <li>노드 연결 시 AI 자동 실행 및 결과 전달</li>
-                    <li>15개 큐레이터 전용 워크플로우 템플릿</li>
-                    <li>One-Click Workflow Launch (상황별 즉시 실행)</li>
-                    <li>80% 작업 자동화 (8시간 → 1시간)</li>
+                    <li><strong>15개 Preset Templates:</strong> AI Orchestrator가 조율하는 큐레이터 전용 워크플로우</li>
+                    <li><strong>One-Click Launch:</strong> 템플릿 선택만으로 복잡한 Orchestration 즉시 실행</li>
+                    <li><strong>Custom Workflow Builder:</strong> 드래그앤드롭으로 나만의 Orchestration 설계</li>
+                    <li><strong>Auto-Save & Version Control:</strong> 워크플로우 자동 저장 및 버전 관리</li>
+                    <li><strong>Team Collaboration:</strong> 팀원과 워크플로우 공유 및 실시간 협업</li>
                 </ul>
             </div>
             
             <div class="use-cases">
-                <h4>💡 사용 사례</h4>
+                <h4>💡 템플릿 예시</h4>
                 <p>
-                    <strong>전시 기획안 자동 생성:</strong> "작품 리서치" AI 노드에 작가명을 입력하면, 
-                    자동으로 Google Docs에 기획안이 생성되고, 예산 계산 AI가 전시 비용을 산출하며, 
-                    Google Calendar에 일정이 자동으로 등록됩니다. 8시간 걸리던 작업이 1시간으로 단축됩니다.
+                    <strong>전시 기획 Complete Package:</strong> AI Orchestrator가 작품 리서치부터 예산 산출, 
+                    기획안 작성, 일정 등록까지 전 과정을 자동으로 조율. 
+                    단 한 번의 클릭으로 8시간 작업을 1시간으로 단축.
                 </p>
             </div>
             
             <div class="module-actions">
                 <a href="/workflow" class="btn btn-primary">
-                    <i class="fas fa-play"></i> Workflow 시작하기
+                    <i class="fas fa-play"></i> 템플릿 시작하기
                 </a>
                 <a href="/about" class="btn btn-secondary">
-                    <i class="fas fa-book"></i> 템플릿 갤러리
+                    <i class="fas fa-th-large"></i> 템플릿 갤러리
                 </a>
             </div>
         </div>
