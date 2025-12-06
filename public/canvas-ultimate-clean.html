@@ -5126,6 +5126,293 @@ console.log('✅ Command Palette (Cmd+K) 초기화 완료');
 lucide.createIcons();
 </script>
 
+<!-- AI Orchestrator Engine -->
+<script src="/static/js/ai-orchestrator-engine.js"></script>
+<script src="/static/js/ai-orchestrator-workflows.js"></script>
+
+<!-- AI Orchestrator Integration for Canvas -->
+<script>
+console.log('🚀 [Canvas] AI Orchestrator Integration starting...');
+
+/**
+ * AI Workspace Search 통합
+ * Landing 페이지의 AI 검색 기능과 동일한 인터페이스
+ */
+const aiSearchInput = document.querySelector('.ai-input input');
+const aiSearchButton = document.querySelector('.ai-input .ai-button');
+
+if (aiSearchInput && aiSearchButton) {
+    aiSearchButton.addEventListener('click', async () => {
+        const command = aiSearchInput.value.trim();
+        
+        if (!command) {
+            alert('검색어를 입력해주세요.');
+            return;
+        }
+        
+        console.log('🤖 [Canvas AI] Command received:', command);
+        
+        // Show loading state
+        aiSearchButton.innerHTML = '<i data-lucide="loader" class="animate-spin"></i>';
+        aiSearchButton.disabled = true;
+        lucide.createIcons();
+        
+        try {
+            // Execute AI Orchestrator workflow
+            const session = await window.executeWorkflowByCommand(command);
+            
+            if (session) {
+                console.log('✅ [Canvas AI] Workflow executed:', session.id);
+                
+                // Show success notification
+                showCanvasNotification({
+                    type: 'success',
+                    title: 'AI 워크플로우 완료',
+                    message: `"${command}" 실행 완료 (${session.totalDuration}ms)`,
+                    duration: 5000
+                });
+                
+                // Create Canvas visualization of the workflow
+                visualizeWorkflowOnCanvas(session);
+                
+            } else {
+                throw new Error('워크플로우 실행 실패');
+            }
+            
+        } catch (error) {
+            console.error('❌ [Canvas AI] Error:', error);
+            
+            showCanvasNotification({
+                type: 'error',
+                title: 'AI 실행 오류',
+                message: error.message,
+                duration: 5000
+            });
+            
+        } finally {
+            // Reset button
+            aiSearchButton.innerHTML = '<i data-lucide="send"></i>';
+            aiSearchButton.disabled = false;
+            lucide.createIcons();
+            
+            // Clear input
+            aiSearchInput.value = '';
+        }
+    });
+    
+    // Enter key support
+    aiSearchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            aiSearchButton.click();
+        }
+    });
+    
+    console.log('✅ [Canvas AI] AI Workspace Search integrated');
+}
+
+/**
+ * Canvas에 워크플로우 시각화
+ */
+function visualizeWorkflowOnCanvas(session) {
+    console.log('🎨 [Canvas] Visualizing workflow:', session.id);
+    
+    const viewport = document.getElementById('canvasViewport');
+    if (!viewport) return;
+    
+    const startX = 200;
+    const startY = 200;
+    const nodeSpacing = 300;
+    
+    // Phase별로 노드 생성
+    session.phaseResults.forEach((phaseResult, phaseIndex) => {
+        const phaseY = startY + (phaseIndex * 150);
+        
+        phaseResult.results.forEach((agentResult, agentIndex) => {
+            const nodeX = startX + (agentIndex * nodeSpacing);
+            
+            // Create workflow node card
+            const card = createWorkflowNodeCard({
+                x: nodeX,
+                y: phaseY,
+                phase: phaseResult.phaseName,
+                agentType: agentResult.agentType,
+                status: agentResult.status,
+                duration: agentResult.duration,
+                output: agentResult.output
+            });
+            
+            viewport.appendChild(card);
+        });
+    });
+    
+    // Sync to Dashboard
+    setTimeout(() => {
+        syncCanvasStateToDashboard();
+    }, 500);
+    
+    console.log('✅ [Canvas] Workflow visualization complete');
+}
+
+/**
+ * 워크플로우 노드 카드 생성
+ */
+function createWorkflowNodeCard(data) {
+    const card = document.createElement('div');
+    card.className = 'card workflow-node';
+    card.style.left = data.x + 'px';
+    card.style.top = data.y + 'px';
+    card.style.width = '250px';
+    card.dataset.agentType = data.agentType;
+    card.dataset.phase = data.phase;
+    
+    // Status color
+    const statusColors = {
+        'completed': '#10B981',
+        'running': '#F59E0B',
+        'failed': '#EF4444',
+        'pending': '#6B7280'
+    };
+    const statusColor = statusColors[data.status] || '#6B7280';
+    
+    card.innerHTML = `
+        <div class="card-header" style="background: linear-gradient(135deg, ${statusColor}33, ${statusColor}11); border-left: 4px solid ${statusColor};">
+            <i data-lucide="cpu" style="width:16px;height:16px;color:${statusColor}"></i>
+            ${data.agentType}
+        </div>
+        <div class="card-content">
+            <div style="font-size: 11px; color: #9CA3AF; margin-bottom: 8px;">
+                ${data.phase}
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                <span style="color: ${statusColor};">● ${data.status}</span>
+                <span style="color: #6B7280;">${data.duration}ms</span>
+            </div>
+            ${data.output ? `
+                <div style="margin-top: 8px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 4px; font-size: 11px; color: #D1D5DB; max-height: 60px; overflow-y: auto;">
+                    ${JSON.stringify(data.output, null, 2).substring(0, 100)}...
+                </div>
+            ` : ''}
+        </div>
+        
+        <!-- Connection Handle -->
+        <div class="connection-handle" title="연결선 만들기"></div>
+    `;
+    
+    // Re-render Lucide icons
+    lucide.createIcons();
+    
+    return card;
+}
+
+/**
+ * Canvas 알림 표시
+ */
+function showCanvasNotification(notification) {
+    const notificationEl = document.createElement('div');
+    notificationEl.className = `canvas-notification notification-${notification.type}`;
+    notificationEl.style.cssText = `
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: ${notification.type === 'success' ? '#10B981' : '#EF4444'};
+        color: white;
+        padding: 16px 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        z-index: 10000;
+        min-width: 300px;
+        max-width: 400px;
+        animation: slideInRight 0.3s ease-out;
+    `;
+    
+    notificationEl.innerHTML = `
+        <div style="font-weight: 600; margin-bottom: 4px;">${notification.title}</div>
+        <div style="font-size: 14px; opacity: 0.9;">${notification.message}</div>
+    `;
+    
+    document.body.appendChild(notificationEl);
+    
+    // Auto remove
+    setTimeout(() => {
+        notificationEl.style.animation = 'slideOutRight 0.3s ease-out';
+        setTimeout(() => {
+            notificationEl.remove();
+        }, 300);
+    }, notification.duration || 3000);
+}
+
+/**
+ * Update Canvas node status (called from AI Orchestrator)
+ */
+window.updateCanvasNodeStatus = function(event) {
+    console.log('🔄 [Canvas] Node status update:', event);
+    
+    // Find corresponding card and update status
+    const cards = document.querySelectorAll('.workflow-node');
+    cards.forEach(card => {
+        if (card.dataset.agentType === event.agentType) {
+            const statusEl = card.querySelector('[style*="color"]');
+            if (statusEl && event.status) {
+                statusEl.textContent = `● ${event.status}`;
+            }
+        }
+    });
+};
+
+console.log('✅ [Canvas] AI Orchestrator Integration complete');
+</script>
+
+<style>
+/* Workflow Node Styles */
+.workflow-node {
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(59, 130, 246, 0.05));
+}
+
+.workflow-node .card-header {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Notification Animation */
+@keyframes slideInRight {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+}
+
+/* Loading spinner animation */
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+</style>
+</script>
+
 <!-- Command Palette Modal -->
 <div id="commandPaletteOverlay" class="command-palette-overlay">
     <div class="command-palette">
