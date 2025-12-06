@@ -190,8 +190,9 @@
         
         /* App Buttons (Dashboard & Canvas) */
         .nav-app-btn {
-            display: flex;
+            display: flex !important;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
             padding: 0.625rem 1.25rem;
             border: 1px solid;
@@ -201,6 +202,8 @@
             font-weight: 600;
             transition: all 0.3s ease;
             white-space: nowrap;
+            opacity: 1 !important;
+            visibility: visible !important;
         }
         
         .nav-app-btn:hover {
@@ -211,6 +214,11 @@
         
         .nav-app-btn i {
             font-size: 0.875rem;
+            display: inline-block !important;
+        }
+        
+        .nav-app-btn span {
+            display: inline-block !important;
         }
         
         /* Icon Buttons (Language & MyPage) */
@@ -1371,11 +1379,34 @@
             /* Auth buttons container */
             .nav-container > div:last-child {
                 gap: 0.5rem !important;
+                flex-wrap: wrap !important;
+            }
+            
+            /* App buttons - ensure visibility on mobile */
+            .nav-app-btn {
+                display: flex !important;
+                padding: 0.5rem 1rem !important;
+                font-size: 0.75rem !important;
+            }
+            
+            .nav-app-btn span {
+                display: inline-block !important;
             }
             
             .nav-signup-btn, .nav-login-btn, .mypage-btn {
                 padding: 0.5rem 1rem !important;
                 font-size: 0.875rem !important;
+            }
+            
+            /* Hide signup text on very small screens */
+            @media (max-width: 480px) {
+                .nav-signup-btn span {
+                    display: none !important;
+                }
+                
+                .nav-app-btn span {
+                    font-size: 0.7rem !important;
+                }
             }
             
             .lang-selector select {
