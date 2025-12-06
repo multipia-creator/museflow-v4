@@ -511,18 +511,75 @@ class AIOrchestrator {
     // ==========================================
 
     async simulateGeminiAPI(query) {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                resolve({
-                    research: `${query}에 대한 AI 리서치 결과\n\n주요 발견:\n1. 역사적 맥락 분석\n2. 작품 선정 기준\n3. 전시 구성 제안`,
-                    sources: ['Google Arts & Culture', 'Museum API', 'Academic Papers'],
-                    duration: Math.floor(Math.random() * 1000) + 500
-                });
-            }, 800);
-        });
+        // Try real API first, fallback to simulation
+        try {
+            const startTime = Date.now();
+            
+            const response = await fetch('/api/gemini/research', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    query: query,
+                    depth: 'standard'
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`API request failed: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            const duration = Date.now() - startTime;
+            
+            console.log(`✅ [Gemini API] Real API call succeeded (${duration}ms)`);
+            
+            return {
+                research: data.research || data.data?.research,
+                sources: data.sources || ['Google Gemini AI'],
+                duration: duration,
+                realAPI: !data.fallback
+            };
+            
+        } catch (error) {
+            console.warn('⚠️ [Gemini API] Falling back to simulation:', error);
+            
+            // Fallback to simulation
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve({
+                        research: `${query}에 대한 AI 리서치 결과 (시뮬레이션)\n\n주요 발견:\n1. 역사적 맥락 분석\n2. 작품 선정 기준\n3. 전시 구성 제안\n\n※ 실제 Gemini API 연동을 위해 환경 변수를 설정하세요.`,
+                        sources: ['Simulation Mode'],
+                        duration: Math.floor(Math.random() * 1000) + 500,
+                        realAPI: false
+                    });
+                }, 800);
+            });
+        }
     }
 
-    calculateExhibitionBudget(params) {
+    async calculateExhibitionBudget(params) {
+        // Try real API first
+        try {
+            const response = await fetch('/api/budget/calculate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(params)
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                console.log('✅ [Budget API] Real API call succeeded');
+                return data;
+            }
+        } catch (error) {
+            console.warn('⚠️ [Budget API] Falling back to simulation:', error);
+        }
+        
+        // Fallback to local calculation
         const baseBudget = params.artworkCount * 5000000;
         const marketing = baseBudget * 0.15;
         const logistics = baseBudget * 0.20;
@@ -536,7 +593,7 @@ class AIOrchestrator {
                 logistics: logistics,
                 insurance: insurance
             },
-            recommendation: '예산 적정, 승인 권장'
+            recommendation: '예산 적정, 승인 권장 (시뮬레이션)'
         };
     }
 
@@ -610,7 +667,27 @@ class AIOrchestrator {
         });
     }
 
-    predictVisitors(params) {
+    async predictVisitors(params) {
+        // Try real API first
+        try {
+            const response = await fetch('/api/visitors/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(params)
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                console.log('✅ [Visitor Prediction API] Real API call succeeded');
+                return data;
+            }
+        } catch (error) {
+            console.warn('⚠️ [Visitor Prediction API] Falling back to simulation:', error);
+        }
+        
+        // Fallback to simulation
         const dailyAvg = Math.floor(Math.random() * 500) + 300;
         const days = 30;
         
