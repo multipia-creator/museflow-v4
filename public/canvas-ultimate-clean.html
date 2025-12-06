@@ -6,19 +6,12 @@
 <title>MuseFlow Canvas - Enhanced</title>
 
 <!-- Google Analytics 4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX', {
-        'page_title': 'MuseFlow Canvas',
-        'send_page_view': true
-    });
-</script>
+
+
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<link href="/static/css/fontawesome-all.min.css" rel="stylesheet">
+<link rel="preload" href="/static/css/fontawesome-all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/static/css/fontawesome-all.min.css"></noscript>
 
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
@@ -2102,14 +2095,295 @@ body {
   box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
 }
 </style>
-</head>
+
+    <!-- ✨ Critical CSS - Inlined for instant rendering -->
+    <style>/**
+ * MuseFlow V18.0 - Critical CSS for Canvas Page
+ * Above-the-fold styles for instant rendering
+ * This will be inlined in <head> to eliminate render-blocking
+ */
+
+/* Reset & Base */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+    background: #0a0a0f;
+    color: #f5f5f7;
+    min-height: 100vh;
+    overflow: hidden;
+    line-height: 1.6;
+}
+
+/* Canvas Container - Critical */
+#canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05) 0%, #0a0a0f 100%);
+    overflow: hidden;
+}
+
+/* Canvas Workspace */
+#canvas-workspace {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: move;
+    transform-origin: center center;
+}
+
+/* Grid Pattern */
+.canvas-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+}
+
+/* Toolbar - Above the fold */
+#canvas-toolbar {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1rem;
+    z-index: 100;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.toolbar-button {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.toolbar-button:hover {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.5);
+}
+
+.toolbar-button.active {
+    background: rgba(139, 92, 246, 0.3);
+    border-color: #8b5cf6;
+}
+
+/* Widget Panel - Above the fold */
+#widget-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 320px;
+    max-height: calc(100vh - 40px);
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    z-index: 100;
+    overflow-y: auto;
+}
+
+.widget-panel-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: sticky;
+    top: 0;
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(20px);
+    z-index: 1;
+}
+
+.widget-panel-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+/* Widget Search */
+.widget-search {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: white;
+    font-size: 0.95rem;
+}
+
+.widget-search::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Widget List */
+.widget-list {
+    padding: 1rem;
+}
+
+.widget-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    cursor: grab;
+    transition: all 0.2s;
+}
+
+.widget-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(139, 92, 246, 0.3);
+    transform: translateY(-2px);
+}
+
+.widget-item.dragging {
+    cursor: grabbing;
+    opacity: 0.5;
+}
+
+/* Card - Canvas Element */
+.card {
+    position: absolute;
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    min-width: 280px;
+    max-width: 480px;
+    cursor: move;
+    transition: box-shadow 0.2s;
+}
+
+.card:hover {
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.card.selected {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.5);
+}
+
+/* AI Assistant - Above the fold */
+.ai-assistant {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    max-width: 600px;
+}
+
+.ai-assistant-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+}
+
+.ai-assistant-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Loading States */
+.skeleton {
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0.05) 0%, 
+        rgba(255, 255, 255, 0.1) 50%, 
+        rgba(255, 255, 255, 0.05) 100%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Prevent FOUC */
+html { visibility: visible; opacity: 1; }
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    #canvas-toolbar {
+        top: 10px;
+        left: 10px;
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+    
+    .toolbar-button {
+        width: 40px;
+        height: 40px;
+    }
+    
+    #widget-panel {
+        top: auto;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        max-height: 60vh;
+        border-radius: 16px 16px 0 0;
+    }
+    
+    .ai-assistant {
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        max-width: none;
+        transform: none;
+    }
+}
+</style>
+    
+    <!-- ⚡ Lazy Loading Script for Performance -->
+    <script src="/static/js/lazy-loading.js"></script>
+    
+    <!-- 📊 Google Analytics 4 - Advanced Event Tracking -->
+    <script src="/static/js/analytics-ga4.js" async></script>
+    </head>
 <body>
 
 <!-- Unified Navigation Bar - Dashboard Style -->
 <nav class="unified-navbar">
     <div class="unified-nav-container">
         <a href="/" class="unified-nav-logo">
-            <img src="/static/images/logo-neon-m.png" alt="MuseFlow">
+            <img loading="lazy" src="/static/images/logo-neon-m.png" alt="MuseFlow">
             <span>MuseFlow</span>
         </a>
         <ul class="unified-nav-links">
@@ -3840,7 +4114,7 @@ function createCard(card) {
     let thumbnailContent = '';
     if (card.preview) {
         if (card.type === 'image') {
-            thumbnailContent = `<img src="${card.preview}" alt="${card.title}" style="width:100%;height:100%;object-fit:cover;">`;
+            thumbnailContent = `<img loading="lazy" src="${card.preview}" alt="${card.title}" style="width:100%;height:100%;object-fit:cover;">`;
         } else if (card.type === 'video') {
             thumbnailContent = `<video src="${card.preview}" style="width:100%;height:100%;object-fit:cover;" muted loop autoplay></video>`;
         } else if (card.type === 'audio') {
@@ -4218,7 +4492,7 @@ window.addAICard = function(type, title, content, imageUrl = null) {
     if (imageUrl && (type === 'image' || type === 'video')) {
         const thumbnail = cardEl.querySelector('.card-thumbnail');
         thumbnail.innerHTML = type === 'image' 
-            ? `<img src="${imageUrl}" alt="${title}">`
+            ? `<img loading="lazy" src="${imageUrl}" alt="${title}">`
             : `<video src="${imageUrl}" controls></video>`;
     }
     
@@ -4350,7 +4624,7 @@ function openModal(type, url, title) {
     const content = document.getElementById('modalContent');
     
     if (type === 'image') {
-        content.innerHTML = `<img src="${url}" alt="${title}">`;
+        content.innerHTML = `<img loading="lazy" src="${url}" alt="${title}">`;
     } else if (type === 'video') {
         content.innerHTML = `<video src="${url}" controls autoplay style="outline: none;"></video>`;
     }
@@ -5127,8 +5401,8 @@ lucide.createIcons();
 </script>
 
 <!-- AI Orchestrator Engine -->
-<script src="/static/js/ai-orchestrator-engine.js"></script>
-<script src="/static/js/ai-orchestrator-workflows.js"></script>
+<script src="/static/js/ai-orchestrator-engine.js" defer></script>
+<script src="/static/js/ai-orchestrator-workflows.js" defer></script>
 
 <!-- AI Orchestrator Integration for Canvas -->
 <script>

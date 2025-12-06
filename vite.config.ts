@@ -4,6 +4,19 @@ import adapter from '@hono/vite-dev-server/cloudflare'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
+  build: {
+    outDir: 'dist',
+    // Minification
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    },
+    // Chunk size warning limit
+    chunkSizeWarningLimit: 1000
+  },
   plugins: [
     build({
       exclude: [
