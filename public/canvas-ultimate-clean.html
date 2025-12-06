@@ -3832,7 +3832,7 @@ if (canvasContainer && viewport) {
         
         // Dashboard 동기화
         setTimeout(() => {
-            syncCanvasToDashboard();
+            syncCanvasStateToDashboard();
         }, 100);
         
         console.log('✅ Widget 노드 생성:', draggedWidgetData.name, `at (${Math.round(x / zoom)}, ${Math.round(y / zoom)})`);
@@ -4010,7 +4010,7 @@ function selectCommand(index) {
     
     // Dashboard 동기화
     setTimeout(() => {
-        syncCanvasToDashboard();
+        syncCanvasStateToDashboard();
     }, 100);
     
     console.log('✅ Command Palette에서 Widget 생성:', widget.name);
