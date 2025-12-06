@@ -743,24 +743,35 @@ function getTimeAgo(date) {
 // ============================================
 
 function saveSettings() {
-    const showGrid = document.getElementById('showGrid')?.checked;
-    const snapToGrid = document.getElementById('snapToGrid')?.checked;
-    const autoSave = document.getElementById('autoSave')?.checked;
-    
-    CanvasState.settings = {
-        ...CanvasState.settings,
-        showGrid: showGrid !== undefined ? showGrid : CanvasState.settings.showGrid,
-        snapToGrid: snapToGrid !== undefined ? snapToGrid : CanvasState.settings.snapToGrid,
-        autoSave: autoSave !== undefined ? autoSave : CanvasState.settings.autoSave
-    };
-    
-    StorageManager.save('settings', CanvasState.settings);
+    // Apply settings first (which updates CanvasState from checkboxes)
     applySettings();
+    
+    // Save to localStorage
+    StorageManager.save('settings', CanvasState.settings);
+    
     showToast('설정이 저장되었습니다');
+    
+    console.log('✅ Settings saved to localStorage:', CanvasState.settings);
 }
 
 function applySettings() {
     const canvas = document.querySelector('.canvas');
+    
+    // Read current checkbox values
+    const showGridCheckbox = document.getElementById('showGrid');
+    const snapToGridCheckbox = document.getElementById('snapToGrid');
+    const autoSaveCheckbox = document.getElementById('autoSave');
+    
+    // Update state from checkboxes
+    if (showGridCheckbox !== null) {
+        CanvasState.settings.showGrid = showGridCheckbox.checked;
+    }
+    if (snapToGridCheckbox !== null) {
+        CanvasState.settings.snapToGrid = snapToGridCheckbox.checked;
+    }
+    if (autoSaveCheckbox !== null) {
+        CanvasState.settings.autoSave = autoSaveCheckbox.checked;
+    }
     
     // Apply grid visibility
     if (canvas) {
@@ -772,11 +783,14 @@ function applySettings() {
             canvas.style.backgroundSize = `${CanvasState.settings.gridSize}px ${CanvasState.settings.gridSize}px`;
         } else {
             canvas.style.backgroundImage = 'none';
+            canvas.style.backgroundColor = '#ffffff';
         }
     }
     
     // Store settings globally for other functions to use
     window.canvasSettings = CanvasState.settings;
+    
+    console.log('✅ Settings applied:', CanvasState.settings);
 }
 
 // ============================================
@@ -1097,6 +1111,16 @@ function loadCanvasState() {
     const savedSettings = StorageManager.load('settings');
     if (savedSettings) {
         CanvasState.settings = savedSettings;
+        
+        // Sync checkboxes with loaded settings
+        const showGridCheckbox = document.getElementById('showGrid');
+        const snapToGridCheckbox = document.getElementById('snapToGrid');
+        const autoSaveCheckbox = document.getElementById('autoSave');
+        
+        if (showGridCheckbox) showGridCheckbox.checked = savedSettings.showGrid !== false;
+        if (snapToGridCheckbox) snapToGridCheckbox.checked = savedSettings.snapToGrid !== false;
+        if (autoSaveCheckbox) autoSaveCheckbox.checked = savedSettings.autoSave !== false;
+        
         applySettings();
     }
     
