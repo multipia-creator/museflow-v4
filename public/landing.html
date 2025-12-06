@@ -1849,6 +1849,7 @@
             display: flex;
             align-items: center;
             gap: 1.5rem;
+            padding: 0 1rem;
         }
 
         .museflow-footer-logo {
@@ -1867,6 +1868,7 @@
 
         .museflow-footer-text {
             color: #e5e5e5;
+            white-space: nowrap;
         }
 
         .museflow-footer-version {
@@ -1877,6 +1879,80 @@
         /* Adjust body padding to prevent content overlap */
         body {
             padding-bottom: 40px !important;
+        }
+        
+        /* Mobile Footer Optimization */
+        @media (max-width: 768px) {
+            .museflow-footer {
+                height: auto;
+                min-height: 80px;
+                padding: 1rem 0;
+                position: relative; /* Fixed -> Relative on mobile to prevent overlap */
+            }
+            
+            .museflow-footer-content {
+                flex-direction: column;
+                gap: 0.75rem;
+                text-align: center;
+                padding: 0 1.5rem;
+            }
+            
+            .museflow-footer-divider {
+                display: none;
+            }
+            
+            .museflow-footer-text {
+                font-size: 0.75rem;
+                line-height: 1.6;
+            }
+            
+            .museflow-footer-logo {
+                font-size: 1rem;
+                font-weight: 700;
+            }
+            
+            .museflow-footer-version {
+                font-size: 0.75rem;
+                font-weight: 600;
+            }
+            
+            body {
+                padding-bottom: 0 !important; /* Remove fixed footer padding */
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .museflow-footer {
+                min-height: 100px;
+                padding: 1.25rem 0;
+            }
+            
+            .museflow-footer-content {
+                gap: 0.5rem;
+                padding: 0 1rem;
+            }
+            
+            .museflow-footer-text {
+                font-size: 0.7rem;
+                line-height: 1.5;
+            }
+            
+            .museflow-footer-logo {
+                font-size: 0.95rem;
+            }
+            
+            .museflow-footer-version {
+                font-size: 0.7rem;
+            }
+            
+            /* Hide secondary text on very small screens for clarity */
+            .museflow-footer-text:nth-of-type(2) {
+                display: none;
+            }
+            
+            body {
+                padding-bottom: 0 !important;
+            }
         }
     </style>
 
