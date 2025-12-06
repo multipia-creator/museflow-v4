@@ -1,6 +1,6 @@
 {
   "name": "museflow-v4",
-  "version": "4.0.0",
+  "version": "15.0.0",
   "type": "module",
   "engines": {
     "node": ">=18.0.0",
@@ -9,8 +9,8 @@
   "scripts": {
     "dev": "vite",
     "dev:sandbox": "wrangler pages dev dist --ip 0.0.0.0 --port 3000",
-    "prebuild": "node scripts/validate-migrations.cjs",
-    "build": "vite build && npm run copy:html && npm run generate:routes && npm run validate:routes",
+    "prebuild": "node scripts/validate-migrations.cjs && node scripts/generate-version.cjs",
+    "build": "vite build && npm run copy:html && npm run generate:routes && npm run validate:routes && node scripts/generate-version.cjs",
     "generate:routes": "node scripts/generate-routes.cjs",
     "copy:html": "cp public/dashboard.html public/login.html public/signup.html public/landing.html public/index.html public/projects.html public/account.html public/admin.html public/ar-vr-demo.html public/canvas.html public/canvas-v3.html public/canvas-v4-hybrid.html public/canvas-v4-ultimate.html public/canvas-v4-complete.html public/canvas-v5-clean.html public/forgot-password.html public/budget.html public/workflow.html public/workflow-tools.html public/analytics-dashboard.html public/google-mcp.html public/icon-samples.html public/icon-samples-lucide.html public/3d-viewer.html public/digital-twin.html public/digital-twin-pro.html public/_headers dist/ 2>/dev/null || true",
     "validate:migrations": "node scripts/validate-migrations.cjs",
