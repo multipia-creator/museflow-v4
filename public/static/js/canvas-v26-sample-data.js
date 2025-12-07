@@ -185,8 +185,18 @@ const MuseumSampleData = {
         },
         {
           id: 'task_ed_002',
+          title: '학습 목표 및 성과 지표 설정',
+          description: '교육 목표, 평가 기준, 성과 측정 방법 설계',
+          priority: 'high',
+          status: 'pending',
+          deadline: new Date(Date.now() + 11 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['목표설정', '평가'],
+          projectId: 'sample_education_001'
+        },
+        {
+          id: 'task_ed_003',
           title: '교육 자료 제작',
-          description: 'PPT, 워크북, 활동지 제작',
+          description: 'PPT, 워크북, 활동지, 참고 자료 제작',
           priority: 'high',
           status: 'pending',
           deadline: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
@@ -194,7 +204,7 @@ const MuseumSampleData = {
           projectId: 'sample_education_001'
         },
         {
-          id: 'task_ed_003',
+          id: 'task_ed_004',
           title: '외부 강사 섭외',
           description: '전문 작가 3명, 미술교육 전문가 2명',
           priority: 'medium',
@@ -204,7 +214,17 @@ const MuseumSampleData = {
           projectId: 'sample_education_001'
         },
         {
-          id: 'task_ed_004',
+          id: 'task_ed_005',
+          title: '교육 공간 및 시설 준비',
+          description: '강의실 예약, 미술 재료, 장비 준비',
+          priority: 'medium',
+          status: 'pending',
+          deadline: new Date(Date.now() + 13 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['시설', '준비'],
+          projectId: 'sample_education_001'
+        },
+        {
+          id: 'task_ed_006',
           title: '참가자 모집',
           description: '온라인 신청, SNS 홍보, 학교 연계',
           priority: 'medium',
@@ -212,20 +232,70 @@ const MuseumSampleData = {
           deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
           tags: ['모집', '홍보'],
           projectId: 'sample_education_001'
+        },
+        {
+          id: 'task_ed_007',
+          title: '홍보 자료 제작',
+          description: '포스터, SNS 콘텐츠, 학교 공문 작성',
+          priority: 'low',
+          status: 'pending',
+          deadline: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['홍보', '마케팅'],
+          projectId: 'sample_education_001'
+        },
+        {
+          id: 'task_ed_008',
+          title: '안전 교육 및 보험 가입',
+          description: '참가자 안전 교육, 상해 보험 가입',
+          priority: 'high',
+          status: 'pending',
+          deadline: new Date(Date.now() + 13 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['안전', '보험'],
+          projectId: 'sample_education_001'
+        },
+        {
+          id: 'task_ed_009',
+          title: '오리엔테이션 준비',
+          description: '첫 수업 오리엔테이션, 참가자 명단 확정',
+          priority: 'medium',
+          status: 'pending',
+          deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['오리엔테이션', '준비'],
+          projectId: 'sample_education_001'
+        },
+        {
+          id: 'task_ed_010',
+          title: '만족도 조사 및 피드백 시스템 구축',
+          description: '참가자 만족도 조사지, 피드백 수집 방법 설계',
+          priority: 'low',
+          status: 'pending',
+          deadline: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['평가', '피드백'],
+          projectId: 'sample_education_001'
         }
       ],
       canvasCards: [
-        { id: 'card_ed_001', title: '학습 목표', type: 'objective', x: 100, y: 100, content: '미술 이해도 향상, 창의성 개발' },
-        { id: 'card_ed_002', title: '커리큘럼', type: 'curriculum', x: 300, y: 100, content: '8주 과정, 주 1회 2시간' },
-        { id: 'card_ed_003', title: '교육 자료', type: 'material', x: 500, y: 100, content: 'PPT, 워크북, 활동지' },
-        { id: 'card_ed_004', title: '강사진', type: 'instructor', x: 300, y: 300, content: '작가 3명, 교육전문가 2명' },
-        { id: 'card_ed_005', title: '홍보 채널', type: 'marketing', x: 500, y: 300, content: 'SNS, 학교, 온라인' }
+        { id: 'card_ed_001', title: '학습 목표', type: 'objective', x: 100, y: 100, content: '미술 이해도 향상, 창의성 개발, 표현 능력 강화', color: '#eef2ff' },
+        { id: 'card_ed_002', title: '커리큘럼', type: 'curriculum', x: 350, y: 100, content: '8주 과정 (회화 3주, 조각 2주, 미디어아트 3주)', color: '#fff7ed' },
+        { id: 'card_ed_003', title: '대상 참가자', type: 'audience', x: 600, y: 100, content: '중고등학생 20명 (학년 무관)', color: '#fef3c7' },
+        { id: 'card_ed_004', title: '교육 자료', type: 'material', x: 100, y: 280, content: 'PPT, 워크북, 활동지, 참고 영상', color: '#dfe7fd' },
+        { id: 'card_ed_005', title: '강사진', type: 'instructor', x: 350, y: 280, content: '전문 작가 3명, 교육전문가 2명', color: '#fce7f3' },
+        { id: 'card_ed_006', title: '교육 공간', type: 'facility', x: 600, y: 280, content: '미술실, 미디어 랩, 전시실 견학', color: '#e0f2fe' },
+        { id: 'card_ed_007', title: '홍보 전략', type: 'marketing', x: 100, y: 460, content: 'SNS, 학교 연계, 포스터, 온라인 광고', color: '#f0fdf4' },
+        { id: 'card_ed_008', title: '재료 및 장비', type: 'equipment', x: 350, y: 460, content: '미술 재료, 태블릿, 카메라, 프로젝터', color: '#fef3c7' },
+        { id: 'card_ed_009', title: '평가 방법', type: 'evaluation', x: 600, y: 460, content: '작품 평가, 참여도, 만족도 조사', color: '#ede9fe' },
+        { id: 'card_ed_010', title: '예산 계획', type: 'budget', x: 850, y: 280, content: '총 2천만원 (강사료 40%, 재료비 30%, 홍보 20%, 기타 10%)', color: '#fef2f2' }
       ],
       connections: [
-        { from: 'card_ed_001', to: 'card_ed_002' },
-        { from: 'card_ed_002', to: 'card_ed_003' },
-        { from: 'card_ed_002', to: 'card_ed_004' },
-        { from: 'card_ed_003', to: 'card_ed_005' }
+        { from: 'card_ed_001', to: 'card_ed_002' }, // 학습 목표 → 커리큘럼
+        { from: 'card_ed_001', to: 'card_ed_003' }, // 학습 목표 → 대상 참가자
+        { from: 'card_ed_002', to: 'card_ed_004' }, // 커리큘럼 → 교육 자료
+        { from: 'card_ed_002', to: 'card_ed_005' }, // 커리큘럼 → 강사진
+        { from: 'card_ed_003', to: 'card_ed_006' }, // 대상 참가자 → 교육 공간
+        { from: 'card_ed_004', to: 'card_ed_007' }, // 교육 자료 → 홍보 전략
+        { from: 'card_ed_005', to: 'card_ed_008' }, // 강사진 → 재료 및 장비
+        { from: 'card_ed_002', to: 'card_ed_009' }, // 커리큘럼 → 평가 방법
+        { from: 'card_ed_001', to: 'card_ed_010' }  // 학습 목표 → 예산 계획
       ]
     },
 
@@ -255,6 +325,16 @@ const MuseumSampleData = {
         },
         {
           id: 'task_col_002',
+          title: '작품 진위 여부 확인',
+          description: '작품 출처, 진위 검증, 이력 조사',
+          priority: 'high',
+          status: 'pending',
+          deadline: new Date(Date.now() + 40 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['진위', '검증'],
+          projectId: 'sample_collection_001'
+        },
+        {
+          id: 'task_col_003',
           title: '작품 가치 평가',
           description: '전문가 감정, 시장 가치 분석',
           priority: 'high',
@@ -264,7 +344,17 @@ const MuseumSampleData = {
           projectId: 'sample_collection_001'
         },
         {
-          id: 'task_col_003',
+          id: 'task_col_004',
+          title: '예산 확보 및 승인',
+          description: '구매 예산 책정, 이사회 승인',
+          priority: 'high',
+          status: 'pending',
+          deadline: new Date(Date.now() + 50 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['예산', '승인'],
+          projectId: 'sample_collection_001'
+        },
+        {
+          id: 'task_col_005',
           title: '소장가와 협상',
           description: '구매/기증 협상, 계약서 작성',
           priority: 'medium',
@@ -274,13 +364,53 @@ const MuseumSampleData = {
           projectId: 'sample_collection_001'
         },
         {
-          id: 'task_col_004',
+          id: 'task_col_006',
+          title: '법률 검토 및 계약 체결',
+          description: '법률 자문, 계약서 검토, 공증',
+          priority: 'high',
+          status: 'pending',
+          deadline: new Date(Date.now() + 65 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['법률', '계약'],
+          projectId: 'sample_collection_001'
+        },
+        {
+          id: 'task_col_007',
           title: '작품 운송 및 보험',
           description: '전문 운송업체 선정, 보험 가입',
           priority: 'high',
           status: 'pending',
           deadline: new Date(Date.now() + 70 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
           tags: ['운송', '보험'],
+          projectId: 'sample_collection_001'
+        },
+        {
+          id: 'task_col_008',
+          title: '작품 상태 조사 및 사진 촬영',
+          description: '입고 시 작품 상태 기록, 고해상도 촬영',
+          priority: 'medium',
+          status: 'pending',
+          deadline: new Date(Date.now() + 75 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['촬영', '기록'],
+          projectId: 'sample_collection_001'
+        },
+        {
+          id: 'task_col_009',
+          title: '소장품 등록 및 DB 입력',
+          description: '등록번호 부여, 메타데이터 입력',
+          priority: 'high',
+          status: 'pending',
+          deadline: new Date(Date.now() + 80 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['등록', 'DB'],
+          projectId: 'sample_collection_001'
+        },
+        {
+          id: 'task_col_010',
+          title: '수장고 보관 및 정리',
+          description: '적정 환경 보관, 수장고 배치',
+          priority: 'medium',
+          status: 'pending',
+          deadline: new Date(Date.now() + 85 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['보관', '수장고'],
           projectId: 'sample_collection_001'
         }
       ],
