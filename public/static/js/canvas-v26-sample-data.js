@@ -415,17 +415,27 @@ const MuseumSampleData = {
         }
       ],
       canvasCards: [
-        { id: 'card_col_001', title: '작품 조사', type: 'research', x: 100, y: 100, content: '경매, 갤러리, 개인 소장' },
-        { id: 'card_col_002', title: '가치 평가', type: 'evaluation', x: 300, y: 100, content: '전문가 감정, 시장 분석' },
-        { id: 'card_col_003', title: '협상', type: 'negotiation', x: 500, y: 100, content: '구매/기증 협상' },
-        { id: 'card_col_004', title: '운송', type: 'logistics', x: 300, y: 300, content: '전문 운송, 보험' },
-        { id: 'card_col_005', title: '등록', type: 'registration', x: 500, y: 300, content: '소장품 DB 등록' }
+        { id: 'card_col_001', title: '작품 조사', type: 'research', x: 100, y: 100, content: '경매, 갤러리, 개인 소장가 대상', color: '#eef2ff' },
+        { id: 'card_col_002', title: '진위 검증', type: 'authentication', x: 350, y: 100, content: '작품 출처, 이력 조사', color: '#fff7ed' },
+        { id: 'card_col_003', title: '가치 평가', type: 'evaluation', x: 600, y: 100, content: '전문가 감정, 시장 가치 분석', color: '#fef3c7' },
+        { id: 'card_col_004', title: '예산 확보', type: 'budget', x: 100, y: 280, content: '구매 예산, 이사회 승인', color: '#dfe7fd' },
+        { id: 'card_col_005', title: '협상', type: 'negotiation', x: 350, y: 280, content: '구매/기증 협상, 계약', color: '#fce7f3' },
+        { id: 'card_col_006', title: '법률 검토', type: 'legal', x: 600, y: 280, content: '계약서 검토, 공증', color: '#e0f2fe' },
+        { id: 'card_col_007', title: '운송 & 보험', type: 'logistics', x: 100, y: 460, content: '전문 운송, 작품 보험', color: '#f0fdf4' },
+        { id: 'card_col_008', title: '상태 조사', type: 'inspection', x: 350, y: 460, content: '입고 검수, 사진 촬영', color: '#fef3c7' },
+        { id: 'card_col_009', title: 'DB 등록', type: 'registration', x: 600, y: 460, content: '등록번호, 메타데이터', color: '#ede9fe' },
+        { id: 'card_col_010', title: '수장고 보관', type: 'storage', x: 850, y: 280, content: '온습도 관리, 배치', color: '#fef2f2' }
       ],
       connections: [
-        { from: 'card_col_001', to: 'card_col_002' },
-        { from: 'card_col_002', to: 'card_col_003' },
-        { from: 'card_col_003', to: 'card_col_004' },
-        { from: 'card_col_004', to: 'card_col_005' }
+        { from: 'card_col_001', to: 'card_col_002' }, // 조사 → 진위 검증
+        { from: 'card_col_002', to: 'card_col_003' }, // 진위 검증 → 가치 평가
+        { from: 'card_col_003', to: 'card_col_004' }, // 가치 평가 → 예산 확보
+        { from: 'card_col_004', to: 'card_col_005' }, // 예산 확보 → 협상
+        { from: 'card_col_005', to: 'card_col_006' }, // 협상 → 법률 검토
+        { from: 'card_col_006', to: 'card_col_007' }, // 법률 검토 → 운송
+        { from: 'card_col_007', to: 'card_col_008' }, // 운송 → 상태 조사
+        { from: 'card_col_008', to: 'card_col_009' }, // 상태 조사 → DB 등록
+        { from: 'card_col_009', to: 'card_col_010' }  // DB 등록 → 수장고 보관
       ]
     },
 
@@ -455,6 +465,16 @@ const MuseumSampleData = {
         },
         {
           id: 'task_con_002',
+          title: '과학적 분석 및 진단',
+          description: 'X-ray, 현미경 분석, 재료 성분 분석',
+          priority: 'high',
+          status: 'pending',
+          deadline: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['분석', '진단'],
+          projectId: 'sample_conservation_001'
+        },
+        {
+          id: 'task_con_003',
           title: '보존 처리 계획 수립',
           description: '처리 방법, 소요 시간, 예산 계획',
           priority: 'high',
@@ -464,7 +484,17 @@ const MuseumSampleData = {
           projectId: 'sample_conservation_001'
         },
         {
-          id: 'task_con_003',
+          id: 'task_con_004',
+          title: '처리 재료 및 장비 준비',
+          description: '보존 재료 구매, 전문 장비 준비',
+          priority: 'medium',
+          status: 'pending',
+          deadline: new Date(Date.now() + 18 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['재료', '장비'],
+          projectId: 'sample_conservation_001'
+        },
+        {
+          id: 'task_con_005',
           title: '전문가 협업',
           description: '외부 보존 전문가 섭외 및 협업',
           priority: 'medium',
@@ -474,7 +504,17 @@ const MuseumSampleData = {
           projectId: 'sample_conservation_001'
         },
         {
-          id: 'task_con_004',
+          id: 'task_con_006',
+          title: '예비 테스트',
+          description: '처리 방법 예비 테스트, 안전성 확인',
+          priority: 'high',
+          status: 'pending',
+          deadline: new Date(Date.now() + 25 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['테스트', '안전'],
+          projectId: 'sample_conservation_001'
+        },
+        {
+          id: 'task_con_007',
           title: '보존 처리 실행',
           description: '세척, 수리, 복원 작업 진행',
           priority: 'high',
@@ -484,7 +524,17 @@ const MuseumSampleData = {
           projectId: 'sample_conservation_001'
         },
         {
-          id: 'task_con_005',
+          id: 'task_con_008',
+          title: '처리 과정 사진 기록',
+          description: '전후 비교 사진, 과정 상세 기록',
+          priority: 'medium',
+          status: 'pending',
+          deadline: new Date(Date.now() + 95 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['기록', '사진'],
+          projectId: 'sample_conservation_001'
+        },
+        {
+          id: 'task_con_009',
           title: '처리 후 모니터링',
           description: '처리 효과 검증, 경과 관찰',
           priority: 'medium',
@@ -492,22 +542,40 @@ const MuseumSampleData = {
           deadline: new Date(Date.now() + 110 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
           tags: ['모니터링', '검증'],
           projectId: 'sample_conservation_001'
+        },
+        {
+          id: 'task_con_010',
+          title: '보존 처리 보고서 작성',
+          description: '처리 내용, 방법, 결과 상세 보고서',
+          priority: 'high',
+          status: 'pending',
+          deadline: new Date(Date.now() + 115 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['보고서', '문서'],
+          projectId: 'sample_conservation_001'
         }
       ],
       canvasCards: [
-        { id: 'card_con_001', title: '상태 조사', type: 'inspection', x: 100, y: 100, content: '손상 정도 평가' },
-        { id: 'card_con_002', title: '처리 계획', type: 'plan', x: 300, y: 100, content: '방법, 시간, 예산' },
-        { id: 'card_con_003', title: '전문가 협업', type: 'collaboration', x: 500, y: 100, content: '외부 전문가' },
-        { id: 'card_con_004', title: '처리 실행', type: 'execution', x: 300, y: 300, content: '세척, 수리, 복원' },
-        { id: 'card_con_005', title: '모니터링', type: 'monitoring', x: 500, y: 300, content: '경과 관찰' },
-        { id: 'card_con_006', title: '보고서', type: 'report', x: 100, y: 300, content: '처리 보고서 작성' }
+        { id: 'card_con_001', title: '상태 조사', type: 'inspection', x: 100, y: 100, content: '손상 정도, 원인 파악', color: '#eef2ff' },
+        { id: 'card_con_002', title: '과학적 분석', type: 'analysis', x: 350, y: 100, content: 'X-ray, 현미경, 재료 분석', color: '#fff7ed' },
+        { id: 'card_con_003', title: '처리 계획', type: 'plan', x: 600, y: 100, content: '방법, 시간, 예산, 위험도', color: '#fef3c7' },
+        { id: 'card_con_004', title: '재료 & 장비', type: 'equipment', x: 100, y: 280, content: '보존 재료, 전문 장비', color: '#dfe7fd' },
+        { id: 'card_con_005', title: '전문가 협업', type: 'collaboration', x: 350, y: 280, content: '외부 보존 전문가', color: '#fce7f3' },
+        { id: 'card_con_006', title: '예비 테스트', type: 'testing', x: 600, y: 280, content: '처리 방법 검증', color: '#e0f2fe' },
+        { id: 'card_con_007', title: '처리 실행', type: 'execution', x: 100, y: 460, content: '세척, 수리, 복원', color: '#f0fdf4' },
+        { id: 'card_con_008', title: '과정 기록', type: 'documentation', x: 350, y: 460, content: '사진, 상세 기록', color: '#fef3c7' },
+        { id: 'card_con_009', title: '모니터링', type: 'monitoring', x: 600, y: 460, content: '경과 관찰, 효과 검증', color: '#ede9fe' },
+        { id: 'card_con_010', title: '보고서', type: 'report', x: 850, y: 280, content: '처리 보고서 작성', color: '#fef2f2' }
       ],
       connections: [
         { from: 'card_con_001', to: 'card_con_002' },
         { from: 'card_con_002', to: 'card_con_003' },
         { from: 'card_con_003', to: 'card_con_004' },
-        { from: 'card_con_004', to: 'card_con_005' },
-        { from: 'card_con_005', to: 'card_con_006' }
+        { from: 'card_con_003', to: 'card_con_005' },
+        { from: 'card_con_004', to: 'card_con_006' },
+        { from: 'card_con_006', to: 'card_con_007' },
+        { from: 'card_con_007', to: 'card_con_008' },
+        { from: 'card_con_008', to: 'card_con_009' },
+        { from: 'card_con_009', to: 'card_con_010' }
       ]
     },
 
