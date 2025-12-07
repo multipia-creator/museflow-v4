@@ -259,14 +259,14 @@
             background: rgba(10, 10, 15, 0.95);
             backdrop-filter: blur(20px);
             border: 2px solid var(--border-light);
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
             cursor: move;
             transition: box-shadow 0.2s;
         }
         
         .canvas-node:hover {
-            box-shadow: 0 12px 48px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
         }
         
         .canvas-node.selected {
@@ -388,7 +388,7 @@
             background: rgba(10, 10, 15, 0.95);
             backdrop-filter: blur(20px);
             border: 1px solid var(--border-light);
-            border-radius: 12px;
+            border-radius: 6px;
             z-index: 200;
         }
         
@@ -426,7 +426,7 @@
             left: 0;
             right: 0;
             height: 40px;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            background: #0d0d0d;
             color: #e5e5e5;
             display: flex;
             align-items: center;
@@ -631,7 +631,7 @@
                 padding: 3rem;
                 border-radius: 20px;
                 border: 1px solid rgba(139, 92, 246, 0.3);
-                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
                 text-align: center;
                 z-index: 10000;
                 color: white;
@@ -648,7 +648,7 @@
                     display: inline-block;
                     padding: 0.75rem 2rem;
                     background: linear-gradient(135deg, var(--museum-purple), var(--museum-pink));
-                    border-radius: 12px;
+                    border-radius: 6px;
                     text-decoration: none;
                     color: white;
                     font-weight: 600;
