@@ -19,6 +19,7 @@ import geminiApi from './api-gemini'
 import googleWorkspace from './api-google-workspace'
 import museumApi from './api-museum'
 import databaseApi from './api-database'
+import admin from './routes/admin'
 
 // Export Durable Objects
 export { CollaborationRoom } from './durable-objects/collaboration-room'
@@ -95,6 +96,7 @@ app.route('/api/gemini', geminiApi)
 app.route('/api/google-workspace', googleWorkspace)
 app.route('/api/museum', museumApi)
 app.route('/api/db', databaseApi)
+app.route('/api/admin', admin)
 
 // 404 handler for API routes (prevent fallback to landing.html)
 app.notFound((c) => {
