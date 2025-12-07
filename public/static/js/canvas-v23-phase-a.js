@@ -1042,8 +1042,14 @@ window.addEventListener('load', function() {
             // Force render after delay
             setTimeout(() => {
                 console.log('🔄 Forcing UI re-render...');
-                if (window.ProjectsManager) ProjectsManager.renderProjects();
-                if (window.TasksManager) TasksManager.renderTasks();
+                if (window.ProjectsManager) {
+                    ProjectsManager.renderProjects();
+                    console.log('✅ Projects UI rendered:', ProjectsManager.projects.length, 'projects');
+                }
+                if (window.TasksManager) {
+                    TasksManager.renderTasks();
+                    console.log('✅ Tasks UI rendered:', TasksManager.tasks.length, 'tasks');
+                }
             }, 1500);
         } catch (e) {
             console.error('❌ LocalStorage data verification failed:', e);
