@@ -4058,22 +4058,34 @@ html { visibility: visible; opacity: 1; }
         </button>
     </div>
     <div class="panel-content">
-        <div style="padding: 1rem;">
-            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                <div style="padding: 0.75rem; background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%); border-radius: 8px; border: 1px solid rgba(139, 92, 246, 0.2);">
-                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                        <div style="width: 8px; height: 8px; border-radius: 50%; background: #22C55E; animation: pulse 2s infinite;"></div>
-                        <div style="font-weight: 600; color: #e5e5e5;">이미지 생성 중...</div>
-                    </div>
-                    <div style="font-size: 0.875rem; color: #9CA3AF;">진행률: 73%</div>
-                    <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 0.5rem; overflow: hidden;">
-                        <div style="width: 73%; height: 100%; background: linear-gradient(90deg, #8B5CF6, #6366F1); transition: width 0.3s;"></div>
+        <!-- AI Chat Container -->
+        <div id="aiChatContainer" style="display: flex; flex-direction: column; height: 100%; padding: 0;">
+            <!-- Messages Container -->
+            <div id="aiMessages" style="flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
+                <!-- Welcome Message -->
+                <div class="ai-message-system">
+                    <div style="padding: 0.75rem; background: rgba(139, 92, 246, 0.1); border-radius: 8px; border: 1px solid rgba(139, 92, 246, 0.2);">
+                        <div style="font-size: 0.875rem; color: #9CA3AF; margin-bottom: 0.5rem;">MuseFlow AI Assistant</div>
+                        <div style="font-size: 0.9375rem; color: #e5e5e5;">안녕하세요! 무엇을 도와드릴까요?</div>
+                        <div style="font-size: 0.875rem; color: #9CA3AF; margin-top: 0.5rem;">• 작업 추천 및 우선순위 제안</div>
+                        <div style="font-size: 0.875rem; color: #9CA3AF;">• 템플릿 추천</div>
+                        <div style="font-size: 0.875rem; color: #9CA3AF;">• 프로젝트 진행 상황 분석</div>
                     </div>
                 </div>
-                <div style="padding: 0.75rem; background: rgba(139, 92, 246, 0.05); border-radius: 8px;">
-                    <div style="font-size: 0.875rem; color: #9CA3AF; margin-bottom: 0.5rem;">최근 AI 작업</div>
-                    <div style="font-size: 0.9375rem; color: #e5e5e5;">• 배경 제거 (3분 전)</div>
-                    <div style="font-size: 0.9375rem; color: #e5e5e5;">• 텍스트 번역 (15분 전)</div>
+            </div>
+            
+            <!-- Input Container -->
+            <div id="aiInputContainer" style="padding: 1rem; border-top: 1px solid rgba(139, 92, 246, 0.2);">
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="text" id="aiChatInput" placeholder="메시지를 입력하세요..." 
+                           style="flex: 1; padding: 0.75rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 8px; color: #e5e5e5; font-size: 0.875rem;"
+                           onkeypress="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); window.AIAssistant && window.AIAssistant.sendMessage(); }">
+                    <button id="aiSendBtn" onclick="window.AIAssistant && window.AIAssistant.sendMessage()"
+                            style="padding: 0.75rem 1.25rem; background: linear-gradient(135deg, #8B5CF6, #6366F1); border: none; border-radius: 8px; color: white; font-weight: 600; cursor: pointer; transition: all 0.2s;"
+                            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(139, 92, 246, 0.4)';"
+                            onmouseout="this.style.transform=''; this.style.boxShadow='';">
+                        전송
+                    </button>
                 </div>
             </div>
         </div>
@@ -7628,6 +7640,9 @@ lucide.createIcons();
 
 <!-- Canvas V23.0 Phase B - Templates & Layers & Export Panel -->
 <script src="/static/js/canvas-v23-phase-b.js" defer></script>
+
+<!-- Canvas V24.0 - AI Assistant Panel -->
+<script src="/static/js/canvas-v24-ai-assistant.js" defer></script>
 
 <!-- AI Orchestrator Integration for Canvas -->
 <script>
