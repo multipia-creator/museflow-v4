@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuseFlow - AI-Powered Museum Workflow Platform</title>
+    <meta name="description" content="Linear, purposeful, powerful. Transform museum operations with AI automation.">
+    
+    <!-- Fonts: Inter Only -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons: Font Awesome -->
+    <link rel="stylesheet" href="/static/css/fontawesome-all.min.css">
+    
+    <!-- Linear Design System -->
+    <link rel="stylesheet" href="/static/css/linear-design-system.css">
+    
+    <style>
+        /* ============================================================================
+           ADDITIONAL LANDING PAGE STYLES
+           ============================================================================ */
+        
+        /* Product Showcase Section */
+        .linear-showcase {
+            padding: var(--linear-space-32) var(--linear-space-6);
+            background: linear-gradient(180deg, var(--linear-bg-primary) 0%, var(--linear-bg-secondary) 100%);
+        }
+        
+        .linear-showcase-container {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+        
+        .linear-showcase-header {
+            text-align: center;
+            margin-bottom: var(--linear-space-20);
+        }
+        
+        .linear-showcase-visual {
+            position: relative;
+            border-radius: var(--linear-radius-2xl);
+            overflow: hidden;
+            border: 1px solid var(--linear-border-primary);
+            box-shadow: var(--linear-shadow-xl);
+        }
+        
+        .linear-showcase-visual img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* Social Proof Section */
+        .linear-social-proof {
+            padding: var(--linear-space-32) var(--linear-space-6);
+            background-color: var(--linear-bg-primary);
+        }
+        
+        .linear-testimonial {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .linear-testimonial-quote {
+            font-size: var(--linear-text-3xl);
+            font-weight: var(--linear-weight-medium);
+            line-height: var(--linear-leading-relaxed);
+            color: var(--linear-text-primary);
+            margin-bottom: var(--linear-space-8);
+        }
+        
+        .linear-testimonial-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--linear-space-4);
+        }
+        
+        .linear-testimonial-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: var(--linear-radius-full);
+            border: 2px solid var(--linear-border-primary);
+        }
+        
+        .linear-testimonial-info h4 {
+            font-size: var(--linear-text-lg);
+            font-weight: var(--linear-weight-semibold);
+            color: var(--linear-text-primary);
+        }
+        
+        .linear-testimonial-info p {
+            font-size: var(--linear-text-sm);
+            color: var(--linear-text-tertiary);
+        }
+        
+        .linear-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--linear-space-8);
+            max-width: 1000px;
+            margin: var(--linear-space-20) auto 0;
+        }
+        
+        .linear-stat {
+            text-align: center;
+        }
+        
+        .linear-stat-value {
+            font-size: var(--linear-text-5xl);
+            font-weight: var(--linear-weight-bold);
+            color: var(--linear-text-primary);
+            margin-bottom: var(--linear-space-2);
+        }
+        
+        .linear-stat-label {
+            font-size: var(--linear-text-sm);
+            color: var(--linear-text-tertiary);
+        }
+        
+        /* CTA Section */
+        .linear-cta {
+            padding: var(--linear-space-32) var(--linear-space-6);
+            background: linear-gradient(180deg, var(--linear-bg-primary) 0%, var(--linear-bg-secondary) 100%);
+        }
+        
+        .linear-cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .linear-cta-title {
+            margin-bottom: var(--linear-space-6);
+        }
+        
+        .linear-cta-description {
+            margin-bottom: var(--linear-space-10);
+        }
+        
+        /* Footer */
+        .linear-footer {
+            padding: var(--linear-space-20) var(--linear-space-6);
+            background-color: var(--linear-bg-primary);
+            border-top: 1px solid var(--linear-border-primary);
+        }
+        
+        .linear-footer-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--linear-space-12);
+        }
+        
+        .linear-footer-section h4 {
+            font-size: var(--linear-text-sm);
+            font-weight: var(--linear-weight-semibold);
+            color: var(--linear-text-primary);
+            margin-bottom: var(--linear-space-4);
+            text-transform: uppercase;
+            letter-spacing: var(--linear-tracking-wide);
+        }
+        
+        .linear-footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--linear-space-3);
+        }
+        
+        .linear-footer-link {
+            font-size: var(--linear-text-sm);
+            color: var(--linear-text-tertiary);
+            text-decoration: none;
+            transition: color var(--linear-duration-fast) var(--linear-ease-out);
+        }
+        
+        .linear-footer-link:hover {
+            color: var(--linear-text-primary);
+        }
+        
+        .linear-footer-bottom {
+            margin-top: var(--linear-space-16);
+            padding-top: var(--linear-space-8);
+            border-top: 1px solid var(--linear-border-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--linear-space-4);
+        }
+        
+        .linear-footer-copyright {
+            font-size: var(--linear-text-sm);
+            color: var(--linear-text-quaternary);
+        }
+        
+        .linear-footer-socials {
+            display: flex;
+            gap: var(--linear-space-4);
+        }
+        
+        .linear-footer-social {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--linear-radius-md);
+            background-color: var(--linear-bg-elevated);
+            color: var(--linear-text-tertiary);
+            text-decoration: none;
+            transition: all var(--linear-duration-fast) var(--linear-ease-out);
+        }
+        
+        .linear-footer-social:hover {
+            background-color: var(--linear-bg-hover);
+            color: var(--linear-text-primary);
+        }
+        
+        /* Scroll Animation Helper */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s var(--linear-ease-out);
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- ============================================================================
+         1. NAVIGATION
+         ============================================================================ -->
+    <nav class="linear-nav" id="navbar">
+        <div class="linear-nav-container">
+            <a href="/" class="linear-nav-logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="8" fill="url(#logo-gradient)"/>
+                    <path d="M16 8L8 16L16 24L24 16L16 8Z" fill="white" opacity="0.9"/>
+                    <defs>
+                        <linearGradient id="logo-gradient" x1="0" y1="0" x2="32" y2="32">
+                            <stop offset="0%" stop-color="#5e6ad2"/>
+                            <stop offset="100%" stop-color="#8b5cf6"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span>MuseFlow</span>
+            </a>
+            
+            <ul class="linear-nav-links">
+                <li><a href="/modules" class="linear-nav-link">모듈</a></li>
+                <li><a href="/pricing" class="linear-nav-link">가격</a></li>
+                <li><a href="/about" class="linear-nav-link">소개</a></li>
+                <li><a href="/dashboard" class="linear-btn linear-btn-primary">대시보드 →</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- ============================================================================
+         2. HERO SECTION
+         ============================================================================ -->
+    <section class="linear-hero" id="hero">
+        <div class="linear-hero-container">
+            <!-- Badge -->
+            <div class="linear-hero-badge">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 0L10.5 5.5L16 8L10.5 10.5L8 16L5.5 10.5L0 8L5.5 5.5L8 0Z"/>
+                </svg>
+                <span>Powered by Gemini 2.0 Flash</span>
+            </div>
+            
+            <!-- Main Headline -->
+            <h1 class="linear-hero-title linear-display-2">
+                뮤지엄 워크플로우를<br>
+                <span class="linear-text-gradient">AI가 재정의합니다</span>
+            </h1>
+            
+            <!-- Description -->
+            <p class="linear-hero-description linear-body-lg">
+                8개의 전문 AI 에이전트가 70개 업무를 자동화합니다.<br>
+                설정은 5분, 효율은 300% 향상됩니다.
+            </p>
+            
+            <!-- CTA Buttons -->
+            <div class="linear-hero-cta">
+                <a href="/dashboard" class="linear-btn linear-btn-primary linear-btn-lg">
+                    무료로 시작하기 →
+                </a>
+                <a href="#showcase" class="linear-btn linear-btn-ghost linear-btn-lg">
+                    데모 보기
+                </a>
+            </div>
+            
+            <!-- Trust Signals -->
+            <div class="linear-body-sm" style="margin-top: var(--linear-space-12); color: var(--linear-text-quaternary);">
+                5분 안에 설정 완료 · 신용카드 불필요 · 7일 프로 플랜 무료 체험
+            </div>
+        </div>
+    </section>
+    
+    <!-- ============================================================================
+         3. FEATURES SECTION
+         ============================================================================ -->
+    <section class="linear-features" id="features">
+        <div class="linear-features-container">
+            <!-- Section Header -->
+            <div style="text-align: center; margin-bottom: var(--linear-space-20);">
+                <p class="linear-caption scroll-reveal" style="margin-bottom: var(--linear-space-4);">핵심 기능</p>
+                <h2 class="linear-h1 scroll-reveal">하나의 플랫폼, 무한한 가능성</h2>
+            </div>
+            
+            <!-- Features Grid -->
+            <div class="linear-features-grid">
+                <!-- Feature 1: AI Automation -->
+                <a href="/modules" class="linear-feature-card scroll-reveal">
+                    <div class="linear-feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="linear-feature-title linear-h4">AI 자동화</h3>
+                    <p class="linear-feature-description linear-body">
+                        8개 전문 AI 에이전트가 전시 기획부터 예산 관리까지 자동화합니다.
+                        300% 효율 향상을 경험하세요.
+                    </p>
+                    <div style="margin-top: var(--linear-space-6); color: var(--linear-brand-primary); font-size: var(--linear-text-sm); font-weight: var(--linear-weight-medium);">
+                        모듈 보기 →
+                    </div>
+                </a>
+                
+                <!-- Feature 2: Real-time Collaboration -->
+                <a href="/canvas-ultimate-clean" class="linear-feature-card scroll-reveal">
+                    <div class="linear-feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="linear-feature-title linear-h4">실시간 협업</h3>
+                    <p class="linear-feature-description linear-body">
+                        무한 캔버스에서 팀원들과 실시간으로 아이디어를 공유하고 시각화하세요.
+                    </p>
+                    <div style="margin-top: var(--linear-space-6); color: var(--linear-brand-primary); font-size: var(--linear-text-sm); font-weight: var(--linear-weight-medium);">
+                        캔버스 보기 →
+                    </div>
+                </a>
+                
+                <!-- Feature 3: Integrated Platform -->
+                <a href="/dashboard" class="linear-feature-card scroll-reveal">
+                    <div class="linear-feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="linear-feature-title linear-h4">통합 플랫폼</h3>
+                    <p class="linear-feature-description linear-body">
+                        70개 업무, 63개 연결점을 하나의 대시보드에서 관리하세요.
+                        데이터 기반 의사결정을 내리세요.
+                    </p>
+                    <div style="margin-top: var(--linear-space-6); color: var(--linear-brand-primary); font-size: var(--linear-text-sm); font-weight: var(--linear-weight-medium);">
+                        대시보드 보기 →
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ============================================================================
+         4. PRODUCT SHOWCASE
+         ============================================================================ -->
+    <section class="linear-showcase scroll-reveal" id="showcase">
+        <div class="linear-showcase-container">
+            <div class="linear-showcase-header">
+                <p class="linear-caption" style="margin-bottom: var(--linear-space-4);">제품 데모</p>
+                <h2 class="linear-h1">직관적이고, 강력한 워크플로우</h2>
+            </div>
+            
+            <div class="linear-showcase-visual">
+                <!-- Placeholder for Dashboard Screenshot -->
+                <div style="
+                    aspect-ratio: 16/10;
+                    background: linear-gradient(135deg, rgba(94, 106, 210, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: var(--linear-text-tertiary);
+                    font-size: var(--linear-text-lg);
+                ">
+                    <div style="text-align: center;">
+                        <i class="fas fa-desktop" style="font-size: 4rem; margin-bottom: var(--linear-space-4); opacity: 0.5;"></i>
+                        <p>Dashboard Screenshot</p>
+                        <p class="linear-body-sm">1920x1200 placeholder</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ============================================================================
+         5. SOCIAL PROOF
+         ============================================================================ -->
+    <section class="linear-social-proof scroll-reveal">
+        <div class="linear-testimonial">
+            <blockquote class="linear-testimonial-quote">
+                "MuseFlow 도입 후 전시 준비 시간이 50% 단축되었습니다. 
+                AI가 반복 업무를 처리해주니 큐레이팅에 집중할 수 있게 되었어요."
+            </blockquote>
+            
+            <div class="linear-testimonial-author">
+                <div style="
+                    width: 64px;
+                    height: 64px;
+                    border-radius: var(--linear-radius-full);
+                    background: linear-gradient(135deg, rgba(94, 106, 210, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
+                    border: 2px solid var(--linear-border-primary);
+                "></div>
+                <div class="linear-testimonial-info">
+                    <h4>김민지</h4>
+                    <p>큐레이터, 국립현대미술관</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats Grid -->
+        <div class="linear-stats">
+            <div class="linear-stat">
+                <div class="linear-stat-value">10+</div>
+                <div class="linear-stat-label">전시 기획 완료</div>
+            </div>
+            <div class="linear-stat">
+                <div class="linear-stat-value">50%</div>
+                <div class="linear-stat-label">업무 시간 절감</div>
+            </div>
+            <div class="linear-stat">
+                <div class="linear-stat-value">300%</div>
+                <div class="linear-stat-label">생산성 향상</div>
+            </div>
+            <div class="linear-stat">
+                <div class="linear-stat-value">24/7</div>
+                <div class="linear-stat-label">AI 지원</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ============================================================================
+         6. FINAL CTA
+         ============================================================================ -->
+    <section class="linear-cta scroll-reveal">
+        <div class="linear-cta-container">
+            <h2 class="linear-cta-title linear-h1">
+                지금 시작하세요
+            </h2>
+            <p class="linear-cta-description linear-body-lg">
+                5분이면 충분합니다. 신용카드도 필요 없습니다.<br>
+                7일간 프로 플랜을 무료로 체험해보세요.
+            </p>
+            <div style="display: flex; gap: var(--linear-space-4); justify-content: center; flex-wrap: wrap;">
+                <a href="/dashboard" class="linear-btn linear-btn-primary linear-btn-lg">
+                    무료로 시작하기 →
+                </a>
+                <a href="/pricing" class="linear-btn linear-btn-secondary linear-btn-lg">
+                    가격 보기
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ============================================================================
+         7. FOOTER
+         ============================================================================ -->
+    <footer class="linear-footer">
+        <div class="linear-footer-container">
+            <!-- Product -->
+            <div class="linear-footer-section">
+                <h4>제품</h4>
+                <ul class="linear-footer-links">
+                    <li><a href="/modules" class="linear-footer-link">모듈</a></li>
+                    <li><a href="/pricing" class="linear-footer-link">가격</a></li>
+                    <li><a href="/dashboard" class="linear-footer-link">대시보드</a></li>
+                    <li><a href="/canvas-ultimate-clean" class="linear-footer-link">캔버스</a></li>
+                </ul>
+            </div>
+            
+            <!-- Company -->
+            <div class="linear-footer-section">
+                <h4>회사</h4>
+                <ul class="linear-footer-links">
+                    <li><a href="/about" class="linear-footer-link">소개</a></li>
+                    <li><a href="/contact" class="linear-footer-link">연락처</a></li>
+                </ul>
+            </div>
+            
+            <!-- Resources -->
+            <div class="linear-footer-section">
+                <h4>리소스</h4>
+                <ul class="linear-footer-links">
+                    <li><a href="/help-center" class="linear-footer-link">헬프 센터</a></li>
+                    <li><a href="/behavior-dashboard" class="linear-footer-link">행동 분석</a></li>
+                </ul>
+            </div>
+            
+            <!-- Legal -->
+            <div class="linear-footer-section">
+                <h4>법률</h4>
+                <ul class="linear-footer-links">
+                    <li><a href="/privacy" class="linear-footer-link">개인정보처리방침</a></li>
+                    <li><a href="/terms" class="linear-footer-link">이용약관</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Footer Bottom -->
+        <div class="linear-container">
+            <div class="linear-footer-bottom">
+                <p class="linear-footer-copyright">
+                    © 2024 MuseFlow. All rights reserved.
+                </p>
+                <div class="linear-footer-socials">
+                    <a href="#" class="linear-footer-social" aria-label="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="linear-footer-social" aria-label="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" class="linear-footer-social" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- ============================================================================
+         JAVASCRIPT - Linear Interactions
+         ============================================================================ -->
+    <script>
+        // ===================================================================
+        // 1. Navigation Hide/Show on Scroll (Linear Style)
+        // ===================================================================
+        let lastScrollY = window.scrollY;
+        const navbar = document.getElementById('navbar');
+        
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                // Scrolling down
+                navbar.classList.add('hidden');
+            } else {
+                // Scrolling up
+                navbar.classList.remove('hidden');
+            }
+            
+            lastScrollY = currentScrollY;
+        });
+        
+        // ===================================================================
+        // 2. Scroll Reveal Animation
+        // ===================================================================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // ===================================================================
+        // 3. Smooth Scroll for Anchor Links
+        // ===================================================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // ===================================================================
+        // 4. Feature Card Hover Parallax Effect (Subtle)
+        // ===================================================================
+        document.querySelectorAll('.linear-feature-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const deltaX = (x - centerX) / centerX;
+                const deltaY = (y - centerY) / centerY;
+                
+                card.style.transform = `
+                    translateY(-4px) 
+                    rotateX(${deltaY * 2}deg) 
+                    rotateY(${deltaX * 2}deg)
+                `;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+    </script>
+</body>
+</html>
