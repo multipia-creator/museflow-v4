@@ -89,6 +89,8 @@ const exclude = [
   '/forgot-password',
   '/budget',
   '/google-mcp',
+  '/help-center',
+  '/help-system-demo',
   '/landing',
   '/login',
   '/projects',

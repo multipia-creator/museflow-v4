@@ -3,19 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>도움말 센터 - MuseFlow V4</title>
-    <meta name="description" content="MuseFlow V4의 모든 기능을 배우고 문제를 해결하세요. 소장품 관리, 전시 기획, AI 활용부터 고급 분석까지 완벽 가이드.">
-    <meta name="keywords" content="뮤지엄 관리, 도움말, 사용 설명서, MuseFlow, 튜토리얼">
-    
-    <!-- Favicon -->
-    <link rel="icon" href="/static/favicon.ico">
+    <title>도움말 센터 - MuseFlow V26.0</title>
+    <meta name="description" content="MuseFlow V26.0 큐레이터 학습 시스템. 7개 역할별 실무 가이드, FAQ, 튜토리얼로 빠르게 배우세요.">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Styles -->
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
     <style>
         * {
             margin: 0;
@@ -24,25 +22,25 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #f9fafb;
-            color: #111827;
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e5e7eb;
             line-height: 1.6;
         }
 
         /* Navigation */
         nav {
-            background: white;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 16px 24px;
+            background: rgba(15, 10, 31, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
         .nav-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             align-items: center;
@@ -53,328 +51,645 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            font-size: 20px;
-            font-weight: 700;
-            color: #4f46e5;
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             text-decoration: none;
-        }
-
-        .nav-brand:hover {
-            color: #4338ca;
         }
 
         .nav-links {
             display: flex;
-            align-items: center;
-            gap: 24px;
+            gap: 2rem;
         }
 
         .nav-link {
-            color: #6b7280;
+            color: #9ca3af;
             text-decoration: none;
-            font-size: 14px;
             transition: color 0.2s;
+            font-weight: 500;
         }
 
         .nav-link:hover {
-            color: #4f46e5;
+            color: #8b5cf6;
         }
 
-        .nav-link.active {
-            color: #4f46e5;
+        /* Hero Section */
+        .hero {
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #9ca3af;
+            margin-bottom: 2rem;
+        }
+
+        /* Search Bar */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 3.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8b5cf6;
+        }
+
+        .search-clear {
+            position: absolute;
+            right: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            font-size: 1.25rem;
+            display: none;
+        }
+
+        .search-clear.active {
+            display: block;
+        }
+
+        /* Search Results */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(30, 20, 60, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            margin-top: 0.5rem;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            z-index: 50;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .search-result-item:hover {
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-type {
+            font-size: 0.75rem;
+            color: #8b5cf6;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+
+        .search-result-title {
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .search-result-snippet {
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Category Grid */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .category-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-card:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-4px);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-description {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-count {
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.2);
+            color: #8b5cf6;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
             font-weight: 600;
         }
 
-        /* Main Container */
-        main {
-            min-height: calc(100vh - 200px);
-            padding: 20px;
+        /* FAQ Section */
+        .faq-section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: white;
+            transition: background 0.2s;
+        }
+
+        .faq-question:hover {
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .faq-answer {
+            padding: 0 1.25rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s;
+            color: #9ca3af;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 1.25rem 1.25rem;
+            max-height: 500px;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Article Modal */
+        .article-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 2rem;
+        }
+
+        .article-modal.active {
+            display: flex;
+        }
+
+        .article-content {
+            background: rgba(30, 20, 60, 0.98);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .article-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .article-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .article-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .article-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .article-tag {
+            background: rgba(139, 92, 246, 0.2);
+            color: #8b5cf6;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+        }
+
+        .article-body h3 {
+            color: white;
+            font-size: 1.25rem;
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        .article-body p {
+            color: #d1d5db;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .article-body strong {
+            color: #8b5cf6;
+        }
+
+        .article-body code {
+            background: rgba(139, 92, 246, 0.2);
+            color: #c4b5fd;
+            padding: 0.125rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
         }
 
         /* Footer */
         footer {
-            background: white;
-            border-top: 1px solid #e5e7eb;
-            padding: 32px 24px;
-            margin-top: 64px;
-        }
-
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 32px;
-        }
-
-        .footer-section h3 {
-            font-size: 14px;
-            font-weight: 600;
-            color: #111827;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 8px;
-        }
-
-        .footer-links a {
-            color: #6b7280;
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.2s;
-        }
-
-        .footer-links a:hover {
-            color: #4f46e5;
-        }
-
-        .footer-bottom {
-            max-width: 1200px;
-            margin: 32px auto 0;
-            padding-top: 24px;
-            border-top: 1px solid #e5e7eb;
+            background: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
             text-align: center;
-            color: #9ca3af;
-            font-size: 13px;
-        }
-
-        /* Quick Help Button */
-        .quick-help-btn {
-            position: fixed;
-            bottom: 32px;
-            right: 32px;
-            width: 56px;
-            height: 56px;
-            background: #4f46e5;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
-            transition: all 0.3s;
-            z-index: 1000;
-        }
-
-        .quick-help-btn:hover {
-            background: #4338ca;
-            transform: scale(1.1);
-            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.5);
+            color: #6b7280;
+            margin-top: 4rem;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+
             .nav-links {
                 display: none;
             }
 
-            .footer-container {
-                grid-template-columns: 1fr;
-                gap: 24px;
+            .article-content {
+                padding: 1.5rem;
             }
 
-            .quick-help-btn {
-                bottom: 20px;
-                right: 20px;
-                width: 48px;
-                height: 48px;
-                font-size: 20px;
+            .article-title {
+                font-size: 1.5rem;
             }
-        }
-
-        /* Announcement Banner */
-        .announcement-banner {
-            background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
-            color: white;
-            padding: 12px 24px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .announcement-banner a {
-            color: white;
-            text-decoration: underline;
-            font-weight: 600;
         }
     </style>
 </head>
 <body>
-    <!-- Load Unified Navigation -->
-    <!-- Announcement Banner -->
-    <div class="announcement-banner">
-        🎉 MuseFlow V4가 출시되었습니다! <a href="/help/whats-new">새로운 기능 살펴보기 →</a>
-    </div>
-
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <a href="/" class="nav-brand">
-                <span>🏛️</span>
-                <span>MuseFlow</span>
+            <a href="/landing" class="nav-brand">
+                🎨 MuseFlow
             </a>
             <div class="nav-links">
-                <a href="/" class="nav-link">대시보드</a>
-                <a href="/collections" class="nav-link">소장품</a>
-                <a href="/exhibitions" class="nav-link">전시</a>
-                <a href="/help-center.html" class="nav-link active">도움말</a>
-                <a href="/contact" class="nav-link">문의</a>
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/canvas-ultimate-clean" class="nav-link">Canvas</a>
+                <a href="/help-center" class="nav-link" style="color: #8b5cf6;">Help Center</a>
             </div>
         </div>
     </nav>
 
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>도움말 센터</h1>
+        <p>MuseFlow V26.0 큐레이터 학습 시스템 가이드</p>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <i data-lucide="search" class="search-icon"></i>
+            <input 
+                type="text" 
+                class="search-input" 
+                id="searchInput"
+                placeholder="가이드, FAQ 검색... (예: 전시 기획, Canvas 연결)"
+            >
+            <button class="search-clear" id="searchClear">×</button>
+            
+            <!-- Search Results -->
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
     <!-- Main Content -->
-    <main>
-        <!-- Help Center Container (will be populated by help-center.js) -->
-        <div id="help-center-container" class="help-center" data-help-center-auto-init data-data-url="/static/data/help/help-center-data.json" data-user-role="curator" data-container="#help-center-container">
-            <!-- Loading State -->
-            <div class="help-loading">
-                <div class="help-loading-spinner"></div>
-                <p>도움말 센터를 불러오는 중...</p>
+    <div class="container">
+        <!-- Categories Grid -->
+        <div class="categories-grid" id="categoriesGrid">
+            <!-- Categories will be dynamically loaded -->
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h2 class="section-title">자주 묻는 질문 (FAQ)</h2>
+            <div id="faqContainer">
+                <!-- FAQ items will be dynamically loaded -->
             </div>
         </div>
-    </main>
+    </div>
+
+    <!-- Article Modal -->
+    <div class="article-modal" id="articleModal">
+        <div class="article-content">
+            <button class="article-close" id="articleClose">×</button>
+            <div class="article-header" id="articleHeader"></div>
+            <div class="article-body" id="articleBody"></div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h3>제품</h3>
-                <ul class="footer-links">
-                    <li><a href="/features">기능</a></li>
-                    <li><a href="/pricing">가격</a></li>
-                    <li><a href="/demo">데모</a></li>
-                    <li><a href="/roadmap">로드맵</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>지원</h3>
-                <ul class="footer-links">
-                    <li><a href="/help-center.html">도움말 센터</a></li>
-                    <li><a href="/contact">문의하기</a></li>
-                    <li><a href="/status">시스템 상태</a></li>
-                    <li><a href="/changelog">변경 이력</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>회사</h3>
-                <ul class="footer-links">
-                    <li><a href="/about">소개</a></li>
-                    <li><a href="/blog">블로그</a></li>
-                    <li><a href="/careers">채용</a></li>
-                    <li><a href="/press">언론</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>법률</h3>
-                <ul class="footer-links">
-                    <li><a href="/privacy">개인정보처리방침</a></li>
-                    <li><a href="/terms">이용약관</a></li>
-                    <li><a href="/security">보안정책</a></li>
-                    <li><a href="/compliance">규정준수</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 MuseFlow. All rights reserved. | Version 4.0.0 | 남현우 교수</p>
-        </div>
+        <p>&copy; 2025 MuseFlow V26.0. All rights reserved.</p>
+        <p>교수님: 남현우 | Email: gallerypia@gmail.com</p>
     </footer>
 
-    <!-- Quick Help Button -->
-    <button class="quick-help-btn" onclick="scrollToTop()" title="맨 위로">
-        ↑
-    </button>
-
     <!-- Scripts -->
-    <script src="/static/js/help/tooltip-system.js"></script>
-    <script src="/static/js/help/context-help-panel.js"></script>
-    <script src="/static/js/help/help-center.js"></script>
-    <script src="/static/js/help/ai-assistant.js"></script>
+    <script src="/static/js/help-center-v26.js"></script>
     <script src="/static/js/help/behavior-detector.js"></script>
-
+    <script src="/static/js/ai-assistant-widget.js"></script>
     <script>
-        // Scroll to top function
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Initialize BehaviorDetector for Help Center
+        if (typeof BehaviorDetector !== 'undefined') {
+            BehaviorDetector.init({
+                idleTimeout: 60000, // 1 minute for Help Center
+                enableProactiveHelp: true,
+                enableAnalytics: true
             });
+            console.log('✅ [HelpCenter] BehaviorDetector initialized');
         }
 
-        // Show/hide scroll button based on scroll position
-        window.addEventListener('scroll', () => {
-            const btn = document.querySelector('.quick-help-btn');
-            if (window.scrollY > 300) {
-                btn.style.opacity = '1';
+        // Load Categories
+        function loadCategories() {
+            const grid = document.getElementById('categoriesGrid');
+            
+            for (const [roleKey, roleData] of Object.entries(HELP_CENTER_V26.guides)) {
+                const card = document.createElement('div');
+                card.className = 'category-card';
+                card.onclick = () => showRoleGuides(roleKey);
+                
+                card.innerHTML = `
+                    <div class="category-icon">${roleData.icon}</div>
+                    <div class="category-title">${roleData.title}</div>
+                    <div class="category-description">${roleData.description}</div>
+                    <span class="category-count">${roleData.articles.length}개 가이드</span>
+                `;
+                
+                grid.appendChild(card);
+            }
+        }
+
+        // Load FAQ
+        function loadFAQ() {
+            const container = document.getElementById('faqContainer');
+            
+            HELP_CENTER_V26.faq.forEach((item, index) => {
+                const faqItem = document.createElement('div');
+                faqItem.className = 'faq-item';
+                
+                faqItem.innerHTML = `
+                    <div class="faq-question">
+                        <span>${item.question}</span>
+                        <i data-lucide="chevron-down" class="faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">${item.answer}</div>
+                `;
+                
+                faqItem.querySelector('.faq-question').onclick = () => {
+                    faqItem.classList.toggle('active');
+                    lucide.createIcons();
+                };
+                
+                container.appendChild(faqItem);
+            });
+            
+            lucide.createIcons();
+        }
+
+        // Show Role Guides
+        function showRoleGuides(roleKey) {
+            const roleData = HELP_CENTER_V26.guides[roleKey];
+            const article = roleData.articles[0]; // Show first article
+            showArticle(roleKey, article);
+        }
+
+        // Show Article
+        function showArticle(roleKey, article) {
+            const modal = document.getElementById('articleModal');
+            const header = document.getElementById('articleHeader');
+            const body = document.getElementById('articleBody');
+            const roleData = HELP_CENTER_V26.guides[roleKey];
+            
+            header.innerHTML = `
+                <div class="article-title">${article.title}</div>
+                <div class="article-tags">
+                    <span class="article-tag">${roleData.icon} ${roleData.title}</span>
+                    ${article.tags.map(tag => `<span class="article-tag">${tag}</span>`).join('')}
+                </div>
+            `;
+            
+            body.innerHTML = article.content;
+            
+            modal.classList.add('active');
+        }
+
+        // Search Functionality
+        const searchInput = document.getElementById('searchInput');
+        const searchClear = document.getElementById('searchClear');
+        const searchResults = document.getElementById('searchResults');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+            
+            if (query.length > 0) {
+                searchClear.classList.add('active');
+                
+                if (query.length >= 2) {
+                    const results = HELP_CENTER_V26.search(query);
+                    displaySearchResults(results);
+                }
             } else {
-                btn.style.opacity = '0.6';
+                searchClear.classList.remove('active');
+                searchResults.classList.remove('active');
             }
         });
 
-        // Initialize Context Help Panel (optional, can be toggled on/off)
-        document.addEventListener('DOMContentLoaded', () => {
-            // Uncomment below to enable context-aware help panel on this page
-            // ContextHelpPanel.init({
-            //   position: 'right',
-            //   defaultOpen: false,
-            //   userRole: 'curator',
-            //   userSkillLevel: 'intermediate'
-            // });
-
-            // Initialize AI Assistant
-            AIAssistant.init({
-                apiEndpoint: '/api/help/ai-assistant',
-                position: 'bottom-right',
-                autoOpen: false,
-                userRole: 'curator'
-            });
-
-            // Initialize Behavior Detector
-            BehaviorDetector.init({
-                idleTimeout: 30000,
-                enableProactiveHelp: true,
-                enableAnalytics: true,
-                debugMode: false
-            });
-
-            console.log('[HelpCenter Page] Initialized with AI Assistant and Behavior Detector');
+        searchClear.addEventListener('click', () => {
+            searchInput.value = '';
+            searchClear.classList.remove('active');
+            searchResults.classList.remove('active');
         });
 
-        // Listen to custom events from help systems
-        window.addEventListener('help:quickAction', (e) => {
-            console.log('[HelpCenter Page] Quick action triggered:', e.detail);
-            // Handle quick actions here
-        });
-
-        window.addEventListener('help:playTutorial', (e) => {
-            console.log('[HelpCenter Page] Tutorial play requested:', e.detail);
-            // Handle tutorial video playback here
-        });
-
-        window.addEventListener('help:openArticle', (e) => {
-            console.log('[HelpCenter Page] Article open requested from AI bot:', e.detail);
-            // HelpCenter.showArticle() is called by AIAssistant automatically
-        });
-
-        // Service Worker registration for offline support (optional)
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').then(
-                    (registration) => {
-                        console.log('[SW] Registered:', registration.scope);
-                    },
-                    (error) => {
-                        console.log('[SW] Registration failed:', error);
-                    }
-                );
-            });
+        function displaySearchResults(results) {
+            const container = searchResults;
+            
+            if (results.length === 0) {
+                container.innerHTML = '<div class="search-result-item">검색 결과가 없습니다.</div>';
+                container.classList.add('active');
+                return;
+            }
+            
+            container.innerHTML = results.map(result => {
+                if (result.type === 'guide') {
+                    return `
+                        <div class="search-result-item" onclick="showArticle('${result.role}', ${JSON.stringify(result.article).replace(/"/g, '&quot;')})">
+                            <div class="search-result-type">${result.roleTitle}</div>
+                            <div class="search-result-title">${result.article.title}</div>
+                            <div class="search-result-snippet">${result.article.tags.join(', ')}</div>
+                        </div>
+                    `;
+                } else if (result.type === 'faq') {
+                    return `
+                        <div class="search-result-item">
+                            <div class="search-result-type">FAQ</div>
+                            <div class="search-result-title">${result.question}</div>
+                            <div class="search-result-snippet">${result.answer.substring(0, 100)}...</div>
+                        </div>
+                    `;
+                }
+            }).join('');
+            
+            container.classList.add('active');
         }
+
+        // Close Article Modal
+        document.getElementById('articleClose').onclick = () => {
+            document.getElementById('articleModal').classList.remove('active');
+        };
+
+        // Click outside to close
+        document.getElementById('articleModal').onclick = (e) => {
+            if (e.target.id === 'articleModal') {
+                document.getElementById('articleModal').classList.remove('active');
+            }
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCategories();
+            loadFAQ();
+            lucide.createIcons();
+        });
     </script>
 </body>
 </html>

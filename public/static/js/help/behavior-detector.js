@@ -971,6 +971,15 @@ const BehaviorDetector = {
     window.dispatchEvent(new CustomEvent('behavior:detected', {
       detail: behavior
     }));
+
+    // Dispatch specific events for AI Assistant integration
+    if (type === 'idle_detected') {
+      document.dispatchEvent(new CustomEvent('museflow:behavior:idle', { detail: behavior }));
+    } else if (type === 'stuck_detected') {
+      document.dispatchEvent(new CustomEvent('museflow:behavior:stuck', { detail: behavior }));
+    } else if (type.includes('error')) {
+      document.dispatchEvent(new CustomEvent('museflow:behavior:error', { detail: behavior }));
+    }
   },
 
   /**

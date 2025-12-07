@@ -8012,6 +8012,23 @@ console.log('✅ [Canvas] AI Orchestrator Integration complete');
 </div>
 
 
+    <!-- 📊 Behavior Detector (User Activity Tracking) -->
+    <script src="/static/js/help/behavior-detector.js"></script>
+    <script>
+        // Initialize BehaviorDetector for Canvas
+        if (typeof BehaviorDetector !== 'undefined') {
+            BehaviorDetector.init({
+                idleTimeout: 180000, // 3 minutes for Canvas (longer than Help Center)
+                enableProactiveHelp: true,
+                enableAnalytics: true
+            });
+            console.log('✅ [Canvas] BehaviorDetector initialized');
+        }
+    </script>
+
+    <!-- 🤖 AI Assistant Widget -->
+    <script src="/static/js/ai-assistant-widget.js"></script>
+
     <!-- ⌨️  Keyboard Navigation & Accessibility -->
     <script src="/static/js/keyboard-navigation.js"></script>
     
