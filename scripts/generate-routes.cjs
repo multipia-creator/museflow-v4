@@ -25,6 +25,7 @@ const exclude = [
   '/*.html',
   
   // Pretty URL paths (all)
+  '/about',
   '/account',
   '/admin',
   '/analytics-dashboard',
@@ -42,6 +43,7 @@ const exclude = [
   '/help-system-demo',
   '/landing',
   '/login',
+  '/modules',
   '/projects',
   '/signup',
   '/workflow',
