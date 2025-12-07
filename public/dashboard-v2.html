@@ -2175,25 +2175,29 @@
                 // Row 1: AI 검색 (전체 너비)
                 { type: 'ai-search', name: 'AI 검색', icon: 'fa-sparkles', x: 0, y: 0, w: 12, h: 2 },
                 
-                // Row 2: 주요 작업 (좌측 6칸) + 현재 진행 작업 (우측 6칸)
-                { type: 'todo-list', name: '주요 작업', icon: 'fa-tasks', x: 0, y: 2, w: 6, h: 5 },
-                { type: 'alert-list', name: '현재 진행 중', icon: 'fa-bell', x: 6, y: 2, w: 6, h: 5 },
+                // Row 2: Canvas V23.0 통합 (좌측: Projects, 우측: Tasks)
+                { type: 'projects-summary', name: 'Canvas 프로젝트', icon: 'fa-folder', x: 0, y: 2, w: 6, h: 5 },
+                { type: 'tasks-summary', name: 'Canvas 작업', icon: 'fa-check-square', x: 6, y: 2, w: 6, h: 5 },
                 
-                // Row 3: 진행 중인 작업 (좌측 6칸) + Google Workspace (우측 6칸)
-                { type: 'timeline', name: '진행 중인 작업', icon: 'fa-clock', x: 0, y: 7, w: 6, h: 5 },
-                { type: 'workspace-google', name: 'Google Workspace', icon: 'fab fa-google', x: 6, y: 7, w: 6, h: 5 },
+                // Row 3: 주요 작업 (좌측 6칸) + 현재 진행 작업 (우측 6칸)
+                { type: 'todo-list', name: '주요 작업', icon: 'fa-tasks', x: 0, y: 7, w: 6, h: 5 },
+                { type: 'alert-list', name: '현재 진행 중', icon: 'fa-bell', x: 6, y: 7, w: 6, h: 5 },
                 
-                // Row 4: 6개 Stat Cards (각 2칸씩)
-                { type: 'stat-card-exhibition', name: '전시', icon: 'fa-image', x: 0, y: 12, w: 2, h: 3 },
-                { type: 'stat-card-education', name: '교육', icon: 'fa-graduation-cap', x: 2, y: 12, w: 2, h: 3 },
-                { type: 'stat-card-collection', name: '수집', icon: 'fa-folder-plus', x: 4, y: 12, w: 2, h: 3 },
-                { type: 'stat-card-conservation', name: '보존', icon: 'fa-shield-alt', x: 6, y: 12, w: 2, h: 3 },
-                { type: 'stat-card-publication', name: '출판', icon: 'fa-book', x: 8, y: 12, w: 2, h: 3 },
-                { type: 'stat-card-research', name: '연구', icon: 'fa-microscope', x: 10, y: 12, w: 2, h: 3 },
+                // Row 4: 진행 중인 작업 (좌측 6칸) + Google Workspace (우측 6칸)
+                { type: 'timeline', name: '진행 중인 작업', icon: 'fa-clock', x: 0, y: 12, w: 6, h: 5 },
+                { type: 'workspace-google', name: 'Google Workspace', icon: 'fab fa-google', x: 6, y: 12, w: 6, h: 5 },
                 
-                // Row 5: 예산 차트 (좌측 6칸) + 관람객 차트 (우측 6칸)
-                { type: 'bar-chart', name: '예산 사용 현황', icon: 'fa-chart-bar', x: 0, y: 15, w: 6, h: 5 },
-                { type: 'visitor-chart', name: '관람객 추이', icon: 'fa-users', x: 6, y: 15, w: 6, h: 5 }
+                // Row 5: 6개 Stat Cards (각 2칸씩)
+                { type: 'stat-card-exhibition', name: '전시', icon: 'fa-image', x: 0, y: 17, w: 2, h: 3 },
+                { type: 'stat-card-education', name: '교육', icon: 'fa-graduation-cap', x: 2, y: 17, w: 2, h: 3 },
+                { type: 'stat-card-collection', name: '수집', icon: 'fa-folder-plus', x: 4, y: 17, w: 2, h: 3 },
+                { type: 'stat-card-conservation', name: '보존', icon: 'fa-shield-alt', x: 6, y: 17, w: 2, h: 3 },
+                { type: 'stat-card-publication', name: '출판', icon: 'fa-book', x: 8, y: 17, w: 2, h: 3 },
+                { type: 'stat-card-research', name: '연구', icon: 'fa-microscope', x: 10, y: 17, w: 2, h: 3 },
+                
+                // Row 6: 예산 차트 (좌측 6칸) + 관람객 차트 (우측 6칸)
+                { type: 'bar-chart', name: '예산 사용 현황', icon: 'fa-chart-bar', x: 0, y: 20, w: 6, h: 5 },
+                { type: 'visitor-chart', name: '관람객 추이', icon: 'fa-users', x: 6, y: 20, w: 6, h: 5 }
             ];
             
             defaultWidgets.forEach(widget => {
@@ -4011,6 +4015,114 @@
                         </div>
                     </div>
                 `;
+            }
+            
+            // Projects Summary Widget (V23.0 Integration)
+            if (type === 'projects-summary') {
+                try {
+                    const projectsData = JSON.parse(localStorage.getItem('museflow_projects_v23') || '[]');
+                    const totalProjects = projectsData.length;
+                    const recentProjects = projectsData.slice(0, 3);
+                    
+                    return `
+                        <div style="display: flex; flex-direction: column; gap: 1rem; padding: 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.75rem; border-bottom: 2px solid var(--border-primary);">
+                                <div>
+                                    <div style="font-size: 2rem; font-weight: 700; color: var(--text-primary);">${totalProjects}</div>
+                                    <div style="font-size: 0.875rem; color: var(--text-secondary);">총 프로젝트</div>
+                                </div>
+                                <button onclick="window.location.href='/canvas-ultimate-clean'" style="padding: 0.5rem 1rem; background: linear-gradient(135deg, #8B5CF6, #7C3AED); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: transform 0.2s;"
+                                        onmouseover="this.style.transform='scale(1.05)'"
+                                        onmouseout="this.style.transform='scale(1)'">
+                                    <i class="fas fa-external-link-alt" style="margin-right: 0.5rem;"></i>
+                                    Canvas 열기
+                                </button>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                                ${recentProjects.length > 0 ? recentProjects.map(project => `
+                                    <div style="padding: 0.875rem; background: var(--surface); border: 1.5px solid var(--border-primary); border-radius: 10px; transition: all 0.2s; cursor: pointer;"
+                                         onmouseover="this.style.borderColor='#8B5CF6'; this.style.transform='translateX(4px)'"
+                                         onmouseout="this.style.borderColor='var(--border-primary)'; this.style.transform='translateX(0)'"
+                                         onclick="window.location.href='/canvas-ultimate-clean'">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                            <div style="font-weight: 600; color: var(--text-primary); font-size: 0.9375rem;">
+                                                ${project.favorite ? '<i class="fas fa-star" style="color: #FBBF24; margin-right: 0.5rem;"></i>' : ''}
+                                                ${project.name || 'Untitled Project'}
+                                            </div>
+                                            <div style="font-size: 0.8125rem; color: var(--text-tertiary);">
+                                                ${new Date(project.updatedAt || Date.now()).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' })}
+                                            </div>
+                                        </div>
+                                        <div style="display: flex; gap: 1rem; font-size: 0.8125rem; color: var(--text-secondary);">
+                                            <span><i class="fas fa-box" style="margin-right: 0.375rem;"></i>${(project.cards || []).length}개 카드</span>
+                                            <span><i class="fas fa-link" style="margin-right: 0.375rem;"></i>${(project.connections || []).length}개 연결</span>
+                                        </div>
+                                    </div>
+                                `).join('') : '<div style="text-align: center; padding: 2rem; color: var(--text-tertiary);"><i class="fas fa-folder-open" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5;"></i><p>프로젝트가 없습니다</p></div>'}
+                            </div>
+                        </div>
+                    `;
+                } catch (error) {
+                    console.error('Projects widget error:', error);
+                    return '<div style="padding: 1rem; color: var(--text-secondary);">프로젝트 데이터를 불러올 수 없습니다.</div>';
+                }
+            }
+            
+            // Tasks Summary Widget (V23.0 Integration)
+            if (type === 'tasks-summary') {
+                try {
+                    const tasksData = JSON.parse(localStorage.getItem('museflow_tasks_v23') || '[]');
+                    const activeTasks = tasksData.filter(t => !t.completed);
+                    const completedTasks = tasksData.filter(t => t.completed);
+                    const overdueTasks = activeTasks.filter(t => t.dueDate < Date.now());
+                    
+                    return `
+                        <div style="display: flex; flex-direction: column; gap: 1rem; padding: 1rem;">
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 0.5rem;">
+                                <div style="text-align: center; padding: 0.75rem; background: rgba(139, 92, 246, 0.1); border-radius: 10px;">
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: #8B5CF6;">${activeTasks.length}</div>
+                                    <div style="font-size: 0.8125rem; color: var(--text-secondary);">진행중</div>
+                                </div>
+                                <div style="text-align: center; padding: 0.75rem; background: rgba(239, 68, 68, 0.1); border-radius: 10px;">
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: #EF4444;">${overdueTasks.length}</div>
+                                    <div style="font-size: 0.8125rem; color: var(--text-secondary);">기한초과</div>
+                                </div>
+                                <div style="text-align: center; padding: 0.75rem; background: rgba(34, 197, 94, 0.1); border-radius: 10px;">
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: #22C55E;">${completedTasks.length}</div>
+                                    <div style="font-size: 0.8125rem; color: var(--text-secondary);">완료</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 0.625rem; max-height: 300px; overflow-y: auto;">
+                                ${activeTasks.length > 0 ? activeTasks.slice(0, 5).map(task => {
+                                    const isOverdue = task.dueDate < Date.now();
+                                    const priorityColor = task.priority === 'high' ? '#EF4444' : task.priority === 'medium' ? '#F59E0B' : '#6B7280';
+                                    return `
+                                        <div style="padding: 0.75rem; background: var(--surface); border: 1.5px solid ${isOverdue ? '#FCA5A5' : 'var(--border-primary)'}; border-radius: 8px; transition: all 0.2s;"
+                                             onmouseover="this.style.borderColor='#8B5CF6'"
+                                             onmouseout="this.style.borderColor='${isOverdue ? '#FCA5A5' : 'var(--border-primary)'}'">
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.375rem;">
+                                                <div style="font-weight: 600; color: var(--text-primary); font-size: 0.875rem;">${task.title || 'Untitled Task'}</div>
+                                                ${isOverdue ? '<span style="padding: 0.25rem 0.5rem; background: #FEE2E2; color: #EF4444; font-size: 0.75rem; border-radius: 6px; font-weight: 600;">기한초과</span>' : ''}
+                                            </div>
+                                            <div style="display: flex; gap: 0.75rem; font-size: 0.75rem; color: var(--text-secondary);">
+                                                <span style="color: ${priorityColor};"><i class="fas fa-flag" style="margin-right: 0.25rem;"></i>${task.priority === 'high' ? '높음' : task.priority === 'medium' ? '중간' : '낮음'}</span>
+                                                <span><i class="fas fa-calendar" style="margin-right: 0.25rem;"></i>${new Date(task.dueDate).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' })}</span>
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('') : '<div style="text-align: center; padding: 2rem; color: var(--text-tertiary);"><i class="fas fa-check-circle" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5;"></i><p>진행 중인 작업이 없습니다</p></div>'}
+                            </div>
+                            <button onclick="window.location.href='/canvas-ultimate-clean'" style="width: 100%; padding: 0.75rem; background: transparent; border: 2px solid #8B5CF6; color: #8B5CF6; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s;"
+                                    onmouseover="this.style.background='#8B5CF6'; this.style.color='white'"
+                                    onmouseout="this.style.background='transparent'; this.style.color='#8B5CF6'">
+                                전체 작업 보기
+                            </button>
+                        </div>
+                    `;
+                } catch (error) {
+                    console.error('Tasks widget error:', error);
+                    return '<div style="padding: 1rem; color: var(--text-secondary);">작업 데이터를 불러올 수 없습니다.</div>';
+                }
             }
             
             // 기본 템플릿
