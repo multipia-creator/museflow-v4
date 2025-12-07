@@ -2902,6 +2902,193 @@ body {
         margin: 0.5rem 0;
     }
     
+    /* ============================================
+       LAYERS PANEL STYLES - Professional Design
+       ============================================ */
+    
+    .layers-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.875rem 1rem;
+        border-bottom: 1.5px solid rgba(139, 92, 246, 0.15);
+        background: rgba(139, 92, 246, 0.03);
+    }
+    
+    .btn-refresh-layers {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: rgba(139, 92, 246, 0.1);
+        border: 1.5px solid rgba(139, 92, 246, 0.2);
+        border-radius: 8px;
+        color: #A78BFA;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .btn-refresh-layers:hover {
+        background: rgba(139, 92, 246, 0.15);
+        border-color: rgba(139, 92, 246, 0.3);
+        transform: rotate(180deg);
+    }
+    
+    .layers-info {
+        font-size: 0.875rem;
+        color: #9CA3AF;
+        font-weight: 500;
+    }
+    
+    .layers-info span {
+        color: #A78BFA;
+        font-weight: 700;
+    }
+    
+    #layersList {
+        padding: 0.875rem;
+        overflow-y: auto;
+        max-height: calc(100vh - 250px);
+    }
+    
+    .layer-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.875rem;
+        background: rgba(139, 92, 246, 0.08);
+        border-radius: 8px;
+        border: 1.5px solid rgba(139, 92, 246, 0.2);
+        margin-bottom: 0.625rem;
+        transition: all 0.2s;
+        cursor: move;
+        user-select: none;
+    }
+    
+    .layer-item:hover {
+        background: rgba(139, 92, 246, 0.12);
+        border-color: rgba(139, 92, 246, 0.3);
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+    }
+    
+    .layer-item.dragging {
+        opacity: 0.5;
+        transform: scale(0.95);
+    }
+    
+    .layer-item.hidden {
+        opacity: 0.4;
+    }
+    
+    .layer-item.locked {
+        background: rgba(75, 85, 99, 0.1);
+        border-color: rgba(75, 85, 99, 0.2);
+        cursor: not-allowed;
+    }
+    
+    .layer-drag-handle {
+        display: flex;
+        align-items: center;
+        color: #6B7280;
+        cursor: move;
+    }
+    
+    .layer-visibility {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        background: rgba(139, 92, 246, 0.1);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: #A78BFA;
+    }
+    
+    .layer-visibility:hover {
+        background: rgba(139, 92, 246, 0.15);
+        color: #C4B5FD;
+    }
+    
+    .layer-content {
+        flex: 1;
+    }
+    
+    .layer-name {
+        font-size: 0.9375rem;
+        color: #e5e5e5;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+    }
+    
+    .layer-info {
+        font-size: 0.8125rem;
+        color: #9CA3AF;
+        display: flex;
+        gap: 0.75rem;
+    }
+    
+    .layer-z-index {
+        color: #A78BFA;
+        font-weight: 600;
+    }
+    
+    .layer-actions {
+        display: flex;
+        gap: 0.375rem;
+    }
+    
+    .layer-lock,
+    .layer-delete {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        background: rgba(139, 92, 246, 0.1);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: #6B7280;
+    }
+    
+    .layer-lock:hover {
+        background: rgba(251, 191, 36, 0.15);
+        color: #FCD34D;
+    }
+    
+    .layer-lock.locked {
+        background: rgba(251, 191, 36, 0.15);
+        color: #FCD34D;
+    }
+    
+    .layer-delete:hover {
+        background: rgba(239, 68, 68, 0.15);
+        color: #EF4444;
+    }
+    
+    .layers-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 1.5rem;
+        text-align: center;
+        color: #6B7280;
+    }
+    
+    .layers-empty i {
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+    
+    .layers-empty p {
+        font-size: 0.9375rem;
+        margin: 0;
+    }
+    
     /* Empty State - Professional Design */
     .empty-state {
         display: flex;
@@ -3346,6 +3533,7 @@ html { visibility: visible; opacity: 1; }
         <div class="icon" data-panel="stats"><i data-lucide="bar-chart-2" style="width:16px;height:16px"></i></div>
         <div class="icon" data-panel="widget"><i data-lucide="package" style="width:16px;height:16px"></i><span class="badge">87</span></div>
         <div class="icon" data-panel="tasks"><i data-lucide="check-square" style="width:16px;height:16px"></i><span class="badge">2</span></div>
+        <div class="icon" data-panel="layers"><i data-lucide="layers" style="width:16px;height:16px"></i></div>
         <div class="icon" data-panel="ai"><i data-lucide="sparkles" style="width:16px;height:16px"></i><span class="badge">1</span></div>
         <div class="icon" data-panel="alerts"><i data-lucide="bell" style="width:16px;height:16px"></i><span class="badge">3</span></div>
     </div>
@@ -3668,6 +3856,38 @@ html { visibility: visible; opacity: 1; }
     <div class="panel-content">
         <div id="tasksList">
             <!-- Tasks will be dynamically rendered here by TasksManager -->
+        </div>
+    </div>
+</div>
+
+<!-- ============================================
+     LAYERS PANEL - Z-index & Layer Management
+     ============================================ -->
+<div class="panel right" id="layersPanel" data-side="right">
+    <div class="panel-header">
+        <span class="panel-title">
+            <i data-lucide="layers" class="icon" style="margin-right:8px;"></i>
+            Layers
+        </span>
+        <button class="panel-close" onclick="closePanel('layersPanel')">
+            <i data-lucide="x" style="width:14px;height:14px"></i>
+        </button>
+    </div>
+    
+    <!-- Layers Toolbar -->
+    <div class="layers-toolbar">
+        <button class="btn-refresh-layers" id="refreshLayersBtn" title="레이어 새로고침">
+            <i data-lucide="refresh-cw" class="icon-xs"></i>
+        </button>
+        <div class="layers-info">
+            <span id="layersCount">0</span> layers
+        </div>
+    </div>
+    
+    <!-- Layers List (Dynamic - Drag & Drop) -->
+    <div class="panel-content">
+        <div id="layersList">
+            <!-- Layers will be dynamically rendered here by LayersManager -->
         </div>
     </div>
 </div>

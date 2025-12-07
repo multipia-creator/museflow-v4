@@ -441,6 +441,272 @@ const TemplatesManager = {
 window.TemplatesManager = TemplatesManager;
 
 // ============================================
+// LAYERS PANEL - Complete Implementation
+// ============================================
+
+const LayersManager = {
+    layers: [],
+    draggedLayer: null,
+    
+    init() {
+        this.loadLayers();
+        this.setupEventListeners();
+        this.renderLayers();
+    },
+    
+    loadLayers() {
+        // Get all canvas cards as layers
+        if (window.CanvasState && Array.isArray(window.CanvasState.cards)) {
+            this.layers = window.CanvasState.cards.map((card, index) => ({
+                id: card.id,
+                name: card.title || `Card ${index + 1}`,
+                type: card.type || 'text',
+                zIndex: card.zIndex || (1000 + index),
+                visible: card.visible !== false,
+                locked: card.locked || false,
+                element: card
+            }));
+            
+            // Sort by z-index descending (top layer first)
+            this.layers.sort((a, b) => b.zIndex - a.zIndex);
+        }
+    },
+    
+    setupEventListeners() {
+        // Refresh button
+        const refreshBtn = document.getElementById('refreshLayersBtn');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', () => {
+                this.loadLayers();
+                this.renderLayers();
+                showToast('레이어 목록 새로고침됨', 'success');
+            });
+        }
+    },
+    
+    toggleVisibility(layerId) {
+        const layer = this.layers.find(l => l.id === layerId);
+        if (!layer) return;
+        
+        layer.visible = !layer.visible;
+        
+        // Update CanvasState
+        if (window.CanvasState && Array.isArray(window.CanvasState.cards)) {
+            const card = window.CanvasState.cards.find(c => c.id === layerId);
+            if (card) {
+                card.visible = layer.visible;
+                
+                // Update DOM element if exists
+                const cardElement = document.querySelector(`[data-card-id="${layerId}"]`);
+                if (cardElement) {
+                    cardElement.style.display = layer.visible ? 'block' : 'none';
+                }
+            }
+        }
+        
+        this.renderLayers();
+        showToast(layer.visible ? '레이어 표시됨' : '레이어 숨김', 'success');
+    },
+    
+    toggleLock(layerId) {
+        const layer = this.layers.find(l => l.id === layerId);
+        if (!layer) return;
+        
+        layer.locked = !layer.locked;
+        
+        // Update CanvasState
+        if (window.CanvasState && Array.isArray(window.CanvasState.cards)) {
+            const card = window.CanvasState.cards.find(c => c.id === layerId);
+            if (card) {
+                card.locked = layer.locked;
+            }
+        }
+        
+        this.renderLayers();
+        showToast(layer.locked ? '레이어 잠김' : '레이어 잠금 해제', 'success');
+    },
+    
+    deleteLayer(layerId) {
+        const layer = this.layers.find(l => l.id === layerId);
+        if (!layer) return;
+        
+        if (!confirm(`"${layer.name}" 레이어를 삭제하시겠습니까?`)) return;
+        
+        // Remove from layers
+        this.layers = this.layers.filter(l => l.id !== layerId);
+        
+        // Remove from CanvasState
+        if (window.CanvasState && Array.isArray(window.CanvasState.cards)) {
+            window.CanvasState.cards = window.CanvasState.cards.filter(c => c.id !== layerId);
+            
+            // Remove DOM element
+            const cardElement = document.querySelector(`[data-card-id="${layerId}"]`);
+            if (cardElement) {
+                cardElement.remove();
+            }
+        }
+        
+        this.renderLayers();
+        showToast('레이어 삭제됨', 'success');
+    },
+    
+    updateZIndex(layerId, newZIndex) {
+        const layer = this.layers.find(l => l.id === layerId);
+        if (!layer) return;
+        
+        layer.zIndex = newZIndex;
+        
+        // Update CanvasState
+        if (window.CanvasState && Array.isArray(window.CanvasState.cards)) {
+            const card = window.CanvasState.cards.find(c => c.id === layerId);
+            if (card) {
+                card.zIndex = newZIndex;
+                
+                // Update DOM element z-index
+                const cardElement = document.querySelector(`[data-card-id="${layerId}"]`);
+                if (cardElement) {
+                    cardElement.style.zIndex = newZIndex;
+                }
+            }
+        }
+        
+        this.renderLayers();
+    },
+    
+    handleDragStart(event, layerId) {
+        if (event.target.classList.contains('layer-lock') || 
+            event.target.classList.contains('layer-delete') || 
+            event.target.classList.contains('layer-visibility')) {
+            return;
+        }
+        
+        const layer = this.layers.find(l => l.id === layerId);
+        if (!layer || layer.locked) return;
+        
+        this.draggedLayer = layer;
+        event.target.classList.add('dragging');
+    },
+    
+    handleDragEnd(event) {
+        event.target.classList.remove('dragging');
+        this.draggedLayer = null;
+    },
+    
+    handleDragOver(event) {
+        event.preventDefault();
+    },
+    
+    handleDrop(event, targetLayerId) {
+        event.preventDefault();
+        
+        if (!this.draggedLayer || this.draggedLayer.id === targetLayerId) return;
+        
+        const targetLayer = this.layers.find(l => l.id === targetLayerId);
+        if (!targetLayer) return;
+        
+        // Swap z-index
+        const tempZIndex = this.draggedLayer.zIndex;
+        this.updateZIndex(this.draggedLayer.id, targetLayer.zIndex);
+        this.updateZIndex(targetLayer.id, tempZIndex);
+        
+        // Re-sort layers
+        this.layers.sort((a, b) => b.zIndex - a.zIndex);
+        
+        showToast('레이어 순서 변경됨', 'success');
+    },
+    
+    renderLayers() {
+        // Try multiple methods to find the container (same as Phase A fix)
+        let container = document.getElementById('layersList');
+        
+        if (!container) {
+            container = document.querySelector('#layersList');
+        }
+        
+        if (!container) {
+            const panel = document.getElementById('layersPanel');
+            if (panel) {
+                container = panel.querySelector('#layersList');
+                
+                if (!container) {
+                    const panelContent = panel.querySelector('.panel-content');
+                    if (panelContent) {
+                        console.log('🔧 Creating layersList element...');
+                        container = document.createElement('div');
+                        container.id = 'layersList';
+                        panelContent.appendChild(container);
+                        console.log('✅ layersList element created successfully');
+                    }
+                }
+            }
+        }
+        
+        if (!container) {
+            console.warn('⚠️ layersList container not found');
+            return;
+        }
+        
+        // Update layers count
+        const countElement = document.getElementById('layersCount');
+        if (countElement) {
+            countElement.textContent = this.layers.length;
+        }
+        
+        // Render layers
+        if (this.layers.length === 0) {
+            container.innerHTML = `
+                <div class="layers-empty">
+                    <i data-lucide="layers" style="width:48px;height:48px;"></i>
+                    <p>레이어가 없습니다</p>
+                    <p style="font-size:0.8125rem;margin-top:0.5rem;">캔버스에 카드를 추가하면<br>여기에 레이어로 표시됩니다</p>
+                </div>
+            `;
+        } else {
+            container.innerHTML = this.layers.map(layer => `
+                <div class="layer-item ${layer.hidden ? 'hidden' : ''} ${layer.locked ? 'locked' : ''}" 
+                     draggable="${!layer.locked}"
+                     ondragstart="LayersManager.handleDragStart(event, '${layer.id}')"
+                     ondragend="LayersManager.handleDragEnd(event)"
+                     ondragover="LayersManager.handleDragOver(event)"
+                     ondrop="LayersManager.handleDrop(event, '${layer.id}')">
+                    <div class="layer-drag-handle">
+                        <i data-lucide="grip-vertical" style="width:16px;height:16px;"></i>
+                    </div>
+                    <div class="layer-visibility" onclick="LayersManager.toggleVisibility('${layer.id}')">
+                        <i data-lucide="${layer.visible ? 'eye' : 'eye-off'}" style="width:14px;height:14px;"></i>
+                    </div>
+                    <div class="layer-content">
+                        <div class="layer-name">${layer.name}</div>
+                        <div class="layer-info">
+                            <span class="layer-z-index">Z: ${layer.zIndex}</span>
+                            <span>${layer.type}</span>
+                        </div>
+                    </div>
+                    <div class="layer-actions">
+                        <div class="layer-lock ${layer.locked ? 'locked' : ''}" 
+                             onclick="LayersManager.toggleLock('${layer.id}')"
+                             title="${layer.locked ? '잠금 해제' : '잠금'}">
+                            <i data-lucide="${layer.locked ? 'lock' : 'unlock'}" style="width:14px;height:14px;"></i>
+                        </div>
+                        <div class="layer-delete" 
+                             onclick="LayersManager.deleteLayer('${layer.id}')"
+                             title="삭제">
+                            <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Recreate icons
+        if (window.lucide) lucide.createIcons();
+    }
+};
+
+// Expose globally for debugging
+window.LayersManager = LayersManager;
+
+// ============================================
 // INITIALIZE ON LOAD
 // ============================================
 
@@ -463,6 +729,17 @@ window.addEventListener('load', function() {
         console.error('❌ Templates Panel initialization failed:', error);
     }
     
+    // Initialize Layers Panel
+    try {
+        LayersManager.init();
+        console.log('✅ Layers Panel initialized successfully');
+    } catch (error) {
+        console.error('❌ Layers Panel initialization failed:', error);
+    }
+    
     console.log('✅ MuseFlow Canvas V23.0 - Phase B Loaded');
+    console.log('📊 Phase B Features:');
+    console.log('   • Templates: 10+ museum templates');
+    console.log('   • Layers: Z-index management, Show/Hide, Lock');
 });
 
