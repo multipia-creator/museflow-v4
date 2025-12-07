@@ -254,7 +254,18 @@ const ProjectsManager = {
     
     renderProjects(searchQuery = '') {
         const container = document.getElementById('projectsList');
-        if (!container) return;
+        if (!container) {
+            console.warn('⚠️ projectsList container not found, will retry...');
+            // Retry after a delay if container doesn't exist
+            setTimeout(() => {
+                const retryContainer = document.getElementById('projectsList');
+                if (retryContainer) {
+                    console.log('✅ projectsList found on retry, rendering now...');
+                    this.renderProjects(searchQuery);
+                }
+            }, 1000);
+            return;
+        }
         
         // Filter projects
         let filtered = this.projects;
@@ -585,7 +596,18 @@ const TasksManager = {
     
     renderTasks() {
         const container = document.getElementById('tasksList');
-        if (!container) return;
+        if (!container) {
+            console.warn('⚠️ tasksList container not found, will retry...');
+            // Retry after a delay if container doesn't exist
+            setTimeout(() => {
+                const retryContainer = document.getElementById('tasksList');
+                if (retryContainer) {
+                    console.log('✅ tasksList found on retry, rendering now...');
+                    this.renderTasks();
+                }
+            }, 1000);
+            return;
+        }
         
         // Filter tasks
         let filtered = this.tasks;
@@ -913,24 +935,85 @@ const SettingsManager = {
 // ============================================
 // Initialize Phase A on DOM Ready
 // ============================================
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Initializing MuseFlow Canvas V23.0 - Phase A');
-    
-    // Initialize Projects Manager
-    if (document.getElementById('projectsList')) {
-        ProjectsManager.init();
-        console.log('✅ Projects Panel initialized');
-    }
-    
-    // Initialize Tasks Manager
-    if (document.getElementById('tasksList')) {
-        TasksManager.init();
-        console.log('✅ Tasks Panel initialized');
-    }
-    
-    // Initialize Settings Manager
-    SettingsManager.init();
-    console.log('✅ Settings Panel initialized');
-    
-    console.log('✅ MuseFlow Canvas V23.0 - Phase A Loaded');
+// Use window.onload to ensure all DOM elements are fully loaded
+window.addEventListener('load', function() {
+    // Add small delay to ensure all deferred scripts are executed
+    setTimeout(function() {
+        console.log('🚀 Initializing MuseFlow Canvas V23.0 - Phase A');
+        console.log('📊 DOM Ready State:', document.readyState);
+        
+        // Check DOM elements existence
+        const projectsListElement = document.getElementById('projectsList');
+        const tasksListElement = document.getElementById('tasksList');
+        const projectsPanelElement = document.getElementById('projectsPanel');
+        const tasksPanelElement = document.getElementById('tasksPanel');
+        
+        console.log('🔍 DOM Elements Check:');
+        console.log('   • projectsList:', projectsListElement ? '✅ Found' : '❌ Not Found');
+        console.log('   • tasksList:', tasksListElement ? '✅ Found' : '❌ Not Found');
+        console.log('   • projectsPanel:', projectsPanelElement ? '✅ Found' : '❌ Not Found');
+        console.log('   • tasksPanel:', tasksPanelElement ? '✅ Found' : '❌ Not Found');
+        
+        // Try querySelector as alternative
+        const projectsListByQuery = document.querySelector('#projectsList');
+        const tasksListByQuery = document.querySelector('#tasksList');
+        console.log('🔍 querySelector Check:');
+        console.log('   • projectsList (query):', projectsListByQuery ? '✅ Found' : '❌ Not Found');
+        console.log('   • tasksList (query):', tasksListByQuery ? '✅ Found' : '❌ Not Found');
+        
+        // Initialize Projects Manager (Force execution)
+        console.log('📦 Initializing Projects Manager...');
+        try {
+            ProjectsManager.init();
+            console.log('✅ Projects Panel initialized successfully');
+        } catch (error) {
+            console.error('❌ Projects Panel initialization failed:', error);
+        }
+        
+        // Initialize Tasks Manager (Force execution)
+        console.log('📋 Initializing Tasks Manager...');
+        try {
+            TasksManager.init();
+            console.log('✅ Tasks Panel initialized successfully');
+        } catch (error) {
+            console.error('❌ Tasks Panel initialization failed:', error);
+        }
+        
+        // Initialize Settings Manager
+        console.log('⚙️ Initializing Settings Manager...');
+        try {
+            SettingsManager.init();
+            console.log('✅ Settings Panel initialized successfully');
+        } catch (error) {
+            console.error('❌ Settings Panel initialization failed:', error);
+        }
+        
+        console.log('✅ MuseFlow Canvas V23.0 - Phase A Loaded');
+        console.log('📊 Final Check - LocalStorage Data:');
+        console.log('   • Projects:', localStorage.getItem('museflow_projects_v23') ? 'Has data' : 'No data');
+        console.log('   • Tasks:', localStorage.getItem('museflow_tasks_v23') ? 'Has data' : 'No data');
+        console.log('   • Settings:', localStorage.getItem('museflow_settings') ? 'Has data' : 'No data');
+        
+        // Additional verification - check actual data
+        try {
+            const projectsData = JSON.parse(localStorage.getItem('museflow_projects_v23') || '[]');
+            const tasksData = JSON.parse(localStorage.getItem('museflow_tasks_v23') || '[]');
+            console.log('📦 Projects Count:', projectsData.length);
+            console.log('📋 Tasks Count:', tasksData.length);
+            
+            // Force render after delay
+            setTimeout(() => {
+                console.log('🔄 Forcing UI re-render...');
+                if (window.ProjectsManager) ProjectsManager.renderProjects();
+                if (window.TasksManager) TasksManager.renderTasks();
+            }, 1500);
+        } catch (e) {
+            console.error('❌ LocalStorage data verification failed:', e);
+        }
+    }, 500); // 500ms delay to ensure DOM is fully ready
 });
+
+// Expose managers globally for debugging
+window.ProjectsManager = ProjectsManager;
+window.TasksManager = TasksManager;
+window.SettingsManager = SettingsManager;

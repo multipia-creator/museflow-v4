@@ -60,6 +60,9 @@ const StorageManager = {
     }
 };
 
+// Expose StorageManager globally for Phase A
+window.StorageManager = StorageManager;
+
 // ============================================
 // Toast Notification System
 // ============================================
@@ -92,6 +95,9 @@ function showToast(message, type = 'success', duration = 3000) {
     // Recreate icons
     if (window.lucide) lucide.createIcons();
 }
+
+// Expose showToast globally for Phase A
+window.showToast = showToast;
 
 // ============================================
 // ACTIONS PANEL - 4 Core Buttons
