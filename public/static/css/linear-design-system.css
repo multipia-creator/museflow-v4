@@ -1,0 +1,607 @@
+/**
+ * Linear.app Inspired Design System
+ * Pure, Minimal, Purposeful Design
+ * Dark Mode First, Monochrome Focus
+ */
+
+/* ============================================================================
+   1. DESIGN TOKENS - Linear Style Variables
+   ============================================================================ */
+
+:root {
+  /* --- Linear Color System: Dark Mode First --- */
+  
+  /* Background Colors */
+  --linear-bg-primary: #0d0d0d;
+  --linear-bg-secondary: #151515;
+  --linear-bg-tertiary: #1a1a1a;
+  --linear-bg-hover: #202020;
+  --linear-bg-elevated: #252525;
+  
+  /* Text Colors */
+  --linear-text-primary: #ffffff;
+  --linear-text-secondary: rgba(255, 255, 255, 0.7);
+  --linear-text-tertiary: rgba(255, 255, 255, 0.5);
+  --linear-text-quaternary: rgba(255, 255, 255, 0.3);
+  
+  /* Border Colors */
+  --linear-border-primary: rgba(255, 255, 255, 0.1);
+  --linear-border-secondary: rgba(255, 255, 255, 0.06);
+  --linear-border-hover: rgba(255, 255, 255, 0.15);
+  
+  /* Brand Colors - Used Sparingly */
+  --linear-brand-primary: #5e6ad2;
+  --linear-brand-hover: #6b77e6;
+  --linear-brand-subtle: rgba(94, 106, 210, 0.15);
+  
+  /* Semantic Colors */
+  --linear-success: #26d07c;
+  --linear-warning: #ff9d4d;
+  --linear-error: #ff6b6b;
+  
+  /* Gradients - Subtle Only */
+  --linear-gradient-brand: linear-gradient(135deg, #5e6ad2 0%, #8b5cf6 100%);
+  --linear-gradient-subtle: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 100%);
+  
+  /* --- Typography System: Swiss Style + Modern --- */
+  --linear-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --linear-font-mono: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+  
+  /* Perfect Type Scale (1.250 - Major Third) */
+  --linear-text-xs: 0.75rem;     /* 12px */
+  --linear-text-sm: 0.875rem;    /* 14px */
+  --linear-text-base: 1rem;      /* 16px */
+  --linear-text-lg: 1.125rem;    /* 18px */
+  --linear-text-xl: 1.25rem;     /* 20px */
+  --linear-text-2xl: 1.563rem;   /* 25px */
+  --linear-text-3xl: 1.953rem;   /* 31px */
+  --linear-text-4xl: 2.441rem;   /* 39px */
+  --linear-text-5xl: 3.052rem;   /* 49px */
+  --linear-text-6xl: 3.815rem;   /* 61px */
+  --linear-text-7xl: 4.768rem;   /* 76px */
+  --linear-text-8xl: 5.96rem;    /* 95px */
+  
+  /* Font Weights */
+  --linear-weight-regular: 400;
+  --linear-weight-medium: 500;
+  --linear-weight-semibold: 600;
+  --linear-weight-bold: 700;
+  
+  /* Line Heights */
+  --linear-leading-tight: 1.2;
+  --linear-leading-normal: 1.5;
+  --linear-leading-relaxed: 1.75;
+  
+  /* Letter Spacing */
+  --linear-tracking-tight: -0.02em;
+  --linear-tracking-normal: 0;
+  --linear-tracking-wide: 0.02em;
+  
+  /* --- Spacing System: 4px Base Unit --- */
+  --linear-space-1: 0.25rem;  /* 4px */
+  --linear-space-2: 0.5rem;   /* 8px */
+  --linear-space-3: 0.75rem;  /* 12px */
+  --linear-space-4: 1rem;     /* 16px */
+  --linear-space-5: 1.25rem;  /* 20px */
+  --linear-space-6: 1.5rem;   /* 24px */
+  --linear-space-8: 2rem;     /* 32px */
+  --linear-space-10: 2.5rem;  /* 40px */
+  --linear-space-12: 3rem;    /* 48px */
+  --linear-space-16: 4rem;    /* 64px */
+  --linear-space-20: 5rem;    /* 80px */
+  --linear-space-24: 6rem;    /* 96px */
+  --linear-space-32: 8rem;    /* 128px */
+  
+  /* --- Effects & Shadows --- */
+  --linear-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --linear-shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+  --linear-shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
+  --linear-shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.5);
+  
+  /* Blur Effects */
+  --linear-blur-sm: blur(8px);
+  --linear-blur-md: blur(16px);
+  --linear-blur-lg: blur(24px);
+  
+  /* Border Radius */
+  --linear-radius-sm: 6px;
+  --linear-radius-md: 8px;
+  --linear-radius-lg: 12px;
+  --linear-radius-xl: 16px;
+  --linear-radius-2xl: 24px;
+  --linear-radius-full: 9999px;
+  
+  /* --- Timing Functions (Linear's Signature Easing) --- */
+  --linear-ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  --linear-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --linear-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  /* Duration */
+  --linear-duration-fast: 150ms;
+  --linear-duration-base: 250ms;
+  --linear-duration-slow: 400ms;
+}
+
+/* ============================================================================
+   2. GLOBAL RESET & BASE
+   ============================================================================ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--linear-font-family);
+  font-size: var(--linear-text-base);
+  line-height: var(--linear-leading-normal);
+  color: var(--linear-text-primary);
+  background-color: var(--linear-bg-primary);
+  overflow-x: hidden;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--linear-brand-primary);
+  color: var(--linear-text-primary);
+}
+
+/* ============================================================================
+   3. TYPOGRAPHY SYSTEM - Linear Style Headlines
+   ============================================================================ */
+
+/* Massive Display Headlines */
+.linear-display-1 {
+  font-size: var(--linear-text-8xl);
+  font-weight: var(--linear-weight-bold);
+  line-height: var(--linear-leading-tight);
+  letter-spacing: var(--linear-tracking-tight);
+}
+
+.linear-display-2 {
+  font-size: var(--linear-text-7xl);
+  font-weight: var(--linear-weight-bold);
+  line-height: var(--linear-leading-tight);
+  letter-spacing: var(--linear-tracking-tight);
+}
+
+.linear-display-3 {
+  font-size: var(--linear-text-6xl);
+  font-weight: var(--linear-weight-semibold);
+  line-height: var(--linear-leading-tight);
+  letter-spacing: var(--linear-tracking-tight);
+}
+
+/* Headline Styles */
+.linear-h1 {
+  font-size: var(--linear-text-5xl);
+  font-weight: var(--linear-weight-bold);
+  line-height: var(--linear-leading-tight);
+  letter-spacing: var(--linear-tracking-tight);
+}
+
+.linear-h2 {
+  font-size: var(--linear-text-4xl);
+  font-weight: var(--linear-weight-semibold);
+  line-height: var(--linear-leading-tight);
+  letter-spacing: var(--linear-tracking-tight);
+}
+
+.linear-h3 {
+  font-size: var(--linear-text-3xl);
+  font-weight: var(--linear-weight-semibold);
+  line-height: 1.3;
+  letter-spacing: var(--linear-tracking-tight);
+}
+
+.linear-h4 {
+  font-size: var(--linear-text-2xl);
+  font-weight: var(--linear-weight-medium);
+  line-height: 1.4;
+}
+
+/* Body Text */
+.linear-body-lg {
+  font-size: var(--linear-text-xl);
+  line-height: var(--linear-leading-relaxed);
+  color: var(--linear-text-secondary);
+}
+
+.linear-body {
+  font-size: var(--linear-text-base);
+  line-height: var(--linear-leading-normal);
+  color: var(--linear-text-secondary);
+}
+
+.linear-body-sm {
+  font-size: var(--linear-text-sm);
+  line-height: var(--linear-leading-normal);
+  color: var(--linear-text-tertiary);
+}
+
+.linear-caption {
+  font-size: var(--linear-text-xs);
+  line-height: 1.4;
+  color: var(--linear-text-quaternary);
+  text-transform: uppercase;
+  letter-spacing: var(--linear-tracking-wide);
+}
+
+/* Gradient Text (Use Sparingly) */
+.linear-text-gradient {
+  background: var(--linear-gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================================================
+   4. NAVIGATION - Linear Style
+   ============================================================================ */
+
+.linear-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: rgba(13, 13, 13, 0.8);
+  backdrop-filter: var(--linear-blur-md);
+  border-bottom: 1px solid var(--linear-border-primary);
+  transition: transform var(--linear-duration-base) var(--linear-ease-out);
+}
+
+.linear-nav.hidden {
+  transform: translateY(-100%);
+}
+
+.linear-nav-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--linear-space-4) var(--linear-space-6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.linear-nav-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--linear-space-3);
+  font-size: var(--linear-text-lg);
+  font-weight: var(--linear-weight-semibold);
+  color: var(--linear-text-primary);
+  text-decoration: none;
+  transition: opacity var(--linear-duration-fast) var(--linear-ease-out);
+}
+
+.linear-nav-logo:hover {
+  opacity: 0.8;
+}
+
+.linear-nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--linear-space-8);
+  list-style: none;
+}
+
+.linear-nav-link {
+  font-size: var(--linear-text-sm);
+  font-weight: var(--linear-weight-medium);
+  color: var(--linear-text-secondary);
+  text-decoration: none;
+  transition: color var(--linear-duration-fast) var(--linear-ease-out);
+}
+
+.linear-nav-link:hover {
+  color: var(--linear-text-primary);
+}
+
+/* ============================================================================
+   5. BUTTONS - Linear Minimalist Style
+   ============================================================================ */
+
+.linear-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--linear-space-2);
+  padding: var(--linear-space-3) var(--linear-space-6);
+  font-family: var(--linear-font-family);
+  font-size: var(--linear-text-sm);
+  font-weight: var(--linear-weight-medium);
+  border-radius: var(--linear-radius-md);
+  border: none;
+  cursor: pointer;
+  transition: all var(--linear-duration-fast) var(--linear-ease-out);
+  text-decoration: none;
+}
+
+/* Primary Button */
+.linear-btn-primary {
+  background-color: var(--linear-text-primary);
+  color: var(--linear-bg-primary);
+}
+
+.linear-btn-primary:hover {
+  background-color: var(--linear-text-secondary);
+  transform: translateY(-1px);
+}
+
+.linear-btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Secondary Button */
+.linear-btn-secondary {
+  background-color: var(--linear-bg-elevated);
+  color: var(--linear-text-primary);
+  border: 1px solid var(--linear-border-primary);
+}
+
+.linear-btn-secondary:hover {
+  background-color: var(--linear-bg-hover);
+  border-color: var(--linear-border-hover);
+}
+
+/* Ghost Button */
+.linear-btn-ghost {
+  background-color: transparent;
+  color: var(--linear-text-secondary);
+}
+
+.linear-btn-ghost:hover {
+  color: var(--linear-text-primary);
+  background-color: var(--linear-bg-hover);
+}
+
+/* Large Button */
+.linear-btn-lg {
+  padding: var(--linear-space-4) var(--linear-space-8);
+  font-size: var(--linear-text-base);
+}
+
+/* ============================================================================
+   6. HERO SECTION - Linear Minimalist
+   ============================================================================ */
+
+.linear-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--linear-space-32) var(--linear-space-6);
+  overflow: hidden;
+}
+
+.linear-hero-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+  z-index: 1;
+}
+
+.linear-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--linear-space-2);
+  padding: var(--linear-space-2) var(--linear-space-4);
+  background-color: var(--linear-bg-elevated);
+  border: 1px solid var(--linear-border-primary);
+  border-radius: var(--linear-radius-full);
+  font-size: var(--linear-text-sm);
+  color: var(--linear-text-tertiary);
+  margin-bottom: var(--linear-space-8);
+}
+
+.linear-hero-title {
+  margin-bottom: var(--linear-space-6);
+  animation: fade-up 0.8s var(--linear-ease-out) forwards;
+  animation-delay: 0.1s;
+  opacity: 0;
+}
+
+.linear-hero-description {
+  max-width: 720px;
+  margin: 0 auto var(--linear-space-12);
+  animation: fade-up 0.8s var(--linear-ease-out) forwards;
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+
+.linear-hero-cta {
+  display: flex;
+  gap: var(--linear-space-4);
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fade-up 0.8s var(--linear-ease-out) forwards;
+  animation-delay: 0.3s;
+  opacity: 0;
+}
+
+/* Background Effects */
+.linear-hero::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(94, 106, 210, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ============================================================================
+   7. FEATURE CARDS - Linear Grid Style
+   ============================================================================ */
+
+.linear-features {
+  padding: var(--linear-space-32) var(--linear-space-6);
+  background-color: var(--linear-bg-primary);
+}
+
+.linear-features-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.linear-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--linear-space-6);
+  margin-top: var(--linear-space-16);
+}
+
+.linear-feature-card {
+  padding: var(--linear-space-8);
+  background-color: var(--linear-bg-secondary);
+  border: 1px solid var(--linear-border-primary);
+  border-radius: var(--linear-radius-lg);
+  transition: all var(--linear-duration-base) var(--linear-ease-out);
+}
+
+.linear-feature-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--linear-border-hover);
+  box-shadow: var(--linear-shadow-lg);
+}
+
+.linear-feature-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--linear-bg-elevated);
+  border: 1px solid var(--linear-border-primary);
+  border-radius: var(--linear-radius-md);
+  margin-bottom: var(--linear-space-5);
+  font-size: var(--linear-text-2xl);
+}
+
+.linear-feature-title {
+  margin-bottom: var(--linear-space-3);
+}
+
+.linear-feature-description {
+  color: var(--linear-text-tertiary);
+  line-height: var(--linear-leading-relaxed);
+}
+
+/* ============================================================================
+   8. ANIMATIONS - Linear Subtle Motion
+   ============================================================================ */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.linear-animate {
+  opacity: 0;
+  animation: fade-up 0.6s var(--linear-ease-out) forwards;
+}
+
+/* Stagger Delay Classes */
+.linear-delay-1 { animation-delay: 0.1s; }
+.linear-delay-2 { animation-delay: 0.2s; }
+.linear-delay-3 { animation-delay: 0.3s; }
+.linear-delay-4 { animation-delay: 0.4s; }
+.linear-delay-5 { animation-delay: 0.5s; }
+
+/* ============================================================================
+   9. RESPONSIVE DESIGN
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  :root {
+    --linear-text-8xl: 3.5rem;
+    --linear-text-7xl: 3rem;
+    --linear-text-6xl: 2.5rem;
+    --linear-text-5xl: 2rem;
+    --linear-text-4xl: 1.75rem;
+  }
+  
+  .linear-nav-links {
+    display: none;
+  }
+  
+  .linear-hero {
+    min-height: 80vh;
+    padding: var(--linear-space-20) var(--linear-space-4);
+  }
+  
+  .linear-features-grid {
+    grid-template-columns: 1fr;
+    gap: var(--linear-space-4);
+  }
+}
+
+/* ============================================================================
+   10. UTILITY CLASSES
+   ============================================================================ */
+
+/* Container */
+.linear-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--linear-space-6);
+}
+
+/* Text Alignment */
+.linear-text-center { text-align: center; }
+.linear-text-left { text-align: left; }
+.linear-text-right { text-align: right; }
+
+/* Spacing Utilities */
+.linear-mt-4 { margin-top: var(--linear-space-4); }
+.linear-mt-8 { margin-top: var(--linear-space-8); }
+.linear-mt-12 { margin-top: var(--linear-space-12); }
+.linear-mt-16 { margin-top: var(--linear-space-16); }
+
+.linear-mb-4 { margin-bottom: var(--linear-space-4); }
+.linear-mb-8 { margin-bottom: var(--linear-space-8); }
+.linear-mb-12 { margin-bottom: var(--linear-space-12); }
+.linear-mb-16 { margin-bottom: var(--linear-space-16); }
+
+/* Display Utilities */
+.linear-flex { display: flex; }
+.linear-inline-flex { display: inline-flex; }
+.linear-grid { display: grid; }
+.linear-block { display: block; }
+.linear-inline-block { display: inline-block; }
+
+/* Flex Utilities */
+.linear-items-center { align-items: center; }
+.linear-justify-center { justify-content: center; }
+.linear-justify-between { justify-content: space-between; }
+.linear-flex-col { flex-direction: column; }
+.linear-gap-2 { gap: var(--linear-space-2); }
+.linear-gap-4 { gap: var(--linear-space-4); }
+.linear-gap-6 { gap: var(--linear-space-6); }
+.linear-gap-8 { gap: var(--linear-space-8); }
