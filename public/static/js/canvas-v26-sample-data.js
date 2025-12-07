@@ -65,6 +65,26 @@ const MuseumSampleData = {
         },
         {
           id: 'task_ex_004',
+          title: '작품 운송 및 보험 처리',
+          description: '작품 안전 운송 계획, 작품 보험 가입',
+          priority: 'high',
+          status: 'pending',
+          deadline: new Date(Date.now() + 25 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['운송', '보험'],
+          projectId: 'sample_exhibition_001'
+        },
+        {
+          id: 'task_ex_005',
+          title: '조명 및 전시 설비 점검',
+          description: '전시 조명 테스트, 온습도 조절 시스템 점검',
+          priority: 'medium',
+          status: 'pending',
+          deadline: new Date(Date.now() + 28 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['시설', '점검'],
+          projectId: 'sample_exhibition_001'
+        },
+        {
+          id: 'task_ex_006',
           title: '전시 도록 제작',
           description: '작가 인터뷰, 작품 사진, 비평문 수록 도록 제작',
           priority: 'medium',
@@ -74,7 +94,27 @@ const MuseumSampleData = {
           projectId: 'sample_exhibition_001'
         },
         {
-          id: 'task_ex_005',
+          id: 'task_ex_007',
+          title: '홍보 자료 제작 및 배포',
+          description: '포스터, 리플렛, SNS 홍보 콘텐츠 제작',
+          priority: 'medium',
+          status: 'pending',
+          deadline: new Date(Date.now() + 32 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['홍보', '마케팅'],
+          projectId: 'sample_exhibition_001'
+        },
+        {
+          id: 'task_ex_008',
+          title: '도슨트 교육 프로그램 준비',
+          description: '전시 해설사 교육 자료 준비, 리허설 진행',
+          priority: 'low',
+          status: 'pending',
+          deadline: new Date(Date.now() + 33 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['교육', '도슨트'],
+          projectId: 'sample_exhibition_001'
+        },
+        {
+          id: 'task_ex_009',
           title: '오프닝 행사 준비',
           description: '개막식 리셉션, 작가 토크 프로그램 기획',
           priority: 'low',
@@ -82,22 +122,40 @@ const MuseumSampleData = {
           deadline: new Date(Date.now() + 35 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
           tags: ['행사', '리셉션'],
           projectId: 'sample_exhibition_001'
+        },
+        {
+          id: 'task_ex_010',
+          title: '언론 보도자료 배포',
+          description: '미술 전문지, 일간지 보도자료 작성 및 배포',
+          priority: 'low',
+          status: 'pending',
+          deadline: new Date(Date.now() + 34 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          tags: ['홍보', '언론'],
+          projectId: 'sample_exhibition_001'
         }
       ],
       canvasCards: [
-        { id: 'card_ex_001', title: '전시 컨셉', type: 'idea', x: 100, y: 100, content: '한국 현대미술의 다양성과 실험성' },
-        { id: 'card_ex_002', title: '작품 리스트', type: 'list', x: 300, y: 100, content: '회화 15점, 조각 8점, 설치 5점' },
-        { id: 'card_ex_003', title: '공간 설계', type: 'design', x: 500, y: 100, content: '3개 전시실, 순환 동선' },
-        { id: 'card_ex_004', title: '홍보 전략', type: 'strategy', x: 300, y: 300, content: 'SNS, 언론 보도, 포스터' },
-        { id: 'card_ex_005', title: '개막식', type: 'event', x: 500, y: 300, content: '2024.04.15 오후 5시' },
-        { id: 'card_ex_006', title: '예산 계획', type: 'budget', x: 100, y: 300, content: '총 3억원 (작품대여 50%)' }
+        { id: 'card_ex_001', title: '전시 컨셉', type: 'idea', x: 100, y: 100, content: '한국 현대미술의 다양성과 실험성', color: '#eef2ff' },
+        { id: 'card_ex_002', title: '작품 리스트', type: 'list', x: 350, y: 100, content: '회화 15점, 조각 8점, 설치 5점, 미디어아트 3점', color: '#fff7ed' },
+        { id: 'card_ex_003', title: '참여 작가', type: 'people', x: 600, y: 100, content: '총 10명 (국내 7명, 해외 3명)', color: '#fef3c7' },
+        { id: 'card_ex_004', title: '공간 설계', type: 'design', x: 100, y: 280, content: '3개 전시실, 순환 동선, 휴게 공간', color: '#dfe7fd' },
+        { id: 'card_ex_005', title: '작품 운송', type: 'logistics', x: 350, y: 280, content: '전문 운송사, 포장, 보험', color: '#fce7f3' },
+        { id: 'card_ex_006', title: '조명 계획', type: 'technical', x: 600, y: 280, content: 'LED 조명, 작품별 맞춤 조도', color: '#e0f2fe' },
+        { id: 'card_ex_007', title: '홍보 전략', type: 'strategy', x: 100, y: 460, content: 'SNS, 언론 보도, 포스터, 온라인 광고', color: '#f0fdf4' },
+        { id: 'card_ex_008', title: '전시 도록', type: 'publication', x: 350, y: 460, content: '200페이지, 작가 인터뷰, 비평문', color: '#fef3c7' },
+        { id: 'card_ex_009', title: '개막식', type: 'event', x: 600, y: 460, content: '2024.04.15 오후 5시, 작가 토크', color: '#ede9fe' },
+        { id: 'card_ex_010', title: '예산 계획', type: 'budget', x: 850, y: 280, content: '총 3억원 (작품대여 40%, 운영 30%, 홍보 20%, 기타 10%)', color: '#fef2f2' }
       ],
       connections: [
-        { from: 'card_ex_001', to: 'card_ex_002' },
-        { from: 'card_ex_002', to: 'card_ex_003' },
-        { from: 'card_ex_003', to: 'card_ex_004' },
-        { from: 'card_ex_004', to: 'card_ex_005' },
-        { from: 'card_ex_001', to: 'card_ex_006' }
+        { from: 'card_ex_001', to: 'card_ex_002' }, // 컨셉 → 작품 리스트
+        { from: 'card_ex_001', to: 'card_ex_003' }, // 컨셉 → 참여 작가
+        { from: 'card_ex_002', to: 'card_ex_004' }, // 작품 리스트 → 공간 설계
+        { from: 'card_ex_003', to: 'card_ex_005' }, // 참여 작가 → 작품 운송
+        { from: 'card_ex_004', to: 'card_ex_006' }, // 공간 설계 → 조명 계획
+        { from: 'card_ex_004', to: 'card_ex_007' }, // 공간 설계 → 홍보 전략
+        { from: 'card_ex_002', to: 'card_ex_008' }, // 작품 리스트 → 전시 도록
+        { from: 'card_ex_007', to: 'card_ex_009' }, // 홍보 전략 → 개막식
+        { from: 'card_ex_001', to: 'card_ex_010' }  // 컨셉 → 예산 계획
       ]
     },
 
