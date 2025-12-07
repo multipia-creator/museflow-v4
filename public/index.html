@@ -2262,23 +2262,26 @@ html { visibility: visible; opacity: 1; }
                 <li role="none"><a href="/pricing" role="menuitem">가격</a></li>
             </ul>
             <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <!-- Dashboard Button -->
-                <a href="/dashboard" class="nav-app-btn" style="background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.3); color: #c4b5fd;">
+                <!-- Dashboard Button (Hidden by default - shown after login) -->
+                <a href="/dashboard" class="nav-app-btn" style="display: none; background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.3); color: #c4b5fd;">
                     <i class="fas fa-chart-line" style="display: inline-block; width: 1em; text-align: center;" aria-hidden="true"></i>
                     <span>대시보드</span>
                 </a>
                 
-                <!-- Canvas Button -->
-                <a href="/canvas-ultimate-clean" class="nav-app-btn" style="background: rgba(236, 72, 153, 0.1); border-color: rgba(236, 72, 153, 0.3); color: #fbb6ce;">
+                <!-- Canvas Button (Hidden by default - shown after login) -->
+                <a href="/canvas-ultimate-clean" class="nav-app-btn" style="display: none; background: rgba(236, 72, 153, 0.1); border-color: rgba(236, 72, 153, 0.3); color: #fbb6ce;">
                     <i class="fas fa-palette" style="display: inline-block; width: 1em; text-align: center;" aria-hidden="true"></i>
                     <span>캔버스</span>
                 </a>
                 
+                <!-- Signup Button (Shown by default - hidden after login) -->
                 <a href="/signup.html" class="nav-signup-btn">
                     <i class="fas fa-sparkles" aria-hidden="true"></i> 
                     <span>무료로 시작하기</span>
                     <i class="fas fa-arrow-right" style="font-size: 0.875rem;" aria-hidden="true"></i>
                 </a>
+                
+                <!-- Login Button (Shown by default - hidden after login) -->
                 <a href="/login.html" class="nav-login-btn">
                     로그인
                 </a>
@@ -2296,8 +2299,8 @@ html { visibility: visible; opacity: 1; }
                     <option value="it">🇮🇹 Italiano</option>
                 </select>
                 
-                <!-- MyPage Button -->
-                <a href="/account.html" class="nav-icon-btn" title="내 계정">
+                <!-- MyPage Button (Hidden by default - shown after login) -->
+                <a href="/account.html" class="nav-icon-btn" style="display: none;" title="내 계정">
                     <span style="font-size: 1rem;">👤</span>
                     <span class="mypage-text">내 계정</span>
                 </a>
@@ -2309,7 +2312,21 @@ html { visibility: visible; opacity: 1; }
     <section class="hero" id="hero">
         <div class="hero-background"></div>
         <div class="hero-content">
+            <!-- MVP Disclaimer Badge -->
+            <div style="display: inline-block; padding: 0.75rem 1.5rem; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 100px; margin-bottom: 1.5rem; font-size: 0.875rem; color: rgba(147, 197, 253, 0.9); line-height: 1.6;">
+                <i class="fas fa-info-circle" style="margin-right: 0.5rem; color: #60a5fa;"></i>
+                상기 프로젝트는 과학기술정보통신부 한국연구재단 기초연구 사업의 MVP입니다.
+            </div>
+            
             <!-- <img loading="lazy" src="/static/images/logo-neon-m.png" alt="MuseFlow" class="hero-logo"> -->
+            
+            <!-- MVP Badge -->
+            <div style="display: inline-block; margin-bottom: 1.5rem; padding: 0.75rem 1.5rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 50px; backdrop-filter: blur(10px);">
+                <p style="font-size: 0.9rem; color: #c4b5fd; font-weight: 500; margin: 0;">
+                    <i class="fas fa-info-circle" style="margin-right: 0.5rem;"></i>
+                    상기 프로젝트는 과학기술정보통신부 한국연구재단 기초연구 사업의 MVP입니다.
+                </p>
+            </div>
             
             <h1 class="hero-title" data-i18n="heroTitle">
                 AI Orchestrator로 혁신하는<br>
@@ -5224,6 +5241,9 @@ html { visibility: visible; opacity: 1; }
 
     <!-- ⌨️  Keyboard Navigation & Accessibility -->
     <script src="/static/js/keyboard-navigation.js"></script>
+    
+    <!-- 🔐 Authentication-based Navigation Controller -->
+    <script src="/static/js/auth-nav-controller.js"></script>
     
 </body>
 </html>
