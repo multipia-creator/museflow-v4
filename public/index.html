@@ -2259,7 +2259,7 @@ html { visibility: visible; opacity: 1; }
                 <li role="none"><a href="#hero" role="menuitem">홈</a></li>
                 <li role="none"><a href="/about" role="menuitem">소개</a></li>
                 <li role="none"><a href="/modules" role="menuitem">모듈</a></li>
-                <li role="none"><a href="#pricing" role="menuitem">가격</a></li>
+                <li role="none"><a href="/pricing" role="menuitem">가격</a></li>
             </ul>
             <div style="display: flex; align-items: center; gap: 0.75rem;">
                 <!-- Dashboard Button -->
@@ -2738,69 +2738,6 @@ html { visibility: visible; opacity: 1; }
         </div>
     </section>
 
-    <!-- Pricing Section - Apple Style -->
-    <section class="section pricing-section" id="pricing" style="padding: 5rem 2rem; background: linear-gradient(180deg, #000 0%, #0a0a0f 50%, #000 100%);">
-        <div class="section-header" style="margin-bottom: 4rem;">
-            <span class="section-badge" data-i18n="pricingBadge">Pricing Plans</span>
-            <h2 class="section-title" data-i18n="pricingTitle">Choose Your Plan</h2>
-            <p class="section-description" data-i18n="pricingDesc">
-                Flexible pricing for museums of all sizes
-            </p>
-        </div>
-        
-        <div class="pricing-grid" style="max-width: 1200px; margin: 0 auto;">
-            <!-- Free Plan -->
-            <div class="pricing-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);">
-                <h3 class="pricing-name" data-i18n="pricingFree" style="font-size: 1.75rem; margin-bottom: 1rem;">Free</h3>
-                <div class="pricing-price" style="font-size: 3.5rem; margin-bottom: 0.25rem;">$0</div>
-                <div class="pricing-period" data-i18n="pricingFreePeriod" style="font-size: 1rem; margin-bottom: 2rem; opacity: 0.6;">Forever free</div>
-                <ul class="pricing-features" style="text-align: left; margin-bottom: 2.5rem;">
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingFreeFeature1">Up to 5 workflows</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingFreeFeature2">2 team members</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingFreeFeature3">Basic AI agents</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingFreeFeature4">100 museum API requests/day</span></li>
-                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingFreeFeature5">Community support</span></li>
-                </ul>
-                <button class="pricing-cta" data-i18n="pricingFreeCta" style="width: 100%; padding: 1rem; font-size: 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateY(0)';">Get Started</button>
-            </div>
-            
-            <!-- Professional Plan - Featured -->
-            <div class="pricing-card featured" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%); border: 2px solid rgba(139, 92, 246, 0.5); transform: scale(1.05); position: relative;">
-                <div class="pricing-badge" data-i18n="pricingProBadge" style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #8b5cf6, #ec4899); padding: 0.5rem 1.5rem; border-radius: 100px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; box-shadow: 0 4px 16px rgba(139, 92, 246, 0.5);">Most Popular</div>
-                <h3 class="pricing-name" data-i18n="pricingPro" style="font-size: 1.75rem; margin-bottom: 1rem; margin-top: 1rem;">Professional</h3>
-                <div class="pricing-price" data-i18n="pricingProPrice" style="font-size: 3.5rem; margin-bottom: 0.25rem; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">$99</div>
-                <div class="pricing-period" data-i18n="pricingProPeriod" style="font-size: 1rem; margin-bottom: 2rem; opacity: 0.6;">per month</div>
-                <ul class="pricing-features" style="text-align: left; margin-bottom: 2.5rem;">
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature1">Unlimited workflows</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature2">10 team members</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature3">All 8 AI agents</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature4">Unlimited museum API</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature5">AR/VR experiences</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature6">Real-time collaboration</span></li>
-                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature7">Priority support</span></li>
-                </ul>
-                <button class="pricing-cta" data-i18n="pricingProCta" style="width: 100%; padding: 1rem; font-size: 1rem; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); border: none; color: white; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4); font-weight: 600;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 40px rgba(139, 92, 246, 0.6)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 32px rgba(139, 92, 246, 0.4)';">Start Free Trial</button>
-            </div>
-            
-            <!-- Enterprise Plan -->
-            <div class="pricing-card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);">
-                <h3 class="pricing-name" data-i18n="pricingEnterprise" style="font-size: 1.75rem; margin-bottom: 1rem;">Enterprise</h3>
-                <div class="pricing-price" data-i18n="pricingEnterprisePrice" style="font-size: 3.5rem; margin-bottom: 0.25rem;">Custom</div>
-                <div class="pricing-period" data-i18n="pricingEnterprisePeriod" style="font-size: 1rem; margin-bottom: 2rem; opacity: 0.6;">Contact us</div>
-                <ul class="pricing-features" style="text-align: left; margin-bottom: 2.5rem;">
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature1">Everything in Pro</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature2">Unlimited team members</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature3">Custom AI training</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature4">Dedicated infrastructure</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature5">On-premise deployment</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature6">24/7 phone support</span></li>
-                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature7">SLA guarantee</span></li>
-                </ul>
-                <button class="pricing-cta" data-i18n="pricingEnterpriseCta" style="width: 100%; padding: 1rem; font-size: 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateY(0)';">Contact Sales</button>
-            </div>
-        </div>
-    </section>
-
     <!-- About Section - Apple Style -->
     <section id="about" style="padding: 0; margin: 0;">
         <div class="agents-grid" style="grid-template-columns: 1fr;">
@@ -2817,7 +2754,7 @@ html { visibility: visible; opacity: 1; }
                 </p>
                 <div class="agent-cta-group">
                     <a href="/admin.html" class="agent-btn agent-btn-primary">Get Started</a>
-                    <a href="#pricing" class="agent-btn agent-btn-secondary">View Pricing →</a>
+                    <a href="/pricing" class="agent-btn agent-btn-secondary">View Pricing →</a>
                 </div>
             </div>
             
@@ -2860,7 +2797,7 @@ html { visibility: visible; opacity: 1; }
                 </p>
                 <div class="agent-cta-group">
                     <a href="/admin.html" class="agent-btn agent-btn-primary">Join MuseFlow</a>
-                    <a href="#pricing" class="agent-btn agent-btn-secondary">Contact Us →</a>
+                    <a href="/contact" class="agent-btn agent-btn-secondary">Contact Us →</a>
                 </div>
             </div>
         </div>
@@ -2885,7 +2822,7 @@ html { visibility: visible; opacity: 1; }
                 <i class="fas fa-palette" aria-hidden="true"></i>
                 <span>캔버스</span>
             </a>
-            <a href="#pricing" class="mobile-nav-item">
+            <a href="/pricing" class="mobile-nav-item">
                 <i class="fas fa-tag" aria-hidden="true"></i>
                 <span>가격</span>
             </a>
@@ -2900,7 +2837,7 @@ html { visibility: visible; opacity: 1; }
                 <ul>
                     <li role="none"><a href="#features" role="menuitem">Features</a></li>
                     <li role="none"><a href="/modules" role="menuitem">Modules</a></li>
-                    <li role="none"><a href="#pricing" role="menuitem">Pricing</a></li>
+                    <li role="none"><a href="/pricing" role="menuitem">Pricing</a></li>
                 </ul>
             </div>
             

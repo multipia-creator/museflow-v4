@@ -44,6 +44,7 @@ const exclude = [
   '/landing',
   '/login',
   '/modules',
+  '/pricing',
   '/projects',
   '/signup',
   '/workflow',
