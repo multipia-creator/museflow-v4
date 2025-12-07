@@ -6,26 +6,17 @@
     <title>MuseFlow.life - AI-Powered Museum Workflow Platform</title>
     <meta name="description" content="Transform your museum operations with AI-powered workflow automation, multi-agent system, and real-time collaboration.">
     
-    <!-- Google Analytics 4 -->
-    
-    
-    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Icons -->
-    <link rel="preload" href="/static/css/fontawesome-all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="/static/css/fontawesome-all.min.css"></noscript>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     
     <!-- Styles -->
-    <link rel="preload" href="/static/css/world-class-ui.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="/static/css/world-class-ui.css"></noscript>
-    <link rel="preload" href="/static/css/mobile-responsive.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="/static/css/mobile-responsive.css"></noscript>
-    <link rel="preload" href="/static/css/unified-footer.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="/static/css/unified-footer.css"></noscript>
+    <link rel="stylesheet" href="/static/css/world-class-ui.css">
+    <link rel="stylesheet" href="/static/css/mobile-responsive.css">
     
     <style>
         * {
@@ -158,7 +149,7 @@
             padding: 0.625rem 1.25rem;
             background: rgba(59, 130, 246, 0.1);
             border: 1px solid rgba(59, 130, 246, 0.3);
-            color: #93c5fd;
+            color: #60a5fa;
             border-radius: 8px;
             text-decoration: none;
             font-size: 0.875rem;
@@ -195,39 +186,6 @@
             background: rgba(255, 255, 255, 0.1);
             border-color: rgba(255, 255, 255, 0.2);
             color: white;
-        }
-        
-        /* App Buttons (Dashboard & Canvas) */
-        .nav-app-btn {
-            display: flex !important;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 0.625rem 1.25rem;
-            border: 1px solid;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
-        
-        .nav-app-btn:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.2);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-        }
-        
-        .nav-app-btn i {
-            font-size: 0.875rem;
-            display: inline-block !important;
-        }
-        
-        .nav-app-btn span {
-            display: inline-block !important;
         }
         
         /* Icon Buttons (Language & MyPage) */
@@ -541,7 +499,7 @@
             background: rgba(139, 92, 246, 0.2);
             border: 1px solid rgba(139, 92, 246, 0.5);
             border-radius: 100px;
-            color: #c4b5fd;
+            color: #a78bfa;
             font-weight: 600;
             font-size: 0.875rem;
             text-transform: uppercase;
@@ -886,7 +844,7 @@
             background: rgba(139, 92, 246, 0.2);
             border: 1px solid rgba(139, 92, 246, 0.5);
             border-radius: 100px;
-            color: #c4b5fd;
+            color: #a78bfa;
             font-weight: 600;
             font-size: 0.875rem;
         }
@@ -965,11 +923,6 @@
         }
         
         @media (max-width: 1024px) {
-            .nav-links {
-                display: flex !important;
-                gap: 1.5rem !important;
-            }
-            
             .nav-signup-btn span {
                 display: none;
             }
@@ -981,8 +934,7 @@
         
         @media (max-width: 768px) {
             .nav-links {
-                display: flex !important;
-                gap: 1.5rem !important;
+                display: none;
             }
             
             .nav-signup-btn {
@@ -1276,141 +1228,33 @@
         }
         
         @media (max-width: 768px) {
-            /* Modules Grid - Card Layout for Mobile */
-            .agents-grid {
-                display: block !important;
-                padding: 1rem !important;
-            }
-            
             .agent-card-hero {
-                min-height: auto !important;
-                padding: 2rem 1.5rem !important;
-                margin-bottom: 1.5rem !important;
-                border-radius: 20px !important;
-                background: rgba(139, 92, 246, 0.05) !important;
-                border: 1px solid rgba(139, 92, 246, 0.2) !important;
-                transition: all 0.3s ease !important;
-            }
-            
-            .agent-card-hero:active {
-                transform: scale(0.98);
-                background: rgba(139, 92, 246, 0.1) !important;
+                min-height: 60vh;
+                padding: 3rem 2rem;
             }
             
             .agent-visual {
-                width: 120px !important;
-                height: 120px !important;
-                margin: 0 auto 1.5rem !important;
+                width: 200px;
+                height: 200px;
+                margin-bottom: 2rem;
             }
             
             .agent-icon-large {
-                font-size: 3.5rem !important;
+                font-size: 5rem;
             }
             
             .agent-title-large {
-                font-size: 1.75rem !important;
-                margin-bottom: 1rem !important;
+                font-size: 2rem;
             }
             
             .agent-description-large {
-                font-size: 1rem !important;
-                line-height: 1.6 !important;
-                margin-bottom: 1.5rem !important;
-            }
-            
-            .agent-cta-group {
-                display: flex !important;
-                flex-direction: column !important;
-                gap: 0.75rem !important;
-            }
-            
-            .agent-btn {
-                width: 100% !important;
-                padding: 1rem 1.5rem !important;
-                min-height: 52px !important;
-                font-size: 1rem !important;
-                border-radius: 14px !important;
-                text-align: center !important;
-            }
-            
-            .agent-btn:active {
-                transform: scale(0.97);
+                font-size: 1.1rem;
             }
         }
         
         /* ========================================
-           MOBILE RESPONSIVE STYLES - PROFESSIONAL UX
+           MOBILE RESPONSIVE STYLES
            ======================================== */
-        
-        /* Mobile-First Approach: Touch-friendly design */
-        * {
-            -webkit-tap-highlight-color: rgba(139, 92, 246, 0.2);
-            -webkit-touch-callout: none;
-        }
-        
-        /* Smooth Scrolling */
-        html {
-            scroll-behavior: smooth;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        
-        /* Bottom Navigation Bar - Mobile Only */
-        .mobile-bottom-nav {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(15, 10, 31, 0.98);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 0.75rem 0 calc(0.75rem + env(safe-area-inset-bottom));
-            z-index: 1000;
-            box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.3);
-        }
-        
-        .mobile-bottom-nav-container {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .mobile-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.25rem;
-            padding: 0.5rem;
-            min-width: 64px;
-            min-height: 48px;
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.6);
-            transition: all 0.3s ease;
-            border-radius: 12px;
-        }
-        
-        .mobile-nav-item:active {
-            transform: scale(0.95);
-            background: rgba(139, 92, 246, 0.1);
-        }
-        
-        .mobile-nav-item.active {
-            color: #8B5CF6;
-        }
-        
-        .mobile-nav-item i {
-            font-size: 1.25rem;
-        }
-        
-        .mobile-nav-item span {
-            font-size: 0.625rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
         
         /* Hamburger Menu */
         .mobile-menu-toggle {
@@ -1418,20 +1262,11 @@
             flex-direction: column;
             gap: 6px;
             cursor: pointer;
-            padding: 12px;
-            min-width: 44px;
-            min-height: 44px;
+            padding: 8px;
             background: rgba(139, 92, 246, 0.1);
             border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 12px;
+            border-radius: 8px;
             transition: all 0.3s ease;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .mobile-menu-toggle:active {
-            transform: scale(0.95);
-            background: rgba(139, 92, 246, 0.2);
         }
         
         .mobile-menu-toggle span {
@@ -1453,34 +1288,22 @@
             transform: rotate(-45deg) translate(7px, -7px);
         }
         
-        /* Mobile Navigation - Professional UX */
+        /* Mobile Navigation */
         @media (max-width: 768px) {
-            /* Show bottom navigation */
-            .mobile-bottom-nav {
-                display: block;
-            }
-            
-            /* Add padding for bottom nav */
-            body {
-                padding-bottom: calc(64px + env(safe-area-inset-bottom)) !important;
-            }
-            
             /* Hide desktop nav links */
             .nav-links {
                 position: fixed;
                 top: 80px;
                 left: -100%;
                 width: 100%;
-                height: calc(100vh - 80px);
                 background: rgba(15, 10, 31, 0.98);
                 backdrop-filter: blur(20px);
                 flex-direction: column;
                 padding: 2rem;
                 gap: 1.5rem;
                 border-top: 1px solid rgba(255, 255, 255, 0.1);
-                transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: left 0.3s ease;
                 z-index: 999;
-                overflow-y: auto;
             }
             
             .nav-links.active {
@@ -1489,41 +1312,16 @@
             
             .nav-links li {
                 width: 100%;
-                animation: slideInLeft 0.3s ease forwards;
-                opacity: 0;
-            }
-            
-            .nav-links.active li:nth-child(1) { animation-delay: 0.1s; }
-            .nav-links.active li:nth-child(2) { animation-delay: 0.15s; }
-            .nav-links.active li:nth-child(3) { animation-delay: 0.2s; }
-            .nav-links.active li:nth-child(4) { animation-delay: 0.25s; }
-            
-            @keyframes slideInLeft {
-                from {
-                    opacity: 0;
-                    transform: translateX(-20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
             }
             
             .nav-links a {
                 display: block;
-                padding: 1.25rem;
-                min-height: 60px;
+                padding: 1rem;
                 font-size: 1.25rem;
                 text-align: center;
                 background: rgba(139, 92, 246, 0.05);
-                border-radius: 16px;
+                border-radius: 12px;
                 border: 1px solid rgba(139, 92, 246, 0.2);
-                transition: all 0.3s ease;
-            }
-            
-            .nav-links a:active {
-                transform: scale(0.98);
-                background: rgba(139, 92, 246, 0.15);
             }
             
             /* Show hamburger menu */
@@ -1534,7 +1332,6 @@
             /* Navigation container */
             .nav-container {
                 padding: 1rem;
-                height: 80px;
             }
             
             .nav-logo-text {
@@ -1549,141 +1346,59 @@
             /* Auth buttons container */
             .nav-container > div:last-child {
                 gap: 0.5rem !important;
-                flex-wrap: wrap !important;
-            }
-            
-            /* App buttons - Touch-friendly */
-            .nav-app-btn {
-                display: flex !important;
-                padding: 0.625rem 1rem !important;
-                min-height: 44px !important;
-                font-size: 0.75rem !important;
-                align-items: center !important;
-            }
-            
-            .nav-app-btn:active {
-                transform: scale(0.95);
-            }
-            
-            .nav-app-btn span {
-                display: inline-block !important;
             }
             
             .nav-signup-btn, .nav-login-btn, .mypage-btn {
-                padding: 0.625rem 1rem !important;
-                min-height: 44px !important;
+                padding: 0.5rem 1rem !important;
                 font-size: 0.875rem !important;
             }
             
-            .nav-signup-btn:active,
-            .nav-login-btn:active,
-            .mypage-btn:active {
-                transform: scale(0.95);
-            }
-            
-            /* Language selector */
-            .lang-selector select,
-            #lang-select {
-                padding: 0.625rem !important;
-                min-height: 44px !important;
+            .lang-selector select {
+                padding: 0.5rem !important;
                 font-size: 0.875rem !important;
             }
         }
         
-        /* Very Small Screens - Optimized */
-        @media (max-width: 480px) {
-            .nav-signup-btn span {
-                display: none !important;
-            }
-            
-            .nav-app-btn {
-                padding: 0.5rem 0.75rem !important;
-            }
-            
-            .nav-app-btn span {
-                font-size: 0.65rem !important;
-            }
-            
-            .nav-logo-text {
-                font-size: 1.1rem !important;
-            }
-        }
-        
-        /* Hero Section Mobile - Professional UX */
+        /* Hero Section Mobile */
         @media (max-width: 768px) {
             .hero-section {
-                min-height: 100vh !important;
+                min-height: auto !important;
                 padding: 6rem 1.5rem 4rem !important;
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: center !important;
             }
             
             .hero-badge {
                 font-size: 0.875rem !important;
-                padding: 0.625rem 1.25rem !important;
-                animation: fadeInUp 0.6s ease 0.2s forwards;
-                opacity: 0;
-            }
-            
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+                padding: 0.5rem 1rem !important;
             }
             
             .hero-title {
                 font-size: 2.5rem !important;
                 line-height: 1.2 !important;
-                animation: fadeInUp 0.6s ease 0.4s forwards;
-                opacity: 0;
             }
             
             .hero-subtitle {
-                font-size: 1.125rem !important;
-                line-height: 1.7 !important;
-                animation: fadeInUp 0.6s ease 0.6s forwards;
-                opacity: 0;
+                font-size: 1rem !important;
+                line-height: 1.6 !important;
             }
             
             .hero-cta {
                 flex-direction: column !important;
                 gap: 1rem !important;
-                animation: fadeInUp 0.6s ease 0.8s forwards;
-                opacity: 0;
             }
             
-            .hero-cta button,
-            .hero-cta a {
+            .hero-cta button {
                 width: 100% !important;
-                padding: 1.25rem 2rem !important;
-                min-height: 56px !important;
-                font-size: 1.125rem !important;
-                border-radius: 16px !important;
-                font-weight: 600 !important;
-            }
-            
-            .hero-cta button:active,
-            .hero-cta a:active {
-                transform: scale(0.97);
+                padding: 1rem 2rem !important;
+                font-size: 1rem !important;
             }
             
             .hero-stats {
                 flex-direction: column !important;
                 gap: 1.5rem !important;
-                animation: fadeInUp 0.6s ease 1s forwards;
-                opacity: 0;
             }
             
             .stat-card {
                 width: 100% !important;
-                padding: 1.5rem !important;
-                border-radius: 16px !important;
             }
         }
         
@@ -1827,75 +1542,6 @@
                 text-align: center !important;
             }
         }
-    
-    /* Screen Reader Only - Accessibility */
-    .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border-width: 0;
-    }
-    
-    .sr-only-focusable:focus {
-        position: static;
-        width: auto;
-        height: auto;
-        margin: 0;
-        overflow: visible;
-        clip: auto;
-        white-space: normal;
-    }
-    
-    /* Skip to Content Link - WCAG 2.1 Guideline 2.4.1 */
-    .skip-link {
-        position: absolute;
-        top: -100px;
-        left: 0;
-        background: #000;
-        color: #fff;
-        padding: 1rem 2rem;
-        text-decoration: none;
-        font-weight: 600;
-        z-index: 100000;
-        border-radius: 0 0 8px 0;
-        transition: top 0.3s ease;
-    }
-    
-    .skip-link:focus {
-        top: 0;
-        outline: 3px solid #c4b5fd;
-        outline-offset: 2px;
-    }
-    
-    /* Enhanced Focus Styles for Keyboard Navigation */
-    *:focus {
-        outline: 2px solid #c4b5fd;
-        outline-offset: 2px;
-    }
-    
-    *:focus:not(:focus-visible) {
-        outline: none;
-    }
-    
-    *:focus-visible {
-        outline: 3px solid #c4b5fd;
-        outline-offset: 3px;
-        box-shadow: 0 0 0 4px rgba(196, 181, 253, 0.3);
-    }
-    
-    button:focus-visible,
-    a:focus-visible,
-    input:focus-visible,
-    select:focus-visible,
-    textarea:focus-visible {
-        outline: 3px solid #c4b5fd;
-        outline-offset: 2px;
-    }
     </style>
 
     <style>
@@ -1921,7 +1567,6 @@
             display: flex;
             align-items: center;
             gap: 1.5rem;
-            padding: 0 1rem;
         }
 
         .museflow-footer-logo {
@@ -1940,311 +1585,26 @@
 
         .museflow-footer-text {
             color: #e5e5e5;
-            white-space: nowrap;
         }
 
         .museflow-footer-version {
             font-weight: 600;
-            color: #93c5fd;
+            color: #60A5FA;
         }
 
         /* Adjust body padding to prevent content overlap */
         body {
             padding-bottom: 40px !important;
         }
-        
-        /* Mobile Footer Optimization */
-        @media (max-width: 768px) {
-            .museflow-footer {
-                height: auto;
-                min-height: 80px;
-                padding: 1rem 0;
-                position: relative; /* Fixed -> Relative on mobile to prevent overlap */
-            }
-            
-            .museflow-footer-content {
-                flex-direction: column;
-                gap: 0.75rem;
-                text-align: center;
-                padding: 0 1.5rem;
-            }
-            
-            .museflow-footer-divider {
-                display: none;
-            }
-            
-            .museflow-footer-text {
-                font-size: 0.75rem;
-                line-height: 1.6;
-            }
-            
-            .museflow-footer-logo {
-                font-size: 1rem;
-                font-weight: 700;
-            }
-            
-            .museflow-footer-version {
-                font-size: 0.75rem;
-                font-weight: 600;
-            }
-            
-            body {
-                padding-bottom: 0 !important; /* Remove fixed footer padding */
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .museflow-footer {
-                min-height: 100px;
-                padding: 1.25rem 0;
-            }
-            
-            .museflow-footer-content {
-                gap: 0.5rem;
-                padding: 0 1rem;
-            }
-            
-            .museflow-footer-text {
-                font-size: 0.7rem;
-                line-height: 1.5;
-            }
-            
-            .museflow-footer-logo {
-                font-size: 0.95rem;
-            }
-            
-            .museflow-footer-version {
-                font-size: 0.7rem;
-            }
-            
-            /* Hide secondary text on very small screens for clarity */
-            .museflow-footer-text:nth-of-type(2) {
-                display: none;
-            }
-            
-            body {
-                padding-bottom: 0 !important;
-            }
-        }
     </style>
 
-
-    <!-- ✨ Critical CSS - Inlined for instant rendering -->
-    <style>/**
- * MuseFlow V18.0 - Critical CSS for Landing Page
- * Above-the-fold styles for instant rendering
- * This will be inlined in <head> to eliminate render-blocking
- */
-
-/* Reset & Base */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(135deg, #0a0a0f 0%, #1a0f2e 50%, #0a0a0f 100%);
-    color: #f5f5f7;
-    min-height: 100vh;
-    line-height: 1.6;
-    padding-top: 80px;
-    padding-bottom: 40px;
-}
-
-/* Unified Navbar - Critical */
-.unified-navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(10, 10, 15, 0.95);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 1000;
-    padding: 0;
-    height: 64px;
-}
-
-.unified-nav-container {
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 0.75rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-}
-
-.unified-nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    text-decoration: none;
-    color: white;
-    font-weight: 700;
-    font-size: 1.25rem;
-}
-
-.unified-nav-logo img {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-}
-
-.unified-nav-links {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-    list-style: none;
-}
-
-.unified-nav-links a {
-    color: rgba(255, 255, 255, 0.85);
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s;
-}
-
-.unified-nav-links a:hover {
-    color: white;
-}
-
-/* Hero Section - Above the fold */
-.hero-section {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 4rem 2rem 2rem;
-    text-align: center;
-}
-
-.hero-title {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
-    background: linear-gradient(135deg, #ffffff 0%, #a78bfa 50%, #8b5cf6 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.hero-subtitle {
-    font-size: clamp(1.1rem, 2vw, 1.5rem);
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 2rem;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.hero-cta-buttons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 3rem;
-}
-
-.cta-button-primary, .cta-button-secondary {
-    padding: 1rem 2.5rem;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    text-decoration: none;
-    transition: all 0.3s;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.cta-button-primary {
-    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-    color: white;
-    border: none;
-}
-
-.cta-button-secondary {
-    background: rgba(255, 255, 255, 0.05);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* Stats Section - Above the fold */
-.stats-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    max-width: 1000px;
-    margin: 0 auto 3rem;
-}
-
-.stat-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 1.5rem;
-    text-align: center;
-}
-
-.stat-value {
-    font-size: 2rem;
-    font-weight: 800;
-    color: #8b5cf6;
-    margin-bottom: 0.5rem;
-}
-
-.stat-label {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.9rem;
-}
-
-/* Loading States */
-.skeleton {
-    background: linear-gradient(90deg, 
-        rgba(255, 255, 255, 0.05) 0%, 
-        rgba(255, 255, 255, 0.1) 50%, 
-        rgba(255, 255, 255, 0.05) 100%
-    );
-    background-size: 200% 100%;
-    animation: skeleton-loading 1.5s ease-in-out infinite;
-}
-
-@keyframes skeleton-loading {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-}
-
-/* Prevent FOUC */
-html { visibility: visible; opacity: 1; }
-
-/* Mobile Optimization */
-@media (max-width: 768px) {
-    body { padding-top: 60px; }
-    .unified-navbar { height: 56px; }
-    .unified-nav-container { padding: 0.5rem 1rem; }
-    .unified-nav-logo { font-size: 1.1rem; }
-    .unified-nav-logo img { width: 32px; height: 32px; }
-    .hero-section { padding: 2rem 1rem 1rem; }
-    .stats-section { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-}
-</style>
-    
-    <!-- ⚡ Lazy Loading Script for Performance -->
-    <script src="/static/js/lazy-loading.js"></script>
-    
-    <!-- 📊 Google Analytics 4 - Advanced Event Tracking -->
-    <script src="/static/js/analytics-ga4.js" async></script>
-    </head>
+</head>
 <body>
-    <!-- Skip to Content for Keyboard Navigation -->
-    <a href="#hero-section" class="skip-link">
-        메인 콘텐츠로 건너뛰기
-    </a>
-    
     <!-- Main Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="#hero" class="nav-logo">
-                <img loading="lazy" src="/static/images/logo-neon-m.png" alt="MuseFlow" style="box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);">
+                <img src="/static/images/logo-neon-m.png" alt="MuseFlow" style="box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);">
                 <span class="nav-logo-text">MuseFlow.life</span>
             </a>
             
@@ -2256,28 +1616,18 @@ html { visibility: visible; opacity: 1; }
             </div>
             
             <ul class="nav-links" id="nav-links">
-                <li role="none"><a href="/landing" role="menuitem">홈</a></li>
-                <li role="none"><a href="/about" role="menuitem">소개</a></li>
-                <li role="none"><a href="/modules" role="menuitem">모듈</a></li>
-                <li role="none"><a href="#pricing" role="menuitem">가격</a></li>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#modules">Modules</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/canvas-ultimate-clean">Canvas</a></li>
             </ul>
             <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <!-- Dashboard Button -->
-                <a href="/dashboard.html" class="nav-app-btn" style="background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.3); color: #c4b5fd;">
-                    <i class="fas fa-chart-line" style="display: inline-block; width: 1em; text-align: center;" aria-hidden="true"></i>
-                    <span>대시보드</span>
-                </a>
-                
-                <!-- Canvas Button -->
-                <a href="/canvas-ultimate-clean.html" class="nav-app-btn" style="background: rgba(236, 72, 153, 0.1); border-color: rgba(236, 72, 153, 0.3); color: #fbb6ce;">
-                    <i class="fas fa-palette" style="display: inline-block; width: 1em; text-align: center;" aria-hidden="true"></i>
-                    <span>캔버스</span>
-                </a>
-                
                 <a href="/signup.html" class="nav-signup-btn">
-                    <i class="fas fa-sparkles" aria-hidden="true"></i> 
-                    <span>무료로 시작하기</span>
-                    <i class="fas fa-arrow-right" style="font-size: 0.875rem;" aria-hidden="true"></i>
+                    <i class="fas fa-sparkles"></i> 
+                    <span>MuseFlow 슈퍼 에이전트 잠금 해제</span>
+                    <i class="fas fa-arrow-right" style="font-size: 0.875rem;"></i>
                 </a>
                 <a href="/login.html" class="nav-login-btn">
                     로그인
@@ -2309,57 +1659,56 @@ html { visibility: visible; opacity: 1; }
     <section class="hero" id="hero">
         <div class="hero-background"></div>
         <div class="hero-content">
-            <!-- <img loading="lazy" src="/static/images/logo-neon-m.png" alt="MuseFlow" class="hero-logo"> -->
+            <!-- <img src="/static/images/logo-neon-m.png" alt="MuseFlow" class="hero-logo"> -->
             
             <h1 class="hero-title" data-i18n="heroTitle">
-                AI Orchestrator로 혁신하는<br>
-                <span style="background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">뮤지엄 워크플로우</span>
+                AI-Powered Museum<br>Workflow Platform
             </h1>
             
             <p class="hero-subtitle" data-i18n="heroSubtitle">
-                15개 AI Agent를 조율하여 복잡한 업무를 3-5초 만에 완전 자동화. 
-                87개 전문 Widget, MCP Protocol 기반 Multi-Agent 통신, 
-                실시간 협업으로 8시간 작업을 1시간으로 단축.
+                Transform your museum operations with intelligent workflow automation, 
+                multi-agent AI system, and real-time collaboration. 
+                Built for the future of cultural institutions.
             </p>
             
             <!-- AI Workspace Search -->
             <div class="ai-workspace" style="max-width: 800px; margin: 0 auto 2rem; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 1.5rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
                 <div style="position: relative; margin-bottom: 1rem;">
-                    <input type="text" id="ai-search" data-i18n-placeholder="searchPlaceholder" placeholder="당신의 전시를 디자인하세요" style="width: 100%; padding: 1rem 8rem 1rem 1.5rem; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-size: 1rem;" / aria-label="AI 검색 입력" role="searchbox">
+                    <input type="text" id="ai-search" data-i18n-placeholder="searchPlaceholder" placeholder="당신의 전시를 디자인하세요" style="width: 100%; padding: 1rem 8rem 1rem 1.5rem; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-size: 1rem;" />
                     
                     <!-- Voice Recognition Button -->
-                    <button id="voice-btn" class="voice-btn" title="음성 인식" style="position: absolute; right: 5rem; top: 50%; transform: translateY(-50%); background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); padding: 0.75rem; border-radius: 10px; color: #c4b5fd; cursor: pointer; font-weight: 600; transition: all 0.3s ease;" aria-label="음성 인식 시작" role="button">
-                        <i class="fas fa-microphone" id="voice-icon" aria-hidden="true"></i>
+                    <button id="voice-btn" class="voice-btn" title="음성 인식" style="position: absolute; right: 5rem; top: 50%; transform: translateY(-50%); background: rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.4); padding: 0.75rem; border-radius: 10px; color: #a78bfa; cursor: pointer; font-weight: 600; transition: all 0.3s ease;">
+                        <i class="fas fa-microphone" id="voice-icon"></i>
                     </button>
                     
                     <!-- Search Button -->
-                    <button id="search-btn" style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); border: none; padding: 0.75rem 1.5rem; border-radius: 10px; color: white; cursor: pointer; font-weight: 600;" aria-label="검색 실행" role="button">
-                        <i class="fas fa-search" aria-hidden="true"></i>
+                    <button id="search-btn" style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); border: none; padding: 0.75rem 1.5rem; border-radius: 10px; color: white; cursor: pointer; font-weight: 600;">
+                        <i class="fas fa-search"></i>
                     </button>
                 </div>
                 <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;">
-                    <button class="ai-tool-btn" data-tool="exhibition" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #c4b5fd; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                    <button class="ai-tool-btn" data-tool="exhibition" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
                         <span data-i18n="toolPlanExhibition">🎯 전시 기획하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="budget" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #c4b5fd; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                    <button class="ai-tool-btn" data-tool="budget" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
                         <span data-i18n="toolCalculateBudget">💰 예산 계산하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="artwork" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #c4b5fd; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                    <button class="ai-tool-btn" data-tool="artwork" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
                         <span data-i18n="toolSelectArtworks">🏛️ 작품 선정하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="visitor" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #c4b5fd; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                    <button class="ai-tool-btn" data-tool="visitor" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
                         <span data-i18n="toolPredictVisitors">👥 관람객 예측하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="space" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #c4b5fd; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                    <button class="ai-tool-btn" data-tool="space" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
                         <span data-i18n="toolDesignSpace">🏗️ 공간 설계하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="schedule" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #c4b5fd; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                    <button class="ai-tool-btn" data-tool="schedule" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
                         <span data-i18n="toolManageSchedule">📋 일정 관리하기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="guide" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #c4b5fd; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                    <button class="ai-tool-btn" data-tool="guide" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
                         <span data-i18n="toolCreateGuide">💬 가이드 만들기</span>
                     </button>
-                    <button class="ai-tool-btn" data-tool="all" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #c4b5fd; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
+                    <button class="ai-tool-btn" data-tool="all" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; color: #a78bfa; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease;">
                         <span data-i18n="toolViewAll">🤖 전체 보기</span>
                     </button>
                 </div>
@@ -2367,28 +1716,28 @@ html { visibility: visible; opacity: 1; }
             
             <div class="hero-cta-group">
                 <a href="#features" class="hero-cta-secondary">
-                    <i class="fas fa-info-circle" aria-hidden="true"></i> <span data-i18n="learnMore">Learn More</span>
+                    <i class="fas fa-info-circle"></i> <span data-i18n="learnMore">Learn More</span>
                 </a>
             </div>
             
             <!-- Auth Buttons -->
             <div class="hero-cta-group" style="margin-top: 1.5rem;">
                 <a href="/signup.html" class="hero-cta-primary">
-                    <i class="fas fa-user-plus" aria-hidden="true"></i> <span data-i18n="signupButton">가입하기</span>
+                    <i class="fas fa-user-plus"></i> <span data-i18n="signupButton">가입하기</span>
                 </a>
                 <a href="/login.html" class="hero-cta-secondary">
-                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i> <span data-i18n="loginButton">로그인</span>
+                    <i class="fas fa-sign-in-alt"></i> <span data-i18n="loginButton">로그인</span>
                 </a>
             </div>
             
             <div class="hero-stats">
                 <div class="hero-stat">
-                    <div class="hero-stat-number">15</div>
-                    <div class="hero-stat-label" data-i18n="aiAgents">AI Agent Types</div>
+                    <div class="hero-stat-number">8</div>
+                    <div class="hero-stat-label" data-i18n="aiAgents">AI Agents</div>
                 </div>
                 <div class="hero-stat">
                     <div class="hero-stat-number">19</div>
-                    <div class="hero-stat-label" data-i18n="autoNodes">Auto Nodes/Workflow</div>
+                    <div class="hero-stat-label" data-i18n="autoNodes">Auto-Generated Nodes</div>
                 </div>
                 <div class="hero-stat">
                     <div class="hero-stat-number">3s</div>
@@ -2415,7 +1764,7 @@ html { visibility: visible; opacity: 1; }
                 <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; backdrop-filter: blur(40px); background: rgba(0, 0, 0, 0.3);">
                     <!-- Pulsing Play Button -->
                     <div class="demo-play-button" style="width: 100px; height: 100px; background: rgba(255, 255, 255, 0.2); border: 3px solid white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; animation: pulse 2s infinite;">
-                        <i class="fas fa-play" style="font-size: 2.5rem; color: white; margin-left: 8px;" aria-hidden="true"></i>
+                        <i class="fas fa-play" style="font-size: 2.5rem; color: white; margin-left: 8px;"></i>
                     </div>
                     
                     <!-- Coming Soon Text -->
@@ -2425,7 +1774,7 @@ html { visibility: visible; opacity: 1; }
                         
                         <!-- Notify Me Button -->
                         <button id="notify-btn" style="padding: 1rem 2rem; background: white; color: #8b5cf6; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);">
-                            <i class="fas fa-bell" aria-hidden="true"></i> <span data-i18n="notifyButton">Notify Me When Available</span>
+                            <i class="fas fa-bell"></i> <span data-i18n="notifyButton">Notify Me When Available</span>
                         </button>
                     </div>
                 </div>
@@ -2435,26 +1784,26 @@ html { visibility: visible; opacity: 1; }
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem;">
                 <div style="text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="width: 64px; height: 64px; margin: 0 auto 1rem; background: rgba(139, 92, 246, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-bolt" style="font-size: 2rem; color: #8b5cf6;" aria-hidden="true"></i>
+                        <i class="fas fa-bolt" style="font-size: 2rem; color: #8b5cf6;"></i>
                     </div>
-                    <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-i18n="demoFeature1Title">87개 Widget System</h4>
-                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="demoFeature1Desc">드래그앤드롭으로 완성하는 전시 워크플로우</p>
+                    <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-i18n="demoFeature1Title">3-Second Workflow</h4>
+                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="demoFeature1Desc">Generate complete exhibition workflows instantly</p>
                 </div>
                 
                 <div style="text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="width: 64px; height: 64px; margin: 0 auto 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-brain" style="font-size: 2rem; color: #3b82f6;" aria-hidden="true"></i>
+                        <i class="fas fa-robot" style="font-size: 2rem; color: #3b82f6;"></i>
                     </div>
-                    <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-i18n="demoFeature2Title">Gemini AI Assistant</h4>
-                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="demoFeature2Desc">Context 기반 지능형 업무 지원</p>
+                    <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-i18n="demoFeature2Title">8 AI Agents</h4>
+                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="demoFeature2Desc">Specialized agents for every museum task</p>
                 </div>
                 
                 <div style="text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.05); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="width: 64px; height: 64px; margin: 0 auto 1rem; background: rgba(236, 72, 153, 0.1); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-chart-line" style="font-size: 2rem; color: #ec4899;" aria-hidden="true"></i>
+                        <i class="fas fa-users" style="font-size: 2rem; color: #ec4899;"></i>
                     </div>
-                    <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-i18n="demoFeature3Title">Google Analytics 4</h4>
-                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="demoFeature3Desc">실시간 사용자 행동 분석 및 인사이트</p>
+                    <h4 style="font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 0.5rem;" data-i18n="demoFeature3Title">Real-time Collaboration</h4>
+                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;" data-i18n="demoFeature3Desc">Team up seamlessly across your organization</p>
                 </div>
             </div>
         </div>
@@ -2463,41 +1812,6 @@ html { visibility: visible; opacity: 1; }
     <!-- Features Section - Apple Style -->
     <section id="features" style="padding: 0; margin: 0;">
         <div class="agents-grid">
-            <!-- AI Orchestrator Engine -->
-            <div class="agent-card-hero" style="grid-column: 1 / -1; background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%); border: 2px solid rgba(139, 92, 246, 0.3);">
-                <div class="agent-visual">
-                    <div class="agent-icon-large" style="font-size: 5rem;">🧩</div>
-                </div>
-                <h2 class="agent-title-large" style="font-size: 3.5rem;" data-i18n="featureOrchestratorTitle">AI Orchestrator<br>Engine</h2>
-                <p class="agent-description-large" style="font-size: 1.25rem; max-width: 900px; margin: 0 auto;" data-i18n="featureOrchestratorDesc">
-                    Multi-Agent Coordination Engine with 15 AI node types and MCP protocol.
-                    Real-time execution tracking, intelligent workflow optimization, and conditional branching.
-                    Transform 8-hour tasks into 1-hour with 80% automation rate.
-                </p>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem auto; max-width: 900px;">
-                    <div style="background: rgba(139, 92, 246, 0.1); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(139, 92, 246, 0.2);">
-                        <div style="font-size: 2rem; font-weight: 700; color: #c4b5fd; margin-bottom: 0.5rem;">15</div>
-                        <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">AI Agent Types</div>
-                    </div>
-                    <div style="background: rgba(236, 72, 153, 0.1); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(236, 72, 153, 0.2);">
-                        <div style="font-size: 2rem; font-weight: 700; color: #f472b6; margin-bottom: 0.5rem;">6</div>
-                        <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">Execution Phases</div>
-                    </div>
-                    <div style="background: rgba(139, 92, 246, 0.1); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(139, 92, 246, 0.2);">
-                        <div style="font-size: 2rem; font-weight: 700; color: #c4b5fd; margin-bottom: 0.5rem;">3.2s</div>
-                        <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">Avg. Completion</div>
-                    </div>
-                    <div style="background: rgba(236, 72, 153, 0.1); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(236, 72, 153, 0.2);">
-                        <div style="font-size: 2rem; font-weight: 700; color: #f472b6; margin-bottom: 0.5rem;">80%</div>
-                        <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7);">Automation Rate</div>
-                    </div>
-                </div>
-                <div class="agent-cta-group">
-                    <a href="/workflow.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
-                    <a href="/workflow.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
-                </div>
-            </div>
-            
             <!-- AI Workflow Generation -->
             <div class="agent-card-hero">
                 <div class="agent-visual">
@@ -2505,9 +1819,8 @@ html { visibility: visible; opacity: 1; }
                 </div>
                 <h2 class="agent-title-large" data-i18n="feature1Title">AI Workflow<br>Generation</h2>
                 <p class="agent-description-large" data-i18n="feature1Desc">
-                    Natural language to complete workflows in 3-5 seconds.
+                    Transform natural language into complete workflows in 3-5 seconds.
                     19 auto-generated nodes across 6 phases with budget estimation.
-                    Powered by AI Orchestrator's intelligent routing system.
                 </p>
                 <div class="agent-cta-group">
                     <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
@@ -2522,20 +1835,12 @@ html { visibility: visible; opacity: 1; }
                 </div>
                 <h2 class="agent-title-large" data-i18n="feature2Title">Multi-Agent<br>System</h2>
                 <p class="agent-description-large" data-i18n="feature2Desc">
-                    15 specialized AI agents orchestrated via MCP protocol.
-                    Gemini Research, Budget Calculator, Docs Creator, Calendar Sync, Email Notifier.
-                    Intelligent task distribution with parallel/sequential execution.
+                    8 specialized AI agents working together via MCP protocol.
+                    Exhibition planning, financial analysis, and visitor prediction.
                 </p>
-                <div style="display: flex; gap: 0.5rem; justify-content: center; margin: 1rem 0; flex-wrap: wrap;">
-                    <span style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem;">🔬 Research Agent</span>
-                    <span style="padding: 0.5rem 1rem; background: rgba(236, 72, 153, 0.1); border: 1px solid rgba(236, 72, 153, 0.3); border-radius: 100px; font-size: 0.875rem;">💰 Budget Agent</span>
-                    <span style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem;">📄 Docs Agent</span>
-                    <span style="padding: 0.5rem 1rem; background: rgba(236, 72, 153, 0.1); border: 1px solid rgba(236, 72, 153, 0.3); border-radius: 100px; font-size: 0.875rem;">📅 Calendar Agent</span>
-                    <span style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem;">📧 Email Agent</span>
-                </div>
                 <div class="agent-cta-group">
-                    <a href="/workflow.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
-                    <a href="/workflow.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
                 </div>
             </div>
             
@@ -2608,131 +1913,131 @@ html { visibility: visible; opacity: 1; }
     <!-- Modules Section - Apple Style -->
     <section id="modules" style="padding: 0; margin: 0;">
         <div class="agents-grid">
-            <!-- Dashboard Module -->
+            <!-- Coordinator Agent -->
             <div class="agent-card-hero">
                 <div class="agent-visual">
-                    <div class="agent-icon-large">📊</div>
+                    <div class="agent-icon-large">🎯</div>
                 </div>
-                <h2 class="agent-title-large">Dashboard</h2>
-                <p class="agent-description-large">
-                    통합 프로젝트 대시보드. 실시간 통계, 워크플로우 현황, 
-                    팀 협업 관리, Canvas 동기화 기능을 제공합니다.
+                <h2 class="agent-title-large" data-i18n="coordinatorTitle">Coordinator<br>Agent</h2>
+                <p class="agent-description-large" data-i18n="coordinatorDesc">
+                    The brain of MuseFlow. Orchestrates all agents using MCP protocol, 
+                    routes requests to specialists, and manages inter-agent communication.
                 </p>
                 <div class="agent-cta-group">
-                    <a href="/dashboard.html" class="agent-btn agent-btn-primary">체험하기</a>
-                    <a href="/dashboard.html" class="agent-btn agent-btn-secondary">자세히 보기 →</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
                 </div>
             </div>
             
-            <!-- Canvas Widget System -->
+            <!-- Exhibition Agent -->
             <div class="agent-card-hero">
                 <div class="agent-visual">
                     <div class="agent-icon-large">🎨</div>
                 </div>
-                <h2 class="agent-title-large">Canvas<br>Widget System</h2>
-                <p class="agent-description-large">
-                    87개 뮤지엄 전문 Widget. 드래그앤드롭으로 워크플로우 생성, 
-                    실시간 편집, Premium 결제 시스템 통합.
+                <h2 class="agent-title-large" data-i18n="exhibitionTitle">Exhibition<br>Agent</h2>
+                <p class="agent-description-large" data-i18n="exhibitionDesc">
+                    Your creative curator. Plans exhibitions, curates artwork selections, 
+                    designs gallery layouts from simple descriptions.
                 </p>
                 <div class="agent-cta-group">
-                    <a href="/canvas-ultimate-clean.html" class="agent-btn agent-btn-primary">체험하기</a>
-                    <a href="/canvas-ultimate-clean.html" class="agent-btn agent-btn-secondary">자세히 보기 →</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
                 </div>
             </div>
             
-            <!-- Workflow Automation -->
-            <div class="agent-card-hero">
-                <div class="agent-visual">
-                    <div class="agent-icon-large">⚙️</div>
-                </div>
-                <h2 class="agent-title-large">Workflow<br>Automation</h2>
-                <p class="agent-description-large">
-                    자동화된 워크플로우. 전시 기획, 예산 관리, 관람객 분석 
-                    자동 실행 및 스케줄링 기능.
-                </p>
-                <div class="agent-cta-group">
-                    <a href="/workflow.html" class="agent-btn agent-btn-primary">체험하기</a>
-                    <a href="/workflow.html" class="agent-btn agent-btn-secondary">자세히 보기 →</a>
-                </div>
-            </div>
-            
-            <!-- Budget Management -->
+            <!-- Budget Agent -->
             <div class="agent-card-hero">
                 <div class="agent-visual">
                     <div class="agent-icon-large">💰</div>
                 </div>
-                <h2 class="agent-title-large">Budget<br>Management</h2>
-                <p class="agent-description-large">
-                    지능형 예산 관리. 카테고리별 예산 배분, 실시간 지출 추적, 
-                    AI 기반 비용 최적화 및 예측.
+                <h2 class="agent-title-large" data-i18n="budgetTitle">Budget<br>Agent</h2>
+                <p class="agent-description-large" data-i18n="budgetDesc">
+                    Financial intelligence. Analyzes data, optimizes budget allocation, 
+                    forecasts costs, and generates detailed breakdowns.
                 </p>
                 <div class="agent-cta-group">
-                    <a href="/budget.html" class="agent-btn agent-btn-primary">체험하기</a>
-                    <a href="/budget.html" class="agent-btn agent-btn-secondary">자세히 보기 →</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
                 </div>
             </div>
             
-            <!-- Analytics Dashboard -->
+            <!-- Archive Agent -->
             <div class="agent-card-hero">
                 <div class="agent-visual">
-                    <div class="agent-icon-large">📈</div>
+                    <div class="agent-icon-large">🏛️</div>
                 </div>
-                <h2 class="agent-title-large">Analytics<br>Dashboard</h2>
-                <p class="agent-description-large">
-                    데이터 인사이트. 관람객 통계, 전시 효과 분석, 
-                    실시간 차트, KPI 모니터링 기능.
+                <h2 class="agent-title-large" data-i18n="archiveTitle">Archive<br>Agent</h2>
+                <p class="agent-description-large" data-i18n="archiveDesc">
+                    Your digital archivist. Searches artwork databases, recommends pieces, 
+                    provides historical context, and manages metadata.
                 </p>
                 <div class="agent-cta-group">
-                    <a href="/analytics-dashboard.html" class="agent-btn agent-btn-primary">체험하기</a>
-                    <a href="/analytics-dashboard.html" class="agent-btn agent-btn-secondary">자세히 보기 →</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
                 </div>
             </div>
             
-            <!-- AI Assistant -->
+            <!-- Visitor Agent -->
             <div class="agent-card-hero">
                 <div class="agent-visual">
-                    <div class="agent-icon-large">🤖</div>
+                    <div class="agent-icon-large">👥</div>
                 </div>
-                <h2 class="agent-title-large">AI<br>Assistant</h2>
-                <p class="agent-description-large">
-                    Gemini 기반 AI 채팅. 자연어 명령으로 워크플로우 생성, 
-                    데이터 분석, 전시 기획 지원.
+                <h2 class="agent-title-large" data-i18n="visitorTitle">Visitor<br>Agent</h2>
+                <p class="agent-description-large" data-i18n="visitorDesc">
+                    Crowd intelligence. Predicts daily traffic, analyzes patterns, 
+                    forecasts capacity needs, and optimizes management.
                 </p>
                 <div class="agent-cta-group">
-                    <a href="/canvas-ultimate-clean.html" class="agent-btn agent-btn-primary">체험하기</a>
-                    <a href="/canvas-ultimate-clean.html" class="agent-btn agent-btn-secondary">자세히 보기 →</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
                 </div>
             </div>
             
-            <!-- Digital Twin -->
+            <!-- Digital Twin Agent -->
             <div class="agent-card-hero">
                 <div class="agent-visual">
                     <div class="agent-icon-large">🏗️</div>
                 </div>
-                <h2 class="agent-title-large">Digital Twin</h2>
-                <p class="agent-description-large">
-                    가상 뮤지엄 시뮬레이터. 3D 공간 최적화, 관람객 동선 히트맵, 
-                    전시물 배치 테스트 기능.
+                <h2 class="agent-title-large" data-i18n="digitalTwinTitle">Digital Twin<br>Agent</h2>
+                <p class="agent-description-large" data-i18n="digitalTwinDesc">
+                    Virtual museum simulator. Optimizes artwork placement, generates flow heatmaps, 
+                    and tests layout configurations in real-time.
                 </p>
                 <div class="agent-cta-group">
-                    <a href="/digital-twin-pro.html" class="agent-btn agent-btn-primary">체험하기</a>
-                    <a href="/digital-twin-pro.html" class="agent-btn agent-btn-secondary">자세히 보기 →</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
                 </div>
             </div>
             
-            <!-- AR/VR Demo -->
+            <!-- Chatbot Agent -->
             <div class="agent-card-hero">
                 <div class="agent-visual">
-                    <div class="agent-icon-large">🥽</div>
+                    <div class="agent-icon-large">💬</div>
                 </div>
-                <h2 class="agent-title-large">AR/VR<br>Demo</h2>
-                <p class="agent-description-large">
-                    몰입형 전시 체험. AR 전시물 증강, VR 가상 갤러리 투어, 
-                    3D 아트워크 뷰어 기능.
+                <h2 class="agent-title-large" data-i18n="chatbotTitle">Chatbot<br>Agent</h2>
+                <p class="agent-description-large" data-i18n="chatbotDesc">
+                    AI museum guide. Provides personalized recommendations, 
+                    answers visitor questions, and manages conversation context.
                 </p>
                 <div class="agent-cta-group">
-                    <a href="/ar-vr-demo.html" class="agent-btn agent-btn-primary">체험하기</a>
-                    <a href="/ar-vr-demo.html" class="agent-btn agent-btn-secondary">자세히 보기 →</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
+                </div>
+            </div>
+            
+            <!-- Notion Integration -->
+            <div class="agent-card-hero">
+                <div class="agent-visual">
+                    <div class="agent-icon-large">🔗</div>
+                </div>
+                <h2 class="agent-title-large" data-i18n="notionTitle">Notion<br>Integration</h2>
+                <p class="agent-description-large" data-i18n="notionDesc">
+                    Seamless workflow sync. Two-way sync with Notion workspace, 
+                    automatic project creation, and real-time status updates.
+                </p>
+                <div class="agent-cta-group">
+                    <a href="/admin.html" class="agent-btn agent-btn-primary" data-i18n="learnMore">Learn more</a>
+                    <a href="/admin.html" class="agent-btn agent-btn-secondary"><span data-i18n="tryNow">Try now</span> →</a>
                 </div>
             </div>
         </div>
@@ -2755,11 +2060,11 @@ html { visibility: visible; opacity: 1; }
                 <div class="pricing-price" style="font-size: 3.5rem; margin-bottom: 0.25rem;">$0</div>
                 <div class="pricing-period" data-i18n="pricingFreePeriod" style="font-size: 1rem; margin-bottom: 2rem; opacity: 0.6;">Forever free</div>
                 <ul class="pricing-features" style="text-align: left; margin-bottom: 2.5rem;">
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingFreeFeature1">Up to 5 workflows</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingFreeFeature2">2 team members</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingFreeFeature3">Basic AI agents</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingFreeFeature4">100 museum API requests/day</span></li>
-                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingFreeFeature5">Community support</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature1">Up to 5 workflows</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature2">2 team members</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature3">Basic AI agents</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature4">100 museum API requests/day</span></li>
+                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingFreeFeature5">Community support</span></li>
                 </ul>
                 <button class="pricing-cta" data-i18n="pricingFreeCta" style="width: 100%; padding: 1rem; font-size: 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateY(0)';">Get Started</button>
             </div>
@@ -2771,13 +2076,13 @@ html { visibility: visible; opacity: 1; }
                 <div class="pricing-price" data-i18n="pricingProPrice" style="font-size: 3.5rem; margin-bottom: 0.25rem; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">$99</div>
                 <div class="pricing-period" data-i18n="pricingProPeriod" style="font-size: 1rem; margin-bottom: 2rem; opacity: 0.6;">per month</div>
                 <ul class="pricing-features" style="text-align: left; margin-bottom: 2.5rem;">
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature1">Unlimited workflows</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature2">10 team members</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature3">All 8 AI agents</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature4">Unlimited museum API</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature5">AR/VR experiences</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature6">Real-time collaboration</span></li>
-                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingProFeature7">Priority support</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature1">Unlimited workflows</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature2">10 team members</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature3">All 8 AI agents</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature4">Unlimited museum API</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature5">AR/VR experiences</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature6">Real-time collaboration</span></li>
+                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #8b5cf6; margin-right: 0.75rem;"></i> <span data-i18n="pricingProFeature7">Priority support</span></li>
                 </ul>
                 <button class="pricing-cta" data-i18n="pricingProCta" style="width: 100%; padding: 1rem; font-size: 1rem; background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); border: none; color: white; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4); font-weight: 600;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 40px rgba(139, 92, 246, 0.6)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 32px rgba(139, 92, 246, 0.4)';">Start Free Trial</button>
             </div>
@@ -2788,13 +2093,13 @@ html { visibility: visible; opacity: 1; }
                 <div class="pricing-price" data-i18n="pricingEnterprisePrice" style="font-size: 3.5rem; margin-bottom: 0.25rem;">Custom</div>
                 <div class="pricing-period" data-i18n="pricingEnterprisePeriod" style="font-size: 1rem; margin-bottom: 2rem; opacity: 0.6;">Contact us</div>
                 <ul class="pricing-features" style="text-align: left; margin-bottom: 2.5rem;">
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature1">Everything in Pro</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature2">Unlimited team members</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature3">Custom AI training</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature4">Dedicated infrastructure</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature5">On-premise deployment</span></li>
-                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature6">24/7 phone support</span></li>
-                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;" aria-hidden="true"></i> <span data-i18n="pricingEnterpriseFeature7">SLA guarantee</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature1">Everything in Pro</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature2">Unlimited team members</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature3">Custom AI training</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature4">Dedicated infrastructure</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature5">On-premise deployment</span></li>
+                    <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature6">24/7 phone support</span></li>
+                    <li style="padding: 0.75rem 0;"><i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem;"></i> <span data-i18n="pricingEnterpriseFeature7">SLA guarantee</span></li>
                 </ul>
                 <button class="pricing-cta" data-i18n="pricingEnterpriseCta" style="width: 100%; padding: 1rem; font-size: 1rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 12px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateY(0)';">Contact Sales</button>
             </div>
@@ -2832,16 +2137,16 @@ html { visibility: visible; opacity: 1; }
                     by Google's Gemini 2.0 and running on Cloudflare's global edge network.
                 </p>
                 <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; max-width: 700px; margin-bottom: 2rem;">
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">Gemini 2.0 Flash</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">TypeScript 5.7</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">Hono 4.10</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">Cloudflare Workers</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">D1 Database</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">Durable Objects</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">Three.js</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">WebXR API</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">Chart.js</span>
-                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #c4b5fd;">Notion API</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Gemini 2.0 Flash</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">TypeScript 5.7</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Hono 4.10</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Cloudflare Workers</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">D1 Database</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Durable Objects</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Three.js</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">WebXR API</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Chart.js</span>
+                    <span class="tech-badge" style="padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 100px; font-size: 0.875rem; color: #a78bfa;">Notion API</span>
                 </div>
                 <div class="agent-cta-group">
                     <a href="#features" class="agent-btn agent-btn-primary">Explore Features</a>
@@ -2866,68 +2171,46 @@ html { visibility: visible; opacity: 1; }
         </div>
     </section>
 
-    <!-- Mobile Bottom Navigation -->
-    <nav class="mobile-bottom-nav">
-        <div class="mobile-bottom-nav-container">
-            <a href="#hero" class="mobile-nav-item active">
-                <i class="fas fa-home" aria-hidden="true"></i>
-                <span>홈</span>
-            </a>
-            <a href="#modules" class="mobile-nav-item">
-                <i class="fas fa-th-large" aria-hidden="true"></i>
-                <span>모듈</span>
-            </a>
-            <a href="/dashboard.html" class="mobile-nav-item">
-                <i class="fas fa-chart-line" aria-hidden="true"></i>
-                <span>대시보드</span>
-            </a>
-            <a href="/canvas-ultimate-clean.html" class="mobile-nav-item">
-                <i class="fas fa-palette" aria-hidden="true"></i>
-                <span>캔버스</span>
-            </a>
-            <a href="#pricing" class="mobile-nav-item">
-                <i class="fas fa-tag" aria-hidden="true"></i>
-                <span>가격</span>
-            </a>
-        </div>
-    </nav>
-
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
                 <h4>Product</h4>
                 <ul>
-                    <li role="none"><a href="#features" role="menuitem">Features</a></li>
-                    <li role="none"><a href="/modules" role="menuitem">Modules</a></li>
-                    <li role="none"><a href="#pricing" role="menuitem">Pricing</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#modules">Modules</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="/admin.html">Platform Dashboard</a></li>
                 </ul>
             </div>
             
             <div class="footer-section">
                 <h4>Resources</h4>
                 <ul>
-                    <li role="none"><a href="/ar-vr-demo" role="menuitem">AR/VR Demo</a></li>
-                    <li role="none"><a href="/dashboard" role="menuitem">Dashboard</a></li>
-                    <li role="none"><a href="/canvas-ultimate-clean" role="menuitem">Canvas</a></li>
+                    <li><a href="/admin.html">Admin Dashboard</a></li>
+                    <li><a href="/ar-vr-demo.html">AR/VR Demo</a></li>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">API Reference</a></li>
                 </ul>
             </div>
             
             <div class="footer-section">
                 <h4>Company</h4>
                 <ul>
-                    <li role="none"><a href="/about" role="menuitem">About</a></li>
-                    <li role="none"><a href="https://gallerypia.com" target="_blank" rel="noopener noreferrer" role="menuitem">Blog</a></li>
-                    <li role="none"><a href="/contact" role="menuitem">Contact</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
                 </ul>
             </div>
             
             <div class="footer-section">
                 <h4>Connect</h4>
                 <ul>
-                    <li><a href="https://github.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a></li>
-                    <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
-                    <li><a href="/contact"><i class="fas fa-envelope" aria-hidden="true"></i> Email</a></li>
+                    <li><a href="#"><i class="fab fa-github"></i> GitHub</a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                    <li><a href="#"><i class="fas fa-envelope"></i> Email</a></li>
                 </ul>
             </div>
         </div>
@@ -3183,7 +2466,7 @@ html { visibility: visible; opacity: 1; }
         const translations = {
             ko: {
                 // Navigation
-                signup: '무료로 시작하기',
+                signup: 'MuseFlow 슈퍼 에이전트 잠금 해제',
                 login: '로그인',
                 langName: '영어',
                 langFlag: '🇺🇸',
@@ -3194,8 +2477,8 @@ html { visibility: visible; opacity: 1; }
                 navAbout: '소개',
                 
                 // Hero Section
-                heroTitle: 'AI Orchestrator로 혁신하는<br>뮤지엄 워크플로우',
-                heroSubtitle: '15개 AI Agent를 조율하여 복잡한 업무를 3-5초 만에 완전 자동화. 87개 전문 Widget, MCP Protocol 기반 Multi-Agent 통신, 실시간 협업으로 8시간 작업을 1시간으로 단축.',
+                heroTitle: 'AI 기반 뮤지엄<br>워크플로우 플랫폼',
+                heroSubtitle: '지능형 워크플로우 자동화, 멀티 에이전트 AI 시스템, 실시간 협업으로 뮤지엄 운영을 혁신하세요. 문화기관의 미래를 위해 설계되었습니다.',
                 launchPlatform: '플랫폼 시작하기',
                 learnMore: '더 알아보기',
                 signupButton: '가입하기',
@@ -3368,8 +2651,8 @@ html { visibility: visible; opacity: 1; }
                 navAbout: 'About',
                 
                 // Hero Section
-                heroTitle: 'AI Orchestrator for<br>Museum Workflows',
-                heroSubtitle: 'Coordinate 15 AI Agents to fully automate complex tasks in 3-5 seconds. 87 professional Widgets, MCP Protocol-based Multi-Agent communication, real-time collaboration. Reduce 8-hour tasks to 1 hour.',
+                heroTitle: 'AI-Powered Museum<br>Workflow Platform',
+                heroSubtitle: 'Transform your museum operations with intelligent workflow automation, multi-agent AI system, and real-time collaboration. Built for the future of cultural institutions.',
                 launchPlatform: 'Launch Platform',
                 learnMore: 'Learn More',
                 signupButton: 'Sign Up',
@@ -4812,9 +4095,6 @@ html { visibility: visible; opacity: 1; }
             mobileMenuToggle.addEventListener('click', () => {
                 mobileMenuToggle.classList.toggle('active');
                 navLinks.classList.toggle('active');
-                
-                // Prevent body scroll when menu is open
-                document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
             });
             
             // Close mobile menu when clicking nav links
@@ -4822,7 +4102,6 @@ html { visibility: visible; opacity: 1; }
                 link.addEventListener('click', () => {
                     mobileMenuToggle.classList.remove('active');
                     navLinks.classList.remove('active');
-                    document.body.style.overflow = '';
                 });
             });
             
@@ -4831,57 +4110,9 @@ html { visibility: visible; opacity: 1; }
                 if (!mobileMenuToggle.contains(e.target) && !navLinks.contains(e.target)) {
                     mobileMenuToggle.classList.remove('active');
                     navLinks.classList.remove('active');
-                    document.body.style.overflow = '';
                 }
             });
         }
-        
-        // Mobile Bottom Navigation - Active State
-        const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
-        const sections = document.querySelectorAll('section[id]');
-        
-        // Update active state on scroll
-        function updateMobileNavActive() {
-            const scrollY = window.pageYOffset;
-            
-            sections.forEach(section => {
-                const sectionHeight = section.offsetHeight;
-                const sectionTop = section.offsetTop - 100;
-                const sectionId = section.getAttribute('id');
-                
-                if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-                    mobileNavItems.forEach(item => {
-                        item.classList.remove('active');
-                        if (item.getAttribute('href') === `#${sectionId}`) {
-                            item.classList.add('active');
-                        }
-                    });
-                }
-            });
-        }
-        
-        // Smooth scroll for mobile nav
-        mobileNavItems.forEach(item => {
-            if (item.getAttribute('href').startsWith('#')) {
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const targetId = item.getAttribute('href').substring(1);
-                    const targetSection = document.getElementById(targetId);
-                    
-                    if (targetSection) {
-                        const offsetTop = targetSection.offsetTop - 80;
-                        window.scrollTo({
-                            top: offsetTop,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            }
-        });
-        
-        // Listen to scroll events
-        window.addEventListener('scroll', updateMobileNavActive);
-        updateMobileNavActive(); // Initial check
         
         // Voice Recognition with Web Speech API
         const voiceBtn = document.getElementById('voice-btn');
@@ -5224,69 +4455,10 @@ html { visibility: visible; opacity: 1; }
             </div>
             <div class="museflow-footer-divider"></div>
             <div class="museflow-footer-version">
-                V15.0
+                V4.0
             </div>
         </div>
     </footer>
-    
-    <!-- Unified Footer Script -->
-    <script src="/static/js/unified-footer.js" async></script>
 
-    <!-- Analytics Helper Functions -->
-    <script>
-        // Analytics Event Tracking Helper
-        function trackEvent(eventName, eventParams = {}) {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', eventName, eventParams);
-                console.log('📊 Analytics Event:', eventName, eventParams);
-            }
-        }
-
-        // Track button clicks
-        document.addEventListener('DOMContentLoaded', function() {
-            // Track CTA button clicks
-            const ctaButtons = document.querySelectorAll('.cta-primary, .cta-secondary, .nav-app-btn');
-            ctaButtons.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    const btnText = this.textContent.trim();
-                    const btnHref = this.getAttribute('href') || 'no-link';
-                    trackEvent('button_click', {
-                        button_text: btnText,
-                        button_link: btnHref,
-                        page_location: window.location.pathname
-                    });
-                });
-            });
-
-            // Track module card clicks
-            const moduleCards = document.querySelectorAll('.module-card a');
-            moduleCards.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    const moduleName = this.closest('.module-card')?.querySelector('h3')?.textContent || 'unknown';
-                    trackEvent('module_click', {
-                        module_name: moduleName,
-                        action: this.textContent.trim()
-                    });
-                });
-            });
-
-            // Track scroll depth
-            let maxScroll = 0;
-            window.addEventListener('scroll', function() {
-                const scrollPercent = Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
-                if (scrollPercent > maxScroll && scrollPercent % 25 === 0) {
-                    maxScroll = scrollPercent;
-                    trackEvent('scroll_depth', {
-                        percent: scrollPercent
-                    });
-                }
-            });
-        });
-    </script>
-
-
-    <!-- ⌨️  Keyboard Navigation & Accessibility -->
-    <script src="/static/js/keyboard-navigation.js"></script>
-    
 </body>
 </html>
