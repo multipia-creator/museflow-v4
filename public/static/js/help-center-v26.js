@@ -8,7 +8,7 @@ const HELP_CENTER_V26 = {
   guides: {
     exhibition: {
       title: '전시 기획 가이드',
-      icon: '🎨',
+      icon: 'fa-palette',
       description: '전시 기획부터 개막까지 전 과정을 단계별로 안내합니다.',
       articles: [
         {
@@ -80,7 +80,7 @@ const HELP_CENTER_V26 = {
     
     education: {
       title: '교육 프로그램 가이드',
-      icon: '👨‍🏫',
+      icon: 'fa-chalkboard-teacher',
       description: '교육 프로그램 기획부터 평가까지 실무 가이드',
       articles: [
         {
@@ -130,7 +130,7 @@ const HELP_CENTER_V26 = {
     
     collection: {
       title: '소장품 관리 가이드',
-      icon: '🏛️',
+      icon: 'fa-landmark',
       description: '소장품 수집부터 DB 관리까지',
       articles: [
         {
@@ -180,7 +180,7 @@ const HELP_CENTER_V26 = {
     
     conservation: {
       title: '보존 처리 가이드',
-      icon: '🔬',
+      icon: 'fa-microscope',
       description: '소장품 보존 및 복원 전문 가이드',
       articles: [
         {
@@ -209,7 +209,7 @@ const HELP_CENTER_V26 = {
     
     publishing: {
       title: '학술 출판 가이드',
-      icon: '📚',
+      icon: 'fa-book',
       description: '학술지 발간 및 논문 출판 가이드',
       articles: [
         {
@@ -238,7 +238,7 @@ const HELP_CENTER_V26 = {
     
     research: {
       title: '학술 연구 가이드',
-      icon: '📖',
+      icon: 'fa-graduation-cap',
       description: '학술 연구 방법론 및 논문 작성 가이드',
       articles: [
         {
@@ -267,7 +267,7 @@ const HELP_CENTER_V26 = {
     
     administration: {
       title: '행정 관리 가이드',
-      icon: '💼',
+      icon: 'fa-briefcase',
       description: '예산 관리 및 행정 업무 가이드',
       articles: [
         {

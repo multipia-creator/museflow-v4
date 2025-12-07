@@ -226,46 +226,45 @@ const AIAssistantWidget = {
       }
 
       .ai-chat-toggle {
-        width: 64px;
-        height: 64px;
-        background: linear-gradient(135deg, ${this.config.primaryColor} 0%, ${this.config.secondaryColor} 100%);
-        border: none;
-        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        background: #18181b;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
         cursor: pointer;
-        box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
         position: relative;
       }
 
       .ai-chat-toggle:hover {
-        transform: scale(1.1);
-        box-shadow: 0 12px 32px rgba(139, 92, 246, 0.6);
+        border-color: rgba(255, 255, 255, 0.2);
+        background: #1f1f23;
       }
 
       .ai-chat-toggle .icon {
-        font-size: 32px;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        font-size: 20px;
+        color: #a1a1aa;
       }
 
       .ai-chat-toggle .notification-badge {
         position: absolute;
-        top: 4px;
-        right: 4px;
-        width: 20px;
-        height: 20px;
+        top: -4px;
+        right: -4px;
+        width: 16px;
+        height: 16px;
         background: #ef4444;
         border-radius: 50%;
-        border: 2px solid white;
-        font-size: 11px;
-        font-weight: 700;
+        border: 2px solid #0a0a0f;
+        font-size: 9px;
+        font-weight: 600;
         color: white;
         display: flex;
         align-items: center;
         justify-content: center;
-        animation: pulse 2s infinite;
       }
 
       @keyframes pulse {
@@ -275,19 +274,18 @@ const AIAssistantWidget = {
 
       .ai-chat-window {
         position: absolute;
-        bottom: 80px;
+        bottom: 56px;
         right: 0;
-        width: 420px;
-        height: 600px;
-        background: rgba(30, 20, 60, 0.98);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(139, 92, 246, 0.3);
-        border-radius: 16px;
-        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+        width: 360px;
+        height: 540px;
+        background: #0d0d0d;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
         display: none;
         flex-direction: column;
         overflow: hidden;
-        animation: slideUp 0.3s ease;
+        animation: slideUp 0.2s ease;
       }
 
       .ai-chat-window.open {
@@ -306,9 +304,9 @@ const AIAssistantWidget = {
       }
 
       .ai-chat-header {
-        padding: 20px;
-        background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 1rem;
+        background: transparent;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -321,19 +319,20 @@ const AIAssistantWidget = {
       }
 
       .ai-chat-header-title .icon {
-        font-size: 28px;
+        font-size: 18px;
+        color: #a1a1aa;
       }
 
       .ai-chat-header-title .text h3 {
-        color: white;
-        font-size: 18px;
-        font-weight: 700;
+        color: #e5e7eb;
+        font-size: 0.9375rem;
+        font-weight: 500;
         margin: 0;
       }
 
       .ai-chat-header-title .text p {
-        color: #9ca3af;
-        font-size: 13px;
+        color: #71717a;
+        font-size: 0.75rem;
         margin: 0;
       }
 
@@ -343,30 +342,33 @@ const AIAssistantWidget = {
       }
 
       .ai-chat-header-actions button {
-        background: rgba(255, 255, 255, 0.1);
-        border: none;
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        width: 28px;
+        height: 28px;
+        border-radius: 4px;
         cursor: pointer;
-        transition: background 0.2s;
+        transition: all 0.2s;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 18px;
+        font-size: 14px;
+        color: #a1a1aa;
       }
 
       .ai-chat-header-actions button:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.15);
+        color: #e5e7eb;
       }
 
       .ai-chat-messages {
         flex: 1;
         overflow-y: auto;
-        padding: 20px;
+        padding: 1rem;
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 0.875rem;
       }
 
       .ai-message {
@@ -385,36 +387,41 @@ const AIAssistantWidget = {
       }
 
       .ai-message-avatar {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        border-radius: 4px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 20px;
+        font-size: 14px;
         flex-shrink: 0;
       }
 
       .ai-message.assistant .ai-message-avatar {
-        background: linear-gradient(135deg, ${this.config.primaryColor} 0%, ${this.config.secondaryColor} 100%);
+        background: rgba(255, 255, 255, 0.06);
+        color: #a1a1aa;
       }
 
       .ai-message.user .ai-message-avatar {
-        background: #374151;
+        background: rgba(255, 255, 255, 0.04);
+        color: #71717a;
       }
 
       .ai-message-content {
-        max-width: 70%;
-        background: rgba(255, 255, 255, 0.05);
-        padding: 12px 16px;
-        border-radius: 12px;
-        color: #e5e7eb;
+        max-width: 75%;
+        background: rgba(255, 255, 255, 0.02);
+        padding: 0.625rem 0.875rem;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: #d4d4d8;
+        font-size: 0.8125rem;
         line-height: 1.5;
       }
 
       .ai-message.user .ai-message-content {
-        background: ${this.config.primaryColor};
-        color: white;
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 255, 255, 0.08);
+        color: #e5e7eb;
       }
 
       .ai-quick-actions {
@@ -425,42 +432,42 @@ const AIAssistantWidget = {
       }
 
       .ai-quick-action-btn {
-        background: rgba(139, 92, 246, 0.2);
-        border: 1px solid rgba(139, 92, 246, 0.4);
-        color: ${this.config.primaryColor};
-        padding: 8px 14px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 500;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #a1a1aa;
+        padding: 0.375rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 400;
         cursor: pointer;
         transition: all 0.2s;
         white-space: nowrap;
       }
 
       .ai-quick-action-btn:hover {
-        background: rgba(139, 92, 246, 0.3);
-        border-color: ${this.config.primaryColor};
-        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 255, 255, 0.15);
+        color: #e5e7eb;
       }
 
       .ai-chat-input-container {
-        padding: 16px 20px;
-        background: rgba(0, 0, 0, 0.2);
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0.875rem;
+        background: transparent;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
       }
 
       .ai-chat-input {
         width: 100%;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
-        padding: 12px 48px 12px 16px;
-        color: white;
-        font-size: 14px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 6px;
+        padding: 0.625rem 2.5rem 0.625rem 0.75rem;
+        color: #e5e7eb;
+        font-size: 0.8125rem;
         resize: none;
         outline: none;
         font-family: inherit;
-        transition: border-color 0.2s;
+        transition: all 0.2s;
       }
 
       .ai-chat-input:focus {
