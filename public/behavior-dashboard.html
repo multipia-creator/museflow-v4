@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 행동 분석 대시보드 - MuseFlow V26.0</title>
+    <meta name="description" content="MuseFlow V26.0 사용자 행동 패턴 분석 및 도움말 효과성 측정 대시보드">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            color: #e5e7eb;
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #9ca3af;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-4px);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .chart-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .behavior-list {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .behavior-item {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .behavior-item:last-child {
+            border-bottom: none;
+        }
+
+        .behavior-type {
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.2);
+            color: #8b5cf6;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-right: 1rem;
+        }
+
+        .behavior-time {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📊 사용자 행동 분석 대시보드</h1>
+            <p class="subtitle">MuseFlow V26.0 행동 패턴 분석 및 도움말 효과성 측정</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-label">총 행동 기록</div>
+                <div class="stat-value" id="totalBehaviors">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⏱️</div>
+                <div class="stat-label">평균 세션 시간</div>
+                <div class="stat-value" id="avgSessionTime">0분</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-label">도움말 수락률</div>
+                <div class="stat-value" id="helpAcceptRate">0%</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🔥</div>
+                <div class="stat-label">활성 사용자</div>
+                <div class="stat-value" id="activeUsers">1</div>
+            </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="charts-grid">
+            <!-- Behavior Type Distribution -->
+            <div class="chart-card">
+                <h2 class="chart-title">행동 유형 분포</h2>
+                <div class="chart-container">
+                    <canvas id="behaviorTypeChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Help Effectiveness -->
+            <div class="chart-card">
+                <h2 class="chart-title">도움말 효과성</h2>
+                <div class="chart-container">
+                    <canvas id="helpEffectivenessChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Activity Timeline -->
+            <div class="chart-card">
+                <h2 class="chart-title">활동 타임라인 (최근 24시간)</h2>
+                <div class="chart-container">
+                    <canvas id="activityTimelineChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Error Detection -->
+            <div class="chart-card">
+                <h2 class="chart-title">오류 감지 현황</h2>
+                <div class="chart-container">
+                    <canvas id="errorDetectionChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Behaviors -->
+        <div class="behavior-list">
+            <h2 class="chart-title">최근 행동 기록 (최대 20개)</h2>
+            <div id="recentBehaviors">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn" onclick="refreshDashboard()">🔄 새로고침</button>
+            <button class="btn btn-secondary" onclick="clearAllData()">🗑️ 데이터 초기화</button>
+            <button class="btn btn-secondary" onclick="exportData()">📥 데이터 내보내기</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/help/behavior-detector.js"></script>
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Dashboard Data
+        let dashboardData = {
+            behaviors: [],
+            stats: {},
+            charts: {}
+        };
+
+        // Load Dashboard Data
+        function loadDashboardData() {
+            try {
+                // Load from localStorage
+                const stored = localStorage.getItem('behavior_data');
+                if (stored) {
+                    dashboardData.behaviors = JSON.parse(stored);
+                } else {
+                    dashboardData.behaviors = [];
+                }
+
+                console.log('Loaded ' + dashboardData.behaviors.length + ' behavior records');
+                
+                // Calculate stats
+                calculateStats();
+                
+                // Update UI
+                updateStats();
+                updateCharts();
+                updateRecentBehaviors();
+            } catch (error) {
+                console.error('Failed to load dashboard data:', error);
+            }
+        }
+
+        // Calculate Statistics
+        function calculateStats() {
+            const behaviors = dashboardData.behaviors;
+            
+            // Total behaviors
+            dashboardData.stats.total = behaviors.length;
+
+            // Average session time
+            const sessionTimes = behaviors
+                .filter(b => b.sessionDuration)
+                .map(b => b.sessionDuration);
+            
+            dashboardData.stats.avgSessionTime = sessionTimes.length > 0
+                ? Math.round(sessionTimes.reduce((a, b) => a + b, 0) / sessionTimes.length / 60000)
+                : 0;
+
+            // Help acceptance rate
+            const helpOffered = behaviors.filter(b => b.type === 'help_offered').length;
+            const helpAccepted = behaviors.filter(b => b.type === 'help_accepted').length;
+            
+            dashboardData.stats.helpAcceptRate = helpOffered > 0
+                ? Math.round((helpAccepted / helpOffered) * 100)
+                : 0;
+
+            // Behavior type distribution
+            const typeCount = {};
+            behaviors.forEach(b => {
+                typeCount[b.type] = (typeCount[b.type] || 0) + 1;
+            });
+            dashboardData.stats.typeDistribution = typeCount;
+        }
+
+        // Update Stats UI
+        function updateStats() {
+            document.getElementById('totalBehaviors').textContent = dashboardData.stats.total || 0;
+            document.getElementById('avgSessionTime').textContent = (dashboardData.stats.avgSessionTime || 0) + '분';
+            document.getElementById('helpAcceptRate').textContent = (dashboardData.stats.helpAcceptRate || 0) + '%';
+        }
+
+        // Update Charts
+        function updateCharts() {
+            createBehaviorTypeChart();
+            createHelpEffectivenessChart();
+            createActivityTimelineChart();
+            createErrorDetectionChart();
+        }
+
+        // Behavior Type Chart
+        function createBehaviorTypeChart() {
+            const ctx = document.getElementById('behaviorTypeChart').getContext('2d');
+            
+            const typeDistribution = dashboardData.stats.typeDistribution || {};
+            const labels = Object.keys(typeDistribution);
+            const data = Object.values(typeDistribution);
+
+            if (dashboardData.charts.behaviorType) {
+                dashboardData.charts.behaviorType.destroy();
+            }
+
+            dashboardData.charts.behaviorType = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            'rgba(139, 92, 246, 0.8)',
+                            'rgba(236, 72, 153, 0.8)',
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(251, 191, 36, 0.8)',
+                            'rgba(239, 68, 68, 0.8)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#e5e7eb' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Help Effectiveness Chart
+        function createHelpEffectivenessChart() {
+            const ctx = document.getElementById('helpEffectivenessChart').getContext('2d');
+            
+            const behaviors = dashboardData.behaviors;
+            const helpOffered = behaviors.filter(b => b.type === 'help_offered').length;
+            const helpAccepted = behaviors.filter(b => b.type === 'help_accepted').length;
+            const helpDismissed = behaviors.filter(b => b.type === 'help_dismissed').length;
+
+            if (dashboardData.charts.helpEffectiveness) {
+                dashboardData.charts.helpEffectiveness.destroy();
+            }
+
+            dashboardData.charts.helpEffectiveness = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['제안됨', '수락됨', '거절됨'],
+                    datasets: [{
+                        label: '도움말 상호작용',
+                        data: [helpOffered, helpAccepted, helpDismissed],
+                        backgroundColor: [
+                            'rgba(139, 92, 246, 0.8)',
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(239, 68, 68, 0.8)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#e5e7eb' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: '#e5e7eb' },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // Activity Timeline Chart
+        function createActivityTimelineChart() {
+            const ctx = document.getElementById('activityTimelineChart').getContext('2d');
+            
+            // Group by hour (last 24 hours)
+            const now = Date.now();
+            const hourlyActivity = {};
+            
+            for (let i = 23; i >= 0; i--) {
+                const hour = new Date(now - i * 3600000).getHours();
+                hourlyActivity[hour] = 0;
+            }
+
+            dashboardData.behaviors
+                .filter(b => now - b.timestamp < 24 * 3600000)
+                .forEach(b => {
+                    const hour = new Date(b.timestamp).getHours();
+                    hourlyActivity[hour]++;
+                });
+
+            const labels = Object.keys(hourlyActivity).map(h => h + '시');
+            const data = Object.values(hourlyActivity);
+
+            if (dashboardData.charts.activityTimeline) {
+                dashboardData.charts.activityTimeline.destroy();
+            }
+
+            dashboardData.charts.activityTimeline = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '활동 건수',
+                        data: data,
+                        borderColor: 'rgba(139, 92, 246, 1)',
+                        backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#e5e7eb' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: '#e5e7eb' },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // Error Detection Chart
+        function createErrorDetectionChart() {
+            const ctx = document.getElementById('errorDetectionChart').getContext('2d');
+            
+            const behaviors = dashboardData.behaviors;
+            const validationErrors = behaviors.filter(b => b.type === 'validation_error').length;
+            const apiErrors = behaviors.filter(b => b.type === 'api_error').length;
+            const runtimeErrors = behaviors.filter(b => b.type === 'runtime_error').length;
+
+            if (dashboardData.charts.errorDetection) {
+                dashboardData.charts.errorDetection.destroy();
+            }
+
+            dashboardData.charts.errorDetection = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Validation Errors', 'API Errors', 'Runtime Errors'],
+                    datasets: [{
+                        label: '오류 감지 건수',
+                        data: [validationErrors, apiErrors, runtimeErrors],
+                        backgroundColor: [
+                            'rgba(251, 191, 36, 0.8)',
+                            'rgba(239, 68, 68, 0.8)',
+                            'rgba(220, 38, 38, 0.8)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: { color: '#e5e7eb' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        y: {
+                            ticks: { color: '#e5e7eb' },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // Update Recent Behaviors
+        function updateRecentBehaviors() {
+            const container = document.getElementById('recentBehaviors');
+            const behaviors = dashboardData.behaviors.slice(-20).reverse();
+
+            if (behaviors.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #6b7280; padding: 2rem;">행동 기록이 없습니다.</p>';
+                return;
+            }
+
+            container.innerHTML = behaviors.map(b => {
+                const time = new Date(b.timestamp).toLocaleString('ko-KR');
+                return `
+                    <div class="behavior-item">
+                        <div>
+                            <span class="behavior-type">${b.type}</span>
+                            <span style="color: #d1d5db;">${b.page || 'Unknown Page'}</span>
+                        </div>
+                        <span class="behavior-time">${time}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Refresh Dashboard
+        function refreshDashboard() {
+            loadDashboardData();
+            lucide.createIcons();
+        }
+
+        // Clear All Data
+        function clearAllData() {
+            if (confirm('모든 행동 분석 데이터를 삭제하시겠습니까?')) {
+                localStorage.removeItem('behavior_data');
+                loadDashboardData();
+                alert('데이터가 초기화되었습니다.');
+            }
+        }
+
+        // Export Data
+        function exportData() {
+            const dataStr = JSON.stringify(dashboardData.behaviors, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'museflow-behavior-data-' + new Date().toISOString().split('T')[0] + '.json';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize Dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboardData();
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>

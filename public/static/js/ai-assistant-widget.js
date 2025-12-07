@@ -40,7 +40,38 @@ const AIAssistantWidget = {
     currentContext: null,
     userRole: null,
     lastActivity: Date.now(),
-    suggestions: []
+    suggestions: [],
+    language: 'ko' // 'ko' or 'en'
+  },
+
+  /**
+   * Multi-language Support
+   */
+  i18n: {
+    ko: {
+      welcomeMessage: 'MuseFlow AI 도우미입니다. 무엇을 도와드릴까요? 🎨',
+      headerTitle: 'AI 도우미',
+      headerSubtitle: 'MuseFlow V26.0',
+      inputPlaceholder: '질문을 입력하세요... (예: Canvas 사용법, 전시 기획 도움말)',
+      clearHistoryConfirm: '대화 이력을 모두 삭제하시겠습니까?',
+      buttons: {
+        minimize: '최소화',
+        close: '닫기',
+        clearHistory: '대화 이력 초기화'
+      }
+    },
+    en: {
+      welcomeMessage: 'I\'m MuseFlow AI Assistant. How can I help you? 🎨',
+      headerTitle: 'AI Assistant',
+      headerSubtitle: 'MuseFlow V26.0',
+      inputPlaceholder: 'Ask a question... (e.g., How to use Canvas, Exhibition planning help)',
+      clearHistoryConfirm: 'Are you sure you want to clear all conversation history?',
+      buttons: {
+        minimize: 'Minimize',
+        close: 'Close',
+        clearHistory: 'Clear History'
+      }
+    }
   },
 
   /**
@@ -163,11 +194,18 @@ const AIAssistantWidget = {
     // Detect user context
     this.detectContext();
     
-    // Show welcome message
-    setTimeout(() => {
-      this.addMessage('assistant', this.config.welcomeMessage);
-      this.showQuickActions();
-    }, 1000);
+    // Load conversation history
+    this.loadConversationHistory();
+    
+    // Show welcome message (only if no history)
+    if (this.state.messages.length === 0) {
+      setTimeout(() => {
+        this.addMessage('assistant', this.config.welcomeMessage);
+        this.showQuickActions();
+      }, 1000);
+    } else {
+      console.log('[AIAssistant] Loaded ' + this.state.messages.length + ' previous messages');
+    }
     
     console.log('[AIAssistant] Widget initialized successfully');
   },
@@ -545,6 +583,7 @@ const AIAssistantWidget = {
             </div>
           </div>
           <div class="ai-chat-header-actions">
+            <button id="aiClearHistoryBtn" title="대화 이력 초기화">🗑️</button>
             <button id="aiMinimizeBtn" title="최소화">_</button>
             <button id="aiCloseBtn" title="닫기">×</button>
           </div>
@@ -588,6 +627,13 @@ const AIAssistantWidget = {
     // Minimize button
     document.getElementById('aiMinimizeBtn').addEventListener('click', () => {
       this.minimizeChat();
+    });
+
+    // Clear history button
+    document.getElementById('aiClearHistoryBtn').addEventListener('click', () => {
+      if (confirm('대화 이력을 모두 삭제하시겠습니까?')) {
+        this.clearConversationHistory();
+      }
     });
 
     // Send message
@@ -718,46 +764,100 @@ const AIAssistantWidget = {
   },
 
   /**
-   * Process User Message and Generate Response
+   * Process User Message and Generate Response (Enhanced)
    */
   processUserMessage(message) {
     const lowerMessage = message.toLowerCase();
 
-    // Check for keywords and provide appropriate response
+    // Enhanced keyword matching with scoring
+    const keywords = {
+      tutorial: ['튜토리얼', '시작', '처음', '배우', '학습', 'tutorial', 'start', 'begin'],
+      sample: ['샘플', '예시', '데이터', '예제', 'sample', 'example', 'data'],
+      canvas: ['canvas', '캔버스', '워크플로우', '카드', 'workflow', 'card'],
+      help: ['도움말', '가이드', '도와', 'help', 'guide', 'assist'],
+      exhibition: ['전시', '기획', '큐레이팅', 'exhibition', 'curating'],
+      education: ['교육', '프로그램', '강좌', 'education', 'program'],
+      collection: ['소장품', '수집', '작품', 'collection', 'artwork'],
+      conservation: ['보존', '복원', '처리', 'conservation', 'restoration'],
+      publishing: ['출판', '학술지', '논문', 'publishing', 'journal', 'paper'],
+      research: ['연구', '조사', '분석', 'research', 'investigation'],
+      administration: ['행정', '관리', '예산', 'administration', 'budget', 'management'],
+      task: ['작업', '업무', '태스크', 'task', 'work'],
+      connection: ['연결', '링크', '관계', 'connection', 'link', 'relationship']
+    };
+
+    // Calculate keyword scores
+    const scores = {};
+    for (const [category, words] of Object.entries(keywords)) {
+      scores[category] = words.filter(word => lowerMessage.includes(word)).length;
+    }
+
+    // Find highest score
+    const maxScore = Math.max(...Object.values(scores));
+    const topCategory = Object.keys(scores).find(key => scores[key] === maxScore);
+
     let response = '';
     let actions = null;
 
-    if (lowerMessage.includes('튜토리얼') || lowerMessage.includes('시작') || lowerMessage.includes('처음')) {
+    // Generate response based on top category
+    if (scores.tutorial > 0) {
       response = '튜토리얼을 시작하시겠습니까? 7가지 박물관 업무별 가이드를 제공합니다.';
       actions = [
-        { text: '전시 기획 튜토리얼', action: 'startTutorial_exhibition' },
-        { text: '교육 프로그램 튜토리얼', action: 'startTutorial_education' },
-        { text: '모든 튜토리얼 보기', link: '/help-center' }
+        { text: '🎨 전시 기획', action: 'startTutorial_exhibition' },
+        { text: '📚 교육 프로그램', action: 'startTutorial_education' },
+        { text: '모든 튜토리얼', link: '/help-center' }
       ];
-    } else if (lowerMessage.includes('샘플') || lowerMessage.includes('예시') || lowerMessage.includes('데이터')) {
+    } else if (scores.sample > 0) {
       response = 'MuseFlow V26.0은 7가지 박물관 업무별 샘플 데이터를 제공합니다. Canvas에서 샘플 워크플로우를 확인해보세요!';
       actions = [
         { text: 'Canvas 열기', link: '/canvas-ultimate-clean' },
         { text: '샘플 데이터 설명', link: '/help-center' }
       ];
-    } else if (lowerMessage.includes('canvas') || lowerMessage.includes('캔버스')) {
+    } else if (scores.canvas > 0) {
       response = 'Canvas는 워크플로우를 시각화하는 공간입니다. 카드를 드래그하여 이동하고, 연결선으로 흐름을 표현할 수 있습니다.';
       actions = [
         { text: 'Canvas 가이드', link: '/help-center?article=canvas' },
         { text: 'Canvas 열기', link: '/canvas-ultimate-clean' }
       ];
-    } else if (lowerMessage.includes('도움말') || lowerMessage.includes('가이드') || lowerMessage.includes('도와')) {
+    } else if (scores.task > 0) {
+      response = 'Tasks는 프로젝트의 할 일 목록입니다. 우선순위를 설정하고, 마감일을 관리하며, 진행 상태를 추적할 수 있습니다.';
+      actions = [
+        { text: 'Task 관리 가이드', link: '/help-center?article=tasks' },
+        { text: 'Canvas에서 보기', link: '/canvas-ultimate-clean' }
+      ];
+    } else if (scores.connection > 0) {
+      response = 'Canvas Card 간의 연결선은 워크플로우의 흐름을 표현합니다. 카드를 클릭하여 연결선을 생성할 수 있습니다.';
+      actions = [
+        { text: '연결선 사용법', link: '/help-center?article=connections' },
+        { text: 'Canvas 열기', link: '/canvas-ultimate-clean' }
+      ];
+    } else if (scores.exhibition > 0) {
+      response = '전시 기획 업무를 도와드리겠습니다. 전시 기획서 작성부터 개막까지의 전 과정을 지원합니다.';
+      actions = this.roleActions.exhibition.actions;
+    } else if (scores.education > 0) {
+      response = '교육 프로그램 기획을 도와드리겠습니다. 커리큘럼 설계부터 교육 자료 제작까지 지원합니다.';
+      actions = this.roleActions.education.actions;
+    } else if (scores.collection > 0) {
+      response = '소장품 수집 업무를 도와드리겠습니다. 작품 평가부터 등록 관리까지 전 과정을 안내합니다.';
+      actions = this.roleActions.collection.actions;
+    } else if (scores.conservation > 0) {
+      response = '보존 처리 업무를 도와드리겠습니다. 과학적 분석부터 처리 계획 수립까지 지원합니다.';
+      actions = this.roleActions.conservation.actions;
+    } else if (scores.publishing > 0) {
+      response = '학술 출판 업무를 도와드리겠습니다. 논문 심사부터 학술지 발간까지 안내합니다.';
+      actions = this.roleActions.publishing.actions;
+    } else if (scores.research > 0) {
+      response = '학술 연구 업무를 도와드리겠습니다. 연구 계획 수립부터 논문 발표까지 지원합니다.';
+      actions = this.roleActions.research.actions;
+    } else if (scores.administration > 0) {
+      response = '행정 관리 업무를 도와드리겠습니다. 예산 집행부터 인력 관리까지 안내합니다.';
+      actions = this.roleActions.administration.actions;
+    } else if (scores.help > 0) {
       response = '도움말 센터에서 7가지 업무별 실무 가이드를 확인하세요!';
       actions = Object.keys(this.roleActions).slice(0, 3).map(role => ({
         text: this.roleActions[role].title,
         link: `/help-center?role=${role}`
       }));
-    } else if (lowerMessage.includes('전시')) {
-      response = '전시 기획 업무를 도와드리겠습니다. 어떤 부분이 궁금하신가요?';
-      actions = this.roleActions.exhibition.actions;
-    } else if (lowerMessage.includes('교육')) {
-      response = '교육 프로그램 기획을 도와드리겠습니다. 필요한 가이드를 선택하세요.';
-      actions = this.roleActions.education.actions;
     } else {
       response = '궁금하신 내용을 더 구체적으로 말씀해주시면 도와드리겠습니다. 아래 버튼을 눌러 주제를 선택하실 수도 있습니다.';
       actions = [
@@ -768,6 +868,9 @@ const AIAssistantWidget = {
     }
 
     this.addMessage('assistant', response, actions);
+    
+    // Save conversation after each message
+    this.saveConversationHistory();
   },
 
   /**
@@ -912,6 +1015,106 @@ const AIAssistantWidget = {
     setTimeout(() => {
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }, 100);
+  },
+
+  /**
+   * Save Conversation History to localStorage
+   */
+  saveConversationHistory() {
+    try {
+      const historyData = {
+        messages: this.state.messages,
+        lastSaved: Date.now(),
+        userRole: this.state.userRole,
+        currentContext: this.state.currentContext
+      };
+
+      localStorage.setItem('ai_assistant_conversation', JSON.stringify(historyData));
+      console.log('[AIAssistant] Conversation history saved (' + this.state.messages.length + ' messages)');
+    } catch (error) {
+      console.error('[AIAssistant] Failed to save conversation:', error);
+    }
+  },
+
+  /**
+   * Load Conversation History from localStorage
+   */
+  loadConversationHistory() {
+    try {
+      const stored = localStorage.getItem('ai_assistant_conversation');
+      
+      if (!stored) {
+        console.log('[AIAssistant] No previous conversation found');
+        return;
+      }
+
+      const historyData = JSON.parse(stored);
+      
+      // Check if history is not too old (7 days max)
+      const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days
+      if (Date.now() - historyData.lastSaved > maxAge) {
+        console.log('[AIAssistant] Conversation history expired, clearing...');
+        localStorage.removeItem('ai_assistant_conversation');
+        return;
+      }
+
+      // Restore messages
+      this.state.messages = historyData.messages || [];
+      this.state.userRole = historyData.userRole || null;
+      this.state.currentContext = historyData.currentContext || null;
+
+      // Render messages in UI
+      const messagesContainer = document.getElementById('aiChatMessages');
+      if (messagesContainer) {
+        messagesContainer.innerHTML = ''; // Clear existing
+        
+        this.state.messages.forEach(msg => {
+          const message = document.createElement('div');
+          message.className = `ai-message ${msg.role}`;
+          
+          const avatar = msg.role === 'assistant' ? '🤖' : '👤';
+          
+          message.innerHTML = `
+            <div class="ai-message-avatar">${avatar}</div>
+            <div class="ai-message-content">${msg.content}</div>
+          `;
+          
+          messagesContainer.appendChild(message);
+        });
+
+        this.scrollToBottom();
+      }
+
+      console.log('[AIAssistant] Loaded ' + this.state.messages.length + ' messages from history');
+    } catch (error) {
+      console.error('[AIAssistant] Failed to load conversation:', error);
+      localStorage.removeItem('ai_assistant_conversation');
+    }
+  },
+
+  /**
+   * Clear Conversation History
+   */
+  clearConversationHistory() {
+    try {
+      localStorage.removeItem('ai_assistant_conversation');
+      this.state.messages = [];
+      
+      const messagesContainer = document.getElementById('aiChatMessages');
+      if (messagesContainer) {
+        messagesContainer.innerHTML = '';
+      }
+
+      // Show welcome message again
+      setTimeout(() => {
+        this.addMessage('assistant', this.config.welcomeMessage);
+        this.showQuickActions();
+      }, 500);
+
+      console.log('[AIAssistant] Conversation history cleared');
+    } catch (error) {
+      console.error('[AIAssistant] Failed to clear conversation:', error);
+    }
   }
 };
 
