@@ -2495,6 +2495,191 @@ body {
         color: #e5e5e5;
     }
     
+    /* ============================================
+       TEMPLATES PANEL - Professional Design
+       ============================================ */
+    
+    .templates-toolbar {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(34, 197, 94, 0.2);
+        background: rgba(34, 197, 94, 0.05);
+    }
+    
+    .templates-search-box {
+        position: relative;
+        margin-bottom: 0.75rem;
+    }
+    
+    .templates-search-box input {
+        width: 100%;
+        padding: 0.625rem 2.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1.5px solid rgba(34, 197, 94, 0.3) !important;
+        border-radius: 8px;
+        color: #e5e5e5;
+        font-size: 0.875rem;
+        transition: all 0.2s;
+    }
+    
+    .templates-search-box input:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(34, 197, 94, 0.6) !important;
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+    }
+    
+    .templates-search-icon {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9CA3AF;
+        pointer-events: none;
+    }
+    
+    .templates-categories {
+        display: flex;
+        gap: 0.5rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+    }
+    
+    .template-category-btn {
+        padding: 0.5rem 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1.5px solid rgba(34, 197, 94, 0.3);
+        border-radius: 20px;
+        color: #9CA3AF;
+        font-size: 0.8125rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+        font-weight: 500;
+    }
+    
+    .template-category-btn:hover {
+        background: rgba(34, 197, 94, 0.1);
+        border-color: rgba(34, 197, 94, 0.5);
+        color: #e5e5e5;
+    }
+    
+    .template-category-btn.active {
+        background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+        border-color: #22C55E;
+        color: white;
+        font-weight: 600;
+    }
+    
+    #templatesList {
+        padding: 1rem;
+        overflow-y: auto;
+        max-height: calc(100vh - 320px);
+    }
+    
+    .template-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.75rem;
+    }
+    
+    .template-item {
+        position: relative;
+        aspect-ratio: 4/3;
+        background: rgba(34, 197, 94, 0.08);
+        border-radius: 10px;
+        border: 1.5px solid rgba(34, 197, 94, 0.2);
+        cursor: pointer;
+        transition: all 0.25s;
+        overflow: hidden;
+    }
+    
+    .template-item:hover {
+        transform: translateY(-2px);
+        border-color: rgba(34, 197, 94, 0.6);
+        box-shadow: 0 8px 20px rgba(34, 197, 94, 0.2);
+    }
+    
+    .template-preview {
+        width: 100%;
+        height: 70%;
+        background: rgba(34, 197, 94, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: rgba(34, 197, 94, 0.6);
+    }
+    
+    .template-info {
+        padding: 0.5rem;
+        background: rgba(26, 26, 26, 0.95);
+        height: 30%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .template-name {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #e5e5e5;
+        margin-bottom: 0.125rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .template-category {
+        font-size: 0.6875rem;
+        color: #9CA3AF;
+    }
+    
+    .template-badge {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+        border-radius: 4px;
+        font-size: 0.625rem;
+        font-weight: 600;
+        color: white;
+        text-transform: uppercase;
+    }
+    
+    .btn-save-template {
+        width: 100%;
+        padding: 0.75rem;
+        background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+        color: white;
+        font-weight: 600;
+        font-size: 0.875rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+    
+    .btn-save-template:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+    }
+    
+    .template-empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #9CA3AF;
+    }
+    
+    .template-empty-state i {
+        font-size: 3rem;
+        color: #6B7280;
+        margin-bottom: 1rem;
+    }
+    
     /* Tasks Panel - Professional Design */
     .tasks-toolbar {
         padding: 1rem;
@@ -3151,6 +3336,7 @@ html { visibility: visible; opacity: 1; }
         <div class="icon" data-panel="history"><i data-lucide="clock" style="width:16px;height:16px"></i></div>
         <div class="icon" data-panel="actions"><i data-lucide="zap" style="width:16px;height:16px"></i></div>
         <div class="icon" data-panel="projects"><i data-lucide="folder" style="width:16px;height:16px"></i></div>
+        <div class="icon" data-panel="templates"><i data-lucide="layout-template" style="width:16px;height:16px"></i></div>
         <div class="icon" data-panel="settings"><i data-lucide="settings" style="width:16px;height:16px"></i></div>
     </div>
     <div class="canvas">
@@ -3304,6 +3490,56 @@ html { visibility: visible; opacity: 1; }
         <div id="projectsList">
             <!-- Projects will be dynamically rendered here by ProjectsManager -->
         </div>
+    </div>
+</div>
+
+<!-- ============================================
+     TEMPLATES PANEL - Museum Templates Library
+     ============================================ -->
+<div class="panel left" id="templatesPanel" data-side="left">
+    <div class="panel-header">
+        <span class="panel-title">
+            <i data-lucide="layout-template" class="icon" style="margin-right:8px;"></i>
+            Templates
+        </span>
+        <button class="panel-close" onclick="closePanel('templatesPanel')">
+            <i data-lucide="x" style="width:14px;height:14px"></i>
+        </button>
+    </div>
+    
+    <!-- Templates Toolbar -->
+    <div class="templates-toolbar">
+        <!-- Search Box -->
+        <div class="templates-search-box">
+            <i data-lucide="search" class="icon templates-search-icon"></i>
+            <input type="text" 
+                   id="templateSearch" 
+                   placeholder="템플릿 검색..."
+                   autocomplete="off">
+        </div>
+        
+        <!-- Category Filters -->
+        <div class="templates-categories">
+            <button class="template-category-btn active" data-category="all">전체</button>
+            <button class="template-category-btn" data-category="exhibition">전시기획</button>
+            <button class="template-category-btn" data-category="collection">소장품관리</button>
+            <button class="template-category-btn" data-category="visitor">관람객서비스</button>
+            <button class="template-category-btn" data-category="education">교육프로그램</button>
+            <button class="template-category-btn" data-category="marketing">마케팅</button>
+        </div>
+    </div>
+    
+    <!-- Templates List (Dynamic) -->
+    <div class="panel-content">
+        <div id="templatesList">
+            <!-- Templates will be dynamically rendered here by TemplatesManager -->
+        </div>
+        
+        <!-- Save Current as Template Button -->
+        <button class="btn-save-template" id="saveTemplateBtn">
+            <i data-lucide="save" class="icon-xs"></i>
+            현재 캔버스를 템플릿으로 저장
+        </button>
     </div>
 </div>
 
@@ -7011,6 +7247,9 @@ lucide.createIcons();
 
 <!-- Canvas V23.0 Phase A - Projects & Tasks Panel -->
 <script src="/static/js/canvas-v23-phase-a.js" defer></script>
+
+<!-- Canvas V23.0 Phase B - Templates & Layers & Export Panel -->
+<script src="/static/js/canvas-v23-phase-b.js" defer></script>
 
 <!-- AI Orchestrator Integration for Canvas -->
 <script>
