@@ -20,6 +20,7 @@ import googleWorkspace from './api-google-workspace'
 import museumApi from './api-museum'
 import databaseApi from './api-database'
 import admin from './routes/admin'
+import approvals from './api/approvals'
 
 // Export Durable Objects
 export { CollaborationRoom } from './durable-objects/collaboration-room'
@@ -97,6 +98,7 @@ app.route('/api/google-workspace', googleWorkspace)
 app.route('/api/museum', museumApi)
 app.route('/api/db', databaseApi)
 app.route('/api/admin', admin)
+app.route('/api/approvals', approvals)
 
 // 404 handler for API routes (prevent fallback to landing.html)
 app.notFound((c) => {
