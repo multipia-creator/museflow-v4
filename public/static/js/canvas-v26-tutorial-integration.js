@@ -16,6 +16,11 @@
 
 const MuseumTutorialIntegration = {
   /**
+   * Help Center V26 Integration
+   */
+  helpCenterURL: '/help-center',
+  
+  /**
    * 7가지 업무별 튜토리얼 시나리오
    */
   TUTORIAL_SCENARIOS: {
