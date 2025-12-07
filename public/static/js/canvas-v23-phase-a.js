@@ -253,17 +253,36 @@ const ProjectsManager = {
     },
     
     renderProjects(searchQuery = '') {
-        const container = document.getElementById('projectsList');
+        // Try multiple methods to find the container
+        let container = document.getElementById('projectsList');
+        
+        // Fallback 1: Try querySelector
         if (!container) {
-            console.warn('⚠️ projectsList container not found, will retry...');
-            // Retry after a delay if container doesn't exist
-            setTimeout(() => {
-                const retryContainer = document.getElementById('projectsList');
-                if (retryContainer) {
-                    console.log('✅ projectsList found on retry, rendering now...');
-                    this.renderProjects(searchQuery);
+            container = document.querySelector('#projectsList');
+        }
+        
+        // Fallback 2: Try from parent panel
+        if (!container) {
+            const panel = document.getElementById('projectsPanel');
+            if (panel) {
+                container = panel.querySelector('#projectsList');
+                
+                // Fallback 3: Create the element if panel exists but projectsList doesn't
+                if (!container) {
+                    const panelContent = panel.querySelector('.panel-content');
+                    if (panelContent) {
+                        console.log('🔧 Creating projectsList element...');
+                        container = document.createElement('div');
+                        container.id = 'projectsList';
+                        panelContent.appendChild(container);
+                        console.log('✅ projectsList element created successfully');
+                    }
                 }
-            }, 1000);
+            }
+        }
+        
+        if (!container) {
+            console.warn('⚠️ projectsList container not found, stopping retry to prevent infinite loop');
             return;
         }
         
@@ -595,17 +614,36 @@ const TasksManager = {
     },
     
     renderTasks() {
-        const container = document.getElementById('tasksList');
+        // Try multiple methods to find the container
+        let container = document.getElementById('tasksList');
+        
+        // Fallback 1: Try querySelector
         if (!container) {
-            console.warn('⚠️ tasksList container not found, will retry...');
-            // Retry after a delay if container doesn't exist
-            setTimeout(() => {
-                const retryContainer = document.getElementById('tasksList');
-                if (retryContainer) {
-                    console.log('✅ tasksList found on retry, rendering now...');
-                    this.renderTasks();
+            container = document.querySelector('#tasksList');
+        }
+        
+        // Fallback 2: Try from parent panel
+        if (!container) {
+            const panel = document.getElementById('tasksPanel');
+            if (panel) {
+                container = panel.querySelector('#tasksList');
+                
+                // Fallback 3: Create the element if panel exists but tasksList doesn't
+                if (!container) {
+                    const panelContent = panel.querySelector('.panel-content');
+                    if (panelContent) {
+                        console.log('🔧 Creating tasksList element...');
+                        container = document.createElement('div');
+                        container.id = 'tasksList';
+                        panelContent.appendChild(container);
+                        console.log('✅ tasksList element created successfully');
+                    }
                 }
-            }, 1000);
+            }
+        }
+        
+        if (!container) {
+            console.warn('⚠️ tasksList container not found, stopping retry to prevent infinite loop');
             return;
         }
         
