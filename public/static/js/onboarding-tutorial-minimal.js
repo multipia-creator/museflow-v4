@@ -64,7 +64,7 @@
         }, 7000);
     }
     
-    // Create minimal tooltip
+    // Create ultra-minimal tooltip (60% smaller)
     function createTooltip(step, index) {
         // Remove existing
         if (tooltipElement) {
@@ -75,65 +75,75 @@
         
         tooltipElement = document.createElement('div');
         tooltipElement.className = 'minimal-tutorial';
+        
+        // Ultra-compact icon-only layout
         tooltipElement.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <span style="font-size: 10px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em;">
-                    Tip ${index + 1}/${totalSteps}
-                </span>
-                <button class="minimal-tutorial-close" onclick="window.minimalTutorial.dismiss()" style="
-                    background: transparent;
-                    border: none;
-                    color: #9ca3af;
-                    cursor: pointer;
-                    padding: 2px;
-                    font-size: 14px;
-                    line-height: 1;
-                    transition: color 0.15s;
-                " onmouseover="this.style.color='#1f2937'" onmouseout="this.style.color='#9ca3af'">
-                    ×
-                </button>
-            </div>
-            <div style="margin-bottom: 6px;">
-                <div style="font-size: 13px; font-weight: 600; color: #1f2937; margin-bottom: 3px;">
-                    <i data-lucide="${step.icon}" style="width: 12px; height: 12px; display: inline-block; margin-right: 4px; vertical-align: -1px;"></i>
+            <div style="text-align: center;">
+                <div style="margin-bottom: 4px;">
+                    <i data-lucide="${step.icon}" style="width: 18px; height: 18px; color: #3b82f6; stroke-width: 2;"></i>
+                </div>
+                <div style="font-size: 9px; font-weight: 600; color: #1f2937; margin-bottom: 2px; line-height: 1.2;">
                     ${step.title}
                 </div>
-                <div style="font-size: 11px; color: #6b7280; line-height: 1.4;">
+                <div style="font-size: 7px; color: #6b7280; line-height: 1.3; margin-bottom: 6px;">
                     ${step.content}
                 </div>
-            </div>
-            <div style="display: flex; gap: 6px; justify-content: flex-end;">
-                <button onclick="window.minimalTutorial.next()" style="
-                    padding: 5px 10px;
-                    font-size: 11px;
-                    font-weight: 500;
-                    border-radius: 4px;
-                    border: 1px solid rgba(0, 0, 0, 0.1);
-                    background: #ffffff;
-                    color: #6b7280;
-                    cursor: pointer;
-                    transition: all 0.15s;
-                " onmouseover="this.style.borderColor='#3b82f6'; this.style.color='#3b82f6'" 
-                   onmouseout="this.style.borderColor='rgba(0,0,0,0.1)'; this.style.color='#6b7280'">
-                    ${index < totalSteps - 1 ? 'Next' : 'Done'}
-                </button>
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 4px;">
+                    <span style="font-size: 7px; color: #9ca3af;">${index + 1}/${totalSteps}</span>
+                    <div style="display: flex; gap: 3px;">
+                        <button onclick="window.minimalTutorial.dismiss()" style="
+                            width: 16px;
+                            height: 16px;
+                            padding: 0;
+                            font-size: 10px;
+                            border-radius: 3px;
+                            border: 1px solid rgba(0, 0, 0, 0.1);
+                            background: #ffffff;
+                            color: #9ca3af;
+                            cursor: pointer;
+                            transition: all 0.15s;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        " onmouseover="this.style.background='#fef2f2'; this.style.borderColor='#ef4444'; this.style.color='#ef4444'" 
+                           onmouseout="this.style.background='#ffffff'; this.style.borderColor='rgba(0,0,0,0.1)'; this.style.color='#9ca3af'"
+                           title="Skip">×</button>
+                        <button onclick="window.minimalTutorial.next()" style="
+                            width: 16px;
+                            height: 16px;
+                            padding: 0;
+                            font-size: 9px;
+                            border-radius: 3px;
+                            border: 1px solid rgba(59, 130, 246, 0.3);
+                            background: #3b82f6;
+                            color: #ffffff;
+                            cursor: pointer;
+                            transition: all 0.15s;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        " onmouseover="this.style.background='#2563eb'" 
+                           onmouseout="this.style.background='#3b82f6'"
+                           title="${index < totalSteps - 1 ? 'Next' : 'Done'}">→</button>
+                    </div>
+                </div>
             </div>
         `;
         
-        // Minimal style - Fixed bottom-right
+        // Ultra-compact style - 60% smaller
         tooltipElement.style.cssText = `
             position: fixed;
-            bottom: 72px;
+            bottom: 24px;
             right: 20px;
-            width: 180px;
+            width: 72px;
             background: #ffffff;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            border-radius: 8px;
-            padding: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 6px;
+            padding: 8px 6px;
+            box-shadow: 0 2px 12px rgba(59, 130, 246, 0.15), 0 1px 3px rgba(0, 0, 0, 0.08);
             z-index: 1000;
-            font-family: Inter, sans-serif;
-            transition: opacity 0.15s;
+            font-family: Inter, -apple-system, sans-serif;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         `;
         
         document.body.appendChild(tooltipElement);
@@ -141,6 +151,11 @@
         // Initialize lucide icons
         if (window.lucide) {
             window.lucide.createIcons();
+        }
+        
+        // Add pulse animation on first show
+        if (index === 0) {
+            tooltipElement.style.animation = 'tutorial-pulse 2s ease-in-out';
         }
     }
     
