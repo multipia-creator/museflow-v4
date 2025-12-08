@@ -278,6 +278,24 @@
         
         let html = '';
         
+        // AI Recommendations Section (NEW!)
+        if (!searchInput.value && window.aiRecommendation) {
+            const recommendations = window.aiRecommendation.getRecommendations(allWidgets, 5);
+            if (recommendations.length > 0) {
+                html += '<div class="command-section ai-recommendation-section">';
+                html += '<div class="command-section-title">✨ AI 추천</div>';
+                recommendations.forEach((rec, index) => {
+                    const matchPercent = Math.round(rec.score * 100);
+                    html += renderWidgetItem(rec.widget, false, false, -1, {
+                        isAI: true,
+                        reason: rec.reason,
+                        matchPercent
+                    });
+                });
+                html += '</div>';
+            }
+        }
+        
         // Favorites Section
         if (state.favoriteWidgets.length > 0 && !searchInput.value) {
             html += '<div class="command-section">';
@@ -329,19 +347,35 @@
     }
     
     // Render Widget Item
-    function renderWidgetItem(widget, isFavSection = false, isSelected = false, dataIndex = -1) {
+    function renderWidgetItem(widget, isFavSection = false, isSelected = false, dataIndex = -1, aiData = null) {
         const isFav = isFavorite(widget.id);
         const premiumBadge = widget.premium ? '<span class="premium-badge">PRO</span>' : '';
         
+        // AI recommendation badge
+        let aiInfo = '';
+        if (aiData && aiData.isAI) {
+            aiInfo = `
+                <div class="ai-recommendation-reason">
+                    🤖 ${aiData.reason}
+                    <span class="ai-recommendation-match">${aiData.matchPercent}% 매칭</span>
+                </div>
+            `;
+        }
+        
         return `
-            <div class="command-item ${isSelected ? 'selected' : ''}" 
+            <div class="command-item ${isSelected ? 'selected' : ''} ${aiData ? 'ai-recommendation-item' : ''}" 
                  data-widget-id="${widget.id}"
                  data-index="${dataIndex}"
                  onclick="window.commandPalette.selectWidget('${widget.id}')">
                 <div class="command-item-left">
                     <i data-lucide="${widget.icon}" style="width: 16px; height: 16px; color: #6b7280;"></i>
-                    <span class="command-item-name">${widget.name}</span>
-                    ${premiumBadge}
+                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                        <div>
+                            <span class="command-item-name">${widget.name}</span>
+                            ${premiumBadge}
+                        </div>
+                        ${aiInfo}
+                    </div>
                 </div>
                 <div class="command-item-right">
                     <span class="command-item-category">${widget.category}</span>
@@ -385,6 +419,11 @@
         
         // Save to recent
         saveRecentWidget(widget);
+        
+        // Track usage for AI recommendations
+        if (window.aiRecommendation) {
+            window.aiRecommendation.trackUsage(widget.id, widget.category);
+        }
         
         // Trigger widget addition to canvas
         if (widget.element) {
@@ -670,7 +709,8 @@
         toggleFavorite: (widgetId) => {
             const widget = allWidgets.find(w => w.id === widgetId);
             if (widget) toggleFavorite(widget);
-        }
+        },
+        allWidgets // Expose for AI recommendation system
     };
     
     // Auto-initialize on page load
