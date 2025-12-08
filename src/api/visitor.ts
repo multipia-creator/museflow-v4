@@ -43,6 +43,10 @@ app.post('/predict', async (c) => {
 
     console.log('📊 Visitor prediction request:', request.exhibitionTheme);
 
+    // Initialize Gemini service
+    const { initGemini } = await import('../services/gemini.service');
+    initGemini({ apiKey: c.env.GEMINI_API_KEY });
+
     // Initialize Visitor Agent
     const agent = new VisitorAgent();
     await agent.initialize();

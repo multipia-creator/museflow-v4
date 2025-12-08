@@ -21,6 +21,8 @@ import museumApi from './api-museum'
 import databaseApi from './api-database'
 import admin from './routes/admin'
 import approvals from './api/approvals'
+import visitor from './api/visitor'
+import education from './api/education'
 
 // Export Durable Objects
 export { CollaborationRoom } from './durable-objects/collaboration-room'
@@ -99,6 +101,8 @@ app.route('/api/museum', museumApi)
 app.route('/api/db', databaseApi)
 app.route('/api/admin', admin)
 app.route('/api/approvals', approvals)
+app.route('/api/visitor', visitor)
+app.route('/api/education', education)
 
 // 404 handler for API routes (prevent fallback to landing.html)
 app.notFound((c) => {
