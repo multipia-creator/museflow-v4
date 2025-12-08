@@ -351,13 +351,21 @@
         const isFav = isFavorite(widget.id);
         const premiumBadge = widget.premium ? '<span class="premium-badge">PRO</span>' : '';
         
-        // AI recommendation badge
+        // AI recommendation badge + feedback buttons
         let aiInfo = '';
         if (aiData && aiData.isAI) {
             aiInfo = `
                 <div class="ai-recommendation-reason">
                     🤖 ${aiData.reason}
                     <span class="ai-recommendation-match">${aiData.matchPercent}% 매칭</span>
+                    <div class="ai-feedback-buttons">
+                        <button class="ai-feedback-btn" 
+                                onclick="event.stopPropagation(); window.aiHandleFeedback('${widget.id}', true)"
+                                title="도움됨">👍</button>
+                        <button class="ai-feedback-btn" 
+                                onclick="event.stopPropagation(); window.aiHandleFeedback('${widget.id}', false)"
+                                title="별로">👎</button>
+                    </div>
                 </div>
             `;
         }
