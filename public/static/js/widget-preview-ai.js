@@ -14,6 +14,55 @@
             this.hoverTimer = null;
             this.HOVER_DELAY = 500; // 0.5s delay before showing
             this.currentTarget = null;
+            
+            // Thumbnail placeholder generator
+            this.generatePlaceholder = this.generatePlaceholder.bind(this);
+        }
+        
+        /**
+         * Generate SVG placeholder for widget thumbnail
+         */
+        generatePlaceholder(widgetName, category, icon) {
+            const svgContent = `
+                <svg width="320" height="180" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#f9fafb;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#f3f4f6;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <rect width="320" height="180" fill="url(#bg-gradient)"/>
+                    <rect x="0" y="0" width="320" height="40" fill="rgba(0,0,0,0.02)"/>
+                    <text x="160" y="90" text-anchor="middle" 
+                          font-family="Inter, sans-serif" font-size="32" fill="#9ca3af">
+                        ${icon}
+                    </text>
+                    <text x="160" y="125" text-anchor="middle" 
+                          font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#1f2937">
+                        ${widgetName}
+                    </text>
+                    <text x="160" y="145" text-anchor="middle" 
+                          font-family="Inter, sans-serif" font-size="11" fill="#6b7280">
+                        ${category}
+                    </text>
+                </svg>
+            `;
+            return `data:image/svg+xml,${encodeURIComponent(svgContent)}`;
+        }
+        
+        /**
+         * Get widget thumbnail URL
+         */
+        getWidgetThumbnail(widgetId, widgetData) {
+            // Check if real image exists (will implement later)
+            const realImageUrl = `/static/img/widgets/${widgetId}.png`;
+            
+            // For now, always use placeholder
+            return this.generatePlaceholder(
+                widgetData.name || 'Widget',
+                widgetData.category || 'General',
+                widgetData.icon || '📦'
+            );
         }
         
         init() {
@@ -86,18 +135,22 @@
             
             // Create tooltip
             this.tooltip = document.createElement('div');
-            this.tooltip.className = 'widget-preview-tooltip';
+            this.tooltip.className = 'widget-preview-tooltip enhanced';
             this.tooltip.innerHTML = this.renderTooltip(data);
+            
+            // Initial state (for animation)
+            this.tooltip.style.opacity = '0';
+            this.tooltip.style.transform = 'translateY(10px) scale(0.95)';
             
             document.body.appendChild(this.tooltip);
             
             // Position tooltip
             this.positionTooltip(targetElement);
             
-            // Fade in
+            // Animate in
             requestAnimationFrame(() => {
                 this.tooltip.style.opacity = '1';
-                this.tooltip.style.transform = 'translateY(0)';
+                this.tooltip.style.transform = 'translateY(0) scale(1)';
             });
             
             // Initialize lucide icons
@@ -120,43 +173,109 @@
         }
         
         renderTooltip(data) {
-            const premiumBadge = data.premium 
-                ? '<span class="preview-premium-badge">PRO</span>' 
-                : '';
-            
             const features = data.features || ['대시보드', '분석', '시각화'];
             const description = data.description || `${data.name} 위젯의 상세 설명입니다.`;
+            const thumbnailUrl = this.getWidgetThumbnail(data.id, data);
+            
+            // Icon mapping for emojis
+            const iconEmoji = this.getIconEmoji(data.icon || 'package');
             
             return `
-                <div class="preview-header">
-                    <div class="preview-title">
-                        <i data-lucide="${data.icon || 'package'}" style="width: 16px; height: 16px;"></i>
-                        <span>${data.name}</span>
+                <!-- Thumbnail Section (NEW!) -->
+                <div class="preview-thumbnail">
+                    <img 
+                        src="${thumbnailUrl}" 
+                        alt="${data.name} Preview"
+                        loading="lazy"
+                        width="320" 
+                        height="180"
+                        onerror="this.style.display='none'"
+                    />
+                    <div class="preview-overlay">
+                        <div class="preview-zoom-hint">🔍 미리보기</div>
                     </div>
-                    ${premiumBadge}
                 </div>
-                <div class="preview-body">
-                    <div class="preview-icon-large">
-                        <i data-lucide="${data.icon || 'package'}" style="width: 48px; height: 48px; color: #3b82f6;"></i>
-                    </div>
-                    <div class="preview-meta">
-                        <div class="preview-meta-item">
-                            <span class="preview-meta-label">카테고리</span>
-                            <span class="preview-meta-value">${data.category}</span>
+                
+                <!-- Info Section (Enhanced) -->
+                <div class="preview-info">
+                    <div class="preview-header-enhanced">
+                        <div class="preview-icon-emoji">${iconEmoji}</div>
+                        <div class="preview-title-block">
+                            <h4 class="preview-title-text">${data.name}</h4>
+                            <div class="preview-meta-badges">
+                                ${data.premium ? '<span class="badge-premium">Premium</span>' : '<span class="badge-free">Free</span>'}
+                                <span class="badge-category">${data.category || 'General'}</span>
+                            </div>
                         </div>
-                        <div class="preview-meta-item">
-                            <span class="preview-meta-label">타입</span>
-                            <span class="preview-meta-value">${data.premium ? 'Premium' : 'Free'}</span>
-                        </div>
                     </div>
-                    <div class="preview-description">
+                    
+                    <div class="preview-description-enhanced">
                         ${description}
                     </div>
-                    <div class="preview-features">
-                        ${features.map(f => `<span class="preview-feature-tag">${f}</span>`).join('')}
+                    
+                    <div class="preview-features-enhanced">
+                        ${features.map(f => `<div class="feature-tag">${f}</div>`).join('')}
                     </div>
                 </div>
             `;
+        }
+        
+        /**
+         * Map lucide icon name to emoji
+         */
+        getIconEmoji(iconName) {
+            const iconMap = {
+                'package': '📦',
+                'folder': '📁',
+                'file': '📄',
+                'chart-bar': '📊',
+                'pie-chart': '🥧',
+                'trending-up': '📈',
+                'users': '👥',
+                'calendar': '📅',
+                'mail': '✉️',
+                'image': '🖼️',
+                'video': '🎬',
+                'music': '🎵',
+                'settings': '⚙️',
+                'search': '🔍',
+                'bell': '🔔',
+                'heart': '❤️',
+                'star': '⭐',
+                'bookmark': '🔖',
+                'tag': '🏷️',
+                'database': '💾',
+                'cloud': '☁️',
+                'download': '⬇️',
+                'upload': '⬆️',
+                'share': '🔗',
+                'lock': '🔒',
+                'unlock': '🔓',
+                'key': '🔑',
+                'shield': '🛡️',
+                'zap': '⚡',
+                'cpu': '💻',
+                'smartphone': '📱',
+                'tablet': '📲',
+                'monitor': '🖥️',
+                'printer': '🖨️',
+                'camera': '📷',
+                'map': '🗺️',
+                'globe': '🌍',
+                'compass': '🧭',
+                'clock': '🕐',
+                'timer': '⏱️',
+                'stopwatch': '⏲️',
+                'hourglass': '⏳',
+                'rocket': '🚀',
+                'sparkles': '✨',
+                'gift': '🎁',
+                'trophy': '🏆',
+                'medal': '🏅',
+                'award': '🎖️'
+            };
+            
+            return iconMap[iconName] || '📦';
         }
         
         positionTooltip(targetElement) {
