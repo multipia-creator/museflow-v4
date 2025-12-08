@@ -324,6 +324,17 @@ body {
     overflow-y: auto;
 }
 
+/* Hide removed panels (Minimal 5-icon design) */
+#historyPanel,
+#actionsPanel,
+#templatesPanel,
+#settingsPanel,
+#statsPanel,
+#tasksPanel,
+#alertsPanel {
+    display: none !important;
+}
+
 /* Media Card with thumbnail */
 .card {
     position: absolute !important;
@@ -3602,23 +3613,12 @@ html { visibility: visible; opacity: 1; }
 <!-- Main Container -->
 <div class="container">
     <div class="sidebar left">
-        <!-- Primary Actions (Top) -->
+        <!-- Minimal Figma-style: 5 Essential Icons Only -->
         <div class="icon" data-panel="projects" title="Projects"><i data-lucide="folder" style="width:16px;height:16px"></i></div>
         <div class="icon" data-panel="widget" title="Widgets (87)"><i data-lucide="package" style="width:16px;height:16px"></i><span class="badge">87</span></div>
         <div class="icon" data-panel="layers" title="Layers"><i data-lucide="layers" style="width:16px;height:16px"></i></div>
-        
-        <!-- Secondary Actions (Middle) -->
-        <div class="icon" data-panel="history" title="History"><i data-lucide="clock" style="width:16px;height:16px"></i></div>
-        <div class="icon" data-panel="ai" title="AI Assistant"><i data-lucide="sparkles" style="width:16px;height:16px"></i><span class="badge">1</span></div>
-        <div class="icon" data-panel="tasks" title="Tasks"><i data-lucide="check-square" style="width:16px;height:16px"></i><span class="badge">2</span></div>
-        <div class="icon" data-panel="alerts" title="Alerts"><i data-lucide="bell" style="width:16px;height:16px"></i><span class="badge">3</span></div>
-        
-        <!-- Tertiary Actions (Bottom) -->
-        <div class="icon" data-panel="templates" title="Templates"><i data-lucide="layout-template" style="width:16px;height:16px"></i></div>
-        <div class="icon" data-panel="actions" title="Actions"><i data-lucide="zap" style="width:16px;height:16px"></i></div>
+        <div class="icon" data-panel="ai" title="AI Assistant"><i data-lucide="sparkles" style="width:16px;height:16px"></i></div>
         <div class="icon" data-panel="export" title="Export"><i data-lucide="download" style="width:16px;height:16px"></i></div>
-        <div class="icon" data-panel="stats" title="Statistics"><i data-lucide="bar-chart-2" style="width:16px;height:16px"></i></div>
-        <div class="icon" data-panel="settings" title="Settings"><i data-lucide="settings" style="width:16px;height:16px"></i></div>
     </div>
     <div class="canvas">
         <div class="viewport" id="vp"></div>
