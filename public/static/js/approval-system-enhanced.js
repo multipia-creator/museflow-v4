@@ -51,19 +51,14 @@
   // ============================================================
   async function loadCurrentUser() {
     try {
-      const authToken = localStorage.getItem('authToken') || 
-                       localStorage.getItem('auth_token') ||
-                       localStorage.getItem('user_session');
-      
-      if (!authToken) {
+      // auth-utils 사용
+      if (!window.AuthUtils || !window.AuthUtils.isAuthenticated()) {
         console.log('⚠️ 로그인 필요');
         return;
       }
 
-      const response = await fetch(`${API_BASE}/api/auth/me`, {
-        headers: {
-          'Authorization': `Bearer ${authToken}`
-        }
+      const response = await window.AuthUtils.apiCall(`${API_BASE}/api/auth/me`, {
+        method: 'GET'
       });
 
       if (response.ok) {
@@ -84,16 +79,12 @@
     if (!currentUser) return;
 
     try {
-      const authToken = localStorage.getItem('authToken') || 
-                       localStorage.getItem('auth_token') ||
-                       localStorage.getItem('user_session');
-      
       let count = 0;
       
       if (isApprover) {
         // 결재권자: 승인 대기 건수
-        const response = await fetch(`${API_BASE}/api/approvals/pending`, {
-          headers: { 'Authorization': `Bearer ${authToken}` }
+        const response = await window.AuthUtils.apiCall(`${API_BASE}/api/approvals/pending`, {
+          method: 'GET'
         });
         if (response.ok) {
           const data = await response.json();

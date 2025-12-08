@@ -1,10 +1,14 @@
 import { Hono } from 'hono'
+import { authMiddleware } from '../middleware/auth'
 
 type Bindings = {
   DB: D1Database;
 }
 
 const app = new Hono<{ Bindings: Bindings }>()
+
+// 모든 dashboard API에 인증 적용
+app.use('*', authMiddleware)
 
 // ==========================================
 // Canvas → Dashboard 실시간 동기화 API

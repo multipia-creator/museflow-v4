@@ -1,23 +1,6 @@
-# AI Models
-GEMINI_API_KEY=your_gemini_api_key_here
+# Local Development Environment Variables
+# Copy this file to .dev.vars and fill in your actual values
+# .dev.vars is automatically loaded by Wrangler for local development
 
-# Notion Integration
-NOTION_API_KEY=your_notion_api_key_here
-NOTION_DATABASE_PROJECTS=your_projects_database_id
-NOTION_DATABASE_TASKS=your_tasks_database_id
-NOTION_DATABASE_ARTWORKS=your_artworks_database_id
-
-# Museum Data APIs
-MUSEUM_API_KEY=your_museum_api_key_here
-MUSEUM_API_BASE_URL=https://www.emuseum.go.kr/openapi
-
-# Neo4j Knowledge Graph
-NEO4J_URI=bolt://localhost:7687
-NEO4J_USER=neo4j
-NEO4J_PASSWORD=your_neo4j_password
-
-# Redis (for local development)
-REDIS_URL=redis://localhost:6379
-
-# Environment
-NODE_ENV=development
+JWT_SECRET=local-dev-secret-change-for-production
+GEMINI_API_KEY=your-gemini-api-key

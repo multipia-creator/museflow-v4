@@ -41,8 +41,9 @@ const htmlFiles = fs.readdirSync(PUBLIC_DIR)
 
 console.log(`HTML files in public/: ${htmlFiles.length}\n`);
 
-// Check if all HTML files are excluded
-const missingHtml = htmlFiles.filter(file => !routes.exclude.includes(file));
+// Check if all HTML files are excluded (support wildcard /*.html)
+const hasHtmlWildcard = routes.exclude.includes('/*.html');
+const missingHtml = hasHtmlWildcard ? [] : htmlFiles.filter(file => !routes.exclude.includes(file));
 if (missingHtml.length > 0) {
   ERRORS.push(`HTML files not excluded: ${missingHtml.join(', ')}`);
 }

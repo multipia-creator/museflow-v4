@@ -12,7 +12,7 @@
     "prebuild": "node scripts/validate-migrations.cjs && node scripts/generate-version.cjs",
     "build": "vite build && npm run copy:html && npm run generate:routes && npm run validate:routes && node scripts/generate-version.cjs",
     "generate:routes": "node scripts/generate-routes.cjs",
-    "copy:html": "cp public/dashboard.html public/login.html public/signup.html public/landing.html public/index.html public/projects.html public/account.html public/admin.html public/ar-vr-demo.html public/canvas.html public/canvas-v3.html public/canvas-v4-hybrid.html public/canvas-v4-ultimate.html public/canvas-v4-complete.html public/canvas-v5-clean.html public/forgot-password.html public/budget.html public/workflow.html public/workflow-tools.html public/analytics-dashboard.html public/google-mcp.html public/icon-samples.html public/icon-samples-lucide.html public/3d-viewer.html public/digital-twin.html public/digital-twin-pro.html public/_headers dist/ 2>/dev/null || true",
+    "copy:html": "find public -maxdepth 1 -name '*.html' -exec cp {} dist/ \\; && cp public/_headers dist/ 2>/dev/null || true",
     "validate:migrations": "node scripts/validate-migrations.cjs",
     "validate:routes": "node scripts/validate-routes.cjs",
     "preview": "wrangler pages dev",

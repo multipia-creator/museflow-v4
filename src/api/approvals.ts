@@ -5,6 +5,7 @@
 
 import { Hono } from 'hono'
 import type { D1Database } from '@cloudflare/workers-types'
+import { authMiddleware, requireApprover } from '../middleware/auth'
 
 type Bindings = {
   DB: D1Database
@@ -13,35 +14,15 @@ type Bindings = {
 const app = new Hono<{ Bindings: Bindings }>()
 
 // ============================================================
-// Middleware: 결재권자 체크
+// 모든 approvals API에 인증 적용
 // ============================================================
-const requireApprover = async (c: any, next: any) => {
-  const user = c.get('user')
-  
-  if (!user) {
-    return c.json({ error: '로그인이 필요합니다' }, 401)
-  }
-
-  // is_approver 체크
-  const approverCheck = await c.env.DB.prepare(
-    'SELECT is_approver FROM users WHERE id = ?'
-  ).bind(user.id).first()
-
-  if (!approverCheck || !approverCheck.is_approver) {
-    return c.json({ error: '결재 권한이 없습니다' }, 403)
-  }
-
-  await next()
-}
+app.use('*', authMiddleware)
 
 // ============================================================
 // 1. 승인 요청 (일반 사용자)
 // ============================================================
 app.post('/projects/:id/request-approval', async (c) => {
-  const user = c.get('user')
-  if (!user) {
-    return c.json({ error: '로그인이 필요합니다' }, 401)
-  }
+  const user = c.get('user') // authMiddleware에서 설정됨
 
   const projectId = c.req.param('id')
   const { comment } = await c.req.json()
@@ -216,11 +197,7 @@ app.post('/projects/:id/reject', requireApprover, async (c) => {
 // 5. 승인 이력 조회
 // ============================================================
 app.get('/projects/:id/history', async (c) => {
-  const user = c.get('user')
-  if (!user) {
-    return c.json({ error: '로그인이 필요합니다' }, 401)
-  }
-
+  const user = c.get('user') // authMiddleware에서 설정됨
   const projectId = c.req.param('id')
 
   try {
@@ -250,10 +227,7 @@ app.get('/projects/:id/history', async (c) => {
 // 6. 내 승인 요청 현황 (일반 사용자)
 // ============================================================
 app.get('/my-requests', async (c) => {
-  const user = c.get('user')
-  if (!user) {
-    return c.json({ error: '로그인이 필요합니다' }, 401)
-  }
+  const user = c.get('user') // authMiddleware에서 설정됨
 
   try {
     const myRequests = await c.env.DB.prepare(`

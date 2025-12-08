@@ -5,12 +5,16 @@
 
 import { Hono } from 'hono'
 import type { Context } from 'hono'
+import { authMiddleware } from '../middleware/auth'
 
 type Bindings = {
   DB: D1Database
 }
 
 const app = new Hono<{ Bindings: Bindings }>()
+
+// 모든 projects API에 인증 적용
+app.use('*', authMiddleware)
 
 // ============================================================================
 // GET /api/projects - List all projects

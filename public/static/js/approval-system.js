@@ -35,7 +35,7 @@
   // ============================================================
   async function loadCurrentUser() {
     try {
-      const authToken = localStorage.getItem('authToken');
+      const authToken = window.AuthUtils ? window.AuthUtils.getAuthToken() : null;
       if (!authToken) {
         console.log('⚠️ 로그인 필요');
         return;
@@ -65,7 +65,7 @@
     console.log('📋 승인 대기 목록 로드 (결재권자)');
 
     try {
-      const authToken = localStorage.getItem('authToken');
+      const authToken = window.AuthUtils ? window.AuthUtils.getAuthToken() : null;
       const response = await fetch(`${API_BASE}/api/approvals/pending`, {
         headers: {
           'Authorization': `Bearer ${authToken}`
@@ -166,7 +166,7 @@
     console.log('📋 내 승인 요청 현황 로드');
 
     try {
-      const authToken = localStorage.getItem('authToken');
+      const authToken = window.AuthUtils ? window.AuthUtils.getAuthToken() : null;
       const response = await fetch(`${API_BASE}/api/approvals/my-requests`, {
         headers: {
           'Authorization': `Bearer ${authToken}`
@@ -262,7 +262,7 @@
     const comment = prompt('승인 코멘트를 입력하세요 (선택):');
     
     try {
-      const authToken = localStorage.getItem('authToken');
+      const authToken = window.AuthUtils ? window.AuthUtils.getAuthToken() : null;
       const response = await fetch(`${API_BASE}/api/approvals/projects/${projectId}/approve`, {
         method: 'POST',
         headers: {
@@ -296,7 +296,7 @@
     }
     
     try {
-      const authToken = localStorage.getItem('authToken');
+      const authToken = window.AuthUtils ? window.AuthUtils.getAuthToken() : null;
       const response = await fetch(`${API_BASE}/api/approvals/projects/${projectId}/reject`, {
         method: 'POST',
         headers: {

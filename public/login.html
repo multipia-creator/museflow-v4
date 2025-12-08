@@ -438,6 +438,7 @@
     
     <script src="/static/js/core/toast.js"></script>
     <script src="/static/js/core/loading.js"></script>
+    <script src="/static/js/auth-utils.js"></script>
     <script src="/static/js/core/oauth-manager.js"></script>
     <script>
         // API Base URL Configuration
@@ -576,8 +577,13 @@
                 Loading.hide(loaderId);
                 
                 if (response.ok) {
-                    // Store token
-                    localStorage.setItem('authToken', data.token);
+                    // Store token using auth-utils.js
+                    if (window.AuthUtils) {
+                        window.AuthUtils.setAuthToken(data.token);
+                    } else {
+                        // Fallback
+                        localStorage.setItem('museflow_auth_token', data.token);
+                    }
                     localStorage.setItem('user', JSON.stringify(data.user));
                     
                     // Show success toast

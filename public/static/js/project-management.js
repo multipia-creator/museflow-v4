@@ -33,9 +33,8 @@
     // ==========================================
     
     function getAuthToken() {
-        return localStorage.getItem('auth_token') || 
-               localStorage.getItem('user_session') ||
-               sessionStorage.getItem('auth_token');
+        // auth-utils.js의 전역 함수 사용
+        return window.AuthUtils ? window.AuthUtils.getAuthToken() : null;
     }
     
     // ==========================================
