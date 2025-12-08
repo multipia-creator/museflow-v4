@@ -3,16 +3,19 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   test: {
     globals: true,
-    environment: 'happy-dom',
+    environment: 'node',
+    include: ['tests/**/*.test.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       exclude: [
-        'node_modules/',
-        'dist/',
-        '**/*.config.ts',
-        '**/*.d.ts',
-      ],
+        'node_modules/**',
+        'dist/**',
+        '**/*.config.*',
+        '**/types/**'
+      ]
     },
-  },
+    testTimeout: 30000,
+    hookTimeout: 30000
+  }
 });

@@ -1,0 +1,61 @@
+/* MuseFlow Neon Logo Styles - Optimized */
+
+.unified-nav-logo,
+.linear-nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.unified-nav-logo:hover,
+.linear-nav-logo:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.unified-nav-logo .logo-image,
+.linear-nav-logo .logo-image {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.3));
+    transition: filter 0.3s ease;
+}
+
+.unified-nav-logo:hover .logo-image,
+.linear-nav-logo:hover .logo-image {
+    filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.5));
+}
+
+.unified-nav-logo-text,
+.linear-nav-logo span {
+    font-size: 1.25rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .unified-nav-logo .logo-image,
+    .linear-nav-logo .logo-image {
+        height: 32px;
+    }
+    
+    .unified-nav-logo-text,
+    .linear-nav-logo span {
+        font-size: 1.1rem;
+    }
+}
+
+/* Dark mode enhancement */
+@media (prefers-color-scheme: dark) {
+    .unified-nav-logo .logo-image,
+    .linear-nav-logo .logo-image {
+        filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.4));
+    }
+}

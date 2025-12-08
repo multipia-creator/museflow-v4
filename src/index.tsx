@@ -23,6 +23,7 @@ import admin from './routes/admin'
 import approvals from './api/approvals'
 import visitor from './api/visitor'
 import education from './api/education'
+import agentsHub from './api/agents-hub'
 
 // Export Durable Objects
 export { CollaborationRoom } from './durable-objects/collaboration-room'
@@ -103,6 +104,7 @@ app.route('/api/admin', admin)
 app.route('/api/approvals', approvals)
 app.route('/api/visitor', visitor)
 app.route('/api/education', education)
+app.route('/api/agents-hub', agentsHub)
 
 // 404 handler for API routes (prevent fallback to landing.html)
 app.notFound((c) => {

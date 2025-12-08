@@ -11,11 +11,27 @@ export default defineConfig({
     terserOptions: {
       compress: {
         drop_console: true,
-        drop_debugger: true
+        drop_debugger: true,
+        passes: 2
+      },
+      format: {
+        comments: false
       }
     },
-    // Chunk size warning limit
-    chunkSizeWarningLimit: 1000
+    // Chunk optimization
+    chunkSizeWarningLimit: 800,
+    rollupOptions: {
+      output: {
+        // Optimize chunk naming
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
+      }
+    },
+    // Build optimizations
+    target: 'es2020',
+    cssCodeSplit: true,
+    sourcemap: false
   },
   plugins: [
     build({
