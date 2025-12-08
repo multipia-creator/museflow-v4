@@ -177,49 +177,51 @@ body {
 }
 
 .sidebar {
-    background: linear-gradient(180deg, #1a1a1a, #0f0f0f);
-    border-right: 1px solid #333;
+    background: #fafbfc;
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
-    padding: 8px 3px;
-    gap: 4px;
+    padding: 12px 6px;
+    gap: 2px;
 }
 
+/* Right sidebar removed - minimalist single sidebar design */
 .sidebar.right {
-    border-left: 1px solid #333;
-    border-right: none;
+    display: none;
 }
 
 .icon {
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #666;
+    color: #6b7280;
     cursor: pointer;
-    border-radius: 8px;
-    transition: 0.2s;
+    border-radius: 6px;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
 }
 
 .icon:hover {
-    background: rgba(16, 185, 129, 0.15);
-    color: #10b981;
+    background: rgba(59, 130, 246, 0.08);
+    color: #3b82f6;
 }
 
 .icon.active {
-    background: rgba(16, 185, 129, 0.25);
-    color: #10b981;
+    background: rgba(59, 130, 246, 0.12);
+    color: #3b82f6;
+    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.2);
 }
 
 .badge {
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: 3px;
+    right: 3px;
     background: #ef4444;
     color: #fff;
     font-size: 9px;
+    font-weight: 600;
     min-width: 14px;
     height: 14px;
     border-radius: 7px;
@@ -227,16 +229,17 @@ body {
     align-items: center;
     justify-content: center;
     padding: 0 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .canvas {
-    background: #ffffff;
+    background: #fafafa;
     overflow: hidden;
     position: relative;
-    /* Grid pattern */
+    /* Minimal grid pattern - barely visible */
     background-image: 
-        linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
+        linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
     background-size: 20px 20px;
 }
 
@@ -256,11 +259,12 @@ body {
     top: 64px;
     bottom: 48px;
     width: 280px;
-    background: rgba(26, 26, 26, 0.98);
-    border: 1px solid #333;
+    background: #ffffff;
+    border: none;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
     z-index: 100;
     transform: translateX(-100%);
-    transition: 0.3s;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     display: none;
 }
 
@@ -269,8 +273,8 @@ body {
 }
 
 .panel.right {
-    right: 40px;
-    transform: translateX(100%);
+    /* Right panels removed - all panels open from left */
+    left: 40px;
 }
 
 .panel.active {
@@ -280,14 +284,18 @@ body {
 
 .panel-header {
     padding: 16px;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    background: #fafafa;
 }
 
 .panel-title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
+    color: #1f2937;
+    letter-spacing: -0.01em;
 }
 
 .panel-close {
@@ -295,23 +303,25 @@ body {
     height: 24px;
     border: none;
     background: transparent;
-    color: #666;
+    color: #9ca3af;
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.15s;
 }
 
 .panel-close:hover {
-    background: rgba(16, 185, 129, 0.15);
-    color: #10b981;
+    background: rgba(0, 0, 0, 0.05);
+    color: #1f2937;
 }
 
 .panel-content {
     padding: 16px;
-    color: #999;
+    color: #6b7280;
     font-size: 13px;
+    overflow-y: auto;
 }
 
 /* Media Card with thumbnail */
@@ -1079,33 +1089,32 @@ body {
   height: 100%; /* 전체 높이 사용 */
 }
 
-/* Search & Filter Toolbar */
+/* Search & Filter Toolbar - Minimal Design */
 .widget-toolbar {
-  padding: 16px 20px;
-  background: #0a0a0a;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 12px 16px;
+  background: #fafafa;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .widget-search-box {
   position: relative;
   display: flex;
   align-items: center;
-  background: #1a1a1a;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-  padding: 11px 14px;
-  transition: all 0.2s;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  padding: 8px 12px;
+  transition: all 0.15s;
 }
 
 .widget-search-box:focus-within {
-  border-color: #8B5CF6;
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.08);
-  background: #222;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
 }
 
 .widget-search-box .icon {
-  stroke: #666;
-  margin-right: 10px;
+  stroke: #9ca3af;
+  margin-right: 8px;
 }
 
 .widget-search-box input {
@@ -1113,205 +1122,207 @@ body {
   background: transparent;
   border: none;
   outline: none;
-  color: #e5e5e5;
-  font-size: 14px;
+  color: #1f2937;
+  font-size: 13px;
 }
 
 .widget-search-box input::placeholder {
-  color: #666;
+  color: #9ca3af;
 }
 
 .widget-btn-clear {
   background: transparent;
   border: none;
-  color: #666;
+  color: #9ca3af;
   cursor: pointer;
   padding: 4px;
-  transition: color 0.2s;
+  transition: all 0.15s;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 4px;
 }
 
 .widget-btn-clear:hover {
-  color: #e5e5e5;
+  color: #1f2937;
+  background: rgba(0, 0, 0, 0.05);
 }
 
-/* Filter Chips */
+/* Filter Chips - Minimal Design */
 .widget-filter-chips {
   display: flex;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 6px;
+  margin-top: 10px;
   flex-wrap: wrap;
 }
 
 .widget-chip {
-  padding: 7px 12px;
-  background: #1a1a1a;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 20px;
+  padding: 6px 10px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
   font-size: 12px;
-  color: #9CA3AF;
+  font-weight: 500;
+  color: #6b7280;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .widget-chip:hover {
-  background: #222;
-  color: #e5e5e5;
-  border-color: rgba(255,255,255,0.15);
+  background: #f9fafb;
+  color: #1f2937;
+  border-color: rgba(0, 0, 0, 0.15);
 }
 
 .widget-chip.active {
-  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+  background: #3b82f6;
   color: white;
-  border-color: #8B5CF6;
+  border-color: #3b82f6;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* Category Groups - Color System */
+/* Category Groups - Minimal Color System */
 .category-group {
-  margin: 4px 8px;
-  border-radius: 12px;
-  border-left: 2px solid;
-  transition: all 0.2s;
+  margin: 2px 0;
+  padding: 8px 12px;
+  border-left: 2px solid transparent;
+  transition: all 0.15s;
 }
 
-/* Blue - Advanced Analytics */
+/* Blue - Advanced Analytics - Minimal */
 .category-advanced-analytics {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.06) 0%, rgba(37, 99, 235, 0.03) 100%);
-  border-left-color: rgba(59, 130, 246, 0.25);
+  background: rgba(59, 130, 246, 0.03);
+  border-left-color: #3b82f6;
 }
 
 .category-advanced-analytics .category-header {
-  color: #93c5fd;
+  color: #1f2937;
 }
 
 .category-advanced-analytics .category-icon {
-  stroke: #60A5FA;
+  stroke: #3b82f6;
 }
 
 .category-advanced-analytics .widget-item:hover {
-  background: rgba(59, 130, 246, 0.1);
-  border-color: rgba(59, 130, 246, 0.35);
+  background: rgba(59, 130, 246, 0.06);
 }
 
-/* Amber - Museum Professional */
+/* Amber - Museum Professional - Minimal */
 .category-museum-professional {
-  background: linear-gradient(135deg, rgba(251, 191, 36, 0.06) 0%, rgba(245, 158, 11, 0.03) 100%);
-  border-left-color: rgba(251, 191, 36, 0.25);
+  background: rgba(245, 158, 11, 0.03);
+  border-left-color: #f59e0b;
 }
 
 .category-museum-professional .category-header {
-  color: #FCD34D;
+  color: #1f2937;
 }
 
 .category-museum-professional .category-icon {
-  stroke: #FCD34D;
+  stroke: #f59e0b;
 }
 
 .category-museum-professional .widget-item:hover {
-  background: rgba(251, 191, 36, 0.1);
-  border-color: rgba(251, 191, 36, 0.35);
+  background: rgba(245, 158, 11, 0.06);
 }
 
-/* Green - Visitor Experience */
+/* Green - Visitor Experience - Minimal */
 .category-visitor-experience {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.06) 0%, rgba(22, 163, 74, 0.03) 100%);
-  border-left-color: rgba(34, 197, 94, 0.25);
+  background: rgba(34, 197, 94, 0.03);
+  border-left-color: #22c55e;
 }
 
 .category-visitor-experience .category-header {
-  color: #4ADE80;
+  color: #1f2937;
 }
 
 .category-visitor-experience .category-icon {
-  stroke: #4ADE80;
+  stroke: #22c55e;
 }
 
 .category-visitor-experience .widget-item:hover {
-  background: rgba(34, 197, 94, 0.1);
-  border-color: rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.06);
 }
 
-/* Slate - Operations */
+/* Slate - Operations - Minimal */
 .category-operations {
-  background: linear-gradient(135deg, rgba(100, 116, 139, 0.06) 0%, rgba(71, 85, 105, 0.03) 100%);
-  border-left-color: rgba(100, 116, 139, 0.25);
+  background: rgba(100, 116, 139, 0.03);
+  border-left-color: #64748b;
 }
 
 .category-operations .category-header {
-  color: #94A3B8;
+  color: #1f2937;
 }
 
 .category-operations .category-icon {
-  stroke: #94A3B8;
+  stroke: #64748b;
 }
 
 .category-operations .widget-item:hover {
-  background: rgba(100, 116, 139, 0.1);
-  border-color: rgba(100, 116, 139, 0.35);
+  background: rgba(100, 116, 139, 0.06);
 }
 
-/* Purple - Collaboration (Brand Color) */
+/* Purple - Collaboration - Minimal */
 .category-collaboration {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.06) 0%, rgba(124, 58, 237, 0.03) 100%);
-  border-left-color: rgba(139, 92, 246, 0.25);
+  background: rgba(139, 92, 246, 0.03);
+  border-left-color: #8b5cf6;
 }
 
 .category-collaboration .category-header {
-  color: #c4b5fd;
+  color: #1f2937;
 }
 
 .category-collaboration .category-icon {
-  stroke: #A78BFA;
+  stroke: #8b5cf6;
 }
 
 .category-collaboration .widget-item:hover {
-  background: rgba(139, 92, 246, 0.1);
-  border-color: rgba(139, 92, 246, 0.35);
+  background: rgba(139, 92, 246, 0.06);
 }
 
-/* Emerald - Finance */
+/* Emerald - Finance - Minimal */
 .category-finance {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.06) 0%, rgba(5, 150, 105, 0.03) 100%);
-  border-left-color: rgba(16, 185, 129, 0.25);
+  background: rgba(16, 185, 129, 0.03);
+  border-left-color: #10b981;
 }
 
 .category-finance .category-header {
-  color: #34D399;
+  color: #1f2937;
 }
 
 .category-finance .category-icon {
-  stroke: #34D399;
+  stroke: #10b981;
 }
 
 .category-finance .widget-item:hover {
-  background: rgba(16, 185, 129, 0.1);
-  border-color: rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.06);
 }
 
-/* Category Header */
+/* Category Header - Minimal */
 .category-header {
   display: flex;
   align-items: center;
-  padding: 14px 18px;
+  padding: 10px 12px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s;
   user-select: none;
-  gap: 10px;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .category-header:hover {
-  background: rgba(255,255,255,0.02);
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .category-chevron {
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   stroke: currentColor;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 .category-group[data-expanded="true"] .category-chevron {
@@ -1338,61 +1349,60 @@ body {
   opacity: 0.7;
 }
 
-/* Category Content (Accordion) */
+/* Category Content (Accordion) - Minimal */
 .category-content {
   overflow: hidden;
-  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  padding-bottom: 8px;
+  transition: max-height 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-bottom: 4px;
 }
 
-/* Widget Items */
+/* Widget Items - Minimal Design */
 .widget-item {
   display: flex;
   align-items: center;
-  padding: 14px 16px;
-  margin: 6px 12px;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.04);
-  border-radius: 10px;
+  padding: 10px 12px;
+  margin: 2px 8px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
   cursor: grab;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  gap: 12px;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 10px;
 }
 
 .widget-item:hover {
-  transform: translateX(4px);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .widget-item:active {
   cursor: grabbing;
-  transform: translateX(2px);
+  transform: scale(0.98);
 }
 
 .widget-item.dragging {
-  opacity: 0.4;
+  opacity: 0.5;
 }
 
 .widget-icon-wrapper {
-  width: 42px;
-  height: 42px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255,255,255,0.04);
-  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 6px;
   flex-shrink: 0;
-  transition: all 0.2s;
+  transition: all 0.15s;
 }
 
 .widget-item:hover .widget-icon-wrapper {
-  background: rgba(255,255,255,0.08);
-  transform: scale(1.05);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .widget-icon-wrapper .icon {
   stroke: currentColor;
-  opacity: 0.9;
+  opacity: 0.8;
 }
 
 .widget-info {
@@ -1403,18 +1413,18 @@ body {
 .widget-name {
   font-size: 13px;
   font-weight: 600;
-  color: #e5e5e5;
-  margin-bottom: 5px;
+  color: #1f2937;
+  margin-bottom: 3px;
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
   flex-wrap: wrap;
-  line-height: 1.4;
+  line-height: 1.3;
 }
 
 .widget-description {
-  font-size: 11.5px;
-  color: #9CA3AF;
+  font-size: 11px;
+  color: #6b7280;
   line-height: 1.5;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3592,24 +3602,28 @@ html { visibility: visible; opacity: 1; }
 <!-- Main Container -->
 <div class="container">
     <div class="sidebar left">
-        <div class="icon" data-panel="history"><i data-lucide="clock" style="width:16px;height:16px"></i></div>
-        <div class="icon" data-panel="actions"><i data-lucide="zap" style="width:16px;height:16px"></i></div>
-        <div class="icon" data-panel="projects"><i data-lucide="folder" style="width:16px;height:16px"></i></div>
-        <div class="icon" data-panel="templates"><i data-lucide="layout-template" style="width:16px;height:16px"></i></div>
-        <div class="icon" data-panel="export"><i data-lucide="download" style="width:16px;height:16px"></i></div>
-        <div class="icon" data-panel="settings"><i data-lucide="settings" style="width:16px;height:16px"></i></div>
+        <!-- Primary Actions (Top) -->
+        <div class="icon" data-panel="projects" title="Projects"><i data-lucide="folder" style="width:16px;height:16px"></i></div>
+        <div class="icon" data-panel="widget" title="Widgets (87)"><i data-lucide="package" style="width:16px;height:16px"></i><span class="badge">87</span></div>
+        <div class="icon" data-panel="layers" title="Layers"><i data-lucide="layers" style="width:16px;height:16px"></i></div>
+        
+        <!-- Secondary Actions (Middle) -->
+        <div class="icon" data-panel="history" title="History"><i data-lucide="clock" style="width:16px;height:16px"></i></div>
+        <div class="icon" data-panel="ai" title="AI Assistant"><i data-lucide="sparkles" style="width:16px;height:16px"></i><span class="badge">1</span></div>
+        <div class="icon" data-panel="tasks" title="Tasks"><i data-lucide="check-square" style="width:16px;height:16px"></i><span class="badge">2</span></div>
+        <div class="icon" data-panel="alerts" title="Alerts"><i data-lucide="bell" style="width:16px;height:16px"></i><span class="badge">3</span></div>
+        
+        <!-- Tertiary Actions (Bottom) -->
+        <div class="icon" data-panel="templates" title="Templates"><i data-lucide="layout-template" style="width:16px;height:16px"></i></div>
+        <div class="icon" data-panel="actions" title="Actions"><i data-lucide="zap" style="width:16px;height:16px"></i></div>
+        <div class="icon" data-panel="export" title="Export"><i data-lucide="download" style="width:16px;height:16px"></i></div>
+        <div class="icon" data-panel="stats" title="Statistics"><i data-lucide="bar-chart-2" style="width:16px;height:16px"></i></div>
+        <div class="icon" data-panel="settings" title="Settings"><i data-lucide="settings" style="width:16px;height:16px"></i></div>
     </div>
     <div class="canvas">
         <div class="viewport" id="vp"></div>
     </div>
-    <div class="sidebar right">
-        <div class="icon" data-panel="stats"><i data-lucide="bar-chart-2" style="width:16px;height:16px"></i></div>
-        <div class="icon" data-panel="widget"><i data-lucide="package" style="width:16px;height:16px"></i><span class="badge">87</span></div>
-        <div class="icon" data-panel="tasks"><i data-lucide="check-square" style="width:16px;height:16px"></i><span class="badge">2</span></div>
-        <div class="icon" data-panel="layers"><i data-lucide="layers" style="width:16px;height:16px"></i></div>
-        <div class="icon" data-panel="ai"><i data-lucide="sparkles" style="width:16px;height:16px"></i><span class="badge">1</span></div>
-        <div class="icon" data-panel="alerts"><i data-lucide="bell" style="width:16px;height:16px"></i><span class="badge">3</span></div>
-    </div>
+    <!-- Right sidebar removed - all controls unified in left sidebar -->
 </div>
 
 <!-- Panels -->
