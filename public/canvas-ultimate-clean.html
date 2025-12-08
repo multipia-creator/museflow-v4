@@ -317,28 +317,28 @@ body {
 /* Media Card with thumbnail */
 .card {
     position: absolute !important;
-    width: 300px;
+    width: 280px;
     min-width: 200px;
-    min-height: 200px;
+    min-height: 320px;
     background: #ffffff !important;
-    border-radius: 8px !important;
+    border-radius: 16px !important;
     border: 0 none transparent !important;
     outline: 0 none transparent !important;
-    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.08), 0 2px 8px rgba(139, 92, 246, 0.04) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06) !important;
     overflow: hidden !important;
     cursor: move;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card:hover {
-    box-shadow: 0 8px 30px rgba(139, 92, 246, 0.12), 0 4px 12px rgba(139, 92, 246, 0.06) !important;
-    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06) !important;
+    transform: translateY(-4px) !important;
     border: 0 none transparent !important;
     outline: 0 none transparent !important;
 }
 
 .card.selected {
-    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.4), 0 4px 20px rgba(139, 92, 246, 0.15) !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5), 0 4px 16px rgba(0, 0, 0, 0.1) !important;
     z-index: 1000 !important;
     border: 0 none transparent !important;
     outline: 0 none transparent !important;
@@ -381,15 +381,15 @@ body {
 
 .card-thumbnail {
     width: 100%;
-    height: 160px;
-    background: linear-gradient(135deg, #C8A5FF 0%, #A5D5FF 100%);
+    height: 200px;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 3rem;
     overflow: hidden;
     position: relative;
-    border-radius: 8px 8px 0 0;
+    border-radius: 0;
 }
 
 .card-thumbnail img {
@@ -405,60 +405,60 @@ body {
 }
 
 .card-thumbnail.video {
-    background: linear-gradient(135deg, #FFA5A5 0%, #A5B5FF 100%);
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
 }
 
 .card-thumbnail.audio {
-    background: linear-gradient(135deg, #A5D5FF 0%, #A5FFA5 100%);
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
 }
 
 .card-thumbnail.image {
-    background: linear-gradient(135deg, #FFB595 0%, #FFA5D5 100%);
+    background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
 }
 
 .card-thumbnail.document {
-    background: linear-gradient(135deg, #FFB595 0%, #FFA5C5 100%);
+    background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%);
 }
 
 .card-thumbnail.data {
-    background: linear-gradient(135deg, #A5B5FF 0%, #A5FFB5 100%);
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
 }
 
 .card-header {
-    padding: 10px 12px;
+    padding: 16px 20px;
     background: #ffffff;
     color: #1f2937;
-    font-weight: 500;
-    font-size: 13px;
+    font-weight: 600;
+    font-size: 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: none;
 }
 
 .card-header.video {
-    background: linear-gradient(to right, #FFF5F5, #ffffff);
-    border-left: 3px solid #EF4444;
+    background: #ffffff;
+    border-left: none;
 }
 
 .card-header.audio {
-    background: linear-gradient(to right, #F0F9FF, #ffffff);
-    border-left: 3px solid #3B82F6;
+    background: #ffffff;
+    border-left: none;
 }
 
 .card-header.image {
-    background: linear-gradient(to right, #FFF7ED, #ffffff);
-    border-left: 3px solid #F59E0B;
+    background: #ffffff;
+    border-left: none;
 }
 
 .card-header.document {
-    background: linear-gradient(to right, #FDF4FF, #ffffff);
-    border-left: 3px solid #A855F7;
+    background: #ffffff;
+    border-left: none;
 }
 
 .card-header.data {
-    background: linear-gradient(to right, #F0FDF4, #ffffff);
-    border-left: 3px solid #10B981;
+    background: #ffffff;
+    border-left: none;
 }
 
 .card-title {
@@ -474,44 +474,46 @@ body {
 }
 
 .card-action-btn {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     border: none;
-    background: #f3f4f6;
-    border-radius: 4px;
+    background: transparent;
+    border-radius: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s;
-    color: #6b7280;
+    color: #94a3b8;
 }
 
 .card-action-btn:hover {
-    background: #e5e7eb;
-    color: #374151;
+    background: #f1f5f9;
+    color: #475569;
     transform: scale(1.05);
 }
 
 .card-action-btn:active {
     transform: scale(0.95);
+    background: #e2e8f0;
 }
 
 .card-footer {
-    padding: 8px 12px;
-    background: #f9fafb;
+    padding: 12px 20px 16px 20px;
+    background: #ffffff;
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 11px;
-    color: #6b7280;
-    border-radius: 0 0 8px 8px;
+    gap: 8px;
+    font-size: 14px;
+    color: #64748b;
+    border-radius: 0;
 }
 
 .card-meta-item {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
+    font-weight: 400;
 }
 
 .controls {
