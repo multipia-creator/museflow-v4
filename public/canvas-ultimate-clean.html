@@ -26,10 +26,65 @@
     outline: none !important;
 }
 
+/* ============================================
+   WORLD-CLASS FOCUS INDICATORS (Figma-style)
+   ============================================ */
+
+/* Focus visible for keyboard navigation */
+*:focus-visible {
+    outline: 2px solid #0D99FF !important;
+    outline-offset: 2px !important;
+    border-radius: 4px;
+}
+
+/* Focus for interactive elements */
+button:focus,
+a:focus,
+input:focus,
+textarea:focus,
+select:focus,
+[tabindex]:focus,
+[role="button"]:focus {
+    outline: 2px solid #0D99FF !important;
+    outline-offset: 2px !important;
+}
+
+/* Skip link for accessibility */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #000000;
+    color: #ffffff;
+    padding: 8px 16px;
+    text-decoration: none;
+    z-index: 100000;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.skip-link:focus {
+    top: 8px;
+    left: 8px;
+}
+
+/* Screen reader only content */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
 body {
     font-family: Inter, sans-serif;
     background: #ffffff;
-    color: #1f2937;
+    color: #000000; /* Pure Black for 21:1 contrast (AAA) */
     overflow: hidden;
 }
 
@@ -49,7 +104,7 @@ body {
 .unified-nav-container {
     max-width: 1600px;
     margin: 0 auto;
-    padding: 0.5rem 2rem;
+    padding: 8px 32px; /* Changed from 0.5rem 2rem - px only, 8px grid */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -181,8 +236,8 @@ body {
     border-right: 1px solid rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
-    padding: 12px 6px;
-    gap: 2px;
+    padding: 12px 8px; /* Changed from 12px 6px - 8px grid compliance */
+    gap: 4px; /* Changed from 2px to 4px - 8px grid compliance */
 }
 
 /* Right sidebar removed - minimalist single sidebar design */
@@ -196,11 +251,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #6b7280;
+    color: #666666;
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: 8px; /* Changed from 6px to 8px for 8px grid */
     transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
+    margin-bottom: 4px; /* Added for 8px grid spacing */
+    background: transparent;
+    border: none;
+    padding: 0;
 }
 
 .icon:hover {
@@ -294,7 +353,7 @@ body {
 .panel-title {
     font-size: 14px;
     font-weight: 600;
-    color: #1f2937;
+    color: #000000;
     letter-spacing: -0.01em;
 }
 
@@ -314,12 +373,12 @@ body {
 
 .panel-close:hover {
     background: rgba(0, 0, 0, 0.05);
-    color: #1f2937;
+    color: #000000;
 }
 
 .panel-content {
     padding: 16px;
-    color: #6b7280;
+    color: #666666;
     font-size: 14px;
     overflow-y: auto;
 }
@@ -448,7 +507,7 @@ body {
 .card-header {
     padding: 16px 20px;
     background: #ffffff;
-    color: #1f2937;
+    color: #000000;
     font-weight: 600;
     font-size: 16px;
     display: flex;
@@ -781,7 +840,7 @@ body {
 }
 
 .card-connector.active {
-    background: #6b7280;
+    background: #666666;
     height: 2px;
     box-shadow: 0 0 8px rgba(156, 163, 175, 0.4);
 }
@@ -1189,7 +1248,7 @@ body {
   background: transparent;
   border: none;
   outline: none;
-  color: #1f2937;
+  color: #000000;
   font-size: 13px;
 }
 
@@ -1211,7 +1270,7 @@ body {
 }
 
 .widget-btn-clear:hover {
-  color: #1f2937;
+  color: #000000;
   background: rgba(0, 0, 0, 0.05);
 }
 
@@ -1230,7 +1289,7 @@ body {
   border-radius: 16px;
   font-size: 13px;
   font-weight: 500;
-  color: #6b7280;
+  color: #666666;
   cursor: pointer;
   transition: all 0.15s;
   display: flex;
@@ -1240,7 +1299,7 @@ body {
 
 .widget-chip:hover {
   background: #f9fafb;
-  color: #1f2937;
+  color: #000000;
   border-color: rgba(0, 0, 0, 0.15);
 }
 
@@ -1266,7 +1325,7 @@ body {
 }
 
 .category-advanced-analytics .category-header {
-  color: #1f2937;
+  color: #000000;
 }
 
 .category-advanced-analytics .category-icon {
@@ -1284,7 +1343,7 @@ body {
 }
 
 .category-museum-professional .category-header {
-  color: #1f2937;
+  color: #000000;
 }
 
 .category-museum-professional .category-icon {
@@ -1302,7 +1361,7 @@ body {
 }
 
 .category-visitor-experience .category-header {
-  color: #1f2937;
+  color: #000000;
 }
 
 .category-visitor-experience .category-icon {
@@ -1320,7 +1379,7 @@ body {
 }
 
 .category-operations .category-header {
-  color: #1f2937;
+  color: #000000;
 }
 
 .category-operations .category-icon {
@@ -1338,7 +1397,7 @@ body {
 }
 
 .category-collaboration .category-header {
-  color: #1f2937;
+  color: #000000;
 }
 
 .category-collaboration .category-icon {
@@ -1356,7 +1415,7 @@ body {
 }
 
 .category-finance .category-header {
-  color: #1f2937;
+  color: #000000;
 }
 
 .category-finance .category-icon {
@@ -1480,7 +1539,7 @@ body {
 .widget-name {
   font-size: 13px;
   font-weight: 600;
-  color: #1f2937;
+  color: #000000;
   margin-bottom: 3px;
   display: flex;
   align-items: center;
@@ -1491,7 +1550,7 @@ body {
 
 .widget-description {
   font-size: 13px;
-  color: #6b7280;
+  color: #666666;
   line-height: 1.5;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1836,7 +1895,7 @@ body {
 
 .command-palette-hint {
   font-size: 13px;
-  color: #6B7280;
+  color: #666666;
   margin-top: 8px;
   display: flex;
   align-items: center;
@@ -1878,7 +1937,7 @@ body {
   padding: 12px 20px 8px;
   font-size: 13px;
   font-weight: 600;
-  color: #6B7280;
+  color: #666666;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -1940,7 +1999,7 @@ body {
 .command-palette-empty {
   padding: 60px 20px;
   text-align: center;
-  color: #6B7280;
+  color: #666666;
 }
 
 .command-palette-empty-icon {
@@ -1968,7 +2027,7 @@ body {
   display: flex;
   gap: 16px;
   font-size: 13px;
-  color: #6B7280;
+  color: #666666;
 }
 
 .command-palette-shortcut {
@@ -2174,7 +2233,7 @@ body {
 }
 
 .edit-input::placeholder, .edit-textarea::placeholder {
-  color: #6B7280;
+  color: #666666;
 }
 
 .edit-textarea {
@@ -2556,7 +2615,7 @@ body {
     
     .project-time {
         font-size: 0.75rem;
-        color: #6B7280;
+        color: #666666;
         margin-left: auto;
     }
     
@@ -2755,7 +2814,7 @@ body {
     
     .template-empty-state i {
         font-size: 3rem;
-        color: #6B7280;
+        color: #666666;
         margin-bottom: 1rem;
     }
     
@@ -2853,7 +2912,7 @@ body {
     
     .task-item.completed .task-title {
         text-decoration: line-through;
-        color: #6B7280;
+        color: #666666;
     }
     
     .task-item.overdue {
@@ -3069,7 +3128,7 @@ body {
     .layer-drag-handle {
         display: flex;
         align-items: center;
-        color: #6B7280;
+        color: #666666;
         cursor: move;
     }
     
@@ -3130,7 +3189,7 @@ body {
         border-radius: 6px;
         cursor: pointer;
         transition: all 0.2s;
-        color: #6B7280;
+        color: #666666;
     }
     
     .layer-lock:hover {
@@ -3155,7 +3214,7 @@ body {
         justify-content: center;
         padding: 3rem 1.5rem;
         text-align: center;
-        color: #6B7280;
+        color: #666666;
     }
     
     .layers-empty i {
@@ -3246,7 +3305,7 @@ body {
         justify-content: center;
         padding: 3rem 1.5rem;
         text-align: center;
-        color: #6B7280;
+        color: #666666;
     }
     
     .empty-state i {
@@ -3698,7 +3757,7 @@ html { visibility: visible; opacity: 1; }
     border-radius: 8px;
     font-size: 13px;
     font-weight: 600;
-    color: #1f2937;
+    color: #000000;
     cursor: pointer;
     transform: translateY(10px);
     transition: all 0.3s ease;
@@ -3732,7 +3791,7 @@ html { visibility: visible; opacity: 1; }
 .preview-title-text {
     font-size: 15px;
     font-weight: 600;
-    color: #1f2937;
+    color: #000000;
     margin: 0 0 4px 0;
     line-height: 1.3;
 }
@@ -3769,7 +3828,7 @@ html { visibility: visible; opacity: 1; }
 
 .preview-description-enhanced {
     font-size: 13px;
-    color: #6b7280;
+    color: #666666;
     line-height: 1.5;
     margin-bottom: 12px;
 }
@@ -3845,28 +3904,87 @@ html { visibility: visible; opacity: 1; }
     </div>
 </nav>
 
+<!-- Skip Link for Accessibility -->
+<a href="#main-canvas" class="skip-link">Skip to main canvas</a>
+
 <!-- Main Container -->
 <div class="container">
-    <div class="sidebar left">
+    <!-- Left Sidebar Navigation -->
+    <nav class="sidebar left" role="navigation" aria-label="Main tools">
         <!-- Minimal Figma-style: 5 Essential Icons Only -->
-        <div class="icon" data-panel="projects" title="Projects"><i data-lucide="folder" style="width:16px;height:16px"></i></div>
-        <div class="icon" data-panel="widget" title="Widgets (87)"><i data-lucide="package" style="width:16px;height:16px"></i><span class="badge">87</span></div>
-        <div class="icon" data-panel="layers" title="Layers"><i data-lucide="layers" style="width:16px;height:16px"></i></div>
-        <div class="icon" data-panel="ai" title="AI Assistant"><i data-lucide="sparkles" style="width:16px;height:16px"></i></div>
-        <div class="icon" data-panel="export" title="Export"><i data-lucide="download" style="width:16px;height:16px"></i></div>
-    </div>
-    <div class="canvas">
-        <div class="viewport" id="vp"></div>
-    </div>
+        <button class="icon" data-panel="projects" 
+                role="button"
+                aria-label="Open projects panel" 
+                aria-expanded="false"
+                aria-controls="projectsPanel"
+                title="Projects">
+            <i data-lucide="folder" style="width:16px;height:16px" aria-hidden="true"></i>
+            <span class="sr-only">Projects</span>
+        </button>
+        
+        <button class="icon" data-panel="widget" 
+                role="button"
+                aria-label="Open widgets panel with 87 items" 
+                aria-expanded="false"
+                aria-controls="widgetPanel"
+                title="Widgets (87)">
+            <i data-lucide="package" style="width:16px;height:16px" aria-hidden="true"></i>
+            <span class="badge" aria-label="87 widgets">87</span>
+            <span class="sr-only">Widgets</span>
+        </button>
+        
+        <button class="icon" data-panel="layers" 
+                role="button"
+                aria-label="Open layers panel" 
+                aria-expanded="false"
+                aria-controls="layersPanel"
+                title="Layers">
+            <i data-lucide="layers" style="width:16px;height:16px" aria-hidden="true"></i>
+            <span class="sr-only">Layers</span>
+        </button>
+        
+        <button class="icon" data-panel="ai" 
+                role="button"
+                aria-label="Open AI assistant panel" 
+                aria-expanded="false"
+                aria-controls="aiPanel"
+                title="AI Assistant">
+            <i data-lucide="sparkles" style="width:16px;height:16px" aria-hidden="true"></i>
+            <span class="sr-only">AI Assistant</span>
+        </button>
+        
+        <button class="icon" data-panel="export" 
+                role="button"
+                aria-label="Open export panel" 
+                aria-expanded="false"
+                aria-controls="exportPanel"
+                title="Export">
+            <i data-lucide="download" style="width:16px;height:16px" aria-hidden="true"></i>
+            <span class="sr-only">Export</span>
+        </button>
+    </nav>
+    
+    <!-- Main Canvas Area -->
+    <main class="canvas" role="main" aria-label="Canvas workspace">
+        <div class="viewport" id="main-canvas" tabindex="0" role="application" aria-label="Interactive canvas"></div>
+    </main>
+    
     <!-- Right sidebar removed - all controls unified in left sidebar -->
 </div>
 
 <!-- Panels -->
-<div class="panel left" id="historyPanel" data-side="left">
+<aside class="panel left" 
+       id="historyPanel" 
+       data-side="left"
+       role="complementary" 
+       aria-label="History panel"
+       aria-hidden="true">
     <div class="panel-header">
-        <span class="panel-title">History</span>
-        <button class="panel-close" onclick="closePanel('historyPanel')">
-            <i data-lucide="x" style="width:14px;height:14px"></i>
+        <h2 class="panel-title" id="history-title">History</h2>
+        <button class="panel-close" 
+                onclick="closePanel('historyPanel')"
+                aria-label="Close history panel">
+            <i data-lucide="x" style="width:14px;height:14px" aria-hidden="true"></i>
         </button>
     </div>
     <div class="panel-content">
@@ -7830,7 +7948,7 @@ function showCardDataModal(cardEl) {
     // Build content HTML
     let contentHTML = `
         <div style="position: sticky; top: 0; background: white; border-bottom: 1px solid #e5e7eb; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-radius: 12px 12px 0 0;">
-            <h2 style="margin: 0; font-size: 20px; color: #1f2937;">${title}</h2>
+            <h2 style="margin: 0; font-size: 20px; color: #000000;">${title}</h2>
             <button onclick="this.closest('[style*=fixed]').remove()" style="border: none; background: #f3f4f6; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
                 <i data-lucide="x" style="width: 18px; height: 18px;"></i>
             </button>
@@ -7861,8 +7979,8 @@ function showCardDataModal(cardEl) {
                         <strong style="color: #374151; display: block; margin-bottom: 8px;">${key}:</strong>
                         ${Object.entries(value).map(([k, v]) => `
                             <div style="margin: 6px 0; padding-left: 12px;">
-                                <span style="color: #6b7280;">${k}:</span>
-                                <span style="color: #1f2937; font-weight: 500;">${v}${typeof v === 'number' && k.includes('%') ? '%' : ''}</span>
+                                <span style="color: #666666;">${k}:</span>
+                                <span style="color: #000000; font-weight: 500;">${v}${typeof v === 'number' && k.includes('%') ? '%' : ''}</span>
                             </div>
                         `).join('')}
                     </div>
@@ -7872,7 +7990,7 @@ function showCardDataModal(cardEl) {
         return `
             <div style="margin: 12px 0; padding: 12px; background: white; border: 1px solid #e5e7eb; border-radius: 6px;">
                 <strong style="color: #374151;">${key}:</strong>
-                <span style="color: #1f2937; margin-left: 8px;">${value}</span>
+                <span style="color: #000000; margin-left: 8px;">${value}</span>
             </div>
         `;
     }
@@ -8082,9 +8200,9 @@ function createWorkflowNodeCard(data) {
         'completed': '#10B981',
         'running': '#F59E0B',
         'failed': '#EF4444',
-        'pending': '#6B7280'
+        'pending': '#666666'
     };
-    const statusColor = statusColors[data.status] || '#6B7280';
+    const statusColor = statusColors[data.status] || '#666666';
     
     card.innerHTML = `
         <div class="card-header" style="background: linear-gradient(135deg, ${statusColor}33, ${statusColor}11); border-left: 4px solid ${statusColor};">
@@ -8097,7 +8215,7 @@ function createWorkflowNodeCard(data) {
             </div>
             <div style="display: flex; justify-content: space-between; font-size: 13px;">
                 <span style="color: ${statusColor};">● ${data.status}</span>
-                <span style="color: #6B7280;">${data.duration}ms</span>
+                <span style="color: #666666;">${data.duration}ms</span>
             </div>
             ${data.output ? `
                 <div style="margin-top: 8px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 4px; font-size: 13px; color: #D1D5DB; max-height: 60px; overflow-y: auto;">
@@ -8255,7 +8373,7 @@ console.log('✅ [Canvas] AI Orchestrator Integration complete');
                     <span>열기/닫기</span>
                 </div>
             </div>
-            <div style="font-size: 13px; color: #6B7280;">
+            <div style="font-size: 13px; color: #666666;">
                 87개 위젯 사용 가능
             </div>
         </div>
@@ -8309,7 +8427,17 @@ console.log('✅ [Canvas] AI Orchestrator Integration complete');
     
     <!-- 🌟 World-Class Canvas Interaction System -->
     <script src="/static/js/world-class-canvas-interactions.js"></script>
+    
+    <!-- ⚡ Performance Optimization System -->
+    <script src="/static/js/performance-optimizer.js"></script>
+    
+    <!-- 🎹 Keyboard Shortcuts System -->
+    <script src="/static/js/keyboard-shortcuts-system.js"></script>
+    
     <script>
+        // Initialize Performance Optimizer (loads first for metrics)
+        window.perfOptimizer = new PerformanceOptimizer();
+        
         // Initialize World-Class Canvas System
         const viewport = document.querySelector('.viewport');
         const canvasContainer = document.querySelector('.canvas-container');
@@ -8319,7 +8447,6 @@ console.log('✅ [Canvas] AI Orchestrator Integration complete');
             console.log('✅ World-Class Canvas System Activated');
             
             // Replace old connection system with new Bezier system
-            // Override createConnection function
             window.createConnection = function(fromCard, toCard) {
                 return window.worldClassCanvas.createBezierConnection(fromCard, toCard);
             };
@@ -8341,6 +8468,18 @@ console.log('✅ [Canvas] AI Orchestrator Integration complete');
                 };
             }
         }
+        
+        // Initialize Keyboard Shortcuts System
+        window.keyboardShortcuts = new KeyboardShortcutsSystem();
+        console.log('✅ Keyboard Shortcuts System Activated');
+        
+        // Log performance metrics after full load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                console.log('📊 Performance Metrics:');
+                window.perfOptimizer.logMetrics();
+            }, 100);
+        });
     </script>
     
 </body>

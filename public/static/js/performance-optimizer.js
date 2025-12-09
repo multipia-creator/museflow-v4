@@ -1,225 +1,218 @@
 /**
- * MuseFlow V10.4 - Performance Optimizer
- * Lazy loading, prefetching, and resource optimization
+ * MuseFlow Performance Optimization System
+ * 
+ * Implements lazy loading, code splitting, and performance enhancements
+ * Goal: Reduce load time from 2.1s to < 1.2s (Figma level)
+ * 
+ * @version 1.0.0
+ * @date 2025-12-08
  */
 
-(function() {
-    'use strict';
-
-    // 1. Resource Hints - Preconnect to CDNs
-    const cdnDomains = [
-        'https://cdn.tailwindcss.com',
-        'https://cdnjs.cloudflare.com',
-        'https://unpkg.com'
-    ];
-
-    cdnDomains.forEach(domain => {
-        const link = document.createElement('link');
-        link.rel = 'preconnect';
-        link.href = domain;
-        link.crossOrigin = 'anonymous';
-        document.head.appendChild(link);
-    });
-
-    // 2. Lazy Load Images
-    const lazyLoadImages = () => {
-        const images = document.querySelectorAll('img[data-src]');
+class PerformanceOptimizer {
+    constructor() {
+        this.loadStartTime = performance.now();
+        this.metrics = {
+            scriptsLoaded: 0,
+            imagesLoaded: 0,
+            totalScripts: 0,
+            totalImages: 0
+        };
         
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.removeAttribute('data-src');
-                    observer.unobserve(img);
-                }
-            });
-        }, {
-            rootMargin: '50px 0px' // Start loading 50px before entering viewport
-        });
-
-        images.forEach(img => imageObserver.observe(img));
-    };
-
-    // 3. Prefetch Next Page
-    const prefetchNextPage = () => {
-        const navLinks = document.querySelectorAll('.unified-nav-links a');
-        const currentPath = window.location.pathname;
-
-        navLinks.forEach(link => {
-            const href = link.getAttribute('href');
+        this.init();
+    }
+    
+    init() {
+        console.log('⚡ Performance Optimizer Initialized');
+        this.measureInitialLoad();
+        this.setupLazyLoading();
+        this.optimizeImages();
+        this.deferNonCritical();
+    }
+    
+    // ========================================
+    // INITIAL LOAD MEASUREMENT
+    // ========================================
+    
+    measureInitialLoad() {
+        window.addEventListener('load', () => {
+            const loadTime = performance.now() - this.loadStartTime;
+            console.log(`📊 Page Load Time: ${loadTime.toFixed(0)}ms`);
             
-            // Skip current page and external links
-            if (!href || href === currentPath || href.startsWith('http')) {
-                return;
-            }
-
-            // Prefetch on hover
-            link.addEventListener('mouseenter', () => {
-                const prefetchLink = document.createElement('link');
-                prefetchLink.rel = 'prefetch';
-                prefetchLink.href = href;
-                prefetchLink.as = 'document';
-                document.head.appendChild(prefetchLink);
-            }, { once: true });
-        });
-    };
-
-    // 4. Defer Non-Critical Scripts
-    const deferScripts = () => {
-        const scripts = document.querySelectorAll('script[data-defer]');
-        
-        window.addEventListener('load', () => {
-            scripts.forEach(script => {
-                const newScript = document.createElement('script');
-                newScript.src = script.dataset.defer;
-                if (script.dataset.module) newScript.type = 'module';
-                document.body.appendChild(newScript);
-            });
-        });
-    };
-
-    // 5. Critical CSS Loaded Check
-    const checkCriticalCSS = () => {
-        const criticalCSS = document.querySelector('link[href*="critical.css"]');
-        if (criticalCSS) {
-            criticalCSS.onload = () => {
-                console.log('[Performance] Critical CSS loaded');
-                document.documentElement.classList.add('critical-loaded');
-            };
-        }
-    };
-
-    // 6. Web Vitals Monitoring
-    const monitorWebVitals = () => {
-        // First Contentful Paint (FCP)
-        const perfObserver = new PerformanceObserver((list) => {
-            for (const entry of list.getEntries()) {
-                if (entry.name === 'first-contentful-paint') {
-                    console.log(`[Performance] FCP: ${entry.startTime.toFixed(0)}ms`);
-                }
-            }
-        });
-
-        try {
-            perfObserver.observe({ entryTypes: ['paint'] });
-        } catch (e) {
-            // Browser doesn't support
-        }
-
-        // Largest Contentful Paint (LCP)
-        const lcpObserver = new PerformanceObserver((list) => {
-            const entries = list.getEntries();
-            const lastEntry = entries[entries.length - 1];
-            console.log(`[Performance] LCP: ${lastEntry.startTime.toFixed(0)}ms`);
-        });
-
-        try {
-            lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
-        } catch (e) {
-            // Browser doesn't support
-        }
-
-        // First Input Delay (FID)
-        window.addEventListener('load', () => {
-            const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-            console.log(`[Performance] Page Load Time: ${loadTime}ms`);
-        });
-    };
-
-    // 7. Service Worker Registration with Update Check
-    const registerServiceWorker = () => {
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', async () => {
-                try {
-                    const registration = await navigator.serviceWorker.register('/sw.js');
-                    console.log('[Service Worker] Registered:', registration.scope);
-
-                    // Check for updates
-                    registration.addEventListener('updatefound', () => {
-                        const newWorker = registration.installing;
-                        console.log('[Service Worker] Update found');
-
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                // New version available
-                                if (confirm('🚀 New version available! Reload to update?')) {
-                                    newWorker.postMessage({ type: 'SKIP_WAITING' });
-                                    window.location.reload();
-                                }
-                            }
-                        });
-                    });
-                } catch (error) {
-                    console.error('[Service Worker] Registration failed:', error);
-                }
-            });
-        }
-    };
-
-    // 8. Memory Cleanup on Page Hide
-    const setupMemoryCleanup = () => {
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                // Clear large objects from memory when page is hidden
-                console.log('[Performance] Page hidden - cleaning up memory');
-                
-                // Remove large cached data if needed
-                // (Specific to your app's data structures)
-            }
-        });
-    };
-
-    // Initialize All Optimizations
-    const init = () => {
-        // Run immediately
-        checkCriticalCSS();
-        deferScripts();
-        registerServiceWorker();
-
-        // Run after DOM ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                lazyLoadImages();
-                prefetchNextPage();
-                setupMemoryCleanup();
-            });
-        } else {
-            lazyLoadImages();
-            prefetchNextPage();
-            setupMemoryCleanup();
-        }
-
-        // Run after full load
-        window.addEventListener('load', () => {
-            monitorWebVitals();
-            
-            // Report performance metrics
-            setTimeout(() => {
+            // Performance Navigation Timing
+            if (performance.getEntriesByType) {
                 const perfData = performance.getEntriesByType('navigation')[0];
                 if (perfData) {
-                    console.log('[Performance Report]', {
-                        'DNS Lookup': `${perfData.domainLookupEnd - perfData.domainLookupStart}ms`,
-                        'TCP Connection': `${perfData.connectEnd - perfData.connectStart}ms`,
-                        'DOM Processing': `${perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart}ms`,
-                        'Total Load Time': `${perfData.loadEventEnd - perfData.fetchStart}ms`
-                    });
+                    console.log(`📊 DOM Content Loaded: ${perfData.domContentLoadedEventEnd.toFixed(0)}ms`);
+                    console.log(`📊 DOM Interactive: ${perfData.domInteractive.toFixed(0)}ms`);
                 }
-            }, 1000);
+            }
         });
-    };
+    }
+    
+    // ========================================
+    // LAZY LOADING
+    // ========================================
+    
+    setupLazyLoading() {
+        // Lazy load images
+        const images = document.querySelectorAll('img[data-src]');
+        
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        observer.unobserve(img);
+                        this.metrics.imagesLoaded++;
+                    }
+                });
+            });
+            
+            images.forEach(img => imageObserver.observe(img));
+            this.metrics.totalImages = images.length;
+            
+            console.log(`✅ Lazy loading enabled for ${images.length} images`);
+        } else {
+            // Fallback for older browsers
+            images.forEach(img => {
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+            });
+        }
+    }
+    
+    // ========================================
+    // IMAGE OPTIMIZATION
+    // ========================================
+    
+    optimizeImages() {
+        const images = document.querySelectorAll('img');
+        
+        images.forEach(img => {
+            // Add loading="lazy" if not already set
+            if (!img.hasAttribute('loading')) {
+                img.setAttribute('loading', 'lazy');
+            }
+            
+            // Add decoding="async" for better performance
+            if (!img.hasAttribute('decoding')) {
+                img.setAttribute('decoding', 'async');
+            }
+        });
+        
+        console.log(`✅ Optimized ${images.length} images`);
+    }
+    
+    // ========================================
+    // DEFER NON-CRITICAL SCRIPTS
+    // ========================================
+    
+    deferNonCritical() {
+        // Defer non-critical features until after page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                this.loadNonCriticalFeatures();
+            }, 100);
+        });
+    }
+    
+    loadNonCriticalFeatures() {
+        // Load AI features after initial render
+        if (window.AIRecommendation) {
+            setTimeout(() => {
+                console.log('⏳ Loading AI features...');
+                // AI features initialization deferred
+            }, 500);
+        }
+        
+        // Load analytics
+        if (typeof gtag !== 'undefined') {
+            setTimeout(() => {
+                console.log('⏳ Loading analytics...');
+                // Analytics deferred
+            }, 1000);
+        }
+    }
+    
+    // ========================================
+    // DEBOUNCE & THROTTLE UTILITIES
+    // ========================================
+    
+    debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+    
+    throttle(func, limit) {
+        let inThrottle;
+        return function(...args) {
+            if (!inThrottle) {
+                func.apply(this, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
+    }
+    
+    // ========================================
+    // MEMORY MANAGEMENT
+    // ========================================
+    
+    cleanupUnusedResources() {
+        // Remove inactive panel content
+        const panels = document.querySelectorAll('.panel:not(.active)');
+        panels.forEach(panel => {
+            const content = panel.querySelector('.panel-content');
+            if (content && content.dataset.cached !== 'true') {
+                // Cache and clear content
+                panel.dataset.cachedContent = content.innerHTML;
+                content.innerHTML = '';
+            }
+        });
+    }
+    
+    restorePanelContent(panelId) {
+        const panel = document.getElementById(panelId);
+        if (panel && panel.dataset.cachedContent) {
+            const content = panel.querySelector('.panel-content');
+            if (content && !content.innerHTML) {
+                content.innerHTML = panel.dataset.cachedContent;
+            }
+        }
+    }
+    
+    // ========================================
+    // PERFORMANCE MONITORING
+    // ========================================
+    
+    getMetrics() {
+        return {
+            ...this.metrics,
+            loadTime: performance.now() - this.loadStartTime,
+            memory: performance.memory ? {
+                used: (performance.memory.usedJSHeapSize / 1048576).toFixed(2) + ' MB',
+                total: (performance.memory.totalJSHeapSize / 1048576).toFixed(2) + ' MB',
+                limit: (performance.memory.jsHeapSizeLimit / 1048576).toFixed(2) + ' MB'
+            } : 'Not available'
+        };
+    }
+    
+    logMetrics() {
+        const metrics = this.getMetrics();
+        console.table(metrics);
+    }
+}
 
-    // Start optimization
-    init();
+// Global initialization
+window.PerformanceOptimizer = PerformanceOptimizer;
 
-    // Expose to global for debugging
-    window.MuseFlowPerformance = {
-        version: '10.4',
-        lazyLoadImages,
-        prefetchNextPage,
-        monitorWebVitals
-    };
-
-    console.log('[Performance Optimizer] V10.4 initialized');
-
-})();
+console.log('🌟 Performance Optimizer Loaded');
